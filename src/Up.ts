@@ -7,14 +7,14 @@ import { UpConfigSettings } from './UpConfigSettings'
 
 
 export class Up {
-  private static defaultUp: Up = new Up()
+  private static default: Up = new Up()
 
-  static toAst(markup: string, changedSettings?: UpConfigSettings): DocumentNode {
-    return this.defaultUp.toAst(markup, changedSettings)
+  static toAst(markup: string, settings?: UpConfigSettings): DocumentNode {
+    return this.default.toAst(markup, settings)
   }
 
-  static toHtml(markupOrSyntaxNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
-    return this.defaultUp.toHtml(markupOrSyntaxNode, changedSettings)
+  static toHtml(markupOrSyntaxNode: string | SyntaxNode, settings?: UpConfigSettings): string {
+    return this.default.toHtml(markupOrSyntaxNode, settings)
   }
 
 
@@ -24,12 +24,12 @@ export class Up {
     this.config = new UpConfig(settings)
   }
 
-  toAst(markup: string, changedSettings?: UpConfigSettings): DocumentNode {
-    return toAst(markup, this.config.withChanges(changedSettings))
+  toAst(markup: string, extraSettings?: UpConfigSettings): DocumentNode {
+    return toAst(markup, this.config.withChanges(extraSettings))
   }
 
-  toHtml(markupOrSyntaxNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
-    return toHtml(markupOrSyntaxNode, this.config.withChanges(changedSettings))
+  toHtml(markupOrSyntaxNode: string | SyntaxNode, extraSettings?: UpConfigSettings): string {
+    return toHtml(markupOrSyntaxNode, this.config.withChanges(extraSettings))
   }
 }
 
