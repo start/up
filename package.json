@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "write-up",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A lightweight markup language for writing structured documents in plain text",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
