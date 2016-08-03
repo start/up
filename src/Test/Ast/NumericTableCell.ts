@@ -36,13 +36,13 @@ function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean }): 
 }
 
 function isCellNumeric(rawCellValue: string): boolean {
-  const tableOrChartText = `
+  const markup = `
 Table
 Dummy Header Cell
 ${rawCellValue};`
 
   const table =
-    Up.toAst(tableOrChartText).children[0] as TableNode
+    Up.toAst(markup).children[0] as TableNode
 
   return table.rows[0].cells[0].isNumeric()
 }
