@@ -17,16 +17,16 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // blank lines terminates the whole list.
 export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  const linesByListItem: string[][] = []
+  const listItems: UnorderedListNode.Item[] = []
 
   while (!markupLineConsumer.done()) {
-    let linesForCurrentListItem: string[] = []
+    const linesOfMarkupInCurrentListItem: string[] = []
 
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: line => {
-        linesForCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
+        linesOfMarkupInCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
       }
     })
 
@@ -36,34 +36,32 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
     let shouldTerminateList = false
 
+    // Let's collect the rest of the lines in the current list item (if there are any)  
     getIndentedBlock({
       lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        linesForCurrentListItem.push(...indentedLines)
+        linesOfMarkupInCurrentListItem.push(...indentedLines)
         markupLineConsumer.skipLines(countLinesConsumed)
         shouldTerminateList = hasMultipleTrailingBlankLines
       }
     })
 
-    linesByListItem.push(linesForCurrentListItem)
+    listItems.push(
+      new UnorderedListNode.Item(
+        getOutlineNodes(linesOfMarkupInCurrentListItem, args.headingLeveler, args.config)))
 
     if (shouldTerminateList) {
       break
     }
   }
 
-  if (!linesByListItem.length) {
+  if (!listItems.length) {
     return false
   }
-
-  const listItems =
-    linesByListItem.map((lines) =>
-      new UnorderedListNode.Item(getOutlineNodes(lines, args.headingLeveler, args.config)))
 
   args.then([new UnorderedListNode(listItems)], markupLineConsumer.countLinesConsumed)
   return true
 }
-
 
 const BULLET_PATTERN =
   patternStartingWith(
