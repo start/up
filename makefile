@@ -52,7 +52,7 @@ test: compile
 	$(local_mocha) $(mocha_args_for_behavioral_tests)
 
 # Run all export unit tests. These tests have timed out on Travis CI before, so we specify a larger timeout.
-	$(local_mocha) ./verify-exports-of-distributable-js-module.js --timeout 3000
+	$(local_mocha) ./describe-exports-of-js-module.js --timeout 3000
 
 
 .PHONY: coverage
