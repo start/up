@@ -36,16 +36,16 @@ import { Token } from './Token'
 // between the delimiter and the first backtick, nothing gets trimmed from that side.    
 export function tryToTokenizeCodeOrUnmatchedDelimiter(
   args: {
-    text: string
+    markup: string
     then: (resultToken: Token, lengthConsumed: number) => void
   }
 ): boolean {
-  const { text, then } = args
-  const textConsumer = new TextConsumer(text)
+  const { markup, then } = args
+  const markupConsumer = new TextConsumer(markup)
 
   let startDelimiter: string
 
-  textConsumer.consume({
+  markupConsumer.consume({
     pattern: CODE_DELIMITER_PATTERN,
     thenBeforeAdvancingTextIndex: match => {
       startDelimiter = match
@@ -58,20 +58,20 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
   let code = ''
 
-  while (!textConsumer.done()) {
-    textConsumer.consume({
+  while (!markupConsumer.done()) {
+    markupConsumer.consume({
       pattern: CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
         code += match
       }
     })
 
-    // Alright, we've consumed a chunk of inline code. Either we've reached the end of the text,
+    // Alright, we've consumed a chunk of inline code. Either we've reached the end of the markup,
     // or we're up against a possible end delimiter.
 
     let possibleEndDelimiter: string
 
-    textConsumer.consume({
+    markupConsumer.consume({
       pattern: CODE_DELIMITER_PATTERN,
       thenBeforeAdvancingTextIndex: match => {
         possibleEndDelimiter = match
@@ -79,12 +79,12 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     })
 
     if (!possibleEndDelimiter) {
-      // Looks like we reached the end of the text. Let's bail.
+      // Looks like we reached the end of the markup. Let's bail.
       break
     }
 
     if (possibleEndDelimiter === startDelimiter) {
-      then(new Token(TokenKind.Code, trimCode(code)), textConsumer.textIndex)
+      then(new Token(TokenKind.Code, trimCode(code)), markupConsumer.textIndex)
       return true
     }
 
