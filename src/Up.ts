@@ -9,12 +9,12 @@ import { UpConfigSettings } from './UpConfigSettings'
 export class Up {
   private static defaultUp: Up = new Up()
 
-  static toAst(text: string, changedSettings?: UpConfigSettings): DocumentNode {
-    return this.defaultUp.toAst(text, changedSettings)
+  static toAst(markup: string, changedSettings?: UpConfigSettings): DocumentNode {
+    return this.defaultUp.toAst(markup, changedSettings)
   }
 
-  static toHtml(textOrNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
-    return this.defaultUp.toHtml(textOrNode, changedSettings)
+  static toHtml(markupOrSyntaxNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
+    return this.defaultUp.toHtml(markupOrSyntaxNode, changedSettings)
   }
 
 
@@ -24,25 +24,25 @@ export class Up {
     this.config = new UpConfig(settings)
   }
 
-  toAst(text: string, changedSettings?: UpConfigSettings): DocumentNode {
-    return toAst(text, this.config.withChanges(changedSettings))
+  toAst(markup: string, changedSettings?: UpConfigSettings): DocumentNode {
+    return toAst(markup, this.config.withChanges(changedSettings))
   }
 
-  toHtml(textOrNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
-    return toHtml(textOrNode, this.config.withChanges(changedSettings))
+  toHtml(markupOrSyntaxNode: string | SyntaxNode, changedSettings?: UpConfigSettings): string {
+    return toHtml(markupOrSyntaxNode, this.config.withChanges(changedSettings))
   }
 }
 
 
-function toAst(text: string, config: UpConfig): DocumentNode {
-  return parseDocument(text, config)
+function toAst(markup: string, config: UpConfig): DocumentNode {
+  return parseDocument(markup, config)
 }
 
-function toHtml(textOrNode: string | SyntaxNode, config: UpConfig): string {
+function toHtml(markupOrSyntaxNode: string | SyntaxNode, config: UpConfig): string {
   const node =
-    typeof textOrNode === 'string'
-      ? toAst(textOrNode, config)
-      : textOrNode
+    typeof markupOrSyntaxNode === 'string'
+      ? toAst(markupOrSyntaxNode, config)
+      : markupOrSyntaxNode
 
   return new HtmlWriter(config).write(node)
 }
