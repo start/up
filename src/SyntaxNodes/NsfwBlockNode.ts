@@ -1,6 +1,6 @@
-import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
+import { RevealableOutlineSyntaxNode } from './RevealableOutlineSyntaxNode'
 
 
-export class NsfwBlockNode extends RichOutlineSyntaxNode {
+export class NsfwBlockNode extends RevealableOutlineSyntaxNode {
   protected NSFW_BLOCK_NODE(): void { }
 }

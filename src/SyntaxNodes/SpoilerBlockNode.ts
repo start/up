@@ -1,6 +1,6 @@
-import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
+import { RevealableOutlineSyntaxNode } from './RevealableOutlineSyntaxNode'
 
 
-export class SpoilerBlockNode extends RichOutlineSyntaxNode {
+export class SpoilerBlockNode extends RevealableOutlineSyntaxNode {
   protected SPOILER_BLOCK_NODE(): void { }
 }
