@@ -28,9 +28,9 @@ export class OrderedListNode implements OutlineSyntaxNode {
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return concat(
-      this.items.map(item => item.childrenToIncludeInTableOfContents()))
+      this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }
 }
 

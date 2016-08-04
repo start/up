@@ -15,7 +15,7 @@ export class TableNode implements OutlineSyntaxNode {
     return this.caption != null
   }
   
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 }

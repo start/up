@@ -11,9 +11,9 @@ export class DescriptionListNode implements OutlineSyntaxNode {
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return concat(
-      this.items.map(item => item.childrenToIncludeInTableOfContents()))
+      this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }
 }
 
@@ -24,8 +24,8 @@ export namespace DescriptionListNode {
       public terms: DescriptionListNode.Item.Term[],
       public description: DescriptionListNode.Item.Description) { }
 
-    childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
-      return this.description.childrenToIncludeInTableOfContents()
+    descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+      return this.description.descendantsToIncludeInTableOfContents()
     }
   }
 

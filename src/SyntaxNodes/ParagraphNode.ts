@@ -7,7 +7,7 @@ export class ParagraphNode extends InlineSyntaxNodeContainer implements OutlineS
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 

@@ -8,7 +8,7 @@ export class BlockquoteNode extends RichOutlineSyntaxNode {
   }
   
   // As a rule, we don't want to include any blockquoted content in the table of contents.
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 

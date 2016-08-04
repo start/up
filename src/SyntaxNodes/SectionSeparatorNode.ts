@@ -6,7 +6,7 @@ export class SectionSeparatorNode implements OutlineSyntaxNode {
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 

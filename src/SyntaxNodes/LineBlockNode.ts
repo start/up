@@ -9,7 +9,7 @@ export class LineBlockNode implements OutlineSyntaxNode {
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 }

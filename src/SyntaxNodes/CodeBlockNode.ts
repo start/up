@@ -8,7 +8,7 @@ export class CodeBlockNode implements OutlineSyntaxNode {
     return false
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 

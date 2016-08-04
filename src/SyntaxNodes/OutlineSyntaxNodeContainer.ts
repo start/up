@@ -5,8 +5,8 @@ import { concat } from '../CollectionHelpers'
 export abstract class OutlineSyntaxNodeContainer {
   constructor(public children: OutlineSyntaxNode[]) { }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return concat(
-      this.children.map(child => child.childrenToIncludeInTableOfContents()))
+      this.children.map(child => child.descendantsToIncludeInTableOfContents()))
   }
 }

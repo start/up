@@ -9,7 +9,7 @@ export abstract class RevealableOutlineSyntaxNode extends RichOutlineSyntaxNode 
   }
   
   // As a rule, we don't want to include any revealable content in the table of contents.
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 

@@ -1,4 +1,4 @@
 export interface OutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[]
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[]
 }

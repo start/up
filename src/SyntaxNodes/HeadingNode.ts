@@ -12,7 +12,7 @@ export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyn
     return true
   }
 
-  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
 }
