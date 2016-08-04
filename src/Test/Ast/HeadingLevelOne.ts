@@ -8,24 +8,8 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
-describe("A line of text underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
-
-  it('produces a heading node', () => {
-    const markup = `
-Messy heading tests
-#~#~#~#~#~#~#~#~#~#`
-
-    expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
-        new HeadingNode([new PlainTextNode('Messy heading tests')], 1),
-      ]))
-  })
-})
-
-
 describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
-
-  it('produces a level-1 heading node', () => {
+  it('always produces a level-1 heading node', () => {
     const markup = `
 Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
@@ -61,6 +45,7 @@ Hello, world!
       ]))
   })
 })
+
 
 describe("A heading", () => {
   it('can have an optional overline consisting of the same characters as its underline', () => {
