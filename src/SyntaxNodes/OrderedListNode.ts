@@ -23,7 +23,9 @@ export class OrderedListNode implements OutlineSyntaxNode {
         : OrderedListNode.Order.Ascending)
   }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
 }
 
 

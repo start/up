@@ -5,7 +5,9 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 export class LineBlockNode implements OutlineSyntaxNode {
   constructor(public lines: LineBlockNode.Line[]) { }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
 }
 
 

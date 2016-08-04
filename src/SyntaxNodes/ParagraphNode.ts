@@ -3,6 +3,9 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export class ParagraphNode extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
+
   protected PARAGRAPH_NODE(): void { }
 }

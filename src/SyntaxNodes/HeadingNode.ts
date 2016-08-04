@@ -8,5 +8,7 @@ export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyn
     super(children)
   }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return true
+  }
 }

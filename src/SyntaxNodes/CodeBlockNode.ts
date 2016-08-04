@@ -4,6 +4,9 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 export class CodeBlockNode implements OutlineSyntaxNode {
   constructor(public code: string) { }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
+  
   protected CODE_BLOCK_NODE(): void { }
 }

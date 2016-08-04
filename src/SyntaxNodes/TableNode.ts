@@ -11,7 +11,9 @@ export class TableNode implements OutlineSyntaxNode {
     public rows: TableNode.Row[],
     public caption?: TableNode.Caption) { }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return this.caption != null
+  }
 }
 
 

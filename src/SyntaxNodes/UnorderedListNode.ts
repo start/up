@@ -5,7 +5,9 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 export class UnorderedListNode implements OutlineSyntaxNode {
   constructor(public items: UnorderedListNode.Item[]) { }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
 }
 
 

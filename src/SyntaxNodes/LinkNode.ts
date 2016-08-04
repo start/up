@@ -14,6 +14,9 @@ export class LinkNode extends RichInlineSyntaxNode implements OutlineSyntaxNode 
     super(children)
   }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
+
   protected LINK_NODE(): void { }
 }

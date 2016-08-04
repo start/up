@@ -11,7 +11,10 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return ''
   }
 
-  OUTLINE_SYNTAX_NODE(): void { }
+  shouldBeIncludedInTableOfContents(): boolean {
+    return false
+  }
+
   protected MEDIA_SYNTAX_NODE(): void { }
 }
 
