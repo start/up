@@ -38,5 +38,7 @@ export { InlineSyntaxNodeContainer } from './SyntaxNodes/InlineSyntaxNodeContain
 export { MediaSyntaxNode } from './SyntaxNodes/MediaSyntaxNode'
 export { OutlineSyntaxNode } from './SyntaxNodes/OutlineSyntaxNode'
 export { OutlineSyntaxNodeContainer } from './SyntaxNodes/OutlineSyntaxNodeContainer'
+export { RevealableInlineSyntaxNode } from './SyntaxNodes/RevealableInlineSyntaxNode'
+export { RevealableOutlineSyntaxNode } from './SyntaxNodes/RevealableOutlineSyntaxNode'
 export { RichInlineSyntaxNode } from './SyntaxNodes/RichInlineSyntaxNode'
 export { RichOutlineSyntaxNode } from './SyntaxNodes/RichOutlineSyntaxNode'

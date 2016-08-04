@@ -63,6 +63,8 @@ context('Every base syntax node class is exported:', () => {
     'InlineSyntaxNodeContainer',
     'MediaSyntaxNode',
     'OutlineSyntaxNodeContainer',
+    'RevealableInlineSyntaxNode',
+    'RevealableOutlineSyntaxNode',
     'RichInlineSyntaxNode',
     'RichOutlineSyntaxNode'
   ])
