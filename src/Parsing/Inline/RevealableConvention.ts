@@ -1,12 +1,8 @@
 import { TokenKind } from './Tokenization/TokenKind'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
+import { RevealableInlineSyntaxNodeType } from '../../SyntaxNodes/RevealableInlineSyntaxNodeType'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
 
-// A "revealable" inline convention is one that requires deliberate action from the reader to reveal.
-//
-// Spoilers are an example.
 export class RevealableConvention implements RichConventionWithoutExtraFields {
   NodeType: RevealableInlineSyntaxNodeType
   startTokenKind: TokenKind
@@ -23,9 +19,4 @@ export class RevealableConvention implements RichConventionWithoutExtraFields {
     this.startTokenKind = args.startTokenKind
     this.endTokenKind = args.endTokenKind
   }
-}
-
-
-export interface RevealableInlineSyntaxNodeType {
-  new (children: InlineSyntaxNode[]): RevealableInlineSyntaxNode
 }
