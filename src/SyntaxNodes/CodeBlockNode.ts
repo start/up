@@ -7,6 +7,10 @@ export class CodeBlockNode implements OutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
-  
+
+  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+    return []
+  }
+
   protected CODE_BLOCK_NODE(): void { }
 }

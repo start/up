@@ -11,4 +11,8 @@ export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyn
   shouldBeIncludedInTableOfContents(): boolean {
     return true
   }
+
+  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+    return []
+  }
 }

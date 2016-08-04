@@ -1,5 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
+import { concat } from '../CollectionHelpers'
 
 
 export class UnorderedListNode implements OutlineSyntaxNode {
@@ -7,6 +8,11 @@ export class UnorderedListNode implements OutlineSyntaxNode {
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
+  }
+
+  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+    return concat(
+      this.items.map(item => item.childrenToIncludeInTableOfContents()))
   }
 }
 

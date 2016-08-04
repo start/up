@@ -8,6 +8,10 @@ export class LineBlockNode implements OutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
+
+  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+    return []
+  }
 }
 
 

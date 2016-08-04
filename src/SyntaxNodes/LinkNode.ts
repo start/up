@@ -17,6 +17,10 @@ export class LinkNode extends RichInlineSyntaxNode implements OutlineSyntaxNode 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
+  
+  childrenToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+    return []
+  }
 
   protected LINK_NODE(): void { }
 }
