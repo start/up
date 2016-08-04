@@ -2,6 +2,8 @@ import { UpConfigSettings} from './UpConfigSettings'
 
 
 const DEFAULT_SETTINGS: UpConfigSettings = {
+  createTableOfContents: false,
+  
   documentName: 'up',
 
   defaultUrlScheme: 'https://',

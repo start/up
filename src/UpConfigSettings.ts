@@ -1,4 +1,6 @@
 export interface UpConfigSettings {
+  createTableOfContents?: boolean
+  
   documentName?: string
 
   defaultUrlScheme?: string
