@@ -13,5 +13,9 @@ export function parseDocument(markup: string, config: UpConfig): DocumentNode {
   const documentNode = new DocumentNode(documentChildren)
   insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
 
+  if (config.settings.createTableOfContents) {
+    documentNode.createTableOfContents()
+  }
+
   return documentNode
 }
