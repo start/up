@@ -11,10 +11,10 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
-context("A document is not given a table of contents if:", () => {
+context("A document is not given a table of contents if", () => {
   const tableOfContents: DocumentNode.TableOfContents = undefined
 
-  specify("The 'createTableOfContents' config setting (which defaults to false) isn't set to true", () => {
+  specify('the "createTableOfContents" config setting (which defaults to false) is not set to true', () => {
     const markup = `
 I enjoy apples
 ==============`
@@ -69,5 +69,27 @@ SPOILER:
           ])
         ])
       ], tableOfContents))
+  })
+})
+
+
+context('A document is given a table of contents if the "createTableOfContents" config setting is set to true and the document contains', () => {
+  const up = new Up({
+    createTableOfContents: true
+  })
+
+  specify('a heading', () => {
+    const markup = `
+I enjoy apples
+==============`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([heading], tableOfContents))
   })
 })
