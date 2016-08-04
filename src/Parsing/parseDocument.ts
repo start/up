@@ -1,9 +1,8 @@
-import { DocumentNode } from '../SyntaxNodes/DocumentNode'
+import { DocumentNode, getFinalizedDocument } from '../SyntaxNodes/DocumentNode'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { INPUT_LINE_BREAK } from './Strings'
 import { UpConfig } from '../UpConfig'
-import { getFinalizedDocument } from './getFinalizedDocument'
 
 
 export function parseDocument(markup: string, config: UpConfig): DocumentNode {
