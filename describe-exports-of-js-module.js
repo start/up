@@ -71,10 +71,21 @@ context('Every base syntax node class is exported:', () => {
 })
 
 
+context('For anyone who really wants to fiddle with the abstract syntax tree', () => {
+  specify('the exported function `getFinalizedDocument` helps you produce footnote blocks and tables of contents', () => {
+    expectAClassOrFunction(EXPORTS['getFinalizedDocument'])
+  })
+})
+
+
 function specifyEveryClassShouldBeExported(classNames) {
   for (const className of classNames) {
     specify(className, () => {
-      expect(typeof EXPORTS[className]).to.be.eql('function')
+      expectAClassOrFunction(EXPORTS[className])
     })
   }
+}
+
+function expectAClassOrFunction(object) {
+  expect(typeof object).to.be.eql('function')
 }
