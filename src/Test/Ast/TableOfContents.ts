@@ -92,4 +92,43 @@ I enjoy apples
     expect(up.toAst(markup)).to.be.eql(
       new DocumentNode([heading], tableOfContents))
   })
+
+  specify('a chart with a caption', () => {
+    const markup = `
+Chart: \`AND\` operator logic
+
+        1;      0
+1;      true;   false
+0;      false;  false`
+
+    const chart =
+      new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+          ],
+
+          new TableNode.Caption([
+            new InlineCodeNode('AND'),
+            new PlainTextNode(' operator logic')
+          ]))
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([chart])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([chart], tableOfContents))
+  })
 })
