@@ -35,8 +35,10 @@ export function getFinalizedDocument(
   if (args.createTableOfContents) {
     const tableOfContentsEntries = documentNode.descendantsToIncludeInTableOfContents()
 
-    documentNode.tableOfContents =
-      new DocumentNode.TableOfContents(tableOfContentsEntries)
+    // An empty table of contents wouldn't be very useful! Let's avoid creating them.
+    if (tableOfContentsEntries.length) {
+      documentNode.tableOfContents = new DocumentNode.TableOfContents(tableOfContentsEntries)
+    }
   }
 
   return documentNode
