@@ -13,8 +13,8 @@ context("A chart caption is exactly like a table caption.", () => {
 Chart: \`AND\` operator logic
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -28,12 +28,12 @@ Chart: \`AND\` operator logic
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
 
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
           ],
 
           new TableNode.Caption([
@@ -50,8 +50,8 @@ Chart: \`AND\` operator logic
 Chart:  \t  \t  \`AND\` operator logic \t \t  
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -64,11 +64,11 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
           ],
           new TableNode.Caption([
             new InlineCodeNode('AND'),

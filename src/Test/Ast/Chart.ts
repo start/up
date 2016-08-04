@@ -14,8 +14,8 @@ context('A chart is simply a table with a second, vertical header. Its syntax is
 Chart: AND operator logic
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -28,11 +28,11 @@ Chart: AND operator logic
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ],
           new TableNode.Caption([new PlainTextNode('AND operator logic')]))
       ]))
@@ -46,8 +46,8 @@ context("On a chart's label line", () => {
 Chart:
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -61,12 +61,12 @@ Chart:
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
 
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ])
       ]))
   })
@@ -76,8 +76,8 @@ Chart:
 Chart
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -91,12 +91,12 @@ Chart
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
 
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ])
       ]))
   })
@@ -181,8 +181,8 @@ describe('The padding between cells in a chart', () => {
     const markup = `
 Chart: AND operator logic
 1;0
-0;true;false
-1;false;false`
+1;true;false
+0;false;false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -195,11 +195,11 @@ Chart: AND operator logic
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ],
           new TableNode.Caption([new PlainTextNode('AND operator logic')]))
       ]))
@@ -528,8 +528,8 @@ context("The label line for charts can end with whitespace, regardless of whethe
 Chart:  \t  \t  \t 
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -543,12 +543,12 @@ Chart:  \t  \t  \t
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
 
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ])
       ]))
   })
@@ -558,8 +558,8 @@ Chart:  \t  \t  \t
 Chart:  \t  \t  \t 
 
         1;      0
-0;      true;   false
-1;      false;  false`
+1;      true;   false
+0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -573,12 +573,12 @@ Chart:  \t  \t  \t
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('true')]),
               new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
 
             new TableNode.Row([
               new TableNode.Row.Cell([new PlainTextNode('false')]),
               new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('1')]))
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ])
       ]))
   })

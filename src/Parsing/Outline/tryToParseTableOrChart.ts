@@ -55,8 +55,8 @@ import { getTableCells } from './getTableCells'
 // Chart: `AND` operator logic
 //
 //         1;      0
-// 0;      true;   false
-// 1;      false;  false
+// 1;      true;   false
+// 0;      false;  false
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
