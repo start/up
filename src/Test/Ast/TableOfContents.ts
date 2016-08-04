@@ -93,6 +93,41 @@ I enjoy apples
       new DocumentNode([heading], tableOfContents))
   })
 
+  specify('a table with a caption', () => {
+    const markup = `
+Table: Games in the Chrono series
+
+Game;             Release Date
+
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+
+    const table =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+            new TableNode.Row.Cell([new PlainTextNode('1999')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Games in the Chrono series')
+        ]))
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([table])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([table], tableOfContents))
+  })
+
   specify('a chart with a caption', () => {
     const markup = `
 Chart: \`AND\` operator logic
@@ -103,27 +138,24 @@ Chart: \`AND\` operator logic
 
     const chart =
       new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
-          ]), [
-
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
-          ],
-
-          new TableNode.Caption([
-            new InlineCodeNode('AND'),
-            new PlainTextNode(' operator logic')
-          ]))
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+        ],
+        new TableNode.Caption([
+          new InlineCodeNode('AND'),
+          new PlainTextNode(' operator logic')
+        ]))
 
     const tableOfContents =
       new DocumentNode.TableOfContents([chart])
