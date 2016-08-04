@@ -10,6 +10,7 @@ export interface RichConventionWithoutExtraFields {
   endTokenKind: TokenKind
 }
 
+
 export interface RichSyntaxNodeWithoutExtraFieldsType {
   new (children: InlineSyntaxNode[]): RichInlineSyntaxNode
 }
