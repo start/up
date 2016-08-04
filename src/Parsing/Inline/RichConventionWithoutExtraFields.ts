@@ -5,11 +5,11 @@ import { TokenKind } from './Tokenization/TokenKind'
 
 // A rich inline convention is one that can contain other inline conventions.
 export interface RichConventionWithoutExtraFields {
-  NodeType: RichSyntaxNodeWithoutExtraFields
+  NodeType: RichSyntaxNodeWithoutExtraFieldsType
   startTokenKind: TokenKind
   endTokenKind: TokenKind
 }
 
-export interface RichSyntaxNodeWithoutExtraFields {
+export interface RichSyntaxNodeWithoutExtraFieldsType {
   new (children: InlineSyntaxNode[]): RichInlineSyntaxNode
 }
