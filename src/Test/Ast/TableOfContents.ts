@@ -7,6 +7,7 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 /*import { StressNode } from '../../SyntaxNodes/StressNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -388,6 +389,35 @@ NSFL:
         new NsflBlockNode([
           new ParagraphNode([new PlainTextNode("Who doesn't?")])
         ])
+      ], tableOfContents))
+  })
+
+  specify('Section separators', () => {
+    const markup = `
+Anyway, let's get to the point.
+
+I enjoy apples
+==============
+
+Who doesn't?
+
+~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
+
+No one!`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        heading,
+        new ParagraphNode([new PlainTextNode("Who doesn't?")]),
+        new SectionSeparatorNode(),
+        new ParagraphNode([new PlainTextNode("No one!")])
       ], tableOfContents))
   })
 
