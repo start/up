@@ -10,6 +10,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
@@ -152,7 +153,7 @@ Chart: \`AND\` operator logic
           new TableNode.Row([
             new TableNode.Row.Cell([new PlainTextNode('false')]),
             new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
         ],
         new TableNode.Caption([
           new InlineCodeNode('AND'),
@@ -192,7 +193,7 @@ Who doesn't?`
       new DocumentNode([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
-        new ParagraphNode([new PlainTextNode("Who doesn't?")]),
+        new ParagraphNode([new PlainTextNode("Who doesn't?")])
       ], tableOfContents))
   })
 
@@ -220,7 +221,7 @@ I enjoy apples
           new OrderedListNode.Item([
             new ParagraphNode([new PlainTextNode("They're delicious")])
           ], 2)
-        ]),
+        ])
       ], tableOfContents))
   })
 
@@ -248,7 +249,29 @@ I enjoy apples
           new UnorderedListNode.Item([
             new ParagraphNode([new PlainTextNode("They're delicious")])
           ])
-        ]),
+        ])
+      ], tableOfContents))
+  })
+
+  specify('Code blocks', () => {
+    const markup = `
+I enjoy apples
+==============
+
+\`\`\`
+const reason = "They are cheap and delicious."
+\`\`\``
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        heading,
+        new CodeBlockNode('const reason = "They are cheap and delicious."'),
       ], tableOfContents))
   })
 })
