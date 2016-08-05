@@ -540,3 +540,52 @@ Chart:
       ], tableOfContents))
   })
 })
+
+
+
+context("Headings, tables with captions, and charts with captions don't have to be at the top level of the document to be included in the table of contents.", () => {
+  context('Instead, they can be inside:', () => {
+    specify('Ordered lists', () => {
+      const markup = `
+I enjoy apples
+==============
+
+1. They're cheap
+   -------------
+
+   Very cheap.
+
+2. They're delicious
+   -----------------
+   
+   Very delicious.`
+
+      const applesHeading =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+      const cheapHeading =
+        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+
+      const deliciousHeading =
+        new HeadingNode([new PlainTextNode("They're delicious")], 2)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([applesHeading])
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          applesHeading,
+          new OrderedListNode([
+            new OrderedListNode.Item([
+              cheapHeading,
+              new ParagraphNode([new PlainTextNode("Very cheap.")])
+            ], 1),
+            new OrderedListNode.Item([
+              deliciousHeading,
+              new ParagraphNode([new PlainTextNode("Very delicious.")])
+            ], 2)
+          ])
+        ], tableOfContents))
+    })
+  })
+})
