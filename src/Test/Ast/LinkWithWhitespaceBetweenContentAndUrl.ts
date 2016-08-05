@@ -312,7 +312,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
@@ -456,7 +456,7 @@ describe('If there is nothing but whitspace between an inline spoiler and a brac
 
 
 describe("A link's URL, when separated from its content by whitespace,", () => {
-  it('can itself contain whitespace if each whitespace character is escaped with a backslash ', () => {
+  it('can itself contain whitespace if each whitespace character is escaped with a backslash', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this search',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],

@@ -390,7 +390,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
       + '</table>')
   })
 
-  specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned ', () => {
+  specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
     const node =
       new TableNode(
         new TableNode.Header([

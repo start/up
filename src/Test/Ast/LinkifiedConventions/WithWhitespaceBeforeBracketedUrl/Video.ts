@@ -373,7 +373,7 @@ context('A linkified video convention can have whitespace between its video URL 
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[video: usernaming](https://example.com/video.webm) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([

@@ -373,7 +373,7 @@ context('A linkified image convention can have whitespace between its image URL 
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([

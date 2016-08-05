@@ -186,7 +186,7 @@ NSFL  \t  \t
 
 
 describe('NSFL blocks', () => {
-  context('can contain any outline convention, including: ', () => {
+  context('can contain any outline convention, including:', () => {
     specify('Other NSFL blocks', () => {
       const markup = `
 NSFL:

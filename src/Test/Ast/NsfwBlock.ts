@@ -186,7 +186,7 @@ NSFW  \t  \t
 
 
 describe('NSFW blocks', () => {
-  context('can contain any outline convention, including: ', () => {
+  context('can contain any outline convention, including:', () => {
     specify('Other NSFW blocks', () => {
       const markup = `
 NSFW:

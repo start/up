@@ -186,7 +186,7 @@ SPOILER  \t  \t
 
 
 describe('Spoiler blocks', () => {
-  context('can contain any outline convention, including: ', () => {
+  context('can contain any outline convention, including:', () => {
     specify('Other spoiler blocks', () => {
       const markup = `
 SPOILER:

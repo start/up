@@ -334,7 +334,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[SPOILER: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([

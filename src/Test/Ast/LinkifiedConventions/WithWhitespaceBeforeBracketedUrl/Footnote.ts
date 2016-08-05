@@ -425,7 +425,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         const footnote = new FootnoteNode([
           new PlainTextNode('username')

@@ -335,7 +335,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[NSFL: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([

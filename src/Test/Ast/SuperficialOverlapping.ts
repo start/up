@@ -16,7 +16,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
   context('This includes:', () => {
-    specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion) ', () => {
+    specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
       expect(Up.toAst('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
@@ -134,7 +134,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with a priority in between the first two (e.g. spoiler) ', () => {
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
       expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body {squish)}] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
@@ -150,7 +150,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority than both (e.g. link) ', () => {
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority than both (e.g. link)', () => {
       expect(Up.toAst('(There was another [NSFL: rotten body {squish)(example.com)}] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([

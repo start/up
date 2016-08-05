@@ -373,7 +373,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
       })
     })
 
-    context('The top-level domain must contain only letters ', () => {
+    context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         expect(Up.toAst('[audio: usernaming](https://example.com/sounds.ogg) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([

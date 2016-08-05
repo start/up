@@ -19,7 +19,7 @@ import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 
-context('Once a convention has been linkified, it cannot be linkified again. This applies for: ', () => {
+context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
   specify('Spoilers', () => {
     expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
