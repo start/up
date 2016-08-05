@@ -985,3 +985,87 @@ NSFL:
     })
   })
 })
+
+
+describe('The entries in a table of contents', () => {
+  it("point to the same syntax node objects that are in the document's syntax tree", () => {
+    const markup = `
+* I like apples.
+
+  # Really.
+  
+    Apple
+      The best fruit.
+      ===============
+      
+      Table: Apple varieties
+      
+      Apple;            Description
+      Pink Lady;        Very crisp and sweet
+      Red Delicious;    Very mushy and bland
+      
+
+      Purchasing
+      --------
+      
+      Chart: Where to buy apples
+
+                        Target;   Walmart
+      Pink Lady;        No;       Yes
+      Red Delicious;    No;       No`
+
+    const bestFruitHeading =
+      new HeadingNode([new PlainTextNode('The best fruit.')], 1)
+
+    const table =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Apple')]),
+          new TableNode.Header.Cell([new PlainTextNode('Description')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Pink Lady')]),
+            new TableNode.Row.Cell([new PlainTextNode('Very crisp and sweet')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Red Delicious')]),
+            new TableNode.Row.Cell([new PlainTextNode('Very mushy and bland')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Apple varieties')
+        ]))
+
+    const purchasingHeading =
+      new HeadingNode([new PlainTextNode('Purchasing')], 2)
+
+    const chart =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('Target')]),
+          new TableNode.Header.Cell([new PlainTextNode('Walmart')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('No')]),
+            new TableNode.Row.Cell([new PlainTextNode('Yes')])
+          ], new TableNode.Header.Cell([new PlainTextNode('Pink Lady')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('No')]),
+            new TableNode.Row.Cell([new PlainTextNode('No')])
+          ], new TableNode.Header.Cell([new PlainTextNode('Red Delicious')]))
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Where to buy apples')
+        ]))
+
+    const documentNode = Up.toAst(markup, { createTableOfContents: true })
+
+    const tableOfContents = documentNode.tableOfContents
+
+    expect(tableOfContents.entries[0] === bestFruitHeading).to.be.true
+    expect(tableOfContents.entries[1] === table).to.be.true
+    expect(tableOfContents.entries[2] === purchasingHeading).to.be.true
+    expect(tableOfContents.entries[3] === chart).to.be.true
+  })
+})
