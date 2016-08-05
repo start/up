@@ -824,6 +824,19 @@ Apple
   })
 
   context('However they cannot be inside:', () => {
+    specify('Blockquotes', () => {
+      const markup = `
+> They're cheap
+> -------------`
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          ])
+        ], NO_TABLE_OF_CONTENTS))
+    })
+
     specify('Spoiler blocks', () => {
       const markup = `
 SPOILER:
