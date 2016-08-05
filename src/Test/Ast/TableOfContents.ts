@@ -18,10 +18,11 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
-context("A document is not given a table of contents if", () => {
-  const NO_TABLE_OF_CONTENTS: DocumentNode.TableOfContents = undefined
+const NO_TABLE_OF_CONTENTS: DocumentNode.TableOfContents = undefined
 
-  specify('the "createTableOfContents" config setting (which defaults to false) is not set to true', () => {
+
+context("A document is not given a table of contents if", () => {
+  specify('the "createTableOfContents" config setting is not set to true', () => {
     const markup = `
 I enjoy apples
 ==============`
@@ -819,6 +820,23 @@ Apple
             ]))
           ])
         ], tableOfContents))
+    })
+  })
+
+  context('However they cannot be inside:', () => {
+    specify('Spoiler blocks', () => {
+      const markup = `
+SPOILER:
+
+  They're cheap
+  -------------`
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          ])
+        ], NO_TABLE_OF_CONTENTS))
     })
   })
 })
