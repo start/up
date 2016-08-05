@@ -467,6 +467,42 @@ const reason = "They are cheap and delicious."
       ], tableOfContents))
   })
 
+  specify("Tables without captions", () => {
+    const markup = `
+The Chrono series
+=============
+
+Table:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+    const heading =
+      new HeadingNode([new PlainTextNode('The Chrono series')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      new DocumentNode([
+        heading,
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ])
+          ])
+      ], tableOfContents))
+  })
+
   specify("Charts without captions", () => {
     const markup = `
 Boolean logic
