@@ -823,7 +823,7 @@ Apple
     })
   })
 
-  specify('They can be nested arbitrarily deep within lists', () => {
+  specify('They can be nested arbitrarily deep within ordered lists, unordered lists, and description lists', () => {
     const markup = `
 * I like apples.
 
@@ -831,12 +831,26 @@ Apple
   
     Apple
       The best fruit.
+      ===============
       
       Table: Apple varieties
       
       Apple;            Description
       Pink Lady;        Very crisp and sweet
-      Red Delicious;    Very mushy and bland`
+      Red Delicious;    Very mushy and bland
+      
+
+      Purchasing
+      --------
+      
+      Chart: Where to buy apples
+
+                        Target;   Walmart
+      Pink Lady;        No;       Yes
+      Red Delicious;    No;       No`
+
+    const bestFruitHeading =
+      new HeadingNode([new PlainTextNode('The best fruit.')], 1)
 
     const table =
       new TableNode(
@@ -857,25 +871,50 @@ Apple
           new PlainTextNode('Apple varieties')
         ]))
 
+    const purchasingHeading =
+      new HeadingNode([new PlainTextNode('Purchasing')], 2)
+
+    const chart =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('Target')]),
+          new TableNode.Header.Cell([new PlainTextNode('Walmart')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('No')]),
+            new TableNode.Row.Cell([new PlainTextNode('Yes')])
+          ], new TableNode.Header.Cell([new PlainTextNode('Pink Lady')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('No')]),
+            new TableNode.Row.Cell([new PlainTextNode('No')])
+          ], new TableNode.Header.Cell([new PlainTextNode('Red Delicious')]))
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Where to buy apples')
+        ]))
+
     const tableOfContents =
-      new DocumentNode.TableOfContents([table])
+      new DocumentNode.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
 
     expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
       new DocumentNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([new PlainTextNode('I like apples.')]),
-            
+
             new OrderedListNode([
               new OrderedListNode.Item([
                 new ParagraphNode([new PlainTextNode('Really.')]),
-                
+
                 new DescriptionListNode([
                   new DescriptionListNode.Item([
                     new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
                   ], new DescriptionListNode.Item.Description([
-                    new ParagraphNode([new PlainTextNode('The best fruit.')]),
-                    table
+                    bestFruitHeading,
+                    table,
+                    purchasingHeading,
+                    chart
                   ]))
                 ])
               ])
