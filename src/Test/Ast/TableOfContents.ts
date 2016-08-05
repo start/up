@@ -921,8 +921,7 @@ Apple
             ])
           ])
         ])
-      ], tableOfContents)
-    )
+      ], tableOfContents))
   })
 
 
