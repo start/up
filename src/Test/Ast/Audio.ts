@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
-describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
+context('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
   it('produces an audio node with the first bracketed text treated as the description and the second treated as the audio URL', () => {
     expect(Up.toAst('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -20,7 +20,7 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 })
 
 
-describe('An audio convention that is the only convention on its line is not placed inside a paragraph node.', () => {
+context('An audio convention that is the only convention on its line is not placed inside a paragraph node.', () => {
   specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[audio: ghostly howling](http://example.com/ghosts.ogg)')).to.be.eql(
       new DocumentNode([

@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
-describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "video:" immediately followed by another instance of bracketed text', () => {
+context('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "video:" immediately followed by another instance of bracketed text', () => {
   it('produces a video node with the first bracketed text treated as the description and the second treated as the URL', () => {
     expect(Up.toAst('I would never stay in a house with this. [video: ghosts eating luggage](http://example.com/poltergeists.webm) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
@@ -20,7 +20,7 @@ describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text s
 })
 
 
-describe('A video that is the only convention on its line is not placed inside a paragraph node.', () => {
+context('A video that is the only convention on its line is not placed inside a paragraph node.', () => {
   specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.toAst('[video: ghosts eating luggage](http://example.com/poltergeists.webm)')).to.be.eql(
       new DocumentNode([
