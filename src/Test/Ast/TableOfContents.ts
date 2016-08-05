@@ -587,5 +587,51 @@ I enjoy apples
           ])
         ], tableOfContents))
     })
+
+
+    specify('Nested ordered lists', () => {
+      const markup = `
+I enjoy apples
+==============
+
+# They're cheap
+  -------------
+
+  Very cheap.
+
+  # Cost
+    -----------------
+   
+    Typically, apples cost twenty dolloars per pound.`
+
+      const applesHeading =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+      const cheapHeading =
+        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+
+      const costHeading =
+        new HeadingNode([new PlainTextNode("Cost")], 2)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([applesHeading, cheapHeading, costHeading])
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          applesHeading,
+          new OrderedListNode([
+            new OrderedListNode.Item([
+              cheapHeading,
+              new ParagraphNode([new PlainTextNode("Very cheap.")]),
+              new OrderedListNode([
+                new OrderedListNode.Item([
+                  costHeading,
+                  new ParagraphNode([new PlainTextNode("Typically, apples cost twenty dolloars per pound.")])
+                ])
+              ])
+            ])
+          ])
+        ], tableOfContents))
+    })
   })
 })
