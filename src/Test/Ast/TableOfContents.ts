@@ -987,8 +987,8 @@ NSFL:
 })
 
 
-describe('The entries in a table of contents', () => {
-  it("point to the same syntax node objects that are in the document's syntax tree", () => {
+describe("The entries in a table of contents reference the same syntax node objects that are in the document's syntax tree. This is true for entries", () => {
+  specify("coming from the top level of the document", () => {
     const markup = `
 The best fruit.
 ===============
@@ -1012,6 +1012,48 @@ Red Delicious;    No;       No`
     const documentNode = Up.toAst(markup, { createTableOfContents: true })
 
     const [bestFruitHeading, table, purchasingHeading, chart] = documentNode.children 
+    const { entries } = documentNode.tableOfContents
+
+
+    expect(entries[0] === bestFruitHeading).to.be.true
+    expect(entries[1] === table).to.be.true
+    expect(entries[2] === purchasingHeading).to.be.true
+    expect(entries[3] === chart).to.be.true
+  })
+
+  specify("nested deep within other conventions", () => {
+    const markup = `
+* I like apples.
+
+  # Really.
+  
+    Apple
+      The best fruit.
+      ===============
+      
+      Table: Apple varieties
+      
+      Apple;            Description
+      Pink Lady;        Very crisp and sweet
+      Red Delicious;    Very mushy and bland
+      
+
+      Purchasing
+      --------
+      
+      Chart: Where to buy apples
+
+                        Target;   Walmart
+      Pink Lady;        No;       Yes
+      Red Delicious;    No;       No`
+
+    const documentNode = Up.toAst(markup, { createTableOfContents: true })
+    
+    const unorderedList = documentNode.children[0] as UnorderedListNode
+    const orderedList = unorderedList.items[0].children[1] as OrderedListNode
+    const descriptionList = orderedList.items[0].children[1] as DescriptionListNode
+
+    const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children 
     const { entries } = documentNode.tableOfContents
 
 
