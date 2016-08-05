@@ -311,6 +311,32 @@ Apples are blue`
       ], tableOfContents))
   })
 
+  specify('Spoiler blocks', () => {
+    const markup = `
+Anyway, let's get to the point.
+
+I enjoy apples
+==============
+
+SPOILER:
+  Who doesn't?`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        heading,
+        new SpoilerBlockNode([
+          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        ])
+      ], tableOfContents))
+  })
+
   specify('Code blocks', () => {
     const markup = `
 I enjoy apples
