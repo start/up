@@ -1,6 +1,6 @@
 export interface UpConfigSettings {
   createTableOfContents?: boolean
-  
+
   documentName?: string
 
   defaultUrlScheme?: string
@@ -24,6 +24,7 @@ export interface UpConfigSettings {
       toggleNsfl?: string
       footnote?: string
       footnoteReference?: string
+      tableOfContents?: string
 
       [term: string]: string
     }
