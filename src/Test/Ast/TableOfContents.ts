@@ -1014,7 +1014,6 @@ Red Delicious;    No;       No`
     const [bestFruitHeading, table, purchasingHeading, chart] = documentNode.children 
     const { entries } = documentNode.tableOfContents
 
-
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === table).to.be.true
     expect(entries[2] === purchasingHeading).to.be.true
