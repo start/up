@@ -471,7 +471,7 @@ const reason = "They are cheap and delicious."
   specify("Tables without captions", () => {
     const markup = `
 The Chrono series
-=============
+=================
 
 Table:
 
@@ -600,7 +600,7 @@ I enjoy apples
   Very cheap.
 
   # Cost
-    -----------------
+    ----
    
     Typically, apples cost twenty dolloars per pound.`
 
@@ -729,7 +729,7 @@ I enjoy apples
 
 Apple
   The best fruit
-  -------------
+  --------------
 
   Really.
 
@@ -778,7 +778,7 @@ I enjoy apples
 
 Apple
   The best fruit
-  -------------
+  --------------
 
   Really.
 
@@ -830,8 +830,8 @@ Apple
   # Really.
   
     Apple
-      The best fruit.
-      ===============
+      The best fruit
+      ==============
       
       Table: Apple varieties
       
@@ -841,7 +841,7 @@ Apple
       
 
       Purchasing
-      --------
+      ----------
       
       Chart: Where to buy apples
 
@@ -850,7 +850,7 @@ Apple
       Red Delicious;    No;       No`
 
     const bestFruitHeading =
-      new HeadingNode([new PlainTextNode('The best fruit.')], 1)
+      new HeadingNode([new PlainTextNode('The best fruit')], 1)
 
     const table =
       new TableNode(
@@ -990,8 +990,8 @@ NSFL:
 describe("The entries in a table of contents reference the same syntax node objects that are in the document's syntax tree. This is true for entries", () => {
   specify("coming from the top level of the document", () => {
     const markup = `
-The best fruit.
-===============
+The best fruit
+==============
 
 Table: Apple varieties
 
@@ -1001,7 +1001,7 @@ Red Delicious;    Very mushy and bland
 
 
 Purchasing
---------
+----------
 
 Chart: Where to buy apples
 
@@ -1028,8 +1028,8 @@ Red Delicious;    No;       No`
   # Really.
   
     Apple
-      The best fruit.
-      ===============
+      The best fruit
+      ==============
       
       Table: Apple varieties
       
@@ -1039,7 +1039,7 @@ Red Delicious;    No;       No`
       
 
       Purchasing
-      --------
+      ----------
       
       Chart: Where to buy apples
 
@@ -1055,7 +1055,6 @@ Red Delicious;    No;       No`
 
     const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children 
     const { entries } = documentNode.tableOfContents
-
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === table).to.be.true
