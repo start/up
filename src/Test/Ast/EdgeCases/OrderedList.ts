@@ -50,7 +50,25 @@ describe('An ordered list with a single item can be sandwched by identical secti
         ]))
     })
   })
+
+
+  context("If an ordered list has just one item, that item's bullet can't be a numeral followed by a period.", () => {
+    specify('Therefore, such a line produces a heading when sandwiched by identical streaks.', () => {
+      const markup = `
+----------------------------------------
+1783. Not a good year for Great Britain.
+----------------------------------------`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new HeadingNode([
+            new PlainTextNode('1783. Not a good year for Great Britain.')
+          ], 1)
+        ]))
+    })
+  })
 })
+
 
 describe('An ordered list followed by 2 blank lines followed by another ordered list', () => {
   it('produce two separate ordered lists', () => {
