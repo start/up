@@ -164,3 +164,33 @@ Chart: \`AND\` operator logic
       new DocumentNode([chart], tableOfContents))
   })
 })
+
+
+context('The table of contents of a document excludes most conventions. Specifically:', () => {
+  const up = new Up({
+    createTableOfContents: true
+  })
+
+  specify('Paragraphs', () => {
+    const markup = `
+Anyway, let's get to the point.
+
+I enjoy apples
+==============
+
+Who doesn't?`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        heading,
+        new ParagraphNode([new PlainTextNode("Who doesn't?")]),
+      ], tableOfContents))
+  })
+})
