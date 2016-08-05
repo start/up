@@ -10,6 +10,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
+import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
@@ -249,6 +250,34 @@ I enjoy apples
           new UnorderedListNode.Item([
             new ParagraphNode([new PlainTextNode("They're delicious")])
           ])
+        ])
+      ], tableOfContents))
+  })
+
+  specify('Description lists', () => {
+    const markup = `
+I enjoy apples
+==============
+
+Apples
+  They're delicious.`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        heading,
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Apples')])
+          ],
+            new DescriptionListNode.Item.Description([
+              new ParagraphNode([new PlainTextNode("They're delicious.")])
+            ]))
         ])
       ], tableOfContents))
   })
