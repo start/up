@@ -8,6 +8,7 @@ import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 /*import { StressNode } from '../../SyntaxNodes/StressNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
@@ -191,6 +192,34 @@ Who doesn't?`
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
         new ParagraphNode([new PlainTextNode("Who doesn't?")]),
+      ], tableOfContents))
+  })
+
+  specify('Ordered lists', () => {
+    const markup = `
+I enjoy apples
+==============
+
+1. They're cheap
+2. They're delicious`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        heading,
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([new PlainTextNode("They're cheap")])
+          ], 1),
+          new OrderedListNode.Item([
+            new ParagraphNode([new PlainTextNode("They're delicious")])
+          ], 2)
+        ]),
       ], tableOfContents))
   })
 })
