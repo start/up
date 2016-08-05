@@ -838,5 +838,35 @@ SPOILER:
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
+  
+    specify('NSFW blocks', () => {
+      const markup = `
+NSFW:
+
+  They're cheap
+  -------------`
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          new NsfwBlockNode([
+            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          ])
+        ], NO_TABLE_OF_CONTENTS))
+    })
+  
+    specify('NSFL blocks', () => {
+      const markup = `
+NSFL:
+
+  They're cheap
+  -------------`
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          new NsflBlockNode([
+            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          ])
+        ], NO_TABLE_OF_CONTENTS))
+    })
   })
 })
