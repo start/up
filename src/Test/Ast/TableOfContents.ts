@@ -769,5 +769,56 @@ Pink lady
           ])
         ], tableOfContents))
     })
+
+    specify('Nested description lists', () => {
+      const markup = `
+I enjoy apples
+==============
+
+Apple
+  The best fruit
+  -------------
+
+  Really.
+
+  Pink lady
+    The best apple
+    --------------
+    
+    Really.`
+
+      const applesHeading =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+      const bestFruitHeading =
+        new HeadingNode([new PlainTextNode("The best fruit")], 2)
+
+      const pinkLadyHeading =
+        new HeadingNode([new PlainTextNode("The best apple")], 2)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
+
+      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+        new DocumentNode([
+          applesHeading,
+          new DescriptionListNode([
+            new DescriptionListNode.Item([
+              new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
+            ], new DescriptionListNode.Item.Description([
+              bestFruitHeading,
+              new ParagraphNode([new PlainTextNode('Really.')]),
+              new DescriptionListNode([
+                new DescriptionListNode.Item([
+                  new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
+                ], new DescriptionListNode.Item.Description([
+                  pinkLadyHeading,
+                  new ParagraphNode([new PlainTextNode('Really.')])
+                ]))
+              ])
+            ]))
+          ])
+        ], tableOfContents))
+    })
   })
 })
