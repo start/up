@@ -9,8 +9,6 @@ import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-/*import { StressNode } from '../../SyntaxNodes/StressNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
@@ -21,7 +19,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
 context("A document is not given a table of contents if", () => {
-  const tableOfContents: DocumentNode.TableOfContents = undefined
+  const NO_TABLE_OF_CONTENTS: DocumentNode.TableOfContents = undefined
 
   specify('the "createTableOfContents" config setting (which defaults to false) is not set to true', () => {
     const markup = `
@@ -31,7 +29,7 @@ I enjoy apples
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
-      ], tableOfContents))
+      ], NO_TABLE_OF_CONTENTS))
   })
 
   specify("the 'createTableOfContents' config setting is set to true, but the document has no outline conventions that would be put into its table of contents", () => {
@@ -77,7 +75,7 @@ SPOILER:
             new PlainTextNode(' operator.'),
           ])
         ])
-      ], tableOfContents))
+      ], NO_TABLE_OF_CONTENTS))
   })
 })
 
@@ -175,7 +173,7 @@ Chart: \`AND\` operator logic
 })
 
 
-context('The table of contents of a document excludes most conventions. Specifically:', () => {
+context('The table of contents of a document does not include most conventions. Specifically, it does not include:', () => {
   const up = new Up({
     createTableOfContents: true
   })
