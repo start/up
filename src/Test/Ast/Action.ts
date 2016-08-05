@@ -7,7 +7,7 @@ import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Text surrounded by curly brackets', () => {
-  it('is put inside an action node with the curly brackets preserved as plain text', () => {
+  it('is put inside an action node', () => {
     expect(Up.toAst('Well... {sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well... '),
@@ -21,7 +21,7 @@ describe('Text surrounded by curly brackets', () => {
 
 
 describe('An action', () => {
-  it('is evaluated for inline conventions', () => {
+  it('can contain inline conventions', () => {
     expect(Up.toAst('Well... {the *deepest* sigh} We have some work to do.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well... '),
@@ -108,7 +108,7 @@ describe('A left curly bracket followed by two right curly brackets', () => {
 })
 
 
-describe("A curly bracket followed by whitespace", () => {
+describe("An open curly bracket followed by whitespace", () => {
   it('does not open an action conventions', () => {
     expect(Up.toAst("I can't eat most pizza. 8o{ But I can have some! 8o}")).to.be.eql(
       insideDocumentAndParagraph([
