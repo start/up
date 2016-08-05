@@ -5,6 +5,8 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 /*import { StressNode } from '../../SyntaxNodes/StressNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -332,6 +334,58 @@ SPOILER:
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
         new SpoilerBlockNode([
+          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        ])
+      ], tableOfContents))
+  })
+
+  specify('NSFW blocks', () => {
+    const markup = `
+Anyway, let's get to the point.
+
+I enjoy apples
+==============
+
+NSFW:
+  Who doesn't?`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        heading,
+        new NsfwBlockNode([
+          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        ])
+      ], tableOfContents))
+  })
+
+  specify('NSFL blocks', () => {
+    const markup = `
+Anyway, let's get to the point.
+
+I enjoy apples
+==============
+
+NSFL:
+  Who doesn't?`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        heading,
+        new NsflBlockNode([
           new ParagraphNode([new PlainTextNode("Who doesn't?")])
         ])
       ], tableOfContents))
