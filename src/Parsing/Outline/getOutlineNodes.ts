@@ -30,9 +30,9 @@ export function getOutlineNodes(
 
   const outlineConventions = [
     tryToParseBlankLineSeparation,
-    tryToParseHeading,
     tryToParseUnorderedList,
     trytoParseOrderedList,
+    tryToParseHeading,
     tryToParseSectionSeparatorStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,

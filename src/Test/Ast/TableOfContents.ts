@@ -570,7 +570,7 @@ I enjoy apples
         new HeadingNode([new PlainTextNode("They're delicious")], 2)
 
       const tableOfContents =
-        new DocumentNode.TableOfContents([applesHeading])
+        new DocumentNode.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
 
       expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
         new DocumentNode([
