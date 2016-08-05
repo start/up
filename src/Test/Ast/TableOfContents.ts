@@ -12,6 +12,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
@@ -278,6 +279,34 @@ Apples
             new DescriptionListNode.Item.Description([
               new ParagraphNode([new PlainTextNode("They're delicious.")])
             ]))
+        ])
+      ], tableOfContents))
+  })
+
+  specify('Line blocks', () => {
+    const markup = `
+I enjoy apples
+==============
+
+Roses are read
+Apples are blue`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        heading,
+        new LineBlockNode([
+          new LineBlockNode.Line([
+            new PlainTextNode("Roses are read")
+          ]),
+          new LineBlockNode.Line([
+            new PlainTextNode("Apples are blue")
+          ])
         ])
       ], tableOfContents))
   })
