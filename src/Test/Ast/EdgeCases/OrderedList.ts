@@ -1,34 +1,56 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('An ordered list with a single item', () => {
-  it('can be sandwched by identical section separator streaks without producing a heading', () => {
-    const markup = `
+describe('An ordered list with a single item can be sandwched by identical section separator streaks without producing a heading.', () => {
+  context('This includes when the bullet is:', () => {
+    specify('A number sign', () => {
+      const markup = `
 -----------
 # Mittens
 -----------`
 
-    expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
-        new SectionSeparatorNode(),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Mittens')
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new SectionSeparatorNode(),
+          new OrderedListNode([
+            new OrderedListNode.Item([
+              new ParagraphNode([
+                new PlainTextNode('Mittens')
+              ])
             ])
-          ])
-        ]),
-        new SectionSeparatorNode()
-      ]))
+          ]),
+          new SectionSeparatorNode()
+        ]))
+    })
+
+    specify('A numeral followed by a closing parenthesis', () => {
+      const markup = `
+-----------
+1) Mittens
+-----------`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new SectionSeparatorNode(),
+          new OrderedListNode([
+            new OrderedListNode.Item([
+              new ParagraphNode([
+                new PlainTextNode('Mittens')
+              ])
+            ], 1)
+          ]),
+          new SectionSeparatorNode()
+        ]))
+    })
   })
 })
-
 
 describe('An ordered list followed by 2 blank lines followed by another ordered list', () => {
   it('produce two separate ordered lists', () => {
@@ -232,6 +254,40 @@ context("When an ordered list has just one item, that item can start with an int
               new PlainTextNode('1783. Not a good year for Great Britain.')
             ])
           ])
+        ])
+      ]))
+  })
+})
+
+
+describe('An ordered list item with a numeral followed by a bullet', () => {
+  it('can start with a heading', () => {
+    const markup = `
+I enjoy apples
+==============
+
+1. They're cheap
+   -------------
+
+   Very cheap.
+
+2. They're delicious
+   -----------------
+   
+   Very delicious.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're cheap")], 2),
+            new ParagraphNode([new PlainTextNode("Very cheap.")])
+          ], 1),
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're delicious")], 2),
+            new ParagraphNode([new PlainTextNode("Very delicious.")])
+          ], 2)
         ])
       ]))
   })
