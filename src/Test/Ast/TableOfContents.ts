@@ -823,6 +823,70 @@ Apple
     })
   })
 
+  specify('They can be nested arbitrarily deep within lists', () => {
+    const markup = `
+* I like apples.
+
+  # Really.
+  
+    Apple
+      The best fruit.
+      
+      Table: Apple varieties
+      
+      Apple;            Description
+      Pink Lady;        Very crisp and sweet
+      Red Delicious;    Very mushy and bland`
+
+    const table =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Apple')]),
+          new TableNode.Header.Cell([new PlainTextNode('Description')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Pink Lady')]),
+            new TableNode.Row.Cell([new PlainTextNode('Very crisp and sweet')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Red Delicious')]),
+            new TableNode.Row.Cell([new PlainTextNode('Very mushy and bland')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Apple varieties')
+        ]))
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([table])
+
+    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([new PlainTextNode('I like apples.')]),
+            
+            new OrderedListNode([
+              new OrderedListNode.Item([
+                new ParagraphNode([new PlainTextNode('Really.')]),
+                
+                new DescriptionListNode([
+                  new DescriptionListNode.Item([
+                    new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
+                  ], new DescriptionListNode.Item.Description([
+                    new ParagraphNode([new PlainTextNode('The best fruit.')]),
+                    table
+                  ]))
+                ])
+              ])
+            ])
+          ])
+        ])
+      ], tableOfContents)
+    )
+  })
+
+
   context('However they cannot be inside:', () => {
     specify('Blockquotes', () => {
       const markup = `
@@ -851,7 +915,7 @@ SPOILER:
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
-  
+
     specify('NSFW blocks', () => {
       const markup = `
 NSFW:
@@ -866,7 +930,7 @@ NSFW:
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
-  
+
     specify('NSFL blocks', () => {
       const markup = `
 NSFL:
