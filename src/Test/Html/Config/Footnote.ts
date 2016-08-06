@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -13,7 +15,7 @@ describe("A footnote's ID", () => {
       }
     })
 
-    const node =
+    const node = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -22,6 +24,7 @@ describe("A footnote's ID", () => {
           new PlainTextNode("Killer Bees"),
         ], 3),
       ])
+    ])
 
     const html =
       '<dl class="up-footnotes">'
@@ -42,9 +45,13 @@ describe("The ID of the footnote referenced by a footnote reference", () => {
       }
     })
 
-    const node = new FootnoteNode([], 3)
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ])
 
-    expect(up.toHtml(node)).to.be.eql(
-      '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-fn-3">3</a></sup>')
+    expect(up.toHtml(documentNode)).to.be.eql(
+      '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-fn-3">3</a></sup></p>')
   })
 })
