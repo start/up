@@ -35,8 +35,8 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 
 
-context('A table of contents produces a <nav class="up-table-of-contents"> as the first element of the HTML. The <nav> starts with <h1>Table of Contents</h1>.', () => {
-  context("After the <h1>, each table of contents entry gets its own heading element.", () => {
+context('A table of contents produces a <nav class="up-table-of-contents"> as the first element of the HTML. The <nav> starts with an <h1> containing the term for "Table of Contents"', () => {
+  context("After that <h1>, each table of contents entry gets its own HTML element.", () => {
     context("A heading entry produces a heading element with a level one higher than its own. The heading's content is wrapped in a link pointing to the actual heading in the document.", () => {
       specify('A level 1 heading produces an <h2>', () => {
         const heading =
