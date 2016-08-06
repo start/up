@@ -43,28 +43,33 @@ describe('An empty document node', () => {
 
 describe('A paragraph node', () => {
   it('produces a <p>', () => {
-    const node = new ParagraphNode([new PlainTextNode('Nimble navigator')])
-    expect(Up.toHtml(node)).to.be.eql('<p>Nimble navigator</p>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([new PlainTextNode('Nimble navigator')])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Nimble navigator</p>')
   })
 })
 
 
 describe('An unordered list node', () => {
   it('produces an <ul> containing an <li> for each list item', () => {
-    const node = new UnorderedListNode([
-      new UnorderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Tropical')
-        ])
-      ]),
-      new UnorderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Territories')
+    const documentNode = new DocumentNode([
+      new UnorderedListNode([
+        new UnorderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Tropical')
+          ])
+        ]),
+        new UnorderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Territories')
+          ])
         ])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<ul>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -75,20 +80,22 @@ describe('An unordered list node', () => {
 
 describe('An ordered list node', () => {
   it('produces an <ol> containing an <li> for each list item', () => {
-    const node = new OrderedListNode([
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Tropical')
-        ])
-      ]),
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Territories')
+    const documentNode = new DocumentNode([
+      new OrderedListNode([
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Tropical')
+          ])
+        ]),
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Territories')
+          ])
         ])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -99,20 +106,22 @@ describe('An ordered list node', () => {
 
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
-    const node = new OrderedListNode([
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Tropical')
-        ])
-      ]),
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Territories')
-        ])
-      ], 5)
+    const documentNode = new DocumentNode([
+      new OrderedListNode([
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Tropical')
+          ])
+        ]),
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Territories')
+          ])
+        ], 5)
+      ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li value="5"><p>Territories</p></li>'
@@ -123,15 +132,17 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> is given a "start" attribute set to the appropriate starting ordinal', () => {
-    const node = new OrderedListNode([
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Tropical')
-        ])
-      ], 3),
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Territories')
+    const node = new DocumentNode([
+      new OrderedListNode([
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Tropical')
+          ])
+        ], 3),
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Territories')
+          ])
         ])
       ])
     ])
