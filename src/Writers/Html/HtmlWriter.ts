@@ -125,7 +125,19 @@ export class HtmlWriter extends Writer<string> {
   }
 
   protected heading(node: HeadingNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('h' + Math.min(6, node.level), node.children)
+    const attrs: { id?: string } = {}
+
+    const ordinalOfEntryInTableOfContents =
+      this.getOrdinalOfEntryInTableOfContents(node)
+
+    if (ordinalOfEntryInTableOfContents) {
+      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
+    }
+
+    return this.htmlElementWithAlreadyEscapedChildren(
+      'h' + Math.min(6, node.level),
+      node.children,
+      attrs)
   }
 
   protected sectionSeparator(): string {
@@ -484,6 +496,14 @@ export class HtmlWriter extends Writer<string> {
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
     return this.getId(this.config.settings.i18n.terms.outline, ordinal)
+  }
+
+  // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
+  //
+  // Returns null if there isn't an entry in the table of contents for the node.  
+  private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
+    const index = this.documentNode.tableOfContents.entries.indexOf(node)
+    return index ? (index + 1) : null
   }
 
   private footnoteId(referenceNumber: number): string {
