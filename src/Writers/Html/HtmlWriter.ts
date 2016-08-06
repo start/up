@@ -32,6 +32,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
@@ -125,19 +126,10 @@ export class HtmlWriter extends Writer<string> {
   }
 
   protected heading(node: HeadingNode): string {
-    const attrs: { id?: string } = {}
-
-    const ordinalOfEntryInTableOfContents =
-      this.getOrdinalOfEntryInTableOfContents(node)
-
-    if (ordinalOfEntryInTableOfContents) {
-      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
-    }
-
     return this.htmlElementWithAlreadyEscapedChildren(
       'h' + Math.min(6, node.level),
       node.children,
-      attrs)
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
   }
 
   protected sectionSeparator(): string {
@@ -254,7 +246,8 @@ export class HtmlWriter extends Writer<string> {
         this.tableCaption(node.caption),
         this.tableHeader(node.header),
         node.rows.map(row => this.tableRow(row)).join('')
-      ])
+      ],
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
   }
 
   protected link(node: LinkNode): string {
@@ -314,9 +307,7 @@ export class HtmlWriter extends Writer<string> {
 
       if (entry instanceof HeadingNode) {
         const linkToElementInDocument =
-          new LinkNode(
-            entry.children,
-            internalFragmentUrl(this.idOfElementReferencedByTableOfContents(ordinal)))
+          this.linkToElementReferencedByTableOfContents(entry.children, ordinal)
 
         const tableOfContentsHeading =
           new HeadingNode([linkToElementInDocument], entry.level + 1)
@@ -324,8 +315,22 @@ export class HtmlWriter extends Writer<string> {
         return this.write(tableOfContentsHeading)
       }
 
+      if (entry instanceof TableNode) {
+        const linkToElementInDocument =
+          this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
+          
+        return this.write(linkToElementInDocument)
+      }
+
       throw new Error('Unrecognized tables of contents entry')
     })
+  }
+
+  private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): LinkNode {
+    const idOfElement =
+      this.idOfElementReferencedByTableOfContents(ordinalTableOfContentsEntry)
+
+    return new LinkNode(children, internalFragmentUrl(idOfElement))
   }
 
   private orderedListItem(listItem: OrderedListNode.Item): string {
@@ -494,6 +499,19 @@ export class HtmlWriter extends Writer<string> {
     return nodes.map(node => this.write(node))
   }
 
+  private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode): AttrsWithPossibleId {
+    const attrs: AttrsWithPossibleId = {}
+
+    const ordinalOfEntryInTableOfContents =
+      this.getOrdinalOfEntryInTableOfContents(node)
+
+    if (ordinalOfEntryInTableOfContents) {
+      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
+    }
+
+    return attrs
+  }
+
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
     return this.getId(this.config.settings.i18n.terms.outline, ordinal)
   }
@@ -508,7 +526,7 @@ export class HtmlWriter extends Writer<string> {
 
     const index =
       this.documentNode.tableOfContents.entries.indexOf(node)
-    
+
     return (index >= 0) ? (index + 1) : null
   }
 
@@ -519,4 +537,9 @@ export class HtmlWriter extends Writer<string> {
   private footnoteReferenceId(referenceNumber: number): string {
     return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber)
   }
+}
+
+
+interface AttrsWithPossibleId {
+  id?: string
 }
