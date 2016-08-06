@@ -36,12 +36,18 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 
 export abstract class Writer<TResult> {
+  private _result: TResult
+
   constructor(
     protected documentNode: DocumentNode,
     protected config: UpConfig) { }
 
-  result(): TResult {
-    return this.document(this.documentNode)
+  // TODO: Explain why this class is single-use
+  get result(): TResult {
+    this._result =
+      this._result || this.document(this.documentNode)
+
+    return this._result
   }
 
   protected write(node: SyntaxNode): TResult {
