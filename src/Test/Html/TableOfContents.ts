@@ -50,8 +50,99 @@ context('A table of contents produces a <nav class="up-table-of-contents"> as th
           + '<h1>Table of Contents</h1>'
           + '<h2><a href="#up-outline-1">I enjoy apples</a></h2>'
           + '</nav>'
-          + '<h1 id="up-outline-1">I enjoy apples</h1>'
-        )
+          + '<h1 id="up-outline-1">I enjoy apples</h1>')
+      })
+
+      specify('A level 2 heading produces an <h3>', () => {
+        const heading =
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 2)
+
+        const documentNode =
+          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+        expect(Up.toHtml(documentNode)).to.be.eql(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<h3><a href="#up-outline-1">I enjoy apples</a></h3>'
+          + '</nav>'
+          + '<h2 id="up-outline-1">I enjoy apples</h2>')
+      })
+
+      specify('A level 3 heading produces an <h4>', () => {
+        const heading =
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 3)
+
+        const documentNode =
+          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+        expect(Up.toHtml(documentNode)).to.be.eql(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<h4><a href="#up-outline-1">I enjoy apples</a></h4>'
+          + '</nav>'
+          + '<h3 id="up-outline-1">I enjoy apples</h3>')
+      })
+
+      specify('A level 4 heading produces an <h5>', () => {
+        const heading =
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 4)
+
+        const documentNode =
+          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+        expect(Up.toHtml(documentNode)).to.be.eql(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<h5><a href="#up-outline-1">I enjoy apples</a></h5>'
+          + '</nav>'
+          + '<h4 id="up-outline-1">I enjoy apples</h4>')
+      })
+
+      specify('A level 5 heading produces an <h6>', () => {
+        const heading =
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 5)
+
+        const documentNode =
+          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+        expect(Up.toHtml(documentNode)).to.be.eql(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+          + '</nav>'
+          + '<h5 id="up-outline-1">I enjoy apples</h5>')
+      })
+
+      context('HTML heading levels go no higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.', () => {
+        specify('A level 6 heading produces an <h6>', () => {
+          const heading =
+            new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
+
+          const documentNode =
+            new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+          expect(Up.toHtml(documentNode)).to.be.eql(
+            '<nav class="up-table-of-contents">'
+            + '<h1>Table of Contents</h1>'
+            + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+            + '</nav>'
+            + '<h6 id="up-outline-1">I enjoy apples</h6>')
+        })
+
+        specify('A level 10 heading produces an <h6>', () => {
+          const heading =
+            new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
+
+          const documentNode =
+            new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+          expect(Up.toHtml(documentNode)).to.be.eql(
+            '<nav class="up-table-of-contents">'
+            + '<h1>Table of Contents</h1>'
+            + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+            + '</nav>'
+            + '<h6 id="up-outline-1">I enjoy apples</h6>')
+        })
       })
     })
   })
