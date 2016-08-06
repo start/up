@@ -36,7 +36,7 @@ import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElemen
 import { escapeHtmlContent } from './EscapingHelpers'
 
 
-export class HtmlWriter extends Writer {
+export class HtmlWriter extends Writer<string> {
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an anchor element for the inner link.
   private isInsideLink = false
