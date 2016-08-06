@@ -303,25 +303,28 @@ export class HtmlWriter extends Writer<string> {
 
   private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string {
     const listItems =
-      entries
-        .map((entry, indexOfEntry) => {
-          const ordinal = indexOfEntry + 1
-
-          if (entry instanceof HeadingNode) {
-            return new HeadingNode(
-              [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
-              entry.level + 1)
-          }
-
-          if (entry instanceof TableNode) {
-            return this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
-          }
-
-          throw new Error('Unrecognized tables of contents entry')
-        })
-        .map(entry => new UnorderedListNode.Item([entry]))
+      entries.map((entry, index) =>
+        new UnorderedListNode.Item([
+          this.nodeRepresentingTableOfContentsEntry(entry, index)
+        ]))
 
     return this.write(new UnorderedListNode(listItems))
+  }
+
+  private nodeRepresentingTableOfContentsEntry(entry: OutlineSyntaxNode, indexOfEntry: number): OutlineSyntaxNode {
+    const ordinal = indexOfEntry + 1
+
+    if (entry instanceof HeadingNode) {
+      return new HeadingNode(
+        [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
+        entry.level + 1)
+    }
+
+    if (entry instanceof TableNode) {
+      return this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
+    }
+
+    throw new Error('Unrecognized tables of contents entry')
   }
 
   private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): LinkNode {
