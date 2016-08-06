@@ -16,6 +16,8 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 const NO_TABLE_OF_CONTENTS: DocumentNode.TableOfContents = undefined
@@ -465,6 +467,35 @@ const reason = "They are cheap and delicious."
       new DocumentNode([
         heading,
         new CodeBlockNode('const reason = "They are cheap and delicious."'),
+      ], tableOfContents))
+  })
+
+  specify('Footnote blocks', () => {
+    const markup = `
+I enjoy apples
+==============
+
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    const tableOfContents =
+      new DocumentNode.TableOfContents([heading])
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        heading,
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have.")
+        ]),
+        new FootnoteBlockNode([footnote])
       ], tableOfContents))
   })
 
@@ -1011,7 +1042,7 @@ Red Delicious;    No;       No`
 
     const documentNode = Up.toAst(markup, { createTableOfContents: true })
 
-    const [bestFruitHeading, table, purchasingHeading, chart] = documentNode.children 
+    const [bestFruitHeading, table, purchasingHeading, chart] = documentNode.children
     const { entries } = documentNode.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
@@ -1047,12 +1078,12 @@ Red Delicious;    No;       No`
       Red Delicious;    No;       No`
 
     const documentNode = Up.toAst(markup, { createTableOfContents: true })
-    
+
     const unorderedList = documentNode.children[0] as UnorderedListNode
     const orderedList = unorderedList.items[0].children[1] as OrderedListNode
     const descriptionList = orderedList.items[0].children[1] as DescriptionListNode
 
-    const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children 
+    const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children
     const { entries } = documentNode.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
