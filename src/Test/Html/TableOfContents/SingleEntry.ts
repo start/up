@@ -6,7 +6,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 
 
-context('When a document has table of contents, it produces a <nav class="up-table-of-contents"> as the first element of the HTML. The <nav> starts with an <h1> containing the term for "Table of Contents"', () => {
+context('When a document has table of contents, the first HTML element is a <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
   context("After that <h1> is an <ul> in which each table of contents entry gets its own item.", () => {
     context("A heading entry produces a heading element with a level one higher than its own. The heading's content is wrapped in a link pointing to the actual heading in the document.", () => {
       specify('A level 1 heading produces an <h2>', () => {
