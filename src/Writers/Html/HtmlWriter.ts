@@ -32,7 +32,6 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { UpConfig } from '../../UpConfig'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
@@ -63,10 +62,6 @@ export class HtmlWriter extends Writer {
   private spoilerCount = 0
   private nsfwCount = 0
   private nsflCount = 0
-
-  constructor(config: UpConfig) {
-    super(config)
-  }
 
   protected document(node: DocumentNode): string {
     const tableOfContents =

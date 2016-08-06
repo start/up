@@ -5,7 +5,7 @@ import { parseDocument } from './Parsing/parseDocument'
 import { getHtml } from './Writers//Html/getHtml'
 
 
-type MarkupOrSyntaxNode = string | DocumentNode
+export type MarkupOrSyntaxNode = string | DocumentNode
 
 
 export class Up {
