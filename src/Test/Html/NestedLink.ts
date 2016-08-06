@@ -18,7 +18,7 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<a href="https://google.com">Google<sup id="up-footnote-reference-2" class="up-footnote-reference">2</sup></a>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google<sup id="up-footnote-reference-2" class="up-footnote-reference">2</sup></a></p>')
   })
 
   specify("a nested link does not produce another link element. The nested link's contents are included directly inside the outer link", () => {
@@ -31,6 +31,6 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<a href="https://google.com">Google is probably not Bing</a>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
