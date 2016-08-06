@@ -25,6 +25,7 @@ export interface UpConfigSettings {
       footnote?: string
       footnoteReference?: string
       tableOfContents?: string
+      outline?: string
 
       [term: string]: string
     }

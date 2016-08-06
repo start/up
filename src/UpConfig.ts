@@ -27,7 +27,8 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       toggleNsfl: 'toggle NSFL',
       footnote: 'footnote',
       footnoteReference: 'footnote reference',
-      tableOfContents: 'Table of Contents'
+      tableOfContents: 'Table of Contents',
+      outline: 'outline'
     }
   }
 }
