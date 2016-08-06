@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 
@@ -12,14 +14,20 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
       }
     })
 
-    const node = new InlineNsfwNode([])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineNsfwNode([])
+      ])
+    ])
 
     const html =
-      '<span class="up-nsfw up-revealable">'
+      '<p>'
+      + '<span class="up-nsfw up-revealable">'
       + '<label for="up-explicit-1">toggle NSFW</label>'
       + '<input id="up-explicit-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
@@ -34,7 +42,9 @@ describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)
       }
     })
 
-    const node = new NsfwBlockNode([])
+    const node = new DocumentNode([
+      new NsfwBlockNode([])
+    ])
 
     const html =
       '<div class="up-nsfw up-revealable">'
