@@ -334,6 +334,6 @@ describe("Within a link's href attribute, <, ', and >", () => {
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<a href="https://example.com/?z=\'<span>\'"></a>')
+      '<p><a href="https://example.com/?z=\'<span>\'"></a></p>')
   })
 })

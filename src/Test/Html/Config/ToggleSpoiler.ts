@@ -21,11 +21,13 @@ describe("The text in an inline spoiler's label", () => {
     ])
 
     const html =
-      '<span class="up-spoiler up-revealable">'
+      '<p>'
+      + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">show/hide</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
