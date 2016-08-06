@@ -601,13 +601,13 @@ describe('A section separator node', () => {
 
 describe('An emphasis node', () => {
   it('produces an <em>', () => {
-    const node = new DocumentNode([
+    const documentnode = new DocumentNode([
       new ParagraphNode([
         new EmphasisNode([new PlainTextNode('Always')])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql('<p><em>Always</em></p>')
+    expect(Up.toHtml(documentnode)).to.be.eql('<p><em>Always</em></p>')
   })
 })
 
@@ -653,13 +653,13 @@ describe('A revision insertion node', () => {
 
 describe('A revision deletion node', () => {
   it('produces a <del>', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql('<p><del>Koopa Tropa</del></p>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><del>Koopa Tropa</del></p>')
   })
 })
 
@@ -718,27 +718,36 @@ describe('A link node', () => {
 
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
-    const node = new FootnoteNode([], 3)
+    const documentnode = new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
-      '<sup id="up-footnote-reference-3" class="up-footnote-reference">'
+    expect(Up.toHtml(documentnode)).to.be.eql(
+      '<p>'
+      + '<sup id="up-footnote-reference-3" class="up-footnote-reference">'
       + '<a href="#up-footnote-3">3</a>'
-      + '</sup>')
+      + '</sup>'
+      + '</p>')
   })
 })
 
 
 describe('A footnote block node', () => {
   it('produces a <dl class="up-footnotes">', () => {
-    const node = new FootnoteBlockNode([])
-    expect(Up.toHtml(node)).to.be.eql('<dl class="up-footnotes"></dl>')
+    const documentNode = new DocumentNode([
+      new FootnoteBlockNode([])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<dl class="up-footnotes"></dl>')
   })
 })
 
 
 describe("Each footnote in a footnote block", () => {
   it("produce a <dt> with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> containing the footnote contents", () => {
-    const node =
+    const documentNode = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -747,6 +756,7 @@ describe("Each footnote in a footnote block", () => {
           new PlainTextNode("Killer Bees"),
         ], 3),
       ])
+    ])
 
     const html =
       '<dl class="up-footnotes">'
@@ -754,18 +764,18 @@ describe("Each footnote in a footnote block", () => {
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('An image node', () => {
   it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
   })
 })
@@ -801,7 +811,7 @@ describe('A video node', () => {
 
 describe('An inline spoiler node', () => {
   it('produces a <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox, and a <span> containing the spoiler contents', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
       ])
@@ -816,7 +826,7 @@ describe('An inline spoiler node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -891,7 +901,7 @@ describe('A spoiler block node', () => {
 
 describe('A NSFW block node', () => {
   it('produces the same HTML as an inline NSFW node, but with <div>s instead of <span>s', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new NsfwBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -908,14 +918,14 @@ describe('A NSFW block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('A NSFL block node', () => {
   it('produces the same HTML as an inline NSFL node, but with <div>s instead of <span>s', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new NsflBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -932,6 +942,6 @@ describe('A NSFL block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
