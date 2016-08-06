@@ -1,6 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpConfigSettings } from '../../../UpConfigSettings'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { SyntaxNode } from '../../../SyntaxNodes/SyntaxNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -10,7 +12,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    node: SyntaxNode
+    node: DocumentNode
     htmlFromDefaultSettings: string
     configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
@@ -70,8 +72,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new FootnoteNode([], 3),
-    htmlFromDefaultSettings: '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>',
+    node: new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ]),
+    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       documentName: 'reply 11'
     },
@@ -84,8 +90,12 @@ describe('The "documentName" config setting', () => {
 
 describe('The "idWordDelimiter" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new FootnoteNode([], 3),
-    htmlFromDefaultSettings: '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>',
+    node: new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ]),
+    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         idWordDelimiter: '::'
@@ -102,8 +112,12 @@ describe('The "idWordDelimiter" config setting', () => {
 
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new FootnoteNode([], 3),
-    htmlFromDefaultSettings: '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>',
+    node: new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ]),
+    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         terms: {
