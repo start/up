@@ -412,7 +412,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
   })
 
   specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([]),
@@ -426,8 +426,9 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
           ], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
           new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
         ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col"></th><th scope="col">Most Common Word</th></tr></thead>'
       + '<tr><th scope="row" colspan="2">Monday</th></tr>'
@@ -442,16 +443,18 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div> for each line', () => {
-    const node = new LineBlockNode([
-      new LineBlockNode.Line([
-        new PlainTextNode('Hollow')
-      ]),
-      new LineBlockNode.Line([
-        new PlainTextNode('Fangs')
+    const documentNode = new DocumentNode([
+      new LineBlockNode([
+        new LineBlockNode.Line([
+          new PlainTextNode('Hollow')
+        ]),
+        new LineBlockNode.Line([
+          new PlainTextNode('Fangs')
+        ])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<div class="up-lines">'
       + '<div>Hollow</div>'
       + '<div>Fangs</div>'
@@ -462,101 +465,136 @@ describe('A line block node', () => {
 
 describe('A code block node', () => {
   it('produces a <pre> containing a <code> containing the code', () => {
-    const node = new CodeBlockNode('color = Color.Green')
-    expect(Up.toHtml(node)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
+    const documentNode = new DocumentNode([
+      new CodeBlockNode('color = Color.Green')
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
   })
 })
 
 
 describe('A blockquote node', () => {
   it('produces a <blockquote>', () => {
-    const node = new BlockquoteNode([
-      new ParagraphNode([
-        new PlainTextNode('Centipede')
+    const documentNOde = new DocumentNode([
+      new BlockquoteNode([
+        new ParagraphNode([
+          new PlainTextNode('Centipede')
+        ])
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql('<blockquote><p>Centipede</p></blockquote>')
+    expect(Up.toHtml(documentNOde)).to.be.eql('<blockquote><p>Centipede</p></blockquote>')
   })
 })
 
 
 describe('A level 1 heading node', () => {
   it('produces an <h1>', () => {
-    const node = new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
-    expect(Up.toHtml(node)).to.be.eql('<h1>Bulbasaur</h1>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h1>Bulbasaur</h1>')
   })
 })
 
 
 describe('A level 2 heading node', () => {
   it('produces an <h2>', () => {
-    const node = new HeadingNode([new PlainTextNode('Ivysaur')], 2)
-    expect(Up.toHtml(node)).to.be.eql('<h2>Ivysaur</h2>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Ivysaur')], 2)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h2>Ivysaur</h2>')
   })
 })
 
 
 describe('A level 3 heading node', () => {
   it('produces an <h3>', () => {
-    const node = new HeadingNode([new PlainTextNode('Venusaur')], 3)
-    expect(Up.toHtml(node)).to.be.eql('<h3>Venusaur</h3>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Venusaur')], 3)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h3>Venusaur</h3>')
   })
 })
 
 
 describe('A level 4 heading node', () => {
   it('produces an <h4<', () => {
-    const node = new HeadingNode([new PlainTextNode('Charmander')], 4)
-    expect(Up.toHtml(node)).to.be.eql('<h4>Charmander</h4>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Charmander')], 4)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h4>Charmander</h4>')
   })
 })
 
 
 describe('A level 5 heading node', () => {
   it('produces an <h5>', () => {
-    const node = new HeadingNode([new PlainTextNode('Charmeleon')], 5)
-    expect(Up.toHtml(node)).to.be.eql('<h5>Charmeleon</h5>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Charmeleon')], 5)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h5>Charmeleon</h5>')
   })
 })
 
 
 describe('A level 6 heading node', () => {
   it('produces an <h6>', () => {
-    const node = new HeadingNode([new PlainTextNode('Charizard')], 6)
-    expect(Up.toHtml(node)).to.be.eql('<h6>Charizard</h6>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Charizard')], 6)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Charizard</h6>')
   })
 })
 
 
 describe('A level 7 heading node', () => {
   it('produces an <h6>', () => {
-    const node = new HeadingNode([new PlainTextNode('Squirtle')], 7)
-    expect(Up.toHtml(node)).to.be.eql('<h6>Squirtle</h6>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Squirtle')], 7)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Squirtle</h6>')
   })
 })
 
 
 describe('A level 8 heading node', () => {
   it('produces an <h6>', () => {
-    const node = new HeadingNode([new PlainTextNode('Wartortle')], 8)
-    expect(Up.toHtml(node)).to.be.eql('<h6>Wartortle</h6>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Wartortle')], 8)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Wartortle</h6>')
   })
 })
 
 
 describe('A level 9 heading node', () => {
   it('produces an <h6>', () => {
-    const node = new HeadingNode([new PlainTextNode('Blastoise')], 9)
-    expect(Up.toHtml(node)).to.be.eql('<h6>Blastoise</h6>')
+    const documentNode = new DocumentNode([
+      new HeadingNode([new PlainTextNode('Blastoise')], 9)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Blastoise</h6>')
   })
 })
 
 
 describe('A section separator node', () => {
   it('produces an <hr>', () => {
-    const node = new SectionSeparatorNode()
-    expect(Up.toHtml(node)).to.be.eql('<hr>')
+    const documentNode = new DocumentNode([
+      new SectionSeparatorNode()
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<hr>')
   })
 })
 
