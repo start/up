@@ -36,7 +36,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'*/
 
 
 context('When a document has table of contents, it produces a <nav class="up-table-of-contents"> as the first element of the HTML. The <nav> starts with an <h1> containing the term for "Table of Contents"', () => {
-  context("After that <h1>, each table of contents entry gets its own HTML element.", () => {
+  context("After that <h1> is an <ul> in which each table of contents entry gets its own item.", () => {
     context("A heading entry produces a heading element with a level one higher than its own. The heading's content is wrapped in a link pointing to the actual heading in the document.", () => {
       specify('A level 1 heading produces an <h2>', () => {
         const heading =
@@ -48,7 +48,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<h2><a href="#up-outline-1">I enjoy apples</a></h2>'
+          + '<ul>'
+          + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
+          + '</ul>'
           + '</nav>'
           + '<h1 id="up-outline-1">I enjoy apples</h1>')
       })
@@ -63,7 +65,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<h3><a href="#up-outline-1">I enjoy apples</a></h3>'
+          + '<ul>'
+          + '<li><h3><a href="#up-outline-1">I enjoy apples</a></h3></li>'
+          + '</ul>'
           + '</nav>'
           + '<h2 id="up-outline-1">I enjoy apples</h2>')
       })
@@ -78,7 +82,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<h4><a href="#up-outline-1">I enjoy apples</a></h4>'
+          + '<ul>'
+          + '<li><h4><a href="#up-outline-1">I enjoy apples</a></h4></li>'
+          + '</ul>'
           + '</nav>'
           + '<h3 id="up-outline-1">I enjoy apples</h3>')
       })
@@ -93,7 +99,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<h5><a href="#up-outline-1">I enjoy apples</a></h5>'
+          + '<ul>'
+          + '<li><h5><a href="#up-outline-1">I enjoy apples</a></h5></li>'
+          + '</ul>'
           + '</nav>'
           + '<h4 id="up-outline-1">I enjoy apples</h4>')
       })
@@ -108,7 +116,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+          + '<ul>'
+          + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+          + '</ul>'
           + '</nav>'
           + '<h5 id="up-outline-1">I enjoy apples</h5>')
       })
@@ -124,7 +134,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
           expect(Up.toHtml(documentNode)).to.be.eql(
             '<nav class="up-table-of-contents">'
             + '<h1>Table of Contents</h1>'
-            + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+            + '<ul>'
+            + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+            + '</ul>'
             + '</nav>'
             + '<h6 id="up-outline-1">I enjoy apples</h6>')
         })
@@ -139,7 +151,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
           expect(Up.toHtml(documentNode)).to.be.eql(
             '<nav class="up-table-of-contents">'
             + '<h1>Table of Contents</h1>'
-            + '<h6><a href="#up-outline-1">I enjoy apples</a></h6>'
+            + '<ul>'
+            + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+            + '</ul>'
             + '</nav>'
             + '<h6 id="up-outline-1">I enjoy apples</h6>')
         })
@@ -173,7 +187,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<a href="#up-outline-1">Influential games</a>'
+          + '<ul>'
+          + '<li><a href="#up-outline-1">Influential games</a></li>'
+          + '</ul>'
           + '</nav>'
           + '<table id="up-outline-1">'
           + '<caption>Influential games</caption>'
@@ -208,7 +224,9 @@ context('When a document has table of contents, it produces a <nav class="up-tab
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
-          + '<a href="#up-outline-1">AND operator logic</a>'
+          + '<ul>'
+          + '<li><a href="#up-outline-1">AND operator logic</a></li>'
+          + '</ul>'
           + '</nav>'
           + '<table id="up-outline-1">'
           + '<caption>AND operator logic</caption>'
