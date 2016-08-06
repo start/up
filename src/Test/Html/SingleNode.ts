@@ -132,7 +132,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> is given a "start" attribute set to the appropriate starting ordinal', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -147,7 +147,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<ol start="3">'
       + '<li value="3"><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -158,20 +158,22 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> is given the "reversed" attribute', () => {
-    const node = new OrderedListNode([
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Tropical')
-        ])
-      ], 2),
-      new OrderedListNode.Item([
-        new ParagraphNode([
-          new PlainTextNode('Territories')
-        ])
-      ], 1)
+    const documentNode = new DocumentNode([
+      new OrderedListNode([
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Tropical')
+          ])
+        ], 2),
+        new OrderedListNode.Item([
+          new ParagraphNode([
+            new PlainTextNode('Territories')
+          ])
+        ], 1)
+      ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<ol start="2" reversed>'
       + '<li value="2"><p>Tropical</p></li>'
       + '<li value="1"><p>Territories</p></li>'
@@ -182,7 +184,7 @@ describe('When an ordered list node is in descending order', () => {
 
 describe('A description list', () => {
   it('produces a <dl> containing a <dt> for each term, and a <dd> for each description', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -200,8 +202,9 @@ describe('A description list', () => {
           ])
         ]))
       ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<dl>'
       + '<dt>Bulbasaur</dt>'
       + '<dd><p>A grass type Pokemon</p></dd>'
@@ -215,7 +218,7 @@ describe('A description list', () => {
 
 describe('A table', () => {
   it('produces a <table> containing a <caption> for its caption, a <thead> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -233,8 +236,9 @@ describe('A table', () => {
         new TableNode.Caption([
           new PlainTextNode('Influential Games')
         ]))
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<caption>Influential Games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
@@ -247,7 +251,7 @@ describe('A table', () => {
 
 context('When a table has rows with cells with numeric values', () => {
   specify('the <td> produced for those cells have the "up-numeric" class', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -265,8 +269,9 @@ context('When a table has rows with cells with numeric values', () => {
         new TableNode.Caption([
           new PlainTextNode('Games in the Chrono series')
         ]))
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
@@ -279,14 +284,15 @@ context('When a table has rows with cells with numeric values', () => {
 
 describe('A table without a caption or any rows', () => {
   it('produces a <table> that does not contain a <caption> or any <tr> outside of its <thead>', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
           new TableNode.Header.Cell([new PlainTextNode('Release Date')])
         ]), [])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
       + '</table>')
@@ -296,14 +302,15 @@ describe('A table without a caption or any rows', () => {
 
 context('When a table header has cells spanning multiple columns', () => {
   specify('the <th> for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')], 5),
           new TableNode.Header.Cell([new PlainTextNode('Developer')], 3)
         ]), [])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="3">Developer</th></tr></thead>'
       + '</table>')
@@ -313,7 +320,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
 context('When a table has rows with cells spanning multiple columns', () => {
   specify('the <td>s for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
@@ -331,8 +338,9 @@ context('When a table has rows with cells spanning multiple columns', () => {
             new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
           ])
         ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th><th scope="col">Cooldown</th><th scope="col">Date</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
@@ -344,7 +352,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
 
 context('When a table cell has a numeric value and spans multiple columns', () => {
   specify('the <td> produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -361,8 +369,9 @@ context('When a table cell has a numeric value and spans multiple columns', () =
             new TableNode.Row.Cell([new PlainTextNode('1995')])
           ])
         ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Year Development Started</th><th scope="col">Year Released</th></tr></thead>'
       + '<tr><td>Final Fantasy II</td><td class="up-numeric" colspan="2">1989</td></tr>'
@@ -374,7 +383,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
   specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> produced by the row', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([]),
@@ -391,8 +400,9 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
           ], new TableNode.Header.Cell([new PlainTextNode('0')]))
         ],
         new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<table>'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'

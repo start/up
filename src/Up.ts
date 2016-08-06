@@ -1,9 +1,8 @@
-import { parseDocument } from './Parsing/parseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
-import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
-import { getHtml } from './Writers//Html/getHtml'
 import { UpConfig } from './UpConfig'
 import { UpConfigSettings } from './UpConfigSettings'
+import { parseDocument } from './Parsing/parseDocument'
+import { getHtml } from './Writers//Html/getHtml'
 
 
 type MarkupOrSyntaxNode = string | DocumentNode
