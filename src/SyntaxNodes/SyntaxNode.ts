@@ -4,4 +4,4 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export type SyntaxNode =
-  DocumentNode | OutlineSyntaxNode | InlineSyntaxNode
+  OutlineSyntaxNode | InlineSyntaxNode

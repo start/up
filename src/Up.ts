@@ -1,9 +1,12 @@
 import { parseDocument } from './Parsing/parseDocument'
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { SyntaxNode } from './SyntaxNodes/SyntaxNode'
-import { HtmlWriter } from './Writers//Html/HtmlWriter'
+import { getHtml } from './Writers//Html/getHtml'
 import { UpConfig } from './UpConfig'
 import { UpConfigSettings } from './UpConfigSettings'
+
+
+type MarkupOrSyntaxNode = string | DocumentNode
 
 
 export class Up {
@@ -17,7 +20,7 @@ export class Up {
     return toAst(markup, this.config.withChanges(extraSettings))
   }
 
-  toHtml(markupOrSyntaxNode: string | SyntaxNode, extraSettings?: UpConfigSettings): string {
+  toHtml(markupOrSyntaxNode: MarkupOrSyntaxNode, extraSettings?: UpConfigSettings): string {
     return toHtml(markupOrSyntaxNode, this.config.withChanges(extraSettings))
   }
 }
@@ -43,8 +46,8 @@ export namespace Up {
     return defaultUp.toAst(markup, settings)
   }
 
-  export function toHtml(markupOrSyntaxNode: string | SyntaxNode, settings?: UpConfigSettings): string {
-    return defaultUp.toHtml(markupOrSyntaxNode, settings)
+  export function toHtml(markupOrDocumentNode: MarkupOrSyntaxNode, settings?: UpConfigSettings): string {
+    return defaultUp.toHtml(markupOrDocumentNode, settings)
   }
 }
 
@@ -53,11 +56,11 @@ function toAst(markup: string, config: UpConfig): DocumentNode {
   return parseDocument(markup, config)
 }
 
-function toHtml(markupOrSyntaxNode: string | SyntaxNode, config: UpConfig): string {
-  const node =
-    typeof markupOrSyntaxNode === 'string'
-      ? toAst(markupOrSyntaxNode, config)
-      : markupOrSyntaxNode
+function toHtml(markupOrDocumentNode: MarkupOrSyntaxNode, config: UpConfig): string {
+  const documentNode =
+    typeof markupOrDocumentNode === 'string'
+      ? toAst(markupOrDocumentNode, config)
+      : markupOrDocumentNode
 
-  return new HtmlWriter(config).write(node)
+  return getHtml(documentNode, config)
 }

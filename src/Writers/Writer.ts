@@ -36,9 +36,13 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 
 export abstract class Writer {
-  constructor(protected config: UpConfig) { }
+  result: string
 
-  write(node: SyntaxNode): string {
+  constructor(protected documentNode: DocumentNode, protected config: UpConfig) {
+    this.result = this.document(documentNode)
+  }
+
+  protected write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
   }
 
@@ -96,10 +100,6 @@ export abstract class Writer {
 
     if (node instanceof ParagraphNode) {
       return this.paragraph(node)
-    }
-
-    if (node instanceof DocumentNode) {
-      return this.document(node)
     }
 
     if (node instanceof BlockquoteNode) {
