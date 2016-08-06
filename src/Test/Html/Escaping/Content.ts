@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
@@ -17,10 +19,16 @@ import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 
+
 describe('Within a plain text node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const node = new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
-    expect(Up.toHtml(node)).to.be.eql('4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?')
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      ])
+    ])
+
+    expect(Up.toHtml(node)).to.be.eql('<p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p>')
   })
 })
 
@@ -28,7 +36,11 @@ describe('Within a plain text node, all instances of < and &', () => {
 describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
     const text = 'John said, "1 and 2 > 0. I can\'t believe it."'
-    const node = new PlainTextNode(text)
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new PlainTextNode(text)
+      ])
+    ])
     expect(Up.toHtml(node)).to.be.eql(text)
   })
 })
@@ -42,14 +54,20 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
       }
     })
 
-    const node = new InlineSpoilerNode([])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([])
+      ])
+    ])
 
     const html =
-      '<span class="up-spoiler up-revealable">'
+      '<p>'
+      + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
@@ -64,14 +82,20 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
       }
     })
 
-    const node = new InlineNsfwNode([])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineNsfwNode([])
+      ])
+    ])
 
     const html =
-      '<span class="up-nsfw up-revealable">'
+      '<p>'
+      + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
@@ -86,14 +110,20 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       }
     })
 
-    const node = new InlineNsflNode([])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineNsflNode([])
+      ])
+    ])
 
     const html =
-      '<span class="up-nsfl up-revealable">'
+      '<p>'
+      + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
     expect(up.toHtml(node)).to.be.eql(html)
   })
@@ -168,16 +198,19 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
 
 describe('Inside a plain text node itself nested within several inline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
-    const node =
-      new EmphasisNode([
-        new StressNode([
-          new RevisionDeletionNode([
-            new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new EmphasisNode([
+          new StressNode([
+            new RevisionDeletionNode([
+              new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+            ])
           ])
         ])
       ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql('<em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em>')
+    expect(Up.toHtml(node)).to.be.eql('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
   })
 })
 
