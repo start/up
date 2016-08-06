@@ -37,12 +37,16 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 // This class provides dyanmic dispatch for writing every type of syntax node.
 //
-// Additionally, it provides access to the following goodies throughout the entire
-// writing process:
+// Additionally, it provides access to the following goodies throughout the entire writing
+// process:
 //
 // 1. The provided configuration settings
 // 2. The document syntax node and its table of contents
 // 3. An easy way to generate unique IDs using the provided configuration settings
+//
+// Writers are designed to be single use, so a new instance must be created every time a new
+// document is written. This makes it a bit simpler to write concrete writer classes, because
+// they don't have to worry about resetting any counters.
 export abstract class Writer<TResult> {
   private _result: TResult
 
@@ -50,7 +54,6 @@ export abstract class Writer<TResult> {
     protected documentNode: DocumentNode,
     protected config: UpConfig) { }
 
-  // TODO: Explain why this class is single-use
   get result(): TResult {
     this._result =
       this._result || this.document(this.documentNode)
