@@ -290,7 +290,7 @@ export class HtmlWriter extends Writer<string> {
     return htmlElementWithAlreadyEscapedChildren(
       'nav', [
         this.tableOfContentsTitle(),
-        ...this.tableOfContentsEntries(tableOfContents.entries)
+        this.tableOfContentsEntries(tableOfContents.entries)
       ],
       { class: classAttrValue("table-of-contents") })
   }
@@ -301,29 +301,27 @@ export class HtmlWriter extends Writer<string> {
         new PlainTextNode(this.config.settings.i18n.terms.tableOfContents)], 1))
   }
 
-  private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string[] {
-    return entries.map((entry, index) => {
-      const ordinal = index + 1
+  private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string {
+    const listItems =
+      entries
+        .map((entry, indexOfEntry) => {
+          const ordinal = indexOfEntry + 1
 
-      if (entry instanceof HeadingNode) {
-        const linkToElementInDocument =
-          this.linkToElementReferencedByTableOfContents(entry.children, ordinal)
+          if (entry instanceof HeadingNode) {
+            return new HeadingNode(
+              [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
+              entry.level + 1)
+          }
 
-        const tableOfContentsHeading =
-          new HeadingNode([linkToElementInDocument], entry.level + 1)
+          if (entry instanceof TableNode) {
+            return this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
+          }
 
-        return this.write(tableOfContentsHeading)
-      }
+          throw new Error('Unrecognized tables of contents entry')
+        })
+        .map(entry => new UnorderedListNode.Item([entry]))
 
-      if (entry instanceof TableNode) {
-        const linkToElementInDocument =
-          this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
-          
-        return this.write(linkToElementInDocument)
-      }
-
-      throw new Error('Unrecognized tables of contents entry')
-    })
+    return this.write(new UnorderedListNode(listItems))
   }
 
   private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): LinkNode {
