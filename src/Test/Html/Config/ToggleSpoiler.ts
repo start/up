@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 
@@ -12,7 +14,11 @@ describe("The text in an inline spoiler's label", () => {
       }
     })
 
-    const node = new InlineSpoilerNode([])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([])
+      ])
+    ])
 
     const html =
       '<span class="up-spoiler up-revealable">'
@@ -34,7 +40,9 @@ describe("The text in a spoiler block's label", () => {
       }
     })
 
-    const node = new SpoilerBlockNode([])
+    const node = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
 
     const html =
       '<div class="up-spoiler up-revealable">'
