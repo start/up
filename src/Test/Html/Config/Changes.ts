@@ -12,45 +12,45 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    node: DocumentNode
+    documentNode: DocumentNode
     htmlFromDefaultSettings: string
     configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
 
-  const { node, htmlFromDefaultSettings, configChanges, conflictingConfigChanges } = args
+  const { documentNode, htmlFromDefaultSettings, configChanges, conflictingConfigChanges } = args
 
 
   describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // We don't care about the result! We only care to ensure these config settings don't apply to subsequent calls.
-      Up.toHtml(node, configChanges)
+      Up.toHtml(documentNode, configChanges)
 
-      expect(Up.toHtml(node)).to.be.eql(htmlFromDefaultSettings)
+      expect(Up.toHtml(documentNode)).to.be.eql(htmlFromDefaultSettings)
     })
   })
 
   const whenProvidingConfigAtCreation =
-    new Up(configChanges).toHtml(node)
+    new Up(configChanges).toHtml(documentNode)
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.toHtml(node, configChanges)
+    Up.toHtml(documentNode, configChanges)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().toHtml(node, configChanges)
+    new Up().toHtml(documentNode, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).toHtml(node, configChanges)
+    new Up(conflictingConfigChanges).toHtml(documentNode, configChanges)
 
   describe("when provided to an Up object's toHtml method", () => {
     it("does not alter the Up object's original settings", () => {
       const up = new Up(configChanges)
 
       // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
-      up.toHtml(node, conflictingConfigChanges)
+      up.toHtml(documentNode, conflictingConfigChanges)
 
-      expect(whenProvidingConfigAtCreation).to.be.eql(up.toHtml(node, configChanges))
+      expect(whenProvidingConfigAtCreation).to.be.eql(up.toHtml(documentNode, configChanges))
     })
   })
 
@@ -72,7 +72,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new DocumentNode([
+    documentNode: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -90,7 +90,7 @@ describe('The "documentName" config setting', () => {
 
 describe('The "idWordDelimiter" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new DocumentNode([
+    documentNode: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -112,7 +112,7 @@ describe('The "idWordDelimiter" config setting', () => {
 
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new DocumentNode([
+    documentNode: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -138,8 +138,12 @@ describe('The "footnote reference" config term', () => {
 
 describe('The "footnote" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new FootnoteNode([], 3),
-    htmlFromDefaultSettings: '<sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup>',
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new FootnoteNode([], 3)
+      ])
+    ]),
+    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         terms: {
@@ -160,13 +164,19 @@ describe('The "footnote" config term', () => {
 
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineSpoilerNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-spoiler up-revealable">'
+    '<p>'
+    + '<span class="up-spoiler up-revealable">'
     + '<label for="up-spoiler-1">toggle spoiler</label>'
     + '<input id="up-spoiler-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -187,13 +197,19 @@ describe('The "spoiler" config term', () => {
 
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineSpoilerNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-spoiler up-revealable">'
+    '<p>'
+    + '<span class="up-spoiler up-revealable">'
     + '<label for="up-spoiler-1">toggle spoiler</label>'
     + '<input id="up-spoiler-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -214,13 +230,19 @@ describe('The "toggleSpoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineNsfwNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineNsfwNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-nsfw up-revealable">'
+    '<p>'
+    + '<span class="up-nsfw up-revealable">'
     + '<label for="up-nsfw-1">toggle NSFW</label>'
     + '<input id="up-nsfw-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -242,13 +264,19 @@ describe('The "nsfw" config term', () => {
 
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineNsfwNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineNsfwNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-nsfw up-revealable">'
+    '<p>'
+    + '<span class="up-nsfw up-revealable">'
     + '<label for="up-nsfw-1">toggle NSFW</label>'
     + '<input id="up-nsfw-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -270,13 +298,19 @@ describe('The "toggleNsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineNsflNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineNsflNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-nsfl up-revealable">'
+    '<p>'
+    + '<span class="up-nsfl up-revealable">'
     + '<label for="up-nsfl-1">toggle NSFL</label>'
     + '<input id="up-nsfl-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -298,13 +332,19 @@ describe('The "nsfl" config term', () => {
 
 describe('The "togglensfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    node: new InlineNsflNode([]),
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new InlineNsflNode([])
+      ])
+    ]),
     htmlFromDefaultSettings:
-    '<span class="up-nsfl up-revealable">'
+    '<p>'
+    + '<span class="up-nsfl up-revealable">'
     + '<label for="up-nsfl-1">toggle NSFL</label>'
     + '<input id="up-nsfl-1" type="checkbox">'
     + '<span></span>'
-    + '</span>',
+    + '</span>'
+    + '</p>',
     configChanges: {
       i18n: {
         terms: {
