@@ -35,6 +35,14 @@ import { UpConfig } from '../UpConfig'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 
+// This class provides dyanmic dispatch for writing every type of syntax node.
+//
+// Additionally, it provides access to the following goodies throughout the entire
+// writing process:
+//
+// 1. The provided configuration settings
+// 2. The document syntax node and its table of contents
+// 3. An easy way to generate unique IDs using the provided configuration settings
 export abstract class Writer<TResult> {
   private _result: TResult
 
