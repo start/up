@@ -761,7 +761,9 @@ describe("Each footnote in a footnote block", () => {
 
 describe('An image node', () => {
   it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
-    const node = new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+    const node = new DocumentNode([
+      new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+    ])
 
     expect(Up.toHtml(node)).to.be.eql(
       '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
@@ -771,9 +773,11 @@ describe('An image node', () => {
 
 describe('An audio node', () => {
   it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
-    const node = new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+    const documentNode = new DocumentNode([
+      new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop>'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
@@ -783,9 +787,11 @@ describe('An audio node', () => {
 
 describe('A video node', () => {
   it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
-    const node = new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+    const documentNode = new DocumentNode([
+      new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop>'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
@@ -795,14 +801,20 @@ describe('A video node', () => {
 
 describe('An inline spoiler node', () => {
   it('produces a <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox, and a <span> containing the spoiler contents', () => {
-    const node = new InlineSpoilerNode([new PlainTextNode('45.9%')])
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([new PlainTextNode('45.9%')])
+      ])
+    ])
 
     const html =
-      '<span class="up-spoiler up-revealable">'
+      '<p>'
+      + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" type="checkbox">'
       + '<span>45.9%</span>'
       + '</span>'
+      + '</p>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
   })
@@ -811,41 +823,55 @@ describe('An inline spoiler node', () => {
 
 describe('An NSFW node', () => {
   it('produces a <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox, and a <span> containing the NSFW contents', () => {
-    const node = new InlineNsfwNode([new PlainTextNode('naked Gary')])
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new InlineNsfwNode([new PlainTextNode('naked Gary')])
+      ])
+    ])
 
     const html =
-      '<span class="up-nsfw up-revealable">'
+      '<p>'
+      + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
       + '<input id="up-nsfw-1" type="checkbox">'
       + '<span>naked Gary</span>'
       + '</span>'
+      + '</p>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('An inline NSFL node', () => {
   it('produces a <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox, and a <span> containing the NSFL contents', () => {
-    const node = new InlineNsflNode([new PlainTextNode('rotting Gary')])
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new InlineNsflNode([new PlainTextNode('rotting Gary')])
+      ])
+    ])
 
     const html =
-      '<span class="up-nsfl up-revealable">'
+      '<p>'
+      + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
       + '<input id="up-nsfl-1" type="checkbox">'
       + '<span>rotting Gary</span>'
       + '</span>'
+      + '</p>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div>s instead of <span>s', () => {
-    const node = new SpoilerBlockNode([
-      new ParagraphNode([
-        new PlainTextNode('John Carmack is a decent programmer.')
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([
+        new ParagraphNode([
+          new PlainTextNode('John Carmack is a decent programmer.')
+        ])
       ])
     ])
 
@@ -858,16 +884,18 @@ describe('A spoiler block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('A NSFW block node', () => {
   it('produces the same HTML as an inline NSFW node, but with <div>s instead of <span>s', () => {
-    const node = new NsfwBlockNode([
-      new ParagraphNode([
-        new PlainTextNode('John Carmack is a decent programmer.')
+    const node = new DocumentNode([
+      new NsfwBlockNode([
+        new ParagraphNode([
+          new PlainTextNode('John Carmack is a decent programmer.')
+        ])
       ])
     ])
 
@@ -887,9 +915,11 @@ describe('A NSFW block node', () => {
 
 describe('A NSFL block node', () => {
   it('produces the same HTML as an inline NSFL node, but with <div>s instead of <span>s', () => {
-    const node = new NsflBlockNode([
-      new ParagraphNode([
-        new PlainTextNode('John Carmack is a decent programmer.')
+    const node = new DocumentNode([
+      new NsflBlockNode([
+        new ParagraphNode([
+          new PlainTextNode('John Carmack is a decent programmer.')
+        ])
       ])
     ])
 
@@ -903,13 +933,5 @@ describe('A NSFL block node', () => {
       + '</div>'
 
     expect(Up.toHtml(node)).to.be.eql(html)
-  })
-})
-
-
-describe('A plain text node', () => {
-  it('produces text, not an html element', () => {
-    const node = new PlainTextNode('Kokiri Forest')
-    expect(Up.toHtml(node)).to.be.eql('Kokiri Forest')
   })
 })
