@@ -601,72 +601,117 @@ describe('A section separator node', () => {
 
 describe('An emphasis node', () => {
   it('produces an <em>', () => {
-    const node = new EmphasisNode([new PlainTextNode('Always')])
-    expect(Up.toHtml(node)).to.be.eql('<em>Always</em>')
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new EmphasisNode([new PlainTextNode('Always')])
+      ])
+    ])
+
+    expect(Up.toHtml(node)).to.be.eql('<p><em>Always</em></p>')
   })
 })
 
 
 describe('A stress node', () => {
   it('produces a <strong>', () => {
-    const node = new StressNode([new PlainTextNode('Ness')])
-    expect(Up.toHtml(node)).to.be.eql('<strong>Ness</strong>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new StressNode([new PlainTextNode('Ness')])
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><strong>Ness</strong></p>')
   })
 })
 
 
 describe('An inline code node', () => {
   it('produces a <code>', () => {
-    const node = new InlineCodeNode('then')
-    expect(Up.toHtml(node)).to.be.eql('<code>then</code>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new InlineCodeNode('then')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><code>then</code></p>')
   })
 })
 
 
 describe('A revision insertion node', () => {
   it('produces an <ins>', () => {
-    const node = new RevisionInsertionNode([new PlainTextNode('Wario')])
-    expect(Up.toHtml(node)).to.be.eql('<ins>Wario</ins>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new RevisionInsertionNode([new PlainTextNode('Wario')])
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><ins>Wario</ins></p>')
   })
 })
 
 
 describe('A revision deletion node', () => {
   it('produces a <del>', () => {
-    const node = new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
-    expect(Up.toHtml(node)).to.be.eql('<del>Koopa Tropa</del>')
+    const node = new DocumentNode([
+      new ParagraphNode([
+        new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
+      ])
+    ])
+
+    expect(Up.toHtml(node)).to.be.eql('<p><del>Koopa Tropa</del></p>')
   })
 })
 
 
 describe('A parenthesized node', () => {
   it('produces a <span class="up-parenthesized">', () => {
-    const node = new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
-    expect(Up.toHtml(node)).to.be.eql('<span class="up-parenthesized">(Koopa Tropa)</span>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-parenthesized">(Koopa Tropa)</span></p>')
   })
 })
 
 
 describe('A square bracketed node', () => {
   it('produces a <span class="up-square-bracketed">', () => {
-    const node = new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
-    expect(Up.toHtml(node)).to.be.eql('<span class="up-square-bracketed">[Koopa Tropa]</span>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-square-bracketed">[Koopa Tropa]</span></p>')
   })
 })
 
 
 describe('An action node', () => {
   it('produces a <span class="up-action">', () => {
-    const node = new ActionNode([new PlainTextNode('dies')])
-    expect(Up.toHtml(node)).to.be.eql('<span class="up-action">dies</span>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new ActionNode([new PlainTextNode('dies')])
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-action">dies</span></p>')
   })
 })
 
 
 describe('A link node', () => {
   it('produces an <a> with its href attribute set to its URL', () => {
-    const node = new LinkNode([new PlainTextNode('Google')], 'https://google.com')
-    expect(Up.toHtml(node)).to.be.eql('<a href="https://google.com">Google</a>')
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('Google')], 'https://google.com')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google</a></p>')
   })
 })
 
