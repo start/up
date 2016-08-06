@@ -34,15 +34,13 @@ describe('Within a plain text node, all instances of < and &', () => {
 
 describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
-    const text = 'John said, "1 and 2 > 0. I can\'t believe it."'
-
     const documentNode = new DocumentNode([
       new ParagraphNode([
-        new PlainTextNode(text)
+        new PlainTextNode('John said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(text)
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>John said, "1 and 2 > 0. I can\'t believe it."</p>')
   })
 })
 
