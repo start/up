@@ -31,6 +31,7 @@ import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
+import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { UpConfig } from '../../UpConfig'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
@@ -68,7 +69,12 @@ export class HtmlWriter extends Writer {
   }
 
   protected document(node: DocumentNode): string {
-    return this.htmlElements(node.children).join('')
+    const tableOfContents =
+      node.tableOfContents
+        ? this.tableOfContents(node.tableOfContents)
+        : ''
+
+    return tableOfContents + this.htmlElements(node.children).join('')
   }
 
   protected blockquote(node: BlockquoteNode): string {
@@ -280,6 +286,33 @@ export class HtmlWriter extends Writer {
     return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children)
   }
 
+  private tableOfContents(tableOfContents: DocumentNode.TableOfContents): string {
+    return htmlElementWithAlreadyEscapedChildren(
+      'nav',
+      this.tableOfContentsEntries(tableOfContents.entries),
+      { class: classAttrValue("table-of-contents") })
+  }
+
+  private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string[] {
+    return entries.map((entry, index) => {
+      const ordinal = index + 1
+
+      if (entry instanceof HeadingNode) {
+        const linkToElementInDocument =
+          new LinkNode(
+            entry.children,
+            internalFragmentUrl(this.idOfElementReferencedByTableOfContents(ordinal)))
+
+        const tableOfContentsHeading =
+          new HeadingNode([linkToElementInDocument], entry.level + 1)
+
+        return this.write(tableOfContentsHeading)
+      }
+
+      throw new Error('Unrecognized tables of contents entry')
+    })
+  }
+
   private orderedListItem(listItem: OrderedListNode.Item): string {
     const attrs: { value?: number } = {}
 
@@ -444,6 +477,10 @@ export class HtmlWriter extends Writer {
 
   private htmlElements(nodes: SyntaxNode[]): string[] {
     return nodes.map(node => this.write(node))
+  }
+
+  private idOfElementReferencedByTableOfContents(ordinal: number): string {
+    return this.getId(this.config.settings.i18n.terms.outline, ordinal)
   }
 
   private footnoteId(referenceNumber: number): string {
