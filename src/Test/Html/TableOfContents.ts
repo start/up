@@ -123,7 +123,7 @@ context('When a document has table of contents, it produces a <nav class="up-tab
           + '<h5 id="up-outline-1">I enjoy apples</h5>')
       })
 
-      context('HTML heading levels go no higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.', () => {
+      context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
         specify('A level 6 heading produces an <h6>', () => {
           const heading =
             new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
