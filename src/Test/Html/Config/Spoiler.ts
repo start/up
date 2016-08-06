@@ -1,5 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 
@@ -12,16 +14,22 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       }
     })
 
-    const node = new InlineSpoilerNode([])
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new InlineSpoilerNode([])
+      ])
+    ])
 
     const html =
-      '<span class="up-spoiler up-revealable">'
+      '<p>'
+      + '<span class="up-spoiler up-revealable">'
       + '<label for="up-ruins-ending-1">toggle spoiler</label>'
       + '<input id="up-ruins-ending-1" type="checkbox">'
       + '<span></span>'
       + '</span>'
+      + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -34,7 +42,9 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       }
     })
 
-    const node = new SpoilerBlockNode([])
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
 
     const html =
       '<div class="up-spoiler up-revealable">'
@@ -43,6 +53,6 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })

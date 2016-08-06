@@ -14,7 +14,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
       }
     })
 
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -29,7 +29,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -42,7 +42,7 @@ describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)
       }
     })
 
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new NsfwBlockNode([])
     ])
 
@@ -53,6 +53,6 @@ describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
