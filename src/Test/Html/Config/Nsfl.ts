@@ -22,7 +22,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
 
     const html =
       '<p>'
-    '<span class="up-nsfl up-revealable">'
+      + '<span class="up-nsfl up-revealable">'
       + '<label for="up-life-ruining-1">toggle NSFL</label>'
       + '<input id="up-life-ruining-1" type="checkbox">'
       + '<span></span>'
