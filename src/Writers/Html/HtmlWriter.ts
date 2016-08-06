@@ -502,8 +502,14 @@ export class HtmlWriter extends Writer<string> {
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
   private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
-    const index = this.documentNode.tableOfContents.entries.indexOf(node)
-    return index ? (index + 1) : null
+    if (!this.documentNode.tableOfContents) {
+      return null
+    }
+
+    const index =
+      this.documentNode.tableOfContents.entries.indexOf(node)
+    
+    return (index >= 0) ? (index + 1) : null
   }
 
   private footnoteId(referenceNumber: number): string {
