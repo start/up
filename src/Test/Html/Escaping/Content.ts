@@ -22,13 +22,13 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 
 describe('Within a plain text node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql('<p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p>')
   })
 })
 
@@ -36,12 +36,14 @@ describe('Within a plain text node, all instances of < and &', () => {
 describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
     const text = 'John said, "1 and 2 > 0. I can\'t believe it."'
-    const node = new DocumentNode([
+
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new PlainTextNode(text)
       ])
     ])
-    expect(Up.toHtml(node)).to.be.eql(text)
+
+    expect(Up.toHtml(documentNode)).to.be.eql(text)
   })
 })
 
@@ -54,7 +56,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
       }
     })
 
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -69,7 +71,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -82,7 +84,7 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
       }
     })
 
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -97,7 +99,7 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -110,7 +112,7 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       }
     })
 
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -125,7 +127,7 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -138,7 +140,9 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
       }
     })
 
-    const node = new SpoilerBlockNode([])
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
 
     const html =
       '<div class="up-spoiler up-revealable">'
@@ -147,7 +151,7 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -160,7 +164,9 @@ describe("Within a NSFW block's label, all instances of < and &", () => {
       }
     })
 
-    const node = new NsfwBlockNode([])
+    const documentNode = new DocumentNode([
+      new NsfwBlockNode([])
+    ])
 
     const html =
       '<div class="up-nsfw up-revealable">'
@@ -169,7 +175,7 @@ describe("Within a NSFW block's label, all instances of < and &", () => {
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
@@ -182,7 +188,9 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
       }
     })
 
-    const node = new NsflBlockNode([])
+    const documentNode = new DocumentNode([
+      new NsflBlockNode([])
+    ])
 
     const html =
       '<div class="up-nsfl up-revealable">'
@@ -191,14 +199,14 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 })
 
 
 describe('Inside a plain text node itself nested within several inline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
-    const node = new DocumentNode([
+    const documentNode = new DocumentNode([
       new ParagraphNode([
         new EmphasisNode([
           new StressNode([
@@ -210,14 +218,14 @@ describe('Inside a plain text node itself nested within several inline nodes, al
       ])
     ])
 
-    expect(Up.toHtml(node)).to.be.eql('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
   })
 })
 
 
 describe('Inside a plain text node itself nested within several outline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
-    const node =
+    const documentNode = new DocumentNode([
       new BlockquoteNode([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -227,17 +235,20 @@ describe('Inside a plain text node itself nested within several outline nodes, a
           ])
         ])
       ])
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
+    expect(Up.toHtml(documentNode)).to.be.eql('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
   })
 })
 
 
 describe("Within a video's fallback link content, all instances of < and &", () => {
   it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
-    const node = new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    const documentNode = new DocumentNode([
+      new VideoNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<video src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?" controls loop><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
   })
 })
@@ -245,9 +256,11 @@ describe("Within a video's fallback link content, all instances of < and &", () 
 
 describe("Within an audio convention's fallback link content, all instances of < and &", () => {
   it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
-    const node = new AudioNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    const documentNode = new DocumentNode([
+      new AudioNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    ])
 
-    expect(Up.toHtml(node)).to.be.eql(
+    expect(Up.toHtml(documentNode)).to.be.eql(
       '<audio src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?" controls loop><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
   })
 })
