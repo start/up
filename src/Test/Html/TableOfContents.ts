@@ -46,8 +46,8 @@ context('A table of contents produces a <nav class="up-table-of-contents"> as th
           new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
 
         expect(Up.toHtml(documentNode)).to.be.eql(
-          '<nav class="up-table-ofcontents">'
-          + '<h1>Table of Contents<h1>'
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
           + '<h2><a href="#up-outline-1">I enjoy apples</a><h2>'
           + '</nav>'
           + '<h1 id="up-outline-1">I enjoy apples</h1>'

@@ -288,9 +288,17 @@ export class HtmlWriter extends Writer {
 
   private tableOfContents(tableOfContents: DocumentNode.TableOfContents): string {
     return htmlElementWithAlreadyEscapedChildren(
-      'nav',
-      this.tableOfContentsEntries(tableOfContents.entries),
+      'nav', [
+        this.tableOfContentsTitle(),
+        ...this.tableOfContentsEntries(tableOfContents.entries)
+      ],
       { class: classAttrValue("table-of-contents") })
+  }
+
+  private tableOfContentsTitle(): string {
+    return this.write(
+      new HeadingNode([
+        new PlainTextNode(this.config.settings.i18n.terms.tableOfContents)], 1))
   }
 
   private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string[] {
