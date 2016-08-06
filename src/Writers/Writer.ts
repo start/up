@@ -36,10 +36,10 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 
 export abstract class Writer {
-  result: string
+  constructor(protected documentNode: DocumentNode, protected config: UpConfig) { }
 
-  constructor(protected documentNode: DocumentNode, protected config: UpConfig) {
-    this.result = this.document(documentNode)
+  result(): string {
+    return this.document(this.documentNode)
   }
 
   protected write(node: SyntaxNode): string {
