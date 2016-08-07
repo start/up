@@ -19,14 +19,13 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { documentNode, configChanges, conflictingConfigChanges } = args
 
-
   const htmlFromDefaultSettings =
     Up.toHtml(documentNode)
 
 
   describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
-      // Let's make sure the config changes would change the HTML
+      // Let's make sure the provided config changes would actually change the HTML
       expect(Up.toHtml(documentNode, configChanges)).to.not.be.eql(htmlFromDefaultSettings)
 
       // Now, let's make sure the config changes don't alter subsequent calls
@@ -43,10 +42,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("does not alter the Up object's original settings", () => {
       const up = new Up(configChanges)
 
-      // We don't care about the result! We only care to ensure the original config settings weren't overwritten.
-      up.toHtml(documentNode, conflictingConfigChanges)
+      // Let's make sure the provided conflicting changes are actually conflicting
+      expect(up.toHtml(documentNode, conflictingConfigChanges)).to.not.be.eql(whenProvidingConfigAtCreation)
 
-      expect(whenProvidingConfigAtCreation).to.be.eql(up.toHtml(documentNode, configChanges))
+      // Now, let's make sure they didn't alter any subsequent calls
+      expect(up.toHtml(documentNode, configChanges)).to.be.eql(whenProvidingConfigAtCreation)
     })
   })
 
