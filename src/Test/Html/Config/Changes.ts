@@ -3,6 +3,7 @@ import Up from '../../../index'
 import { UpConfigSettings } from '../../../UpConfigSettings'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
@@ -356,6 +357,40 @@ describe('The "toggleNsfl" config term', () => {
       i18n: {
         terms: {
           togglensfl: 'show nsfl?'
+        }
+      }
+    }
+  })
+})
+
+
+describe('The "tableOfContents" config term', () => {
+  const heading = new HeadingNode([], 1)
+
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    documentNode: new DocumentNode(
+      [heading],
+      new DocumentNode.TableOfContents([heading])),
+    htmlFromDefaultSettings:
+    '<nav class="up-table-of-contents">'
+    + '<h1>Table of Contents</h1>'
+    + '<ul>'
+    + '<li><h2><a href="#up-part-1"></a></h2></li>'
+    + '</ul>'
+    + '</nav>'
+    + '<h1 id="up-part-1"></h1>',
+    configChanges: {
+      i18n: {
+        terms: {
+          tableOfContents: 'In This Article'
+        }
+      }
+    },
+
+    conflictingConfigChanges: {
+      i18n: {
+        terms: {
+          tableOfContents: 'Skip To...'
         }
       }
     }
