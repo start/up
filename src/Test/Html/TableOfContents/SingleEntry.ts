@@ -21,10 +21,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
+          + '<li><h2><a href="#up-part-1">I enjoy apples</a></h2></li>'
           + '</ul>'
           + '</nav>'
-          + '<h1 id="up-outline-1">I enjoy apples</h1>')
+          + '<h1 id="up-part-1">I enjoy apples</h1>')
       })
 
       specify('A level 2 heading produces an <h3>', () => {
@@ -38,10 +38,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h3><a href="#up-outline-1">I enjoy apples</a></h3></li>'
+          + '<li><h3><a href="#up-part-1">I enjoy apples</a></h3></li>'
           + '</ul>'
           + '</nav>'
-          + '<h2 id="up-outline-1">I enjoy apples</h2>')
+          + '<h2 id="up-part-1">I enjoy apples</h2>')
       })
 
       specify('A level 3 heading produces an <h4>', () => {
@@ -55,10 +55,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h4><a href="#up-outline-1">I enjoy apples</a></h4></li>'
+          + '<li><h4><a href="#up-part-1">I enjoy apples</a></h4></li>'
           + '</ul>'
           + '</nav>'
-          + '<h3 id="up-outline-1">I enjoy apples</h3>')
+          + '<h3 id="up-part-1">I enjoy apples</h3>')
       })
 
       specify('A level 4 heading produces an <h5>', () => {
@@ -72,10 +72,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h5><a href="#up-outline-1">I enjoy apples</a></h5></li>'
+          + '<li><h5><a href="#up-part-1">I enjoy apples</a></h5></li>'
           + '</ul>'
           + '</nav>'
-          + '<h4 id="up-outline-1">I enjoy apples</h4>')
+          + '<h4 id="up-part-1">I enjoy apples</h4>')
       })
 
       specify('A level 5 heading produces an <h6>', () => {
@@ -89,10 +89,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+          + '<li><h6><a href="#up-part-1">I enjoy apples</a></h6></li>'
           + '</ul>'
           + '</nav>'
-          + '<h5 id="up-outline-1">I enjoy apples</h5>')
+          + '<h5 id="up-part-1">I enjoy apples</h5>')
       })
 
       context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
@@ -107,10 +107,10 @@ context('When a document has table of contents, the first HTML element is a <nav
             '<nav class="up-table-of-contents">'
             + '<h1>Table of Contents</h1>'
             + '<ul>'
-            + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+            + '<li><h6><a href="#up-part-1">I enjoy apples</a></h6></li>'
             + '</ul>'
             + '</nav>'
-            + '<h6 id="up-outline-1">I enjoy apples</h6>')
+            + '<h6 id="up-part-1">I enjoy apples</h6>')
         })
 
         specify('A level 10 heading produces an <h6>', () => {
@@ -124,10 +124,10 @@ context('When a document has table of contents, the first HTML element is a <nav
             '<nav class="up-table-of-contents">'
             + '<h1>Table of Contents</h1>'
             + '<ul>'
-            + '<li><h6><a href="#up-outline-1">I enjoy apples</a></h6></li>'
+            + '<li><h6><a href="#up-part-1">I enjoy apples</a></h6></li>'
             + '</ul>'
             + '</nav>'
-            + '<h6 id="up-outline-1">I enjoy apples</h6>')
+            + '<h6 id="up-part-1">I enjoy apples</h6>')
         })
       })
     })
@@ -160,10 +160,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><a href="#up-outline-1">Influential games</a></li>'
+          + '<li><a href="#up-part-1">Influential games</a></li>'
           + '</ul>'
           + '</nav>'
-          + '<table id="up-outline-1">'
+          + '<table id="up-part-1">'
           + '<caption>Influential games</caption>'
           + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
           + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -197,10 +197,10 @@ context('When a document has table of contents, the first HTML element is a <nav
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><a href="#up-outline-1">AND operator logic</a></li>'
+          + '<li><a href="#up-part-1">AND operator logic</a></li>'
           + '</ul>'
           + '</nav>'
-          + '<table id="up-outline-1">'
+          + '<table id="up-part-1">'
           + '<caption>AND operator logic</caption>'
           + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
           + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
@@ -227,10 +227,10 @@ context('When a document has table of contents, the first HTML element is a <nav
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
+        + '<li><h2><a href="#up-part-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>'
-        + '<h1 id="up-outline-1">I enjoy apples</h1>'
+        + '<h1 id="up-part-1">I enjoy apples</h1>'
         + '<blockquote>'
         + '<h1>I enjoy apples</h1>'
         + '</blockquote>')
@@ -287,10 +287,10 @@ context('When a document has table of contents, the first HTML element is a <nav
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-outline-1">Influential games</a></li>'
+      + '<li><a href="#up-part-1">Influential games</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-outline-1">'
+      + '<table id="up-part-1">'
       + '<caption>Influential games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -353,10 +353,10 @@ context('When a document has table of contents, the first HTML element is a <nav
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-outline-1">AND operator logic</a></li>'
+      + '<li><a href="#up-part-1">AND operator logic</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-outline-1">'
+      + '<table id="up-part-1">'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'

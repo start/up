@@ -28,7 +28,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       footnote: 'footnote',
       footnoteReference: 'footnote reference',
       tableOfContents: 'Table of Contents',
-      outline: 'outline'
+      itemReferencedByTableOfContents: 'part'
     }
   }
 }
