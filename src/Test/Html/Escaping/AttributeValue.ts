@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
@@ -17,7 +18,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-context('Within any attribute value, all instances of " and & are escaped. Specifically, within the:', () => {
+context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
   specify("src attribute of links", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
@@ -321,6 +322,30 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</div>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  specify('the id attribute of elements referenced by the table of contents', () => {
+    const up = new Up({
+      i18n: {
+        idWordDelimiter: '"&&"',
+        terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
+      }
+    })
+
+    const heading =
+      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+    const documentNode =
+      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+    expect(up.toHtml(documentNode)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">I enjoy apples</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">I enjoy apples</h1>')
   })
 })
 
