@@ -11,6 +11,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
+import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
@@ -507,6 +508,73 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<input id="nsfl-1" type="checkbox">'
       + '<div></div>'
       + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+})
+
+
+
+describe("The ID of an element referenced by the table of contents", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
+    const heading = new HeadingNode([], 1)
+
+    const documentNode =
+      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-part-1"></a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="up-part-1"></h1>'
+
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+
+  it("is prefixed with the document name, if one was provided", () => {
+    const up = new Up({
+      documentName: 'reply-11'
+    })
+
+    const heading = new HeadingNode([], 1)
+
+    const documentNode =
+      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#reply-11-part-1"></a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="reply-11-part-1"></h1>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  it("is not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ' \t'
+    })
+
+    const heading = new HeadingNode([], 1)
+
+    const documentNode =
+      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#part-1"></a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="part-1"></h1>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
