@@ -299,8 +299,8 @@ context('When severeal links are nested within each other', () => {
 })
 
 
-context('when a link contains 2 or more inner links', () => {
-  specify("Neither inner link produces an <a> element", () => {
+context('When a link contains 2 or more inner links', () => {
+  specify("neither inner link produces an <a> element", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
