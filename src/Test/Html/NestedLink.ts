@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -10,35 +11,45 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 
 
 context('Inside a link', () => {
-  specify("a footnote does not produce another link element. The footnote's <sup> directly contains the footnote's reference number", () => {
+  specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Google'),
-          new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
+          new EmphasisNode([
+            new PlainTextNode('Google'),
+            new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
+          ])
         ], 'https://google.com')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google<sup id="up-footnote-reference-2" class="up-footnote-reference">2</sup></a></p>')
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p>' +
+      '<a href="https://google.com"><em>Google<sup id="up-footnote-reference-2" class="up-footnote-reference">2</sup></em></a>'
+      + '</p>')
   })
 
-  specify("a nested link does not produce another link element. The nested link's contents are included directly inside the outer link", () => {
+  specify("a nested link does not produce another <a> element. The nested link's contents are included directly inside the outer link", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Google is probably not '),
-          new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
+          new EmphasisNode([
+            new PlainTextNode('Google is probably not '),
+            new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
+          ])
         ], 'https://google.com')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p>'
+      + '<a href="https://google.com"><em>Google is probably not Bing</em></a>'
+      + '</p>')
   })
 })
 
 
-context('Links nested within table of contents entries do not produce anchor elements. This applies to links within:', () => {
+context('Links nested within table of contents entries do not produce <a> elements. This applies to links within:', () => {
   specify('Headings', () => {
     const heading =
       new HeadingNode([
