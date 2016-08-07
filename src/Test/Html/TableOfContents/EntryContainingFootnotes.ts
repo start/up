@@ -9,7 +9,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 
-context('Any footnotes within table of contents entries are stripped (though they remain in the original element.) This applies for footnotes within entries for:', () => {
+context("Within the table of contents itself, footnotes produce no HTML (they're ignored). This applies for footnotes within entries for:", () => {
   specify('Headings', () => {
     const topLevelFootnote =
       new FootnoteNode([new PlainTextNode('Sometimes')], 1)
