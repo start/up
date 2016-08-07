@@ -277,3 +277,23 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '</table>')
   })
 })
+
+
+context('When severeal links are nested within each other', () => {
+  specify('only the outermost link produces an <a> element', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new LinkNode([
+            new LinkNode([
+              new PlainTextNode('Google is probably not '),
+              new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
+            ], 'https://ddg.gg')
+          ], 'https://google.co.uk')
+        ], 'https://google.com')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+  })
+})
