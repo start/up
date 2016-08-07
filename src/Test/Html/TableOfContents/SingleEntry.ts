@@ -4,6 +4,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
+import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 
 
 context('When a document has table of contents, the first HTML element is a <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
@@ -208,4 +209,31 @@ context('When a document has table of contents, the first HTML element is a <nav
       })
     })
   })
+
+  context("The table of contents has no effect on elements that aren't referenced by it, even when syntax nodes represented by those elements are otherwise identical.", () => {
+      specify("Other headings are not affected", () => {
+        const headingInTableOfContents =
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+        const documentNode =
+          new DocumentNode([
+            headingInTableOfContents,
+            new BlockquoteNode([
+              new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+            ])
+          ], new DocumentNode.TableOfContents([headingInTableOfContents]))
+
+        expect(Up.toHtml(documentNode)).to.be.eql(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<ul>'
+          + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
+          + '</ul>'
+          + '</nav>'
+          + '<h1 id="up-outline-1">I enjoy apples</h1>'
+          + '<blockquote>'
+          + '<h1>I enjoy apples</h1>'
+          + '</blockquote>')
+      })
+    })
 })
