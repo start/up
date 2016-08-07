@@ -211,29 +211,98 @@ context('When a document has table of contents, the first HTML element is a <nav
   })
 
   context("The table of contents has no effect on elements that aren't referenced by it, even when syntax nodes represented by those elements are otherwise identical.", () => {
-      specify("Other headings are not affected", () => {
-        const headingInTableOfContents =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+    specify("Other headings are not affected", () => {
+      const headingInTableOfContents =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
-        const documentNode =
-          new DocumentNode([
-            headingInTableOfContents,
-            new BlockquoteNode([
-              new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
-            ])
-          ], new DocumentNode.TableOfContents([headingInTableOfContents]))
+      const documentNode =
+        new DocumentNode([
+          headingInTableOfContents,
+          new BlockquoteNode([
+            new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+          ])
+        ], new DocumentNode.TableOfContents([headingInTableOfContents]))
 
-        expect(Up.toHtml(documentNode)).to.be.eql(
-          '<nav class="up-table-of-contents">'
-          + '<h1>Table of Contents</h1>'
-          + '<ul>'
-          + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
-          + '</ul>'
-          + '</nav>'
-          + '<h1 id="up-outline-1">I enjoy apples</h1>'
-          + '<blockquote>'
-          + '<h1>I enjoy apples</h1>'
-          + '</blockquote>')
-      })
+      expect(Up.toHtml(documentNode)).to.be.eql(
+        '<nav class="up-table-of-contents">'
+        + '<h1>Table of Contents</h1>'
+        + '<ul>'
+        + '<li><h2><a href="#up-outline-1">I enjoy apples</a></h2></li>'
+        + '</ul>'
+        + '</nav>'
+        + '<h1 id="up-outline-1">I enjoy apples</h1>'
+        + '<blockquote>'
+        + '<h1>I enjoy apples</h1>'
+        + '</blockquote>')
     })
+  })
+
+  specify("Other headings are not affected", () => {
+    const tableInTableOfContents =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([new PlainTextNode('Game')]),
+          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          ]),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
+            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          ])
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('Influential games')
+        ]))
+
+    const documentNode =
+      new DocumentNode([
+        tableInTableOfContents,
+        new BlockquoteNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([new PlainTextNode('Game')]),
+              new TableNode.Header.Cell([new PlainTextNode('Developer')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+                new TableNode.Row.Cell([new PlainTextNode('Square')])
+              ]),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
+                new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+              ])
+            ],
+            new TableNode.Caption([
+              new PlainTextNode('Influential games')
+            ]))
+
+        ])
+      ],
+        new DocumentNode.TableOfContents([tableInTableOfContents]))
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><a href="#up-outline-1">Influential games</a></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<table id="up-outline-1">'
+      + '<caption>Influential games</caption>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
+      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
+      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
+      + '</table>'
+      + '<blockquote>'
+      + '<table>'
+      + '<caption>Influential games</caption>'
+      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
+      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
+      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
+      + '</table>'
+      + '</blockquote>')
+  })
 })
