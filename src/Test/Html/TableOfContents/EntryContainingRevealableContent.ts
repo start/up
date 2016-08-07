@@ -4,9 +4,9 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-//import { TableNode } from '../../../SyntaxNodes/TableNode'
+import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-//import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 //import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -56,14 +56,8 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '</span>'
       + '</h1>')
   })
-/*
+
   specify('Tables', () => {
-    const captionRevealable =
-      new InlineNsfwNode([new PlainTextNode('Sometimes')])
-
-    const paragraphRevealable =
-      new InlineNsfwNode([new PlainTextNode('Always')])
-
     const table =
       new TableNode(
         new TableNode.Header([
@@ -80,37 +74,47 @@ context("Within the table of contents, the IDs of revealable content elements do
           ])
         ],
         new TableNode.Caption([
-          new PlainTextNode('I enjoy apples'),
-          captionRevealable,
-          new PlainTextNode(' '),
-          new EmphasisNode([
-            new PlainTextNode('and you should too'),
-            paragraphRevealable
-          ])
+          new PlainTextNode('I enjoy apples '),
+          new InlineNsfwNode([new PlainTextNode('sometimes')])
         ]))
 
     const documentNode =
-      new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+      new DocumentNode([
+        new ParagraphNode([
+          new InlineNsfwNode([new PlainTextNode('Never')]),
+          new PlainTextNode(' eat apples.'),
+        ]),
+        table
+      ], new DocumentNode.TableOfContents([table]))
 
     expect(Up.toHtml(documentNode)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-part-1">I enjoy apples <em>and you should too</em></a></li>'
-      + '</ul>'
+      + '<ul><li><a href="#up-part-1">'
+      + 'I enjoy apples '
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<span>sometimes</span>'
+      + '</span>'
+      + '</a></li></ul>'
       + '</nav>'
+      + '<p>'
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-2">toggle NSFW</label>'
+      + '<input id="up-nsfw-2" type="checkbox">'
+      + '<span>Never</span>'
+      + '</span>'
+      + ' eat apples.'
+      + '</p>'
       + '<table id="up-part-1">'
       + '<caption>'
-      + 'I enjoy apples'
-      + '<sup id="up-footnote-reference-1" class="up-footnote-reference">'
-      + '<a href="#up-footnote-1">1</a>'
-      + '</sup>'
-      + ' <em>'
-      + 'and you should too'
-      + '<sup id="up-footnote-reference-2" class="up-footnote-reference">'
-      + '<a href="#up-footnote-2">2</a>'
-      + '</sup>'
-      + '</em>'
+      + 'I enjoy apples '
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-3">toggle NSFW</label>'
+      + '<input id="up-nsfw-3" type="checkbox">'
+      + '<span>sometimes</span>'
+      + '</span>'      
       + '</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -118,6 +122,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '</table>')
   })
 
+/*
   specify('Charts', () => {
     const captionRevealable =
       new InlineNsflNode([new PlainTextNode('Sometimes')])
@@ -178,6 +183,5 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
       + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
       + '</table>')
-  })
-  */
+  })*/
 })
