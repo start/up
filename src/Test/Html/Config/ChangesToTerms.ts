@@ -229,7 +229,6 @@ describe('The "nsfw" config term', () => {
         }
       }
     },
-
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -255,7 +254,6 @@ describe('The "toggleNsfw" config term', () => {
         }
       }
     },
-
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -281,7 +279,6 @@ describe('The "nsfl" config term', () => {
         }
       }
     },
-
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -307,7 +304,6 @@ describe('The "toggleNsfl" config term', () => {
         }
       }
     },
-
     conflictingConfigChanges: {
       i18n: {
         terms: {
@@ -333,7 +329,6 @@ describe('The "tableOfContents" config term', () => {
         }
       }
     },
-
     conflictingConfigChanges: {
       i18n: {
         terms: {
