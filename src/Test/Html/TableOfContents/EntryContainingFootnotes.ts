@@ -126,4 +126,73 @@ context('Any footnotes within table of contents entries are stripped (though the
       + '<dt id="up-footnote-2"><a href="#up-footnote-reference-2">2</a></dt><dd>Always</dd>'
       + '</dl>')
   })
+
+  specify('Charts', () => {
+    const topLevelFootnote =
+      new FootnoteNode([new PlainTextNode('Sometimes')], 1)
+
+    const nestedFootnote =
+      new FootnoteNode([new PlainTextNode('Always')], 2)
+
+    const chart =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+        ],
+        new TableNode.Caption([
+          new PlainTextNode('I enjoy apples'),
+          topLevelFootnote,
+          new PlainTextNode(' '),
+          new EmphasisNode([
+            new PlainTextNode('and you should too'),
+            nestedFootnote
+          ])
+        ]))
+
+    const documentNode =
+      new DocumentNode([
+        chart,
+        new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
+      ], new DocumentNode.TableOfContents([chart]))
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><a href="#up-part-1">I enjoy apples <em>and you should too</em></a></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<table id="up-part-1">'
+      + '<caption>'
+      + 'I enjoy apples'
+      + '<sup id="up-footnote-reference-1" class="up-footnote-reference">'
+      + '<a href="#up-footnote-1">1</a>'
+      + '</sup>'
+      + ' <em>'
+      + 'and you should too'
+      + '<sup id="up-footnote-reference-2" class="up-footnote-reference">'
+      + '<a href="#up-footnote-2">2</a>'
+      + '</sup>'
+      + '</em>'
+      + '</caption>'
+      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
+      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
+      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
+      + '</table>'
+      + '<dl class="up-footnotes">'
+      + '<dt id="up-footnote-1"><a href="#up-footnote-reference-1">1</a></dt><dd>Sometimes</dd>'
+      + '<dt id="up-footnote-2"><a href="#up-footnote-reference-2">2</a></dt><dd>Always</dd>'
+      + '</dl>')
+  })
 })
