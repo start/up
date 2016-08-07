@@ -8,7 +8,9 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-
+import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
+import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
+import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
   it("are prefixed with the default document name 'up' if one wasn't provided", () => {
@@ -332,6 +334,179 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '<span></span>'
       + '</span>'
       + '</p>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+})
+
+
+
+
+describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+
+  it("are prefixed with the document name, if one was provided", () => {
+    const up = new Up({
+      documentName: 'reply-11'
+    })
+
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="reply-11-spoiler-1">toggle spoiler</label>'
+      + '<input id="reply-11-spoiler-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  it("are not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ' \t'
+    })
+
+    const documentNode = new DocumentNode([
+      new SpoilerBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="spoiler-1">toggle spoiler</label>'
+      + '<input id="spoiler-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+})
+
+
+describe("The ID of an NSFW block's checkbox (on both the checkbox and the label)", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+    const documentNode = new DocumentNode([
+      new NsfwBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
+      + '<input id="up-nsfw-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+
+  it("are prefixed with the document name, if one was provided", () => {
+    const up = new Up({
+      documentName: 'reply-11'
+    })
+
+    const documentNode = new DocumentNode([
+      new NsfwBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="reply-11-nsfw-1">toggle NSFW</label>'
+      + '<input id="reply-11-nsfw-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  it("are not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ' \t'
+    })
+
+    const documentNode = new DocumentNode([
+      new NsfwBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="nsfw-1">toggle NSFW</label>'
+      + '<input id="nsfw-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+})
+
+
+describe("The ID of an NSFL block's checkbox (on both the checkbox and the label)", () => {
+  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+    const documentNode = new DocumentNode([
+      new NsflBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-1">toggle NSFL</label>'
+      + '<input id="up-nsfl-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(Up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+
+  it("are prefixed with the document name, if one was provided", () => {
+    const up = new Up({
+      documentName: 'reply-11'
+    })
+
+    const documentNode = new DocumentNode([
+      new NsflBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="reply-11-nsfl-1">toggle NSFL</label>'
+      + '<input id="reply-11-nsfl-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
+
+    expect(up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  it("are not prefixed with a document name if a blank name was provided", () => {
+    const up = new Up({
+      documentName: ' \t'
+    })
+
+    const documentNode = new DocumentNode([
+      new NsflBlockNode([])
+    ])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="nsfl-1">toggle NSFL</label>'
+      + '<input id="nsfl-1" type="checkbox">'
+      + '<div></div>'
+      + '</div>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
