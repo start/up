@@ -22,6 +22,7 @@ context('Any footnotes within table of contents entries are stripped (though the
       new HeadingNode([
         new PlainTextNode('I enjoy apples'),
         topLevelFootnote,
+        new PlainTextNode(' '),
         new EmphasisNode([
           new PlainTextNode('and you should too'),
           nestedFootnote
@@ -46,12 +47,12 @@ context('Any footnotes within table of contents entries are stripped (though the
       + '<sup id="up-footnote-reference-1" class="up-footnote-reference">'
       + '<a href="#up-footnote-1">1</a>'
       + '</sup>'
-      + '<em>'
+      + ' <em>'
       + 'and you should too'
-      + '</em>'
       + '<sup id="up-footnote-reference-2" class="up-footnote-reference">'
       + '<a href="#up-footnote-2">2</a>'
       + '</sup>'
+      + '</em>'
       + '</h1>'
       + '<dl class="up-footnotes">'
       + '<dt id="up-footnote-1"><a href="#up-footnote-reference-1">1</a></dt><dd>Sometimes</dd>'

@@ -38,10 +38,6 @@ import { escapeHtmlContent } from './EscapingHelpers'
 
 
 export class HtmlWriter extends Writer<string> {
-  // If a link is nested within another link, we include the inner link's contents directly in the outer link.
-  // We don't create an anchor element for the inner link.
-  private isInsideLink = false
-
   // Our HTML for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
   // perfectly well for screen-readers
   //
@@ -63,6 +59,13 @@ export class HtmlWriter extends Writer<string> {
   private spoilerCount = 0
   private nsfwCount = 0
   private nsflCount = 0
+
+  // If a link is nested within another link, we include the inner link's contents directly in the outer link.
+  // We don't create an anchor element for the inner link.
+  private isInsideLink = false
+
+  // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
+  private isInsideTableOfContents = false
 
   protected document(node: DocumentNode): string {
     const tableOfContents =
@@ -223,6 +226,11 @@ export class HtmlWriter extends Writer<string> {
   }
 
   protected footnoteReference(node: FootnoteNode): string {
+    if (this.isInsideTableOfContents) {
+      // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
+      return ''
+    }
+
     const innerLinkNode = this.footnoteReferenceInnerLink(node)
 
     return this.htmlElementWithAlreadyEscapedChildren(
@@ -287,12 +295,19 @@ export class HtmlWriter extends Writer<string> {
   }
 
   private tableOfContents(tableOfContents: DocumentNode.TableOfContents): string {
-    return htmlElementWithAlreadyEscapedChildren(
-      'nav', [
-        this.tableOfContentsTitle(),
-        this.tableOfContentsEntries(tableOfContents.entries)
-      ],
-      { class: classAttrValue("table-of-contents") })
+    this.isInsideTableOfContents = true
+
+    const html =
+      htmlElementWithAlreadyEscapedChildren(
+        'nav', [
+          this.tableOfContentsTitle(),
+          this.tableOfContentsEntries(tableOfContents.entries)
+        ],
+        { class: classAttrValue("table-of-contents") })
+
+    this.isInsideTableOfContents = false
+
+    return html
   }
 
   private tableOfContentsTitle(): string {
