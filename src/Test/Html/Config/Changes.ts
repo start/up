@@ -329,7 +329,7 @@ describe('The "nsfl" config term', () => {
 })
 
 
-describe('The "togglensfl" config term', () => {
+describe('The "toggleNsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     documentNode: new DocumentNode([
       new ParagraphNode([
