@@ -13,12 +13,15 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     documentNode: DocumentNode
-    htmlFromDefaultSettings: string
     configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
-  const { documentNode, htmlFromDefaultSettings, configChanges, conflictingConfigChanges } = args
+  const { documentNode, configChanges, conflictingConfigChanges } = args
+
+
+  const htmlFromDefaultSettings =
+    Up.toHtml(documentNode)
 
 
   describe("when provided to the default toHtml method", () => {
@@ -81,7 +84,6 @@ describe('The "documentName" config setting', () => {
         new FootnoteNode([], 3)
       ])
     ]),
-    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       documentName: 'reply 11'
     },
@@ -99,7 +101,6 @@ describe('The "idWordDelimiter" config setting', () => {
         new FootnoteNode([], 3)
       ])
     ]),
-    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         idWordDelimiter: '::'
@@ -121,7 +122,6 @@ describe('The "footnote reference" config term', () => {
         new FootnoteNode([], 3)
       ])
     ]),
-    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         terms: {
@@ -147,7 +147,6 @@ describe('The "footnote" config term', () => {
         new FootnoteNode([], 3)
       ])
     ]),
-    htmlFromDefaultSettings: '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>',
     configChanges: {
       i18n: {
         terms: {
@@ -173,14 +172,6 @@ describe('The "spoiler" config term', () => {
         new InlineSpoilerNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-spoiler up-revealable">'
-    + '<label for="up-spoiler-1">toggle spoiler</label>'
-    + '<input id="up-spoiler-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -206,14 +197,6 @@ describe('The "toggleSpoiler" config term', () => {
         new InlineSpoilerNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-spoiler up-revealable">'
-    + '<label for="up-spoiler-1">toggle spoiler</label>'
-    + '<input id="up-spoiler-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -239,14 +222,6 @@ describe('The "nsfw" config term', () => {
         new InlineNsfwNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-nsfw up-revealable">'
-    + '<label for="up-nsfw-1">toggle NSFW</label>'
-    + '<input id="up-nsfw-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -273,14 +248,6 @@ describe('The "toggleNsfw" config term', () => {
         new InlineNsfwNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-nsfw up-revealable">'
-    + '<label for="up-nsfw-1">toggle NSFW</label>'
-    + '<input id="up-nsfw-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -307,14 +274,6 @@ describe('The "nsfl" config term', () => {
         new InlineNsflNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-nsfl up-revealable">'
-    + '<label for="up-nsfl-1">toggle NSFL</label>'
-    + '<input id="up-nsfl-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -341,14 +300,6 @@ describe('The "toggleNsfl" config term', () => {
         new InlineNsflNode([])
       ])
     ]),
-    htmlFromDefaultSettings:
-    '<p>'
-    + '<span class="up-nsfl up-revealable">'
-    + '<label for="up-nsfl-1">toggle NSFL</label>'
-    + '<input id="up-nsfl-1" type="checkbox">'
-    + '<span></span>'
-    + '</span>'
-    + '</p>',
     configChanges: {
       i18n: {
         terms: {
@@ -375,14 +326,6 @@ describe('The "tableOfContents" config term', () => {
     documentNode: new DocumentNode(
       [heading],
       new DocumentNode.TableOfContents([heading])),
-    htmlFromDefaultSettings:
-    '<nav class="up-table-of-contents">'
-    + '<h1>Table of Contents</h1>'
-    + '<ul>'
-    + '<li><h2><a href="#up-part-1"></a></h2></li>'
-    + '</ul>'
-    + '</nav>'
-    + '<h1 id="up-part-1"></h1>',
     configChanges: {
       i18n: {
         terms: {
