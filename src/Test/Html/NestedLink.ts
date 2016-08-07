@@ -297,3 +297,19 @@ context('When severeal links are nested within each other', () => {
     expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
+
+
+context('when a link contains 2 or more inner links', () => {
+  specify("Neither inner link produces an <a> element", () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new LinkNode([new PlainTextNode('Google is probably not ')], 'https://google.co.nz'),
+          new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
+        ], 'https://google.com')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+  })
+})
