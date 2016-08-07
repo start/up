@@ -53,7 +53,9 @@ context('Links nested within table of contents entries do not produce <a> elemen
   specify('Headings', () => {
     const heading =
       new HeadingNode([
-        new LinkNode([new PlainTextNode('I enjoy apples')], 'https://google.com')
+        new EmphasisNode([
+          new LinkNode([new PlainTextNode('I enjoy apples')], 'https://google.com')
+        ])
       ], 1)
 
     const documentNode =
@@ -63,10 +65,10 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-part-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-part-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-part-1"><a href="https://google.com">I enjoy apples</a></h1>')
+      + '<h1 id="up-part-1"><em><a href="https://google.com">I enjoy apples</a></em></h1>')
   })
 
   specify('Tables', () => {
@@ -86,7 +88,9 @@ context('Links nested within table of contents entries do not produce <a> elemen
           ])
         ],
         new TableNode.Caption([
-          new LinkNode([new PlainTextNode('Influential games')], 'https://google.com')
+          new EmphasisNode([
+            new LinkNode([new PlainTextNode('Influential games')], 'https://google.com')
+          ])
         ]))
 
     const documentNode =
@@ -96,11 +100,11 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1">Influential games</a></li>'
+      + '<li><a href="#up-part-1"><em>Influential games</em></a></li>'
       + '</ul>'
       + '</nav>'
       + '<table id="up-part-1">'
-      + '<caption><a href="https://google.com">Influential games</a></caption>'
+      + '<caption><em><a href="https://google.com">Influential games</a></em></caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
       + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
@@ -125,7 +129,9 @@ context('Links nested within table of contents entries do not produce <a> elemen
           ], new TableNode.Header.Cell([new PlainTextNode('0')]))
         ],
         new TableNode.Caption([
-          new LinkNode([new PlainTextNode('AND operator logic')], 'https://google.com')
+          new EmphasisNode([
+            new LinkNode([new PlainTextNode('AND operator logic')], 'https://google.com')
+          ])
         ]))
 
     const documentNode =
@@ -135,11 +141,11 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1">AND operator logic</a></li>'
+      + '<li><a href="#up-part-1"><em>AND operator logic</em></a></li>'
       + '</ul>'
       + '</nav>'
       + '<table id="up-part-1">'
-      + '<caption><a href="https://google.com">AND operator logic</a></caption>'
+      + '<caption><em><a href="https://google.com">AND operator logic</a></em></caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
       + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
