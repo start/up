@@ -18,15 +18,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
-
   const { documentNode, htmlFromDefaultSettings, configChanges, conflictingConfigChanges } = args
 
 
   describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
-      // We don't care about the result! We only care to ensure these config settings don't apply to subsequent calls.
-      Up.toHtml(documentNode, configChanges)
+      // Let's make sure the config changes would change the HTML
+      expect(Up.toHtml(documentNode, configChanges)).to.not.be.eql(htmlFromDefaultSettings)
 
+      // Now, let's make sure the config changes don't alter subsequent calls
       expect(Up.toHtml(documentNode)).to.be.eql(htmlFromDefaultSettings)
     })
   })
@@ -352,7 +352,7 @@ describe('The "toggleNsfl" config term', () => {
     configChanges: {
       i18n: {
         terms: {
-          togglensfl: 'see/hide'
+          toggleNsfl: 'see/hide'
         }
       }
     },
@@ -360,7 +360,7 @@ describe('The "toggleNsfl" config term', () => {
     conflictingConfigChanges: {
       i18n: {
         terms: {
-          togglensfl: 'show nsfl?'
+          toggleNsfl: 'show nsfl?'
         }
       }
     }
