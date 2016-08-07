@@ -31,17 +31,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
   })
 
+
   const whenProvidingConfigAtCreation =
     new Up(configChanges).toHtml(documentNode)
 
-  const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.toHtml(documentNode, configChanges)
-
-  const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().toHtml(documentNode, configChanges)
-
-  const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).toHtml(documentNode, configChanges)
 
   describe("when provided to an Up object's toHtml method", () => {
     it("does not alter the Up object's original settings", () => {
@@ -53,6 +46,17 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingConfigAtCreation).to.be.eql(up.toHtml(documentNode, configChanges))
     })
   })
+
+
+  const whenProvidingChangesWhenCallingDefaultMethod =
+    Up.toHtml(documentNode, configChanges)
+
+  const whenProvidingChangesWhenCallingtMethodOnObject =
+    new Up().toHtml(documentNode, configChanges)
+
+  const whenOverwritingChangesProvidedAtCreation =
+    new Up(conflictingConfigChanges).toHtml(documentNode, configChanges)
+
 
   describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the term when calling the default toHtml method', () => {
