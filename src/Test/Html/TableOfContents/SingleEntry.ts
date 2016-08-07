@@ -172,7 +172,7 @@ context('When a document has table of contents, the first HTML element is a <nav
       })
 
       specify('A chart produces a link containing its caption', () => {
-        const table =
+        const chart =
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -191,7 +191,7 @@ context('When a document has table of contents, the first HTML element is a <nav
             new TableNode.Caption([new PlainTextNode('AND operator logic')]))
 
         const documentNode =
-          new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+          new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
 
         expect(Up.toHtml(documentNode)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -237,7 +237,7 @@ context('When a document has table of contents, the first HTML element is a <nav
     })
   })
 
-  specify("Other headings are not affected", () => {
+  specify("Other tables are not affected", () => {
     const tableInTableOfContents =
       new TableNode(
         new TableNode.Header([
@@ -302,6 +302,72 @@ context('When a document has table of contents, the first HTML element is a <nav
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
       + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
+      + '</table>'
+      + '</blockquote>')
+  })
+
+  specify("Other charts are not affected", () => {
+    const chartInTableOfContents =
+      new TableNode(
+        new TableNode.Header([
+          new TableNode.Header.Cell([]),
+          new TableNode.Header.Cell([new PlainTextNode('1')]),
+          new TableNode.Header.Cell([new PlainTextNode('0')])
+        ]), [
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('true')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+          new TableNode.Row([
+            new TableNode.Row.Cell([new PlainTextNode('false')]),
+            new TableNode.Row.Cell([new PlainTextNode('false')])
+          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+        ],
+        new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+
+    const documentNode =
+      new DocumentNode([
+        chartInTableOfContents,
+        new BlockquoteNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('1')]),
+              new TableNode.Header.Cell([new PlainTextNode('0')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('true')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('false')]),
+                new TableNode.Row.Cell([new PlainTextNode('false')])
+              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            ],
+            new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+        ])
+      ],
+        new DocumentNode.TableOfContents([chartInTableOfContents]))
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><a href="#up-outline-1">AND operator logic</a></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<table id="up-outline-1">'
+      + '<caption>AND operator logic</caption>'
+      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
+      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
+      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
+      + '</table>'
+      + '<blockquote>'
+      + '<table>'
+      + '<caption>AND operator logic</caption>'
+      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
+      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
+      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
       + '</table>'
       + '</blockquote>')
   })
