@@ -13,7 +13,7 @@ import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
@@ -24,7 +24,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -39,7 +39,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup id="reply-11-footnote-reference-3" class="up-footnote-reference"><a href="#reply-11-footnote-3">3</a></sup></p>')
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -57,7 +57,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
 
 
 describe("A footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode =
       new DocumentNode([
         new FootnoteBlockNode([
@@ -79,7 +79,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are prefixed with the provided document name", () => {
+  it("is prefixed with the provided document name", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -105,7 +105,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -134,7 +134,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
@@ -154,7 +154,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -177,7 +177,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -203,7 +203,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
 
 describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
@@ -223,7 +223,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -246,7 +246,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -272,7 +272,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 
 
 describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
@@ -292,7 +292,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -315,7 +315,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -343,7 +343,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
 
 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new SpoilerBlockNode([])
     ])
@@ -359,7 +359,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -378,7 +378,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -400,7 +400,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 
 
 describe("The ID of an NSFW block's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new NsfwBlockNode([])
     ])
@@ -416,7 +416,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -435,7 +435,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
@@ -457,7 +457,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
 
 
 describe("The ID of an NSFL block's checkbox (on both the checkbox and the label)", () => {
-  it("are prefixed with the default document name 'up' if one wasn't provided", () => {
+  it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const documentNode = new DocumentNode([
       new NsflBlockNode([])
     ])
@@ -473,7 +473,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
   })
 
 
-  it("are prefixed with the document name, if one was provided", () => {
+  it("is prefixed with the document name, if one was provided", () => {
     const up = new Up({
       documentName: 'reply-11'
     })
@@ -492,7 +492,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
 
-  it("are not prefixed with a document name if a blank name was provided", () => {
+  it("is not prefixed with a document name if a blank name was provided", () => {
     const up = new Up({
       documentName: ' \t'
     })
