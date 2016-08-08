@@ -106,3 +106,20 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
     expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
   })
 })
+
+
+describe('By default, a safe link nested inside an unsafe link', () => {
+  it('produces an <a> element', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'https://google.com')
+        ], 'data:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
+  })
+})
