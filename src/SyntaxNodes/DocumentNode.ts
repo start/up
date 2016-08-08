@@ -17,13 +17,11 @@ export namespace DocumentNode {
 }
 
 
-// TODO: Test this function alone, outside of the parsing process.
-//
 // This function returns a document node with:
 //
 // 1. Footnotes extracted into footnote blocks
 // 2. A table of contents (if it's asked to create one)
-export function getFinalizedDocument(
+export function createDocument(
   args: {
     documentChildren: OutlineSyntaxNode[]
     createTableOfContents: boolean

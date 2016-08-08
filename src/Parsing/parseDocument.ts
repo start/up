@@ -1,4 +1,4 @@
-import { DocumentNode, getFinalizedDocument } from '../SyntaxNodes/DocumentNode'
+import { DocumentNode, createDocument } from '../SyntaxNodes/DocumentNode'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { INPUT_LINE_BREAK } from './Strings'
@@ -11,7 +11,7 @@ export function parseDocument(markup: string, config: UpConfig): DocumentNode {
   const documentChildren =
     getOutlineNodes(markupLines, new HeadingLeveler(), config)
 
-  return getFinalizedDocument({
+  return createDocument({
     documentChildren,
     createTableOfContents: config.settings.createTableOfContents
   })

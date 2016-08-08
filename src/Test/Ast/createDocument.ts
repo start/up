@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { getFinalizedDocument  } from '../../index'
+import { createDocument  } from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -12,7 +12,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 context("The getFinalizedDocument function is exported for users who want help manually fiddling with the abstract syntax tree. (It's automatically used during the normal parsing process.)", () => {
   specify("It assigns footnotes their reference numbers (mutating them) and places them in footnote blocks (mutating any outline nodes they're placed inside)", () => {
-    const documentNode = getFinalizedDocument({
+    const documentNode = createDocument({
       documentChildren: [
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -52,7 +52,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("It produces a table of contents if the 'createTableOfContents' argument is set to true.", () => {
-    const documentNode = getFinalizedDocument({
+    const documentNode = createDocument({
       documentChildren: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -91,7 +91,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("It does not produce a table of contents if the 'createTableOfContents' argument is set to false.", () => {
-    const documentNode = getFinalizedDocument({
+    const documentNode = createDocument({
       documentChildren: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -125,7 +125,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
-    const documentNode = getFinalizedDocument({
+    const documentNode = createDocument({
       documentChildren: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new ParagraphNode([

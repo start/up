@@ -72,8 +72,8 @@ context('Every base syntax node class is exported:', () => {
 
 
 context('For anyone who really wants to fiddle with the abstract syntax tree', () => {
-  specify('the exported function `getFinalizedDocument` helps you produce footnote blocks and tables of contents', () => {
-    expectAClassOrFunction(EXPORTS['getFinalizedDocument'])
+  specify('the exported function `createDocument` helps you create footnote blocks and tables of contents', () => {
+    expectAClassOrFunction(EXPORTS['createDocument'])
   })
 })
 
