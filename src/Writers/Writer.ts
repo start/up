@@ -1,4 +1,5 @@
 import { LinkNode } from '../SyntaxNodes/LinkNode'
+import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { ImageNode } from '../SyntaxNodes/ImageNode'
 import { AudioNode } from '../SyntaxNodes/AudioNode'
 import { VideoNode } from '../SyntaxNodes/VideoNode'
@@ -127,12 +128,8 @@ export abstract class Writer {
     }
 
     if (node instanceof LinkNode) {
-      const shouldWriteLink =
-        this.config.settings.writeUnsafeLinks
-        || !UNSAFE_URL_SCHEME.test(node.url)
-
       return (
-        shouldWriteLink
+        this.isUrlAllowed(node.url)
           ? this.link(node)
           : this.writeAll(node.children))
     }
@@ -197,16 +194,8 @@ export abstract class Writer {
       return this.table(node)
     }
 
-    if (node instanceof ImageNode) {
-      return this.image(node)
-    }
-
-    if (node instanceof AudioNode) {
-      return this.audio(node)
-    }
-
-    if (node instanceof VideoNode) {
-      return this.video(node)
+    if (node instanceof MediaSyntaxNode) {
+      return this.writeIfUrlIsAllowed(node)
     }
 
     if (node instanceof RevisionDeletionNode) {
@@ -254,6 +243,30 @@ export abstract class Writer {
     }
 
     throw new Error('Unrecognized syntax node')
+  }
+
+  private writeIfUrlIsAllowed(media: MediaSyntaxNode): string {
+    if (!this.isUrlAllowed(media.url)) {
+      return ''
+    }
+
+    if (media instanceof ImageNode) {
+      return this.image(media)
+    }
+
+    if (media instanceof AudioNode) {
+      return this.audio(media)
+    }
+
+    if (media instanceof VideoNode) {
+      return this.video(media)
+    }
+
+    throw new Error('Unrecognized media syntax node')
+  }
+
+  private isUrlAllowed(url: string): boolean {
+    return this.config.settings.writeUnsafeLinks || !UNSAFE_URL_SCHEME.test(url)
   }
 }
 
