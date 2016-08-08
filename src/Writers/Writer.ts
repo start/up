@@ -33,6 +33,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
+import { patternStartingWith, either } from '../Parsing/PatternHelpers'
 
 
 // This class provides dyanmic dispatch for writing every type of syntax node.
@@ -63,6 +64,10 @@ export abstract class Writer {
 
   protected write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
+  }
+
+  protected writeAll(nodes: SyntaxNode[]): string[] {
+    return nodes.map(node => this.write(node))
   }
 
   protected abstract document(node: DocumentNode): string
@@ -178,7 +183,14 @@ export abstract class Writer {
     }
 
     if (node instanceof LinkNode) {
-      return this.link(node)
+      const shouldWriteLink =
+        this.config.settings.writeUnsafeLinks
+        || !UNSAFE_URL_PROOCOL.test(node.url)
+
+      return (
+        shouldWriteLink
+          ? this.link(node)
+          : this.writeAll(node.children).join(''))
     }
 
     if (node instanceof ImageNode) {
@@ -243,3 +255,11 @@ export abstract class Writer {
 
 
 const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
+
+const UNSAFE_URL_PROOCOL =
+  patternStartingWith(either(
+    'javascript',
+    'data',
+    'file',
+    'vbscript'
+  ))

@@ -19,24 +19,24 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
     expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
   })
 
-  specify('file', () => {
-    const documentNode = new DocumentNode([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!'),
-        ], 'file:malicious')
-      ])
-    ])
-
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
-  })
-
   specify('data', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!'),
         ], 'data:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+
+  specify('file', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!'),
+        ], 'file:malicious')
       ])
     ])
 

@@ -73,7 +73,7 @@ export class HtmlWriter extends Writer {
         ? this.tableOfContents(node.tableOfContents)
         : ''
 
-    return tableOfContents + this.htmlElements(node.children).join('')
+    return tableOfContents + this.writeAll(node.children).join('')
   }
 
   protected blockquote(node: BlockquoteNode): string {
@@ -454,7 +454,7 @@ export class HtmlWriter extends Writer {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren(
-          'caption', this.htmlElements(caption.children))
+          'caption', this.writeAll(caption.children))
         : '')
   }
 
@@ -502,17 +502,13 @@ export class HtmlWriter extends Writer {
 
     return htmlElementWithAlreadyEscapedChildren(
       tagName,
-      this.htmlElements(cell.children),
+      this.writeAll(cell.children),
       attrs
     )
   }
 
   private htmlElementWithAlreadyEscapedChildren(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
-    return htmlElementWithAlreadyEscapedChildren(tagName, this.htmlElements(children), attrs)
-  }
-
-  private htmlElements(nodes: SyntaxNode[]): string[] {
-    return nodes.map(node => this.write(node))
+    return htmlElementWithAlreadyEscapedChildren(tagName, this.writeAll(children), attrs)
   }
 
   private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode): AttrsWithPossibleId {
