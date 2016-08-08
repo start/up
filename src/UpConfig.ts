@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
   baseForUrlsStartingWithSlash: '',
   baseForUrlsStartingWithHashMark: '',
 
-  writeUnsafeLinks: false,
+  writeUnsafeContent: false,
 
   i18n: {
     idWordDelimiter: '-',

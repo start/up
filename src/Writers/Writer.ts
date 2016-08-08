@@ -266,7 +266,7 @@ export abstract class Writer {
   }
 
   private isUrlAllowed(url: string): boolean {
-    return this.config.settings.writeUnsafeLinks || !UNSAFE_URL_SCHEME.test(url)
+    return this.config.settings.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 }
 
