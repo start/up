@@ -62,15 +62,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the term when calling the default toHtml method', () => {
+    it('has the same result as providing the setting when calling the default toHtml method', () => {
       expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
-    it("has the same result as providing the term when calling the Up object's toHtml method", () => {
+    it("has the same result as providing the setting when calling the Up object's toHtml method", () => {
       expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the term when calling the Up object's toHtml method, overwriting the term provided at creation", () => {
+    it("has the same result as providing the setting when calling the Up object's toHtml method, overwriting the term provided at creation", () => {
       expect(whenProvidingConfigAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
     })
   })
