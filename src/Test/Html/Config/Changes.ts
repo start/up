@@ -7,6 +7,7 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
+import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -70,7 +71,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the setting when calling the Up object's toHtml method, overwriting the term provided at creation", () => {
+    it("has the same result as providing the setting when calling the Up object's toHtml method, overwriting the setting provided at creation", () => {
       expect(whenProvidingConfigAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
     })
   })
@@ -335,6 +336,23 @@ describe('The "tableOfContents" config term', () => {
           tableOfContents: 'Skip To...'
         }
       }
+    }
+  })
+})
+
+
+describe('The "writeUnsafeContent" config setting', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    documentNode: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([], 'javascript:malicious')
+      ])
+    ]),
+    configChanges: {
+      writeUnsafeContent: true
+    },
+    conflictingConfigChanges: {
+      writeUnsafeContent: false
     }
   })
 })
