@@ -6,7 +6,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
-context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. Unsafe link schemes are:', () => {
+context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These unsafe URL schemes are:', () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
