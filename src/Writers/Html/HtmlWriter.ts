@@ -73,7 +73,7 @@ export class HtmlWriter extends Writer {
         ? this.tableOfContents(node.tableOfContents)
         : ''
 
-    return tableOfContents + this.writeAll(node.children).join('')
+    return tableOfContents + this.writeAll(node.children)
   }
 
   protected blockquote(node: BlockquoteNode): string {
@@ -260,7 +260,7 @@ export class HtmlWriter extends Writer {
 
   protected link(node: LinkNode): string {
     if (this.isInsideLink) {
-      return node.children.map(child => this.write(child)).join('')
+      return this.writeAll(node.children)
     }
 
     this.isInsideLink = true
@@ -454,7 +454,7 @@ export class HtmlWriter extends Writer {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren(
-          'caption', this.writeAll(caption.children))
+          'caption', this.writeEach(caption.children))
         : '')
   }
 
@@ -502,13 +502,13 @@ export class HtmlWriter extends Writer {
 
     return htmlElementWithAlreadyEscapedChildren(
       tagName,
-      this.writeAll(cell.children),
+      this.writeEach(cell.children),
       attrs
     )
   }
 
   private htmlElementWithAlreadyEscapedChildren(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
-    return htmlElementWithAlreadyEscapedChildren(tagName, this.writeAll(children), attrs)
+    return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
   private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode): AttrsWithPossibleId {

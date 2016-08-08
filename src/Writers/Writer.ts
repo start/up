@@ -66,8 +66,12 @@ export abstract class Writer {
     return this.dispatchWrite(node)
   }
 
-  protected writeAll(nodes: SyntaxNode[]): string[] {
+  protected writeEach(nodes: SyntaxNode[]): string[] {
     return nodes.map(node => this.write(node))
+  }
+
+  protected writeAll(nodes: SyntaxNode[]): string {
+    return this.writeEach(nodes).join('')
   }
 
   protected abstract document(node: DocumentNode): string
@@ -120,6 +124,17 @@ export abstract class Writer {
 
     if (node instanceof PlainTextNode) {
       return this.plainText(node)
+    }
+
+    if (node instanceof LinkNode) {
+      const shouldWriteLink =
+        this.config.settings.writeUnsafeLinks
+        || !UNSAFE_URL_PROOCOL.test(node.url)
+
+      return (
+        shouldWriteLink
+          ? this.link(node)
+          : this.writeAll(node.children))
     }
 
     if (node instanceof ParagraphNode) {
@@ -180,17 +195,6 @@ export abstract class Writer {
 
     if (node instanceof TableNode) {
       return this.table(node)
-    }
-
-    if (node instanceof LinkNode) {
-      const shouldWriteLink =
-        this.config.settings.writeUnsafeLinks
-        || !UNSAFE_URL_PROOCOL.test(node.url)
-
-      return (
-        shouldWriteLink
-          ? this.link(node)
-          : this.writeAll(node.children).join(''))
     }
 
     if (node instanceof ImageNode) {
