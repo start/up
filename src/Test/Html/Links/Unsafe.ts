@@ -176,7 +176,7 @@ describe('By default, a safe link nested inside an unsafe link', () => {
 })
 
 
-context("A link's URL scheme can start with", () => {
+context("A link's URL scheme is not considered unsafe if it merely starts with", () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
