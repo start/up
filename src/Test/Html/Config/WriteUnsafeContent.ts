@@ -69,6 +69,22 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   })
 
 
+  specify('Because unsafe links produce <a> elements, any links nested inside unsafe lnks do not produce <a> elements.', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'https://google.com')
+        ], 'javascript:malicious')
+      ])
+    ])
+
+    expect(up.toHtml(documentNode)).to.be.eql(
+      '<p><a href="javascript:malicious">Click me!</a></p>')
+  })
+
+
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
       const documentNode = new DocumentNode([
