@@ -123,3 +123,54 @@ describe('By default, a safe link nested inside an unsafe link', () => {
     expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
   })
 })
+
+
+context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter.", () => {
+  specify('javascript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'jaVAscrIpT:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+
+  specify('data', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'dAtA:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+
+  specify('file', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'FilE:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+
+  specify('vbscript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'VbScriPt:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+})
