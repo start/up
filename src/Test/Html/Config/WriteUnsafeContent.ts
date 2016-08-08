@@ -1,6 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
@@ -10,6 +13,61 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   const up = new Up({
     writeUnsafeContent: true
   })
+
+  context('Links produce <a> elements even if their scheme is:', () => {
+    specify('javascript', () => {
+      const documentNode = new DocumentNode([
+        new ParagraphNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'javascript:malicious')
+        ])
+      ])
+
+      expect(up.toHtml(documentNode)).to.be.eql(
+        '<p><a href="javascript:malicious">Click me!</a></p>')
+    })
+
+    specify('data', () => {
+      const documentNode = new DocumentNode([
+        new ParagraphNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'data:malicious')
+        ])
+      ])
+
+      expect(up.toHtml(documentNode)).to.be.eql(
+        '<p><a href="data:malicious">Click me!</a></p>')
+    })
+
+    specify('file', () => {
+      const documentNode = new DocumentNode([
+        new ParagraphNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'file:malicious')
+        ])
+      ])
+
+      expect(up.toHtml(documentNode)).to.be.eql(
+        '<p><a href="file:malicious">Click me!</a></p>')
+    })
+
+    specify('vbscript', () => {
+      const documentNode = new DocumentNode([
+        new ParagraphNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'vbscript:malicious')
+        ])
+      ])
+
+      expect(up.toHtml(documentNode)).to.be.eql(
+        '<p><a href="vbscript:malicious">Click me!</a></p>')
+    })
+  })
+
 
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
@@ -48,6 +106,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
         '<img src="vbscript:malicious" alt="Uh-oh!" title="Uh-oh!">')
     })
   })
+
 
   context('Audio conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
@@ -94,6 +153,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
         + '</audio>')
     })
   })
+
 
   context('Video conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
