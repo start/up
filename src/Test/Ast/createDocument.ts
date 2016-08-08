@@ -13,7 +13,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 context("The getFinalizedDocument function is exported for users who want help manually fiddling with the abstract syntax tree. (It's automatically used during the normal parsing process.)", () => {
   specify("It assigns footnotes their reference numbers (mutating them) and places them in footnote blocks (mutating any outline nodes they're placed inside)", () => {
     const documentNode = createDocument({
-      documentChildren: [
+      children: [
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteNode([new PlainTextNode('Well, I do, but I pretend not to.')]),
@@ -53,7 +53,7 @@ context("The getFinalizedDocument function is exported for users who want help m
 
   specify("It produces a table of contents if the 'createTableOfContents' argument is set to true.", () => {
     const documentNode = createDocument({
-      documentChildren: [
+      children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -92,7 +92,7 @@ context("The getFinalizedDocument function is exported for users who want help m
 
   specify("It does not produce a table of contents if the 'createTableOfContents' argument is set to false.", () => {
     const documentNode = createDocument({
-      documentChildren: [
+      children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -126,7 +126,7 @@ context("The getFinalizedDocument function is exported for users who want help m
 
   specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
     const documentNode = createDocument({
-      documentChildren: [
+      children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),

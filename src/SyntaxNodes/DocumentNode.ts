@@ -23,11 +23,11 @@ export namespace DocumentNode {
 // 2. A table of contents (if it's asked to create one)
 export function createDocument(
   args: {
-    documentChildren: OutlineSyntaxNode[]
+    children: OutlineSyntaxNode[]
     createTableOfContents: boolean
   }
 ): DocumentNode {
-  const documentNode = new DocumentNode(args.documentChildren)
+  const documentNode = new DocumentNode(args.children)
   insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
 
   if (args.createTableOfContents) {
