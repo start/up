@@ -7,10 +7,10 @@ import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 
 
-context('When a document has table of contents, the first HTML element is a <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
-  context("After that <h1> is an <ul> in which each table of contents entry gets its own item.", () => {
-    context("A heading entry produces a heading element with a level one higher than its own. The heading's content is wrapped in a link pointing to the actual heading in the document.", () => {
-      specify('A level 1 heading produces an <h2>', () => {
+context('When a document has a table of contents, its first HTML element is <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
+  context("Following the <h1> is an <ul> containing a <li> for each entry in the table of contents. Each <li> contains a link to the appropriate element in the document.", () => {
+    context("For heading entries, the link's content is the heading's content, and the link is placed inside a new heading element 1 level higher than the original heading.", () => {
+      specify('A level 1 heading entry is placed in an <h2>', () => {
         const heading =
           new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
@@ -27,7 +27,7 @@ context('When a document has table of contents, the first HTML element is a <nav
           + '<h1 id="up-part-1">I enjoy apples</h1>')
       })
 
-      specify('A level 2 heading produces an <h3>', () => {
+      specify('A level 2 heading entry is placed in an <h3>', () => {
         const heading =
           new HeadingNode([new PlainTextNode('I enjoy apples')], 2)
 
@@ -44,7 +44,7 @@ context('When a document has table of contents, the first HTML element is a <nav
           + '<h2 id="up-part-1">I enjoy apples</h2>')
       })
 
-      specify('A level 3 heading produces an <h4>', () => {
+      specify('A level 3 heading entry is placed in an <h4>', () => {
         const heading =
           new HeadingNode([new PlainTextNode('I enjoy apples')], 3)
 
@@ -61,7 +61,7 @@ context('When a document has table of contents, the first HTML element is a <nav
           + '<h3 id="up-part-1">I enjoy apples</h3>')
       })
 
-      specify('A level 4 heading produces an <h5>', () => {
+      specify('A level 4 heading entry entry contains an <h5>', () => {
         const heading =
           new HeadingNode([new PlainTextNode('I enjoy apples')], 4)
 
@@ -78,7 +78,7 @@ context('When a document has table of contents, the first HTML element is a <nav
           + '<h4 id="up-part-1">I enjoy apples</h4>')
       })
 
-      specify('A level 5 heading produces an <h6>', () => {
+      specify('A level 5 heading entry is placed in an <h6>', () => {
         const heading =
           new HeadingNode([new PlainTextNode('I enjoy apples')], 5)
 
@@ -96,7 +96,7 @@ context('When a document has table of contents, the first HTML element is a <nav
       })
 
       context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
-        specify('A level 6 heading produces an <h6>', () => {
+        specify('A level 6 heading entry is placed in an <h6>', () => {
           const heading =
             new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
 
@@ -113,7 +113,7 @@ context('When a document has table of contents, the first HTML element is a <nav
             + '<h6 id="up-part-1">I enjoy apples</h6>')
         })
 
-        specify('A level 10 heading produces an <h6>', () => {
+        specify('A level 10 heading entry is placed in an <h6>', () => {
           const heading =
             new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
 
@@ -132,8 +132,8 @@ context('When a document has table of contents, the first HTML element is a <nav
       })
     })
 
-    context('Charts and tables (both of which must have a caption to be included in the table of contents) each produce a link element containing their caption.', () => {
-      specify('A table produces a link containing its caption', () => {
+    context("For charts and table entries (both of which must have a caption to be included in the table of contents), the link's content is the caption's content.", () => {
+      specify('A table entry contains only a link reflecting its caption', () => {
         const table =
           new TableNode(
             new TableNode.Header([
@@ -171,7 +171,7 @@ context('When a document has table of contents, the first HTML element is a <nav
           + '</table>')
       })
 
-      specify('A chart produces a link containing its caption', () => {
+      specify('A chart entry contains only a link reflecting its caption', () => {
         const chart =
           new TableNode(
             new TableNode.Header([
