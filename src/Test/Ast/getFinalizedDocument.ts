@@ -123,4 +123,49 @@ context("The getFinalizedDocument function is exported for users who want help m
         ])
       ]))
   })
+
+  specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
+    const documentNode = getFinalizedDocument({
+      documentChildren: [
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          new FootnoteNode([new PlainTextNode('Well, I do, but I pretend not to.')]),
+          new PlainTextNode(" Never have.")
+        ]),
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("This ruins the movie."),
+            new FootnoteNode([new PlainTextNode("And this is a fun fact.")])
+          ])
+        ])
+      ],
+      createTableOfContents: true
+    })
+
+    expect(documentNode).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          new FootnoteNode([new PlainTextNode('Well, I do, but I pretend not to.')], 1),
+          new PlainTextNode(" Never have.")
+        ]),
+        new FootnoteBlockNode([
+          new FootnoteNode([new PlainTextNode('Well, I do, but I pretend not to.')], 1),
+        ]),
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("This ruins the movie."),
+            new FootnoteNode([new PlainTextNode("And this is a fun fact.")], 2)
+          ]),
+          new FootnoteBlockNode([
+            new FootnoteNode([new PlainTextNode('And this is a fun fact.')], 2),
+          ])
+        ])
+      ],
+        new DocumentNode.TableOfContents([
+          new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        ])))
+  })
 })
