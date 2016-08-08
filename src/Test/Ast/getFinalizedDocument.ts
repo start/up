@@ -89,4 +89,38 @@ context("The getFinalizedDocument function is exported for users who want help m
           new HeadingNode([new PlainTextNode("They're delicious")], 2)
         ])))
   })
+
+  specify("It does not produce a table of contents if the 'createTableOfContents' argument is set to false.", () => {
+    const documentNode = getFinalizedDocument({
+      documentChildren: [
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're cheap")], 2),
+            new ParagraphNode([new PlainTextNode("Very cheap.")])
+          ]),
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're delicious")], 2),
+            new ParagraphNode([new PlainTextNode("Very delicious.")])
+          ])
+        ])
+      ],
+      createTableOfContents: false
+    })
+
+    expect(documentNode).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're cheap")], 2),
+            new ParagraphNode([new PlainTextNode("Very cheap.")])
+          ]),
+          new OrderedListNode.Item([
+            new HeadingNode([new PlainTextNode("They're delicious")], 2),
+            new ParagraphNode([new PlainTextNode("Very delicious.")])
+          ])
+        ])
+      ]))
+  })
 })
