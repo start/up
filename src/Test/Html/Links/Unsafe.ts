@@ -108,23 +108,6 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 })
 
 
-describe('By default, a safe link nested inside an unsafe link', () => {
-  it('produces an <a> element', () => {
-    const documentNode = new DocumentNode([
-      new ParagraphNode([
-        new LinkNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
-          ], 'https://google.com')
-        ], 'data:malicious')
-      ])
-    ])
-
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
-  })
-})
-
-
 context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
@@ -172,5 +155,77 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+})
+
+
+describe('By default, a safe link nested inside an unsafe link', () => {
+  it('produces an <a> element', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new LinkNode([
+            new PlainTextNode('Click me!')
+          ], 'https://google.com')
+        ], 'data:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
+  })
+})
+
+
+context("A link's URL scheme can start with", () => {
+  specify('javascript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'javascript-app:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p><a href="javascript-app:malicious">Click me!</a></p>')
+  })
+
+  specify('data', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'data-app:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p><a href="data-app:malicious">Click me!</a></p>')
+  })
+
+  specify('file', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'file-app:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p><a href="file-app:malicious">Click me!</a></p>')
+  })
+
+  specify('vbscript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'vbscript-app:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<p><a href="vbscript-app:malicious">Click me!</a></p>')
   })
 })
