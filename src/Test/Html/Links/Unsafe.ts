@@ -11,7 +11,7 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Click me!'),
+          new PlainTextNode('Click me!')
         ], 'javascript:malicious')
       ])
     ])
@@ -23,7 +23,7 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Click me!'),
+          new PlainTextNode('Click me!')
         ], 'data:malicious')
       ])
     ])
@@ -35,7 +35,7 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Click me!'),
+          new PlainTextNode('Click me!')
         ], 'file:malicious')
       ])
     ])
@@ -47,11 +47,62 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
-          new PlainTextNode('Click me!'),
+          new PlainTextNode('Click me!')
         ], 'vbscript:malicious')
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+  })
+})
+
+
+context('Though by default links cannot have unsafe protocols, they can contain them:', () => {
+  specify('javascript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'https://google.com/?q=javascript:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=javascript:malicious">Click me!</a></p>')
+  })
+
+  specify('data', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'https://google.com/?q=data:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=data:malicious">Click me!</a></p>')
+  })
+
+  specify('file', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'https://google.com/?q=file:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=file:malicious">Click me!</a></p>')
+  })
+
+  specify('vbscript', () => {
+    const documentNode = new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([
+          new PlainTextNode('Click me!')
+        ], 'https://google.com/?q=vbscript:malicious')
+      ])
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
   })
 })
