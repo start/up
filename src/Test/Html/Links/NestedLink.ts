@@ -11,7 +11,7 @@ import { TableNode } from '../../../SyntaxNodes/TableNode'
 
 
 context('Inside a link', () => {
-  specify("a footnote does not produce another link element. The footnote's <sup> directly contains the footnote's reference number", () => {
+  specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
@@ -24,7 +24,7 @@ context('Inside a link', () => {
     expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google<sup id="up-footnote-reference-2" class="up-footnote-reference">2</sup></a></p>')
   })
 
-  specify("a nested link does not produce another link element. The nested link's contents are included directly inside the outer link", () => {
+  specify("a nested link does not produce another <a> element. The nested link's contents are included directly inside the outer link", () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
