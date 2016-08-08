@@ -6,7 +6,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
-context('By default, links with unsafe protocols produce no <a> elements. Instead, their contents are included directly into their outer element. Unsafe link protocols are:', () => {
+context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. Unsafe link schemes are:', () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
@@ -57,7 +57,7 @@ context('By default, links with unsafe protocols produce no <a> elements. Instea
 })
 
 
-context('Though by default links cannot have unsafe protocols, they can contain them:', () => {
+context('Though by default, links with unsafe schemes produce no HTML, link URLs can contain unsafe schemes:', () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([

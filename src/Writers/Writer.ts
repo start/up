@@ -129,7 +129,7 @@ export abstract class Writer {
     if (node instanceof LinkNode) {
       const shouldWriteLink =
         this.config.settings.writeUnsafeLinks
-        || !UNSAFE_URL_PROOCOL.test(node.url)
+        || !UNSAFE_URL_SCHEME.test(node.url)
 
       return (
         shouldWriteLink
@@ -260,7 +260,7 @@ export abstract class Writer {
 
 const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
 
-const UNSAFE_URL_PROOCOL =
+const UNSAFE_URL_SCHEME =
   patternStartingWith(either(
     'javascript',
     'data',
