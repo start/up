@@ -17,6 +17,13 @@
     "formatting"
   ],
   "author": "Daniel Miller <daniel@wants.email>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/start/up.git"
+  },
+  "bugs": {
+    "url": "https://github.com/start/up/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "chai": "latest",
