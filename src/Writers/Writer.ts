@@ -74,6 +74,17 @@ export abstract class Writer {
     return this.writeEach(nodes).join('')
   }
 
+  protected getId(...parts: any[]): string {
+    const { settings } = this.config
+
+    const rawIdWithAllParts =
+      [settings.documentName, ...parts].join(' ')
+
+    return rawIdWithAllParts
+      .trim()
+      .replace(WHITESPACE_PATTERN, settings.i18n.idWordDelimiter)
+  }
+
   protected abstract document(node: DocumentNode): string
   protected abstract blockquote(node: BlockquoteNode): string
   protected abstract unorderedList(node: UnorderedListNode): string
@@ -106,17 +117,6 @@ export abstract class Writer {
   protected abstract audio(node: AudioNode): string
   protected abstract video(node: VideoNode): string
   protected abstract plainText(node: PlainTextNode): string
-
-  protected getId(...parts: any[]): string {
-    const { settings } = this.config
-
-    const rawIdWithAllParts =
-      [settings.documentName, ...parts].join(' ')
-
-    return rawIdWithAllParts
-      .trim()
-      .replace(WHITESPACE_PATTERN, settings.i18n.idWordDelimiter)
-  }
 
   private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
