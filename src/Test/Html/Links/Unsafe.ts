@@ -182,12 +182,12 @@ context("A link's URL scheme can start with", () => {
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
-        ], 'javascript-app:malicious')
+        ], 'javascript-app:stuff')
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<p><a href="javascript-app:malicious">Click me!</a></p>')
+      '<p><a href="javascript-app:stuff">Click me!</a></p>')
   })
 
   specify('data', () => {
@@ -195,12 +195,12 @@ context("A link's URL scheme can start with", () => {
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
-        ], 'data-app:malicious')
+        ], 'data-app:stuff')
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<p><a href="data-app:malicious">Click me!</a></p>')
+      '<p><a href="data-app:stuff">Click me!</a></p>')
   })
 
   specify('file', () => {
@@ -208,12 +208,12 @@ context("A link's URL scheme can start with", () => {
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
-        ], 'file-app:malicious')
+        ], 'file-app:stuff')
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<p><a href="file-app:malicious">Click me!</a></p>')
+      '<p><a href="file-app:stuff">Click me!</a></p>')
   })
 
   specify('vbscript', () => {
@@ -221,11 +221,11 @@ context("A link's URL scheme can start with", () => {
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
-        ], 'vbscript-app:malicious')
+        ], 'vbscript-app:stuff')
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<p><a href="vbscript-app:malicious">Click me!</a></p>')
+      '<p><a href="vbscript-app:stuff">Click me!</a></p>')
   })
 })
