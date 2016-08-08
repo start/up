@@ -34,7 +34,7 @@ import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
-import { patternStartingWith, either } from '../Parsing/PatternHelpers'
+import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
 
 
 // This class provides dyanmic dispatch for writing every type of syntax node.
@@ -274,9 +274,10 @@ export abstract class Writer {
 const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
 
 const UNSAFE_URL_SCHEME =
-  patternStartingWith(either(
-    'javascript',
-    'data',
-    'file',
-    'vbscript'
-  ))
+  patternIgnoringCapitalizationAndStartingWith(
+    either(
+      'javascript',
+      'data',
+      'file',
+      'vbscript'
+    ) + ':')
