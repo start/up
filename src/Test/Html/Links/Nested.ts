@@ -1,13 +1,13 @@
 import { expect } from 'chai'
-import Up from '../../index'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
+import Up from '../../../index'
+import { LinkNode } from '../../../SyntaxNodes/LinkNode'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
+import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
+import { TableNode } from '../../../SyntaxNodes/TableNode'
 
 
 context('Inside a link', () => {
