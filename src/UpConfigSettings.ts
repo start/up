@@ -7,6 +7,8 @@ export interface UpConfigSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
 
+  writeUnsafeLinks?: boolean
+
   i18n?: {
     idWordDelimiter?: string
 
