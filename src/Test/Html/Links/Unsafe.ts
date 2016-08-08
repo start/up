@@ -125,7 +125,7 @@ describe('By default, a safe link nested inside an unsafe link', () => {
 })
 
 
-context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter.", () => {
+context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
