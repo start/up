@@ -47,56 +47,56 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 // Writers are designed to be single use, so a new instance must be created every time a new
 // document is written. This makes it a bit simpler to write concrete writer classes, because
 // they don't have to worry about resetting any counters.
-export abstract class Writer<TResult> {
-  private _result: TResult
+export abstract class Writer {
+  private _result: string
 
   constructor(
     protected documentNode: DocumentNode,
     protected config: UpConfig) { }
 
-  get result(): TResult {
+  get result(): string {
     this._result =
       this._result || this.document(this.documentNode)
 
     return this._result
   }
 
-  protected write(node: SyntaxNode): TResult {
+  protected write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
   }
 
-  protected abstract document(node: DocumentNode): TResult
-  protected abstract blockquote(node: BlockquoteNode): TResult
-  protected abstract unorderedList(node: UnorderedListNode): TResult
-  protected abstract orderedList(node: OrderedListNode): TResult
-  protected abstract descriptionList(node: DescriptionListNode): TResult
-  protected abstract lineBlock(node: LineBlockNode): TResult
-  protected abstract codeBlock(node: CodeBlockNode): TResult
-  protected abstract paragraph(node: ParagraphNode): TResult
-  protected abstract heading(node: HeadingNode): TResult
-  protected abstract sectionSeparator(): TResult
-  protected abstract emphasis(node: EmphasisNode): TResult
-  protected abstract stress(node: StressNode): TResult
-  protected abstract inlineCode(node: InlineCodeNode): TResult
-  protected abstract revisionInsertion(node: RevisionInsertionNode): TResult
-  protected abstract revisionDeletion(node: RevisionDeletionNode): TResult
-  protected abstract parenthesized(node: ParenthesizedNode): TResult
-  protected abstract squareBracketed(node: SquareBracketedNode): TResult
-  protected abstract action(node: ActionNode): TResult
-  protected abstract inlineSpoiler(node: InlineSpoilerNode): TResult
-  protected abstract inlineNsfw(node: InlineNsfwNode): TResult
-  protected abstract inlineNsfl(node: InlineNsflNode): TResult
-  protected abstract spoilerBlock(node: SpoilerBlockNode): TResult
-  protected abstract nsfwBlock(node: NsfwBlockNode): TResult
-  protected abstract nsflBlock(node: NsflBlockNode): TResult
-  protected abstract footnoteReference(node: FootnoteNode): TResult
-  protected abstract footnoteBlock(node: FootnoteBlockNode): TResult
-  protected abstract table(node: TableNode): TResult
-  protected abstract link(node: LinkNode): TResult
-  protected abstract image(node: ImageNode): TResult
-  protected abstract audio(node: AudioNode): TResult
-  protected abstract video(node: VideoNode): TResult
-  protected abstract plainText(node: PlainTextNode): TResult
+  protected abstract document(node: DocumentNode): string
+  protected abstract blockquote(node: BlockquoteNode): string
+  protected abstract unorderedList(node: UnorderedListNode): string
+  protected abstract orderedList(node: OrderedListNode): string
+  protected abstract descriptionList(node: DescriptionListNode): string
+  protected abstract lineBlock(node: LineBlockNode): string
+  protected abstract codeBlock(node: CodeBlockNode): string
+  protected abstract paragraph(node: ParagraphNode): string
+  protected abstract heading(node: HeadingNode): string
+  protected abstract sectionSeparator(): string
+  protected abstract emphasis(node: EmphasisNode): string
+  protected abstract stress(node: StressNode): string
+  protected abstract inlineCode(node: InlineCodeNode): string
+  protected abstract revisionInsertion(node: RevisionInsertionNode): string
+  protected abstract revisionDeletion(node: RevisionDeletionNode): string
+  protected abstract parenthesized(node: ParenthesizedNode): string
+  protected abstract squareBracketed(node: SquareBracketedNode): string
+  protected abstract action(node: ActionNode): string
+  protected abstract inlineSpoiler(node: InlineSpoilerNode): string
+  protected abstract inlineNsfw(node: InlineNsfwNode): string
+  protected abstract inlineNsfl(node: InlineNsflNode): string
+  protected abstract spoilerBlock(node: SpoilerBlockNode): string
+  protected abstract nsfwBlock(node: NsfwBlockNode): string
+  protected abstract nsflBlock(node: NsflBlockNode): string
+  protected abstract footnoteReference(node: FootnoteNode): string
+  protected abstract footnoteBlock(node: FootnoteBlockNode): string
+  protected abstract table(node: TableNode): string
+  protected abstract link(node: LinkNode): string
+  protected abstract image(node: ImageNode): string
+  protected abstract audio(node: AudioNode): string
+  protected abstract video(node: VideoNode): string
+  protected abstract plainText(node: PlainTextNode): string
 
   protected getId(...parts: any[]): string {
     const { settings } = this.config
@@ -109,7 +109,7 @@ export abstract class Writer<TResult> {
       .replace(WHITESPACE_PATTERN, settings.i18n.idWordDelimiter)
   }
 
-  private dispatchWrite(node: SyntaxNode): TResult {
+  private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 

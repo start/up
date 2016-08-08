@@ -37,7 +37,7 @@ import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElemen
 import { escapeHtmlContent } from './EscapingHelpers'
 
 
-export class HtmlWriter extends Writer<string> {
+export class HtmlWriter extends Writer {
   // Our HTML for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
   // perfectly well for screen-readers
   //
