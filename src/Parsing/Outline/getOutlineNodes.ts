@@ -66,7 +66,7 @@ export function getOutlineNodes(
 }
 
 
-// To produce a cleaner AST, we condense multiple consecutive section separator nodes into one.
+// To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
 function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 

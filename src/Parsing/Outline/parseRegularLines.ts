@@ -32,7 +32,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
   // Anyway, poetry is pretty fun.
   //
   // Only the first two lines are included in the line block, because the third line is parsed as
-  // a section separator streak.
+  // an outline separator streak.
   //
   // However, line blocks are *not* interrupted  by a line if it is merely the beginning of another
   // outline convention. This distinction is actually demonstrated in the example above!

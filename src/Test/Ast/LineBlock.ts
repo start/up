@@ -170,7 +170,7 @@ You're in for a fright`
       ]))
   })
 
-  specify('a section separator streak', () => {
+  specify('an outline separator streak', () => {
     const markup = `
 Roses are red
 Violets are blue

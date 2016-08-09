@@ -8,7 +8,7 @@ import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
 import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
 
 
-describe('An ordered list with a single item can be sandwched by identical section separator streaks without producing a heading.', () => {
+describe('An ordered list with a single item can be sandwched by identical outline separator streaks without producing a heading.', () => {
   context('This includes when the bullet is:', () => {
     specify('A number sign', () => {
       const markup = `
@@ -112,7 +112,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 
 
 describe('An ordered list followed by 3 blank lines followed by another ordered list', () => {
-  it('produce an ordered list, a section separator, and another ordered list', () => {
+  it('produce an ordered list, an outline separator, and another ordered list', () => {
     const markup = `
 # Iowa
 # New Hampshire

@@ -81,7 +81,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Revision insertion', () => {
-      // If the revision insertion delimiters were alone on a line, they would be interpreted as a section separator streak. 
+      // If the revision insertion delimiters were alone on a line, they would be interpreted as an outline separator streak. 
       expect(Up.toAst('Spiders.++++')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.++++')
@@ -89,7 +89,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Revision insertion', () => {
-      // If the revision deletion delimiters were alone on a line, they would be interpreted as a section separator streak.
+      // If the revision deletion delimiters were alone on a line, they would be interpreted as an outline separator streak.
       expect(Up.toAst('Spiders.~~~~')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.~~~~')
@@ -195,7 +195,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
       specify('Stress', () => {
         expect(Up.toAst('Stars! **\t  \t**')).to.eql(
-          // If the raised voice delimiters were alone on a line, they would be interpreted as a section separator streak.
+          // If the raised voice delimiters were alone on a line, they would be interpreted as an outline separator streak.
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! **\t  \t**')
           ]))

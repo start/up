@@ -8,7 +8,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 describe('A table with one column', () => {
-  it('can contain cells that would otherwise be interpreted as section separator streaks', () => {
+  it('can contain cells that would otherwise be interpreted as outline separator streaks', () => {
     const markup = `
 Table: Most common underlines for top-level headings (from most to least common)
 

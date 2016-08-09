@@ -260,7 +260,7 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 
 
 describe('Within a blockquote, 3 or more blank lines', () => {
-  it('produce a section separator node', () => {
+  it('produce an outline separator node', () => {
     const markup = `
 > Hello, world!
 >

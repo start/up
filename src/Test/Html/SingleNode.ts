@@ -588,7 +588,7 @@ describe('A level 9 heading node', () => {
 })
 
 
-describe('A section separator node', () => {
+describe('An outline separator node', () => {
   it('produces an <hr>', () => {
     const documentNode = new DocumentNode([
       new SectionSeparatorNode()

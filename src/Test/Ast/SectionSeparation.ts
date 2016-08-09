@@ -7,7 +7,7 @@ import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
 
 
 context('Between paragraphs', () => {
-  specify('3 or more empty or blank lines produces a section separator node', () => {
+  specify('3 or more empty or blank lines produces an outline separator node', () => {
     const markup = `
 Hello, world!
   \t \t
@@ -27,7 +27,7 @@ Goodbye, world!`
       ]))
   })
 
-  specify('6 or more empty or blank lines produces only a single section separator node', () => {
+  specify('6 or more empty or blank lines produces only a single outline separator node', () => {
     const markup = `
 Hello, world!
 
@@ -54,7 +54,7 @@ Goodbye, world!`
 
 
 describe('A document that starts with 3 or more empty or blank lines', () => {
-  it('does not produce a leading section separator node', () => {
+  it('does not produce a leading outline separator node', () => {
     const markup = `
 
 
@@ -75,7 +75,7 @@ Hello, world!`
 
 
 describe('A document that ends with 3 or more empty or blank lines', () => {
-  it('does not produce a trailing section separator node', () => {
+  it('does not produce a trailing outline separator node', () => {
     const markup = `
 Hello, world!
 
@@ -96,7 +96,7 @@ Hello, world!
 
 
 describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', () => {
-  it('produces a section separator node', () => {
+  it('produces an outline separator node', () => {
     const markup = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
     expect(Up.toAst(markup)).to.be.eql(
@@ -107,7 +107,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
 })
 
 
-describe('A section separator streak', () => {
+describe('An outline separator streak', () => {
   it('can be directly followed by a paragraph', () => {
     const markup = `
 ~-~-~-~-~
@@ -166,7 +166,7 @@ Goodbye.`
 
 
 describe('Consecutive separator streaks', () => {
-  it('produce a single section separator node', () => {
+  it('produce a single outline separator node', () => {
     const markup = `
 =============================================
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
@@ -179,7 +179,7 @@ describe('Consecutive separator streaks', () => {
 })
 
 
-context('When section separator streaks are separated from each other by only blank or empty lines, they produce only a single section separator node. This applies when they are separated by:', () => {
+context('When outline separator streaks are separated from each other by only blank or empty lines, they produce only a single outline separator node. This applies when they are separated by:', () => {
   specify('1 or 2 blank or empty lines', () => {
     const markup = `
 --------

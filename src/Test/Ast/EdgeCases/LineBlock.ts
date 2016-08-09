@@ -72,7 +72,7 @@ Roses are red
 
 
 describe('A line block', () => [
-  it('can contain an escaped section separator streak', () => {
+  it('can contain an escaped outline separator streak', () => {
     const markup = `
 Roses are red
 Violets are blue
