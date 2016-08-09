@@ -179,6 +179,39 @@ describe('Consecutive separator streaks', () => {
 })
 
 
+context("Though 3 hyphens produce an em dash, they can be used as a separator streak. Just like any separator streak, they can be used when:", () => {
+  specify("They're alone on a line", () => {
+    const markup = `
+---
+
+And that's all.`
+
+    expect(Up.toAst(markup)).to.eql(
+      new DocumentNode([
+        new OutlineSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("And that's all.")
+        ])
+      ]))
+  })
+
+  specify("They're alone on a line but surrounded by whitespace", () => {
+    const markup = `
+  \t --- \t
+
+And that's all.`
+
+    expect(Up.toAst(markup)).to.eql(
+      new DocumentNode([
+        new OutlineSeparatorNode(),
+        new ParagraphNode([
+          new PlainTextNode("And that's all.")
+        ])
+      ]))
+  })
+})
+
+
 context('When outline separator streaks are separated from each other by only blank or empty lines, they produce only a single outline separator node. This applies when they are separated by:', () => {
   specify('1 or 2 blank or empty lines', () => {
     const markup = `
