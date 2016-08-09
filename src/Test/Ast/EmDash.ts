@@ -162,4 +162,18 @@ describe("When any of an em dash's hyphens are escaped, that single hyphen is in
         new PlainTextNode("My favorite dashes: –-")
       ]))
   })
+
+  specify('Escaping the third of 4 hyphens produces an em dash followed by a hyphen', () => {
+    expect(Up.toAst("My favorite dashes: ---\\-")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("My favorite dashes: —-")
+      ]))
+  })
+
+  specify('Escaping the fourth of 5 hyphens produces an em dash followed by a hyphen', () => {
+    expect(Up.toAst("My favorite dashes: ----\\-")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("My favorite dashes: —-")
+      ]))
+  })
 })
