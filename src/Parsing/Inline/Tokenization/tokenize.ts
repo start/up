@@ -922,7 +922,8 @@ class Tokenizer {
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
-      || this.tryToTokenizeEnOrEmDash())
+      || this.tryToTokenizeEnOrEmDash()
+      || this.tryToTokenizePlusMinusSymbol())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -970,7 +971,7 @@ class Tokenizer {
     const COUNT_DASHES_PER_EM_DASH = 3
 
     return this.markupConsumer.consume({
-      pattern: SPECIAL_DASH_PATTERN,
+      pattern: EN_OR_EM_DASH_PATTERN,
       thenBeforeAdvancingTextIndex: dashes => {
         // 2 consecutive hyphens produce an en dash; 3 produce an em dash.
         //
@@ -980,6 +981,15 @@ class Tokenizer {
           dashes.length >= COUNT_DASHES_PER_EM_DASH
             ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
             : EN_DASH
+      }
+    })
+  }
+
+  private tryToTokenizePlusMinusSymbol(): boolean {
+    return this.markupConsumer.consume({
+      pattern: PLUS_MINUS_SYMBOL_PATTERN,
+      thenBeforeAdvancingTextIndex: () => {
+        this.buffer += '±'
       }
     })
   }
@@ -1186,8 +1196,11 @@ const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
 
 
-const SPECIAL_DASH_PATTERN =
-  patternStartingWith(atLeast(2, escapeForRegex('-')))
+const EN_OR_EM_DASH_PATTERN =
+  patternStartingWith(atLeast(2, '-'))
+
+const PLUS_MINUS_SYMBOL_PATTERN =
+  patternStartingWith(escapeForRegex('+-'))
 
 
 // Our URL patterns and associated string constants serve two purposes:
