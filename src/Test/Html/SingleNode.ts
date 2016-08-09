@@ -31,7 +31,7 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 
 
 describe('An empty document node', () => {
@@ -591,7 +591,7 @@ describe('A level 9 heading node', () => {
 describe('An outline separator node', () => {
   it('produces an <hr>', () => {
     const documentNode = new DocumentNode([
-      new SectionSeparatorNode()
+      new OutlineSeparatorNode()
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql('<hr>')

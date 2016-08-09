@@ -3,7 +3,7 @@ import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 
 
 context('Between paragraphs', () => {
@@ -20,7 +20,7 @@ Goodbye, world!`
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('Goodbye, world!')
         ]),
@@ -44,7 +44,7 @@ Goodbye, world!`
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('Goodbye, world!')
         ])
@@ -101,7 +101,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -115,7 +115,7 @@ describe('An outline separator streak', () => {
 
     expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('60.4%')
         ])
@@ -127,14 +127,14 @@ describe('An outline separator streak', () => {
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 
   it('can contain as few as 3 non-whitespace characters', () => {
     expect(Up.toAst('= - ~')).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 
@@ -156,7 +156,7 @@ Goodbye.`
         new ParagraphNode([
           new PlainTextNode('Hello.')
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('Goodbye.')
         ]),
@@ -173,7 +173,7 @@ describe('Consecutive separator streaks', () => {
 =============================================`
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -191,7 +191,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 
@@ -211,7 +211,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })

@@ -8,7 +8,7 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -188,7 +188,7 @@ And addresses do, too`
             new PlainTextNode('Violets are blue')
           ]),
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Lyrics have lines')

@@ -30,7 +30,7 @@ import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
 import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
-import { SectionSeparatorNode } from '../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../SyntaxNodes/OutlineSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { UpConfig } from '../UpConfig'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
@@ -166,7 +166,7 @@ export abstract class Writer {
       return this.heading(node)
     }
 
-    if (node instanceof SectionSeparatorNode) {
+    if (node instanceof OutlineSeparatorNode) {
       return this.sectionSeparator()
     }
 

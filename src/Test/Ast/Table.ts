@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -204,7 +204,7 @@ I don't like video games; in fact, I never have.`
               new TableNode.Row.Cell([new PlainTextNode('1999')])
             ]),
           ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I don't like video games; in fact, I never have.")
         ])

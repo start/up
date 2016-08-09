@@ -4,7 +4,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 
 describe('A description list followed by 2 blank lines followed by another description list', () => {
@@ -105,7 +105,7 @@ Lee Chang-ho
             ])
           ]))
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([

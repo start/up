@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -12,6 +12,6 @@ export function tryToParseSectionSeparatorStreak(args: OutlineParserArgs): boole
     return false
   }
 
-  args.then([new SectionSeparatorNode()], markupLineConsumer.countLinesConsumed)
+  args.then([new OutlineSeparatorNode()], markupLineConsumer.countLinesConsumed)
   return true
 }

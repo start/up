@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -274,7 +274,7 @@ describe('Within a blockquote, 3 or more blank lines', () => {
           new ParagraphNode([
             new PlainTextNode('Hello, world!')
           ]),
-          new SectionSeparatorNode(),
+          new OutlineSeparatorNode(),
           new ParagraphNode([
             new PlainTextNode('Goodbye, '),
             new EmphasisNode([

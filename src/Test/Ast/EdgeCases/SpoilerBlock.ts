@@ -5,7 +5,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 
 context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
@@ -77,7 +77,7 @@ No!`
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode('No!')
         ])

@@ -5,7 +5,7 @@ import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 
 describe('An ordered list with a single item can be sandwched by identical outline separator streaks without producing a heading.', () => {
@@ -18,7 +18,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
-          new SectionSeparatorNode(),
+          new OutlineSeparatorNode(),
           new OrderedListNode([
             new OrderedListNode.Item([
               new ParagraphNode([
@@ -26,7 +26,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
               ])
             ])
           ]),
-          new SectionSeparatorNode()
+          new OutlineSeparatorNode()
         ]))
     })
 
@@ -38,7 +38,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
-          new SectionSeparatorNode(),
+          new OutlineSeparatorNode(),
           new OrderedListNode([
             new OrderedListNode.Item([
               new ParagraphNode([
@@ -46,7 +46,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
               ])
             ], 1)
           ]),
-          new SectionSeparatorNode()
+          new OutlineSeparatorNode()
         ]))
     })
   })
@@ -136,7 +136,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
             ])
           ])
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([

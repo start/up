@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { BLANK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -8,7 +8,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // The blank lines themselves don't produce any syntax nodes.
 //
 // However, 3 or more consecutive blank lines indicates meaningful, deliberate separation between sections.
-// We represent that separation with a SectionSeparatorNode.
+// We represent that separation with a OutlineSeparatorNode.
 export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   let countBlankLines = 0
@@ -26,7 +26,7 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
 
   const nodes =
     countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
-      ? [new SectionSeparatorNode()]
+      ? [new OutlineSeparatorNode()]
       : []
 
   args.then(nodes, markupLineConsumer.countLinesConsumed)

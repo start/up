@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class SectionSeparatorNode implements OutlineSyntaxNode {
+export class OutlineSeparatorNode implements OutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }

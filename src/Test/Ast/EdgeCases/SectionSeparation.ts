@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 
 
@@ -17,7 +17,7 @@ Not me. Us!
 @---------@`
     expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new HeadingNode([
           new PlainTextNode('Not me. Us!')
         ], 1)
@@ -32,7 +32,7 @@ Not me. Us!
 -----------`
     expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new HeadingNode([
           new PlainTextNode('Not me. Us!')
         ], 1)
@@ -46,7 +46,7 @@ describe('A streak of asterisks with spaces between', () => {
     const markup = '* * * * * *'
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -57,7 +57,7 @@ describe('A streak of number signs with spaces between', () => {
     const markup = '# # # # # #'
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -83,7 +83,7 @@ describe('A streak of asterisks with spaces between', () => {
             ])
           ])
         ]),
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -109,7 +109,7 @@ describe('A streak of number signs with spaces between', () => {
             ])
           ])
         ]),
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })

@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
@@ -72,8 +72,8 @@ function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 
   for (let node of nodes) {
     const isConsecutiveSectionSeparatorNode =
-      node instanceof SectionSeparatorNode
-      && last(resultNodes) instanceof SectionSeparatorNode
+      node instanceof OutlineSeparatorNode
+      && last(resultNodes) instanceof OutlineSeparatorNode
 
     if (!isConsecutiveSectionSeparatorNode) {
       resultNodes.push(node)

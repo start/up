@@ -7,7 +7,7 @@ import { TableNode } from '../../SyntaxNodes/TableNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
@@ -443,7 +443,7 @@ No one!`
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
         new ParagraphNode([new PlainTextNode("Who doesn't?")]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([new PlainTextNode("No one!")])
       ], tableOfContents))
   })

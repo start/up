@@ -4,7 +4,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 
 describe('A single blank blockquoted line', () => {
@@ -40,13 +40,13 @@ describe('A single line blockquote', () => {
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new BlockquoteNode([
           new ParagraphNode([
             new PlainTextNode('I choose you!')
           ])
         ]),
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })

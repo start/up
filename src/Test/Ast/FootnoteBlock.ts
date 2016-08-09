@@ -10,7 +10,7 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
@@ -874,7 +874,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           ])
         ]),
         new FootnoteBlockNode(footnotesInUnorderedList),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
           footnoteInParagraph,
@@ -936,7 +936,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           ])
         ]),
         new FootnoteBlockNode([footnoteInUnorderedList]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
           footnoteInParagraph,
@@ -1015,7 +1015,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           footnoteInUnorderedList,
           nestedFootnoteInUnorderedList
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new ParagraphNode([
           new PlainTextNode("I wear glasses"),
           footnoteInParagraph,

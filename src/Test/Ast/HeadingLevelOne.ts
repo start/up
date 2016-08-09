@@ -4,7 +4,7 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { SectionSeparatorNode } from '../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 
 
@@ -99,7 +99,7 @@ Hello, world!
 
     expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })
@@ -112,7 +112,7 @@ Hello, world!
 
     expect(Up.toAst(markup)).to.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
       ]))
   })

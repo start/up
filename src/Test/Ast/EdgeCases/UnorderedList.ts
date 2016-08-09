@@ -4,7 +4,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { SectionSeparatorNode } from '../../../SyntaxNodes/SectionSeparatorNode'
+import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 
@@ -18,7 +18,7 @@ describe('An unordered list with a single item', () => {
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -26,7 +26,7 @@ describe('An unordered list with a single item', () => {
             ])
           ])
         ]),
-        new SectionSeparatorNode()
+        new OutlineSeparatorNode()
       ]))
   })
 })
@@ -142,7 +142,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
             ])
           ])
         ]),
-        new SectionSeparatorNode(),
+        new OutlineSeparatorNode(),
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
