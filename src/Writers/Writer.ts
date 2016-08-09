@@ -83,7 +83,7 @@ export abstract class Writer {
 
     return rawIdWithAllParts
       .trim()
-      .replace(WHITESPACE_PATTERN, settings.i18n.idWordDelimiter)
+      .replace(WHITESPACE_PATTERN, settings.i18n.wordDelimiterForGeneratedIds)
   }
 
   protected abstract document(node: DocumentNode): string

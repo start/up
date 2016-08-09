@@ -95,7 +95,7 @@ describe('The "documentName" config setting', () => {
 })
 
 
-describe('The "idWordDelimiter" config setting', () => {
+describe('The "wordDelimiterForGeneratedIds" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     documentNode: new DocumentNode([
       new ParagraphNode([
@@ -104,12 +104,12 @@ describe('The "idWordDelimiter" config setting', () => {
     ]),
     configChanges: {
       i18n: {
-        idWordDelimiter: '::'
+        wordDelimiterForGeneratedIds: '::'
       }
     },
     conflictingConfigChanges: {
       i18n: {
-        idWordDelimiter: '_'
+        wordDelimiterForGeneratedIds: '_'
       }
     }
   })

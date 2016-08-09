@@ -3,6 +3,7 @@ import { UpConfigSettings} from './UpConfigSettings'
 
 const DEFAULT_SETTINGS: UpConfigSettings = {
   createTableOfContents: false,
+  writeUnsafeContent: false,
   
   documentName: 'up',
 
@@ -10,12 +11,12 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
   baseForUrlsStartingWithSlash: '',
   baseForUrlsStartingWithHashMark: '',
 
-  writeUnsafeContent: false,
-
   i18n: {
-    idWordDelimiter: '-',
+    wordDelimiterForGeneratedIds: '-',
 
     terms: {
+      tableOfContents: 'Table of Contents',
+      partOfDocumentReferencedByTableOfContents: 'part',
       table: 'table',
       chart: 'chart',
       image: 'image',
@@ -28,9 +29,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       nsfl: 'nsfl',
       toggleNsfl: 'toggle NSFL',
       footnote: 'footnote',
-      footnoteReference: 'footnote reference',
-      tableOfContents: 'Table of Contents',
-      partOfDocumentReferencedByTableOfContents: 'part'
+      footnoteReference: 'footnote reference'
     }
   }
 }

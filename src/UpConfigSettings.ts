@@ -10,7 +10,7 @@ export interface UpConfigSettings {
   writeUnsafeContent?: boolean
 
   i18n?: {
-    idWordDelimiter?: string
+    wordDelimiterForGeneratedIds?: string
 
     terms?: {
       table?: string

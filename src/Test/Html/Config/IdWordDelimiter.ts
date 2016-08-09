@@ -15,7 +15,7 @@ describe("The words in a footnote reference's ID (as well as the ID of the footn
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '::'
+        wordDelimiterForGeneratedIds: '::'
       }
     })
 
@@ -35,7 +35,7 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '::'
+        wordDelimiterForGeneratedIds: '::'
       }
     })
 
@@ -65,7 +65,7 @@ describe("The words in the ID of an inline spoiler's checkbox (on both the check
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '_'
+        wordDelimiterForGeneratedIds: '_'
       }
     })
 
@@ -93,7 +93,7 @@ describe("The words in the ID of an inline NSFW conventions's checkbox (on both 
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '_'
+        wordDelimiterForGeneratedIds: '_'
       }
     })
 
@@ -121,7 +121,7 @@ describe("The words in the ID of an inline NSFL conventions's checkbox (on both 
   it("are delimited by specified the ID word delimiter", () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '_'
+        wordDelimiterForGeneratedIds: '_'
       }
     })
 
@@ -156,7 +156,7 @@ describe("In a footnote reference, separate words in the provided document name"
     const up = new Up({
       documentName: 'reply 11',
       i18n: {
-        idWordDelimiter: '::'
+        wordDelimiterForGeneratedIds: '::'
       }
     })
 
@@ -171,7 +171,7 @@ describe("In a footnote block, separate words in the provided document name", ()
     const up = new Up({
       documentName: 'reply 11',
       i18n: {
-        idWordDelimiter: '::'
+        wordDelimiterForGeneratedIds: '::'
       }
     })
 
@@ -201,7 +201,7 @@ describe('In a footnote reference, separate words in the provided term for "foot
   it('are separated by the ID word delimiter in a footnote reference ID', () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '_',
+        wordDelimiterForGeneratedIds: '_',
         terms: { footnoteReference: 'fn ref' }
       }
     })
@@ -222,7 +222,7 @@ describe('In a footnote block, separate words in the provided term for "footnote
   it('are separated by the ID word delimiter in a footnote reference ID', () => {
     const up = new Up({
       i18n: {
-        idWordDelimiter: '_',
+        wordDelimiterForGeneratedIds: '_',
         terms: { footnoteReference: 'fn ref' }
       }
     })
