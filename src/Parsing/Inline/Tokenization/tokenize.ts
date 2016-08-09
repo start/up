@@ -1,5 +1,5 @@
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -922,7 +922,7 @@ class Tokenizer {
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
-      || this.tryToInferDash())
+      || this.tryToTokenizeFancyDash())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -963,11 +963,15 @@ class Tokenizer {
     })
   }
 
-  private tryToInferDash(): boolean {
+  private tryToTokenizeFancyDash(): boolean {
+    const EN_DASH = '–'
+    const EM_DASH = '—'
+
     return this.markupConsumer.consume({
-      pattern: EN_DASH_PATTERN,
-      thenBeforeAdvancingTextIndex: () => {
-        this.buffer += '–'
+      pattern: SPECIAL_DASH_PATTERN,
+      thenBeforeAdvancingTextIndex: dashes => {
+        this.buffer +=
+          (dashes.length >= 3) ? EM_DASH : EN_DASH
       }
     })
   }
@@ -1168,8 +1172,8 @@ const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
 
 
-const EN_DASH_PATTERN =
-  patternStartingWith(exactly(2, escapeForRegex('-')))
+const SPECIAL_DASH_PATTERN =
+  patternStartingWith(atLeast(2, escapeForRegex('-')))
 
 
 // Our URL patterns and associated string constants serve two purposes:
