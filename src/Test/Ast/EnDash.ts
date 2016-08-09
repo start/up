@@ -12,7 +12,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
 context('2 consecutive hyphens normally produce an en dash.', () => {
-  context('This applies within regular text', () => {
+  context('This applies within regular text:', () => {
     specify('Between words', () => {
       expect(Up.toAst("Okay--I'll eat the tarantula.")).to.be.eql(
         insideDocumentAndParagraph([
@@ -43,7 +43,7 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
   })
 
 
-  context('This does not apply within', () => {
+  context('This does not apply within:', () => {
     specify('Link URLs', () => {
       expect(Up.toAst("[American flag emoji] (https://example.com/empojis/US--flag?info)")).to.be.eql(
         insideDocumentAndParagraph([
