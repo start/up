@@ -5,7 +5,9 @@ import { concat } from '../CollectionHelpers'
 
 
 export class DescriptionListNode implements OutlineSyntaxNode {
-  constructor(public items: DescriptionListNode.Item[], public sourceLineNumber: number = undefined) { }
+  constructor(
+    public items: DescriptionListNode.Item[],
+    public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
