@@ -96,25 +96,46 @@ for (let i = items.length - 1; i >= 0; i---) { }
 })
 
 
-context('4 or more consecutive dashes also produce a single em dash.', () => {
-  specify('4 dashes', () => {
+context('4 or more consecutive dashes produce as many em dashes as they can "afford" (at 3 dashes per em dash). Any extra dashes (either 1 or 2) are ignored.', () => {
+  specify('4 dashes produce a single em dash', () => {
     expect(Up.toAst("Okay----I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay—I'll eat the tarantula.")
       ]))
   })
 
-  specify('5 dashes', () => {
+  specify('5 dashes produce a single em dash', () => {
     expect(Up.toAst("Okay-----I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay—I'll eat the tarantula.")
       ]))
   })
 
-  specify('6 dashes', () => {
-    expect(Up.toAst("Okay------I'll eat the tarantula.")).to.be.eql(
+  specify('6 dashes produce 2 em dashes', () => {
+    expect(Up.toAst("Okay, Prof. O------.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("Okay—I'll eat the tarantula.")
+        new PlainTextNode("Okay, Prof. O——")
+      ]))
+  })
+
+  specify('7 dashes produce 2 em dashes', () => {
+    expect(Up.toAst("Okay, Prof. O-------.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("Okay, Prof. O——")
+      ]))
+  })
+
+  specify('8 dashes produce 2 em dashes', () => {
+    expect(Up.toAst("Okay, Prof. --------.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("Okay, Prof. ——")
+      ]))
+  })
+
+  specify('9 dashes produce 3 em dashes', () => {
+    expect(Up.toAst("---------. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("———. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")
       ]))
   })
 })
