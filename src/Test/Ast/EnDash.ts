@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -17,15 +18,15 @@ context('2 consecutive dashes normally produce an en dash.', () => {
         insideDocumentAndParagraph([
           new PlainTextNode("Okay–I'll eat the tarantula.")
         ]))
-    }) 
-    
+    })
+
     specify('Following a word', () => {
       expect(Up.toAst("Okay-- I'll eat the tarantula.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode("Okay– I'll eat the tarantula.")
         ]))
     })
-    
+
     specify('Preceding a word', () => {
       expect(Up.toAst('"I like Starcraft" --Mark Twain')).to.be.eql(
         insideDocumentAndParagraph([
@@ -36,13 +37,6 @@ context('2 consecutive dashes normally produce an en dash.', () => {
 
 
   context('This does not apply within', () => {
-    specify('Inline code', () => {
-      expect(Up.toAst("`i--;`")).to.be.eql(
-        insideDocumentAndParagraph([
-          new InlineCodeNode('i--;')
-        ]))
-    })
-
     specify('Link URLs', () => {
       expect(Up.toAst("[American flag emoji] (https://example.com/empojis/US--flag?info)")).to.be.eql(
         insideDocumentAndParagraph([
@@ -76,6 +70,26 @@ context('2 consecutive dashes normally produce an en dash.', () => {
               new PlainTextNode('you fight Gary')
             ], 'http://example.com/final--battle')
           ])
+        ]))
+    })
+
+    specify('Inline code', () => {
+      expect(Up.toAst("`i--;`")).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineCodeNode('i--;')
+        ]))
+    })
+
+    specify('Code blocks', () => {
+        const markup = `
+\`\`\`
+for (let i = items.length - 1; i >= 0; i--) { }
+\`\`\``
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new CodeBlockNode(
+            `for (let i = items.length - 1; i >= 0; i--) { }`)
         ]))
     })
   })
