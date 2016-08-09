@@ -1,5 +1,6 @@
 export interface UpConfigSettings {
   createTableOfContents?: boolean
+  writeUnsafeContent?: boolean
 
   documentName?: string
 
@@ -7,12 +8,12 @@ export interface UpConfigSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
 
-  writeUnsafeContent?: boolean
-
   i18n?: {
     wordDelimiterForGeneratedIds?: string
 
     terms?: {
+      tableOfContents?: string
+      partOfDocumentReferencedByTableOfContents?: string
       table?: string
       chart?: string
       image?: string
@@ -26,8 +27,6 @@ export interface UpConfigSettings {
       toggleNsfl?: string
       footnote?: string
       footnoteReference?: string
-      tableOfContents?: string
-      partOfDocumentReferencedByTableOfContents?: string
 
       [term: string]: string
     }
