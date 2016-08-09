@@ -9,7 +9,8 @@ export class TableNode implements OutlineSyntaxNode {
   constructor(
     public header: TableNode.Header,
     public rows: TableNode.Row[],
-    public caption?: TableNode.Caption) { }
+    public caption?: TableNode.Caption,
+    public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return this.caption != null

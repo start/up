@@ -8,7 +8,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
   constructor(
     public description: string,
     public url: string,
-    public sourceLineNumber?: number) { }
+    public sourceLineNumber: number = undefined) { }
 
   inlineTextContent(): string {
     return ''

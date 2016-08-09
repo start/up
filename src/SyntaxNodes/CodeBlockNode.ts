@@ -2,7 +2,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class CodeBlockNode implements OutlineSyntaxNode {
-  constructor(public code: string) { }
+  constructor(public code: string, public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false

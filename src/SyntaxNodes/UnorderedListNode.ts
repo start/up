@@ -4,7 +4,7 @@ import { concat } from '../CollectionHelpers'
 
 
 export class UnorderedListNode implements OutlineSyntaxNode {
-  constructor(public items: UnorderedListNode.Item[], public sourceLineNumber?: number) { }
+  constructor(public items: UnorderedListNode.Item[], public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false

@@ -2,7 +2,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class OutlineSeparatorNode implements OutlineSyntaxNode {
-  constructor(public sourceLineNumber?: number) { }
+  constructor(public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
