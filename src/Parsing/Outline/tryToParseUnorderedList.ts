@@ -48,7 +48,12 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
     listItems.push(
       new UnorderedListNode.Item(
-        getOutlineNodes(linesOfMarkupInCurrentListItem, args.headingLeveler, args.config)))
+        getOutlineNodes({
+          markupLines: linesOfMarkupInCurrentListItem,
+          sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+          headingLeveler: args.headingLeveler,
+          config: args.config
+        })))
 
     if (shouldTerminateList) {
       break

@@ -39,7 +39,12 @@ export function getLabeledBlockParser(
       return false
     }
 
-    const children = getOutlineNodes(contentLines, args.headingLeveler, args.config)
+    const children = getOutlineNodes({
+      markupLines: contentLines,
+      sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+      headingLeveler: args.headingLeveler,
+      config: args.config
+    })
 
     args.then([new NodeType(children)], markupLineConsumer.countLinesConsumed)
     return true

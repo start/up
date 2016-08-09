@@ -82,7 +82,12 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     const description =
       new DescriptionListNode.Item.Description(
-        getOutlineNodes(descriptionLines, args.headingLeveler, args.config))
+        getOutlineNodes({
+          markupLines: descriptionLines,
+          sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+          headingLeveler: args.headingLeveler,
+          config: args.config
+        }))
 
     listItems.push(new DescriptionListNode.Item(terms, description))
 

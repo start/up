@@ -32,7 +32,12 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
 
   const blockquote =
     new BlockquoteNode(
-      getOutlineNodes(blockquotedLines, headingLeveler, args.config))
+      getOutlineNodes({
+        markupLines: blockquotedLines,
+        sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+        headingLeveler,
+        config: args.config
+      }))
 
   args.then([blockquote], markupLineConsumer.countLinesConsumed)
   return true

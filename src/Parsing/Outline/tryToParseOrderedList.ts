@@ -60,9 +60,16 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
   let listItems = unparsedListItems.map((unparsedListItem) => {
     return new OrderedListNode.Item(
-      getOutlineNodes(unparsedListItem.markupLines, args.headingLeveler, args.config),
+      getOutlineNodes({
+        markupLines: unparsedListItem.markupLines,
+        sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+        headingLeveler: args.headingLeveler,
+        config: args.config
+      }),
       getExplicitOrdinal(unparsedListItem))
   })
+
+
 
   args.then([new OrderedListNode(listItems)], markupLineConsumer.countLinesConsumed)
   return true
