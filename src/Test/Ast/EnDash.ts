@@ -11,7 +11,7 @@ import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
-context('2 consecutive dashes normally produce an en dash.', () => {
+context('2 consecutive hyphens normally produce an en dash.', () => {
   context('This applies within regular text', () => {
     specify('Between words', () => {
       expect(Up.toAst("Okay--I'll eat the tarantula.")).to.be.eql(
@@ -96,7 +96,7 @@ for (let i = items.length - 1; i >= 0; i--) { }
 })
 
 
-describe('When either of the dashes are escaped, no en dash is produced:', () => {
+describe('When either of the hyphens are escaped, no en dash is produced:', () => {
   specify('First dash:', () => {
     expect(Up.toAst("Okay\\--I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
@@ -104,7 +104,7 @@ describe('When either of the dashes are escaped, no en dash is produced:', () =>
       ]))
   })
 
-  specify('Second dash:', () => {
+  specify('Second hyphen:', () => {
     expect(Up.toAst("Okay-\\-I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay--I'll eat the tarantula.")
