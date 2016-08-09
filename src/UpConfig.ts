@@ -3,7 +3,9 @@ import { UpConfigSettings} from './UpConfigSettings'
 
 const DEFAULT_SETTINGS: UpConfigSettings = {
   createTableOfContents: false,
+
   writeUnsafeContent: false,
+  writeSourceMap: false,
 
   documentName: 'up',
 
