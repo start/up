@@ -343,12 +343,12 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[audio: 4chan] (https://example.com/sounds.ogg) (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[audio: 4chan] (https://example.com/sounds.ogg) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('4chan', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
-            new PlainTextNode('(4chan.org--terrifying)')
+            new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
     })

@@ -394,13 +394,13 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainTextNode('that place')
       ], 1)
 
-      expect(Up.toAst('[^that place] (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[^that place] (4chan.org-terrifying)')).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
             new ParenthesizedNode([
-              new PlainTextNode('(4chan.org--terrifying)')
+              new PlainTextNode('(4chan.org-terrifying)')
             ])
           ]),
           new FootnoteBlockNode([footnote])

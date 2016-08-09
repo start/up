@@ -307,14 +307,14 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[NSFW: that place] (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[NSFW: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('that place')
           ]),
           new PlainTextNode(' '),
           new ParenthesizedNode([
-            new PlainTextNode('(4chan.org--terrifying)')
+            new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
     })

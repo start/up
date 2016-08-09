@@ -343,12 +343,12 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[image: 4chan] (https://example.com/image.png) (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[image: 4chan] (https://example.com/image.png) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new ImageNode('4chan', 'https://example.com/image.png'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
-            new PlainTextNode('(4chan.org--terrifying)')
+            new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
     })

@@ -287,14 +287,14 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[that place] (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[that place]')
           ]),
           new PlainTextNode(' '),
           new ParenthesizedNode([
-            new PlainTextNode('(4chan.org--terrifying)')
+            new PlainTextNode('(4chan.org-terrifying)')
           ])
         ]))
     })

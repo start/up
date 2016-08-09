@@ -343,12 +343,12 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[video: 4chan] (https://example.com/video.webm) (4chan.org--terrifying)')).to.be.eql(
+      expect(Up.toAst('[video: 4chan] (https://example.com/video.webm) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('4chan', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
           new ParenthesizedNode([
-            new PlainTextNode('(4chan.org--terrifying)')
+            new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
     })
