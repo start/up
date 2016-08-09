@@ -4,7 +4,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { tryToParseSectionSeparatorStreak } from './tryToParseSectionSeparatorStreak'
+import { tryToParseOutlineSeparatorStreak } from './tryToParseOutlineSeparatorStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
@@ -33,7 +33,7 @@ export function getOutlineNodes(
     tryToParseUnorderedList,
     trytoParseOrderedList,
     tryToParseHeading,
-    tryToParseSectionSeparatorStreak,
+    tryToParseOutlineSeparatorStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,
     tryToParseTableOrChart,
@@ -62,20 +62,20 @@ export function getOutlineNodes(
     }
   }
 
-  return condenseConsecutiveSectionSeparatorNodes(outlineNodes)
+  return condenseConsecutiveOutlineSeparatorNodes(outlineNodes)
 }
 
 
 // To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
-function condenseConsecutiveSectionSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+function condenseConsecutiveOutlineSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    const isConsecutiveSectionSeparatorNode =
+    const isConsecutiveOutlineSeparatorNode =
       node instanceof OutlineSeparatorNode
       && last(resultNodes) instanceof OutlineSeparatorNode
 
-    if (!isConsecutiveSectionSeparatorNode) {
+    if (!isConsecutiveOutlineSeparatorNode) {
       resultNodes.push(node)
     }
   }
