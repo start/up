@@ -33,6 +33,13 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
           new PlainTextNode('"I like Starcraft" –Mark Twain')
         ]))
     })
+
+    specify('Surrounded by whitespace', () => {
+      expect(Up.toAst("Okay -- I'll eat the tarantula.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode("Okay – I'll eat the tarantula.")
+        ]))
+    })
   })
 
 
