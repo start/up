@@ -4,11 +4,11 @@ import { BLANK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// Outline conventions (e.g. paragraphs, headings) are normally separated by 1 or 2 consecutive blank lines.
-// The blank lines themselves don't produce any syntax nodes.
+// Outline conventions (e.g. paragraphs, headings) are normally separated by 1 or 2 consecutive
+// blank lines. The blank lines themselves don't produce any syntax nodes.
 //
-// However, 3 or more consecutive blank lines indicates meaningful, deliberate separation between sections.
-// We represent that separation with a OutlineSeparatorNode.
+// However, 3 or more consecutive blank lines indicates extra, meaningful separation between
+// outline convention. We represent that separation with a OutlineSeparatorNode.
 export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   let countBlankLines = 0

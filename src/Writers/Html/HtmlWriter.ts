@@ -135,7 +135,7 @@ export class HtmlWriter extends Writer {
       this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
   }
 
-  protected sectionSeparator(): string {
+  protected outlineSeparator(): string {
     return singleTagHtmlElement('hr')
   }
 
