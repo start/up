@@ -11,7 +11,7 @@ import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
-context('A plus sign followed by a hyphen normally produce a plus-minus sign', () => {
+context('A plus sign followed by a hyphen normally produces a plus-minus sign', () => {
   context('This applies within regular text:', () => {
     specify('Between words', () => {
       expect(Up.toAst("Yeah, it uses base HP+-4.")).to.be.eql(
