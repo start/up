@@ -86,6 +86,7 @@ function factorial(n: number): number {
 }
 \`\`\`
 \`\`\`\`\``
+
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
@@ -112,6 +113,7 @@ function factorial(n: number): number {
 }
 \`\`\`\`\`\`
 \`\`\`\`\``
+
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
@@ -137,6 +139,7 @@ function factorial(n: number): number {
       : n * factorial(n - 1))
 }
 \`\`\``
+
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
@@ -166,6 +169,7 @@ function factorial(n: number): number {
 
 It's easy!
 \`\`\`\`\``
+
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new CodeBlockNode(
