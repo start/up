@@ -143,9 +143,9 @@ context('4 or more consecutive hyphens produce as many em dashes as they can "af
 
 describe("When any of an em dash's hyphens are escaped, that single hyphen is interpreted as a regular dash.", () => {
   specify('Escaping the first of 3 hyphens produces a hyphen followed by an en dash', () => {
-    expect(Up.toAst("My favorite hyphens: \\---")).to.be.eql(
+    expect(Up.toAst("My favorite dashes: \\---")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("My favorite hyphens: -–")
+        new PlainTextNode("My favorite dashes: -–")
       ]))
   })
 
@@ -157,9 +157,9 @@ describe("When any of an em dash's hyphens are escaped, that single hyphen is in
   })
 
   specify('Escaping the third of 3 hyphens produces an en dash followed by a hyphen', () => {
-    expect(Up.toAst("My favorite hyphens: --\\-")).to.be.eql(
+    expect(Up.toAst("My favorite dashes: --\\-")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("My favorite hyphens: –-")
+        new PlainTextNode("My favorite dashes: –-")
       ]))
   })
 })
