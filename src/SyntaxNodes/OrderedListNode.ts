@@ -4,7 +4,7 @@ import { concat } from '../CollectionHelpers'
 
 
 export class OrderedListNode implements OutlineSyntaxNode {
-  constructor(public items: OrderedListNode.Item[]) { }
+  constructor(public items: OrderedListNode.Item[], public sourceLineNumber?: number) { }
 
   start(): number {
     return this.items[0].ordinal

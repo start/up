@@ -3,7 +3,7 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export class LineBlockNode implements OutlineSyntaxNode {
-  constructor(public lines: LineBlockNode.Line[]) { }
+  constructor(public lines: LineBlockNode.Line[], public sourceLineNumber?: number) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
