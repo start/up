@@ -1,8 +1,8 @@
 export interface UpConfigSettings {
   createTableOfContents?: boolean
-  
+  createSourceMap?: boolean
+
   writeUnsafeContent?: boolean
-  writeSourceMap?: boolean
 
   documentName?: string
 
