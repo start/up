@@ -7,42 +7,6 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
-describe('A chart with one column', () => {
-  it('can have row header cells that would otherwise be interpreted as outline separator streaks', () => {
-    const markup = `
-Chart: Most common underlines for top-level headings (from most to least common)
-
-      Underline Frequency
-
-====
-####
-----`
-
-    expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Underline Frequency')])
-          ]), [
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('====')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('####')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('----')]))
-          ],
-          new TableNode.Caption([
-            new PlainTextNode('Most common underlines for top-level headings '),
-            new ParenthesizedNode([
-              new PlainTextNode('(from most to least common)')
-            ])
-          ]))
-      ]))
-  })
-})
-
-
 describe("A chart header cell", () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
@@ -160,6 +124,42 @@ I almost didn't include them; however, I realized charts are too useful to leave
       new DocumentNode([
         new ParagraphNode([new PlainTextNode('Chart: my favorite outline convention.')]),
         new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
+      ]))
+  })
+})
+
+
+describe('A chart with one column', () => {
+  it('can contain row header cells that would otherwise be interpreted as outline separator streaks, assuming the streaks have no special inline meaning (e.g. multiple dashes)', () => {
+    const markup = `
+Chart: Most common underlines for top-level headings (from most to least common)
+
+      Underline Frequency
+
+====
+####
+****`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Underline Frequency')])
+          ]), [
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('====')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('####')])),
+            new TableNode.Row(
+              [], new TableNode.Header.Cell([new PlainTextNode('****')]))
+          ],
+          new TableNode.Caption([
+            new PlainTextNode('Most common underlines for top-level headings '),
+            new ParenthesizedNode([
+              new PlainTextNode('(from most to least common)')
+            ])
+          ]))
       ]))
   })
 })
