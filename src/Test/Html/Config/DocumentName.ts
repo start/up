@@ -693,10 +693,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-part-1"></a></h2></li>'
+      + '<li><h2><a href="#up-item-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-part-1"></h1>'
+      + '<h1 id="up-item-1"></h1>'
 
     expect(Up.toHtml(documentNode)).to.be.eql(html)
   })
@@ -716,10 +716,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#reply-11-part-1"></a></h2></li>'
+      + '<li><h2><a href="#reply-11-item-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="reply-11-part-1"></h1>'
+      + '<h1 id="reply-11-item-1"></h1>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
@@ -738,10 +738,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#part-1"></a></h2></li>'
+      + '<li><h2><a href="#item-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="part-1"></h1>'
+      + '<h1 id="item-1"></h1>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })
@@ -760,10 +760,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#part-1"></a></h2></li>'
+      + '<li><h2><a href="#item-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="part-1"></h1>'
+      + '<h1 id="item-1"></h1>'
 
     expect(up.toHtml(documentNode)).to.be.eql(html)
   })

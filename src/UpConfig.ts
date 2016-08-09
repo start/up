@@ -16,7 +16,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
 
     terms: {
       tableOfContents: 'Table of Contents',
-      partOfDocumentReferencedByTableOfContents: 'part',
+      itemReferencedByTableOfContents: 'item',
       table: 'table',
       chart: 'chart',
       image: 'image',

@@ -13,7 +13,7 @@ export interface UpConfigSettings {
 
     terms?: {
       tableOfContents?: string
-      partOfDocumentReferencedByTableOfContents?: string
+      itemReferencedByTableOfContents?: string
       table?: string
       chart?: string
       image?: string

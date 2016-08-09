@@ -6,10 +6,10 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
 describe('The ID of an element referenced by the table of contents', () => {
-  it('uses the config term for "partOfDocumentReferencedByTableOfContents"', () => {
+  it('uses the config term for "itemReferencedByTableOfContents"', () => {
     const up = new Up({
       i18n: {
-        terms: { partOfDocumentReferencedByTableOfContents: 'table of contents entry' }
+        terms: { itemReferencedByTableOfContents: 'table of contents entry' }
       }
     })
 

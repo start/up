@@ -53,10 +53,10 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-part-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-part-1"><a href="https://google.com">I enjoy apples</a></h1>')
+      + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
 
   specify('Tables', () => {
@@ -86,10 +86,10 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1">Influential games</a></li>'
+      + '<li><a href="#up-item-1">Influential games</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-part-1">'
+      + '<table id="up-item-1">'
       + '<caption><a href="https://google.com">Influential games</a></caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -125,10 +125,10 @@ context('Links nested within table of contents entries do not produce <a> elemen
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1">AND operator logic</a></li>'
+      + '<li><a href="#up-item-1">AND operator logic</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-part-1">'
+      + '<table id="up-item-1">'
       + '<caption><a href="https://google.com">AND operator logic</a></caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
@@ -190,10 +190,10 @@ context("Even when a link is nested deep within another link, it doesn't produce
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-part-1"><em>I enjoy apples</em></a></h2></li>'
+      + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-part-1"><em><a href="https://google.com">I enjoy apples</a></em></h1>')
+      + '<h1 id="up-item-1"><em><a href="https://google.com">I enjoy apples</a></em></h1>')
   })
 
   specify('the table of contents entry for a table', () => {
@@ -225,10 +225,10 @@ context("Even when a link is nested deep within another link, it doesn't produce
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1"><em>Influential games</em></a></li>'
+      + '<li><a href="#up-item-1"><em>Influential games</em></a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-part-1">'
+      + '<table id="up-item-1">'
       + '<caption><em><a href="https://google.com">Influential games</a></em></caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -266,10 +266,10 @@ context("Even when a link is nested deep within another link, it doesn't produce
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><a href="#up-part-1"><em>AND operator logic</em></a></li>'
+      + '<li><a href="#up-item-1"><em>AND operator logic</em></a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-part-1">'
+      + '<table id="up-item-1">'
       + '<caption><em><a href="https://google.com">AND operator logic</a></em></caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'

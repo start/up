@@ -328,7 +328,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const up = new Up({
       i18n: {
         wordDelimiterForGeneratedIds: '"&&"',
-        terms: { partOfDocumentReferencedByTableOfContents: 'look "away" & smile & forget' }
+        terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
       }
     })
 
