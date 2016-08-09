@@ -24,12 +24,12 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function getOutlineNodes(
   args: {
     markupLines: string[],
-    countLinesAlreadyConsumed: number,
+    sourceLineNumber: number,
     headingLeveler: HeadingLeveler,
     config: UpConfig
   }
 ): OutlineSyntaxNode[] {
-  const { markupLines, countLinesAlreadyConsumed, headingLeveler, config } = args
+  const { markupLines, headingLeveler, config } = args
   const { terms } = config.settings.i18n
 
   const outlineConventions = [
@@ -50,14 +50,14 @@ export function getOutlineNodes(
   const markupLineConsumer = new LineConsumer(withoutOuterBlankLines(markupLines))
   const outlineNodes: OutlineSyntaxNode[] = []
 
+  let { sourceLineNumber } = args
+
   while (!markupLineConsumer.done()) {
-    // Line numbers are 1-based, not 0-based
-    const sourceLineNumber =
-      1 + countLinesAlreadyConsumed + markupLineConsumer.countLinesConsumed
+    sourceLineNumber += markupLineConsumer.countLinesConsumed
 
     const outlineParserArgs: OutlineParserArgs = {
       markupLines: markupLineConsumer.remaining(),
-      sourceLineNumber: 1 + (countLinesAlreadyConsumed + markupLineConsumer.countLinesConsumed),
+      sourceLineNumber,
       headingLeveler,
       config,
       then: (newNodes, countLinesConsumed) => {
