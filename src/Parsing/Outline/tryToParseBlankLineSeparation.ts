@@ -22,10 +22,10 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
     return false
   }
 
-  const COUNT_BLANK_LINES_IN_SECTION_SEPARATOR = 3
+  const MIN_COUNT_BLANK_LINES_IN_OUTLINE_SEPARATOR = 3
 
   const nodes =
-    countBlankLines >= COUNT_BLANK_LINES_IN_SECTION_SEPARATOR
+    countBlankLines >= MIN_COUNT_BLANK_LINES_IN_OUTLINE_SEPARATOR
       ? [new OutlineSeparatorNode()]
       : []
 

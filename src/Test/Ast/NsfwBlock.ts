@@ -212,7 +212,7 @@ NSFW:
         ]))
     })
 
-    specify('Section separators indicated by 3 or more blank lines', () => {
+    specify('Outline separators indicated by 3 or more blank lines', () => {
       const markup = `
 NSFW:
 

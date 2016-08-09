@@ -419,7 +419,7 @@ I enjoy apples
       ], tableOfContents))
   })
 
-  specify('Section separators', () => {
+  specify('Outline separators', () => {
     const markup = `
 Anyway, let's get to the point.
 
