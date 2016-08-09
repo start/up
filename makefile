@@ -59,7 +59,7 @@ test: compile
 coverage: compile
 # We want istanbul to run only our behavioral unit tests. Why?
 #
-# Well, for now, all 1000+ behavioral unit tests are run against `compiled_dir`. On the other hand, our handful
+# Well, for now, all 2000+ behavioral unit tests are run against `compiled_dir`. On the other hand, our handful
 # of export unit tests are run against `dist_dir`. If we were to have istanbul run our export tests, we'd
 # get an unhelpful test coverage summary, because istanbul doesn't realize that `dist_dir` is copied from
 # `compiled_dir`.
