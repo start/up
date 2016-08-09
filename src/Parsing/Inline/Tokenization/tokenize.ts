@@ -923,7 +923,7 @@ class Tokenizer {
       || this.tryToHandleRaisedVoiceStartDelimiter()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeEnOrEmDash()
-      || this.tryToTokenizePlusMinusSymbol())
+      || this.tryToTokenizePlusMinusSign())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -985,9 +985,9 @@ class Tokenizer {
     })
   }
 
-  private tryToTokenizePlusMinusSymbol(): boolean {
+  private tryToTokenizePlusMinusSign(): boolean {
     return this.markupConsumer.consume({
-      pattern: PLUS_MINUS_SYMBOL_PATTERN,
+      pattern: PLUS_MINUS_SIGN_PATTERN,
       thenBeforeAdvancingTextIndex: () => {
         this.buffer += '±'
       }
@@ -1199,7 +1199,7 @@ const NOT_FOLLOWED_BY_WHITESPACE =
 const EN_OR_EM_DASH_PATTERN =
   patternStartingWith(atLeast(2, '-'))
 
-const PLUS_MINUS_SYMBOL_PATTERN =
+const PLUS_MINUS_SIGN_PATTERN =
   patternStartingWith(escapeForRegex('+-'))
 
 
