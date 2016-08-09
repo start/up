@@ -1,5 +1,5 @@
 import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, exactly, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -921,7 +921,8 @@ class Tokenizer {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
-      || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter())
+      || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
+      || this.tryToInferDash())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -958,6 +959,15 @@ class Tokenizer {
         this.flushNonEmptyBufferToPlainTextToken()
         this.appendToken(resultToken)
         this.markupConsumer.index += lengthConsumed
+      }
+    })
+  }
+
+  private tryToInferDash(): boolean {
+    return this.markupConsumer.consume({
+      pattern: EN_DASH_PATTERN,
+      thenBeforeAdvancingTextIndex: () => {
+        this.buffer += '–'
       }
     })
   }
@@ -1158,6 +1168,10 @@ const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
 
 
+const EN_DASH_PATTERN =
+  patternStartingWith(exactly(2, escapeForRegex('-')))
+
+
 // Our URL patterns and associated string constants serve two purposes:
 //
 // 1. To apply URL config settings
@@ -1225,7 +1239,7 @@ const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
   WHITESPACE_CHAR, 'h', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
-  ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)
+  ...[ESCAPER_CHAR, '-', '*', '+'].map(escapeForRegex)
 ]
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
