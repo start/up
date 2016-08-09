@@ -967,11 +967,19 @@ class Tokenizer {
     const EN_DASH = '–'
     const EM_DASH = '—'
 
+    const COUNT_DASHES_PER_EM_DASH = 3
+
     return this.markupConsumer.consume({
       pattern: SPECIAL_DASH_PATTERN,
       thenBeforeAdvancingTextIndex: dashes => {
+        // 2 consecutive hyphens produce an en dash; 3 produce an em dash.
+        //
+        // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
+        // Any extra hyphens (naturally either 1 or 2) are ignored.
         this.buffer +=
-          (dashes.length >= 3) ? EM_DASH : EN_DASH
+          (dashes.length >= COUNT_DASHES_PER_EM_DASH)
+            ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
+            : EN_DASH
       }
     })
   }
@@ -1162,6 +1170,12 @@ class Tokenizer {
       this.bufferCurrentChar()
     }
   }
+}
+
+
+// `String.repeat` has very poor mobile support.
+function repeat(text: string, count: number): string {
+  return new Array(count + 1).join(text)
 }
 
 

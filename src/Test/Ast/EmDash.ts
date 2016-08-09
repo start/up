@@ -96,7 +96,7 @@ for (let i = items.length - 1; i >= 0; i---) { }
 })
 
 
-context('4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash). Any extra hyphens (either 1 or 2) are ignored.', () => {
+context('4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash). Any extra hyphens (naturally either 1 or 2) are ignored.', () => {
   specify('4 hyphens produce a single em dash', () => {
     expect(Up.toAst("Okay----I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
@@ -114,21 +114,21 @@ context('4 or more consecutive hyphens produce as many em dashes as they can "af
   specify('6 hyphens produce 2 em dashes', () => {
     expect(Up.toAst("Okay, Prof. O------.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("Okay, Prof. O——")
+        new PlainTextNode("Okay, Prof. O——.")
       ]))
   })
 
   specify('7 hyphens produce 2 em dashes', () => {
     expect(Up.toAst("Okay, Prof. O-------.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("Okay, Prof. O——")
+        new PlainTextNode("Okay, Prof. O——.")
       ]))
   })
 
   specify('8 hyphens produce 2 em dashes', () => {
     expect(Up.toAst("Okay, Prof. --------.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("Okay, Prof. ——")
+        new PlainTextNode("Okay, Prof. ——.")
       ]))
   })
 
