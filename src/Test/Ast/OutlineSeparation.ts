@@ -179,35 +179,70 @@ describe('Consecutive separator streaks', () => {
 })
 
 
-context("Though 3 hyphens produce an em dash, they can be used as a separator streak. Just like any separator streak, they can be used when:", () => {
-  specify("They're alone on a line", () => {
-    const markup = `
+context('Outline conventions are evaluated before inline conventions. Therefore, separator streaks can be comprised of characters that have special meaning inline. This includes:', () => {
+  context("3 hyphens (em dash). Just like any other separator streak, '---' can be:", () => {
+    specify("Alone on a line", () => {
+      const markup = `
 ---
 
-And that's all.`
+And that's my story.`
 
-    expect(Up.toAst(markup)).to.eql(
-      new DocumentNode([
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("And that's all.")
-        ])
-      ]))
-  })
+      expect(Up.toAst(markup)).to.eql(
+        new DocumentNode([
+          new OutlineSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode("And that's my story.")
+          ])
+        ]))
+    })
 
-  specify("They're alone on a line but surrounded by whitespace", () => {
-    const markup = `
+    specify("Alone on a line but surrounded by whitespace", () => {
+      const markup = `
   \t --- \t
 
-And that's all.`
+And that's my story.`
 
-    expect(Up.toAst(markup)).to.eql(
-      new DocumentNode([
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("And that's all.")
-        ])
-      ]))
+      expect(Up.toAst(markup)).to.eql(
+        new DocumentNode([
+          new OutlineSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode("And that's my story.")
+          ])
+        ]))
+    })
+  })
+
+
+  context("A plus sign followed by a hyphen (plus-minus sign). Like any other separator streak, a streak containing '+-' can be:", () => {
+    specify("Alone on a line", () => {
+      const markup = `
++-+-+-+-
+
+And that's my story.`
+
+      expect(Up.toAst(markup)).to.eql(
+        new DocumentNode([
+          new OutlineSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode("And that's my story.")
+          ])
+        ]))
+    })
+
+    specify("Alone on a line but surrounded by whitespace", () => {
+      const markup = `
+  \t +-+-+-+- \t
+
+And that's my story.`
+
+      expect(Up.toAst(markup)).to.eql(
+        new DocumentNode([
+          new OutlineSeparatorNode(),
+          new ParagraphNode([
+            new PlainTextNode("And that's my story.")
+          ])
+        ]))
+    })
   })
 })
 
