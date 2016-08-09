@@ -11,12 +11,29 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
 context('2 consecutive dashes normally produce an en dash.', () => {
-  specify('This applies in regular text', () => {
-    expect(Up.toAst("Okay--I'll eat the tarantula.")).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode("Okay–I'll eat the tarantula.")
-      ]))
+  context('This applies within regular text', () => {
+    specify('Between words', () => {
+      expect(Up.toAst("Okay--I'll eat the tarantula.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode("Okay–I'll eat the tarantula.")
+        ]))
+    }) 
+    
+    specify('Following a word', () => {
+      expect(Up.toAst("Okay-- I'll eat the tarantula.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode("Okay– I'll eat the tarantula.")
+        ]))
+    })
+    
+    specify('Preceding a word', () => {
+      expect(Up.toAst('"I like Starcraft" --Mark Twain')).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('"I like Starcraft" –Mark Twain')
+        ]))
+    })
   })
+
 
   context('This does not apply within', () => {
     specify('Inline code', () => {
