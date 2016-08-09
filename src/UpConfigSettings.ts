@@ -27,7 +27,7 @@ export interface UpConfigSettings {
       footnote?: string
       footnoteReference?: string
       tableOfContents?: string
-      itemReferencedByTableOfContents?: string
+      partOfDocumentReferencedByTableOfContents?: string
 
       [term: string]: string
     }

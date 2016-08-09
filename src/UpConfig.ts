@@ -30,7 +30,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       footnote: 'footnote',
       footnoteReference: 'footnote reference',
       tableOfContents: 'Table of Contents',
-      itemReferencedByTableOfContents: 'part'
+      partOfDocumentReferencedByTableOfContents: 'part'
     }
   }
 }

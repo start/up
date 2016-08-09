@@ -525,7 +525,7 @@ export class HtmlWriter extends Writer {
   }
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
-    return this.getId(this.config.settings.i18n.terms.itemReferencedByTableOfContents, ordinal)
+    return this.getId(this.config.settings.i18n.terms.partOfDocumentReferencedByTableOfContents, ordinal)
   }
 
   // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
