@@ -19,7 +19,7 @@ import { NON_BLANK_PATTERN } from '../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
 import { UpConfig } from '../../UpConfig'
-
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 export function getOutlineNodes(
   markupLines: string[],
@@ -47,18 +47,18 @@ export function getOutlineNodes(
   const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!markupLineConsumer.done()) {
-    const outlineParserArgs = {
+    const args: OutlineParserArgs = {
       markupLines: markupLineConsumer.remaining(),
       headingLeveler,
       config,
-      then: (newNodes: OutlineSyntaxNode[], countLinesConsumed: number) => {
+      then: (newNodes, countLinesConsumed) => {
         outlineNodes.push(...newNodes)
         markupLineConsumer.skipLines(countLinesConsumed)
       }
     }
 
-    if (!outlineConventions.some(tryToParse => tryToParse(outlineParserArgs))) {
-      parseRegularLines(outlineParserArgs)
+    if (!outlineConventions.some(tryToParse => tryToParse(args))) {
+      parseRegularLines(args)
     }
   }
 
