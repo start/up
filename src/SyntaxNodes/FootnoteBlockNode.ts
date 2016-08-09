@@ -8,7 +8,7 @@ export class FootnoteBlockNode implements OutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
-  
+
   descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }

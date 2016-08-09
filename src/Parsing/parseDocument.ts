@@ -7,7 +7,7 @@ import { UpConfig } from '../UpConfig'
 
 export function parseDocument(markup: string, config: UpConfig): DocumentNode {
   const markupLines = markup.split(INPUT_LINE_BREAK)
-  
+
   const children =
     getOutlineNodes(markupLines, new HeadingLeveler(), config)
 

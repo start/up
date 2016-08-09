@@ -14,7 +14,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
-  
+
   descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
