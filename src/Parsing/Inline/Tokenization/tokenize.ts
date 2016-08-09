@@ -922,7 +922,7 @@ class Tokenizer {
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToHandleRaisedVoiceStartDelimiter()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
-      || this.tryToTokenizeFancyDash())
+      || this.tryToTokenizeEnOrEmDash())
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
@@ -963,7 +963,7 @@ class Tokenizer {
     })
   }
 
-  private tryToTokenizeFancyDash(): boolean {
+  private tryToTokenizeEnOrEmDash(): boolean {
     const EN_DASH = '–'
     const EM_DASH = '—'
 
@@ -977,7 +977,7 @@ class Tokenizer {
         // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
         // Any extra hyphens (naturally either 1 or 2) are ignored.
         this.buffer +=
-          (dashes.length >= COUNT_DASHES_PER_EM_DASH)
+          dashes.length >= COUNT_DASHES_PER_EM_DASH
             ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
             : EN_DASH
       }
