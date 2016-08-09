@@ -6,8 +6,9 @@ export class Token {
 
   constructor(public kind: TokenKind, public value?: string) { }
 
-  isTheCorrespondingDelimiterFor(other: Token): void {
-    this.correspondingDelimiter = other
-    other.correspondingDelimiter = this
+  // Associates a start token with an end token.
+  enclosesContentBetweenItselfAnd(correspondingDelimiter: Token): void {
+    this.correspondingDelimiter = correspondingDelimiter
+    correspondingDelimiter.correspondingDelimiter = this
   }
 }
