@@ -313,13 +313,77 @@ NSFL:
         ]))
     })
 
-    specify('Outline separators', () => {
-      const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
+    context('Outline separators indicated by:', () => {
+      specify('A streak', () => {
+        const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
 
-      expect(up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new OutlineSeparatorNode(1),
-        ]))
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new OutlineSeparatorNode(1),
+          ]))
+      })
+
+      specify("3 blank lines", () => {
+        const markup = `
+The end.
+
+
+
+No, really. That was it.`
+
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([new PlainTextNode("The end.")], 2),
+            new OutlineSeparatorNode(3),
+            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 6)
+          ]))
+      })
+
+      specify("More than 3 blank lines", () => {
+        const markup = `
+The end.
+
+
+
+
+
+
+
+
+No, really. That was it.`
+
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([new PlainTextNode("The end.")], 2),
+            new OutlineSeparatorNode(3),
+            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 11)
+          ]))
+      })
+
+       specify("Indicated by multiple streaks and instances of consecutive 3+ blank lines (all of which are condensed into one separator node)", () => {
+        const markup = `
+The end.
+
+
+
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+~-~-~-~-~-~-~-~-~-~-~-~-~
+~=~=~=~=~=~=~=~=~=~=~=~=~
+#=#=#=#=#=#=#=#=#=#=#=#=#
+
+
+
+
+No, really. That was it.`
+
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new ParagraphNode([new PlainTextNode("The end.")], 2),
+            new OutlineSeparatorNode(3),
+            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 15)
+          ]))
+      })
     })
 
     specify('Code blocks', () => {
