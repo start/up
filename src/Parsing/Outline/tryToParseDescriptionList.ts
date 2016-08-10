@@ -46,7 +46,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     const descriptionLines: string[] = []
-    
+
     const sourceLineNumberForDescription =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
 
