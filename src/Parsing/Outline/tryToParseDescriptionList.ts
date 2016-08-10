@@ -46,6 +46,9 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     const descriptionLines: string[] = []
+    
+    const sourceLineNumberForDescription =
+      args.sourceLineNumber + markupLineConsumer.countLinesConsumed
 
     // Let's parse the desription's first line.
     const hasDescription = markupLineConsumer.consume({
@@ -84,7 +87,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       new DescriptionListNode.Item.Description(
         getOutlineNodes({
           markupLines: descriptionLines,
-          sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+          sourceLineNumber: sourceLineNumberForDescription,
           headingLeveler: args.headingLeveler,
           config: args.config
         }))
