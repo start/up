@@ -41,7 +41,8 @@ export function getLabeledBlockParser(
 
     const children = getOutlineNodes({
       markupLines: contentLines,
-      sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+      // We add 1 because of the label line.
+      sourceLineNumber: args.sourceLineNumber + 1,
       headingLeveler: args.headingLeveler,
       config: args.config
     })

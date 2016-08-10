@@ -345,9 +345,6 @@ Chrono Cross;     1999`
 
     specify("Charts without captions", () => {
       const markup = `
-Boolean logic
-=============
-
 Chart:
 
         1;      0
