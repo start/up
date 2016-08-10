@@ -15,6 +15,9 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 //import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 //import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -85,7 +88,7 @@ I actually start on the seventh line.`
   })
 
 
-  context("It's not just paragraphs that get a source line number. Nearly every type of outline node is given one:", () => {
+  context("It's not just paragraphs that are given a source line number. Nearly every type of outline node is given one:", () => {
     specify('Headings', () => {
       const markup = `
 I enjoy apples
@@ -371,6 +374,30 @@ Chart:
               ], new TableNode.Header.Cell([new PlainTextNode('0')]))
             ], NO_CAPTION, 2)
         ]))
+    })
+
+
+    context('Media conventions are given a source line number if they serve as outline conventions:', () => {
+      specify('Audio nodes', () => {
+        expect(up.toAst('[audio: haunted house](http://example.com/hauntedhouse.ogg)')).to.be.eql(
+          new DocumentNode([
+            new AudioNode('haunted house', 'http://example.com/hauntedhouse.ogg', 1)
+          ]))
+      })
+
+      specify('Images', () => {
+        expect(up.toAst('[image: haunted house](http://example.com/hauntedhouse.svg)')).to.be.eql(
+          new DocumentNode([
+            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 1)
+          ]))
+      })
+
+      specify('Videos', () => {
+        expect(up.toAst('[video: haunted house](http://example.com/hauntedhouse.webm)')).to.be.eql(
+          new DocumentNode([
+            new VideoNode('haunted house', 'http://example.com/hauntedhouse.webm', 1)
+          ]))
+      })
     })
   })
 })
