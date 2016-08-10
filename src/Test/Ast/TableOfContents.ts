@@ -18,7 +18,10 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 const NO_TABLE_OF_CONTENTS: DocumentNode.TableOfContents = undefined
 
@@ -570,6 +573,93 @@ Chart:
             ], new TableNode.Header.Cell([new PlainTextNode('0')]))
           ])
       ], tableOfContents))
+  })
+
+
+  // TODO: Consider including outlined media conventions in the table of contents
+  context("Outlined media:", () => {
+    specify('Audio', () => {
+      const markup = `
+Haunted houses
+==============
+
+[audio: haunted house] (example.com/hauntedhouse.ogg)`
+
+      const heading =
+        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([heading])
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          heading,
+          new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg')
+        ], tableOfContents))
+    })
+
+    specify('Images', () => {
+      const markup = `
+Haunted houses
+==============
+
+[image: haunted house] (example.com/hauntedhouse.svg)`
+
+      const heading =
+        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([heading])
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          heading,
+          new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+        ], tableOfContents))
+    })
+
+    specify('Videos', () => {
+      const markup = `
+Haunted houses
+==============
+
+[video: haunted house] (example.com/hauntedhouse.webm)`
+
+      const heading =
+        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([heading])
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          heading,
+          new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm')
+        ], tableOfContents))
+    })
+
+
+    specify('Links containing an outlined media convention', () => {
+      const markup = `
+Haunted houses
+==============
+
+[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)`
+
+      const heading =
+        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+
+      const tableOfContents =
+        new DocumentNode.TableOfContents([heading])
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          heading,
+          new LinkNode([
+            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+          ], 'https://example.com/gallery')
+        ], tableOfContents))
+    })
   })
 })
 
