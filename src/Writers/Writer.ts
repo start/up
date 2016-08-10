@@ -86,39 +86,39 @@ export abstract class Writer {
       .replace(WHITESPACE_PATTERN, settings.i18n.wordDelimiterForGeneratedIds)
   }
 
-  protected abstract writeDocument(node: DocumentNode): string
+  protected abstract writeDocument(document: DocumentNode): string
 
-  protected abstract blockquote(node: BlockquoteNode): string
-  protected abstract unorderedList(node: UnorderedListNode): string
-  protected abstract orderedList(node: OrderedListNode): string
-  protected abstract descriptionList(node: DescriptionListNode): string
-  protected abstract lineBlock(node: LineBlockNode): string
-  protected abstract codeBlock(node: CodeBlockNode): string
-  protected abstract paragraph(node: ParagraphNode): string
-  protected abstract heading(node: HeadingNode): string
+  protected abstract action(action: ActionNode): string
+  protected abstract audio(audio: AudioNode): string
+  protected abstract blockquote(blockquote: BlockquoteNode): string
+  protected abstract codeBlock(codeBlock: CodeBlockNode): string
+  protected abstract descriptionList(list: DescriptionListNode): string
+  protected abstract emphasis(emphasis: EmphasisNode): string
+  protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
+  protected abstract footnoteReference(footnote: FootnoteNode): string
+  protected abstract heading(heading: HeadingNode): string
+  protected abstract image(image: ImageNode): string
+  protected abstract inlineCode(inlineCode: InlineCodeNode): string
+  protected abstract inlineNsfl(inlineNsfl: InlineNsflNode): string
+  protected abstract inlineNsfw(inlineNsfw: InlineNsfwNode): string
+  protected abstract inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string
+  protected abstract lineBlock(lineBlock: LineBlockNode): string
+  protected abstract link(link: LinkNode): string
+  protected abstract nsflBlock(nsflBlock: NsflBlockNode): string
+  protected abstract nsfwBlock(nsfwBlock: NsfwBlockNode): string
+  protected abstract orderedList(list: OrderedListNode): string
   protected abstract outlineSeparator(): string
-  protected abstract emphasis(node: EmphasisNode): string
-  protected abstract stress(node: StressNode): string
-  protected abstract inlineCode(node: InlineCodeNode): string
-  protected abstract revisionInsertion(node: RevisionInsertionNode): string
-  protected abstract revisionDeletion(node: RevisionDeletionNode): string
-  protected abstract parenthesized(node: ParenthesizedNode): string
-  protected abstract squareBracketed(node: SquareBracketedNode): string
-  protected abstract action(node: ActionNode): string
-  protected abstract inlineSpoiler(node: InlineSpoilerNode): string
-  protected abstract inlineNsfw(node: InlineNsfwNode): string
-  protected abstract inlineNsfl(node: InlineNsflNode): string
-  protected abstract spoilerBlock(node: SpoilerBlockNode): string
-  protected abstract nsfwBlock(node: NsfwBlockNode): string
-  protected abstract nsflBlock(node: NsflBlockNode): string
-  protected abstract footnoteReference(node: FootnoteNode): string
-  protected abstract footnoteBlock(node: FootnoteBlockNode): string
-  protected abstract table(node: TableNode): string
-  protected abstract link(node: LinkNode): string
-  protected abstract image(node: ImageNode): string
-  protected abstract audio(node: AudioNode): string
-  protected abstract video(node: VideoNode): string
-  protected abstract plainText(node: PlainTextNode): string
+  protected abstract paragraph(paragraph: ParagraphNode): string
+  protected abstract parenthesized(parenthesized: ParenthesizedNode): string
+  protected abstract plainText(plainText: PlainTextNode): string
+  protected abstract revisionDeletion(revisionDeletion: RevisionDeletionNode): string
+  protected abstract revisionInsertion(revisionInsertion: RevisionInsertionNode): string
+  protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
+  protected abstract squareBracketed(squareBracketed: SquareBracketedNode): string
+  protected abstract stress(stress: StressNode): string
+  protected abstract table(table: TableNode): string
+  protected abstract unorderedList(list: UnorderedListNode): string
+  protected abstract video(video: VideoNode): string
 
   private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
