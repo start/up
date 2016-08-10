@@ -29,6 +29,7 @@ import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
@@ -135,8 +136,14 @@ export class HtmlWriter extends Writer {
       this.getAttrsForElementPossiblyReferencedByTableOfContents(heading))
   }
 
-  protected outlineSeparator(): string {
-    return singleTagHtmlElement('hr')
+  protected outlineSeparator(separator: OutlineSeparatorNode): string {
+    const attrs: AttrsWithPossibleSourceLineNumber = {}
+
+    if (separator.sourceLineNumber) {
+      attrs['data-up-source-line'] = separator.sourceLineNumber
+    }
+
+    return singleTagHtmlElement('hr', attrs)
   }
 
   protected emphasis(emphasis: EmphasisNode): string {
@@ -554,4 +561,8 @@ export class HtmlWriter extends Writer {
 
 interface AttrsWithPossibleId {
   id?: string
+}
+
+interface AttrsWithPossibleSourceLineNumber {
+  'data-up-source-line'?: number
 }

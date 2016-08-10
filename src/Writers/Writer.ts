@@ -107,7 +107,7 @@ export abstract class Writer {
   protected abstract nsflBlock(nsflBlock: NsflBlockNode): string
   protected abstract nsfwBlock(nsfwBlock: NsfwBlockNode): string
   protected abstract orderedList(list: OrderedListNode): string
-  protected abstract outlineSeparator(): string
+  protected abstract outlineSeparator(separator: OutlineSeparatorNode): string
   protected abstract paragraph(paragraph: ParagraphNode): string
   protected abstract parenthesized(parenthesized: ParenthesizedNode): string
   protected abstract plainText(plainText: PlainTextNode): string
@@ -168,7 +168,7 @@ export abstract class Writer {
     }
 
     if (node instanceof OutlineSeparatorNode) {
-      return this.outlineSeparator()
+      return this.outlineSeparator(node)
     }
 
     if (node instanceof EmphasisNode) {
