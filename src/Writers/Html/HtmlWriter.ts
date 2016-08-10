@@ -137,13 +137,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected outlineSeparator(separator: OutlineSeparatorNode): string {
-    const attrs: AttrsWithPossibleSourceLineNumber = {}
-
-    if (separator.sourceLineNumber) {
-      attrs['data-up-source-line'] = separator.sourceLineNumber
-    }
-
-    return singleTagHtmlElement('hr', attrs)
+    return singleTagHtmlElement('hr', attrsFor(separator))
   }
 
   protected emphasis(emphasis: EmphasisNode): string {
@@ -559,10 +553,15 @@ export class HtmlWriter extends Writer {
 }
 
 
-interface AttrsWithPossibleId {
-  id?: string
+function attrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
+  if (node.sourceLineNumber) {
+    attrs['data-up-source-line'] = node.sourceLineNumber
+  }
+
+  return attrs
 }
 
-interface AttrsWithPossibleSourceLineNumber {
-  'data-up-source-line'?: number
+
+interface AttrsWithPossibleId {
+  id?: string
 }
