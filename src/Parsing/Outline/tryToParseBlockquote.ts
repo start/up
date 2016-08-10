@@ -32,7 +32,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
 
   const blockquoteChildren = getOutlineNodes({
     markupLines: blockquotedLines,
-    sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+    sourceLineNumber: args.sourceLineNumber,
     headingLeveler,
     config: args.config
   })

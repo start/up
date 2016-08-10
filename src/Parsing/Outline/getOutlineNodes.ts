@@ -47,13 +47,12 @@ export function getOutlineNodes(
     tryToParseDescriptionList
   ]
 
-  let { sourceLineNumber } = args
-
   const markupWithoutLeadingBlankLines =
     withoutLeadingBlankLines(markupLines)
 
-  sourceLineNumber +=
-    markupLines.length - markupWithoutLeadingBlankLines.length
+  const startingSourceLineNumber = 
+    args.sourceLineNumber +
+      markupLines.length - markupWithoutLeadingBlankLines.length
 
   const markupWithoutOuterBlankLines =
     withoutTrailingBlankLines(markupWithoutLeadingBlankLines)
@@ -62,7 +61,8 @@ export function getOutlineNodes(
   const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!markupLineConsumer.done()) {
-    sourceLineNumber += markupLineConsumer.countLinesConsumed
+    const sourceLineNumber =
+      startingSourceLineNumber + markupLineConsumer.countLinesConsumed
 
     const outlineParserArgs: OutlineParserArgs = {
       markupLines: markupLineConsumer.remaining(),

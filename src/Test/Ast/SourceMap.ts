@@ -292,7 +292,7 @@ NSFL:
       expect(up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new BlockquoteNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 3)
+            new ParagraphNode([new PlainTextNode("Who doesn't?")], 2)
           ], 2)
         ]))
     })
@@ -468,8 +468,8 @@ Pink lady.`
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Apples are blue')])
         ], 7),
-        new HeadingNode([new PlainTextNode("The best fruit")], 11),
-        new ParagraphNode([new PlainTextNode('Really.')], 14),
+        new HeadingNode([new PlainTextNode("The best fruit")], 2, 11),
+        new ParagraphNode([new PlainTextNode('Apples.')], 14),
         new HeadingNode([new PlainTextNode("The best apple")], 2, 17),
         new ParagraphNode([new PlainTextNode('Pink lady.')], 20)
       ]))
@@ -503,10 +503,10 @@ Pink lady
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
           ], new DescriptionListNode.Item.Description([
-            new HeadingNode([new PlainTextNode("The best fruit")], 9),
+            new HeadingNode([new PlainTextNode("The best fruit")], 2, 8),
             new SpoilerBlockNode([
-            new ParagraphNode([new PlainTextNode('Really.')], 13)
-            ], 12)
+            new ParagraphNode([new PlainTextNode('Really.')], 12)
+            ], 11)
           ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
