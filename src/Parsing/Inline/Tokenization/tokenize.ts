@@ -636,7 +636,7 @@ class Tokenizer {
     const tryToBuffer = (pattern: RegExp) =>
       this.markupConsumer.consume({
         pattern,
-        thenBeforeAdvancingTextIndex: match => { this.buffer += match }
+        thenBeforeConsumingText: match => { this.buffer += match }
       })
 
     // Normally, whitespace doesn't have much of an impact on tokenization:
@@ -783,7 +783,7 @@ class Tokenizer {
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
-        thenBeforeAdvancingTextIndex: delimiter => {
+        thenBeforeConsumingText: delimiter => {
           didCloseAnyRaisedVoices = handler.tryToCloseAnyRaisedVoices(delimiter)
 
           if (!didCloseAnyRaisedVoices) {
@@ -931,7 +931,7 @@ class Tokenizer {
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
-        thenBeforeAdvancingTextIndex: (delimiter, charAfterMatch) => {
+        thenBeforeConsumingText: (delimiter, charAfterMatch) => {
           // For a delimiter to open any raiased voices, it must appear to be touching the beginning of some
           // content (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
@@ -972,7 +972,7 @@ class Tokenizer {
 
     return this.markupConsumer.consume({
       pattern: EN_OR_EM_DASH_PATTERN,
-      thenBeforeAdvancingTextIndex: dashes => {
+      thenBeforeConsumingText: dashes => {
         // 2 consecutive hyphens produce an en dash; 3 produce an em dash.
         //
         // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
@@ -988,7 +988,7 @@ class Tokenizer {
   private tryToTokenizePlusMinusSign(): boolean {
     return this.markupConsumer.consume({
       pattern: PLUS_MINUS_SIGN_PATTERN,
-      thenBeforeAdvancingTextIndex: () => {
+      thenBeforeConsumingText: () => {
         this.buffer += '±'
       }
     })
@@ -1016,7 +1016,7 @@ class Tokenizer {
       && this.markupConsumer.consume({
         pattern: startsWith,
 
-        thenBeforeAdvancingTextIndex: (match, charAfterMatch, ...captures) => {
+        thenBeforeConsumingText: (match, charAfterMatch, ...captures) => {
           if (flushesBufferToPlainTextTokenBeforeOpening) {
             this.flushNonEmptyBufferToPlainTextToken()
           }

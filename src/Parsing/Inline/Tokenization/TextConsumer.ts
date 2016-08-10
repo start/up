@@ -36,10 +36,10 @@ export class TextConsumer {
   consume(
     args: {
       pattern: RegExp
-      thenBeforeAdvancingTextIndex?: OnTextMatch
+      thenBeforeConsumingText?: OnTextMatch
     }
   ): boolean {
-    const { pattern, thenBeforeAdvancingTextIndex } = args
+    const { pattern, thenBeforeConsumingText } = args
     const result = pattern.exec(this._remaining)
 
     if (!result) {
@@ -49,8 +49,8 @@ export class TextConsumer {
     const [match, ...captures] = result
     const charAfterMatch = this.entireText[this._textIndex + match.length]
 
-    if (thenBeforeAdvancingTextIndex) {
-      thenBeforeAdvancingTextIndex(match, charAfterMatch, ...captures)
+    if (thenBeforeConsumingText) {
+      thenBeforeConsumingText(match, charAfterMatch, ...captures)
     }
 
     this.index += match.length

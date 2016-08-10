@@ -47,7 +47,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
   markupConsumer.consume({
     pattern: CODE_DELIMITER_PATTERN,
-    thenBeforeAdvancingTextIndex: match => {
+    thenBeforeConsumingText: match => {
       startDelimiter = match
     }
   })
@@ -61,7 +61,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   while (!markupConsumer.done()) {
     markupConsumer.consume({
       pattern: CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN,
-      thenBeforeAdvancingTextIndex: match => {
+      thenBeforeConsumingText: match => {
         code += match
       }
     })
@@ -73,7 +73,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
     markupConsumer.consume({
       pattern: CODE_DELIMITER_PATTERN,
-      thenBeforeAdvancingTextIndex: match => {
+      thenBeforeConsumingText: match => {
         possibleEndDelimiter = match
       }
     })
