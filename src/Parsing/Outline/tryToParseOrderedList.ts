@@ -26,8 +26,12 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       then: (line, bullet) => {
-        unparsedListItem = new UnparsedListItem(bullet)
-        unparsedListItem.markupLines.push(line.replace(BULLETED_PATTERN, ''))
+        unparsedListItem =
+          new UnparsedListItem({
+            bullet,
+            firstLineOfMarkup: line.replace(BULLETED_PATTERN, ''),
+            sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed 
+          })
       }
     })
 
@@ -61,7 +65,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   let listItems = unparsedListItems.map((unparsedListItem) => {
     const itemChildren = getOutlineNodes({
       markupLines: unparsedListItem.markupLines,
-      sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+      sourceLineNumber: unparsedListItem.sourceLineNumber,
       headingLeveler: args.headingLeveler,
       config: args.config
     })
@@ -78,9 +82,21 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
 
 class UnparsedListItem {
+  bullet: string
   markupLines: string[] = []
+  sourceLineNumber: number
 
-  constructor(public bullet: string) { }
+  constructor(
+    args: {
+      bullet: string,
+      firstLineOfMarkup: string,
+      sourceLineNumber: number
+    }
+  ) {
+    this.bullet = args.bullet
+    this.markupLines = [args.firstLineOfMarkup]
+    this.sourceLineNumber = args.sourceLineNumber
+  }
 }
 
 

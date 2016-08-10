@@ -49,11 +49,11 @@ export class LineConsumer {
       return false
     }
 
-    this.skipLines(1)
-
     if (then) {
       then(line, ...captures)
     }
+    
+    this.skipLines(1)
 
     return true
   }

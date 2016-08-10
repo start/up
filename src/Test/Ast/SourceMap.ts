@@ -213,13 +213,13 @@ Bananas
               new DescriptionListNode.Item.Term([new PlainTextNode('Apples')])
             ],
               new DescriptionListNode.Item.Description([
-                new ParagraphNode([new PlainTextNode("They're delicious.")])
+                new ParagraphNode([new PlainTextNode("They're delicious.")], 3)
               ])),
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([new PlainTextNode('Bananas')])
             ],
               new DescriptionListNode.Item.Description([
-                new ParagraphNode([new PlainTextNode("They're also delicious.")])
+                new ParagraphNode([new PlainTextNode("They're also delicious.")], 6)
               ]))
           ], 2)
         ]))
