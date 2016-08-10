@@ -45,6 +45,17 @@ context('When the "createSourceMap" config setting is set to true, all outline c
         new ParagraphNode([new PlainTextNode("Hi!")], 1)
         ]))
   })
+
+  specify("Leading blank lines are accounted for (i.e. not ignored).", () => {
+    const markup = `
+
+I actually start on the third line.`
+
+    expect(up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([new PlainTextNode("I actually start on the third line.")], 3)
+        ]))
+  })
 })
 /*
   specify('a heading', () => {
