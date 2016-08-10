@@ -436,6 +436,91 @@ describe('Footnote blocks', () => {
   })
 })
 
+
+context('When there are several outline conventions, all of them are given soure line numbers. This includes when:', () => {
+  specify('They are all at the top-level of the document', () => {
+    const markup = `
+I enjoy apples
+==============
+
+Don't you?
+
+Roses are red
+Apples are blue
+
+
+The best fruit
+--------------
+
+Apples.
+
+
+The best apple
+--------------
+  
+Pink lady.`
+
+    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
+        new ParagraphNode([new PlainTextNode("Don't you?")], 5),
+        new LineBlockNode([
+          new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
+          new LineBlockNode.Line([new PlainTextNode('Apples are blue')])
+        ], 7),
+        new HeadingNode([new PlainTextNode("The best fruit")], 11),
+        new ParagraphNode([new PlainTextNode('Really.')], 14),
+        new HeadingNode([new PlainTextNode("The best apple")], 2, 17),
+        new ParagraphNode([new PlainTextNode('Pink lady.')], 20)
+      ]))
+  })
+
+  specify('Some are deeply nested.', () => {
+    const markup = `
+I enjoy apples
+==============
+
+Don't you?
+
+Apple
+  The best fruit
+  --------------
+
+  SPOILER:
+    Really.
+
+Pink lady
+  The best apple
+  --------------
+  
+  > Really.`
+
+    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+      new DocumentNode([
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
+        new ParagraphNode([new PlainTextNode("Don't you?")], 5),
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
+          ], new DescriptionListNode.Item.Description([
+            new HeadingNode([new PlainTextNode("The best fruit")], 9),
+            new SpoilerBlockNode([
+            new ParagraphNode([new PlainTextNode('Really.')], 13)
+            ], 12)
+          ])),
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
+          ], new DescriptionListNode.Item.Description([
+            new HeadingNode([new PlainTextNode("The best apple")], 2, 15),
+            new BlockquoteNode([
+              new ParagraphNode([new PlainTextNode('Really.')], 18)
+            ], 18)
+          ]))
+        ], 7)
+      ]))
+  })
+})
+
 /*
 
   context("Headings, tables with captions, and charts with captions don't have to be at the top level of the document to be included in the table of contents.", () => {
