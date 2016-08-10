@@ -67,223 +67,223 @@ export class HtmlWriter extends Writer {
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
 
-  protected document(node: DocumentNode): string {
+  protected document(document: DocumentNode): string {
     const tableOfContents =
-      node.tableOfContents
-        ? this.tableOfContents(node.tableOfContents)
+      document.tableOfContents
+        ? this.tableOfContents(document.tableOfContents)
         : ''
 
-    return tableOfContents + this.writeAll(node.children)
+    return tableOfContents + this.writeAll(document.children)
   }
 
-  protected blockquote(node: BlockquoteNode): string {
-    return this.element('blockquote', node.children)
+  protected blockquote(blockquote: BlockquoteNode): string {
+    return this.element('blockquote', blockquote.children)
   }
 
-  protected unorderedList(node: UnorderedListNode): string {
+  protected unorderedList(list: UnorderedListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      node.items.map(listItem => this.unorderedListItem(listItem)))
+      list.items.map(listItem => this.unorderedListItem(listItem)))
   }
 
-  protected orderedList(node: OrderedListNode): string {
+  protected orderedList(list: OrderedListNode): string {
     const attrs: { start?: number, reversed?: any } = {}
 
-    const start = node.start()
+    const start = list.start()
 
     if (start != null) {
       attrs.start = start
     }
 
-    if (node.order() === OrderedListNode.Order.Descrending) {
+    if (list.order() === OrderedListNode.Order.Descrending) {
       attrs.reversed = NO_ATTRIBUTE_VALUE
     }
 
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
-      node.items.map(listItem => this.orderedListItem(listItem)),
+      list.items.map(listItem => this.orderedListItem(listItem)),
       attrs)
   }
 
-  protected descriptionList(node: DescriptionListNode): string {
+  protected descriptionList(list: DescriptionListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.items.map(item => this.descriptionListItem(item)))
+      list.items.map(item => this.descriptionListItem(item)))
   }
 
-  protected lineBlock(node: LineBlockNode): string {
+  protected lineBlock(lineBlock: LineBlockNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'div',
-      node.lines.map(line => this.line(line)),
+      lineBlock.lines.map(line => this.line(line)),
       { class: classAttrValue('lines') })
   }
 
-  protected codeBlock(node: CodeBlockNode): string {
+  protected codeBlock(codeBlock: CodeBlockNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
-      [htmlElement('code', node.code)])
+      [htmlElement('code', codeBlock.code)])
   }
 
-  protected paragraph(node: ParagraphNode): string {
-    return this.element('p', node.children)
+  protected paragraph(paragraph: ParagraphNode): string {
+    return this.element('p', paragraph.children)
   }
 
-  protected heading(node: HeadingNode): string {
+  protected heading(heading: HeadingNode): string {
     return this.element(
-      'h' + Math.min(6, node.level),
-      node.children,
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
+      'h' + Math.min(6, heading.level),
+      heading.children,
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(heading))
   }
 
   protected outlineSeparator(): string {
     return singleTagHtmlElement('hr')
   }
 
-  protected emphasis(node: EmphasisNode): string {
-    return this.element('em', node.children)
+  protected emphasis(emphasis: EmphasisNode): string {
+    return this.element('em', emphasis.children)
   }
 
-  protected stress(node: StressNode): string {
-    return this.element('strong', node.children)
+  protected stress(stress: StressNode): string {
+    return this.element('strong', stress.children)
   }
 
-  protected inlineCode(node: InlineCodeNode): string {
-    return htmlElement('code', node.code)
+  protected inlineCode(inlineCode: InlineCodeNode): string {
+    return htmlElement('code', inlineCode.code)
   }
 
-  protected revisionInsertion(node: RevisionInsertionNode): string {
-    return this.element('ins', node.children)
+  protected revisionInsertion(revisionInsertion: RevisionInsertionNode): string {
+    return this.element('ins', revisionInsertion.children)
   }
 
-  protected revisionDeletion(node: RevisionDeletionNode): string {
-    return this.element('del', node.children)
+  protected revisionDeletion(revisionDeletion: RevisionDeletionNode): string {
+    return this.element('del', revisionDeletion.children)
   }
 
-  protected parenthesized(node: ParenthesizedNode): string {
-    return this.bracketed(node, 'parenthesized')
+  protected parenthesized(parenthesized: ParenthesizedNode): string {
+    return this.bracketed(parenthesized, 'parenthesized')
   }
 
-  protected squareBracketed(node: SquareBracketedNode): string {
-    return this.bracketed(node, 'square-bracketed')
+  protected squareBracketed(squareBracketed: SquareBracketedNode): string {
+    return this.bracketed(squareBracketed, 'square-bracketed')
   }
 
-  protected action(node: ActionNode): string {
-    return this.element('span', node.children, { class: classAttrValue('action') })
+  protected action(action: ActionNode): string {
+    return this.element('span', action.children, { class: classAttrValue('action') })
   }
 
-  protected inlineSpoiler(node: InlineSpoilerNode): string {
-    return this.spoiler(node, 'span')
+  protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
+    return this.spoiler(inlineSpoiler, 'span')
   }
 
-  protected inlineNsfw(node: InlineNsfwNode): string {
-    return this.nsfw(node, 'span')
+  protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
+    return this.nsfw(inlineNsfw, 'span')
   }
 
-  protected inlineNsfl(node: InlineNsflNode): string {
-    return this.nsfl(node, 'span')
+  protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
+    return this.nsfl(inlineNsfl, 'span')
   }
 
-  protected spoilerBlock(node: SpoilerBlockNode): string {
-    return this.spoiler(node, 'div')
+  protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
+    return this.spoiler(spoilerBlock, 'div')
   }
 
-  protected nsfwBlock(node: NsfwBlockNode): string {
-    return this.nsfw(node, 'div')
+  protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
+    return this.nsfw(nsfwBlock, 'div')
   }
 
-  protected nsflBlock(node: NsflBlockNode): string {
-    return this.nsfl(node, 'div')
+  protected nsflBlock(nsflBlock: NsflBlockNode): string {
+    return this.nsfl(nsflBlock, 'div')
   }
 
-  protected spoiler(node: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
+  protected spoiler(spoiler: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'spoiler',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
-      revealableChildren: node.children,
+      revealableChildren: spoiler.children,
       genericContainerTagName
     })
   }
 
-  protected nsfw(node: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
+  protected nsfw(nsfw: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfw',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
-      revealableChildren: node.children,
+      revealableChildren: nsfw.children,
       genericContainerTagName
     })
   }
 
-  protected nsfl(node: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
+  protected nsfl(nsfl: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
     return this.revealableConvent({
       nonLocalizedConventionTerm: 'nsfl',
       termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
-      revealableChildren: node.children,
+      revealableChildren: nsfl.children,
       genericContainerTagName
     })
   }
 
-  protected footnoteReference(node: FootnoteNode): string {
+  protected footnoteReference(footnote: FootnoteNode): string {
     if (this.isInsideTableOfContents) {
       // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
       return ''
     }
 
-    const innerLinkNode = this.footnoteReferenceInnerLink(node)
+    const innerLinkNode = this.footnoteReferenceInnerLink(footnote)
 
     return this.element(
       'sup',
       [innerLinkNode], {
-        id: this.footnoteReferenceId(node.referenceNumber),
+        id: this.footnoteReferenceId(footnote.referenceNumber),
         class: classAttrValue('footnote-reference')
       })
   }
 
-  protected footnoteBlock(node: FootnoteBlockNode): string {
+  protected footnoteBlock(footnoteBlock: FootnoteBlockNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      node.footnotes.map(footnote => this.footnote(footnote)),
+      footnoteBlock.footnotes.map(footnote => this.footnote(footnote)),
       { class: classAttrValue('footnotes') })
   }
 
-  protected table(node: TableNode): string {
+  protected table(table: TableNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
-        this.tableCaption(node.caption),
-        this.tableHeader(node.header),
-        node.rows.map(row => this.tableRow(row)).join('')
+        this.tableCaption(table.caption),
+        this.tableHeader(table.header),
+        table.rows.map(row => this.tableRow(row)).join('')
       ],
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(table))
   }
 
-  protected link(node: LinkNode): string {
+  protected link(link: LinkNode): string {
     if (this.isInsideLink) {
-      return this.writeAll(node.children)
+      return this.writeAll(link.children)
     }
 
     this.isInsideLink = true
-    const html = this.element('a', node.children, { href: node.url })
+    const html = this.element('a', link.children, { href: link.url })
     this.isInsideLink = false
 
     return html
   }
 
-  protected image(node: ImageNode): string {
-    return singleTagHtmlElement('img', { src: node.url, alt: node.description, title: node.description })
+  protected image(image: ImageNode): string {
+    return singleTagHtmlElement('img', { src: image.url, alt: image.description, title: image.description })
   }
 
-  protected audio(node: AudioNode): string {
-    return this.playableMediaElement('audio', node.description, node.url)
+  protected audio(audio: AudioNode): string {
+    return this.playableMediaElement('audio', audio.description, audio.url)
   }
 
-  protected video(node: VideoNode): string {
-    return this.playableMediaElement('video', node.description, node.url)
+  protected video(video: VideoNode): string {
+    return this.playableMediaElement('video', video.description, video.url)
   }
 
-  protected plainText(node: PlainTextNode): string {
-    return escapeHtmlContent(node.content)
+  protected plainText(plainText: PlainTextNode): string {
+    return escapeHtmlContent(plainText.content)
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
