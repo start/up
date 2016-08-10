@@ -18,6 +18,7 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 //import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 //import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
@@ -377,25 +378,37 @@ Chart:
     })
 
 
-    context('Media conventions are given a source line number if they serve as outline conventions:', () => {
+    context('Media nodes are given a source line number if they were "outlined":', () => {
       specify('Audio nodes', () => {
-        expect(up.toAst('[audio: haunted house](http://example.com/hauntedhouse.ogg)')).to.be.eql(
+        expect(up.toAst('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
           new DocumentNode([
-            new AudioNode('haunted house', 'http://example.com/hauntedhouse.ogg', 1)
+            new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1)
           ]))
       })
 
       specify('Images', () => {
-        expect(up.toAst('[image: haunted house](http://example.com/hauntedhouse.svg)')).to.be.eql(
+        expect(up.toAst('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
           new DocumentNode([
-            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 1)
+            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1)
           ]))
       })
 
       specify('Videos', () => {
-        expect(up.toAst('[video: haunted house](http://example.com/hauntedhouse.webm)')).to.be.eql(
+        expect(up.toAst('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
           new DocumentNode([
-            new VideoNode('haunted house', 'http://example.com/hauntedhouse.webm', 1)
+            new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+          ]))
+      })
+    })
+
+
+    describe('A link containing an outlined media node', () => {
+      it('is given a source line number (but the media node itself is not)', () => {
+        expect(up.toAst('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
+          new DocumentNode([
+            new LinkNode([
+              new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+            ], 'https://example.com/gallery', 1)
           ]))
       })
     })
