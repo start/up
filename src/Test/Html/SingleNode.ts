@@ -164,19 +164,19 @@ describe('When an ordered list node is in descending order', () => {
           new ParagraphNode([
             new PlainTextNode('Tropical')
           ])
-        ], 2),
+        ], 0),
         new OrderedListNode.Item([
           new ParagraphNode([
             new PlainTextNode('Territories')
           ])
-        ], 1)
+        ], -1)
       ])
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
-      '<ol start="2" reversed>'
-      + '<li value="2"><p>Tropical</p></li>'
-      + '<li value="1"><p>Territories</p></li>'
+      '<ol start="0" reversed>'
+      + '<li value="0"><p>Tropical</p></li>'
+      + '<li value="-1"><p>Territories</p></li>'
       + '</ol>')
   })
 })
