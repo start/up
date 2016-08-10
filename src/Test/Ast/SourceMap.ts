@@ -43,18 +43,46 @@ context('When the "createSourceMap" config setting is set to true, all outline c
     expect(up.toAst('Hi!')).to.be.eql(
       new DocumentNode([
         new ParagraphNode([new PlainTextNode("Hi!")], 1)
-        ]))
+      ]))
   })
 
-  specify("Leading blank lines are accounted for (i.e. not ignored).", () => {
-    const markup = `
+
+  context('Leading blank lines are accounted for (i.e. not ignored). For example:', () => {
+    specify("1 leading blank line", () => {
+      const markup = `
+I actually start on the second line.`
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([new PlainTextNode("I actually start on the second line.")], 2)
+        ]))
+    })
+
+    specify("2 leading blank lines", () => {
+      const markup = `
 
 I actually start on the third line.`
 
-    expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([new PlainTextNode("I actually start on the third line.")], 3)
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([new PlainTextNode("I actually start on the third line.")], 3)
         ]))
+    })
+
+    specify("6 leading blank lines", () => {
+      const markup = `
+
+
+
+
+
+I actually start on the seventh line.`
+
+      expect(up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new ParagraphNode([new PlainTextNode("I actually start on the seventh line.")], 7)
+        ]))
+    })
   })
 })
 /*
