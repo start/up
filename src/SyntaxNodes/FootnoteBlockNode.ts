@@ -3,9 +3,12 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class FootnoteBlockNode implements OutlineSyntaxNode {
-  constructor(
-    public footnotes: FootnoteNode[],
-    public sourceLineNumber: number = undefined) { }
+  get sourceLineNumber(): number {
+    // The source line number of a footnote block wouldn't be particulalry meaninful.
+    return undefined
+  }
+
+  constructor(public footnotes: FootnoteNode[]) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
