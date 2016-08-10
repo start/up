@@ -266,9 +266,7 @@ context('When a table has rows with cells with numeric values', () => {
             new TableNode.Row.Cell([new PlainTextNode('1999')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Games in the Chrono series')
-        ]))
+        new TableNode.Caption([new PlainTextNode('Games in the Chrono series')]))
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(
@@ -831,7 +829,7 @@ describe('An inline spoiler node', () => {
 })
 
 
-describe('An NSFW node', () => {
+describe('An inline NSFW node', () => {
   it('produces a <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox, and a <span> containing the NSFW contents', () => {
     const documentNode = new DocumentNode([
       new ParagraphNode([
