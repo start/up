@@ -208,6 +208,7 @@ Apples
   They're delicious.
 
 Bananas
+Peaches
   They're also delicious.`
 
       expect(up.toAst(markup)).to.be.eql(
@@ -220,10 +221,11 @@ Bananas
                 new ParagraphNode([new PlainTextNode("They're delicious.")], 3)
               ])),
             new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Bananas')])
+              new DescriptionListNode.Item.Term([new PlainTextNode('Bananas')]),
+              new DescriptionListNode.Item.Term([new PlainTextNode('Peaches')])
             ],
               new DescriptionListNode.Item.Description([
-                new ParagraphNode([new PlainTextNode("They're also delicious.")], 6)
+                new ParagraphNode([new PlainTextNode("They're also delicious.")], 7)
               ]))
           ], 2)
         ]))
