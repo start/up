@@ -90,15 +90,29 @@ I actually start on the seventh line.`
 
 
   context("Paragraphs nodes aren't the only type to receive a line number. Nearly every type of outline node is given one. Specifically:", () => {
-    specify('Headings', () => {
-      const markup = `
+    context('Headings:', () => {
+      specify('Without an overline', () => {
+        const markup = `
 I enjoy apples
 ==============`
 
-      expect(up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
-        ]))
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
+          ]))
+      })
+
+      specify('With an overline', () => {
+        const markup = `
+==============
+I enjoy apples
+==============`
+
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
+          ]))
+      })
     })
 
     specify('Tables with captions', () => {
@@ -442,6 +456,7 @@ describe('Footnote blocks', () => {
 context('When there are several outline conventions, all of them are given soure line numbers. This includes when:', () => {
   specify('They are all at the top-level of the document', () => {
     const markup = `
+==============
 I enjoy apples
 ==============
 
@@ -465,20 +480,21 @@ Pink lady.`
     expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
-        new ParagraphNode([new PlainTextNode("Don't you?")], 5),
+        new ParagraphNode([new PlainTextNode("Don't you?")], 6),
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Apples are blue')])
-        ], 7),
-        new HeadingNode([new PlainTextNode("The best fruit")], 2, 11),
-        new ParagraphNode([new PlainTextNode('Apples.')], 14),
-        new HeadingNode([new PlainTextNode("The best apple")], 2, 17),
-        new ParagraphNode([new PlainTextNode('Pink lady.')], 20)
+        ], 8),
+        new HeadingNode([new PlainTextNode("The best fruit")], 2, 12),
+        new ParagraphNode([new PlainTextNode('Apples.')], 15),
+        new HeadingNode([new PlainTextNode("The best apple")], 2, 18),
+        new ParagraphNode([new PlainTextNode('Pink lady.')], 21)
       ]))
   })
 
   specify('Some are deeply nested.', () => {
     const markup = `
+==============
 I enjoy apples
 ==============
 
@@ -500,25 +516,25 @@ Pink lady
     expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
-        new ParagraphNode([new PlainTextNode("Don't you?")], 5),
+        new ParagraphNode([new PlainTextNode("Don't you?")], 6),
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
           ], new DescriptionListNode.Item.Description([
-            new HeadingNode([new PlainTextNode("The best fruit")], 2, 8),
+            new HeadingNode([new PlainTextNode("The best fruit")], 2, 9),
             new SpoilerBlockNode([
-            new ParagraphNode([new PlainTextNode('Really.')], 12)
-            ], 11)
+              new ParagraphNode([new PlainTextNode('Really.')], 13)
+            ], 12)
           ])),
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
           ], new DescriptionListNode.Item.Description([
-            new HeadingNode([new PlainTextNode("The best apple")], 2, 15),
+            new HeadingNode([new PlainTextNode("The best apple")], 2, 16),
             new BlockquoteNode([
-              new ParagraphNode([new PlainTextNode('Really.')], 18)
-            ], 18)
+              new ParagraphNode([new PlainTextNode('Really.')], 19)
+            ], 19)
           ]))
-        ], 7)
+        ], 8)
       ]))
   })
 })
