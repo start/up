@@ -22,6 +22,9 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   while (!markupLineConsumer.done()) {
     const linesOfMarkupInCurrentListItem: string[] = []
 
+    const sourceLineNumberForCurrentListItem =
+      args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
@@ -50,7 +53,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
       new UnorderedListNode.Item(
         getOutlineNodes({
           markupLines: linesOfMarkupInCurrentListItem,
-          sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+          sourceLineNumber: sourceLineNumberForCurrentListItem,
           headingLeveler: args.headingLeveler,
           config: args.config
         })))
