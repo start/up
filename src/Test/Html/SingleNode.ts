@@ -233,9 +233,7 @@ describe('A table', () => {
             new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Influential Games')
-        ]))
+        new TableNode.Caption([new PlainTextNode('Influential Games')]))
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql(

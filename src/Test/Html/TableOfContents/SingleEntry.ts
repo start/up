@@ -149,9 +149,7 @@ context('When a document has a table of contents, its first HTML element is <nav
                 new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
               ])
             ],
-            new TableNode.Caption([
-              new PlainTextNode('Influential games')
-            ]))
+            new TableNode.Caption([new PlainTextNode('Influential games')]))
 
         const documentNode =
           new DocumentNode([table], new DocumentNode.TableOfContents([table]))
@@ -253,9 +251,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Influential games')
-        ]))
+        new TableNode.Caption([new PlainTextNode('Influential games')]))
 
     const documentNode =
       new DocumentNode([
@@ -275,9 +271,7 @@ context('When a document has a table of contents, its first HTML element is <nav
                 new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
               ])
             ],
-            new TableNode.Caption([
-              new PlainTextNode('Influential games')
-            ]))
+            new TableNode.Caption([new PlainTextNode('Influential games')]))
 
         ])
       ],
