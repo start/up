@@ -37,7 +37,7 @@ context('When the "createSourceMap" config setting is not set to true', () => {
 })
 
 
-context('When the "createSourceMap" config setting is set to true, all outline conventions are given a source line number.', () => {
+context('When the "createSourceMap" config setting is set to true, outline nodes are given a source line number.', () => {
   const up = new Up({
     createSourceMap: true
   })
@@ -89,7 +89,7 @@ I actually start on the seventh line.`
   })
 
 
-  context("It's not just paragraphs that are given a source line number. Nearly every type of outline node is given one:", () => {
+  context("Paragraphs nodes aren't the only type to receive a line number. Nearly every type of outline node is given one. Specifically:", () => {
     specify('Headings', () => {
       const markup = `
 I enjoy apples
