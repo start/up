@@ -61,6 +61,12 @@ export function getOutlineNodes(
       headingLeveler,
       config,
       then: (newNodes, countLinesConsumed) => {
+        if (config.settings.createSourceMap) {
+          for (const node of newNodes) {
+            node.sourceLineNumber = sourceLineNumber
+          }
+        }
+
         outlineNodes.push(...newNodes)
         markupLineConsumer.skipLines(countLinesConsumed)
       }
@@ -94,6 +100,11 @@ function condenseConsecutiveOutlineSeparatorNodes(nodes: OutlineSyntaxNode[]): O
 
 
 function withoutOuterBlankLines(lines: string[]): string[] {
+  return withoutTrailingBlankLines(withoutLeadingBlankLines(lines))
+}
+
+
+function withoutLeadingBlankLines(lines: string[]): string[] {
   let firstIndexOfNonBlankLine = 0
 
   for (; firstIndexOfNonBlankLine < lines.length; firstIndexOfNonBlankLine++) {
@@ -104,9 +115,13 @@ function withoutOuterBlankLines(lines: string[]): string[] {
     }
   }
 
+  return lines.slice(firstIndexOfNonBlankLine)
+}
+
+function withoutTrailingBlankLines(lines: string[]): string[] {
   let lastIndexOfNonBlankLine = lines.length - 1
 
-  for (; lastIndexOfNonBlankLine >= firstIndexOfNonBlankLine; lastIndexOfNonBlankLine--) {
+  for (; lastIndexOfNonBlankLine >= 0; lastIndexOfNonBlankLine--) {
     const line = lines[lastIndexOfNonBlankLine]
 
     if (NON_BLANK_PATTERN.test(line)) {
@@ -114,5 +129,5 @@ function withoutOuterBlankLines(lines: string[]): string[] {
     }
   }
 
-  return lines.slice(firstIndexOfNonBlankLine, lastIndexOfNonBlankLine + 1)
+  return lines.slice(0, lastIndexOfNonBlankLine + 1)
 }
