@@ -100,6 +100,9 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new DescriptionListNode(listItems)], countLinesConsumed)
+  args.then(
+    [new DescriptionListNode(listItems)],
+    countLinesConsumed)
+
   return true
 }

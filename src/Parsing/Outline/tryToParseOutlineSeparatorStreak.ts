@@ -12,6 +12,9 @@ export function tryToParseOutlineSeparatorStreak(args: OutlineParserArgs): boole
     return false
   }
 
-  args.then([new OutlineSeparatorNode()], markupLineConsumer.countLinesConsumed)
+  args.then(
+    [new OutlineSeparatorNode()],
+    markupLineConsumer.countLinesConsumed)
+
   return true
 }

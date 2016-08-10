@@ -64,7 +64,10 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  args.then([new UnorderedListNode(listItems)], markupLineConsumer.countLinesConsumed)
+  args.then(
+    [new UnorderedListNode(listItems)],
+    markupLineConsumer.countLinesConsumed)
+
   return true
 }
 

@@ -86,7 +86,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
 
   const lengthConsumed = markupLineConsumer.countLinesConsumed
 
-  let regularLinesResultNode: OutlineSyntaxNode
+  let resultOfAnyRegularLines: ParagraphNode | LineBlockNode
 
   switch (inlineNodesPerRegularLine.length) {
     case 0:
@@ -97,15 +97,17 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       return
 
     case 1:
-      regularLinesResultNode = new ParagraphNode(inlineNodesPerRegularLine[0])
+      resultOfAnyRegularLines = new ParagraphNode(inlineNodesPerRegularLine[0])
       break
 
     default: {
-      const lineBlockLines = inlineNodesPerRegularLine.map(inlineNodes => new LineBlockNode.Line(inlineNodes))
-      regularLinesResultNode = new LineBlockNode(lineBlockLines)
+      const lineBlockLines = inlineNodesPerRegularLine
+        .map(inlineNodes => new LineBlockNode.Line(inlineNodes))
+
+      resultOfAnyRegularLines = new LineBlockNode(lineBlockLines)
       break
     }
   }
 
-  args.then([regularLinesResultNode].concat(inlineNodesPromotedToOutline), lengthConsumed)
+  args.then([resultOfAnyRegularLines, ...inlineNodesPromotedToOutline], lengthConsumed)
 }

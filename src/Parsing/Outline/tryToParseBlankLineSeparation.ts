@@ -8,7 +8,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // blank lines. The blank lines themselves don't produce any syntax nodes.
 //
 // However, 3 or more consecutive blank lines indicates extra, meaningful separation between
-// outline convention. We represent that separation with a OutlineSeparatorNode.
+// outline conventions. We represent that separation with a OutlineSeparatorNode.
 export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   let countBlankLines = 0
@@ -24,11 +24,11 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
 
   const MIN_COUNT_BLANK_LINES_IN_OUTLINE_SEPARATOR = 3
 
-  const nodes =
+  args.then(
     countBlankLines >= MIN_COUNT_BLANK_LINES_IN_OUTLINE_SEPARATOR
       ? [new OutlineSeparatorNode()]
-      : []
+      : [],
+    markupLineConsumer.countLinesConsumed)
 
-  args.then(nodes, markupLineConsumer.countLinesConsumed)
   return true
 }

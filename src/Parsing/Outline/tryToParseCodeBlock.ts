@@ -61,8 +61,9 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     codeLines.push(possibleEndStreak)
   }
 
-  const codeBlock = new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))
-  args.then([codeBlock], markupLineConsumer.countLinesConsumed)
+  args.then(
+    [new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))],
+    markupLineConsumer.countLinesConsumed)
 
   return true
 }

@@ -30,16 +30,17 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   // Within blockquotes, heading levels are reset
   const headingLeveler = new HeadingLeveler()
 
-  const blockquote =
-    new BlockquoteNode(
-      getOutlineNodes({
-        markupLines: blockquotedLines,
-        sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
-        headingLeveler,
-        config: args.config
-      }))
+  const blockquoteChildren = getOutlineNodes({
+    markupLines: blockquotedLines,
+    sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed,
+    headingLeveler,
+    config: args.config
+  })
 
-  args.then([blockquote], markupLineConsumer.countLinesConsumed)
+  args.then(
+    [new BlockquoteNode(blockquoteChildren)],
+    markupLineConsumer.countLinesConsumed)
+
   return true
 }
 

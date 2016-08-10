@@ -145,7 +145,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       }
     }))
 
-  args.then([new TableNode(header, rows, caption)], countLinesConsumed)
+  args.then(
+    [new TableNode(header, rows, caption)],
+    countLinesConsumed)
+
   return true
 }
 
