@@ -77,7 +77,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected blockquote(node: BlockquoteNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('blockquote', node.children)
+    return this.element('blockquote', node.children)
   }
 
   protected unorderedList(node: UnorderedListNode): string {
@@ -125,11 +125,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected paragraph(node: ParagraphNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('p', node.children)
+    return this.element('p', node.children)
   }
 
   protected heading(node: HeadingNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren(
+    return this.element(
       'h' + Math.min(6, node.level),
       node.children,
       this.getAttrsForElementPossiblyReferencedByTableOfContents(node))
@@ -140,11 +140,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected emphasis(node: EmphasisNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('em', node.children)
+    return this.element('em', node.children)
   }
 
   protected stress(node: StressNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('strong', node.children)
+    return this.element('strong', node.children)
   }
 
   protected inlineCode(node: InlineCodeNode): string {
@@ -152,11 +152,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected revisionInsertion(node: RevisionInsertionNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('ins', node.children)
+    return this.element('ins', node.children)
   }
 
   protected revisionDeletion(node: RevisionDeletionNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('del', node.children)
+    return this.element('del', node.children)
   }
 
   protected parenthesized(node: ParenthesizedNode): string {
@@ -168,7 +168,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected action(node: ActionNode): string {
-    return this.htmlElementWithAlreadyEscapedChildren('span', node.children, { class: classAttrValue('action') })
+    return this.element('span', node.children, { class: classAttrValue('action') })
   }
 
   protected inlineSpoiler(node: InlineSpoilerNode): string {
@@ -233,7 +233,7 @@ export class HtmlWriter extends Writer {
 
     const innerLinkNode = this.footnoteReferenceInnerLink(node)
 
-    return this.htmlElementWithAlreadyEscapedChildren(
+    return this.element(
       'sup',
       [innerLinkNode], {
         id: this.footnoteReferenceId(node.referenceNumber),
@@ -264,7 +264,7 @@ export class HtmlWriter extends Writer {
     }
 
     this.isInsideLink = true
-    const html = this.htmlElementWithAlreadyEscapedChildren('a', node.children, { href: node.url })
+    const html = this.element('a', node.children, { href: node.url })
     this.isInsideLink = false
 
     return html
@@ -287,11 +287,11 @@ export class HtmlWriter extends Writer {
   }
 
   private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
-    return this.htmlElementWithAlreadyEscapedChildren('span', bracketed.children, { class: classAttrValue(bracketName) })
+    return this.element('span', bracketed.children, { class: classAttrValue(bracketName) })
   }
 
   private unorderedListItem(listItem: UnorderedListNode.Item): string {
-    return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children)
+    return this.element('li', listItem.children)
   }
 
   private tableOfContents(tableOfContents: DocumentNode.TableOfContents): string {
@@ -356,7 +356,7 @@ export class HtmlWriter extends Writer {
       attrs.value = listItem.ordinal
     }
 
-    return this.htmlElementWithAlreadyEscapedChildren('li', listItem.children, attrs)
+    return this.element('li', listItem.children, attrs)
   }
 
   private descriptionListItem(listItem: DescriptionListNode.Item): string {
@@ -366,15 +366,15 @@ export class HtmlWriter extends Writer {
   }
 
   private descriptionTerm(term: DescriptionListNode.Item.Term): string {
-    return this.htmlElementWithAlreadyEscapedChildren('dt', term.children)
+    return this.element('dt', term.children)
   }
 
   private description(description: DescriptionListNode.Item.Description): string {
-    return this.htmlElementWithAlreadyEscapedChildren('dd', description.children)
+    return this.element('dd', description.children)
   }
 
   private line(line: LineBlockNode.Line): string {
-    return this.htmlElementWithAlreadyEscapedChildren('div', line.children)
+    return this.element('div', line.children)
   }
 
   private footnoteReferenceInnerLink(footnoteReference: FootnoteNode): LinkNode {
@@ -387,13 +387,13 @@ export class HtmlWriter extends Writer {
 
   private footnote(footnote: FootnoteNode): string {
     const termHtml =
-      this.htmlElementWithAlreadyEscapedChildren(
+      this.element(
         'dt',
         [this.footnoteLinkBackToReference(footnote)],
         { id: this.footnoteId(footnote.referenceNumber) })
 
     const descriptionHtml =
-      this.htmlElementWithAlreadyEscapedChildren('dd', footnote.children)
+      this.element('dd', footnote.children)
 
     return termHtml + descriptionHtml
   }
@@ -407,7 +407,7 @@ export class HtmlWriter extends Writer {
   }
 
   private playableMediaElement(tagName: string, description: string, url: string): string {
-    return this.htmlElementWithAlreadyEscapedChildren(
+    return this.element(
       tagName,
       this.playableMediaFallback(description, url), {
         src: url,
@@ -442,7 +442,7 @@ export class HtmlWriter extends Writer {
       singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     const content =
-      this.htmlElementWithAlreadyEscapedChildren(genericContainerTagName, revealableChildren)
+      this.element(genericContainerTagName, revealableChildren)
 
     return htmlElementWithAlreadyEscapedChildren(
       genericContainerTagName,
@@ -507,7 +507,7 @@ export class HtmlWriter extends Writer {
     )
   }
 
-  private htmlElementWithAlreadyEscapedChildren(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
+  private element(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
