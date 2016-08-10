@@ -20,8 +20,8 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
-//import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-//import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 const NO_SPECIFIED_SOURCE_LINE_NUMBER: number = undefined
@@ -412,6 +412,27 @@ Chart:
           ]))
       })
     })
+  })
+})
+
+
+describe('Footnote blocks', () => {
+  it('are not assigned source line numbers', () => {
+    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
+
+    const footnote = new FootnoteNode([
+      new PlainTextNode('Well, I do, but I pretend not to.')
+    ], 1)
+
+    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I don't eat cereal."),
+          footnote,
+          new PlainTextNode(" Never have."),
+        ], 1),
+        new FootnoteBlockNode([footnote])
+      ]))
   })
 })
 
