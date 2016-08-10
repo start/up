@@ -279,12 +279,13 @@ SPOILER:
     specify('NSFW blocks (and the outline nodes they contain)', () => {
       const markup = `
 NSFW:
+
   Who doesn't?`
 
       expect(up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsfwBlockNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 3)
+            new ParagraphNode([new PlainTextNode("Who doesn't?")], 4)
           ], 2)
         ]))
     })
@@ -292,12 +293,14 @@ NSFW:
     specify('NSFL blocks (and the outline nodes they contain)', () => {
       const markup = `
 NSFL:
+
+
   Who doesn't?`
 
       expect(up.toAst(markup)).to.be.eql(
         new DocumentNode([
           new NsflBlockNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 3)
+            new ParagraphNode([new PlainTextNode("Who doesn't?")], 5)
           ], 2)
         ]))
     })
