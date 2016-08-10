@@ -43,18 +43,18 @@ describe('An empty document node', () => {
 
 describe('A paragraph node', () => {
   it('produces a <p>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([new PlainTextNode('Nimble navigator')])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Nimble navigator</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Nimble navigator</p>')
   })
 })
 
 
 describe('An unordered list node', () => {
   it('produces an <ul> containing an <li> for each list item', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new UnorderedListNode([
         new UnorderedListNode.Item([
           new ParagraphNode([
@@ -69,7 +69,7 @@ describe('An unordered list node', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ul>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -80,7 +80,7 @@ describe('An unordered list node', () => {
 
 describe('An ordered list node', () => {
   it('produces an <ol> containing an <li> for each list item', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -95,7 +95,7 @@ describe('An ordered list node', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -106,7 +106,7 @@ describe('An ordered list node', () => {
 
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -121,7 +121,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li value="5"><p>Territories</p></li>'
@@ -132,7 +132,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> is given a "start" attribute set to the appropriate starting ordinal', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -147,7 +147,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol start="3">'
       + '<li value="3"><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -158,7 +158,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> is given the "reversed" attribute', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -173,7 +173,7 @@ describe('When an ordered list node is in descending order', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol start="0" reversed>'
       + '<li value="0"><p>Tropical</p></li>'
       + '<li value="-1"><p>Territories</p></li>'
@@ -184,7 +184,7 @@ describe('When an ordered list node is in descending order', () => {
 
 describe('A description list', () => {
   it('produces a <dl> containing a <dt> for each term, and a <dd> for each description', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -204,7 +204,7 @@ describe('A description list', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<dl>'
       + '<dt>Bulbasaur</dt>'
       + '<dd><p>A grass type Pokemon</p></dd>'
@@ -218,7 +218,7 @@ describe('A description list', () => {
 
 describe('A table', () => {
   it('produces a <table> containing a <caption> for its caption, a <thead> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -236,7 +236,7 @@ describe('A table', () => {
         new TableNode.Caption([new PlainTextNode('Influential Games')]))
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<caption>Influential Games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
@@ -249,7 +249,7 @@ describe('A table', () => {
 
 context('When a table has rows with cells with numeric values', () => {
   specify('the <td> produced for those cells have the "up-numeric" class', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -267,7 +267,7 @@ context('When a table has rows with cells with numeric values', () => {
         new TableNode.Caption([new PlainTextNode('Games in the Chrono series')]))
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
@@ -280,7 +280,7 @@ context('When a table has rows with cells with numeric values', () => {
 
 describe('A table without a caption or any rows', () => {
   it('produces a <table> that does not contain a <caption> or any <tr> outside of its <thead>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -288,7 +288,7 @@ describe('A table without a caption or any rows', () => {
         ]), [])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
       + '</table>')
@@ -298,7 +298,7 @@ describe('A table without a caption or any rows', () => {
 
 context('When a table header has cells spanning multiple columns', () => {
   specify('the <th> for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')], 5),
@@ -306,7 +306,7 @@ context('When a table header has cells spanning multiple columns', () => {
         ]), [])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="3">Developer</th></tr></thead>'
       + '</table>')
@@ -316,7 +316,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
 context('When a table has rows with cells spanning multiple columns', () => {
   specify('the <td>s for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
@@ -336,7 +336,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
         ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th><th scope="col">Cooldown</th><th scope="col">Date</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
@@ -348,7 +348,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
 
 context('When a table cell has a numeric value and spans multiple columns', () => {
   specify('the <td> produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -367,7 +367,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
         ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Year Development Started</th><th scope="col">Year Released</th></tr></thead>'
       + '<tr><td>Final Fantasy II</td><td class="up-numeric" colspan="2">1989</td></tr>'
@@ -379,7 +379,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
   specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> produced by the row', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([]),
@@ -398,7 +398,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
         new TableNode.Caption([new PlainTextNode('AND operator logic')]))
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
@@ -408,7 +408,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
   })
 
   specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([]),
@@ -424,7 +424,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
         ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col"></th><th scope="col">Most Common Word</th></tr></thead>'
       + '<tr><th scope="row" colspan="2">Monday</th></tr>'
@@ -439,7 +439,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div> for each line', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new LineBlockNode([
         new LineBlockNode.Line([
           new PlainTextNode('Hollow')
@@ -450,7 +450,7 @@ describe('A line block node', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<div class="up-lines">'
       + '<div>Hollow</div>'
       + '<div>Fangs</div>'
@@ -461,11 +461,11 @@ describe('A line block node', () => {
 
 describe('A code block node', () => {
   it('produces a <pre> containing a <code> containing the code', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new CodeBlockNode('color = Color.Green')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
+    expect(Up.toHtml(document)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
   })
 })
 
@@ -487,110 +487,110 @@ describe('A blockquote node', () => {
 
 describe('A level 1 heading node', () => {
   it('produces an <h1>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h1>Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h1>Bulbasaur</h1>')
   })
 })
 
 
 describe('A level 2 heading node', () => {
   it('produces an <h2>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Ivysaur')], 2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h2>Ivysaur</h2>')
+    expect(Up.toHtml(document)).to.be.eql('<h2>Ivysaur</h2>')
   })
 })
 
 
 describe('A level 3 heading node', () => {
   it('produces an <h3>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Venusaur')], 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h3>Venusaur</h3>')
+    expect(Up.toHtml(document)).to.be.eql('<h3>Venusaur</h3>')
   })
 })
 
 
 describe('A level 4 heading node', () => {
   it('produces an <h4<', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charmander')], 4)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h4>Charmander</h4>')
+    expect(Up.toHtml(document)).to.be.eql('<h4>Charmander</h4>')
   })
 })
 
 
 describe('A level 5 heading node', () => {
   it('produces an <h5>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charmeleon')], 5)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h5>Charmeleon</h5>')
+    expect(Up.toHtml(document)).to.be.eql('<h5>Charmeleon</h5>')
   })
 })
 
 
 describe('A level 6 heading node', () => {
   it('produces an <h6>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charizard')], 6)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Charizard</h6>')
+    expect(Up.toHtml(document)).to.be.eql('<h6>Charizard</h6>')
   })
 })
 
 
 describe('A level 7 heading node', () => {
   it('produces an <h6>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Squirtle')], 7)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Squirtle</h6>')
+    expect(Up.toHtml(document)).to.be.eql('<h6>Squirtle</h6>')
   })
 })
 
 
 describe('A level 8 heading node', () => {
   it('produces an <h6>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Wartortle')], 8)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Wartortle</h6>')
+    expect(Up.toHtml(document)).to.be.eql('<h6>Wartortle</h6>')
   })
 })
 
 
 describe('A level 9 heading node', () => {
   it('produces an <h6>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Blastoise')], 9)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6>Blastoise</h6>')
+    expect(Up.toHtml(document)).to.be.eql('<h6>Blastoise</h6>')
   })
 })
 
 
 describe('An outline separator node', () => {
   it('produces an <hr>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OutlineSeparatorNode()
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<hr>')
+    expect(Up.toHtml(document)).to.be.eql('<hr>')
   })
 })
 
@@ -610,104 +610,104 @@ describe('An emphasis node', () => {
 
 describe('A stress node', () => {
   it('produces a <strong>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new StressNode([new PlainTextNode('Ness')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><strong>Ness</strong></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><strong>Ness</strong></p>')
   })
 })
 
 
 describe('An inline code node', () => {
   it('produces a <code>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineCodeNode('then')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><code>then</code></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><code>then</code></p>')
   })
 })
 
 
 describe('A revision insertion node', () => {
   it('produces an <ins>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new RevisionInsertionNode([new PlainTextNode('Wario')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><ins>Wario</ins></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><ins>Wario</ins></p>')
   })
 })
 
 
 describe('A revision deletion node', () => {
   it('produces a <del>', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><del>Koopa Tropa</del></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><del>Koopa Tropa</del></p>')
   })
 })
 
 
 describe('A parenthesized node', () => {
   it('produces a <span class="up-parenthesized">', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-parenthesized">(Koopa Tropa)</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-parenthesized">(Koopa Tropa)</span></p>')
   })
 })
 
 
 describe('A square bracketed node', () => {
   it('produces a <span class="up-square-bracketed">', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-square-bracketed">[Koopa Tropa]</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-square-bracketed">[Koopa Tropa]</span></p>')
   })
 })
 
 
 describe('An action node', () => {
   it('produces a <span class="up-action">', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new ActionNode([new PlainTextNode('dies')])
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><span class="up-action">dies</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-action">dies</span></p>')
   })
 })
 
 
 describe('A link node', () => {
   it('produces an <a> with its href attribute set to its URL', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('Google')], 'https://google.com')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Google</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Google</a></p>')
   })
 })
 
@@ -732,18 +732,18 @@ describe('A footnote node', () => {
 
 describe('A footnote block node', () => {
   it('produces a <dl class="up-footnotes">', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<dl class="up-footnotes"></dl>')
+    expect(Up.toHtml(document)).to.be.eql('<dl class="up-footnotes"></dl>')
   })
 })
 
 
 describe("Each footnote in a footnote block", () => {
   it("produce a <dt> with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> containing the footnote contents", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -760,18 +760,18 @@ describe("Each footnote in a footnote block", () => {
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('An image node', () => {
   it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
   })
 })
@@ -779,11 +779,11 @@ describe('An image node', () => {
 
 describe('An audio node', () => {
   it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop>'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
@@ -793,11 +793,11 @@ describe('An audio node', () => {
 
 describe('A video node', () => {
   it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop>'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
@@ -807,7 +807,7 @@ describe('A video node', () => {
 
 describe('An inline spoiler node', () => {
   it('produces a <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox, and a <span> containing the spoiler contents', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
       ])
@@ -822,14 +822,14 @@ describe('An inline spoiler node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('An inline NSFW node', () => {
   it('produces a <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox, and a <span> containing the NSFW contents', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([new PlainTextNode('naked Gary')])
       ])
@@ -844,14 +844,14 @@ describe('An inline NSFW node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('An inline NSFL node', () => {
   it('produces a <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox, and a <span> containing the NSFL contents', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([new PlainTextNode('rotting Gary')])
       ])
@@ -866,14 +866,14 @@ describe('An inline NSFL node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div>s instead of <span>s', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new SpoilerBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -890,14 +890,14 @@ describe('A spoiler block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('A NSFW block node', () => {
   it('produces the same HTML as an inline NSFW node, but with <div>s instead of <span>s', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsfwBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -914,14 +914,14 @@ describe('A NSFW block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe('A NSFL block node', () => {
   it('produces the same HTML as an inline NSFL node, but with <div>s instead of <span>s', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsflBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -938,6 +938,6 @@ describe('A NSFL block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })

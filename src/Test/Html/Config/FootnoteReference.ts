@@ -15,13 +15,13 @@ describe("A footnote reference's ID", () => {
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="up-ref-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
   })
 })
@@ -35,7 +35,7 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings")
@@ -52,6 +52,6 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       + '<dt id="up-footnote-3"><a href="#up-ref-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })

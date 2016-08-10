@@ -12,10 +12,10 @@ context("When an item referenced by the table of contents has a source line numb
     const heading =
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
 
-    const documentNode =
+    const document =
       new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -45,10 +45,10 @@ context("When an item referenced by the table of contents has a source line numb
           new PlainTextNode('Influential games')
         ]), 4)
 
-    const documentNode =
+    const document =
       new DocumentNode([table], new DocumentNode.TableOfContents([table]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -84,10 +84,10 @@ context("When an item referenced by the table of contents has a source line numb
           new PlainTextNode('AND operator logic')
         ]), 3)
 
-    const documentNode =
+    const document =
       new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'

@@ -53,12 +53,12 @@ export abstract class Writer {
   private _result: string
 
   constructor(
-    protected documentNode: DocumentNode,
+    protected document: DocumentNode,
     protected config: UpConfig) { }
 
   get result(): string {
     this._result =
-      this._result || this.document(this.documentNode)
+      this._result || this.writeDocument(this.document)
 
     return this._result
   }
@@ -86,7 +86,8 @@ export abstract class Writer {
       .replace(WHITESPACE_PATTERN, settings.i18n.wordDelimiterForGeneratedIds)
   }
 
-  protected abstract document(node: DocumentNode): string
+  protected abstract writeDocument(node: DocumentNode): string
+
   protected abstract blockquote(node: BlockquoteNode): string
   protected abstract unorderedList(node: UnorderedListNode): string
   protected abstract orderedList(node: OrderedListNode): string

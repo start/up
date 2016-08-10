@@ -27,17 +27,17 @@ export function createDocument(
     createTableOfContents: boolean
   }
 ): DocumentNode {
-  const documentNode = new DocumentNode(args.children)
-  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(documentNode)
+  const document = new DocumentNode(args.children)
+  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
 
   if (args.createTableOfContents) {
-    const tableOfContentsEntries = documentNode.descendantsToIncludeInTableOfContents()
+    const tableOfContentsEntries = document.descendantsToIncludeInTableOfContents()
 
     // An empty table of contents wouldn't be very useful! Let's avoid creating them.
     if (tableOfContentsEntries.length) {
-      documentNode.tableOfContents = new DocumentNode.TableOfContents(tableOfContentsEntries)
+      document.tableOfContents = new DocumentNode.TableOfContents(tableOfContentsEntries)
     }
   }
 
-  return documentNode
+  return document
 }

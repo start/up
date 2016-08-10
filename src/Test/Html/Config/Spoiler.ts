@@ -14,7 +14,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -29,7 +29,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -42,7 +42,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new SpoilerBlockNode([])
     ])
 
@@ -53,6 +53,6 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })

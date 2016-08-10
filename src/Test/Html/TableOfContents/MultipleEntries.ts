@@ -59,7 +59,7 @@ context('When a table of contents has multiple entries', () => {
     const tableOfContents =
       new DocumentNode.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       bestFruitHeading,
 
       new UnorderedListNode([
@@ -83,7 +83,7 @@ context('When a table of contents has multiple entries', () => {
       ])
     ], tableOfContents)
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'

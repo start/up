@@ -19,13 +19,13 @@ describe("The words in a footnote reference's ID (as well as the ID of the footn
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="up::footnote::reference::3" class="up-footnote-reference"><a href="#up::footnote::3">3</a></sup></p>')
   })
 })
@@ -39,7 +39,7 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -56,7 +56,7 @@ describe("The words in a footnote's ID (as well as the ID of the footnote refere
       + '<dt id="up::footnote::3"><a href="#up::footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -69,7 +69,7 @@ describe("The words in the ID of an inline spoiler's checkbox (on both the check
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -84,7 +84,7 @@ describe("The words in the ID of an inline spoiler's checkbox (on both the check
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -97,7 +97,7 @@ describe("The words in the ID of an inline NSFW conventions's checkbox (on both 
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -112,7 +112,7 @@ describe("The words in the ID of an inline NSFW conventions's checkbox (on both 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -125,7 +125,7 @@ describe("The words in the ID of an inline NSFL conventions's checkbox (on both 
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -140,14 +140,14 @@ describe("The words in the ID of an inline NSFL conventions's checkbox (on both 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
 
 describe("In a footnote reference, separate words in the provided document name", () => {
   it("are delimited by specified the ID word delimiter", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -160,7 +160,7 @@ describe("In a footnote reference, separate words in the provided document name"
       }
     })
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="reply::11::footnote::reference::3" class="up-footnote-reference"><a href="#reply::11::footnote::3">3</a></sup></p>')
   })
 })
@@ -175,7 +175,7 @@ describe("In a footnote block, separate words in the provided document name", ()
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -192,7 +192,7 @@ describe("In a footnote block, separate words in the provided document name", ()
       + '<dt id="reply::11::footnote::3"><a href="#reply::11::footnote::reference::3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -206,13 +206,13 @@ describe('In a footnote reference, separate words in the provided term for "foot
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="up_fn_ref_3" class="up-footnote-reference"><a href="#up_footnote_3">3</a></sup></p>')
   })
 })
@@ -227,7 +227,7 @@ describe('In a footnote block, separate words in the provided term for "footnote
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -244,7 +244,7 @@ describe('In a footnote block, separate words in the provided term for "footnote
       + '<dt id="up_footnote_3"><a href="#up_fn_ref_3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 

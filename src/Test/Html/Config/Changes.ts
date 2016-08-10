@@ -13,30 +13,30 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    documentNode: DocumentNode
+    document: DocumentNode
     configChanges: UpConfigSettings
     conflictingConfigChanges: UpConfigSettings
   }
 ): void {
-  const { documentNode, configChanges, conflictingConfigChanges } = args
+  const { document, configChanges, conflictingConfigChanges } = args
 
   const htmlFromDefaultSettings =
-    Up.toHtml(documentNode)
+    Up.toHtml(document)
 
 
   describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the provided config changes would actually change the HTML
-      expect(Up.toHtml(documentNode, configChanges)).to.not.be.eql(htmlFromDefaultSettings)
+      expect(Up.toHtml(document, configChanges)).to.not.be.eql(htmlFromDefaultSettings)
 
       // Now, let's make sure the config changes don't alter subsequent calls
-      expect(Up.toHtml(documentNode)).to.be.eql(htmlFromDefaultSettings)
+      expect(Up.toHtml(document)).to.be.eql(htmlFromDefaultSettings)
     })
   })
 
 
   const whenProvidingConfigAtCreation =
-    new Up(configChanges).toHtml(documentNode)
+    new Up(configChanges).toHtml(document)
 
 
   describe("when provided to an Up object's toHtml method", () => {
@@ -44,22 +44,22 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       const up = new Up(configChanges)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.toHtml(documentNode, conflictingConfigChanges)).to.not.be.eql(whenProvidingConfigAtCreation)
+      expect(up.toHtml(document, conflictingConfigChanges)).to.not.be.eql(whenProvidingConfigAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.toHtml(documentNode, configChanges)).to.be.eql(whenProvidingConfigAtCreation)
+      expect(up.toHtml(document, configChanges)).to.be.eql(whenProvidingConfigAtCreation)
     })
   })
 
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.toHtml(documentNode, configChanges)
+    Up.toHtml(document, configChanges)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().toHtml(documentNode, configChanges)
+    new Up().toHtml(document, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).toHtml(documentNode, configChanges)
+    new Up(conflictingConfigChanges).toHtml(document, configChanges)
 
 
   describe('when provided to an Up object at creation', () => {
@@ -80,7 +80,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -97,7 +97,7 @@ describe('The "documentName" config setting', () => {
 
 describe('The "wordDelimiterForGeneratedIds" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -118,7 +118,7 @@ describe('The "wordDelimiterForGeneratedIds" config setting', () => {
 
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -143,7 +143,7 @@ describe('The "footnote reference" config term', () => {
 
 describe('The "footnote" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -168,7 +168,7 @@ describe('The "footnote" config term', () => {
 
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -193,7 +193,7 @@ describe('The "spoiler" config term', () => {
 
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -218,7 +218,7 @@ describe('The "toggleSpoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -243,7 +243,7 @@ describe('The "nsfw" config term', () => {
 
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -268,7 +268,7 @@ describe('The "toggleNsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -293,7 +293,7 @@ describe('The "nsfl" config term', () => {
 
 describe('The "toggleNsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -320,7 +320,7 @@ describe('The "tableOfContents" config term', () => {
   const heading = new HeadingNode([], 1)
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode(
+    document: new DocumentNode(
       [heading],
       new DocumentNode.TableOfContents([heading])),
     configChanges: {
@@ -343,7 +343,7 @@ describe('The "tableOfContents" config term', () => {
 
 describe('The "writeUnsafeContent" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    documentNode: new DocumentNode([
+    document: new DocumentNode([
       new ParagraphNode([
         new LinkNode([], 'javascript:malicious')
       ])

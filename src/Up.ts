@@ -56,10 +56,10 @@ function toAst(markup: string, config: UpConfig): DocumentNode {
 }
 
 function toHtml(markupOrDocumentNode: MarkupOrDocumentNode, config: UpConfig): string {
-  const documentNode =
+  const document =
     typeof markupOrDocumentNode === 'string'
       ? toAst(markupOrDocumentNode, config)
       : markupOrDocumentNode
 
-  return getHtml(documentNode, config)
+  return getHtml(document, config)
 }

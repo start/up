@@ -14,18 +14,18 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   })
 
   it("does not affect a footnote reference's link to its footnote", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
   it("does not affect a footnote's link back to its reference", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings"),
@@ -42,6 +42,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })

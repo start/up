@@ -23,15 +23,15 @@ import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
   specify('Paragraphs', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([new PlainTextNode('Nimble navigator')], 5)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
   })
 
   specify('Unordered list', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new UnorderedListNode([
         new UnorderedListNode.Item([
           new ParagraphNode([
@@ -46,7 +46,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ul data-up-source-line="3">'
       + '<li><p data-up-source-line="3">Tropical</p></li>'
       + '<li><p data-up-source-line="4">Territories</p></li>'
@@ -54,7 +54,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Ordered lists without start ordinals', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -69,7 +69,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol data-up-source-line="1">'
       + '<li><p data-up-source-line="1">Tropical</p></li>'
       + '<li><p data-up-source-line="3">Territories</p></li>'
@@ -77,7 +77,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Ordered lists with start ordinals', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -92,7 +92,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol start="3" data-up-source-line="1">'
       + '<li value="3"><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -100,7 +100,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Reversed ordered lists with start ordinals', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
           new ParagraphNode([
@@ -115,7 +115,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<ol start="2" reversed data-up-source-line="3">'
       + '<li value="2"><p>Tropical</p></li>'
       + '<li value="1"><p>Territories</p></li>'
@@ -123,7 +123,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Description lists', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -143,7 +143,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<dl data-up-source-line="2">'
       + '<dt>Bulbasaur</dt>'
       + '<dd><p data-up-source-line="3">A grass type Pokemon</p></dd>'
@@ -154,7 +154,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Tables', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -174,7 +174,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ]), 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table data-up-source-line="1">'
       + '<caption>Influential Games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
@@ -184,7 +184,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Charts', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
           new TableNode.Header.Cell([]),
@@ -205,7 +205,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ]), 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<table data-up-source-line="3">'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
@@ -215,7 +215,7 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Line blocks', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new LineBlockNode([
         new LineBlockNode.Line([
           new PlainTextNode('Hollow')
@@ -226,7 +226,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 4)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<div class="up-lines" data-up-source-line="4">'
       + '<div>Hollow</div>'
       + '<div>Fangs</div>'
@@ -235,11 +235,11 @@ context('When an outline syntax node has a source line number, its outermost ele
 
 
   specify('Code blocks', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new CodeBlockNode('color = Color.Green', 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
+    expect(Up.toHtml(document)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
   })
 
   specify('Blockquotes', () => {
@@ -259,70 +259,70 @@ context('When an outline syntax node has a source line number, its outermost ele
 
 
   specify('Level 1 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 1, 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h1 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="3">Bulbasaur</h1>')
   })
 
   specify('Level 2 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 2, 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h1 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="1">Bulbasaur</h1>')
   })
 
   specify('Level 3 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 3, 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h1>')
   })
 
   specify('Level 4  headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 4, 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h1>')
   })
   specify('Level 5 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 5, 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h1>')
   })
 
   specify('Level 6 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 6, 1)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h1>')
   })
 
   specify('Level 10 headings', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 10, 2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h1>')
   })
 
   specify('Section separators', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new OutlineSeparatorNode(2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<hr data-up-source-line="2">')
+    expect(Up.toHtml(document)).to.be.eql('<hr data-up-source-line="2">')
   })
 
   specify('Spoiler blocks', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new SpoilerBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -339,11 +339,11 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 
   specify('NSFW blocks', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsfwBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -360,11 +360,11 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 
   specify('NSFL blocks', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsflBlockNode([
         new ParagraphNode([
           new PlainTextNode('John Carmack is a decent programmer.')
@@ -381,49 +381,49 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(documentNode)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 
   specify('Images', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house" data-up-source-line="2">')
   })
 
 
   specify('Audio nodes', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg', 3)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop data-up-source-line="3">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
   })
 
   specify('Videos', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop data-up-source-line="5">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
   })
 
   specify('Links (containing outlined media conventions)', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new LinkNode([
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
       ], 'https://example.com/gallery', 2)
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<a href="https://example.com/gallery" data-up-source-line="2">'
       + '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">'
       + '</a>')

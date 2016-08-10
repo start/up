@@ -14,7 +14,7 @@ describe("The text in an inline NSFL convention's label", () => {
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -29,7 +29,7 @@ describe("The text in an inline NSFL convention's label", () => {
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -42,7 +42,7 @@ describe("The text in a NSFL block's label", () => {
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsflBlockNode([])
     ])
 
@@ -53,6 +53,6 @@ describe("The text in a NSFL block's label", () => {
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })

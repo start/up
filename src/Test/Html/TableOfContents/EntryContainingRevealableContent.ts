@@ -18,7 +18,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         new InlineSpoilerNode([new PlainTextNode('sometimes')])
       ], 1)
 
-    const documentNode =
+    const document =
       new DocumentNode([
         new ParagraphNode([
           new InlineSpoilerNode([new PlainTextNode('Never')]),
@@ -27,7 +27,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new DocumentNode.TableOfContents([heading]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-item-1">'
@@ -78,7 +78,7 @@ context("Within the table of contents, the IDs of revealable content elements do
           new InlineNsfwNode([new PlainTextNode('sometimes')])
         ]))
 
-    const documentNode =
+    const document =
       new DocumentNode([
         new ParagraphNode([
           new InlineNsfwNode([new PlainTextNode('Never')]),
@@ -87,7 +87,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         table
       ], new DocumentNode.TableOfContents([table]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><a href="#up-item-1">'
@@ -144,7 +144,7 @@ context("Within the table of contents, the IDs of revealable content elements do
           new InlineNsflNode([new PlainTextNode('sometimes')])
         ]))
 
-    const documentNode =
+    const document =
       new DocumentNode([
         new ParagraphNode([
           new InlineNsflNode([new PlainTextNode('Never')]),
@@ -153,7 +153,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         table
       ], new DocumentNode.TableOfContents([table]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><a href="#up-item-1">'

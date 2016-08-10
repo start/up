@@ -28,13 +28,13 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
         ])
       ], 1)
 
-    const documentNode =
+    const document =
       new DocumentNode([
         heading,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
       ], new DocumentNode.TableOfContents([heading]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -91,13 +91,13 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
           ])
         ]))
 
-    const documentNode =
+    const document =
       new DocumentNode([
         table,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
       ], new DocumentNode.TableOfContents([table]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -160,13 +160,13 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
           ])
         ]))
 
-    const documentNode =
+    const document =
       new DocumentNode([
         chart,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
       ], new DocumentNode.TableOfContents([chart]))
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'

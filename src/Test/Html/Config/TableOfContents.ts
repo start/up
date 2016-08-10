@@ -16,10 +16,10 @@ describe('The main heading within the table of contents', () => {
     const heading =
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
-    const documentNode =
+    const document =
       new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'

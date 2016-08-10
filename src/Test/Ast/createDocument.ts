@@ -12,7 +12,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 context("The getFinalizedDocument function is exported for users who want help manually fiddling with the abstract syntax tree. (It's automatically used during the normal parsing process.)", () => {
   specify("It assigns footnotes their reference numbers (mutating them) and places them in footnote blocks (mutating any outline nodes they're placed inside)", () => {
-    const documentNode = createDocument({
+    const document = createDocument({
       children: [
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -29,7 +29,7 @@ context("The getFinalizedDocument function is exported for users who want help m
       createTableOfContents: false
     })
 
-    expect(documentNode).to.be.eql(
+    expect(document).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -52,7 +52,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("It produces a table of contents if the 'createTableOfContents' argument is set to true.", () => {
-    const documentNode = createDocument({
+    const document = createDocument({
       children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -69,7 +69,7 @@ context("The getFinalizedDocument function is exported for users who want help m
       createTableOfContents: true
     })
 
-    expect(documentNode).to.be.eql(
+    expect(document).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -91,7 +91,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("It does not produce a table of contents if the 'createTableOfContents' argument is set to false.", () => {
-    const documentNode = createDocument({
+    const document = createDocument({
       children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -108,7 +108,7 @@ context("The getFinalizedDocument function is exported for users who want help m
       createTableOfContents: false
     })
 
-    expect(documentNode).to.be.eql(
+    expect(document).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
@@ -125,7 +125,7 @@ context("The getFinalizedDocument function is exported for users who want help m
   })
 
   specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
-    const documentNode = createDocument({
+    const document = createDocument({
       children: [
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new ParagraphNode([
@@ -143,7 +143,7 @@ context("The getFinalizedDocument function is exported for users who want help m
       createTableOfContents: true
     })
 
-    expect(documentNode).to.be.eql(
+    expect(document).to.be.eql(
       new DocumentNode([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new ParagraphNode([

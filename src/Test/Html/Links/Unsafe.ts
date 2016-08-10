@@ -8,7 +8,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These unsafe URL schemes are:', () => {
   specify('javascript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -16,11 +16,11 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('data', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -28,11 +28,11 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -40,11 +40,11 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('vbscript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -52,14 +52,14 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 })
 
 
 context('Though by default, links with unsafe schemes produce no HTML, link URLs can contain unsafe schemes:', () => {
   specify('javascript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -67,11 +67,11 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=javascript:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=javascript:malicious">Click me!</a></p>')
   })
 
   specify('data', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -79,11 +79,11 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=data:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=data:malicious">Click me!</a></p>')
   })
 
   specify('file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -91,11 +91,11 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=file:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=file:malicious">Click me!</a></p>')
   })
 
   specify('vbscript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -103,14 +103,14 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
   })
 })
 
 
 context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -118,11 +118,11 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('data', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -130,11 +130,11 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -142,11 +142,11 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 
   specify('vbscript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -154,14 +154,14 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
   })
 })
 
 
 describe('By default, a safe link nested inside an unsafe link', () => {
   it('produces an <a> element', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new LinkNode([
@@ -171,14 +171,14 @@ describe('By default, a safe link nested inside an unsafe link', () => {
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
   })
 })
 
 
 context("A link's URL is not considered unsafe if its scheme starts with", () => {
   specify('javascript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -186,12 +186,12 @@ context("A link's URL is not considered unsafe if its scheme starts with", () =>
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="javascript-app:stuff">Click me!</a></p>')
   })
 
   specify('data', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -199,12 +199,12 @@ context("A link's URL is not considered unsafe if its scheme starts with", () =>
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="data-app:stuff">Click me!</a></p>')
   })
 
   specify('file', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -212,12 +212,12 @@ context("A link's URL is not considered unsafe if its scheme starts with", () =>
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="file-app:stuff">Click me!</a></p>')
   })
 
   specify('vbscript', () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -225,7 +225,7 @@ context("A link's URL is not considered unsafe if its scheme starts with", () =>
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="vbscript-app:stuff">Click me!</a></p>')
   })
 })

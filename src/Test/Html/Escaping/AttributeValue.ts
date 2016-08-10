@@ -20,67 +20,67 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
   specify("src attribute of links", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([], 'https://example.com/?x&y&z="hi"')
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></p>')
   })
 
   specify("src attribute of audio elements (and of their fallback links)", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new AudioNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<audio src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new VideoNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<video src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
   })
 
   specify("src attribute of images", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ImageNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<img src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" alt="" title="">')
   })
 
   specify("title attribute of audio elements", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<audio src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
   })
 
   specify("title attribute of videos", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<video src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
   })
 
   specify("alt and title attributes of images", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ImageNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<img src="" alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
   })
 
@@ -92,7 +92,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
       ])
@@ -105,7 +105,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</dt><dd></dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify('id attribute of footntoes in a footnote block', () => {
@@ -116,7 +116,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
       ])
@@ -129,7 +129,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</dt><dd></dd>'
       + '</dl>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("href attribute of a footnote reference's link", () => {
@@ -140,7 +140,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -153,7 +153,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</sup>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify('id attribute of footnote references', () => {
@@ -164,7 +164,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -177,7 +177,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</sup>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of inline spoilers' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -188,7 +188,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
       ])
@@ -203,7 +203,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of inline NSFW conventions' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -214,7 +214,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([new PlainTextNode('45.9%')])
       ])
@@ -229,7 +229,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of inline NSFL conventions' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -240,7 +240,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([new PlainTextNode('45.9%')])
       ])
@@ -255,7 +255,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of spoiler blocks' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -266,7 +266,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new SpoilerBlockNode([])
     ])
 
@@ -277,7 +277,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -288,7 +288,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsfwBlockNode([])
     ])
 
@@ -299,7 +299,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify("id attribute of NSFL blocks' checkboxes (and the 'for' attribute of their labels)", () => {
@@ -310,7 +310,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsflBlockNode([])
     ])
 
@@ -321,7 +321,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 
   specify('the id attribute of elements referenced by the table of contents', () => {
@@ -335,10 +335,10 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const heading =
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
-    const documentNode =
+    const document =
       new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -352,13 +352,13 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
 describe("Within a link's href attribute, <, ', and >", () => {
   it("are not escaped", () => {
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([], "https://example.com/?z='<span>'")
       ])
     ])
 
-    expect(Up.toHtml(documentNode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p><a href="https://example.com/?z=\'<span>\'"></a></p>')
   })
 })

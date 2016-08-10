@@ -67,7 +67,7 @@ export class HtmlWriter extends Writer {
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
 
-  protected document(document: DocumentNode): string {
+  protected writeDocument(document: DocumentNode): string {
     const tableOfContents =
       document.tableOfContents
         ? this.tableOfContents(document.tableOfContents)
@@ -532,12 +532,12 @@ export class HtmlWriter extends Writer {
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
   private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
-    if (!this.documentNode.tableOfContents) {
+    if (!this.document.tableOfContents) {
       return null
     }
 
     const index =
-      this.documentNode.tableOfContents.entries.indexOf(node)
+      this.document.tableOfContents.entries.indexOf(node)
 
     return (index >= 0) ? (index + 1) : null
   }

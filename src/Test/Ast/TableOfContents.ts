@@ -1130,10 +1130,10 @@ Chart: Where to buy apples
 Pink Lady;        No;       Yes
 Red Delicious;    No;       No`
 
-    const documentNode = Up.toAst(markup, { createTableOfContents: true })
+    const document = Up.toAst(markup, { createTableOfContents: true })
 
-    const [bestFruitHeading, table, purchasingHeading, chart] = documentNode.children
-    const { entries } = documentNode.tableOfContents
+    const [bestFruitHeading, table, purchasingHeading, chart] = document.children
+    const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === table).to.be.true
@@ -1167,14 +1167,14 @@ Red Delicious;    No;       No`
       Pink Lady;        No;       Yes
       Red Delicious;    No;       No`
 
-    const documentNode = Up.toAst(markup, { createTableOfContents: true })
+    const document = Up.toAst(markup, { createTableOfContents: true })
 
-    const unorderedList = documentNode.children[0] as UnorderedListNode
+    const unorderedList = document.children[0] as UnorderedListNode
     const orderedList = unorderedList.items[0].children[1] as OrderedListNode
     const descriptionList = orderedList.items[0].children[1] as DescriptionListNode
 
     const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children
-    const { entries } = documentNode.tableOfContents
+    const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === table).to.be.true

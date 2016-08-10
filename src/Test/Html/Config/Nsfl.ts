@@ -14,7 +14,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -29,7 +29,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })
 
@@ -42,7 +42,7 @@ describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new NsflBlockNode([])
     ])
 
@@ -53,6 +53,6 @@ describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)
       + '<div></div>'
       + '</div>'
 
-    expect(up.toHtml(documentNode)).to.be.eql(html)
+    expect(up.toHtml(document)).to.be.eql(html)
   })
 })

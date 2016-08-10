@@ -45,13 +45,13 @@ describe("The ID of the footnote referenced by a footnote reference", () => {
       }
     })
 
-    const documentNode = new DocumentNode([
+    const document = new DocumentNode([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(up.toHtml(documentNode)).to.be.eql(
+    expect(up.toHtml(document)).to.be.eql(
       '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-fn-3">3</a></sup></p>')
   })
 })
