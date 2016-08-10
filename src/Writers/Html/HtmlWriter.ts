@@ -38,8 +38,8 @@ import { escapeHtmlContent } from './EscapingHelpers'
 
 
 export class HtmlWriter extends Writer {
-  // Our HTML for revealable content (spoilers, NSFW, NSFL) doesn't require JavaScript (just CSS), and it works
-  // perfectly well for screen-readers
+  // Our HTML for revealable content (spoilers, NSFW, and NSFL) doesn't require JavaScript (just CSS), and it
+  // works perfectly well for screen-readers.
   //
   // For example, here's our HTML for inline spoilers:
   //
@@ -61,7 +61,7 @@ export class HtmlWriter extends Writer {
   private nsflCount = 0
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
-  // We don't create an anchor element for the inner link.
+  // We don't create an <a> element for the inner link.
   private isInsideLink = false
 
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
