@@ -25,7 +25,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
-      then: line => {
+      thenBeforeConsumingLine: line => {
         linesOfMarkupInCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
       }
     })

@@ -31,7 +31,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       const isTerm = markupLineConsumer.consume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
-        then: line => {
+        thenBeforeConsumingLine: line => {
           markupPerTerm.push(line)
         }
       })
@@ -51,7 +51,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const hasDescription = markupLineConsumer.consume({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
-      then: line => {
+      thenBeforeConsumingLine: line => {
         descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
       }
     })

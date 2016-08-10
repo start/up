@@ -25,7 +25,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLETED_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
-      then: (line, bullet) => {
+      thenBeforeConsumingLine: (line, bullet) => {
         unparsedListItem =
           new UnparsedListItem({
             bullet,
@@ -62,7 +62,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  let listItems = unparsedListItems.map((unparsedListItem) => {
+  let listItems = unparsedListItems.map(unparsedListItem => {
     const itemChildren = getOutlineNodes({
       markupLines: unparsedListItem.markupLines,
       sourceLineNumber: unparsedListItem.sourceLineNumber,

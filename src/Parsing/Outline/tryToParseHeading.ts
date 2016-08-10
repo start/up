@@ -16,7 +16,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   markupLineConsumer.consume({
     linePattern: DIVIDER_STREAK_PATTERN,
-    then: line => {
+    thenBeforeConsumingLine: line => {
       optionalOverline = line
     }
   })
@@ -28,7 +28,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     // Now, let's consume the content...
     markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
-      then: line => {
+      thenBeforeConsumingLine: line => {
         contentMarkup = line
       }
     })
@@ -36,7 +36,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     // ... and the underline.
     && markupLineConsumer.consume({
       if: line => DIVIDER_STREAK_PATTERN.test(line) && isUnderlineConsistentWithOverline(optionalOverline, line),
-      then: line => {
+      thenBeforeConsumingLine: line => {
         underline = line
       }
     })

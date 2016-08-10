@@ -23,14 +23,14 @@ export class LineConsumer {
     args: {
       linePattern?: RegExp
       if?: ShouldConsumeLine
-      then?: OnConsume
+      thenBeforeConsumingLine?: OnConsume
     }
   ): boolean {
     if (this.done()) {
       return false
     }
 
-    const { linePattern, then } = args
+    const { linePattern, thenBeforeConsumingLine } = args
     let captures: string[] = []
 
     const line = this.lines[this._countLinesConsumed]
@@ -49,10 +49,10 @@ export class LineConsumer {
       return false
     }
 
-    if (then) {
-      then(line, ...captures)
+    if (thenBeforeConsumingLine) {
+      thenBeforeConsumingLine(line, ...captures)
     }
-    
+
     this.skipLines(1)
 
     return true

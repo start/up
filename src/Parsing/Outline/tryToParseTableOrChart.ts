@@ -76,13 +76,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const isTable =
     markupLineConsumer.consume({
       linePattern: getLabelPattern(terms.table),
-      then: setRawCaptionContent
+      thenBeforeConsumingLine: setRawCaptionContent
     })
 
   const isChart =
     !isTable && markupLineConsumer.consume({
       linePattern: getLabelPattern(terms.chart),
-      then: setRawCaptionContent
+      thenBeforeConsumingLine: setRawCaptionContent
     })
 
   if (!isTable && !isChart) {
@@ -94,7 +94,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const hasHeader =
     !tryToTerminateTable(markupLineConsumer)
     && markupLineConsumer.consume({
-      then: line => {
+      thenBeforeConsumingLine: line => {
         headerCells = getTableCells(line, config).map(toHeaderCell)
       }
     })
@@ -132,7 +132,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   } while (
     !tryToTerminateTable(markupLineConsumer)
     && markupLineConsumer.consume({
-      then: line => {
+      thenBeforeConsumingLine: line => {
         const cells = getTableCells(line, config)
 
         // In a chart, the first cell of each row is treated as a header for that row.

@@ -56,7 +56,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
     const wasLineConsumed = markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
-      then: line => {
+      thenBeforeConsumingLine: line => {
         inlineNodes = getInlineNodes(line, args.config)
       }
     })
