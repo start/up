@@ -47,10 +47,19 @@ export function getOutlineNodes(
     tryToParseDescriptionList
   ]
 
-  const markupLineConsumer = new LineConsumer(withoutOuterBlankLines(markupLines))
-  const outlineNodes: OutlineSyntaxNode[] = []
-
   let { sourceLineNumber } = args
+
+  const markupWithoutLeadingBlankLines =
+    withoutLeadingBlankLines(markupLines)
+
+  sourceLineNumber +=
+    markupLines.length - markupWithoutLeadingBlankLines.length
+
+  const markupWithoutOuterBlankLines =
+    withoutTrailingBlankLines(markupWithoutLeadingBlankLines)
+
+  const markupLineConsumer = new LineConsumer(markupWithoutOuterBlankLines)
+  const outlineNodes: OutlineSyntaxNode[] = []
 
   while (!markupLineConsumer.done()) {
     sourceLineNumber += markupLineConsumer.countLinesConsumed
@@ -81,29 +90,6 @@ export function getOutlineNodes(
 }
 
 
-// To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
-function condenseConsecutiveOutlineSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
-  const resultNodes: OutlineSyntaxNode[] = []
-
-  for (let node of nodes) {
-    const isConsecutiveOutlineSeparatorNode =
-      node instanceof OutlineSeparatorNode
-      && last(resultNodes) instanceof OutlineSeparatorNode
-
-    if (!isConsecutiveOutlineSeparatorNode) {
-      resultNodes.push(node)
-    }
-  }
-
-  return resultNodes
-}
-
-
-function withoutOuterBlankLines(lines: string[]): string[] {
-  return withoutTrailingBlankLines(withoutLeadingBlankLines(lines))
-}
-
-
 function withoutLeadingBlankLines(lines: string[]): string[] {
   let firstIndexOfNonBlankLine = 0
 
@@ -130,4 +116,21 @@ function withoutTrailingBlankLines(lines: string[]): string[] {
   }
 
   return lines.slice(0, lastIndexOfNonBlankLine + 1)
+}
+
+// To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
+function condenseConsecutiveOutlineSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+  const resultNodes: OutlineSyntaxNode[] = []
+
+  for (let node of nodes) {
+    const isConsecutiveOutlineSeparatorNode =
+      node instanceof OutlineSeparatorNode
+      && last(resultNodes) instanceof OutlineSeparatorNode
+
+    if (!isConsecutiveOutlineSeparatorNode) {
+      resultNodes.push(node)
+    }
+  }
+
+  return resultNodes
 }
