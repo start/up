@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
@@ -29,7 +30,6 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.toHtml(documentNode)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
   })
 
-
   specify('Unordered list', () => {
     const documentNode = new DocumentNode([
       new UnorderedListNode([
@@ -52,7 +52,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '<li><p data-up-source-line="4">Territories</p></li>'
       + '</ul>')
   })
-
 
   specify('Ordered lists without start ordinals', () => {
     const documentNode = new DocumentNode([
@@ -77,7 +76,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</ol>')
   })
 
-
   specify('Ordered lists with start ordinals', () => {
     const documentNode = new DocumentNode([
       new OrderedListNode([
@@ -101,7 +99,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</ol>')
   })
 
-
   specify('Reversed ordered lists with start ordinals', () => {
     const documentNode = new DocumentNode([
       new OrderedListNode([
@@ -124,7 +121,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '<li value="1"><p>Territories</p></li>'
       + '</ol>')
   })
-
 
   specify('Description lists', () => {
     const documentNode = new DocumentNode([
@@ -157,7 +153,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</dl>')
   })
 
-
   specify('Tables', () => {
     const documentNode = new DocumentNode([
       new TableNode(
@@ -187,7 +182,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
       + '</table>')
   })
-
 
   specify('Charts', () => {
     const documentNode = new DocumentNode([
@@ -220,7 +214,6 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</table>')
   })
 
-
   specify('Line blocks', () => {
     const documentNode = new DocumentNode([
       new LineBlockNode([
@@ -248,7 +241,6 @@ context('When an outline syntax node has a source line number, its outermost ele
 
     expect(Up.toHtml(documentNode)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
   })
-
 
   specify('Blockquotes', () => {
     const documentNOde = new DocumentNode([
@@ -321,46 +313,12 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.toHtml(documentNode)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h1>')
   })
 
-
   specify('Section separators', () => {
     const documentNode = new DocumentNode([
       new OutlineSeparatorNode(2)
     ])
 
     expect(Up.toHtml(documentNode)).to.be.eql('<hr data-up-source-line="2">')
-  })
-
-
-  specify('Images', () => {
-    const documentNode = new DocumentNode([
-      new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 2)
-    ])
-
-    expect(Up.toHtml(documentNode)).to.be.eql(
-      '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house" data-up-source-line="2">')
-  })
-
-
-  specify('Audio nodes', () => {
-    const documentNode = new DocumentNode([
-      new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg', 3)
-    ])
-
-    expect(Up.toHtml(documentNode)).to.be.eql(
-      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop data-up-source-line="3">'
-      + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
-      + '</audio>')
-  })
-
-  specify('Videos', () => {
-    const documentNode = new DocumentNode([
-      new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
-    ])
-
-    expect(Up.toHtml(documentNode)).to.be.eql(
-      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop data-up-source-line="5">'
-      + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
-      + '</video>')
   })
 
   specify('Spoiler blocks', () => {
@@ -424,5 +382,50 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
 
     expect(Up.toHtml(documentNode)).to.be.eql(html)
+  })
+
+  specify('Images', () => {
+    const documentNode = new DocumentNode([
+      new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 2)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house" data-up-source-line="2">')
+  })
+
+
+  specify('Audio nodes', () => {
+    const documentNode = new DocumentNode([
+      new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg', 3)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop data-up-source-line="3">'
+      + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
+      + '</audio>')
+  })
+
+  specify('Videos', () => {
+    const documentNode = new DocumentNode([
+      new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop data-up-source-line="5">'
+      + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
+      + '</video>')
+  })
+
+  specify('Links (containing outlined media conventions)', () => {
+    const documentNode = new DocumentNode([
+      new LinkNode([
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      ], 'https://example.com/gallery', 2)
+    ])
+
+    expect(Up.toHtml(documentNode)).to.be.eql(
+      '<a href="https://example.com/gallery" data-up-source-line="2">'
+      + '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">'
+      + '</a>')
   })
 })
