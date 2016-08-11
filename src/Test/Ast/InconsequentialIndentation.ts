@@ -221,6 +221,74 @@ context('Ordered list item bullets can have a single leading space. This include
 })
 
 
+context('Description list terms can have a single leading space. This includes:', () => {
+  specify('The first term for a description', () => {
+    const markup = `
+ Charmander
+Charmeleon
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmeleon')])
+          ], new DescriptionListNode.Item.Description([
+            new ParagraphNode([
+              new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+
+  specify('The last term for a description', () => {
+    const markup = `
+Charmander
+ Charmeleon
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmeleon')])
+          ], new DescriptionListNode.Item.Description([
+            new ParagraphNode([
+              new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+
+  specify('A term that is neither the first nor the last for a description', () => {
+    const markup = `
+Charmander
+ Charmeleon
+Charizard
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmeleon')]),
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charizard')])
+          ], new DescriptionListNode.Item.Description([
+            new ParagraphNode([
+              new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+})
+
+
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
   context('This is true for:', () => {
     specify('Paragraphs', () => {
@@ -270,27 +338,6 @@ Hello, world!
         new DocumentNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
           new HeadingNode([new PlainTextNode('Hello, core!')], 1),
-        ]))
-    })
-
-    specify('Description list terms (a single leading space is allowed)', () => {
-      const markup = `
- Charmander
-Charmeleon
-  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
-              new DescriptionListNode.Item.Term([new PlainTextNode('Charmeleon')])
-            ], new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
-              ])
-            ]))
-          ])
         ]))
     })
   })
