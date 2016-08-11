@@ -55,9 +55,9 @@ context('An ordered list item start have a single leading space. This includes:'
 
   specify('An item in the middle', () => {
     const markup = `
--1. Hello, Celadon City!
- 0. Goodbye, Celadon City!
-01. No, really. Goodbye.`
+#) Hello, Celadon City!
+ #) Goodbye, Celadon City!
+#) No, really. Goodbye.`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
@@ -66,17 +66,17 @@ context('An ordered list item start have a single leading space. This includes:'
             new ParagraphNode([
               new PlainTextNode('Hello, Celadon City!')
             ])
-          ], -1),
+          ]),
           new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, Celadon City!')
             ])
-          ], 0),
+          ]),
           new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('No, really. Goodbye.')
             ])
-          ], 1)
+          ])
         ])
       ]))
   })
