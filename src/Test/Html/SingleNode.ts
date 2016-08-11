@@ -722,7 +722,7 @@ describe('A footnote node', () => {
 
     expect(Up.toHtml(documentnode)).to.be.eql(
       '<p>'
-      + '<sup id="up-footnote-reference-3" class="up-footnote-reference">'
+      + '<sup class="up-footnote-reference" id="up-footnote-reference-3">'
       + '<a href="#up-footnote-3">3</a>'
       + '</sup>'
       + '</p>')
@@ -772,7 +772,7 @@ describe('An image node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">')
+      '<img alt="haunted house" src="http://example.com/hauntedhouse.svg" title="haunted house">')
   })
 })
 
@@ -784,7 +784,7 @@ describe('An audio node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop>'
+      '<audio controls loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
   })
@@ -798,7 +798,7 @@ describe('A video node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop>'
+      '<video controls loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
   })
