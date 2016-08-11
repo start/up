@@ -1,7 +1,7 @@
-import { UpConfigSettings} from './UpConfigSettings'
+import { ConfigSettings} from './ConfigSettings'
 
 
-const DEFAULT_SETTINGS: UpConfigSettings = {
+const DEFAULT_SETTINGS: ConfigSettings = {
   createTableOfContents: false,
   createSourceMap: false,
 
@@ -39,13 +39,13 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
 
 
 export class UpConfig {
-  settings: UpConfigSettings
+  settings: ConfigSettings
 
-  constructor(changes?: UpConfigSettings, baseSettings = DEFAULT_SETTINGS) {
+  constructor(changes?: ConfigSettings, baseSettings = DEFAULT_SETTINGS) {
     this.settings = applyChanges(baseSettings, changes)
   }
 
-  withChanges(changes: UpConfigSettings): UpConfig {
+  withChanges(changes: ConfigSettings): UpConfig {
     return new UpConfig(changes, this.settings)
   }
 

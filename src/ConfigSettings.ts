@@ -1,4 +1,4 @@
-export interface UpConfigSettings {
+export interface ConfigSettings {
   createTableOfContents?: boolean
   createSourceMap?: boolean
 

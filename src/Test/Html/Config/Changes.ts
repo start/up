@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { UpConfigSettings } from '../../../UpConfigSettings'
+import { ConfigSettings } from '../../../ConfigSettings'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
@@ -14,8 +14,8 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: DocumentNode
-    configChanges: UpConfigSettings
-    conflictingConfigChanges: UpConfigSettings
+    configChanges: ConfigSettings
+    conflictingConfigChanges: ConfigSettings
   }
 ): void {
   const { document, configChanges, conflictingConfigChanges } = args

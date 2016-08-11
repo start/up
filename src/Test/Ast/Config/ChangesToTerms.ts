@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { UpConfigSettings } from '../../../UpConfigSettings'
+import { ConfigSettings } from '../../../ConfigSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -10,8 +10,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     textForConfigChanges: string
     textForDefaultSettings: string
-    configChanges: UpConfigSettings
-    conflictingConfigChanges: UpConfigSettings
+    configChanges: ConfigSettings
+    conflictingConfigChanges: ConfigSettings
   }
 ): void {
   const { textForConfigChanges, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
