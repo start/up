@@ -543,7 +543,7 @@ Hello, world!
       const markup = `
   \t \t > I like shorts! They're comfy and easy to wear!
 >
-> like blankets, too.`
+> I like blankets, too.`
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
@@ -558,11 +558,11 @@ Hello, world!
         ]))
     })
 
-    specify('The laste line', () => {
+    specify('The last line', () => {
       const markup = `
 > I like shorts! They're comfy and easy to wear!
 >
-\t \t > like blankets, too.`
+\t \t > I like blankets, too.`
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([

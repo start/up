@@ -3,6 +3,7 @@ import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { patternStartingWith, optional } from '../PatternHelpers'
+import { ANY_WHITESPACE } from '../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -46,4 +47,4 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
 
 
 const BLOCKQUOTE_DELIMITER_PATTERN =
-  patternStartingWith('>' + optional(' '))
+  patternStartingWith(ANY_WHITESPACE + '>' + optional(' '))
