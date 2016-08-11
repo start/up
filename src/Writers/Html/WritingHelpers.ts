@@ -36,7 +36,7 @@ export function internalFragmentUrl(id: string): string {
 //
 // In the following example, the `reversed` attribute doesn't specify a value:
 //
-// <ol start="2" reversed>
+// <ol reversed start="2">
 //   <li value="2">
 //     <p>Ivysaur</p>
 //   </li>
