@@ -216,7 +216,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 })
 
 
-context("An image's URL is not considered unsafe if its scheme starts with", () => {
+context("An image's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new DocumentNode([
       new ImageNode('Uh-oh!', 'javascript-app:stuff')
@@ -255,7 +255,7 @@ context("An image's URL is not considered unsafe if its scheme starts with", () 
 })
 
 
-context("An audio convention's URL is not considered unsafe if its scheme starts with", () => {
+context("An audio convention's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new DocumentNode([
       new AudioNode('Uh-oh!', 'javascript-app:stuff')
@@ -302,7 +302,7 @@ context("An audio convention's URL is not considered unsafe if its scheme starts
 })
 
 
-context("A video's URL is not considered unsafe if its scheme starts with", () => {
+context("A video's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new DocumentNode([
       new VideoNode('Uh-oh!', 'javascript-app:stuff')
