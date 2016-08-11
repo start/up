@@ -64,8 +64,8 @@ context('When an outline syntax node has a source line number, its outermost ele
         new OrderedListNode.Item([
           new ParagraphNode([
             new PlainTextNode('Territories')
-          ])
-        ], 3)
+          ], 3)
+        ])
       ], 1)
     ])
 
@@ -94,8 +94,8 @@ context('When an outline syntax node has a source line number, its outermost ele
 
     expect(Up.toHtml(document)).to.be.eql(
       '<ol start="3" data-up-source-line="1">'
-      + '<li value="3"><p>Tropical</p></li>'
-      + '<li><p>Territories</p></li>'
+      + '<li value="3"><p data-up-source-line="1">Tropical</p></li>'
+      + '<li><p data-up-source-line="3">Territories</p></li>'
       + '</ol>')
   })
 
@@ -110,15 +110,15 @@ context('When an outline syntax node has a source line number, its outermost ele
         new OrderedListNode.Item([
           new ParagraphNode([
             new PlainTextNode('Territories')
-          ], 3)
+          ], 2)
         ], 1)
       ], 1)
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<ol start="2" reversed data-up-source-line="3">'
-      + '<li value="2"><p>Tropical</p></li>'
-      + '<li value="1"><p>Territories</p></li>'
+      '<ol start="2" reversed data-up-source-line="1">'
+      + '<li value="2"><p data-up-source-line="1">Tropical</p></li>'
+      + '<li value="1"><p data-up-source-line="2">Territories</p></li>'
       + '</ol>')
   })
 
