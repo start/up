@@ -349,7 +349,7 @@ You're in for a fright`
 
 
 context("Indentation does not matter for a code block's fences, though it does matter for the code itself", () => {
-    it('produces a code block node', () => {
+  it('produces a code block node', () => {
     const markup = `
           \`\`\`\`\`\`\`\`\`\`\`\`
   function factorial(n: number): number {
@@ -363,7 +363,7 @@ context("Indentation does not matter for a code block's fences, though it does m
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
         new CodeBlockNode(
-`  function factorial(n: number): number {
+          `  function factorial(n: number): number {
     return (
       n <= 1
         ? 1
@@ -536,6 +536,67 @@ Hello, world!
           ],
           new TableNode.Caption([new PlainTextNode('AND operator logic')]))
       ]))
+  })
+
+  context('Blockquotes:', () => {
+    specify('The first line', () => {
+      const markup = `
+  \t \t > I like shorts! They're comfy and easy to wear!
+>
+> like blankets, too.`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like blankets, too.")
+            ])
+          ])
+        ]))
+    })
+
+    specify('The laste line', () => {
+      const markup = `
+> I like shorts! They're comfy and easy to wear!
+>
+\t \t > like blankets, too.`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new ParagraphNode([
+              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like blankets, too.")
+            ])
+          ])
+        ]))
+    })
+
+    specify('A line in the middle', () => {
+      const markup = `
+> Roses are red
+\t > Violets are blue
+>
+> I like poems! They're comfy and easy to write!`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new BlockquoteNode([
+            new LineBlockNode([
+              new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
+              new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
+            ]),
+            new ParagraphNode([
+              new PlainTextNode("I like poems! They're comfy and easy to write!")
+            ])
+          ])
+        ]))
+    })
   })
 })
 
