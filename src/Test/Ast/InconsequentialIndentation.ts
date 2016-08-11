@@ -374,7 +374,7 @@ context("Indentation does not matter for a code block's fences, though it does m
 })
 
 
-context('All indentation is ignored for most outline conventions:', () => {
+context('For some outline conventions, all leading whitespace is ignored:', () => {
   specify('Paragraphs', () => {
     const markup = `
    \t  I'm just a normal guy who eats only when it's raining outside.
