@@ -13,6 +13,7 @@ import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 
 
 describe('Overlapping emphasis (using asterisks) and a link', () => {
@@ -90,6 +91,43 @@ describe('A link overlapping emphasized text (using underscores)', () => {
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
+      ]))
+  })
+})
+
+
+context('When a link overlaps highlighted text, the highlighted text will always be split. This includes when:', () => {
+  it('The link opens first', () => {
+    expect(Up.toAst('This [trash {highlight: can](https://en.wikipedia.org/wiki/Waste_container) not} stay here.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('This '),
+        new LinkNode([
+          new PlainTextNode('trash '),
+          new HighlightNode([
+            new PlainTextNode('can')
+          ]),
+        ], 'https://en.wikipedia.org/wiki/Waste_container'),
+        new HighlightNode([
+          new PlainTextNode(' not')
+        ]),
+        new PlainTextNode(' stay here.')
+      ]))
+  })
+
+  it('The highlight opens first', () => {
+    expect(Up.toAst('I do [highlight: not {care] at}(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I do '),
+        new HighlightNode([
+          new PlainTextNode('not ')
+        ]),
+        new LinkNode([
+          new HighlightNode([
+            new PlainTextNode('care')
+          ]),
+          new PlainTextNode(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainTextNode(' all.')
       ]))
   })
 })
