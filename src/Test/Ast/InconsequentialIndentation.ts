@@ -289,7 +289,7 @@ Charizard
 })
 
 
-context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
+context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, all leading whitespace is somtimes ignored.", () => {
   context('This is true for:', () => {
     specify('Paragraphs', () => {
       expect(Up.toAst(" \t I'm just a normal guy who eats only when it's raining outside.")).to.be.eql(
@@ -495,15 +495,15 @@ Charmander
 
   specify('Tables', () => {
     const markup = `
- Table:
+  \t Table:
 
- \t Game; Release Date
+ \t  Game; Release Date
 
  \t Final Fantasy; 1987
- \t Final Fantasy II; 1988
+ \t  Final Fantasy II; 1988
 
  \t Chrono Trigger; 1995
- \t Chrono Cross; 1999`
+ \t  Chrono Cross; 1999`
 
     expect(Up.toAst(markup)).to.be.eql(
       new DocumentNode([
