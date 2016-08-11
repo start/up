@@ -262,7 +262,7 @@ context("An audio convention's URL is not considered unsafe if its scheme starts
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="javascript-app:stuff" title="Uh-oh!" controls loop>'
+      '<audio controls loop src="javascript-app:stuff" title="Uh-oh!">'
       + '<a href="javascript-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -273,7 +273,7 @@ context("An audio convention's URL is not considered unsafe if its scheme starts
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="data-app:stuff" title="Uh-oh!" controls loop>'
+      '<audio controls loop src="data-app:stuff" title="Uh-oh!">'
       + '<a href="data-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -284,7 +284,7 @@ context("An audio convention's URL is not considered unsafe if its scheme starts
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="file-app:stuff" title="Uh-oh!" controls loop>'
+      '<audio controls loop src="file-app:stuff" title="Uh-oh!">'
       + '<a href="file-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -295,7 +295,7 @@ context("An audio convention's URL is not considered unsafe if its scheme starts
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="vbscript-app:stuff" title="Uh-oh!" controls loop>'
+      '<audio controls loop src="vbscript-app:stuff" title="Uh-oh!">'
       + '<a href="vbscript-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -309,7 +309,7 @@ context("A video's URL is not considered unsafe if its scheme starts with", () =
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="javascript-app:stuff" title="Uh-oh!" controls loop>'
+      '<video controls loop src="javascript-app:stuff" title="Uh-oh!">'
       + '<a href="javascript-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -320,7 +320,7 @@ context("A video's URL is not considered unsafe if its scheme starts with", () =
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="data-app:stuff" title="Uh-oh!" controls loop>'
+      '<video controls loop src="data-app:stuff" title="Uh-oh!">'
       + '<a href="data-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -331,7 +331,7 @@ context("A video's URL is not considered unsafe if its scheme starts with", () =
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="file-app:stuff" title="Uh-oh!" controls loop>'
+      '<video controls loop src="file-app:stuff" title="Uh-oh!">'
       + '<a href="file-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -342,7 +342,7 @@ context("A video's URL is not considered unsafe if its scheme starts with", () =
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="vbscript-app:stuff" title="Uh-oh!" controls loop>'
+      '<video controls loop src="vbscript-app:stuff" title="Uh-oh!">'
       + '<a href="vbscript-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
