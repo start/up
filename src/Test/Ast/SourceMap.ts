@@ -556,6 +556,24 @@ I do eat apples, though.`
 })
 
 
+describe('When a blockquote starts with a blank line', () => {
+  specify('its first convention is mapped to the correct line', () => {
+    const markup = `
+>
+> Who doesn't?
+>
+> Well, aside from you.`
+    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+      new DocumentNode([
+        new BlockquoteNode([
+          new ParagraphNode([new PlainTextNode("Who doesn't?")], 3),
+          new ParagraphNode([new PlainTextNode("Well, aside from you.")], 5)
+        ], 2)
+      ]))
+  })
+})
+
+
 context('When there are several outline conventions, all of them are given soure line numbers. This includes when:', () => {
   specify('They are all at the top-level of the document', () => {
     const markup = `
