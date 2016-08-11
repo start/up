@@ -57,6 +57,13 @@ test: compile
 
 .PHONY: coverage
 coverage: compile
+# Istanbul produces an HTML file for every JavaScript file it touches during unit testing. It does not delete
+# any of its previous summary files.
+#
+# To avoid cluttering up search results with coverage summaries for renamed/removed files, we delete the
+# coverage folder each time we produce a new summary.     
+	rm -rf coverage
+
 # We want istanbul to run only our behavioral unit tests. Why?
 #
 # Well, for now, all 2000+ behavioral unit tests are run against `compiled_dir`. On the other hand, our handful
