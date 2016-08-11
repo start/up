@@ -290,7 +290,15 @@ export class HtmlWriter extends Writer {
   }
 
   protected image(image: ImageNode): string {
-    return singleTagHtmlElement('img', { src: image.url, alt: image.description, title: image.description })
+    const attrs =
+      attrsFor(
+        image, {
+          src: image.url,
+          alt: image.description,
+          title: image.description
+        })
+
+    return singleTagHtmlElement('img', attrs)
   }
 
   protected audio(audio: AudioNode): string {
@@ -298,7 +306,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected video(video: VideoNode): string {
-    return this.playableMediaElement(video, 'video',)
+    return this.playableMediaElement(video, 'video')
   }
 
   protected plainText(plainText: PlainTextNode): string {
@@ -427,7 +435,7 @@ export class HtmlWriter extends Writer {
 
   private playableMediaElement(media: AudioNode | VideoNode, tagName: string): string {
     const { url, description } = media
-    
+
     const attrs =
       attrsFor(
         media, {
