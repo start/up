@@ -486,7 +486,7 @@ export class HtmlWriter extends Writer {
       this.element(tagNameForGenericContainers, args.revealableChildren)
 
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
-    
+
     attrsForOuterContainer.class =
       classAttrValue(nonLocalizedConventionTerm, 'revealable')
 

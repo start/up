@@ -30,7 +30,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
           new UnparsedListItem({
             bullet,
             firstLineOfMarkup: line.replace(BULLETED_PATTERN, ''),
-            sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed 
+            sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed
           })
       }
     })
