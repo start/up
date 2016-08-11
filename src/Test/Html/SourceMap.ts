@@ -390,7 +390,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house" data-up-source-line="2">')
+      '<img alt="haunted house" data-up-source-line="2" src="http://example.com/hauntedhouse.svg" title="haunted house">')
   })
 
 
@@ -400,7 +400,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="http://example.com/ghosts.ogg" title="ghostly howling" controls loop data-up-source-line="3">'
+      '<audio controls data-up-source-line="3" loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
   })
@@ -411,7 +411,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="http://example.com/poltergeists.webm" title="ghosts eating luggage" controls loop data-up-source-line="5">'
+      '<video controls data-up-source-line="5" loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
   })
@@ -424,8 +424,8 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<a href="https://example.com/gallery" data-up-source-line="2">'
-      + '<img src="http://example.com/hauntedhouse.svg" alt="haunted house" title="haunted house">'
+      '<a data-up-source-line="2" href="https://example.com/gallery">'
+      + '<img alt="haunted house" src="http://example.com/hauntedhouse.svg" title="haunted house">'
       + '</a>')
   })
 })
