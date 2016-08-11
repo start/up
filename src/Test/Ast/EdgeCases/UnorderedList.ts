@@ -81,6 +81,34 @@ context('An ordered list item start have a single leading space. This includes:'
         ])
       ]))
   })
+
+  specify('Every item', () => {
+    const markup = `
+ - Hello, Celadon City!
+ - Goodbye, Celadon City!
+ - No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ])
+        ])
+      ]))
+  })
 })
 
 
