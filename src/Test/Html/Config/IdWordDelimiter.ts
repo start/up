@@ -26,7 +26,7 @@ describe("The words in a footnote reference's ID (as well as the ID of the footn
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="up::footnote::reference::3" class="up-footnote-reference"><a href="#up::footnote::3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="up::footnote::reference::3"><a href="#up::footnote::3">3</a></sup></p>')
   })
 })
 
@@ -161,7 +161,7 @@ describe("In a footnote reference, separate words in the provided document name"
     })
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="reply::11::footnote::reference::3" class="up-footnote-reference"><a href="#reply::11::footnote::3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="reply::11::footnote::reference::3"><a href="#reply::11::footnote::3">3</a></sup></p>')
   })
 })
 
