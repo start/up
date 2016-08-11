@@ -374,7 +374,7 @@ context("Indentation does not matter for a code block's fences, though it does m
 })
 
 
-context('For some outline conventions, all leading whitespace is ignored:', () => {
+context('For some outline conventions, all extra indentation is ignored:', () => {
   specify('Paragraphs', () => {
     const markup = `
    \t  I'm just a normal guy who eats only when it's raining outside.
@@ -597,79 +597,8 @@ Hello, world!
           ])
         ]))
     })
-  })
-})
 
-
-context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, all leading whitespace is somtimes ignored.", () => {
-  context("This rule also applies inside outline conventions that can contain other outline conventions:", () => {
-    specify('Ordered list items', () => {
-      const markup = `
-1)  \t Hello, Lavender Town!
-
- \t\t How are we today?`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode('Hello, Lavender Town!')
-              ]),
-              new ParagraphNode([
-                new PlainTextNode('How are we today?')
-              ])
-            ], 1)
-          ])
-        ]))
-    })
-
-    specify('Unordered list items', () => {
-      const markup = `
-*  \t Buy milk.
-
- \t\t Now.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode('Buy milk.')
-              ]),
-              new ParagraphNode([
-                new PlainTextNode('Now.')
-              ])
-            ])
-          ])
-        ]))
-    })
-
-    specify('Descriptions in a description list', () => {
-      const markup = `
-Charmander
-   \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
-   
-\t Does not evolve into Kadabra.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
-            ], new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
-              ]),
-              new ParagraphNode([
-                new PlainTextNode('Does not evolve into Kadabra.')
-              ])
-            ]))
-          ])
-        ]))
-    })
-
-    specify('Blockquotes', () => {
+    specify('After the delimiters', () => {
       const markup = `
 >   \t I like shorts! They're comfy and easy to wear!
 >
@@ -687,5 +616,74 @@ Charmander
           ])
         ]))
     })
+  })
+})
+
+
+context("Within list items, extra indentation for outline conventions is ignored, just as it would be at the top-level of the document", () => {
+  specify('Ordered list items', () => {
+    const markup = `
+1)  \t Hello, Lavender Town!
+
+ \t\t How are we today?`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Lavender Town!')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('How are we today?')
+            ])
+          ], 1)
+        ])
+      ]))
+  })
+
+  specify('Unordered list items', () => {
+    const markup = `
+*  \t Buy milk.
+
+ \t\t Now.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Buy milk.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Now.')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('Descriptions in a description list', () => {
+    const markup = `
+Charmander
+   \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
+   
+\t Does not evolve into Kadabra.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new DescriptionListNode([
+          new DescriptionListNode.Item([
+            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
+          ], new DescriptionListNode.Item.Description([
+            new ParagraphNode([
+              new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Does not evolve into Kadabra.')
+            ])
+          ]))
+        ])
+      ]))
   })
 })
