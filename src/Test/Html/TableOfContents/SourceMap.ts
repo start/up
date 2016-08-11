@@ -22,7 +22,7 @@ context("When an item referenced by the table of contents has a source line numb
       + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1" data-up-source-line="2">I enjoy apples</h1>')
+      + '<h1 data-up-source-line="2" id="up-item-1">I enjoy apples</h1>')
   })
 
   specify('A table entry contains only a link reflecting its caption', () => {
@@ -55,7 +55,7 @@ context("When an item referenced by the table of contents has a source line numb
       + '<li><a href="#up-item-1">Influential games</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-item-1" data-up-source-line="4">'
+      + '<table data-up-source-line="4" id="up-item-1">'
       + '<caption>Influential games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
       + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
@@ -94,7 +94,7 @@ context("When an item referenced by the table of contents has a source line numb
       + '<li><a href="#up-item-1">AND operator logic</a></li>'
       + '</ul>'
       + '</nav>'
-      + '<table id="up-item-1" data-up-source-line="3">'
+      + '<table data-up-source-line="3" id="up-item-1">'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
       + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
