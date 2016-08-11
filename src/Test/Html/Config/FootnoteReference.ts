@@ -22,7 +22,7 @@ describe("A footnote reference's ID", () => {
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="up-ref-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="up-ref-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 })
 
