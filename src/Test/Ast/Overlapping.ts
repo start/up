@@ -8,6 +8,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 
 
 describe('Overlapped stressed and deleted text', () => {
@@ -102,6 +103,46 @@ describe('Overlapped inserted and emphasized text', () => {
           ])
         ]),
         new EmphasisNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped highlighted and stressed text', () => {
+  it('split the stress node because it opened second', () => {
+    expect(Up.toAst('I [highlight: love **drinking] whole** milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new HighlightNode([
+          new PlainTextNode('love '),
+          new StressNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new StressNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed and highlighted text', () => {
+  it('split the highlight node because it opened second', () => {
+    expect(Up.toAst('I **love [highlight: drinking** whole] milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new StressNode([
+          new PlainTextNode('love '),
+          new HighlightNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new HighlightNode([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
