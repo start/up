@@ -223,7 +223,7 @@ context("An image's URL is not considered unsafe if its scheme starts with", () 
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="javascript-app:stuff" alt="Uh-oh!" title="Uh-oh!">')
+      '<img alt="Uh-oh!" src="javascript-app:stuff" title="Uh-oh!">')
   })
 
   specify('data-app', () => {
@@ -232,7 +232,7 @@ context("An image's URL is not considered unsafe if its scheme starts with", () 
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="data-app:stuff" alt="Uh-oh!" title="Uh-oh!">')
+      '<img alt="Uh-oh!" src="data-app:stuff" title="Uh-oh!">')
   })
 
   specify('file-app', () => {
@@ -241,7 +241,7 @@ context("An image's URL is not considered unsafe if its scheme starts with", () 
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="file-app:stuff" alt="Uh-oh!" title="Uh-oh!">')
+      '<img alt="Uh-oh!" src="file-app:stuff" title="Uh-oh!">')
   })
 
   specify('vbscript-app', () => {
@@ -250,7 +250,7 @@ context("An image's URL is not considered unsafe if its scheme starts with", () 
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="vbscript-app:stuff" alt="Uh-oh!" title="Uh-oh!">')
+      '<img alt="Uh-oh!" src="vbscript-app:stuff" title="Uh-oh!">')
   })
 })
 
