@@ -50,9 +50,11 @@ export function getOutlineNodes(
   const markupWithoutLeadingBlankLines =
     withoutLeadingBlankLines(markupLines)
 
-  const startingSourceLineNumber = 
-    args.sourceLineNumber +
-      markupLines.length - markupWithoutLeadingBlankLines.length
+  const countLeadingBlankLinesRemoved =
+    (markupLines.length - markupWithoutLeadingBlankLines.length)
+
+  const startingSourceLineNumber =
+    args.sourceLineNumber + countLeadingBlankLinesRemoved
 
   const markupWithoutOuterBlankLines =
     withoutTrailingBlankLines(markupWithoutLeadingBlankLines)
