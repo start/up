@@ -14,6 +14,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
+import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
@@ -801,6 +802,24 @@ describe('A video node', () => {
       '<video controls loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
+  })
+})
+
+
+describe('A highlight node node', () => {
+  it('produces a <mark> element', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new HighlightNode([new PlainTextNode('45.9%')])
+      ])
+    ])
+
+    const html =
+      '<p>'
+      + '<mark>45.9%</mark>'
+      + '</p>'
+
+    expect(Up.toHtml(document)).to.be.eql(html)
   })
 })
 
