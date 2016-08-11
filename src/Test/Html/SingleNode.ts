@@ -427,11 +427,11 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
     expect(Up.toHtml(document)).to.be.eql(
       '<table>'
       + '<thead><tr><th scope="col"></th><th scope="col">Most Common Word</th></tr></thead>'
-      + '<tr><th scope="row" colspan="2">Monday</th></tr>'
-      + '<tr><th scope="row" colspan="2">Tuesday</th></tr>'
-      + '<tr><th scope="row" colspan="2">Wednesday</th></tr>'
+      + '<tr><th colspan="2" scope="row">Monday</th></tr>'
+      + '<tr><th colspan="2" scope="row">Tuesday</th></tr>'
+      + '<tr><th colspan="2" scope="row">Wednesday</th></tr>'
       + '<tr><th scope="row">Thursday</th><td>Really</td></tr>'
-      + '<tr><th scope="row" colspan="2">Friday</th></tr>'
+      + '<tr><th colspan="2" scope="row">Friday</th></tr>'
       + '</table>')
   })
 })
