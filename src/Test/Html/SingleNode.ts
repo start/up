@@ -174,7 +174,7 @@ describe('When an ordered list node is in descending order', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<ol start="0" reversed>'
+      '<ol reversed start="0">'
       + '<li value="0"><p>Tropical</p></li>'
       + '<li value="-1"><p>Territories</p></li>'
       + '</ol>')
@@ -308,7 +308,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
     expect(Up.toHtml(document)).to.be.eql(
       '<table>'
-      + '<thead><tr><th scope="col" colspan="5">Game</th><th scope="col" colspan="3">Developer</th></tr></thead>'
+      + '<thead><tr><th colspan="5" scope="col">Game</th><th colspan="3" scope="col">Developer</th></tr></thead>'
       + '</table>')
   })
 })
