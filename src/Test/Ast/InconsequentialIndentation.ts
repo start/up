@@ -289,16 +289,160 @@ Charizard
 })
 
 
+context('Indentation is ignored for most outline conventions:', () => {
+  specify('Paragraphs', () => {
+    const markup = `
+   \t  I'm just a normal guy who eats only when it's raining outside.
+  
+  \t\t\t\t Aren't you this way?`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new ParagraphNode([
+          new PlainTextNode("I'm just a normal guy who eats only when it's raining outside.")
+        ]),
+         new ParagraphNode([
+          new PlainTextNode("Aren't you this way?")
+        ])
+      ]))
+  })
+
+  specify('Spoiler blocks', () => {
+    const markup = `
+ \t SPOILER:
+ \t
+   \t I like shorts! They're comfy and easy to wear!
+
+\t I like blankets, too.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new SpoilerBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+          ]),
+          new ParagraphNode([
+            new PlainTextNode("I like blankets, too.")
+          ])
+        ])
+      ]))
+  })
+
+  specify('NSFW blocks', () => {
+    const markup = `
+  \t NSFW:
+ \t
+   \t I like shorts! They're comfy and easy to wear!
+
+\t I like blankets, too.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new NsfwBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+          ]),
+          new ParagraphNode([
+            new PlainTextNode("I like blankets, too.")
+          ])
+        ])
+      ]))
+  })
+
+  specify('NSFL blocks', () => {
+    const markup = `
+  \t NSFL:
+ \t
+   \t I like shorts! They're comfy and easy to wear!
+
+\t I like blankets, too.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new NsflBlockNode([
+          new ParagraphNode([
+            new PlainTextNode("I like shorts! They're comfy and easy to wear!")
+          ]),
+          new ParagraphNode([
+            new PlainTextNode("I like blankets, too.")
+          ])
+        ])
+      ]))
+  })
+
+  specify('Tables', () => {
+    const markup = `
+  \t Table:
+
+ \t  Game; Release Date
+
+ \t Final Fantasy; 1987
+ \t  Final Fantasy II; 1988
+
+ \t Chrono Trigger; 1995
+ \t  Chrono Cross; 1999`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
+              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
+              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ]),
+          ])
+      ]))
+  })
+
+  specify("Charts", () => {
+    const markup = `
+ \t  Chart: AND operator logic
+
+   \t     1;      0
+ \t  1;      true;   false
+  0;      false;  false`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          ],
+          new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+      ]))
+  })
+})
+
+
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, all leading whitespace is somtimes ignored.", () => {
   context('This is true for:', () => {
-    specify('Paragraphs', () => {
-      expect(Up.toAst(" \t I'm just a normal guy who eats only when it's raining outside.")).to.be.eql(
-        new DocumentNode([
-          new ParagraphNode([
-            new PlainTextNode("I'm just a normal guy who eats only when it's raining outside.")
-          ])
-        ]))
-    })
+
 
     specify('Line blocks', () => {
       const markup = `
@@ -426,137 +570,6 @@ Charmander
               new PlainTextNode("I like blankets, too.")
             ])
           ])
-        ]))
-    })
-
-    specify('Spoiler blocks', () => {
-      const markup = `
- \t SPOILER:
- \t
-   \t I like shorts! They're comfy and easy to wear!
-
-\t I like blankets, too.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
-            ]),
-            new ParagraphNode([
-              new PlainTextNode("I like blankets, too.")
-            ])
-          ])
-        ]))
-    })
-
-    specify('NSFW blocks', () => {
-      const markup = `
-  \t NSFW:
- \t
-   \t I like shorts! They're comfy and easy to wear!
-
-\t I like blankets, too.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
-            ]),
-            new ParagraphNode([
-              new PlainTextNode("I like blankets, too.")
-            ])
-          ])
-        ]))
-    })
-
-    specify('NSFL blocks', () => {
-      const markup = `
-  \t NSFL:
- \t
-   \t I like shorts! They're comfy and easy to wear!
-
-\t I like blankets, too.`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode("I like shorts! They're comfy and easy to wear!")
-            ]),
-            new ParagraphNode([
-              new PlainTextNode("I like blankets, too.")
-            ])
-          ])
-        ]))
-    })
-
-    specify('Tables', () => {
-      const markup = `
-  \t Table:
-
- \t  Game; Release Date
-
- \t Final Fantasy; 1987
- \t  Final Fantasy II; 1988
-
- \t Chrono Trigger; 1995
- \t  Chrono Cross; 1999`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
-            ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-                new TableNode.Row.Cell([new PlainTextNode('1987')])
-              ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-                new TableNode.Row.Cell([new PlainTextNode('1988')])
-              ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
-              ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
-              ]),
-            ])
-        ]))
-    })
-
-    specify("Charts", () => {
-      const markup = `
- \t  Chart: AND operator logic
-
-   \t     1;      0
- \t  1;      true;   false
-  0;      false;  false`
-
-      expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
-            ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
-            ],
-            new TableNode.Caption([new PlainTextNode('AND operator logic')]))
         ]))
     })
   })
