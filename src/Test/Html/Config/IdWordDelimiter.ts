@@ -213,7 +213,7 @@ describe('In a footnote reference, separate words in the provided term for "foot
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="up_fn_ref_3" class="up-footnote-reference"><a href="#up_footnote_3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="up_fn_ref_3"><a href="#up_footnote_3">3</a></sup></p>')
   })
 })
 
