@@ -267,7 +267,12 @@ export class HtmlWriter extends Writer {
     }
 
     this.isInsideLink = true
-    const html = this.element('a', link.children, { href: link.url })
+
+    const html =
+      this.element('a',
+      link.children,
+      attrsFor(link, { href: link.url }))
+    
     this.isInsideLink = false
 
     return html
