@@ -1,20 +1,18 @@
 import { escapeHtmlAttrValue, escapeHtmlContent } from './EscapingHelpers'
 
 
-export function htmlElement(
-  tagName: string,
-  content: string,
-  attrs: any = {}
-): string {
-  return htmlElementWithAlreadyEscapedChildren(tagName, [escapeHtmlContent(content)], attrs)
+export function htmlElement(tagName: string, unescapedContent: string, attrs: any = {}): string {
+  return htmlElementWithAlreadyEscapedChildren(
+    tagName,
+    [escapeHtmlContent(unescapedContent)],
+    attrs)
 }
 
-export function htmlElementWithAlreadyEscapedChildren(
-  tagName: string,
-  escapedChildren: string[],
-  attrs: any = {}
-): string {
-  return htmlStartTag(tagName, attrs) + escapedChildren.join('') + `</${tagName}>`
+export function htmlElementWithAlreadyEscapedChildren(tagName: string, escapedChildren: string[], attrs: any = {}): string {
+  return (
+    htmlStartTag(tagName, attrs)
+    + escapedChildren.join('')
+    + `</${tagName}>`)
 }
 
 export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
@@ -49,7 +47,7 @@ export const NO_ATTRIBUTE_VALUE: string = null
 
 function htmlStartTag(tagName: string, attrs: any): string {
   const tagNameWithAttrs =
-    [tagName].concat(htmlAttrs(attrs)).join(' ')
+    [tagName, ...htmlAttrs(attrs)].join(' ')
 
   return `<${tagNameWithAttrs}>`
 }
