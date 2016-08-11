@@ -15,6 +15,212 @@ import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 
 
+context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {
+  specify('The first item', () => {
+    const markup = `
+ * Hello, Celadon City!
+* Goodbye, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('The last item', () => {
+    const markup = `
+- Goodbye, Celadon City!
+ - Hello, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('An item in the middle', () => {
+    const markup = `
+- Hello, Celadon City!
+ - Goodbye, Celadon City!
+- No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('Every item', () => {
+    const markup = `
+ - Hello, Celadon City!
+ - Goodbye, Celadon City!
+ - No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
+context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {
+  specify('The first item', () => {
+    const markup = `
+ * Hello, Celadon City!
+* Goodbye, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('The last item', () => {
+    const markup = `
+- Goodbye, Celadon City!
+ - Hello, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('An item in the middle', () => {
+    const markup = `
+- Hello, Celadon City!
+ - Goodbye, Celadon City!
+- No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ])
+        ])
+      ]))
+  })
+
+  specify('Every item', () => {
+    const markup = `
+ - Hello, Celadon City!
+ - Goodbye, Celadon City!
+ - No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new UnorderedListNode([
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ]),
+          new UnorderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ])
+        ])
+      ]))
+  })
+})
+
+
 context("Indentation is important for many outline conventions. However, once the outline convention of a line has been determined, any leading whitespace is usually ignored.", () => {
   context('This is true for:', () => {
     specify('Paragraphs', () => {
