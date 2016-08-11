@@ -78,13 +78,14 @@ export class HtmlWriter extends Writer {
   }
 
   protected blockquote(blockquote: BlockquoteNode): string {
-    return this.element('blockquote', blockquote.children)
+    return this.element('blockquote', blockquote.children, attrsFor(blockquote))
   }
 
   protected unorderedList(list: UnorderedListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      list.items.map(listItem => this.unorderedListItem(listItem)))
+      list.items.map(listItem => this.unorderedListItem(listItem)),
+      attrsFor(list))
   }
 
   protected orderedList(list: OrderedListNode): string {
@@ -122,11 +123,12 @@ export class HtmlWriter extends Writer {
   protected codeBlock(codeBlock: CodeBlockNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
-      [htmlElement('code', codeBlock.code)])
+      [htmlElement('code', codeBlock.code)],
+      attrsFor(codeBlock))
   }
 
   protected paragraph(paragraph: ParagraphNode): string {
-    return this.element('p', paragraph.children)
+    return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
   protected heading(heading: HeadingNode): string {
