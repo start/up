@@ -204,36 +204,6 @@ export class HtmlWriter extends Writer {
     return this.nsfl(nsflBlock, 'div')
   }
 
-  protected spoiler(spoiler: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
-      conventionCount: ++this.spoilerCount,
-      revealableChildren: spoiler.children,
-      genericContainerTagName
-    })
-  }
-
-  protected nsfw(nsfw: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'nsfw',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
-      conventionCount: ++this.nsfwCount,
-      revealableChildren: nsfw.children,
-      genericContainerTagName
-    })
-  }
-
-  protected nsfl(nsfl: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
-    return this.revealableConvent({
-      nonLocalizedConventionTerm: 'nsfl',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
-      conventionCount: ++this.nsflCount,
-      revealableChildren: nsfl.children,
-      genericContainerTagName
-    })
-  }
-
   protected footnoteReference(footnote: FootnoteNode): string {
     if (this.isInsideTableOfContents) {
       // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
@@ -452,13 +422,43 @@ export class HtmlWriter extends Writer {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
-  private revealableConvent(
+  private spoiler(spoiler: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
+    return this.revealable({
+      nonLocalizedConventionTerm: 'spoiler',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      conventionCount: ++this.spoilerCount,
+      revealableChildren: spoiler.children,
+      genericContainerTagName
+    })
+  }
+
+  private nsfw(nsfw: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfw',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      conventionCount: ++this.nsfwCount,
+      revealableChildren: nsfw.children,
+      genericContainerTagName
+    })
+  }
+
+  private nsfl(nsfl: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfl',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      conventionCount: ++this.nsflCount,
+      revealableChildren: nsfl.children,
+      genericContainerTagName
+    })
+  }
+
+  private revealable(
     args: {
       nonLocalizedConventionTerm: string
       termForTogglingVisibility: string
       conventionCount: number
       revealableChildren: SyntaxNode[]
-      genericContainerTagName: string
+      genericContainerTagName: string,
     }
   ): string {
     const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName } = args
