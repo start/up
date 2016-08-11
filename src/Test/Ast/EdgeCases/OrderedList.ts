@@ -8,6 +8,81 @@ import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
 import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 
+context('An ordered list item start have a single leading space. This includes:', () => {
+  specify('The first item', () => {
+    const markup = `
+ 9. Hello, Celadon City!
+10. Goodbye, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 9),
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ], 10)
+        ])
+      ]))
+  })
+
+  specify('The last item', () => {
+    const markup = `
+10. Goodbye, Celadon City!
+ 9. Hello, Celadon City!`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ], 10),
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], 9)
+        ])
+      ]))
+  })
+
+  specify('An item in the middle', () => {
+    const markup = `
+-1. Hello, Celadon City!
+ 0. Goodbye, Celadon City!
+01. No, really. Goodbye.`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new OrderedListNode([
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Hello, Celadon City!')
+            ])
+          ], -1),
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('Goodbye, Celadon City!')
+            ])
+          ], 0),
+          new OrderedListNode.Item([
+            new ParagraphNode([
+              new PlainTextNode('No, really. Goodbye.')
+            ])
+          ], 1)
+        ])
+      ]))
+  })
+})
+
+
 describe('An ordered list with a single item can be sandwched by identical outline separator streaks without producing a heading.', () => {
   context('This includes when the bullet is:', () => {
     specify('A number sign', () => {
