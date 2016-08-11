@@ -431,7 +431,7 @@ Charmander
 
     specify('Spoiler blocks', () => {
       const markup = `
- SPOILER:
+ \t SPOILER:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
@@ -452,7 +452,7 @@ Charmander
 
     specify('NSFW blocks', () => {
       const markup = `
- NSFW:
+  \t NSFW:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
@@ -473,7 +473,7 @@ Charmander
 
     specify('NSFL blocks', () => {
       const markup = `
- NSFL:
+  \t NSFL:
  \t
    \t I like shorts! They're comfy and easy to wear!
 
