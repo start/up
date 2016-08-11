@@ -93,7 +93,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<ol start="3" data-up-source-line="1">'
+      '<ol data-up-source-line="1" start="3">'
       + '<li value="3"><p data-up-source-line="1">Tropical</p></li>'
       + '<li><p data-up-source-line="3">Territories</p></li>'
       + '</ol>')
@@ -116,7 +116,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<ol start="2" reversed data-up-source-line="1">'
+      '<ol data-up-source-line="1" reversed start="2">'
       + '<li value="2"><p data-up-source-line="1">Tropical</p></li>'
       + '<li value="1"><p data-up-source-line="2">Territories</p></li>'
       + '</ol>')
