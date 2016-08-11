@@ -181,27 +181,66 @@ export class HtmlWriter extends Writer {
   }
 
   protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
-    return this.spoiler(inlineSpoiler, 'span')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'spoiler',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      conventionCount: ++this.spoilerCount,
+      revealableChildren: inlineSpoiler.children,
+      tagNameForGenericContainers: 'span'
+    })
   }
 
   protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
-    return this.nsfw(inlineNsfw, 'span')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfw',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      conventionCount: ++this.nsfwCount,
+      revealableChildren: inlineNsfw.children,
+      tagNameForGenericContainers: 'span'
+    })
   }
 
   protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
-    return this.nsfl(inlineNsfl, 'span')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfl',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      conventionCount: ++this.nsflCount,
+      revealableChildren: inlineNsfl.children,
+      tagNameForGenericContainers: 'span'
+    })
   }
 
   protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
-    return this.spoiler(spoilerBlock, 'div')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'spoiler',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      conventionCount: ++this.spoilerCount,
+      revealableChildren: spoilerBlock.children,
+      tagNameForGenericContainers: 'div',
+      attrsForOuterContainer: attrsFor(spoilerBlock)
+    })
   }
 
   protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
-    return this.nsfw(nsfwBlock, 'div')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfw',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      conventionCount: ++this.nsfwCount,
+      revealableChildren: nsfwBlock.children,
+      tagNameForGenericContainers: 'div',
+      attrsForOuterContainer: attrsFor(nsfwBlock)
+    })
   }
 
   protected nsflBlock(nsflBlock: NsflBlockNode): string {
-    return this.nsfl(nsflBlock, 'div')
+    return this.revealable({
+      nonLocalizedConventionTerm: 'nsfl',
+      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      conventionCount: ++this.nsflCount,
+      revealableChildren: nsflBlock.children,
+      tagNameForGenericContainers: 'div',
+      attrsForOuterContainer: attrsFor(nsflBlock)
+    })
   }
 
   protected footnoteReference(footnote: FootnoteNode): string {
@@ -422,49 +461,20 @@ export class HtmlWriter extends Writer {
     return [new LinkNode([new PlainTextNode(content)], url)]
   }
 
-  private spoiler(spoiler: InlineSpoilerNode | SpoilerBlockNode, genericContainerTagName: string): string {
-    return this.revealable({
-      nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
-      conventionCount: ++this.spoilerCount,
-      revealableChildren: spoiler.children,
-      genericContainerTagName
-    })
-  }
-
-  private nsfw(nsfw: InlineNsfwNode | NsfwBlockNode, genericContainerTagName: string): string {
-    return this.revealable({
-      nonLocalizedConventionTerm: 'nsfw',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
-      conventionCount: ++this.nsfwCount,
-      revealableChildren: nsfw.children,
-      genericContainerTagName
-    })
-  }
-
-  private nsfl(nsfl: InlineNsflNode | NsflBlockNode, genericContainerTagName: string): string {
-    return this.revealable({
-      nonLocalizedConventionTerm: 'nsfl',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
-      conventionCount: ++this.nsflCount,
-      revealableChildren: nsfl.children,
-      genericContainerTagName
-    })
-  }
-
   private revealable(
     args: {
       nonLocalizedConventionTerm: string
       termForTogglingVisibility: string
       conventionCount: number
       revealableChildren: SyntaxNode[]
-      genericContainerTagName: string,
+      tagNameForGenericContainers: string
+      attrsForOuterContainer?: any
     }
   ): string {
-    const { nonLocalizedConventionTerm, conventionCount, termForTogglingVisibility, revealableChildren, genericContainerTagName } = args
+    const { nonLocalizedConventionTerm, termForTogglingVisibility, tagNameForGenericContainers } = args
 
     const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
-    const checkboxId = this.getId(localizedTerm, conventionCount)
+    const checkboxId = this.getId(localizedTerm, args.conventionCount)
 
     const label =
       htmlElement('label', termForTogglingVisibility, { for: checkboxId })
@@ -473,12 +483,17 @@ export class HtmlWriter extends Writer {
       singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     const content =
-      this.element(genericContainerTagName, revealableChildren)
+      this.element(tagNameForGenericContainers, args.revealableChildren)
+
+    const attrsForOuterContainer = args.attrsForOuterContainer || {}
+    
+    attrsForOuterContainer.class =
+      classAttrValue(nonLocalizedConventionTerm, 'revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
-      genericContainerTagName,
+      tagNameForGenericContainers,
       [label, checkbox, content],
-      { class: classAttrValue(nonLocalizedConventionTerm, 'revealable') })
+      attrsForOuterContainer)
   }
 
   private tableCaption(caption: TableNode.Caption): string {
