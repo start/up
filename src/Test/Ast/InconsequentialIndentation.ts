@@ -67,7 +67,7 @@ Hello, world!
         ]))
     })
 
-    specify('Description list terms', () => {
+    specify('Description list terms (a single leading space is allowed)', () => {
       const markup = `
  Charmander
 Charmeleon
