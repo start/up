@@ -7,6 +7,8 @@ export enum TokenKind {
   EmphasisStart,
   FootnoteEnd,
   FootnoteStart,
+  HighlightEnd,
+  HighlightStart,
   ImageStartAndDescription,
   LinkEndAndUrl,
   LinkStart,

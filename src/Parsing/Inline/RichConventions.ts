@@ -1,5 +1,6 @@
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
@@ -25,6 +26,12 @@ export const STRESS_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: StressNode,
   startTokenKind: TokenKind.StressStart,
   endTokenKind: TokenKind.StressEnd
+}
+
+export const HIGHLIGHT_CONVENTION: RichConventionWithoutExtraFields = {
+  NodeType: HighlightNode,
+  startTokenKind: TokenKind.HighlightStart,
+  endTokenKind: TokenKind.HighlightEnd
 }
 
 export const REVISION_DELETION_CONVENTION: RichConventionWithoutExtraFields = {
