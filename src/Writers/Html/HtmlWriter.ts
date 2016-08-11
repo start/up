@@ -104,20 +104,26 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
       list.items.map(listItem => this.orderedListItem(listItem)),
-      attrs)
+      attrsFor(list, attrs))
   }
 
   protected descriptionList(list: DescriptionListNode): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      list.items.map(item => this.descriptionListItem(item)))
+      list.items.map(item => this.descriptionListItem(item)),
+      attrsFor(list))
   }
 
   protected lineBlock(lineBlock: LineBlockNode): string {
+    const attrs =
+      attrsFor(
+        lineBlock,
+        { class: classAttrValue('lines') })
+
     return htmlElementWithAlreadyEscapedChildren(
       'div',
       lineBlock.lines.map(line => this.line(line)),
-      { class: classAttrValue('lines') })
+      attrs)
   }
 
   protected codeBlock(codeBlock: CodeBlockNode): string {
@@ -245,10 +251,15 @@ export class HtmlWriter extends Writer {
   }
 
   protected footnoteBlock(footnoteBlock: FootnoteBlockNode): string {
+    const attrs =
+      attrsFor(
+        footnoteBlock,
+        { class: classAttrValue('footnotes') })
+
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       footnoteBlock.footnotes.map(footnote => this.footnote(footnote)),
-      { class: classAttrValue('footnotes') })
+      attrs)
   }
 
   protected table(table: TableNode): string {
@@ -270,9 +281,9 @@ export class HtmlWriter extends Writer {
 
     const html =
       this.element('a',
-      link.children,
-      attrsFor(link, { href: link.url }))
-    
+        link.children,
+        attrsFor(link, { href: link.url }))
+
     this.isInsideLink = false
 
     return html
@@ -283,11 +294,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected audio(audio: AudioNode): string {
-    return this.playableMediaElement('audio', audio.description, audio.url)
+    return this.playableMediaElement(audio, 'audio')
   }
 
   protected video(video: VideoNode): string {
-    return this.playableMediaElement('video', video.description, video.url)
+    return this.playableMediaElement(video, 'video',)
   }
 
   protected plainText(plainText: PlainTextNode): string {
@@ -414,15 +425,19 @@ export class HtmlWriter extends Writer {
       internalFragmentUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
-  private playableMediaElement(tagName: string, description: string, url: string): string {
-    return this.element(
-      tagName,
-      this.playableMediaFallback(description, url), {
-        src: url,
-        title: description,
-        controls: NO_ATTRIBUTE_VALUE,
-        loop: NO_ATTRIBUTE_VALUE
-      })
+  private playableMediaElement(media: AudioNode | VideoNode, tagName: string): string {
+    const { url, description } = media
+    
+    const attrs =
+      attrsFor(
+        media, {
+          src: url,
+          title: description,
+          controls: NO_ATTRIBUTE_VALUE,
+          loop: NO_ATTRIBUTE_VALUE
+        })
+
+    return this.element(tagName, this.playableMediaFallback(description, url), attrs)
   }
 
   private playableMediaFallback(content: string, url: string): LinkNode[] {
