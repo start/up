@@ -1,7 +1,7 @@
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
-import { UpConfig } from '../../UpConfig'
+import { Config } from '../../Config'
 import { HtmlWriter } from './HtmlWriter'
 
-export function getHtml(document: DocumentNode, config: UpConfig): string {
+export function getHtml(document: DocumentNode, config: Config): string {
   return new HtmlWriter(document, config).result
 }

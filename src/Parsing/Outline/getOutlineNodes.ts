@@ -18,7 +18,7 @@ import { parseRegularLines } from './parseRegularLines'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
-import { UpConfig } from '../../UpConfig'
+import { Config } from '../../Config'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 export function getOutlineNodes(
@@ -26,7 +26,7 @@ export function getOutlineNodes(
     markupLines: string[],
     sourceLineNumber: number,
     headingLeveler: HeadingLeveler,
-    config: UpConfig
+    config: Config
   }
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, config } = args

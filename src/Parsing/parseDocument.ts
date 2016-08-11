@@ -2,10 +2,10 @@ import { DocumentNode, createDocument } from '../SyntaxNodes/DocumentNode'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { INPUT_LINE_BREAK } from './Strings'
-import { UpConfig } from '../UpConfig'
+import { Config } from '../Config'
 
 
-export function parseDocument(markup: string, config: UpConfig): DocumentNode {
+export function parseDocument(markup: string, config: Config): DocumentNode {
   const children = getOutlineNodes({
     markupLines: markup.split(INPUT_LINE_BREAK),
     sourceLineNumber: 1,

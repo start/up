@@ -33,7 +33,7 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { OutlineSeparatorNode } from '../SyntaxNodes/OutlineSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { UpConfig } from '../UpConfig'
+import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
 
@@ -55,7 +55,7 @@ export abstract class Writer {
 
   constructor(
     protected document: DocumentNode,
-    protected config: UpConfig) { }
+    protected config: Config) { }
 
   get result(): string {
     this._result =

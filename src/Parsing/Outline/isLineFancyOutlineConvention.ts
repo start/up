@@ -4,7 +4,7 @@ import { tryToParseOutlineSeparatorStreak } from './tryToParseOutlineSeparatorSt
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { HeadingLeveler } from './HeadingLeveler'
-import { UpConfig } from '../../UpConfig'
+import { Config } from '../../Config'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
@@ -23,7 +23,7 @@ const DUMMY_SOURCE_LINE_NUMBER = 1
 
 
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
-export function isLineFancyOutlineConvention(markupLine: string, config: UpConfig): boolean {
+export function isLineFancyOutlineConvention(markupLine: string, config: Config): boolean {
   const markupLines = [markupLine]
 
   return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(

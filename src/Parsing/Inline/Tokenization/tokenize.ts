@@ -4,7 +4,7 @@ import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT }
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
-import { UpConfig } from '../../../UpConfig'
+import { Config } from '../../../Config'
 import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
@@ -26,7 +26,7 @@ import { RaisedVoiceHandler } from './RaisedVoiceHandler'
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(markup: string, config: UpConfig): Token[] {
+export function tokenize(markup: string, config: Config): Token[] {
   const textWithoutLeadingWhitespace =
     markup.replace(LEADING_WHITESPACE_PATTERN, '')
 
@@ -132,7 +132,7 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(entireText: string, private config: UpConfig) {
+  constructor(entireText: string, private config: Config) {
     this.markupConsumer = new TextConsumer(entireText)
     this.configureConventions()
 

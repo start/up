@@ -38,15 +38,15 @@ const DEFAULT_SETTINGS: ConfigSettings = {
 }
 
 
-export class UpConfig {
+export class Config {
   settings: ConfigSettings
 
   constructor(changes?: ConfigSettings, baseSettings = DEFAULT_SETTINGS) {
     this.settings = applyChanges(baseSettings, changes)
   }
 
-  withChanges(changes: ConfigSettings): UpConfig {
-    return new UpConfig(changes, this.settings)
+  withChanges(changes: ConfigSettings): Config {
+    return new Config(changes, this.settings)
   }
 
   localizeTerm(nonLocalizedTerm: string): string {
