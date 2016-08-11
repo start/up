@@ -15,6 +15,7 @@ import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
+import { HighlightNode } from '../../../../SyntaxNodes/HighlightNode'
 import { InlineNsfwNode } from '../../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../../SyntaxNodes/InlineNsflNode'
 import { InlineSpoilerNode } from '../../../../SyntaxNodes/InlineSpoilerNode'
@@ -23,6 +24,15 @@ import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 
 context('Most inline conventions are not applied if they have no content.', () => {
   context('Specifically:', () => {
+    specify('Highlights', () => {
+      expect(Up.toAst('[highlight:]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareBracketedNode([
+            new PlainTextNode('[highlight:]')
+          ])
+        ]))
+    })
+
     specify('Spoilers', () => {
       expect(Up.toAst('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
@@ -122,6 +132,15 @@ context('Most inline conventions are not applied if they have no content.', () =
 
 
       context("These don't:", () => {
+        specify('Highlights', () => {
+          expect(Up.toAst('[highlight:  \t  \t ]')).to.eql(
+            insideDocumentAndParagraph([
+              new SquareBracketedNode([
+                new PlainTextNode('[highlight:  \t  \t ]')
+              ])
+            ]))
+        })
+
         specify('Spoilers', () => {
           expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
@@ -637,6 +656,26 @@ context("Media conventions are handled a bit differently, because they also have
 
 context("Conventions aren't linkified if the bracketed URL is...", () => {
   context('Empty:', () => {
+    specify('highlight', () => {
+      expect(Up.toAst('[highlight: Ash fights Gary]()')).to.be.eql(
+        insideDocumentAndParagraph([
+          new HighlightNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('()')
+        ]))
+    })
+
+    specify('Spoilers', () => {
+      expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('{}')
+        ]))
+    })
+
     specify('NSFW', () => {
       expect(Up.toAst('[NSFW: Ash fights Gary]()')).to.be.eql(
         insideDocumentAndParagraph([
@@ -654,16 +693,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('[]')
-        ]))
-    })
-
-    specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
-        insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
-          ]),
-          new PlainTextNode('{}')
         ]))
     })
 
@@ -708,6 +737,26 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
   })
 
   context('Blank:', () => {
+    specify('Highlights', () => {
+      expect(Up.toAst('[highlight: Ash fights Gary]{\t \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new HighlightNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('{\t \t \t}')
+        ]))
+    })
+
+    specify('Spoilers', () => {
+      expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new PlainTextNode('{\t \t \t}')
+        ]))
+    })
+
     specify('NSFW', () => {
       expect(Up.toAst('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
@@ -725,16 +774,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
             new PlainTextNode('Ash fights Gary')
           ]),
           new PlainTextNode('[\t \t \t]')
-        ]))
-    })
-
-    specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
-        insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
-          ]),
-          new PlainTextNode('{\t \t \t}')
         ]))
     })
 
