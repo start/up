@@ -24,6 +24,7 @@ const DEFAULT_SETTINGS: UpConfigSettings = {
       image: 'image',
       audio: 'audio',
       video: 'video',
+      highlight: 'highlight',
       spoiler: 'spoiler',
       toggleSpoiler: 'toggle spoiler',
       nsfw: 'nsfw',

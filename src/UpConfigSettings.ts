@@ -21,6 +21,7 @@ export interface UpConfigSettings {
       image?: string
       audio?: string
       video?: string
+      highlight?: string
       spoiler?: string
       toggleSpoiler?: string
       nsfw?: string
