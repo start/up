@@ -485,8 +485,8 @@ Chart:
     })
 
 
-    describe('A link containing an outlined media node', () => {
-      it('is given a source line number (but the media node itself is not)', () => {
+    describe('A link containing an "outlined" media node', () => {
+      it('is given a source line number (but the media node it contains is not)', () => {
         expect(up.toAst('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
           new DocumentNode([
             new LinkNode([
@@ -513,7 +513,7 @@ Chart:
 
 
     context('When a single line of markup produces multiple "outlined" media nodes, and one of them is inside a link,', () => {
-      specify('the link and the media nodes outside of it are mapped to that same line', () => {
+      specify('the link and the media nodes that are outside of it are mapped to that same line', () => {
         const markup =
           '[image: haunted house](example.com/hauntedhouse.svg)(example.com/gallery) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house](example.com/hauntedhouse.webm)'
 
