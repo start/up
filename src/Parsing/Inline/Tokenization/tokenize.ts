@@ -434,6 +434,7 @@ class Tokenizer {
   // `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
+      HIGHLIGHT_CONVENTION,
       SPOILER_CONVENTION,
       NSFW_CONVENTION,
       NSFL_CONVENTION,
