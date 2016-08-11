@@ -12,6 +12,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../../SyntaxNodes/ActionNode'
+import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
@@ -178,6 +179,10 @@ export class HtmlWriter extends Writer {
 
   protected action(action: ActionNode): string {
     return this.element('span', action.children, { class: classAttrValue('action') })
+  }
+
+  protected highlight(highlight: HighlightNode): string {
+    return this.element('mark', highlight.children)
   }
 
   protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {

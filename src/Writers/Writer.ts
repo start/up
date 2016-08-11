@@ -13,6 +13,7 @@ import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
 import { ActionNode } from '../SyntaxNodes/ActionNode'
+import { HighlightNode } from '../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../SyntaxNodes/InlineNsflNode'
@@ -97,6 +98,7 @@ export abstract class Writer {
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
   protected abstract footnoteReference(footnote: FootnoteNode): string
   protected abstract heading(heading: HeadingNode): string
+  protected abstract highlight(highlight: HighlightNode): string
   protected abstract image(image: ImageNode): string
   protected abstract inlineCode(inlineCode: InlineCodeNode): string
   protected abstract inlineNsfl(inlineNsfl: InlineNsflNode): string
@@ -217,6 +219,10 @@ export abstract class Writer {
 
     if (node instanceof ActionNode) {
       return this.action(node)
+    }
+
+    if (node instanceof HighlightNode) {
+      return this.highlight(node)
     }
 
     if (node instanceof InlineSpoilerNode) {
