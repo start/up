@@ -131,6 +131,24 @@ describe('The "video" config term', () => {
 })
 
 
+describe('The "highlight" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    textForConfigChanges: '[mark: Ash fights Gary]',
+    textForDefaultSettings: '[highlight: Ash fights Gary]',
+    configChanges: {
+      i18n: {
+        terms: { highlight: 'mark' }
+      }
+    },
+    conflictingConfigChanges: {
+      i18n: {
+        terms: { highlight: 'paint' }
+      }
+    }
+  })
+})
+
+
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     textForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
