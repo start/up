@@ -55,7 +55,10 @@ function htmlStartTag(tagName: string, attrs: any): string {
 }
 
 function htmlAttrs(attrs: any): string[] {
-  return Object.keys(attrs).map(attrName => htmlAttr(attrs, attrName))
+  const alphabetizedAttrNames =
+    Object.keys(attrs).sort()
+
+  return alphabetizedAttrNames.map(attrName => htmlAttr(attrs, attrName))
 }
 
 function htmlAttr(attrs: any, attrName: string): string {
