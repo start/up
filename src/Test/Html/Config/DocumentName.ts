@@ -22,7 +22,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="up-footnote-reference-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
   it("is prefixed with the document name, if one was provided", () => {
@@ -37,7 +37,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="reply-11-footnote-reference-3" class="up-footnote-reference"><a href="#reply-11-footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="reply-11-footnote-reference-3"><a href="#reply-11-footnote-3">3</a></sup></p>')
   })
 
   it("is not prefixed with a document name if an empty name was provided", () => {
@@ -52,7 +52,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
   it("is not prefixed with a document name if a blank name was provided", () => {
@@ -67,7 +67,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="footnote-reference-3" class="up-footnote-reference"><a href="#footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 })
 

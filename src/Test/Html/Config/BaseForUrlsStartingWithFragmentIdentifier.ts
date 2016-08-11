@@ -21,7 +21,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     ])
 
     expect(up.toHtml(document)).to.be.eql(
-      '<p><sup id="up-footnote-reference-3" class="up-footnote-reference"><a href="#up-footnote-3">3</a></sup></p>')
+      '<p><sup class="up-footnote-reference" id="up-footnote-reference-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
   it("does not affect a footnote's link back to its reference", () => {
