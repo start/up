@@ -32,6 +32,7 @@ context('Every syntax node class is exported:', () => {
     'FootnoteBlockNode',
     'FootnoteNode',
     'HeadingNode',
+    'HighlightNode',
     'ImageNode',
     'InlineCodeNode',
     'InlineNsflNode',
