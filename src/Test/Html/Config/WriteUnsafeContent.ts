@@ -92,7 +92,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<img src="javascript:malicious" alt="Uh-oh!" title="Uh-oh!">')
+        '<img alt="Uh-oh!" src="javascript:malicious" title="Uh-oh!">')
     })
 
     specify('data', () => {
@@ -101,7 +101,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<img src="data:malicious" alt="Uh-oh!" title="Uh-oh!">')
+        '<img alt="Uh-oh!" src="data:malicious" title="Uh-oh!">')
     })
 
     specify('file', () => {
@@ -110,7 +110,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<img src="file:malicious" alt="Uh-oh!" title="Uh-oh!">')
+        '<img alt="Uh-oh!" src="file:malicious" title="Uh-oh!">')
     })
 
     specify('vbscript', () => {
@@ -119,7 +119,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<img src="vbscript:malicious" alt="Uh-oh!" title="Uh-oh!">')
+        '<img alt="Uh-oh!" src="vbscript:malicious" title="Uh-oh!">')
     })
   })
 
