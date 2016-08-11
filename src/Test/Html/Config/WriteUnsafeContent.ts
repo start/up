@@ -131,7 +131,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<audio src="javascript:malicious" title="Uh-oh!" controls loop>'
+        '<audio controls loop src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -142,7 +142,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<audio src="data:malicious" title="Uh-oh!" controls loop>'
+        '<audio controls loop src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -153,7 +153,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<audio src="file:malicious" title="Uh-oh!" controls loop>'
+        '<audio controls loop src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -164,7 +164,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<audio src="vbscript:malicious" title="Uh-oh!" controls loop>'
+        '<audio controls loop src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -178,7 +178,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<video src="javascript:malicious" title="Uh-oh!" controls loop>'
+        '<video controls loop src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -189,7 +189,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<video src="data:malicious" title="Uh-oh!" controls loop>'
+        '<video controls loop src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -200,7 +200,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<video src="file:malicious" title="Uh-oh!" controls loop>'
+        '<video controls loop src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -211,7 +211,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
       ])
 
       expect(up.toHtml(document)).to.be.eql(
-        '<video src="vbscript:malicious" title="Uh-oh!" controls loop>'
+        '<video controls loop src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</video>')
     })
