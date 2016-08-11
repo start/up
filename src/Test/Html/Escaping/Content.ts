@@ -246,7 +246,7 @@ describe("Within a video's fallback link content, all instances of < and &", () 
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?" controls loop><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
+      '<video controls loop src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?"><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
   })
 })
 
@@ -258,6 +258,6 @@ describe("Within an audio convention's fallback link content, all instances of <
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?" controls loop><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
+      '<audio controls loop src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?"><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
   })
 })
