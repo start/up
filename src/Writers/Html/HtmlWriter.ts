@@ -524,7 +524,7 @@ export class HtmlWriter extends Writer {
       attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
     }
 
-    return attrs
+    return attrsFor(node, attrs)
   }
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
