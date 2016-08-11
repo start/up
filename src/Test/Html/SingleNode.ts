@@ -43,7 +43,7 @@ describe('An empty document node', () => {
 
 
 describe('A paragraph node', () => {
-  it('produces a <p>', () => {
+  it('produces a <p> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([new PlainTextNode('Nimble navigator')])
     ])
@@ -54,7 +54,7 @@ describe('A paragraph node', () => {
 
 
 describe('An unordered list node', () => {
-  it('produces an <ul> containing an <li> for each list item', () => {
+  it('produces an <ul> element containing an <li> element for each list item', () => {
     const document = new DocumentNode([
       new UnorderedListNode([
         new UnorderedListNode.Item([
@@ -80,7 +80,7 @@ describe('An unordered list node', () => {
 
 
 describe('An ordered list node', () => {
-  it('produces an <ol> containing an <li> for each list item', () => {
+  it('produces an <ol> element containing an <li> element for each list item', () => {
     const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
@@ -106,7 +106,7 @@ describe('An ordered list node', () => {
 
 
 context('When an ordered list node contains an item with an explicit ordinal', () => {
-  specify('the <li> for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
+  specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
@@ -132,7 +132,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 
 context('When an ordered list node has an explicit starting ordinal', () => {
-  specify('the <ol> is given a "start" attribute set to the appropriate starting ordinal', () => {
+  specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
     const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
@@ -158,7 +158,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 
 
 describe('When an ordered list node is in descending order', () => {
-  specify('the <ol> is given the "reversed" attribute', () => {
+  specify('the <ol> element is given the "reversed" attribute', () => {
     const document = new DocumentNode([
       new OrderedListNode([
         new OrderedListNode.Item([
@@ -184,7 +184,7 @@ describe('When an ordered list node is in descending order', () => {
 
 
 describe('A description list', () => {
-  it('produces a <dl> containing a <dt> for each term, and a <dd> for each description', () => {
+  it('produces a <dl> element containing a <dt> element for each term, and a <dd> element for each description', () => {
     const document = new DocumentNode([
       new DescriptionListNode([
         new DescriptionListNode.Item([
@@ -218,7 +218,7 @@ describe('A description list', () => {
 
 
 describe('A table', () => {
-  it('produces a <table> containing a <caption> for its caption, a <thead> containing a <tr> containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> for each cell in that row', () => {
+  it('produces a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -249,7 +249,7 @@ describe('A table', () => {
 
 
 context('When a table has rows with cells with numeric values', () => {
-  specify('the <td> produced for those cells have the "up-numeric" class', () => {
+  specify('the <td> element produced for those cells have the "up-numeric" class', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -280,7 +280,7 @@ context('When a table has rows with cells with numeric values', () => {
 
 
 describe('A table without a caption or any rows', () => {
-  it('produces a <table> that does not contain a <caption> or any <tr> outside of its <thead>', () => {
+  it('produces a <table> element that does not contain a <caption> element or any <tr> outside of its <thead>', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -298,7 +298,7 @@ describe('A table without a caption or any rows', () => {
 
 
 context('When a table header has cells spanning multiple columns', () => {
-  specify('the <th> for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('the <th> element for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -316,7 +316,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
 
 context('When a table has rows with cells spanning multiple columns', () => {
-  specify('the <td>s for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('the <td> elements for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -348,7 +348,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
 
 
 context('When a table cell has a numeric value and spans multiple columns', () => {
-  specify('the <td> produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('the <td> element produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -379,7 +379,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
-  specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> produced by the row', () => {
+  specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -408,7 +408,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
       + '</table>')
   })
 
-  specify('When a row header cell spans multiple columns, the <th> produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('When a row header cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new DocumentNode([
       new TableNode(
         new TableNode.Header([
@@ -439,7 +439,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
 
 describe('A line block node', () => {
-  it('produces a <div class="up-lines"> containing a <div> for each line', () => {
+  it('produces a <div class="up-lines"> containing a <div> element for each line', () => {
     const document = new DocumentNode([
       new LineBlockNode([
         new LineBlockNode.Line([
@@ -461,7 +461,7 @@ describe('A line block node', () => {
 
 
 describe('A code block node', () => {
-  it('produces a <pre> containing a <code> containing the code', () => {
+  it('produces a <pre> element containing a <code> element containing the code', () => {
     const document = new DocumentNode([
       new CodeBlockNode('color = Color.Green')
     ])
@@ -472,7 +472,7 @@ describe('A code block node', () => {
 
 
 describe('A blockquote node', () => {
-  it('produces a <blockquote>', () => {
+  it('produces a <blockquote> element', () => {
     const documentNOde = new DocumentNode([
       new BlockquoteNode([
         new ParagraphNode([
@@ -487,7 +487,7 @@ describe('A blockquote node', () => {
 
 
 describe('A level 1 heading node', () => {
-  it('produces an <h1>', () => {
+  it('produces an <h1> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
     ])
@@ -498,7 +498,7 @@ describe('A level 1 heading node', () => {
 
 
 describe('A level 2 heading node', () => {
-  it('produces an <h2>', () => {
+  it('produces an <h2> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Ivysaur')], 2)
     ])
@@ -509,7 +509,7 @@ describe('A level 2 heading node', () => {
 
 
 describe('A level 3 heading node', () => {
-  it('produces an <h3>', () => {
+  it('produces an <h3> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Venusaur')], 3)
     ])
@@ -520,7 +520,7 @@ describe('A level 3 heading node', () => {
 
 
 describe('A level 4 heading node', () => {
-  it('produces an <h4<', () => {
+  it('produces an <h4>', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charmander')], 4)
     ])
@@ -531,7 +531,7 @@ describe('A level 4 heading node', () => {
 
 
 describe('A level 5 heading node', () => {
-  it('produces an <h5>', () => {
+  it('produces an <h5> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charmeleon')], 5)
     ])
@@ -542,7 +542,7 @@ describe('A level 5 heading node', () => {
 
 
 describe('A level 6 heading node', () => {
-  it('produces an <h6>', () => {
+  it('produces an <h6> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Charizard')], 6)
     ])
@@ -553,7 +553,7 @@ describe('A level 6 heading node', () => {
 
 
 describe('A level 7 heading node', () => {
-  it('produces an <h6>', () => {
+  it('produces an <h6> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Squirtle')], 7)
     ])
@@ -564,7 +564,7 @@ describe('A level 7 heading node', () => {
 
 
 describe('A level 8 heading node', () => {
-  it('produces an <h6>', () => {
+  it('produces an <h6> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Wartortle')], 8)
     ])
@@ -575,7 +575,7 @@ describe('A level 8 heading node', () => {
 
 
 describe('A level 9 heading node', () => {
-  it('produces an <h6>', () => {
+  it('produces an <h6> element', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Blastoise')], 9)
     ])
@@ -586,7 +586,7 @@ describe('A level 9 heading node', () => {
 
 
 describe('An outline separator node', () => {
-  it('produces an <hr>', () => {
+  it('produces an <hr> element', () => {
     const document = new DocumentNode([
       new OutlineSeparatorNode()
     ])
@@ -597,7 +597,7 @@ describe('An outline separator node', () => {
 
 
 describe('An emphasis node', () => {
-  it('produces an <em>', () => {
+  it('produces an <em> element', () => {
     const documentnode = new DocumentNode([
       new ParagraphNode([
         new EmphasisNode([new PlainTextNode('Always')])
@@ -610,7 +610,7 @@ describe('An emphasis node', () => {
 
 
 describe('A stress node', () => {
-  it('produces a <strong>', () => {
+  it('produces a <strong> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new StressNode([new PlainTextNode('Ness')])
@@ -623,7 +623,7 @@ describe('A stress node', () => {
 
 
 describe('An inline code node', () => {
-  it('produces a <code>', () => {
+  it('produces a <code> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new InlineCodeNode('then')
@@ -636,7 +636,7 @@ describe('An inline code node', () => {
 
 
 describe('A revision insertion node', () => {
-  it('produces an <ins>', () => {
+  it('produces an <ins> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new RevisionInsertionNode([new PlainTextNode('Wario')])
@@ -649,7 +649,7 @@ describe('A revision insertion node', () => {
 
 
 describe('A revision deletion node', () => {
-  it('produces a <del>', () => {
+  it('produces a <del> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
@@ -701,7 +701,7 @@ describe('An action node', () => {
 
 
 describe('A link node', () => {
-  it('produces an <a> with its href attribute set to its URL', () => {
+  it('produces an <a> element with its href attribute set to its URL', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('Google')], 'https://google.com')
@@ -743,7 +743,7 @@ describe('A footnote block node', () => {
 
 
 describe("Each footnote in a footnote block", () => {
-  it("produce a <dt> with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> containing the footnote contents", () => {
+  it("produce a <dt> element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> element containing the footnote contents", () => {
     const document = new DocumentNode([
       new FootnoteBlockNode([
         new FootnoteNode([
@@ -806,7 +806,7 @@ describe('A video node', () => {
 })
 
 
-describe('A highlight node node', () => {
+describe('A highlight node', () => {
   it('produces a <mark> element', () => {
     const document = new DocumentNode([
       new ParagraphNode([
@@ -825,7 +825,7 @@ describe('A highlight node node', () => {
 
 
 describe('An inline spoiler node', () => {
-  it('produces a <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox, and a <span> containing the spoiler contents', () => {
+  it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span> element containing the spoiler contents', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
@@ -847,7 +847,7 @@ describe('An inline spoiler node', () => {
 
 
 describe('An inline NSFW node', () => {
-  it('produces a <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox, and a <span> containing the NSFW contents', () => {
+  it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span> element containing the NSFW contents', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsfwNode([new PlainTextNode('naked Gary')])
@@ -869,7 +869,7 @@ describe('An inline NSFW node', () => {
 
 
 describe('An inline NSFL node', () => {
-  it('produces a <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox, and a <span> containing the NSFL contents', () => {
+  it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span> element containing the NSFL contents', () => {
     const document = new DocumentNode([
       new ParagraphNode([
         new InlineNsflNode([new PlainTextNode('rotting Gary')])
