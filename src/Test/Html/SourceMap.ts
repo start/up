@@ -271,7 +271,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new HeadingNode([new PlainTextNode('Bulbasaur')], 2, 1)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h2 data-up-source-line="1">Bulbasaur</h2>')
   })
 
   specify('Level 3 headings', () => {
@@ -279,7 +279,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new HeadingNode([new PlainTextNode('Bulbasaur')], 3, 3)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h3>')
   })
 
   specify('Level 4  headings', () => {
@@ -287,14 +287,14 @@ context('When an outline syntax node has a source line number, its outermost ele
       new HeadingNode([new PlainTextNode('Bulbasaur')], 4, 1)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings', () => {
     const document = new DocumentNode([
       new HeadingNode([new PlainTextNode('Bulbasaur')], 5, 3)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h5>')
   })
 
   specify('Level 6 headings', () => {
@@ -302,7 +302,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new HeadingNode([new PlainTextNode('Bulbasaur')], 6, 1)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h6>')
   })
 
   specify('Level 10 headings', () => {
@@ -310,7 +310,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new HeadingNode([new PlainTextNode('Bulbasaur')], 10, 2)
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h6>')
   })
 
   specify('Section separators', () => {
