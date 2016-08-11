@@ -495,6 +495,20 @@ Chart:
           ]))
       })
     })
+
+    describe('Multiple media nodes produced from the same line of markup', () => {
+      it('are all mapped to the same line', () => {
+        const markup =
+          '[image: haunted house](example.com/hauntedhouse.svg) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house] (example.com/hauntedhouse.webm)'
+
+        expect(up.toAst(markup)).to.be.eql(
+          new DocumentNode([
+            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1),
+            new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
+            new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+          ]))
+      })
+    })
   })
 })
 
