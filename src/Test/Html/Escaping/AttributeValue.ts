@@ -36,7 +36,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
+      '<audio controls loop src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
@@ -45,7 +45,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="" controls loop><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
+      '<video controls loop src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
   })
 
   specify("src attribute of images", () => {
@@ -54,7 +54,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" alt="" title="">')
+      '<img alt="" src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="">')
   })
 
   specify("title attribute of audio elements", () => {
@@ -63,7 +63,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<audio src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
+      '<audio controls loop src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
   })
 
   specify("title attribute of videos", () => {
@@ -72,7 +72,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<video src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" controls loop><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
+      '<video controls loop src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
   })
 
   specify("alt and title attributes of images", () => {
@@ -81,7 +81,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
-      '<img src="" alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
+      '<img alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
   })
 
   specify('href attribute of backlinks in footnote blocks', () => {
