@@ -531,4 +531,33 @@ Charmander
           ])
       ]))
   })
+
+  specify("Charts", () => {
+    const markup = `
+ \t  Chart: AND operator logic
+
+   \t     1;      0
+ \t  1;      true;   false
+  0;      false;  false`
+
+    expect(Up.toAst(markup)).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('1')]),
+            new TableNode.Header.Cell([new PlainTextNode('0')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('true')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('false')]),
+              new TableNode.Row.Cell([new PlainTextNode('false')])
+            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          ],
+          new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+      ]))
+  })
 })
