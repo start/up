@@ -11,8 +11,10 @@ import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 
+// TODO: Organize these tests into contexts for clarity
+
 describe('Overlapped stressed and deleted text', () => {
-  it('produce a stress node, a nested revision deletion node, then a non-nested revision deletion node. The revision deletion node is split because it opened second', () => {
+  it('splits the revision delietion node because it opened second', () => {
     expect(Up.toAst('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
@@ -23,6 +25,26 @@ describe('Overlapped stressed and deleted text', () => {
           ])
         ]),
         new RevisionDeletionNode([
+          new PlainTextNode(' whole')
+        ]),
+        new PlainTextNode(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped deleted and stressed text', () => {
+  it('split the stress node because it opened second', () => {
+    expect(Up.toAst('I ~~love **drinking~~ whole** milk.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('I '),
+        new RevisionDeletionNode([
+          new PlainTextNode('love '),
+          new StressNode([
+            new PlainTextNode('drinking')
+          ])
+        ]),
+        new StressNode([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
