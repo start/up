@@ -1,6 +1,6 @@
 import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { Config } from './Config'
-import { ConfigSettings } from './ConfigSettings'
+import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
 import { getHtml } from './Writers//Html/getHtml'
 
@@ -11,15 +11,15 @@ export type MarkupOrDocumentNode = string | DocumentNode
 export class Up {
   private config: Config
 
-  constructor(settings?: ConfigSettings) {
+  constructor(settings?: UserProvidedSettings) {
     this.config = new Config(settings)
   }
 
-  toAst(markup: string, extraSettings?: ConfigSettings): DocumentNode {
+  toAst(markup: string, extraSettings?: UserProvidedSettings): DocumentNode {
     return toAst(markup, this.config.withChanges(extraSettings))
   }
 
-  toHtml(markupOrDocumentNode: MarkupOrDocumentNode, extraSettings?: ConfigSettings): string {
+  toHtml(markupOrDocumentNode: MarkupOrDocumentNode, extraSettings?: UserProvidedSettings): string {
     return toHtml(markupOrDocumentNode, this.config.withChanges(extraSettings))
   }
 }
@@ -41,11 +41,11 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function toAst(markup: string, settings?: ConfigSettings): DocumentNode {
+  export function toAst(markup: string, settings?: UserProvidedSettings): DocumentNode {
     return defaultUp.toAst(markup, settings)
   }
 
-  export function toHtml(markupOrDocumentNode: MarkupOrDocumentNode, settings?: ConfigSettings): string {
+  export function toHtml(markupOrDocumentNode: MarkupOrDocumentNode, settings?: UserProvidedSettings): string {
     return defaultUp.toHtml(markupOrDocumentNode, settings)
   }
 }

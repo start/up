@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { ConfigSettings } from '../../../ConfigSettings'
+import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -10,8 +10,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     markupForConfigChanges: string
     markupForDefaultSettings: string
-    configChanges: ConfigSettings
-    conflictingConfigChanges: ConfigSettings
+    configChanges: UserProvidedSettings
+    conflictingConfigChanges: UserProvidedSettings
   }
 ): void {
   const { markupForConfigChanges, markupForDefaultSettings, configChanges, conflictingConfigChanges } = args

@@ -1,7 +1,7 @@
-import { ProvidedTerms } from './ProvidedTerms'
+import { UserProvidedTerms } from './UserProvidedTerms'
 
 
-export interface ConfigSettings {
+export interface UserProvidedSettings {
   createTableOfContents?: boolean
   createSourceMap?: boolean
   writeUnsafeContent?: boolean
@@ -10,5 +10,5 @@ export interface ConfigSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
 
-  terms?: ProvidedTerms
+  terms?: UserProvidedTerms
 }

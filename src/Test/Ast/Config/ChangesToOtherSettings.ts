@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ConfigSettings } from '../../../ConfigSettings'
+import { UserProvidedSettings } from '../../../UserProvidedSettings'
 
 
 // Elsewhere, we test:
@@ -21,8 +21,8 @@ function itWorksAsAdvertised(
     markup: string,
     documentWhenChangeIsApplied: DocumentNode
     documentWhenSettingIsNotChanged: DocumentNode
-    configWithSettingChanged: ConfigSettings
-    configWithSettingSetToDefault: ConfigSettings
+    configWithSettingChanged: UserProvidedSettings
+    configWithSettingSetToDefault: UserProvidedSettings
   }
 ): void {
   const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, configWithSettingChanged, configWithSettingSetToDefault } = args

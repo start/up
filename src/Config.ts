@@ -1,8 +1,8 @@
-import { ConfigSettings} from './ConfigSettings'
+import { UserProvidedSettings} from './UserProvidedSettings'
 import { coalesce } from './CollectionHelpers'
 
 
-const DEFAULT_SETTINGS: ConfigSettings = {
+const DEFAULT_SETTINGS: UserProvidedSettings = {
   createTableOfContents: false,
   createSourceMap: false,
   writeUnsafeContent: false,
@@ -42,9 +42,9 @@ export class Config {
   baseForUrlsStartingWithHashMark: string
 
   // TODO: Remove
-  settings: ConfigSettings
+  settings: UserProvidedSettings
 
-  constructor(changes?: ConfigSettings, baseSettings = DEFAULT_SETTINGS) {
+  constructor(changes?: UserProvidedSettings, baseSettings = DEFAULT_SETTINGS) {
     for (const settings of [baseSettings, changes]) {
       this.applySettings(settings)
     }
@@ -53,7 +53,7 @@ export class Config {
     this.settings = applyChanges(baseSettings, changes)
   }
 
-  withChanges(changes: ConfigSettings): Config {
+  withChanges(changes: UserProvidedSettings): Config {
     return new Config(changes, this.settings)
   }
 
@@ -67,7 +67,7 @@ export class Config {
     throw new Error('Unrecognized term: ' + nonLocalizedTerm)
   }
 
-  private applySettings(settings: ConfigSettings): void {
+  private applySettings(settings: UserProvidedSettings): void {
     if (!settings) {
       return
     }

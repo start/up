@@ -1,5 +1,5 @@
 export { Up as default, Up } from './Up'
-export { ConfigSettings } from './ConfigSettings'
+export { UserProvidedSettings } from './UserProvidedSettings'
 
 export { ActionNode } from './SyntaxNodes/ActionNode'
 export { AudioNode } from './SyntaxNodes/AudioNode'

@@ -1,4 +1,4 @@
-export interface ProvidedTerms {
+export interface UserProvidedTerms {
   audio?: string
   chart?: string
   footnote?: string
