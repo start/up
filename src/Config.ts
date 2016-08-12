@@ -15,8 +15,6 @@ const DEFAULT_SETTINGS: ConfigSettings = {
   baseForUrlsStartingWithHashMark: '',
 
   i18n: {
-    wordDelimiterForGeneratedIds: '-',
-
     terms: {
       tableOfContents: 'Table of Contents',
       itemReferencedByTableOfContents: 'item',
@@ -50,8 +48,6 @@ export class Config {
   defaultUrlScheme: string
   baseForUrlsStartingWithSlash: string
   baseForUrlsStartingWithHashMark: string
-
-  wordDelimiterForGeneratedIds: string
 
   // TODO: Remove
   settings: ConfigSettings
@@ -104,13 +100,6 @@ export class Config {
 
     this.baseForUrlsStartingWithHashMark =
       coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
-
-    if (!settings.i18n) {
-      return
-    }
-
-    this.wordDelimiterForGeneratedIds =
-      coalesce(settings.i18n.wordDelimiterForGeneratedIds, this.wordDelimiterForGeneratedIds)
   }
 }
 

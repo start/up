@@ -95,27 +95,6 @@ describe('The "documentName" config setting', () => {
 })
 
 
-describe('The "wordDelimiterForGeneratedIds" config setting', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
-      ])
-    ]),
-    configChanges: {
-      i18n: {
-        wordDelimiterForGeneratedIds: '::'
-      }
-    },
-    conflictingConfigChanges: {
-      i18n: {
-        wordDelimiterForGeneratedIds: '_'
-      }
-    }
-  })
-})
-
-
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new DocumentNode([

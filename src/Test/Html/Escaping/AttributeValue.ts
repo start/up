@@ -87,7 +87,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify('href attribute of backlinks in footnote blocks', () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { footnoteReference: 'look "up" & read & remember' }
       }
     })
@@ -100,8 +99,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<dl class="up-footnotes">'
-      + '<dt id="up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;2">'
-      + '<a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;up&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;remember&quot;&amp;&amp;&quot;2">2</a>'
+      + '<dt id="up-footnote-2">'
+      + '<a href="#up-look-&quot;up&quot;-&amp;-read-&amp;-remember-2">2</a>'
       + '</dt><dd></dd>'
       + '</dl>'
 
@@ -111,7 +110,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify('id attribute of footntoes in a footnote block', () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { footnote: 'look "down" & read & learn' }
       }
     })
@@ -124,8 +122,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<dl class="up-footnotes">'
-      + '<dt id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;down&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;learn&quot;&amp;&amp;&quot;2">'
-      + '<a href="#up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;reference&quot;&amp;&amp;&quot;2">2</a>'
+      + '<dt id="up-look-&quot;down&quot;-&amp;-read-&amp;-learn-2">'
+      + '<a href="#up-footnote-reference-2">2</a>'
       + '</dt><dd></dd>'
       + '</dl>'
 
@@ -135,7 +133,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("href attribute of a footnote reference's link", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { footnote: 'look "down" & read & learn' }
       }
     })
@@ -148,8 +145,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<p>'
-      + '<sup class="up-footnote-reference" id="up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;reference&quot;&amp;&amp;&quot;3">'
-      + '<a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;down&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;learn&quot;&amp;&amp;&quot;3">3</a>'
+      + '<sup class="up-footnote-reference" id="up-footnote-reference-3">'
+      + '<a href="#up-look-&quot;down&quot;-&amp;-read-&amp;-learn-3">3</a>'
       + '</sup>'
       + '</p>'
 
@@ -159,7 +156,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify('id attribute of footnote references', () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { footnoteReference: 'look "up" & read & remember' }
       }
     })
@@ -172,8 +168,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<p>'
-      + '<sup class="up-footnote-reference" id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;up&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;read&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;remember&quot;&amp;&amp;&quot;3">'
-      + '<a href="#up&quot;&amp;&amp;&quot;footnote&quot;&amp;&amp;&quot;3">3</a>'
+      + '<sup class="up-footnote-reference" id="up-look-&quot;up&quot;-&amp;-read-&amp;-remember-3">'
+      + '<a href="#up-footnote-3">3</a>'
       + '</sup>'
       + '</p>'
 
@@ -183,7 +179,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of inline spoilers' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { spoiler: 'look "away" & smile & forget' }
       }
     })
@@ -197,8 +192,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const html =
       '<p>'
       + '<span class="up-spoiler up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle spoiler</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle spoiler</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<span>45.9%</span>'
       + '</span>'
       + '</p>'
@@ -209,7 +204,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of inline NSFW conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { nsfw: 'look "away" & smile & forget' }
       }
     })
@@ -223,8 +217,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const html =
       '<p>'
       + '<span class="up-nsfw up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle NSFW</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle NSFW</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<span>45.9%</span>'
       + '</span>'
       + '</p>'
@@ -235,7 +229,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of inline NSFL conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { nsfl: 'look "away" & smile & forget' }
       }
     })
@@ -249,8 +242,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const html =
       '<p>'
       + '<span class="up-nsfl up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle NSFL</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle NSFL</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<span>45.9%</span>'
       + '</span>'
       + '</p>'
@@ -261,7 +254,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of spoiler blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { spoiler: 'look "away" & smile & forget' }
       }
     })
@@ -272,8 +264,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<div class="up-spoiler up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle spoiler</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle spoiler</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<div></div>'
       + '</div>'
 
@@ -283,7 +275,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { nsfw: 'look "away" & smile & forget' }
       }
     })
@@ -294,8 +285,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<div class="up-nsfw up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle NSFW</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle NSFW</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<div></div>'
       + '</div>'
 
@@ -305,7 +296,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify("id attribute of NSFL blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { nsfl: 'look "away" & smile & forget' }
       }
     })
@@ -316,8 +306,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const html =
       '<div class="up-nsfl up-revealable">'
-      + '<label for="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">toggle NSFL</label>'
-      + '<input id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1" type="checkbox">'
+      + '<label for="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">toggle NSFL</label>'
+      + '<input id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1" type="checkbox">'
       + '<div></div>'
       + '</div>'
 
@@ -327,7 +317,6 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   specify('the id attribute of elements referenced by the table of contents', () => {
     const up = new Up({
       i18n: {
-        wordDelimiterForGeneratedIds: '"&&"',
         terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
       }
     })
@@ -342,10 +331,10 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up&quot;&amp;&amp;&quot;look&quot;&amp;&amp;&quot;&quot;away&quot;&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;smile&quot;&amp;&amp;&quot;&amp;&quot;&amp;&amp;&quot;forget&quot;&amp;&amp;&quot;1">I enjoy apples</h1>')
+      + '<h1 id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</h1>')
   })
 })
 

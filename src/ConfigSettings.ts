@@ -14,8 +14,6 @@ export interface ConfigSettings {
   baseForUrlsStartingWithHashMark?: string
 
   i18n?: {
-    wordDelimiterForGeneratedIds?: string
-
     terms?: ProvidedTerms
   }
 }

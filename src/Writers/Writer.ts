@@ -82,7 +82,7 @@ export abstract class Writer {
 
     return rawIdWithAllParts
       .trim()
-      .replace(WHITESPACE_PATTERN, this.config.wordDelimiterForGeneratedIds)
+      .replace(WHITESPACE_PATTERN, '-')
   }
 
   protected abstract writeDocument(document: DocumentNode): string
