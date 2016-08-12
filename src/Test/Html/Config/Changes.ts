@@ -316,7 +316,7 @@ describe('The "toggleNsfl" config term', () => {
 })
 
 
-describe('The "tableOfContents" config term', () => {
+describe('The "tableOfContents" config setting', () => {
   const heading = new HeadingNode([], 1)
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
