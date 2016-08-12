@@ -48,6 +48,10 @@ function itWorksAsAdvertised(
     specify('when calling the toAst method on an Up object', () => {
       expect(new Up().toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
     })
+
+    specify('when calling the toAst method on an Up object that had the setting explictly disabled when the object was created', () => {
+      expect(new Up(configWithSettingDisabled).toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+    })
   })
 
 
@@ -55,64 +59,17 @@ function itWorksAsAdvertised(
     expect(new Up(configWithSettingEnabled).toAst(markup, configWithSettingDisabled)).to.be.eql(documentWhenSettingIsDisabled)
   })
 
-  /*
 
-  describe("when provided to the default toAst method", () => {
-    it("is applied", () => {
-      expect(Up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
+  context('does not affect subsequent calls when provided', () => {
+    specify('when calling the default toAst method', () => {
+      expect(Up.toAst(markup, configWithSettingEnabled)).to.be.not.eql(Up.toAst(markup))
     })
 
-    it("does not alter subsequent calls to the default method", () => {
-      expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
-    })
-
-    it("replaces the original term", () => {
-      expect(Up.toAst(textForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+    specify('when calling the toAst method on an Up object', () => {
+      const up = new Up()
+      expect(up.toAst(markup, configWithSettingEnabled)).to.be.not.eql(up.toAst(markup))
     })
   })
-
-
-  describe("when provided to an Up object's toAst method", () => {
-    const up = new Up(configChanges)
-
-    it("is applied", () => {
-      expect(up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
-    })
-
-    it("does not alter the Up object's original settings", () => {
-      expect(up.toAst(textForConfigChanges)).to.be.eql(whenEverythingIsDefault)
-    })
-
-    it("replaces the original term", () => {
-      expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
-    })
-  })
-
-
-  const up = new Up(configChanges)
-
-  const whenProvidingChangesAtCreation =
-    up.toAst(textForConfigChanges)
-
-
-  describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the term when calling the default toAst method', () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(textForConfigChanges, configChanges))
-    })
-
-    it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up().toAst(textForConfigChanges, configChanges))
-    })
-
-    it("has the same result as providing the term when calling the Up object's toAst method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(textForConfigChanges, configChanges))
-    })
-
-    it("replaces the original term", () => {
-      expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
-    })
-  })
-  */
 }
 
 
