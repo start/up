@@ -3,36 +3,6 @@ import { UserProvidedTerms} from './UserProvidedTerms'
 import { coalesce } from './CollectionHelpers'
 
 
-const DEFAULT_SETTINGS: UserProvidedSettings = {
-  createTableOfContents: false,
-  createSourceMap: false,
-  writeUnsafeContent: false,
-  documentName: 'up',
-  defaultUrlScheme: 'https://',
-  baseForUrlsStartingWithSlash: '',
-  baseForUrlsStartingWithHashMark: '',
-
-  terms: {
-    audio: 'audio',
-    chart: 'chart',
-    footnote: 'footnote',
-    footnoteReference: 'footnote reference',
-    highlight: 'highlight',
-    image: 'image',
-    itemReferencedByTableOfContents: 'item',
-    nsfl: 'nsfl',
-    nsfw: 'nsfw',
-    spoiler: 'spoiler',
-    table: 'table',
-    tableOfContents: 'Table of Contents',
-    toggleNsfl: 'toggle NSFL',
-    toggleNsfw: 'toggle NSFW',
-    toggleSpoiler: 'toggle spoiler',
-    video: 'video'
-  }
-}
-
-
 export class Config {
   createTableOfContents = false
   createSourceMap = false
