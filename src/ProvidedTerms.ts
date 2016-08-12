@@ -1,4 +1,4 @@
-export interface ConfigSettingsTerms {
+export interface ProvidedTerms {
   tableOfContents?: string
   itemReferencedByTableOfContents?: string
   table?: string

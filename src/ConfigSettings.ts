@@ -1,4 +1,4 @@
-import { ConfigSettingsTerms } from './ConfigSettingsTerms'
+import { ProvidedTerms } from './ProvidedTerms'
 
 
 export interface ConfigSettings {
@@ -16,6 +16,6 @@ export interface ConfigSettings {
   i18n?: {
     wordDelimiterForGeneratedIds?: string
 
-    terms?: ConfigSettingsTerms
+    terms?: ProvidedTerms
   }
 }
