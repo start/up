@@ -9,9 +9,7 @@ import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'spoiler'", () => {
     const up = new Up({
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
+      terms: { spoiler: 'ruins ending' }
     })
 
     const document = new DocumentNode([
@@ -37,9 +35,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'spoiler'", () => {
     const up = new Up({
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
+      terms: { spoiler: 'ruins ending' }
     })
 
     const document = new DocumentNode([

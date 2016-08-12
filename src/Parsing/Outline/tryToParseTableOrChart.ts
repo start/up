@@ -61,7 +61,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { config } = args
-  const { terms } = config.settings.i18n
+  const { terms } = config.settings
 
   const getLabelPattern = (term: string) =>
     solelyAndIgnoringCapitalization(

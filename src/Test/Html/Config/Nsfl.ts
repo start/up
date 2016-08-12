@@ -9,9 +9,7 @@ import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 describe("The ID of an inline NSFL convention's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'nsfl'", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfl: 'life ruining' }
-      }
+      terms: { nsfl: 'life ruining' }
     })
 
     const document = new DocumentNode([
@@ -37,9 +35,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
 describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'nsfl'", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfl: 'life ruining' }
-      }
+      terms: { nsfl: 'life ruining' }
     })
 
     const document = new DocumentNode([

@@ -7,9 +7,7 @@ import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 
 describe('The "highlight" config term', () => {
   const up = new Up({
-    i18n: {
-      terms: { highlight: 'mark' }
-    }
+    terms: { highlight: 'mark' }
   })
 
   it('is used to indicate highlighted text', () => {

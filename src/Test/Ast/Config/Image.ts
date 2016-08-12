@@ -6,9 +6,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 describe('The term that represents image conventions', () => {
   const up = new Up({
-    i18n: {
-      terms: { image: 'see' }
-    }
+    terms: { image: 'see' }
   })
 
   it('comes from the "image" config term', () => {

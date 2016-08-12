@@ -10,9 +10,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
   const up = new Up({
-    i18n: {
-      terms: { nsfl: 'gross' }
-    }
+    terms: { nsfl: 'gross' }
   })
 
   context('For inline NSFL conventions:', () => {

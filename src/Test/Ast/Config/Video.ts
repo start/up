@@ -6,9 +6,7 @@ import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
 
 describe('The term that represents video conventions', () => {
   const up = new Up({
-    i18n: {
-      terms: { video: 'watch' }
-    }
+    terms: { video: 'watch' }
   })
 
   it('comes from the "video" config term', () => {

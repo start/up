@@ -9,9 +9,7 @@ import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 describe("The ID of an inline NSFW convention's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'nsfw'", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfw: 'explicit' }
-      }
+      terms: { nsfw: 'explicit' }
     })
 
     const document = new DocumentNode([
@@ -37,9 +35,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
 describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)", () => {
   it("uses the provided term for 'nsfw'", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfw: 'explicit' }
-      }
+      terms: { nsfw: 'explicit' }
     })
 
     const document = new DocumentNode([

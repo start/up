@@ -17,9 +17,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
   context("When the custom term for 'spoiler' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { spoiler: '^lookaway^' }
-      }
+      terms: { spoiler: '^lookaway^' }
     })
 
     specify('inline spoilers can be produced using the term', () => {
@@ -42,9 +40,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'nsfw' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfw: '^lookaway^' }
-      }
+      terms: { nsfw: '^lookaway^' }
     })
 
     specify('inline NSFW conventions can be produced using the term', () => {
@@ -67,9 +63,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'nsfl' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfl: '^lookaway^' }
-      }
+      terms: { nsfl: '^lookaway^' }
     })
 
     specify('inline NSFL conventions can be produced using the term', () => {
@@ -92,9 +86,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'audio' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { audio: '^listen^' }
-      }
+      terms: { audio: '^listen^' }
     })
 
     specify('audio conventions can be produced using the term', () => {
@@ -127,9 +119,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'image' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { image: '^look^' }
-      }
+      terms: { image: '^look^' }
     })
 
     specify('audio conventions can be produced using the term', () => {
@@ -162,9 +152,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'video' starts with a caret", () => {
     const up = new Up({
-      i18n: {
-        terms: { video: '^watch^' }
-      }
+      terms: { video: '^watch^' }
     })
 
     specify('audio conventions can be produced using the term', () => {

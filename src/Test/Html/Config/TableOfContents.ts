@@ -8,9 +8,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 describe('The main heading within the table of contents', () => {
   it('uses the config term for "tableOfContents"', () => {
     const up = new Up({
-      i18n: {
-        terms: { tableOfContents: 'In This Article' }
-      }
+      terms: { tableOfContents: 'In This Article' }
     })
 
     const heading =

@@ -7,9 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('The term that represents table conventions', () => {
   const up = new Up({
-    i18n: {
-      terms: { table: 'data' }
-    }
+    terms: { table: 'data' }
   })
 
   it('comes from the "table" config term', () => {

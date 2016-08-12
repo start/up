@@ -10,9 +10,7 @@ import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 
 context('The "nsfl" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
   const up = new Up({
-    i18n: {
-      terms: { nsfw: 'gross' }
-    }
+    terms: { nsfw: 'gross' }
   })
 
   context('For inline NSFW conventions:', () => {

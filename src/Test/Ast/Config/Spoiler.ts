@@ -10,9 +10,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
   const up = new Up({
-    i18n: {
-      terms: { spoiler: 'ruins ending' }
-    }
+    terms: { spoiler: 'ruins ending' }
   })
 
   context('For inline spoilers:', () => {
