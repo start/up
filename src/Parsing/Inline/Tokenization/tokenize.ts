@@ -343,10 +343,12 @@ class Tokenizer {
   }
 
   private getMediaDescriptionConventions(): Convention[] {
+    const { terms } = this.config
+
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new Convention({
-          startsWith: this.getBracketedTermStartPattern(media.nonLocalizedTerm, bracket) + ANY_WHITESPACE,
+          startsWith: this.getBracketedTermStartPattern(media.term(terms), bracket) + ANY_WHITESPACE,
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 

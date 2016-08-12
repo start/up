@@ -35,16 +35,6 @@ export class Config {
     return clone
   }
 
-  localizeTerm(nonLocalizedTerm: string): string {
-    const localizedTerm = this.terms[nonLocalizedTerm]
-
-    if (localizedTerm) {
-      return localizedTerm
-    }
-
-    throw new Error('Unrecognized term: ' + nonLocalizedTerm)
-  }
-
   private applyChangedUserSettings(settings: UserProvidedSettings): void {
     if (!settings) {
       return

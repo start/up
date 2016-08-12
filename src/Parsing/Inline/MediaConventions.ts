@@ -6,19 +6,19 @@ import { TokenKind } from './Tokenization/TokenKind'
 
 
 export const AUDIO_CONVENTION: MediaConvention = {
-  nonLocalizedTerm: 'audio',
+  term: terms => terms.audio,
   NodeType: AudioNode,
   startAndDescriptionTokenKind: TokenKind.AudioStartAndDescription
 }
 
 export const IMAGE_CONVENTION: MediaConvention = {
-  nonLocalizedTerm: 'image',
+  term: terms => terms.image,
   NodeType: ImageNode,
   startAndDescriptionTokenKind: TokenKind.ImageStartAndDescription
 }
 
 export const VIDEO_CONVENTION: MediaConvention = {
-  nonLocalizedTerm: 'video',
+  term: terms => terms.video,
   NodeType: VideoNode,
   startAndDescriptionTokenKind: TokenKind.VideoStartAndDescription
 }
