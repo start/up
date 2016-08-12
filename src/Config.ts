@@ -1,4 +1,5 @@
 import { UserProvidedSettings} from './UserProvidedSettings'
+import { UserProvidedTerms} from './UserProvidedTerms'
 import { coalesce } from './CollectionHelpers'
 
 
@@ -92,6 +93,72 @@ export class Config {
 
     this.baseForUrlsStartingWithHashMark =
       coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
+  }
+}
+
+
+export namespace Config {
+  export class Terms {
+    audio = 'audio'
+    chart = 'chart'
+    footnote = 'footnote'
+    footnoteReference = 'footnote reference'
+    highlight = 'highlight'
+    image = 'image'
+    itemReferencedByTableOfContents = 'item'
+    nsfl = 'nsfl'
+    nsfw = 'nsfw'
+    spoiler = 'spoiler'
+    table = 'table'
+    tableOfContents = 'Table of Contents'
+    toggleNsfl = 'toggle NSFL'
+    toggleNsfw = 'toggle NSFW'
+    toggleSpoiler = 'toggle spoiler'
+    video = 'video';
+
+    applySettings(terms: UserProvidedTerms): void {
+      this.audio =
+        coalesce(terms.audio && this.audio)
+
+      this.chart =
+        coalesce(terms.chart && this.chart)
+
+      this.footnote =
+        coalesce(terms.footnote && this.footnote)
+
+      this.footnoteReference =
+        coalesce(terms.footnoteReference && this.footnoteReference)
+
+      this.highlight =
+        coalesce(terms.highlight && this.highlight)
+
+      this.itemReferencedByTableOfContents =
+        coalesce(terms.itemReferencedByTableOfContents && this.itemReferencedByTableOfContents)
+
+      this.nsfw =
+        coalesce(terms.nsfw && this.nsfw)
+
+      this.spoiler =
+        coalesce(terms.spoiler && this.spoiler)
+
+      this.table =
+        coalesce(terms.table && this.table)
+
+      this.tableOfContents =
+        coalesce(terms.tableOfContents && this.tableOfContents)
+
+      this.toggleNsfl =
+        coalesce(terms.toggleNsfl && this.toggleNsfl)
+
+      this.toggleNsfw =
+        coalesce(terms.toggleNsfw && this.toggleNsfw)
+
+      this.toggleSpoiler =
+        coalesce(terms.toggleSpoiler && this.toggleSpoiler)
+
+      this.video =
+        coalesce(terms.video && this.video)
+    }
   }
 }
 
