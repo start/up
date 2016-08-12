@@ -156,3 +156,30 @@ describe('The "baseForUrlsStartingWithHashMark" config term', () => {
     }
   })
 })
+
+
+describe('The "baseForUrlsStartingWithSlash" config term', () => {
+  itWorksAsAdvertised({
+    markup: '[See users] (/users)',
+
+    documentWhenChangeIsApplied: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see/users')
+      ])
+    ]),
+
+    documentWhenSettingIsNotChanged: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], '/users')
+      ])
+    ]),
+
+    configWithSettingChanged: {
+      baseForUrlsStartingWithSlash: 'my-app://example.com/see'
+    },
+
+    configWithSettingSetToDefault: {
+      baseForUrlsStartingWithSlash: ''
+    }
+  })
+})
