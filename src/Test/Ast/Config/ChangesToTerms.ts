@@ -16,7 +16,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { markupForConfigChanges, markupForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
-  // First, let's just make sure the caller is expecting their config changes to make a difference
+  // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
 
   const whenEverythingIsDefault =
