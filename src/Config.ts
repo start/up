@@ -12,22 +12,22 @@ const DEFAULT_SETTINGS: ConfigSettings = {
   baseForUrlsStartingWithHashMark: '',
 
   terms: {
-    tableOfContents: 'Table of Contents',
-    itemReferencedByTableOfContents: 'item',
-    table: 'table',
-    chart: 'chart',
-    image: 'image',
     audio: 'audio',
-    video: 'video',
-    highlight: 'highlight',
-    spoiler: 'spoiler',
-    toggleSpoiler: 'toggle spoiler',
-    nsfw: 'nsfw',
-    toggleNsfw: 'toggle NSFW',
-    nsfl: 'nsfl',
-    toggleNsfl: 'toggle NSFL',
+    chart: 'chart',
     footnote: 'footnote',
-    footnoteReference: 'footnote reference'
+    footnoteReference: 'footnote reference',
+    highlight: 'highlight',
+    image: 'image',
+    itemReferencedByTableOfContents: 'item',
+    nsfl: 'nsfl',
+    nsfw: 'nsfw',
+    spoiler: 'spoiler',
+    table: 'table',
+    tableOfContents: 'Table of Contents',
+    toggleNsfl: 'toggle NSFL',
+    toggleNsfw: 'toggle NSFW',
+    toggleSpoiler: 'toggle spoiler',
+    video: 'video'
   }
 }
 

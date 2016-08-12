@@ -1,20 +1,20 @@
 export interface ProvidedTerms {
-  tableOfContents?: string
-  itemReferencedByTableOfContents?: string
-  table?: string
-  chart?: string
-  image?: string
   audio?: string
-  video?: string
-  highlight?: string
-  spoiler?: string
-  toggleSpoiler?: string
-  nsfw?: string
-  toggleNsfw?: string
-  nsfl?: string
-  toggleNsfl?: string
+  chart?: string
   footnote?: string
   footnoteReference?: string
+  highlight?: string
+  image?: string
+  itemReferencedByTableOfContents?: string
+  nsfl?: string
+  nsfw?: string
+  spoiler?: string
+  table?: string
+  tableOfContents?: string
+  toggleNsfl?: string
+  toggleNsfw?: string
+  toggleSpoiler?: string
+  video?: string
 
   [term: string]: string
 }
