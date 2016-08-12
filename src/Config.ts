@@ -34,32 +34,39 @@ const DEFAULT_SETTINGS: UserProvidedSettings = {
 
 
 export class Config {
-  createTableOfContents: boolean
-  createSourceMap: boolean
-  writeUnsafeContent: boolean
-  documentName: string
-  defaultUrlScheme: string
-  baseForUrlsStartingWithSlash: string
-  baseForUrlsStartingWithHashMark: string
+  createTableOfContents = false
+  createSourceMap = false
+  writeUnsafeContent = false
+  documentName = 'up'
+  defaultUrlScheme = 'https://'
+  baseForUrlsStartingWithSlash = ''
+  baseForUrlsStartingWithHashMark = ''
 
-  // TODO: Remove
-  settings: UserProvidedSettings
+  terms = new Config.Terms()
 
-  constructor(changes?: UserProvidedSettings, baseSettings = DEFAULT_SETTINGS) {
-    for (const settings of [baseSettings, changes]) {
-      this.applySettings(settings)
-    }
-
-    // TODO: Remove
-    this.settings = applyChanges(baseSettings, changes)
+  constructor(changes?: UserProvidedSettings) {
+    this.applyChangedUserSettings(changes)
   }
 
+  // Returns a new `Config` object with the changes applied.
   withChanges(changes: UserProvidedSettings): Config {
-    return new Config(changes, this.settings)
+    const clone = new Config()
+
+    clone.createTableOfContents = this.createTableOfContents
+    clone.createSourceMap = this.createSourceMap
+    clone.writeUnsafeContent = this.writeUnsafeContent
+    clone.documentName = this.defaultUrlScheme
+    clone.defaultUrlScheme = this.defaultUrlScheme
+    clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
+    clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
+
+    clone.terms = this.terms.withChanges(changes.terms)
+
+    return clone
   }
 
   localizeTerm(nonLocalizedTerm: string): string {
-    const localizedTerm = this.settings.terms[nonLocalizedTerm]
+    const localizedTerm = this.terms[nonLocalizedTerm]
 
     if (localizedTerm) {
       return localizedTerm
@@ -68,7 +75,7 @@ export class Config {
     throw new Error('Unrecognized term: ' + nonLocalizedTerm)
   }
 
-  private applySettings(settings: UserProvidedSettings): void {
+  private applyChangedUserSettings(settings: UserProvidedSettings): void {
     if (!settings) {
       return
     }
@@ -93,6 +100,8 @@ export class Config {
 
     this.baseForUrlsStartingWithHashMark =
       coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
+
+    this.terms.applyChangedUserSettings(settings.terms)
   }
 }
 
@@ -116,7 +125,33 @@ export namespace Config {
     toggleSpoiler = 'toggle spoiler'
     video = 'video';
 
-    applySettings(terms: UserProvidedTerms): void {
+    // Returns a new `Terms` object with the changes applied.
+    withChanges(terms: UserProvidedTerms): Terms {
+      const clone = new Terms()
+
+      clone.audio = this.audio
+      clone.chart = this.chart
+      clone.footnote = this.footnote
+      clone.footnoteReference = this.footnoteReference
+      clone.highlight = this.highlight
+      clone.image = this.image
+      clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
+      clone.nsfl = this.nsfl
+      clone.nsfw = this.nsfw
+      clone.spoiler = this.spoiler
+      clone.table = this.table
+      clone.tableOfContents = this.tableOfContents
+      clone.toggleNsfl = this.toggleNsfl
+      clone.toggleNsfw = this.toggleNsfw
+      clone.toggleSpoiler = this.toggleSpoiler
+      clone.video = this.video
+
+      clone.applyChangedUserSettings(terms)
+
+      return clone
+    }
+
+    applyChangedUserSettings(terms: UserProvidedTerms): void {
       this.audio =
         coalesce(terms.audio && this.audio)
 
@@ -160,36 +195,4 @@ export namespace Config {
         coalesce(terms.video && this.video)
     }
   }
-}
-
-
-// Recursively merges `base` and `changes` and returns the result. Neither argument is mutated.
-//
-// Any fields on `changes` that do not also exist on `base` are ignored.
-function applyChanges(base: StringInxexable, changes: StringInxexable): StringInxexable {
-  if (changes == null) {
-    return base
-  }
-
-  const merged: StringInxexable = {}
-
-  for (const key in base) {
-    const baseValue = merged[key] = base[key]
-    const changedValue = changes[key]
-
-    if (changedValue != null) {
-      // If a changed value is present, we assume it has the same type as the base value.
-      merged[key] =
-        typeof baseValue === 'object'
-          ? applyChanges(baseValue, changedValue)
-          : changedValue
-    }
-  }
-
-  return merged
-}
-
-
-interface StringInxexable {
-  [key: string]: any
 }
