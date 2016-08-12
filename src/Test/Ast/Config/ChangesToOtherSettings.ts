@@ -36,12 +36,16 @@ function itWorksAsAdvertised(
   })
 
 
-  context('works when provided', () => {
-    specify('to the default toAst method', () => {
+  context('works when enabled', () => {
+    specify('when calling the default toAst method', () => {
       expect(Up.toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
     })
 
-    specify('to the toAst method on an Up object', () => {
+    specify('when creating an Up object', () => {
+      expect(new Up(configWithSettingEnabled).toAst(markup)).to.be.eql(documentWhenSettingIsEnabled)
+    })
+
+    specify('when calling the toAst method on an Up object', () => {
       expect(new Up().toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
     })
   })
