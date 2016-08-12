@@ -50,6 +50,8 @@ export class Config {
   baseForUrlsStartingWithSlash: string
   baseForUrlsStartingWithHashMark: string
 
+  wordDelimiterForGeneratedIds: string
+
   // TODO: Remove
   settings: ConfigSettings
 
@@ -80,27 +82,34 @@ export class Config {
     if (!settings) {
       return
     }
-    
+
     this.createTableOfContents =
       coalesce(settings.createTableOfContents, this.createTableOfContents)
-    
+
     this.createSourceMap =
       coalesce(settings.createSourceMap, this.createSourceMap)
-    
+
     this.writeUnsafeContent =
       coalesce(settings.writeUnsafeContent, this.writeUnsafeContent)
-    
+
     this.documentName =
       coalesce(settings.documentName, this.documentName)
-    
+
     this.defaultUrlScheme =
       coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
-    
+
     this.baseForUrlsStartingWithSlash =
       coalesce(settings.baseForUrlsStartingWithSlash, this.baseForUrlsStartingWithSlash)
-    
+
     this.baseForUrlsStartingWithHashMark =
       coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
+
+    if (!settings.i18n) {
+      return
+    }
+
+    this.wordDelimiterForGeneratedIds =
+      coalesce(settings.i18n.wordDelimiterForGeneratedIds, this.wordDelimiterForGeneratedIds)
   }
 }
 
