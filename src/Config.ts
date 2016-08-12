@@ -1,5 +1,5 @@
 import { ConfigSettings} from './ConfigSettings'
-
+import { coalesce } from './CollectionHelpers'
 
 const DEFAULT_SETTINGS: ConfigSettings = {
   createTableOfContents: false,
@@ -39,9 +39,26 @@ const DEFAULT_SETTINGS: ConfigSettings = {
 
 
 export class Config {
+  createTableOfContents: boolean
+  createSourceMap: boolean
+
+  writeUnsafeContent: boolean
+
+  documentName: string
+
+  defaultUrlScheme: string
+  baseForUrlsStartingWithSlash: string
+  baseForUrlsStartingWithHashMark: string
+
+  // TODO: Remove
   settings: ConfigSettings
 
   constructor(changes?: ConfigSettings, baseSettings = DEFAULT_SETTINGS) {
+    for (const settings of [baseSettings, changes]) {
+      this.applySettings(settings)
+    }
+
+    // TODO: Remove
     this.settings = applyChanges(baseSettings, changes)
   }
 
@@ -57,6 +74,33 @@ export class Config {
     }
 
     throw new Error('Unrecognized term: ' + nonLocalizedTerm)
+  }
+
+  private applySettings(settings: ConfigSettings): void {
+    if (!settings) {
+      return
+    }
+    
+    this.createTableOfContents =
+      coalesce(settings.createTableOfContents, this.createTableOfContents)
+    
+    this.createSourceMap =
+      coalesce(settings.createSourceMap, this.createSourceMap)
+    
+    this.writeUnsafeContent =
+      coalesce(settings.writeUnsafeContent, this.writeUnsafeContent)
+    
+    this.documentName =
+      coalesce(settings.documentName, this.documentName)
+    
+    this.defaultUrlScheme =
+      coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
+    
+    this.baseForUrlsStartingWithSlash =
+      coalesce(settings.baseForUrlsStartingWithSlash, this.baseForUrlsStartingWithSlash)
+    
+    this.baseForUrlsStartingWithHashMark =
+      coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
   }
 }
 

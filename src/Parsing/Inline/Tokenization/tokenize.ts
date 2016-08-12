@@ -1153,20 +1153,18 @@ class Tokenizer {
     // However, it might have some leading or trailing whitespace.
     url = url.trim()
 
-    const { settings } = this.config
-
     switch (url[0]) {
       case FORWARD_SLASH:
-        return settings.baseForUrlsStartingWithSlash + url
+        return this.config.baseForUrlsStartingWithSlash + url
 
       case HASH_MARK:
-        return settings.baseForUrlsStartingWithHashMark + url
+        return this.config.baseForUrlsStartingWithHashMark + url
     }
 
     return (
       URL_SCHEME_PATTERN.test(url)
         ? url
-        : settings.defaultUrlScheme + url)
+        : this.config.defaultUrlScheme + url)
   }
 
   private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {

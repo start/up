@@ -23,3 +23,14 @@ export function remove<T>(items: T[], itemToRemove: T): void {
     }
   }
 }
+
+// Returns the first non-null value in `values`, if one exists. Otherwise, returns null.
+export function coalesce<T>(...values: T[]): T {
+  for (const value of values) {
+    if (value != null) {
+      return value
+    }
+  }
+
+  return null
+}
