@@ -19,7 +19,7 @@ function itWorksAsAdvertised(
     configWithSettingDisabled: ConfigSettings
   }
 ): void {
-  const { markup, documentWhenSettingIsEnabled, documentWhenSettingIsDisabled, configWithSettingEnabled } = args
+  const { markup, documentWhenSettingIsEnabled, documentWhenSettingIsDisabled, configWithSettingEnabled, configWithSettingDisabled } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(documentWhenSettingIsEnabled).to.not.be.eql(documentWhenSettingIsDisabled)
@@ -49,7 +49,12 @@ function itWorksAsAdvertised(
       expect(new Up().toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
     })
   })
-  
+
+
+  specify('can be disabled when calling the toAst method on an Up object that had the setting enabled when the object was created', () => {
+    expect(new Up(configWithSettingEnabled).toAst(markup, configWithSettingDisabled)).to.be.eql(documentWhenSettingIsDisabled)
+  })
+
   /*
 
   describe("when provided to the default toAst method", () => {
