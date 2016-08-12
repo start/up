@@ -13,7 +13,5 @@ export interface ConfigSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
 
-  i18n?: {
-    terms?: ProvidedTerms
-  }
+  terms?: ProvidedTerms
 }

@@ -86,14 +86,10 @@ describe('The "audio" config term', () => {
     markupForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
-      i18n: {
-        terms: { audio: 'listen' }
-      }
+      terms: { audio: 'listen' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { audio: 'sound' }
-      }
+      terms: { audio: 'sound' }
     }
   })
 })
@@ -104,14 +100,10 @@ describe('The "image" config term', () => {
     markupForConfigChanges: '[see: Chrono Cross logo][https://example.com/cc.png]',
     markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
     configChanges: {
-      i18n: {
-        terms: { image: 'see' }
-      }
+      terms: { image: 'see' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { image: 'picture' }
-      }
+      terms: { image: 'picture' }
     }
   })
 })
@@ -122,14 +114,10 @@ describe('The "video" config term', () => {
     markupForConfigChanges: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
     configChanges: {
-      i18n: {
-        terms: { video: 'watch' }
-      }
+      terms: { video: 'watch' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { video: 'observe' }
-      }
+      terms: { video: 'observe' }
     }
   })
 })
@@ -140,14 +128,10 @@ describe('The "highlight" config term', () => {
     markupForConfigChanges: '[mark: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
     configChanges: {
-      i18n: {
-        terms: { highlight: 'mark' }
-      }
+      terms: { highlight: 'mark' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { highlight: 'paint' }
-      }
+      terms: { highlight: 'paint' }
     }
   })
 })
@@ -158,14 +142,10 @@ describe('The "spoiler" config term', () => {
     markupForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
-      i18n: {
-        terms: { spoiler: 'ruins ending' }
-      }
+      terms: { spoiler: 'ruins ending' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { spoiler: 'look away' }
-      }
+      terms: { spoiler: 'look away' }
     }
   })
 })
@@ -176,14 +156,10 @@ describe('The "nsfw" config term', () => {
     markupForConfigChanges: '[GETS YOU FIRED: Ash fights Gary]',
     markupForDefaultSettings: '[NSFW: Ash fights Gary]',
     configChanges: {
-      i18n: {
-        terms: { nsfw: 'GETS YOU FIRED' }
-      }
+      terms: { nsfw: 'GETS YOU FIRED' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { nsfw: 'look away' }
-      }
+      terms: { nsfw: 'look away' }
     }
   })
 })
@@ -194,14 +170,10 @@ describe('The "nsfl" config term', () => {
     markupForConfigChanges: '[RUINS LIFE: Ash fights Gary]',
     markupForDefaultSettings: '[NSFL: Ash fights Gary]',
     configChanges: {
-      i18n: {
-        terms: { nsfl: 'RUINS LIFE' }
-      }
+      terms: { nsfl: 'RUINS LIFE' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { nsfl: 'look away' }
-      }
+      terms: { nsfl: 'look away' }
     }
   })
 })
@@ -222,14 +194,10 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
     configChanges: {
-      i18n: {
-        terms: { table: 'data' }
-      }
+      terms: { table: 'data' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { table: 'info' }
-      }
+      terms: { table: 'info' }
     }
   })
 })
@@ -250,14 +218,10 @@ Chart:
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
     configChanges: {
-      i18n: {
-        terms: { chart: 'data' }
-      }
+      terms: { chart: 'data' }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: { chart: 'info' }
-      }
+      terms: { chart: 'info' }
     }
   })
 })
@@ -266,9 +230,7 @@ Chrono Cross;     1999`,
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
-      i18n: {
-        terms: { footnote: 'reference' }
-      }
+      terms: { footnote: 'reference' }
     })
 
     expect(up.toAst('[SPOILER: Ash fights Gary]')).to.be.eql(
@@ -282,9 +244,7 @@ context('Config settings are totally independent. When one setting is changed, t
   specify('the default Up object', () => {
     const ast =
       Up.toAst('[SPOILER: Ash fights Gary]', {
-        i18n: {
-          terms: { footnote: 'reference' }
-        }
+        terms: { footnote: 'reference' }
       })
 
     expect(ast).to.be.eql(

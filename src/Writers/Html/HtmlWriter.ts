@@ -188,7 +188,7 @@ export class HtmlWriter extends Writer {
   protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      termForTogglingVisibility: this.config.settings.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: inlineSpoiler.children,
       tagNameForGenericContainers: 'span'
@@ -198,7 +198,7 @@ export class HtmlWriter extends Writer {
   protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'nsfw',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      termForTogglingVisibility: this.config.settings.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: inlineNsfw.children,
       tagNameForGenericContainers: 'span'
@@ -208,7 +208,7 @@ export class HtmlWriter extends Writer {
   protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'nsfl',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      termForTogglingVisibility: this.config.settings.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: inlineNsfl.children,
       tagNameForGenericContainers: 'span'
@@ -218,7 +218,7 @@ export class HtmlWriter extends Writer {
   protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'spoiler',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleSpoiler,
+      termForTogglingVisibility: this.config.settings.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: spoilerBlock.children,
       tagNameForGenericContainers: 'div',
@@ -229,7 +229,7 @@ export class HtmlWriter extends Writer {
   protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'nsfw',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfw,
+      termForTogglingVisibility: this.config.settings.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: nsfwBlock.children,
       tagNameForGenericContainers: 'div',
@@ -240,7 +240,7 @@ export class HtmlWriter extends Writer {
   protected nsflBlock(nsflBlock: NsflBlockNode): string {
     return this.revealable({
       nonLocalizedConventionTerm: 'nsfl',
-      termForTogglingVisibility: this.config.settings.i18n.terms.toggleNsfl,
+      termForTogglingVisibility: this.config.settings.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: nsflBlock.children,
       tagNameForGenericContainers: 'div',
@@ -354,7 +354,7 @@ export class HtmlWriter extends Writer {
   private tableOfContentsTitle(): string {
     return this.write(
       new HeadingNode([
-        new PlainTextNode(this.config.settings.i18n.terms.tableOfContents)], 1))
+        new PlainTextNode(this.config.settings.terms.tableOfContents)], 1))
   }
 
   private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string {
@@ -576,7 +576,7 @@ export class HtmlWriter extends Writer {
   }
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
-    return this.getId(this.config.settings.i18n.terms.itemReferencedByTableOfContents, ordinal)
+    return this.getId(this.config.settings.terms.itemReferencedByTableOfContents, ordinal)
   }
 
   // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
@@ -594,11 +594,11 @@ export class HtmlWriter extends Writer {
   }
 
   private footnoteId(referenceNumber: number): string {
-    return this.getId(this.config.settings.i18n.terms.footnote, referenceNumber)
+    return this.getId(this.config.settings.terms.footnote, referenceNumber)
   }
 
   private footnoteReferenceId(referenceNumber: number): string {
-    return this.getId(this.config.settings.i18n.terms.footnoteReference, referenceNumber)
+    return this.getId(this.config.settings.terms.footnoteReference, referenceNumber)
   }
 }
 

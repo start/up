@@ -5,16 +5,12 @@ import { coalesce } from './CollectionHelpers'
 const DEFAULT_SETTINGS: ConfigSettings = {
   createTableOfContents: false,
   createSourceMap: false,
-
   writeUnsafeContent: false,
-
   documentName: 'up',
-
   defaultUrlScheme: 'https://',
   baseForUrlsStartingWithSlash: '',
   baseForUrlsStartingWithHashMark: '',
 
-  i18n: {
     terms: {
       tableOfContents: 'Table of Contents',
       itemReferencedByTableOfContents: 'item',
@@ -33,7 +29,6 @@ const DEFAULT_SETTINGS: ConfigSettings = {
       footnote: 'footnote',
       footnoteReference: 'footnote reference'
     }
-  }
 }
 
 
@@ -66,7 +61,7 @@ export class Config {
   }
 
   localizeTerm(nonLocalizedTerm: string): string {
-    const localizedTerm = this.settings.i18n.terms[nonLocalizedTerm]
+    const localizedTerm = this.settings.terms[nonLocalizedTerm]
 
     if (localizedTerm) {
       return localizedTerm

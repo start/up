@@ -30,7 +30,7 @@ export function getOutlineNodes(
   }
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, config } = args
-  const { terms } = config.settings.i18n
+  const { terms } = config.settings
 
   const outlineConventions = [
     tryToParseBlankLineSeparation,

@@ -7,9 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 describe('The term that represents chart conventions', () => {
   const up = new Up({
-    i18n: {
-      terms: { chart: 'data' }
-    }
+    terms: { chart: 'data' }
   })
 
   it('comes from the "chart" config term', () => {
