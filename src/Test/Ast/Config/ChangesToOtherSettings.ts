@@ -1,102 +1,105 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
+import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ConfigSettings } from '../../../ConfigSettings'
 
 
-// Elsewhere, we test the creation of tables of contents. Same with the creation of source maps.
+// Elsewhere, we test:
 //
-// Here, we simply make sure the associated config settings are applied advertised. 
+// 1. The creation of tables of contents
+// 2. The creation of source maps
+// 3. The creation of links based on our various base URL settings
+//
+// Here, we simply make sure the associated config settings are applied as advertised. 
 
 function itWorksAsAdvertised(
   args: {
     markup: string,
-    documentWhenSettingIsEnabled: DocumentNode
-    documentWhenSettingIsDisabled: DocumentNode
-    configWithSettingEnabled: ConfigSettings
-    configWithSettingDisabled: ConfigSettings
+    documentWhenChangeIsApplied: DocumentNode
+    documentWhenSettingIsNotChanged: DocumentNode
+    configWithSettingChanged: ConfigSettings
+    configWithSettingSetToDefault: ConfigSettings
   }
 ): void {
-  const { markup, documentWhenSettingIsEnabled, documentWhenSettingIsDisabled, configWithSettingEnabled, configWithSettingDisabled } = args
+  const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, configWithSettingChanged, configWithSettingSetToDefault } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
-  expect(documentWhenSettingIsEnabled).to.not.be.eql(documentWhenSettingIsDisabled)
+  expect(documentWhenChangeIsApplied).to.not.be.eql(documentWhenSettingIsNotChanged)
 
 
   context('is disabled by default', () => {
     specify('when the default toAst method is called', () => {
-      expect(Up.toAst(markup)).to.be.eql(documentWhenSettingIsDisabled)
+      expect(Up.toAst(markup)).to.be.eql(documentWhenSettingIsNotChanged)
     })
 
     specify('when the toAst method is called on an Up object', () => {
-      expect(new Up().toAst(markup)).to.be.eql(documentWhenSettingIsDisabled)
+      expect(new Up().toAst(markup)).to.be.eql(documentWhenSettingIsNotChanged)
     })
   })
 
 
   context('works when enabled', () => {
     specify('when calling the default toAst method', () => {
-      expect(Up.toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+      expect(Up.toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
-      expect(new Up(configWithSettingEnabled).toAst(markup)).to.be.eql(documentWhenSettingIsEnabled)
+      expect(new Up(configWithSettingChanged).toAst(markup)).to.be.eql(documentWhenChangeIsApplied)
     })
 
     specify('when calling the toAst method on an Up object', () => {
-      expect(new Up().toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+      expect(new Up().toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the toAst method on an Up object that had the setting explictly disabled when the object was created', () => {
-      expect(new Up(configWithSettingDisabled).toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+    specify('when calling the toAst method on an Up object that had the setting explictly set to default when the object was created', () => {
+      expect(new Up(configWithSettingSetToDefault).toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
   })
 
 
-  specify('can be disabled when calling the toAst method on an Up object that had the setting enabled when the object was created', () => {
-    expect(new Up(configWithSettingEnabled).toAst(markup, configWithSettingDisabled)).to.be.eql(documentWhenSettingIsDisabled)
+  specify('can be set back to default when calling the toAst method on an Up object that had the setting changed when the object was created', () => {
+    expect(new Up(configWithSettingChanged).toAst(markup, configWithSettingSetToDefault)).to.be.eql(documentWhenSettingIsNotChanged)
   })
 
 
   context('does not affect subsequent calls when provided', () => {
     specify('when calling the default toAst method', () => {
-      expect(Up.toAst(markup, configWithSettingEnabled)).to.be.not.eql(Up.toAst(markup))
+      expect(Up.toAst(markup, configWithSettingChanged)).to.be.not.eql(Up.toAst(markup))
     })
 
     specify('when calling the toAst method on an Up object', () => {
       const up = new Up()
-      expect(up.toAst(markup, configWithSettingEnabled)).to.be.not.eql(up.toAst(markup))
+      expect(up.toAst(markup, configWithSettingChanged)).to.be.not.eql(up.toAst(markup))
     })
   })
 }
 
 
-const markup = `
-Very important
-==============`
-
-
 describe('The "createTableOfContents" config term', () => {
   itWorksAsAdvertised({
-    markup,
+    markup: `
+Very important
+==============`,
 
-    documentWhenSettingIsEnabled: new DocumentNode([
+    documentWhenChangeIsApplied: new DocumentNode([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ], new DocumentNode.TableOfContents([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ])),
 
-    documentWhenSettingIsDisabled: new DocumentNode([
+    documentWhenSettingIsNotChanged: new DocumentNode([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ]),
 
-    configWithSettingEnabled: {
+    configWithSettingChanged: {
       createTableOfContents: true
     },
 
-    configWithSettingDisabled: {
+    configWithSettingSetToDefault: {
       createTableOfContents: false
     }
   })
@@ -105,22 +108,51 @@ describe('The "createTableOfContents" config term', () => {
 
 describe('The "createSourceMap" config term', () => {
   itWorksAsAdvertised({
-    markup,
+    markup: `
+Very important
+==============`,
 
-    documentWhenSettingIsEnabled: new DocumentNode([
+    documentWhenChangeIsApplied: new DocumentNode([
       new HeadingNode([new PlainTextNode('Very important')], 1, 2)
     ]),
 
-    documentWhenSettingIsDisabled: new DocumentNode([
+    documentWhenSettingIsNotChanged: new DocumentNode([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ]),
 
-    configWithSettingEnabled: {
+    configWithSettingChanged: {
       createSourceMap: true
     },
 
-    configWithSettingDisabled: {
+    configWithSettingSetToDefault: {
       createSourceMap: false
+    }
+  })
+})
+
+
+describe('The "baseForUrlsStartingWithHashMark" config term', () => {
+  itWorksAsAdvertised({
+    markup: '[See users] (#users)',
+
+    documentWhenChangeIsApplied: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see#users')
+      ])
+    ]),
+
+    documentWhenSettingIsNotChanged: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], '#users')
+      ])
+    ]),
+
+    configWithSettingChanged: {
+      baseForUrlsStartingWithHashMark: 'my-app://example.com/see'
+    },
+
+    configWithSettingSetToDefault: {
+      baseForUrlsStartingWithHashMark: ''
     }
   })
 })
