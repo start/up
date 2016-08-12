@@ -11,35 +11,32 @@ const DEFAULT_SETTINGS: ConfigSettings = {
   baseForUrlsStartingWithSlash: '',
   baseForUrlsStartingWithHashMark: '',
 
-    terms: {
-      tableOfContents: 'Table of Contents',
-      itemReferencedByTableOfContents: 'item',
-      table: 'table',
-      chart: 'chart',
-      image: 'image',
-      audio: 'audio',
-      video: 'video',
-      highlight: 'highlight',
-      spoiler: 'spoiler',
-      toggleSpoiler: 'toggle spoiler',
-      nsfw: 'nsfw',
-      toggleNsfw: 'toggle NSFW',
-      nsfl: 'nsfl',
-      toggleNsfl: 'toggle NSFL',
-      footnote: 'footnote',
-      footnoteReference: 'footnote reference'
-    }
+  terms: {
+    tableOfContents: 'Table of Contents',
+    itemReferencedByTableOfContents: 'item',
+    table: 'table',
+    chart: 'chart',
+    image: 'image',
+    audio: 'audio',
+    video: 'video',
+    highlight: 'highlight',
+    spoiler: 'spoiler',
+    toggleSpoiler: 'toggle spoiler',
+    nsfw: 'nsfw',
+    toggleNsfw: 'toggle NSFW',
+    nsfl: 'nsfl',
+    toggleNsfl: 'toggle NSFL',
+    footnote: 'footnote',
+    footnoteReference: 'footnote reference'
+  }
 }
 
 
 export class Config {
   createTableOfContents: boolean
   createSourceMap: boolean
-
   writeUnsafeContent: boolean
-
   documentName: string
-
   defaultUrlScheme: string
   baseForUrlsStartingWithSlash: string
   baseForUrlsStartingWithHashMark: string
