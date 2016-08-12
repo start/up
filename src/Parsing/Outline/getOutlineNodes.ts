@@ -72,7 +72,7 @@ export function getOutlineNodes(
       headingLeveler,
       config,
       then: (newNodes, countLinesConsumed) => {
-        if (config.settings.createSourceMap) {
+        if (config.createSourceMap) {
           for (const node of newNodes) {
             node.sourceLineNumber = sourceLineNumber
           }

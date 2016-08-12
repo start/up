@@ -15,6 +15,6 @@ export function parseDocument(markup: string, config: Config): DocumentNode {
 
   return createDocument({
     children,
-    createTableOfContents: config.settings.createTableOfContents
+    createTableOfContents: config.createTableOfContents
   })
 }

@@ -77,14 +77,12 @@ export abstract class Writer {
   }
 
   protected getId(...parts: any[]): string {
-    const { settings } = this.config
-
     const rawIdWithAllParts =
-      [settings.documentName, ...parts].join(' ')
+      [this.config.documentName, ...parts].join(' ')
 
     return rawIdWithAllParts
       .trim()
-      .replace(WHITESPACE_PATTERN, settings.i18n.wordDelimiterForGeneratedIds)
+      .replace(WHITESPACE_PATTERN, this.config.settings.i18n.wordDelimiterForGeneratedIds)
   }
 
   protected abstract writeDocument(document: DocumentNode): string
@@ -273,7 +271,7 @@ export abstract class Writer {
   }
 
   private isUrlAllowed(url: string): boolean {
-    return this.config.settings.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+    return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 }
 
