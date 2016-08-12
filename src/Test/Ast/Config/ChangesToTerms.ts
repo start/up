@@ -24,6 +24,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe("when provided to the default toAst method", () => {
+    it("is applied", () => {
+      expect(Up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
+    })
+
     it("does not alter subsequent calls to the default method", () => {
       expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
     })
@@ -37,11 +41,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   describe("when provided to an Up object's toAst method", () => {
     const up = new Up(configChanges)
 
-    it("does not alter the Up object's original settings", () => {
-      // Let's make sure the conflicting changes actually were conflicting
+    it("is applied", () => {
       expect(up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
+    })
 
-      // And now let's make sure those conflicting changes didn't overwrite the original settings!
+    it("does not alter the Up object's original settings", () => {
       expect(up.toAst(textForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
