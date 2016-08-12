@@ -32,7 +32,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
     })
 
-    it("replaces the original config term", () => {
+    it("replaces the original term", () => {
       expect(Up.toAst(textForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
@@ -49,7 +49,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(up.toAst(textForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
-    it("replaces the original config term", () => {
+    it("replaces the original term", () => {
       expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
@@ -74,7 +74,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(textForConfigChanges, configChanges))
     })
 
-    it("replaces the original config term", () => {
+    it("replaces the original term", () => {
       expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
