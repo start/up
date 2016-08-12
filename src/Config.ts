@@ -1,6 +1,7 @@
 import { ConfigSettings} from './ConfigSettings'
 import { coalesce } from './CollectionHelpers'
 
+
 const DEFAULT_SETTINGS: ConfigSettings = {
   createTableOfContents: false,
   createSourceMap: false,
