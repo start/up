@@ -8,32 +8,32 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    textForConfigChanges: string
-    textForDefaultSettings: string
+    markupForConfigChanges: string
+    markupForDefaultSettings: string
     configChanges: ConfigSettings
     conflictingConfigChanges: ConfigSettings
   }
 ): void {
-  const { textForConfigChanges, textForDefaultSettings, configChanges, conflictingConfigChanges } = args
+  const { markupForConfigChanges, markupForDefaultSettings, configChanges, conflictingConfigChanges } = args
 
   // First, let's just make sure the caller is expecting their config changes to make a difference
-  expect(textForConfigChanges).to.not.be.eql(textForDefaultSettings)
+  expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
 
   const whenEverythingIsDefault =
-    Up.toAst(textForDefaultSettings)
+    Up.toAst(markupForDefaultSettings)
 
 
   describe("when provided to the default toAst method", () => {
     it("is applied", () => {
-      expect(Up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
+      expect(Up.toAst(markupForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("does not alter subsequent calls to the default method", () => {
-      expect(Up.toAst(textForConfigChanges, configChanges)).to.be.eql(Up.toAst(textForDefaultSettings))
+      expect(Up.toAst(markupForConfigChanges, configChanges)).to.be.eql(Up.toAst(markupForDefaultSettings))
     })
 
     it("replaces the original term", () => {
-      expect(Up.toAst(textForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+      expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -42,15 +42,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up(configChanges)
 
     it("is applied", () => {
-      expect(up.toAst(textForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("does not alter the Up object's original settings", () => {
-      expect(up.toAst(textForConfigChanges)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("replaces the original term", () => {
-      expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -58,24 +58,24 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const up = new Up(configChanges)
 
   const whenProvidingChangesAtCreation =
-    up.toAst(textForConfigChanges)
+    up.toAst(markupForConfigChanges)
 
 
   describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the term when calling the default toAst method', () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(textForConfigChanges, configChanges))
+      expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(markupForConfigChanges, configChanges))
     })
 
     it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up().toAst(textForConfigChanges, configChanges))
+      expect(whenProvidingChangesAtCreation).to.be.eql(new Up().toAst(markupForConfigChanges, configChanges))
     })
 
     it("has the same result as providing the term when calling the Up object's toAst method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(textForConfigChanges, configChanges))
+      expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(markupForConfigChanges, configChanges))
     })
 
     it("replaces the original term", () => {
-      expect(up.toAst(textForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
 }
@@ -83,8 +83,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "audio" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
-    textForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    markupForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
       i18n: {
         terms: { audio: 'listen' }
@@ -101,8 +101,8 @@ describe('The "audio" config term', () => {
 
 describe('The "image" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[see: Chrono Cross logo][https://example.com/cc.png]',
-    textForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
+    markupForConfigChanges: '[see: Chrono Cross logo][https://example.com/cc.png]',
+    markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
     configChanges: {
       i18n: {
         terms: { image: 'see' }
@@ -119,8 +119,8 @@ describe('The "image" config term', () => {
 
 describe('The "video" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[watch: Nevada caucus footage][https://example.com/video.webm]',
-    textForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
+    markupForConfigChanges: '[watch: Nevada caucus footage][https://example.com/video.webm]',
+    markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
     configChanges: {
       i18n: {
         terms: { video: 'watch' }
@@ -137,8 +137,8 @@ describe('The "video" config term', () => {
 
 describe('The "highlight" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[mark: Ash fights Gary]',
-    textForDefaultSettings: '[highlight: Ash fights Gary]',
+    markupForConfigChanges: '[mark: Ash fights Gary]',
+    markupForDefaultSettings: '[highlight: Ash fights Gary]',
     configChanges: {
       i18n: {
         terms: { highlight: 'mark' }
@@ -155,8 +155,8 @@ describe('The "highlight" config term', () => {
 
 describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
-    textForDefaultSettings: '[SPOILER: Ash fights Gary]',
+    markupForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
+    markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
       i18n: {
         terms: { spoiler: 'ruins ending' }
@@ -173,8 +173,8 @@ describe('The "spoiler" config term', () => {
 
 describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[GETS YOU FIRED: Ash fights Gary]',
-    textForDefaultSettings: '[NSFW: Ash fights Gary]',
+    markupForConfigChanges: '[GETS YOU FIRED: Ash fights Gary]',
+    markupForDefaultSettings: '[NSFW: Ash fights Gary]',
     configChanges: {
       i18n: {
         terms: { nsfw: 'GETS YOU FIRED' }
@@ -191,8 +191,8 @@ describe('The "nsfw" config term', () => {
 
 describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: '[RUINS LIFE: Ash fights Gary]',
-    textForDefaultSettings: '[NSFL: Ash fights Gary]',
+    markupForConfigChanges: '[RUINS LIFE: Ash fights Gary]',
+    markupForDefaultSettings: '[NSFL: Ash fights Gary]',
     configChanges: {
       i18n: {
         terms: { nsfl: 'RUINS LIFE' }
@@ -209,13 +209,13 @@ describe('The "nsfl" config term', () => {
 
 describe('The "table" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: `
+    markupForConfigChanges: `
 Data:
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    textForDefaultSettings: `
+    markupForDefaultSettings: `
 Table:
 
 Game;             Release Date
@@ -237,13 +237,13 @@ Chrono Cross;     1999`,
 
 describe('The "chart" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    textForConfigChanges: `
+    markupForConfigChanges: `
 Data:
 
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    textForDefaultSettings: `
+    markupForDefaultSettings: `
 Chart:
 
                   Release Date
