@@ -144,18 +144,18 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
-          nonLocalizedTerm: 'highlight'
+          label: this.config.terms.highlight
         }, {
           richConvention: SPOILER_CONVENTION,
-          nonLocalizedTerm: 'spoiler'
+          label: this.config.terms.spoiler
         }, {
           richConvention: NSFW_CONVENTION,
-          nonLocalizedTerm: 'nsfw'
+          label: this.config.terms.nsfw
         }, {
           richConvention: NSFL_CONVENTION,
-          nonLocalizedTerm: 'nsfl'
+          label: this.config.terms.nsfl
         }
-      ].map(args => this.getConventionsForRichBracketedTerm(args))),
+      ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -175,7 +175,7 @@ class Tokenizer {
           startsWith: '[',
           endsWith: ']'
         }
-      ].map(args => this.getConventionForRichBrackets(args)),
+      ].map(args => this.getConventionForActualBrackets(args)),
 
       ...[
         {
@@ -219,30 +219,31 @@ class Tokenizer {
       }))
   }
 
-  private getConventionsForRichBracketedTerm(
+  // These conventions take the following form (for all brackets):
+  //
+  // [label: some *exciting* text with inline conventions]
+  private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      nonLocalizedTerm: string
+      label: string
     }
   ): Convention[] {
-    const { richConvention, nonLocalizedTerm } = args
+    const { richConvention, label } = args
 
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: this.getBracketedTermStartPattern(nonLocalizedTerm, bracket) + ANY_WHITESPACE,
+        startsWith: this.getLabeledBracketStartPattern(label, bracket) + ANY_WHITESPACE,
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
   }
 
-  private getBracketedTermStartPattern(nonLocalizedTerm: string, bracket: Bracket): string {
-    return (
-      bracket.startPattern
-      + escapeForRegex(this.config.localizeTerm(nonLocalizedTerm)) + ':')
+  private getLabeledBracketStartPattern(label: string, bracket: Bracket): string {
+    return bracket.startPattern + escapeForRegex(label) + ':'
   }
 
-  private getConventionForRichBrackets(
+  private getConventionForActualBrackets(
     args: {
       richConvention: RichConvention
       startsWith: string
@@ -343,12 +344,10 @@ class Tokenizer {
   }
 
   private getMediaDescriptionConventions(): Convention[] {
-    const { terms } = this.config
-
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new Convention({
-          startsWith: this.getBracketedTermStartPattern(media.term(terms), bracket) + ANY_WHITESPACE,
+          startsWith: this.getLabeledBracketStartPattern(media.term(this.config.terms), bracket) + ANY_WHITESPACE,
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 

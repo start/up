@@ -14,8 +14,10 @@ export class Config {
 
   terms = new Config.Terms()
 
-  constructor(changes?: UserProvidedSettings) {
-    this.applyChangedUserSettings(changes)
+  constructor(settings?: UserProvidedSettings) {
+    if (settings) {
+      this.applyChangedUserSettings(settings)
+    }
   }
 
   // Returns a new `Config` object with the changes applied.
@@ -25,21 +27,20 @@ export class Config {
     clone.createTableOfContents = this.createTableOfContents
     clone.createSourceMap = this.createSourceMap
     clone.writeUnsafeContent = this.writeUnsafeContent
-    clone.documentName = this.defaultUrlScheme
+    clone.documentName = this.documentName
     clone.defaultUrlScheme = this.defaultUrlScheme
     clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
     clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
 
-    clone.terms = this.terms.withChanges(changes.terms)
+    if (changes) {
+      clone.applyChangedUserSettings(changes)
+      clone.terms = this.terms.withChanges(changes.terms)
+    }
 
     return clone
   }
 
   private applyChangedUserSettings(settings: UserProvidedSettings): void {
-    if (!settings) {
-      return
-    }
-
     this.createTableOfContents =
       coalesce(settings.createTableOfContents, this.createTableOfContents)
 
@@ -83,7 +84,7 @@ export namespace Config {
     toggleNsfl = 'toggle NSFL'
     toggleNsfw = 'toggle NSFW'
     toggleSpoiler = 'toggle spoiler'
-    video = 'video';
+    video = 'video'
 
     // Returns a new `Terms` object with the changes applied.
     withChanges(terms: UserProvidedTerms): Terms {
@@ -112,47 +113,57 @@ export namespace Config {
     }
 
     applyChangedUserSettings(terms: UserProvidedTerms): void {
+      if (!terms) {
+        return
+      }
+
       this.audio =
-        coalesce(terms.audio && this.audio)
+        coalesce(terms.audio, this.audio)
 
       this.chart =
-        coalesce(terms.chart && this.chart)
+        coalesce(terms.chart, this.chart)
 
       this.footnote =
-        coalesce(terms.footnote && this.footnote)
+        coalesce(terms.footnote, this.footnote)
 
       this.footnoteReference =
-        coalesce(terms.footnoteReference && this.footnoteReference)
+        coalesce(terms.footnoteReference, this.footnoteReference)
 
       this.highlight =
-        coalesce(terms.highlight && this.highlight)
+        coalesce(terms.highlight, this.highlight)
+
+      this.image =
+        coalesce(terms.image, this.image)
 
       this.itemReferencedByTableOfContents =
-        coalesce(terms.itemReferencedByTableOfContents && this.itemReferencedByTableOfContents)
+        coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
+
+      this.nsfl =
+        coalesce(terms.nsfw, this.nsfl)
 
       this.nsfw =
-        coalesce(terms.nsfw && this.nsfw)
+        coalesce(terms.nsfw, this.nsfw)
 
       this.spoiler =
-        coalesce(terms.spoiler && this.spoiler)
+        coalesce(terms.spoiler, this.spoiler)
 
       this.table =
-        coalesce(terms.table && this.table)
+        coalesce(terms.table, this.table)
 
       this.tableOfContents =
-        coalesce(terms.tableOfContents && this.tableOfContents)
+        coalesce(terms.tableOfContents, this.tableOfContents)
 
       this.toggleNsfl =
-        coalesce(terms.toggleNsfl && this.toggleNsfl)
+        coalesce(terms.toggleNsfl, this.toggleNsfl)
 
       this.toggleNsfw =
-        coalesce(terms.toggleNsfw && this.toggleNsfw)
+        coalesce(terms.toggleNsfw, this.toggleNsfw)
 
       this.toggleSpoiler =
-        coalesce(terms.toggleSpoiler && this.toggleSpoiler)
+        coalesce(terms.toggleSpoiler, this.toggleSpoiler)
 
       this.video =
-        coalesce(terms.video && this.video)
+        coalesce(terms.video, this.video)
     }
   }
 }

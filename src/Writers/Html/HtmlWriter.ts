@@ -187,7 +187,8 @@ export class HtmlWriter extends Writer {
 
   protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'spoiler',
+      term: this.config.terms.spoiler,
+      cssClassName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: inlineSpoiler.children,
@@ -197,7 +198,8 @@ export class HtmlWriter extends Writer {
 
   protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'nsfw',
+      term: this.config.terms.nsfw,
+      cssClassName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: inlineNsfw.children,
@@ -207,7 +209,8 @@ export class HtmlWriter extends Writer {
 
   protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'nsfl',
+      term: this.config.terms.nsfl,
+      cssClassName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: inlineNsfl.children,
@@ -217,7 +220,8 @@ export class HtmlWriter extends Writer {
 
   protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'spoiler',
+      term: this.config.terms.spoiler,
+      cssClassName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: spoilerBlock.children,
@@ -228,7 +232,8 @@ export class HtmlWriter extends Writer {
 
   protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'nsfw',
+      term: this.config.terms.nsfw,
+      cssClassName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: nsfwBlock.children,
@@ -239,7 +244,8 @@ export class HtmlWriter extends Writer {
 
   protected nsflBlock(nsflBlock: NsflBlockNode): string {
     return this.revealable({
-      nonLocalizedConventionTerm: 'nsfl',
+      term: this.config.terms.nsfl,
+      cssClassName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: nsflBlock.children,
@@ -468,7 +474,8 @@ export class HtmlWriter extends Writer {
 
   private revealable(
     args: {
-      nonLocalizedConventionTerm: string
+      term: string
+      cssClassName: string
       termForTogglingVisibility: string
       conventionCount: number
       revealableChildren: SyntaxNode[]
@@ -476,27 +483,24 @@ export class HtmlWriter extends Writer {
       attrsForOuterContainer?: any
     }
   ): string {
-    const { nonLocalizedConventionTerm, termForTogglingVisibility, tagNameForGenericContainers } = args
-
-    const localizedTerm = this.config.localizeTerm(nonLocalizedConventionTerm)
-    const checkboxId = this.getId(localizedTerm, args.conventionCount)
+    const checkboxId = this.getId(args.term, args.conventionCount)
 
     const label =
-      htmlElement('label', termForTogglingVisibility, { for: checkboxId })
+      htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
 
     const checkbox =
       singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     const content =
-      this.element(tagNameForGenericContainers, args.revealableChildren)
+      this.element(args.tagNameForGenericContainers, args.revealableChildren)
 
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
     attrsForOuterContainer.class =
-      classAttrValue(nonLocalizedConventionTerm, 'revealable')
+      classAttrValue(args.cssClassName, 'revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
-      tagNameForGenericContainers,
+      args.tagNameForGenericContainers,
       [label, checkbox, content],
       attrsForOuterContainer)
   }
