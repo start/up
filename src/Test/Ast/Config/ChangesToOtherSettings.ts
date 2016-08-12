@@ -131,28 +131,28 @@ Very important
 })
 
 
-describe('The "baseForUrlsStartingWithHashMark" config term', () => {
+describe('The "defaultUrlScheme" config term', () => {
   itWorksAsAdvertised({
-    markup: '[See users] (#users)',
+    markup: '[See users] (example.com/users)',
 
     documentWhenChangeIsApplied: new DocumentNode([
       new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see#users')
+        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new DocumentNode([
       new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], '#users')
+        new LinkNode([new PlainTextNode('See users')], 'https://example.com/users')
       ])
     ]),
 
     configWithSettingChanged: {
-      baseForUrlsStartingWithHashMark: 'my-app://example.com/see'
+      defaultUrlScheme: 'my-app://'
     },
 
     configWithSettingSetToDefault: {
-      baseForUrlsStartingWithHashMark: ''
+      defaultUrlScheme: 'https://'
     }
   })
 })
@@ -180,6 +180,33 @@ describe('The "baseForUrlsStartingWithSlash" config term', () => {
 
     configWithSettingSetToDefault: {
       baseForUrlsStartingWithSlash: ''
+    }
+  })
+})
+
+
+describe('The "baseForUrlsStartingWithHashMark" config term', () => {
+  itWorksAsAdvertised({
+    markup: '[See users] (#users)',
+
+    documentWhenChangeIsApplied: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see#users')
+      ])
+    ]),
+
+    documentWhenSettingIsNotChanged: new DocumentNode([
+      new ParagraphNode([
+        new LinkNode([new PlainTextNode('See users')], '#users')
+      ])
+    ]),
+
+    configWithSettingChanged: {
+      baseForUrlsStartingWithHashMark: 'my-app://example.com/see'
+    },
+
+    configWithSettingSetToDefault: {
+      baseForUrlsStartingWithHashMark: ''
     }
   })
 })
