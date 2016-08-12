@@ -10,7 +10,7 @@ import { ConfigSettings } from '../../../ConfigSettings'
 //
 // Here, we simply make sure the associated config settings are applied advertised. 
 
-function itCanBeProvidedMultipleWaysWithTheSameResult(
+function itWorksAsAdvertised(
   args: {
     markup: string,
     documentWhenSettingIsEnabled: DocumentNode
@@ -19,21 +19,33 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     configWithSettingDisabled: ConfigSettings
   }
 ): void {
-  const { markup, documentWhenSettingIsEnabled, documentWhenSettingIsDisabled, /*configWithSettingEnabled, configWithSettingDisabled*/ } = args
+  const { markup, documentWhenSettingIsEnabled, documentWhenSettingIsDisabled, configWithSettingEnabled } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(documentWhenSettingIsEnabled).to.not.be.eql(documentWhenSettingIsDisabled)
 
 
   context('is disabled by default', () => {
-    it('when the default toAst method is called', () => {
+    specify('when the default toAst method is called', () => {
       expect(Up.toAst(markup)).to.be.eql(documentWhenSettingIsDisabled)
     })
 
-    it('when the default toAst method is called', () => {
+    specify('when the toAst method is called on an Up object', () => {
       expect(new Up().toAst(markup)).to.be.eql(documentWhenSettingIsDisabled)
     })
   })
+
+
+  context('works when provided', () => {
+    specify('to the default toAst method', () => {
+      expect(Up.toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+    })
+
+    specify('to the toAst method on an Up object', () => {
+      expect(new Up().toAst(markup, configWithSettingEnabled)).to.be.eql(documentWhenSettingIsEnabled)
+    })
+  })
+  
   /*
 
   describe("when provided to the default toAst method", () => {
@@ -101,7 +113,7 @@ Very important
 
 
 describe('The "createTableOfContents" config term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
+  itWorksAsAdvertised({
     markup,
 
     documentWhenSettingIsEnabled: new DocumentNode([
@@ -126,7 +138,7 @@ describe('The "createTableOfContents" config term', () => {
 
 
 describe('The "createSourceMap" config term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
+  itWorksAsAdvertised({
     markup,
 
     documentWhenSettingIsEnabled: new DocumentNode([
