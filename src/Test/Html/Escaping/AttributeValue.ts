@@ -86,9 +86,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('href attribute of backlinks in footnote blocks', () => {
     const up = new Up({
-      i18n: {
-        terms: { footnoteReference: 'look "up" & read & remember' }
-      }
+      terms: { footnoteReference: 'look "up" & read & remember' }
     })
 
     const document = new DocumentNode([
@@ -109,9 +107,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('id attribute of footntoes in a footnote block', () => {
     const up = new Up({
-      i18n: {
-        terms: { footnote: 'look "down" & read & learn' }
-      }
+      terms: { footnote: 'look "down" & read & learn' }
     })
 
     const document = new DocumentNode([
@@ -132,9 +128,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("href attribute of a footnote reference's link", () => {
     const up = new Up({
-      i18n: {
-        terms: { footnote: 'look "down" & read & learn' }
-      }
+      terms: { footnote: 'look "down" & read & learn' }
     })
 
     const document = new DocumentNode([
@@ -155,9 +149,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('id attribute of footnote references', () => {
     const up = new Up({
-      i18n: {
-        terms: { footnoteReference: 'look "up" & read & remember' }
-      }
+      terms: { footnoteReference: 'look "up" & read & remember' }
     })
 
     const document = new DocumentNode([
@@ -178,9 +170,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of inline spoilers' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { spoiler: 'look "away" & smile & forget' }
-      }
+      terms: { spoiler: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -203,9 +193,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of inline NSFW conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfw: 'look "away" & smile & forget' }
-      }
+      terms: { nsfw: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -228,9 +216,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of inline NSFL conventions' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfl: 'look "away" & smile & forget' }
-      }
+      terms: { nsfl: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -253,9 +239,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of spoiler blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { spoiler: 'look "away" & smile & forget' }
-      }
+      terms: { spoiler: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -274,9 +258,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of NSFW blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfw: 'look "away" & smile & forget' }
-      }
+      terms: { nsfw: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -295,9 +277,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("id attribute of NSFL blocks' checkboxes (and the 'for' attribute of their labels)", () => {
     const up = new Up({
-      i18n: {
-        terms: { nsfl: 'look "away" & smile & forget' }
-      }
+      terms: { nsfl: 'look "away" & smile & forget' }
     })
 
     const document = new DocumentNode([
@@ -316,9 +296,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('the id attribute of elements referenced by the table of contents', () => {
     const up = new Up({
-      i18n: {
-        terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
-      }
+      terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
     })
 
     const heading =

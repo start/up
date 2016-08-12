@@ -9,9 +9,7 @@ import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 describe("The text in an inline spoiler's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up({
-      i18n: {
-        terms: { toggleSpoiler: 'show/hide' }
-      }
+      terms: { toggleSpoiler: 'show/hide' }
     })
 
     const node = new DocumentNode([
@@ -37,9 +35,7 @@ describe("The text in an inline spoiler's label", () => {
 describe("The text in a spoiler block's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up({
-      i18n: {
-        terms: { toggleSpoiler: 'show/hide' }
-      }
+      terms: { toggleSpoiler: 'show/hide' }
     })
 
     const node = new DocumentNode([

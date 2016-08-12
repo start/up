@@ -103,17 +103,13 @@ describe('The "footnote reference" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          footnoteReference: 'ref'
-        }
+      terms: {
+        footnoteReference: 'ref'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          footnoteReference: 'fn ref'
-        }
+      terms: {
+        footnoteReference: 'fn ref'
       }
     }
   })
@@ -128,17 +124,13 @@ describe('The "footnote" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          footnote: 'fn'
-        }
+      terms: {
+        footnote: 'fn'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          footnote: 'note'
-        }
+      terms: {
+        footnote: 'note'
       }
     }
   })
@@ -153,17 +145,13 @@ describe('The "spoiler" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          spoiler: 'look away'
-        }
+      terms: {
+        spoiler: 'look away'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          spoiler: 'ruins ending'
-        }
+      terms: {
+        spoiler: 'ruins ending'
       }
     }
   })
@@ -178,17 +166,13 @@ describe('The "toggleSpoiler" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          toggleSpoiler: 'show/hide'
-        }
+      terms: {
+        toggleSpoiler: 'show/hide'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          toggleSpoiler: 'see spoiler?'
-        }
+      terms: {
+        toggleSpoiler: 'see spoiler?'
       }
     }
   })
@@ -203,17 +187,13 @@ describe('The "nsfw" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          nsfw: 'look away'
-        }
+      terms: {
+        nsfw: 'look away'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          nsfw: 'explicit'
-        }
+      terms: {
+        nsfw: 'explicit'
       }
     }
   })
@@ -228,17 +208,13 @@ describe('The "toggleNsfw" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          toggleNsfw: 'see/hide'
-        }
+      terms: {
+        toggleNsfw: 'see/hide'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          toggleNsfw: 'show nsfw?'
-        }
+      terms: {
+        toggleNsfw: 'show nsfw?'
       }
     }
   })
@@ -253,17 +229,13 @@ describe('The "nsfl" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          nsfl: 'look away'
-        }
+      terms: {
+        nsfl: 'look away'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          nsfl: 'explicit'
-        }
+      terms: {
+        nsfl: 'explicit'
       }
     }
   })
@@ -278,17 +250,13 @@ describe('The "toggleNsfl" config term', () => {
       ])
     ]),
     configChanges: {
-      i18n: {
-        terms: {
-          toggleNsfl: 'see/hide'
-        }
+      terms: {
+        toggleNsfl: 'see/hide'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          toggleNsfl: 'show nsfl?'
-        }
+      terms: {
+        toggleNsfl: 'show nsfl?'
       }
     }
   })
@@ -303,17 +271,13 @@ describe('The "tableOfContents" config setting', () => {
       [heading],
       new DocumentNode.TableOfContents([heading])),
     configChanges: {
-      i18n: {
-        terms: {
-          tableOfContents: 'In This Article'
-        }
+      terms: {
+        tableOfContents: 'In This Article'
       }
     },
     conflictingConfigChanges: {
-      i18n: {
-        terms: {
-          tableOfContents: 'Skip To...'
-        }
+      terms: {
+        tableOfContents: 'Skip To...'
       }
     }
   })
