@@ -30,6 +30,15 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
     })
 
+    it('is trimmed', () => {
+      expect(up.toAst('[RUINS ending: Ash fights Gary]', { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineNsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
+
     it('ignores any regular expression syntax', () => {
       expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
