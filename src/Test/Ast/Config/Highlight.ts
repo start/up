@@ -26,6 +26,17 @@ describe('The "highlight" config term', () => {
     expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
   })
 
+  it('is trimmed', () => {
+    const markup = '[mark: Ash fights Gary]'
+
+    expect(Up.toAst(markup, { terms: { highlight: ' \t mark \t ' } })).to.be.eql(
+      insideDocumentAndParagraph([
+        new HighlightNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
+  })
+
   it('ignores any regular expression syntax', () => {
     const markup = '[+mark+: Ash fights Gary]'
 
