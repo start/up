@@ -14,7 +14,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
   })
 
   context('For inline spoilers, the term', () => {
-    specify('is used', () => {
+    it('is used', () => {
       expect(up.toAst('[ruins ending: Ash fights Gary]', { terms: { spoiler: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
@@ -23,8 +23,15 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
         ]))
     })
 
-    specify('ignores any regular expression syntax', () => {
-      expect(up.toAst('[*ruins* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
+    it('is case-insensitive, even when custom', () => {
+      const lowercase = '[ruins ending: Ash fights Gary]'
+      const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
+
+      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+    })
+
+    it('ignores any regular expression syntax', () => {
+      expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
@@ -32,8 +39,8 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
         ]))
     })
 
-    specify('can have multiple variations', () => {
-      expect(up.toAst('[ruins ending: Ash fights Gary][look away: Ash fights Gary]', { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
+    it('can have multiple variations', () => {
+      expect(up.toAst('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
@@ -43,18 +50,11 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
           ])
         ]))
     })
-
-    it('The term is case-insensitive, even when custom', () => {
-      const lowercase = '[ruins ending: Ash fights Gary]'
-      const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
-
-      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
-    })
   })
 
 
-  context('For spoiler blocks:', () => {
-    specify('The term is used', () => {
+  context('For spoiler blocks, the term', () => {
+    specify('is used', () => {
       const markup = `
 ruins ending:
 
@@ -74,23 +74,69 @@ ruins ending:
           ])
         ]))
     })
-  })
 
-  it('The term is case-insensitive, even when custom', () => {
-    const lowercase = `
+    it('is case-insensitive, even when custom', () => {
+      const lowercase = `
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    const mixedCase = `
+      const mixedCase = `
 ruINs eNDiNg:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+    })
+
+    it('ignores any regular expression syntax', () => {
+      const markup = `
+*RUINS* ending:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+      expect(Up.toAst(markup, { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            ])
+          ])
+        ]))
+    })
+
+    it('can contain multiple variations', () => {
+      const markup = `
+LOOK AWAY:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  RUINS ENDING:
+    
+    Luckily, Pikachu ultimately decided to stay.`
+
+      expect(Up.toAst(markup, { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
+        new DocumentNode([
+          new SpoilerBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new SpoilerBlockNode([
+              new ParagraphNode([
+                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+              ])
+            ])
+          ])
+        ]))
+    })
   })
 })
