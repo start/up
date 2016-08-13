@@ -8,14 +8,16 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    markupForConfigChanges: string
     markupForDefaultSettings: string
+    markupForConfigChanges: string
     configChanges: UserProvidedSettings
-    equivalentConfigChangesWithBlankVariations: UserProvidedSettings
+    invalidMarkupForEmptyTerm: string
+    invalidMarkupForBlankTerm: string
+    equivalentConfigChangesWithEmptyAndBlankVariations: UserProvidedSettings
     conflictingConfigChanges: UserProvidedSettings
   }
 ): void {
-  const { markupForConfigChanges, markupForDefaultSettings, configChanges, equivalentConfigChangesWithBlankVariations, conflictingConfigChanges } = args
+  const { markupForDefaultSettings, markupForConfigChanges, configChanges, invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations, conflictingConfigChanges } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -33,8 +35,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
-    it("has any blank variations ignored", () => {
-      expect(Up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    it("has any empty or blank variations ignored", () => {
+      expect(Up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+
+      expect(Up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -51,7 +55,9 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any blank variations ignored", () => {
-      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+
+      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -79,7 +85,9 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any blank variations ignored", () => {
-      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+
+      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 }
@@ -87,12 +95,14 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "audio" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    markupForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
       terms: { audio: 'listen' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    invalidMarkupForBlankTerm: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { audio: [null, 'listen', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -109,7 +119,9 @@ describe('The "image" config term', () => {
     configChanges: {
       terms: { image: 'see' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Chrono Cross logo][https://example.com/cc.png]',
+    invalidMarkupForBlankTerm: '[ \t \t : Chrono Cross logo][https://example.com/cc.png]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { image: [null, 'see', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -126,7 +138,9 @@ describe('The "video" config term', () => {
     configChanges: {
       terms: { video: 'watch' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Nevada caucus footage][https://example.com/video.webm]',
+    invalidMarkupForBlankTerm: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { video: [null, 'watch', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -143,7 +157,9 @@ describe('The "highlight" config term', () => {
     configChanges: {
       terms: { highlight: 'mark' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
+    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { highlight: [null, 'mark', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -160,7 +176,9 @@ describe('The "spoiler" config term', () => {
     configChanges: {
       terms: { spoiler: 'ruins ending' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
+    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { spoiler: [null, 'ruins ending', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -177,7 +195,9 @@ describe('The "nsfw" config term', () => {
     configChanges: {
       terms: { nsfw: 'GETS YOU FIRED' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
+    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -194,7 +214,9 @@ describe('The "nsfl" config term', () => {
     configChanges: {
       terms: { nsfl: 'RUINS LIFE' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
+    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -221,7 +243,19 @@ Chrono Cross;     1999`,
     configChanges: {
       terms: { table: 'data' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: `
+:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    invalidMarkupForBlankTerm: `
+ \t \t :
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { table: [null, 'data', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
@@ -248,7 +282,19 @@ Chrono Cross;     1999`,
     configChanges: {
       terms: { chart: 'data' }
     },
-    equivalentConfigChangesWithBlankVariations: {
+    invalidMarkupForEmptyTerm: `
+:
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    invalidMarkupForBlankTerm: `
+ \t \t :
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`,
+    equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { chart: [null, 'data', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
