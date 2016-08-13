@@ -117,31 +117,31 @@ export namespace Config {
       }
 
       this.audio =
-        coalesce(terms.audio, this.audio)
+        changeTermFoundInMarkup(terms.audio, this.audio)
 
       this.chart =
-        coalesce(terms.chart, this.chart)
+        changeTermFoundInMarkup(terms.chart, this.chart)
 
       this.highlight =
-        coalesce(terms.highlight, this.highlight)
+        changeTermFoundInMarkup(terms.highlight, this.highlight)
 
       this.image =
-        coalesce(terms.image, this.image)
+        changeTermFoundInMarkup(terms.image, this.image)
 
       this.nsfl =
-        coalesce(terms.nsfl, this.nsfl)
+        changeTermFoundInMarkup(terms.nsfl, this.nsfl)
 
       this.nsfw =
-        coalesce(terms.nsfw, this.nsfw)
+        changeTermFoundInMarkup(terms.nsfw, this.nsfw)
 
       this.spoiler =
-        coalesce(terms.spoiler, this.spoiler)
+        changeTermFoundInMarkup(terms.spoiler, this.spoiler)
 
       this.table =
-        coalesce(terms.table, this.table)
+        changeTermFoundInMarkup(terms.table, this.table)
 
       this.video =
-        coalesce(terms.video, this.video)
+        changeTermFoundInMarkup(terms.video, this.video)
 
       this.footnote =
         coalesce(terms.footnote, this.footnote)
@@ -170,4 +170,40 @@ export namespace Config {
     export type FoundInMarkup = string[]
     export type FoundInOutput = string
   }
+}
+
+
+// In Up, there are two types of terms:
+//
+// 1. Terms found in markup (e.g. "image", "table")
+// 2. Terms found in the output (e.g. "Table of Contents", "toggle NSFW")
+//
+// We allow multiple variations for terms found in markup. Internally, each markup term is
+// represented by an array of strings containing those variations.
+//
+// For custom markup terms, if the user wants multiple variations, those variations are
+// naturally specified using a string array, too. However, if the user doesn't want multiple
+// varaitions, they can specify the term with a plain string.
+//
+// This function converts takes the user's changes to a given markup term (if any) and
+// converts those changes to the format we use internally (an array of strings).
+function changeTermFoundInMarkup(
+  newVariations: UserProvidedSettings.Terms.FoundInMarkup,
+  originalVariations: Config.Terms.FoundInMarkup
+): Config.Terms.FoundInMarkup {
+  if (newVariations == null) {
+    return originalVariations
+  }
+
+  const newTermVariations =
+    // First of all, if the user provided a string, let's convert it to an array.
+    ((typeof newVariations === "string") ? [newVariations] : newVariations)
+      // Let's ignore any term variations that are null or empty
+      .filter(variation => !!variation)
+      // Let's trim the remaining term variations...
+      .map(varation => varation.trim())
+      // ... and let's ignore any term variations that were just whitespace!
+      .filter(variation => !!variation)
+
+  return newTermVariations.length ? newTermVariations : originalVariations
 }
