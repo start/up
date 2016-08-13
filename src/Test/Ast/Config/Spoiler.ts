@@ -14,9 +14,8 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
   })
 
   context('For inline spoilers:', () => {
-
     specify('The term is used', () => {
-      expect(up.toAst('[ruins ending: Ash fights Gary]')).to.be.eql(
+      expect(up.toAst('[ruins ending: Ash fights Gary]', { terms: { spoiler: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')

@@ -17,7 +17,7 @@ describe('The term that represents video conventions', () => {
   it('can contain multiple variations', () => {
     const markup = '[watch: Nevada caucus footage](https://example.com/video.webm) [view: Nevada caucus footage](https://example.com/video.webm)'
 
-    expect(Up.toAst(markup, { terms: { video: ['watch', 'view'] } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { video: ['view', 'watch'] } })).to.be.eql(
       new DocumentNode([
         new VideoNode('Nevada caucus footage', 'https://example.com/video.webm'),
         new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
