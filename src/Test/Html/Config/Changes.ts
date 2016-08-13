@@ -137,27 +137,6 @@ describe('The "footnote" config term', () => {
 })
 
 
-describe('The "spoiler" config term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
-      ])
-    ]),
-    configChanges: {
-      terms: {
-        spoiler: 'look away'
-      }
-    },
-    conflictingConfigChanges: {
-      terms: {
-        spoiler: 'ruins ending'
-      }
-    }
-  })
-})
-
-
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new DocumentNode([
@@ -179,27 +158,6 @@ describe('The "toggleSpoiler" config term', () => {
 })
 
 
-describe('The "nsfw" config term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
-      new ParagraphNode([
-        new InlineNsfwNode([])
-      ])
-    ]),
-    configChanges: {
-      terms: {
-        nsfw: 'look away'
-      }
-    },
-    conflictingConfigChanges: {
-      terms: {
-        nsfw: 'explicit'
-      }
-    }
-  })
-})
-
-
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new DocumentNode([
@@ -215,27 +173,6 @@ describe('The "toggleNsfw" config term', () => {
     conflictingConfigChanges: {
       terms: {
         toggleNsfw: 'show nsfw?'
-      }
-    }
-  })
-})
-
-
-describe('The "nsfl" config term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
-      new ParagraphNode([
-        new InlineNsflNode([])
-      ])
-    ]),
-    configChanges: {
-      terms: {
-        nsfl: 'look away'
-      }
-    },
-    conflictingConfigChanges: {
-      terms: {
-        nsfl: 'explicit'
       }
     }
   })
