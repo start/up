@@ -13,10 +13,31 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     terms: { spoiler: 'ruins ending' }
   })
 
-  context('For inline spoilers:', () => {
-    specify('The term is used', () => {
+  context('For inline spoilers, the term', () => {
+    specify('is used', () => {
       expect(up.toAst('[ruins ending: Ash fights Gary]', { terms: { spoiler: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
+
+    specify('ignores any regular expression syntax', () => {
+      expect(up.toAst('[*ruins* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
+
+    specify('can have multiple variations', () => {
+      expect(up.toAst('[ruins ending: Ash fights Gary][look away: Ash fights Gary]', { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
           ])
