@@ -20,8 +20,8 @@ describe('The term that represents video conventions', () => {
 
   it('is case-insensitive even when custom', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
-    const misedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
+    const mixedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.toAst(misedCase)).to.be.eql(up.toAst(lowercase))
+    expect(up.toAst(mixedCase)).to.be.eql(up.toAst(lowercase))
   })
 })

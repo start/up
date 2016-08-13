@@ -20,8 +20,8 @@ describe('The term that represents image conventions', () => {
 
   it('is case-insensitive even when custom', () => {
     const lowercase = '[see: Chrono Cross logo][https://example.com/cc.png]'
-    const misedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
+    const mixedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(up.toAst(misedCase)).to.be.eql(up.toAst(lowercase))
+    expect(up.toAst(mixedCase)).to.be.eql(up.toAst(lowercase))
   })
 })
