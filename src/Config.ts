@@ -69,43 +69,48 @@ export class Config {
 
 
 export namespace Config {
+  export type AppearsInMarkup = string[]
+  export type AppearsInOutput = string
+
   export class Terms {
-    audio = 'audio'
-    chart = 'chart'
-    footnote = 'footnote'
-    footnoteReference = 'footnote reference'
-    highlight = 'highlight'
-    image = 'image'
-    itemReferencedByTableOfContents = 'item'
-    nsfl = 'nsfl'
-    nsfw = 'nsfw'
-    spoiler = 'spoiler'
-    table = 'table'
-    tableOfContents = 'Table of Contents'
-    toggleNsfl = 'toggle NSFL'
-    toggleNsfw = 'toggle NSFW'
-    toggleSpoiler = 'toggle spoiler'
-    video = 'video'
+    audio: AppearsInMarkup = ['audio']
+    chart: AppearsInMarkup = ['chart']
+    highlight: AppearsInMarkup = ['highlight']
+    image: AppearsInMarkup = ['image']
+    nsfl: AppearsInMarkup = ['nsfl']
+    nsfw: AppearsInMarkup = ['nsfw']
+    spoiler: AppearsInMarkup = ['spoiler']
+    table: AppearsInMarkup = ['table']
+    video: AppearsInMarkup = ['video']
+    
+    footnote: AppearsInOutput = 'footnote'
+    footnoteReference: AppearsInOutput = 'footnote reference'
+    itemReferencedByTableOfContents: AppearsInOutput = 'item'
+    tableOfContents: AppearsInOutput = 'Table of Contents'
+    toggleNsfl: AppearsInOutput = 'toggle NSFL'
+    toggleNsfw: AppearsInOutput = 'toggle NSFW'
+    toggleSpoiler: AppearsInOutput = 'toggle spoiler'
 
     clone(): Terms {
       const clone = new Terms()
 
       clone.audio = this.audio
       clone.chart = this.chart
-      clone.footnote = this.footnote
-      clone.footnoteReference = this.footnoteReference
       clone.highlight = this.highlight
       clone.image = this.image
-      clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
       clone.nsfl = this.nsfl
       clone.nsfw = this.nsfw
       clone.spoiler = this.spoiler
       clone.table = this.table
+      clone.video = this.video
+
+      clone.footnote = this.footnote
+      clone.footnoteReference = this.footnoteReference
+      clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
       clone.tableOfContents = this.tableOfContents
       clone.toggleNsfl = this.toggleNsfl
       clone.toggleNsfw = this.toggleNsfw
       clone.toggleSpoiler = this.toggleSpoiler
-      clone.video = this.video
 
       return clone
     }
@@ -121,20 +126,11 @@ export namespace Config {
       this.chart =
         coalesce(terms.chart, this.chart)
 
-      this.footnote =
-        coalesce(terms.footnote, this.footnote)
-
-      this.footnoteReference =
-        coalesce(terms.footnoteReference, this.footnoteReference)
-
       this.highlight =
         coalesce(terms.highlight, this.highlight)
 
       this.image =
         coalesce(terms.image, this.image)
-
-      this.itemReferencedByTableOfContents =
-        coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
 
       this.nsfl =
         coalesce(terms.nsfl, this.nsfl)
@@ -148,6 +144,18 @@ export namespace Config {
       this.table =
         coalesce(terms.table, this.table)
 
+      this.video =
+        coalesce(terms.video, this.video)
+
+      this.footnote =
+        coalesce(terms.footnote, this.footnote)
+
+      this.footnoteReference =
+        coalesce(terms.footnoteReference, this.footnoteReference)
+
+      this.itemReferencedByTableOfContents =
+        coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
+
       this.tableOfContents =
         coalesce(terms.tableOfContents, this.tableOfContents)
 
@@ -159,9 +167,6 @@ export namespace Config {
 
       this.toggleSpoiler =
         coalesce(terms.toggleSpoiler, this.toggleSpoiler)
-
-      this.video =
-        coalesce(terms.video, this.video)
     }
   }
 }

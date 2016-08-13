@@ -1,20 +1,23 @@
-export interface UserProvidedTerms {
-  audio?: string
-  chart?: string
-  footnote?: string
-  footnoteReference?: string
-  highlight?: string
-  image?: string
-  itemReferencedByTableOfContents?: string
-  nsfl?: string
-  nsfw?: string
-  spoiler?: string
-  table?: string
-  tableOfContents?: string
-  toggleNsfl?: string
-  toggleNsfw?: string
-  toggleSpoiler?: string
-  video?: string
+export type AppearsInMarkup = string[] | string
+export type AppearsInOutput = string
 
-  [term: string]: string
+
+export interface UserProvidedTerms {
+  audio?: AppearsInMarkup
+  chart?: AppearsInMarkup
+  highlight?: AppearsInMarkup
+  image?: AppearsInMarkup
+  nsfl?: AppearsInMarkup
+  nsfw?: AppearsInMarkup
+  spoiler?: AppearsInMarkup
+  table?: AppearsInMarkup
+  video?: AppearsInMarkup
+
+  footnote?: AppearsInOutput
+  footnoteReference?: AppearsInOutput
+  itemReferencedByTableOfContents?: AppearsInOutput
+  tableOfContents?: AppearsInOutput
+  toggleNsfl?: AppearsInOutput
+  toggleNsfw?: AppearsInOutput
+  toggleSpoiler?: AppearsInOutput
 }
