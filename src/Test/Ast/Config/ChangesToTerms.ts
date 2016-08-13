@@ -14,10 +14,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     invalidMarkupForEmptyTerm: string
     invalidMarkupForBlankTerm: string
     equivalentConfigChangesWithEmptyAndBlankVariations: UserProvidedSettings
+    configChangesWithOnlyEmptyAndBlankVariations: UserProvidedSettings
     conflictingConfigChanges: UserProvidedSettings
   }
 ): void {
-  const { markupForDefaultSettings, markupForConfigChanges, configChanges, invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations, conflictingConfigChanges } = args
+  const { markupForDefaultSettings, markupForConfigChanges, configChanges, invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations, configChangesWithOnlyEmptyAndBlankVariations, conflictingConfigChanges } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -40,6 +41,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
       expect(Up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
+
+    it("has no effect if all variations are empty or blank", () => {
+      expect(Up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 
 
@@ -58,6 +63,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
 
       expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
+
+    it("has no effect if all variations are empty or blank", () => {
+      expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -89,6 +98,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
       expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
+
+    it("has no effect if all variations are empty or blank", () => {
+      expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 }
 
@@ -104,6 +117,9 @@ describe('The "audio" config term', () => {
     invalidMarkupForBlankTerm: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { audio: [null, 'listen', '', ' \t \t ', undefined] }
+    },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { audio: [null, '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { audio: 'sound' }
@@ -124,6 +140,9 @@ describe('The "image" config term', () => {
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { image: [null, 'see', '', ' \t \t ', undefined] }
     },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { image: [null, '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { image: 'picture' }
     }
@@ -142,6 +161,9 @@ describe('The "video" config term', () => {
     invalidMarkupForBlankTerm: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { video: [null, 'watch', '', ' \t \t ', undefined] }
+    },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { video: [null, '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { video: 'observe' }
@@ -162,6 +184,9 @@ describe('The "highlight" config term', () => {
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { highlight: [null, 'mark', '', ' \t \t ', undefined] }
     },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { highlight: [null, '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { highlight: 'paint' }
     }
@@ -180,6 +205,9 @@ describe('The "spoiler" config term', () => {
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { spoiler: [null, 'ruins ending', '', ' \t \t ', undefined] }
+    },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { spoiler: [null, '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { spoiler: 'look away' }
@@ -200,6 +228,9 @@ describe('The "nsfw" config term', () => {
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined] }
     },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { nsfw: [null, '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { nsfw: 'look away' }
     }
@@ -218,6 +249,9 @@ describe('The "nsfl" config term', () => {
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined] }
+    },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { nsfl: [null, '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { nsfl: 'look away' }
@@ -258,6 +292,9 @@ Chrono Cross;     1999`,
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { table: [null, 'data', '', ' \t \t ', undefined] }
     },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { table: [null, '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { table: 'info' }
     }
@@ -296,6 +333,9 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`,
     equivalentConfigChangesWithEmptyAndBlankVariations: {
       terms: { chart: [null, 'data', '', ' \t \t ', undefined] }
+    },
+    configChangesWithOnlyEmptyAndBlankVariations: {
+      terms: { chart: [null, '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { chart: 'info' }
