@@ -187,8 +187,7 @@ export class HtmlWriter extends Writer {
 
   protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
     return this.revealable({
-      term: this.config.terms.spoiler,
-      cssClassName: 'spoiler',
+      conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: inlineSpoiler.children,
@@ -198,8 +197,7 @@ export class HtmlWriter extends Writer {
 
   protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
     return this.revealable({
-      term: this.config.terms.nsfw,
-      cssClassName: 'nsfw',
+      conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: inlineNsfw.children,
@@ -209,8 +207,7 @@ export class HtmlWriter extends Writer {
 
   protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
     return this.revealable({
-      term: this.config.terms.nsfl,
-      cssClassName: 'nsfl',
+      conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: inlineNsfl.children,
@@ -220,8 +217,7 @@ export class HtmlWriter extends Writer {
 
   protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
     return this.revealable({
-      term: this.config.terms.spoiler,
-      cssClassName: 'spoiler',
+      conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealableChildren: spoilerBlock.children,
@@ -232,8 +228,7 @@ export class HtmlWriter extends Writer {
 
   protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
     return this.revealable({
-      term: this.config.terms.nsfw,
-      cssClassName: 'nsfw',
+      conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealableChildren: nsfwBlock.children,
@@ -244,8 +239,7 @@ export class HtmlWriter extends Writer {
 
   protected nsflBlock(nsflBlock: NsflBlockNode): string {
     return this.revealable({
-      term: this.config.terms.nsfl,
-      cssClassName: 'nsfl',
+      conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealableChildren: nsflBlock.children,
@@ -474,8 +468,7 @@ export class HtmlWriter extends Writer {
 
   private revealable(
     args: {
-      term: string
-      cssClassName: string
+      conventionName: string
       termForTogglingVisibility: string
       conventionCount: number
       revealableChildren: SyntaxNode[]
@@ -483,7 +476,7 @@ export class HtmlWriter extends Writer {
       attrsForOuterContainer?: any
     }
   ): string {
-    const checkboxId = this.getId(args.term, args.conventionCount)
+    const checkboxId = this.getId(args.conventionName, args.conventionCount)
 
     const label =
       htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
@@ -497,7 +490,7 @@ export class HtmlWriter extends Writer {
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
     attrsForOuterContainer.class =
-      classAttrValue(args.cssClassName, 'revealable')
+      classAttrValue(args.conventionName, 'revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
