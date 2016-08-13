@@ -34,10 +34,10 @@ describe('The term that represents image conventions', () => {
       ]))
   })
 
-  it('ignores any regular expression syntax', () => {
-    const markup = '[+see+: Chrono Cross logo][https://example.com/cc.png]'
+  it('ignores inline conventions and regular expression rules', () => {
+    const markup = '[*see*: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(Up.toAst(markup, { terms: { image: '+see+' } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { image: '*see*' } })).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))

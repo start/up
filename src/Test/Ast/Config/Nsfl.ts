@@ -30,7 +30,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       expect(up.toAst('[RUINS ending: Ash fights Gary]', { terms: { nsfl: ' \t ruins ending \t ' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
@@ -39,7 +39,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
         ]))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { nsfl: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
@@ -123,7 +123,7 @@ RUINS ending:
         ]))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       const markup = `
 *RUINS* ending:
 

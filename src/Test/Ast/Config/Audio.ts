@@ -34,10 +34,10 @@ describe('The term that represents video conventions', () => {
       ]))
   })
 
-  it('ignores any regular expression syntax', () => {
-    const markup = '[+listen+: chanting at Nevada caucus][https://example.com/audio.ogg]'
+  it('ignores inline conventions and regular expression rules', () => {
+    const markup = '[*listen*: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(Up.toAst(markup, { terms: { audio: '+listen+' } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { audio: '*listen*' } })).to.be.eql(
       new DocumentNode([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))

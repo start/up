@@ -82,15 +82,15 @@ Chrono Cross;     1999`
       ]))
   })
 
-  it('ignores any regular expression syntax', () => {
+  it('ignores inline conventions and regular expression rules', () => {
     const markup = `
-+Data+:
+*Data*:
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup, { terms: { table: '+data+'}})).to.be.eql(
+    expect(Up.toAst(markup, { terms: { table: '*data*'}})).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([

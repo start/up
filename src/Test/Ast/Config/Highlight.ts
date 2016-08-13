@@ -37,10 +37,10 @@ describe('The "highlight" config term', () => {
       ]))
   })
 
-  it('ignores any regular expression syntax', () => {
-    const markup = '[+mark+: Ash fights Gary]'
+  it('ignores inline conventions and regular expression rules', () => {
+    const markup = '[*mark*: Ash fights Gary]'
 
-    expect(Up.toAst(markup, { terms: { highlight: '+mark+' } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { highlight: '*mark*' } })).to.be.eql(
       insideDocumentAndParagraph([
         new HighlightNode([
           new PlainTextNode('Ash fights Gary')

@@ -39,7 +39,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
         ]))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
@@ -102,7 +102,7 @@ ruINs eNDiNg:
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       const markup = `
 *RUINS* ending:
 

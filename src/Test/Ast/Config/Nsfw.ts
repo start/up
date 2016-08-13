@@ -39,7 +39,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
         ]))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
@@ -102,7 +102,7 @@ ruINs eNDiNg:
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       const markup = `
 RUINS ending:
 
@@ -123,7 +123,7 @@ RUINS ending:
         ]))
     })
 
-    it('ignores any regular expression syntax', () => {
+    it('ignores inline conventions and regular expression rules', () => {
       const markup = `
 *RUINS* ending:
 
