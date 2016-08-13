@@ -32,9 +32,10 @@ export class Config {
     clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
     clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
 
+    clone.terms = this.terms.clone()
+
     if (changes) {
       clone.applyChangedUserSettings(changes)
-      clone.terms = this.terms.withChanges(changes.terms)
     }
 
     return clone
@@ -86,8 +87,7 @@ export namespace Config {
     toggleSpoiler = 'toggle spoiler'
     video = 'video'
 
-    // Returns a new `Terms` object with the changes applied.
-    withChanges(terms: UserProvidedTerms): Terms {
+    clone(): Terms {
       const clone = new Terms()
 
       clone.audio = this.audio
@@ -106,8 +106,6 @@ export namespace Config {
       clone.toggleNsfw = this.toggleNsfw
       clone.toggleSpoiler = this.toggleSpoiler
       clone.video = this.video
-
-      clone.applyChangedUserSettings(terms)
 
       return clone
     }
@@ -139,7 +137,7 @@ export namespace Config {
         coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
 
       this.nsfl =
-        coalesce(terms.nsfw, this.nsfl)
+        coalesce(terms.nsfl, this.nsfl)
 
       this.nsfw =
         coalesce(terms.nsfw, this.nsfw)
