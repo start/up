@@ -12,9 +12,9 @@ export class InflectionHandler {
     private args: {
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
-      ConventionForMinorInflection: RichConvention
-      // The convention indicated by surrounding text with double delimiter character on either side.
-      ConventionForMajorInflection: RichConvention
+      conventionForMinorInflection: RichConvention
+      // The convention indicated by surrounding text with double delimiters character on either side.
+      conventionForMajorInflection: RichConvention
       // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
       // A callback to invoke whenever it comes time to treat an dangling start delimiter as plain text. 
@@ -110,12 +110,12 @@ export class InflectionHandler {
         // subsequently matched by other delimiters.
 
         this.encloseWithin({
-          richConvention: this.args.ConventionForMinorInflection,
+          richConvention: this.args.conventionForMinorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
         this.encloseWithin({
-          richConvention: this.args.ConventionForMajorInflection,
+          richConvention: this.args.conventionForMajorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
@@ -166,11 +166,11 @@ export class InflectionHandler {
   }
 
   private applyMinorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.ConventionForMinorInflection, MINOR_INFLECTION_COSE)
+    this.applyConvention(startDelimiter, this.args.conventionForMinorInflection, MINOR_INFLECTION_COSE)
   }
 
   private applyMajorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.ConventionForMajorInflection, MAJOR_INFLECTION_COST)
+    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, MAJOR_INFLECTION_COST)
   }
 
   private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {

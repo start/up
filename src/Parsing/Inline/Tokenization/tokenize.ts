@@ -105,24 +105,17 @@ class Tokenizer {
   // We handle inflection in a manner incompatible with the rest of our conventions, so we throw all that
   // special logic into the InflectionHandler class. More information can be found in comments within that
   // class.
-  private inflectionHandlers = ['*', '_'].map(
-    delimiterChar => new InflectionHandler({
-      delimiterChar,
-      ConventionForMinorInflection: EMPHASIS_CONVENTION,
-      ConventionForMajorInflection: STRESS_CONVENTION,
-
-      encloseWithinConvention: (args) => {
-        this.closeNakedUrlContextIfOneIsOpen()
-        this.encloseWithin(args)
-      },
-
-      insertPlainTextToken: (text, atIndex) => {
-        this.insertToken({
-          token: new Token(TokenKind.PlainText, text),
-          atIndex: atIndex
-        })
-      }
-    }))
+  private inflectionHandlers = [
+    {
+      delimiterChar: '*',
+      conventionForMinorInflection: EMPHASIS_CONVENTION,
+      conventionForMajorInflection: STRESS_CONVENTION
+    }, {
+      delimiterChar: '_',
+      conventionForMinorInflection: EMPHASIS_CONVENTION,
+      conventionForMajorInflection: STRESS_CONVENTION
+    }
+  ].map(args => this.getInflectionHandler(args))
 
   // The most recent token isn't necessarily the last token in the `tokens` collection.
   //
@@ -590,6 +583,36 @@ class Tokenizer {
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     }))
+  }
+
+  private getInflectionHandler(
+    args: {
+      delimiterChar: string
+      // The convention indicated by surrounding text with a single delimiter character on either side.
+      conventionForMinorInflection: RichConvention
+      // The convention indicated by surrounding text with double delimiter characters on either side.
+      conventionForMajorInflection: RichConvention
+    }
+  ): InflectionHandler {
+    const { delimiterChar, conventionForMajorInflection, conventionForMinorInflection } = args
+
+    return new InflectionHandler({
+      delimiterChar,
+      conventionForMinorInflection,
+      conventionForMajorInflection,
+
+      encloseWithinConvention: (args) => {
+        this.closeNakedUrlContextIfOneIsOpen()
+        this.encloseWithin(args)
+      },
+
+      insertPlainTextToken: (text, atIndex) => {
+        this.insertToken({
+          token: new Token(TokenKind.PlainText, text),
+          atIndex: atIndex
+        })
+      }
+    })
   }
 
   private tokenize(): void {
