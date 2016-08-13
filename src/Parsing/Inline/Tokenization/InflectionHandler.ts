@@ -1,7 +1,7 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { InflectionStartDelimiter } from './InflectionStartDelimiter'
-import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
+import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { escapeForRegex, patternStartingWith, atLeastOne } from '../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
@@ -12,7 +12,7 @@ export class InflectionHandler {
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
       delimiterChar: string
-      encloseWithinRichConvention: (args: EncloseWithinRichConventionArgs) => void
+      encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for private use. Please see the `clone` method.
@@ -155,8 +155,8 @@ export class InflectionHandler {
       this.delimiterPattern)
   }
 
-  private encloseWithin(args: EncloseWithinRichConventionArgs) {
-    this.args.encloseWithinRichConvention(args)
+  private encloseWithin(args: EncloseWithinConventionArgs) {
+    this.args.encloseWithinConvention(args)
   }
 
   private applyEmphasis(startDelimiter: InflectionStartDelimiter): void {

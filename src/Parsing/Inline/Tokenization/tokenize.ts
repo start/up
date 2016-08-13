@@ -17,7 +17,7 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
-import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
+import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 
@@ -109,7 +109,7 @@ class Tokenizer {
     delimiterChar => new InflectionHandler({
       delimiterChar,
 
-      encloseWithinRichConvention: (args) => {
+      encloseWithinConvention: (args) => {
         this.closeNakedUrlContextIfOneIsOpen()
         this.encloseWithin(args)
       },
@@ -336,7 +336,7 @@ class Tokenizer {
           whenClosing(context)
         }
 
-        this.encloseContextWithinRichConvention(richConvention, context)
+        this.encloseContextWithinConvention(richConvention, context)
       },
 
       insteadOfFailingWhenLeftUnclosed,
@@ -821,11 +821,11 @@ class Tokenizer {
     }
   }
 
-  private encloseContextWithinRichConvention(richConvention: RichConvention, context: ConventionContext): void {
+  private encloseContextWithinConvention(richConvention: RichConvention, context: ConventionContext): void {
     this.encloseWithin({ richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
-  private encloseWithin(args: EncloseWithinRichConventionArgs): void {
+  private encloseWithin(args: EncloseWithinConventionArgs): void {
     const { richConvention } = args
     let startTokenIndex = args.startingBackAtTokenIndex
 
