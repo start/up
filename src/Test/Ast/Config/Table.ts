@@ -55,6 +55,33 @@ Chrono Cross;     1999`
     expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
   })
 
+  it('is trimmed', () => {
+    const markup = `
+Data:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+
+    expect(Up.toAst(markup, { terms: { table: ' \t data \t '}})).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([new PlainTextNode('Game')]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ]),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ])
+          ])
+      ]))
+  })
+
   it('ignores any regular expression syntax', () => {
     const markup = `
 +Data+:
