@@ -11,10 +11,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     markupForConfigChanges: string
     markupForDefaultSettings: string
     configChanges: UserProvidedSettings
+    equivalentConfigChangesWithBlankVariations: UserProvidedSettings
     conflictingConfigChanges: UserProvidedSettings
   }
 ): void {
-  const { markupForConfigChanges, markupForDefaultSettings, configChanges, conflictingConfigChanges } = args
+  const { markupForConfigChanges, markupForDefaultSettings, configChanges, equivalentConfigChangesWithBlankVariations, conflictingConfigChanges } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -31,6 +32,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("replaces the original setting", () => {
       expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
+
+    it("has any blank variations ignored", () => {
+      expect(Up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 
 
@@ -43,6 +48,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("replaces the original setting", () => {
       expect(up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+    })
+
+    it("has any blank variations ignored", () => {
+      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -68,6 +77,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("replaces the original setting", () => {
       expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
+
+    it("has any blank variations ignored", () => {
+      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 }
 
@@ -78,6 +91,9 @@ describe('The "audio" config term', () => {
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     configChanges: {
       terms: { audio: 'listen' }
+    },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { audio: [null, 'listen', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { audio: 'sound' }
@@ -93,6 +109,9 @@ describe('The "image" config term', () => {
     configChanges: {
       terms: { image: 'see' }
     },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { image: [null, 'see', '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { image: 'picture' }
     }
@@ -106,6 +125,9 @@ describe('The "video" config term', () => {
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
     configChanges: {
       terms: { video: 'watch' }
+    },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { video: [null, 'watch', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { video: 'observe' }
@@ -121,6 +143,9 @@ describe('The "highlight" config term', () => {
     configChanges: {
       terms: { highlight: 'mark' }
     },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { highlight: [null, 'mark', '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { highlight: 'paint' }
     }
@@ -134,6 +159,9 @@ describe('The "spoiler" config term', () => {
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
     configChanges: {
       terms: { spoiler: 'ruins ending' }
+    },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { spoiler: [null, 'ruins ending', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { spoiler: 'look away' }
@@ -149,6 +177,9 @@ describe('The "nsfw" config term', () => {
     configChanges: {
       terms: { nsfw: 'GETS YOU FIRED' }
     },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { nsfw: 'look away' }
     }
@@ -162,6 +193,9 @@ describe('The "nsfl" config term', () => {
     markupForDefaultSettings: '[NSFL: Ash fights Gary]',
     configChanges: {
       terms: { nsfl: 'RUINS LIFE' }
+    },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { nsfl: 'look away' }
@@ -187,6 +221,9 @@ Chrono Cross;     1999`,
     configChanges: {
       terms: { table: 'data' }
     },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { table: [null, 'data', '', ' \t \t ', undefined] }
+    },
     conflictingConfigChanges: {
       terms: { table: 'info' }
     }
@@ -210,6 +247,9 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`,
     configChanges: {
       terms: { chart: 'data' }
+    },
+    equivalentConfigChangesWithBlankVariations: {
+      terms: { chart: [null, 'data', '', ' \t \t ', undefined] }
     },
     conflictingConfigChanges: {
       terms: { chart: 'info' }
