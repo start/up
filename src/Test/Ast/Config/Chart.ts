@@ -102,4 +102,48 @@ Chrono Cross;     1999`
           ])
       ]))
   })
+
+  it('can have multiple variations', () => {
+    const markup = `
+Info:
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999
+
+
+Data:
+
+                  Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+
+    expect(Up.toAst(markup, { terms: { chart: ['data', 'info'] } })).to.be.eql(
+      new DocumentNode([
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+          ]),
+        new TableNode(
+          new TableNode.Header([
+            new TableNode.Header.Cell([]),
+            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          ]), [
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+            new TableNode.Row([
+              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+          ])
+      ]))
+  })
 })
