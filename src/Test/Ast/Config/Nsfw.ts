@@ -104,6 +104,27 @@ ruINs eNDiNg:
 
     it('ignores any regular expression syntax', () => {
       const markup = `
+RUINS ending:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+      expect(Up.toAst(markup, { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
+        new DocumentNode([
+          new NsfwBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            ])
+          ])
+        ]))
+    })
+
+    it('ignores any regular expression syntax', () => {
+      const markup = `
 *RUINS* ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
