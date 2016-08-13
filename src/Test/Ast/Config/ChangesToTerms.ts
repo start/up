@@ -111,16 +111,21 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any blank variations ignored", () => {
-      expect(up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      const up = new Up(equivalentConfigChangesWithEmptyAndBlankVariations)
 
-      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(invalidMarkupForEmptyTerm)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      const up = new Up(configChangesWithOnlyEmptyAndBlankVariations)
+
+      expect(up.toAst(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
+      const up = new Up(configChangesWithNoVariations)
+
       expect(up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
