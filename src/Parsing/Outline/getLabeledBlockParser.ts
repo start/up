@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { getOutlineNodes } from './getOutlineNodes'
 import { getIndentedBlock } from './getIndentedBlock'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional } from '../PatternHelpers'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -19,7 +19,7 @@ export function getLabeledBlockParser(
 
     const labelLinePattern =
       solelyAndIgnoringCapitalization(
-        labels.map(escapeForRegex) + optional(':'))
+        either(...labels.map(escapeForRegex)) + optional(':'))
 
     if (!markupLineConsumer.consume({ linePattern: labelLinePattern })) {
       return false
