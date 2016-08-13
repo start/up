@@ -836,24 +836,24 @@ class Tokenizer {
     // We can avoid some superficial overlapping by shifting our new end token past any overlapping end tokens
     // tokens (but not past any content!). For example:
     //
-    // I've had enough! I hate this game! {softly curses [SPOILER: Professor Oak}]
+    // I've had enough! **I hate [SPOILER: Professor Oak!**]
     //
-    // In the above example, the spoiler convention starts inside the action convention and ends after the
-    // action convention. The two conventions overlap, but only by only their end tokens. By inserting the
-    // end token for the spoiler before the end token of the action convention, we can avoid having to split
+    // In the above example, the spoiler convention starts inside the stress convention and ends after the
+    // stress convention. The two conventions overlap, but only by only their end tokens. By inserting the
+    // end token for the spoiler before the end token of the stress convention, we can avoid having to split
     // any conventions.
     //
     // This is more than just an optimization tactic, however! It actually improves the final abstract
     // syntax tree. How? Well...
     //
     // It's less disruptive to split certain conventions than to split others. We'd rather split an
-    // action convention than an inline spoiler, and we'd rather split an inline spoiler than a footnote.
+    // stress convention than an inline spoiler, and we'd rather split an inline spoiler than a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
     // overlapped by one that we’d prefer to split, it splits the convention we’d rather split. Because we’d
-    // rather split action conventions than spoilers, the action convention in the above example would be
+    // rather split stress conventions than spoilers, the stress convention in the above example would be
     // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
-    // spoiler’s end token inside the action convention, we can avoid having to split the action convention. 
+    // spoiler’s end token inside the stress convention, we can avoid having to split the stress convention. 
 
     const startToken = new Token(richConvention.startTokenKind)
     const endToken = new Token(richConvention.endTokenKind)
