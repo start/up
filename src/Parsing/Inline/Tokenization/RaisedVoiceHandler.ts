@@ -11,10 +11,9 @@ export class RaisedVoiceHandler {
     // We save `args` to make it easier to clone this object. 
     private args: {
       delimiterChar: string
-      encloseWithinRichConvention: (richConvention: RichConvention, startingBackAtIndex: number) => void
+      encloseWithinRichConvention: (args: EncloseWithinRichConventionArgs) => void
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
-
     private startDelimiters: RaisedVoiceStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
@@ -154,7 +153,7 @@ export class RaisedVoiceHandler {
   }
 
   private encloseWithin(args: EncloseWithinRichConventionArgs) {
-    this.args.encloseWithinRichConvention(args.richConvention, args.startingBackAtTokenIndex)
+    this.args.encloseWithinRichConvention(args)
   }
 
   private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {

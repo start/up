@@ -108,9 +108,9 @@ class Tokenizer {
     delimiterChar => new RaisedVoiceHandler({
       delimiterChar,
 
-      encloseWithinRichConvention: (richConvention, startingBackAtTokenIndex) => {
+      encloseWithinRichConvention: (args) => {
         this.closeNakedUrlContextIfOneIsOpen()
-        this.encloseWithin({ richConvention, startingBackAtTokenIndex })
+        this.encloseWithin(args)
       },
 
       insertPlainTextToken: (text, atIndex) => {
