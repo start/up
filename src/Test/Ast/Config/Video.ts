@@ -26,9 +26,9 @@ describe('The term that represents video conventions', () => {
   })
 
   it('ignores any regular expression syntax', () => {
-    const markup = '[+video+: Nevada caucus footage][https://example.com/video.webm]'
+    const markup = '[+watch+: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(Up.toAst(markup, { terms: { video: '+video+' } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { video: '+watch+' } })).to.be.eql(
       new DocumentNode([
         new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
