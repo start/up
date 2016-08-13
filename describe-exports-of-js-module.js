@@ -24,6 +24,7 @@ context('The Up library is exported two ways.', () => {
 context('Every syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([
     'AudioNode',
+    'BoldNode',
     'BlockquoteNode',
     'CodeBlockNode',
     'DescriptionListNode',
@@ -38,6 +39,7 @@ context('Every syntax node class is exported:', () => {
     'InlineNsflNode',
     'InlineNsfwNode',
     'InlineSpoilerNode',
+    'ItalicNode',
     'LineBlockNode',
     'LinkNode',
     'NsflBlockNode',
@@ -73,7 +75,7 @@ context('Every base syntax node class is exported:', () => {
 
 
 context('For anyone who really wants to fiddle with the abstract syntax tree', () => {
-  specify('the exported function `createDocument` helps you create footnote blocks and tables of contents', () => {
+  specify('the exported `createDocument` function helps you create footnote blocks and tables of contents', () => {
     expectAClassOrFunction(EXPORTS['createDocument'])
   })
 })
