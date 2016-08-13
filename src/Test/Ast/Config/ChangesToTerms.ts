@@ -24,15 +24,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe("when provided to the default toAst method", () => {
-    it("is applied", () => {
-      expect(Up.toAst(markupForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
-    })
-
     it("does not alter subsequent calls to the default method", () => {
       expect(Up.toAst(markupForConfigChanges, configChanges)).to.be.eql(Up.toAst(markupForDefaultSettings))
     })
 
-    it("replaces the original term", () => {
+    it("is applied", () => {
+      expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+    })
+
+    it("replaces the original term variations", () => {
       expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
@@ -41,12 +41,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   describe("when provided to an Up object's toAst method", () => {
     const up = new Up(configChanges)
 
-    it("is applied", () => {
-      expect(up.toAst(markupForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
-    })
-
     it("does not alter the Up object's original settings", () => {
       expect(up.toAst(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
+    })
+
+    it("is applied", () => {
+      expect(up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("replaces the original term", () => {
