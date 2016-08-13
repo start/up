@@ -19,7 +19,7 @@ import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
-import { RaisedVoiceHandler } from './RaisedVoiceHandler'
+import { InflectionHandler } from './InflectionHandler'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -103,9 +103,9 @@ class Tokenizer {
   // "Raised voices" means emphasis and stress.
   //
   // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we throw
-  // all that special logic into the RaisedVoiceHandler class. More information can be found in that class.
-  private raisedVoiceHandlers = ['*', '_'].map(
-    delimiterChar => new RaisedVoiceHandler({
+  // all that special logic into the InflectionHandler class. More information can be found in that class.
+  private inflectionHandlers = ['*', '_'].map(
+    delimiterChar => new InflectionHandler({
       delimiterChar,
 
       encloseWithinRichConvention: (args) => {
@@ -620,8 +620,8 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToPlainTextToken()
 
-    for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
-      raisedVoiceHandler.treatUnusedStartDelimitersAsPlainText()
+    for (const inflectionHandler of this.inflectionHandlers) {
+      inflectionHandler.treatDanglingStartDelimitersAsPlainText()
     }
 
     return true
@@ -782,14 +782,14 @@ class Tokenizer {
       return false
     }
 
-    return this.raisedVoiceHandlers.some(handler => {
+    return this.inflectionHandlers.some(handler => {
       let didCloseAnyRaisedVoices = false
 
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeConsumingText: delimiter => {
-          didCloseAnyRaisedVoices = handler.tryToCloseAnyRaisedVoices(delimiter)
+          didCloseAnyRaisedVoices = handler.tryToCloseAnyOpenDelimiters(delimiter)
 
           if (!didCloseAnyRaisedVoices) {
             this.markupConsumer.index -= delimiter.length
@@ -932,7 +932,7 @@ class Tokenizer {
   }
 
   private tryToHandleRaisedVoiceStartDelimiter(): boolean {
-    return this.raisedVoiceHandlers.some(handler =>
+    return this.inflectionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
@@ -941,7 +941,7 @@ class Tokenizer {
           // content (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
             this.flushNonEmptyBufferToPlainTextToken()
-            handler.addStartDelimiter(delimiter, this.tokens.length)
+            handler.addOpenStartDelimiter(delimiter, this.tokens.length)
           } else {
             // If the delimiter isn't followed by a non-whitespace character, we treat the delimiter as plain
             // text. We already know the delimiter wasn't able to close any raised voice conventions, and we
@@ -1040,7 +1040,7 @@ class Tokenizer {
       markupIndex: this.markupConsumer.index,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
-      raisedVoiceHandlers: this.raisedVoiceHandlers.map(handler => handler.clone()),
+      inflectionHandlers: this.inflectionHandlers.map(handler => handler.clone()),
       buffer: this.buffer
     }
   }
@@ -1101,7 +1101,7 @@ class Tokenizer {
     this.buffer = snapshot.buffer
     this.markupConsumer.index = snapshot.markupIndex
     this.openContexts = snapshot.openContexts
-    this.raisedVoiceHandlers = snapshot.raisedVoiceHandlers
+    this.inflectionHandlers = snapshot.inflectionHandlers
   }
 
   private appendNewToken(kind: TokenKind, value?: string): void {
@@ -1138,8 +1138,8 @@ class Tokenizer {
       openContext.registerTokenInsertion({ atIndex })
     }
 
-    for (const raisedVoiceHandler of this.raisedVoiceHandlers) {
-      raisedVoiceHandler.registerTokenInsertion({ atIndex })
+    for (const inflectionHandler of this.inflectionHandlers) {
+      inflectionHandler.registerTokenInsertion({ atIndex })
     }
 
     this.mostRecentToken = token

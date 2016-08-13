@@ -1,5 +1,5 @@
 import { ConventionContext } from './ConventionContext'
-import { RaisedVoiceHandler } from './RaisedVoiceHandler'
+import { InflectionHandler } from './InflectionHandler'
 import { Token } from './Token'
 
 
@@ -7,6 +7,6 @@ export interface TokenizerSnapshot {
   markupIndex: number
   tokens: Token[]
   openContexts: ConventionContext[]
-  raisedVoiceHandlers: RaisedVoiceHandler[]
+  inflectionHandlers: InflectionHandler[]
   buffer: string
 }

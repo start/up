@@ -6,15 +6,17 @@ import { escapeForRegex, patternStartingWith, atLeastOne } from '../../PatternHe
 import { remove } from '../../../CollectionHelpers'
 
 
-export class RaisedVoiceHandler {
+// Applies the (forgiving) rules for inflection conventions, pairing end delimiters with open start delimiters.   
+export class InflectionHandler {
   constructor(
-    // We save `args` to make it easier to clone this object. 
+    // We save `args` as a field to make it easier to clone this object. 
     private args: {
       delimiterChar: string
       encloseWithinRichConvention: (args: EncloseWithinRichConventionArgs) => void
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
-    private startDelimiters: RaisedVoiceStartDelimiter[] = [],
+    // The two optional parameters below are for private use. Please see the `clone` method.
+    private openStartDelimiters: RaisedVoiceStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
     this.delimiterPattern = this.delimiterPattern ||
@@ -22,18 +24,18 @@ export class RaisedVoiceHandler {
         atLeastOne(escapeForRegex(args.delimiterChar)))
   }
 
-  addStartDelimiter(delimiter: string, tokenIndex: number) {
-    this.startDelimiters.push(
+  addOpenStartDelimiter(delimiter: string, tokenIndex: number) {
+    this.openStartDelimiters.push(
       new RaisedVoiceStartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
-    for (const startDelimiter of this.startDelimiters) {
+    for (const startDelimiter of this.openStartDelimiters) {
       startDelimiter.registerTokenInsertion(args.atIndex)
     }
   }
 
-  tryToCloseAnyRaisedVoices(endDelimiter: string): boolean {
+  tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
     if (endDelimiter.length === EMPHASIS_COST) {
 
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) emphasis.
@@ -46,8 +48,8 @@ export class RaisedVoiceHandler {
       // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
       // that has 2 characters to spend. But this fallback happens later.
 
-      for (let i = this.startDelimiters.length - 1; i >= 0; i--) {
-        const startDelimiter = this.startDelimiters[i]
+      for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
+        const startDelimiter = this.openStartDelimiters[i]
 
         if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
           this.applyEmphasis(startDelimiter)
@@ -68,8 +70,8 @@ export class RaisedVoiceHandler {
       // Only if we can't find one, then we'll match with a delimiter that has just 1 character to spend. But this
       // fallback happens later.
 
-      for (let i = this.startDelimiters.length - 1; i >= 0; i--) {
-        const startDelimiter = this.startDelimiters[i]
+      for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
+        const startDelimiter = this.openStartDelimiters[i]
 
         if (startDelimiter.canAfford(STRESS_COST)) {
           this.applyStress(startDelimiter)
@@ -86,8 +88,8 @@ export class RaisedVoiceHandler {
     let unspentEndDelimiterLength = endDelimiter.length
 
     // Once this delimiter has spent all of its characters, it has nothing left to do, so we terminate the loop.
-    for (let i = this.startDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
-      const startDelimiter = this.startDelimiters[i]
+    for (let i = this.openStartDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
+      const startDelimiter = this.openStartDelimiters[i]
 
       if (unspentEndDelimiterLength >= MIN_SHOUTING_COST && startDelimiter.canAfford(MIN_SHOUTING_COST)) {
         // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
@@ -137,18 +139,19 @@ export class RaisedVoiceHandler {
     return unspentEndDelimiterLength < endDelimiter.length
   }
 
-  treatUnusedStartDelimitersAsPlainText(): void {
-    for (const startDelimiter of this.startDelimiters) {
+  treatDanglingStartDelimitersAsPlainText(): void {
+    for (const startDelimiter of this.openStartDelimiters) {
       if (startDelimiter.isUnused()) {
         this.args.insertPlainTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }
   }
 
-  clone(): RaisedVoiceHandler {
-    return new RaisedVoiceHandler(
+  // Like the `ConventionContext` class, this class needs to be clonable in order to properly handle backtracking.
+  clone(): InflectionHandler {
+    return new InflectionHandler(
       this.args,
-      this.startDelimiters.map(delimiter => delimiter.clone()),
+      this.openStartDelimiters.map(delimiter => delimiter.clone()),
       this.delimiterPattern)
   }
 
@@ -177,7 +180,7 @@ export class RaisedVoiceHandler {
     startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {
-      remove(this.startDelimiters, startDelimiter)
+      remove(this.openStartDelimiters, startDelimiter)
     }
   }
 }
