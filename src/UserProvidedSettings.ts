@@ -1,6 +1,3 @@
-import { UserProvidedTerms } from './UserProvidedTerms'
-
-
 export interface UserProvidedSettings {
   createTableOfContents?: boolean
   createSourceMap?: boolean
@@ -10,5 +7,34 @@ export interface UserProvidedSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
 
-  terms?: UserProvidedTerms
+  terms?: UserProvidedSettings.Terms
+}
+
+
+export namespace UserProvidedSettings {
+  export interface Terms {
+    audio?: Terms.FoundInMarkup
+    chart?: Terms.FoundInMarkup
+    highlight?: Terms.FoundInMarkup
+    image?: Terms.FoundInMarkup
+    nsfl?: Terms.FoundInMarkup
+    nsfw?: Terms.FoundInMarkup
+    spoiler?: Terms.FoundInMarkup
+    table?: Terms.FoundInMarkup
+    video?: Terms.FoundInMarkup
+
+    footnote?: Terms.FoundInOutput
+    footnoteReference?: Terms.FoundInOutput
+    itemReferencedByTableOfContents?: Terms.FoundInOutput
+    tableOfContents?: Terms.FoundInOutput
+    toggleNsfl?: Terms.FoundInOutput
+    toggleNsfw?: Terms.FoundInOutput
+    toggleSpoiler?: Terms.FoundInOutput
+  }
+
+
+  export namespace Terms {
+    export type FoundInMarkup = string[] | string
+    export type FoundInOutput = string
+  }
 }

@@ -1,5 +1,4 @@
 import { UserProvidedSettings} from './UserProvidedSettings'
-import { UserProvidedTerms} from './UserProvidedTerms'
 import { coalesce } from './CollectionHelpers'
 
 
@@ -69,27 +68,24 @@ export class Config {
 
 
 export namespace Config {
-  export type AppearsInMarkup = string[]
-  export type AppearsInOutput = string
-
   export class Terms {
-    audio: AppearsInMarkup = ['audio']
-    chart: AppearsInMarkup = ['chart']
-    highlight: AppearsInMarkup = ['highlight']
-    image: AppearsInMarkup = ['image']
-    nsfl: AppearsInMarkup = ['nsfl']
-    nsfw: AppearsInMarkup = ['nsfw']
-    spoiler: AppearsInMarkup = ['spoiler']
-    table: AppearsInMarkup = ['table']
-    video: AppearsInMarkup = ['video']
-    
-    footnote: AppearsInOutput = 'footnote'
-    footnoteReference: AppearsInOutput = 'footnote reference'
-    itemReferencedByTableOfContents: AppearsInOutput = 'item'
-    tableOfContents: AppearsInOutput = 'Table of Contents'
-    toggleNsfl: AppearsInOutput = 'toggle NSFL'
-    toggleNsfw: AppearsInOutput = 'toggle NSFW'
-    toggleSpoiler: AppearsInOutput = 'toggle spoiler'
+    audio: Terms.FoundInMarkup = ['audio']
+    chart: Terms.FoundInMarkup = ['chart']
+    highlight: Terms.FoundInMarkup = ['highlight']
+    image: Terms.FoundInMarkup = ['image']
+    nsfl: Terms.FoundInMarkup = ['nsfl']
+    nsfw: Terms.FoundInMarkup = ['nsfw']
+    spoiler: Terms.FoundInMarkup = ['spoiler']
+    table: Terms.FoundInMarkup = ['table']
+    video: Terms.FoundInMarkup = ['video']
+
+    footnote: Terms.FoundInOutput = 'footnote'
+    footnoteReference: Terms.FoundInOutput = 'footnote reference'
+    itemReferencedByTableOfContents: Terms.FoundInOutput = 'item'
+    tableOfContents: Terms.FoundInOutput = 'Table of Contents'
+    toggleNsfl: Terms.FoundInOutput = 'toggle NSFL'
+    toggleNsfw: Terms.FoundInOutput = 'toggle NSFW'
+    toggleSpoiler: Terms.FoundInOutput = 'toggle spoiler'
 
     clone(): Terms {
       const clone = new Terms()
@@ -115,7 +111,7 @@ export namespace Config {
       return clone
     }
 
-    applyChangedUserSettings(terms: UserProvidedTerms): void {
+    applyChangedUserSettings(terms: UserProvidedSettings.Terms): void {
       if (!terms) {
         return
       }
@@ -168,5 +164,10 @@ export namespace Config {
       this.toggleSpoiler =
         coalesce(terms.toggleSpoiler, this.toggleSpoiler)
     }
+  }
+
+  export namespace Terms {
+    export type FoundInMarkup = string[]
+    export type FoundInOutput = string
   }
 }
