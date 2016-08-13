@@ -18,6 +18,15 @@ describe('The term that represents video conventions', () => {
       ]))
   })
 
+  it('ignores any regular expression syntax', () => {
+    const markup = '[+video+: Nevada caucus footage][https://example.com/video.webm]'
+
+    expect(up.toAst(markup, { terms: { video: '+video+' } })).to.be.eql(
+      new DocumentNode([
+        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+      ]))
+  })
+
   it('can contain multiple variations', () => {
     const markup = '[watch: Nevada caucus footage](https://example.com/video.webm) [view: Nevada caucus footage](https://example.com/video.webm)'
 
