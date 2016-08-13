@@ -30,6 +30,15 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
     })
 
+    it('is trimmed', () => {
+      expect(up.toAst('[RUINS ending: Ash fights Gary]', { terms: { spoiler: ' \t ruins ending \t ' } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineSpoilerNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
+
     it('ignores any regular expression syntax', () => {
       expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
