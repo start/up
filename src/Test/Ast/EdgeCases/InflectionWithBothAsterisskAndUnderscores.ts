@@ -49,8 +49,8 @@ describe('Text surrounded by double asterisk and double underscores on each side
     expect(Up.toAst('Koopas! **__Mario is on his way!__** Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
-        new BoldNode([
-          new StressNode([
+        new StressNode([
+          new BoldNode([
             new PlainTextNode('Mario is on his way!'),
           ]),
         ]),
