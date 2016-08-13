@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, capture } from '../PatternHelpers'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
 import { REST_OF_TEXT } from '../PatternPieces'
 import { getInlineNodes } from '../Inline/getInlineNodes'
@@ -65,7 +65,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
   const getLabelPattern = (labels: string[]) =>
     solelyAndIgnoringCapitalization(
-      labels.map(escapeForRegex) + optional(':' + capture(REST_OF_TEXT)))
+      either(...labels.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
 
   let captionMarkup: string
 
