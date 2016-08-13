@@ -25,6 +25,15 @@ describe('The term that represents video conventions', () => {
     expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
   })
 
+  it('is trimmed', () => {
+    const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
+
+    expect(Up.toAst(markup, { terms: { video: ' \t watch \t ' } })).to.be.eql(
+      new DocumentNode([
+        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+      ]))
+  })
+
   it('ignores any regular expression syntax', () => {
     const markup = '[+watch+: Nevada caucus footage][https://example.com/video.webm]'
 
