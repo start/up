@@ -37,7 +37,7 @@ describe('The term that represents image conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
 
-    expect(Up.toAst(markup, { terms: { video: ['view', 'look'] } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { image: ['view', 'look'] } })).to.be.eql(
       new DocumentNode([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png'),
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
