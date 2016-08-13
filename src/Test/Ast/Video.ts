@@ -77,6 +77,19 @@ describe("The brackets enclosing a video convention's description and URL", () =
 })
 
 
+describe('The term "vid"', () => {
+  it('can be used instead of "video".', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'vid: ghostly howling',
+      url: 'http://example.com/ghosts.webm',
+      toProduce: new DocumentNode([
+        new VideoNode('ghostly howling', 'http://example.com/ghosts.webm')
+      ])
+    })
+  })
+})
+
+
 context("When an video has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
   specify("The URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
