@@ -24,44 +24,35 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe("when provided to the default toAst method", () => {
-    it("does not alter subsequent calls to the default method", () => {
+    it("does not alter settings for subsequent calls to the default method", () => {
       expect(Up.toAst(markupForConfigChanges, configChanges)).to.be.eql(Up.toAst(markupForDefaultSettings))
     })
 
-    it("is applied", () => {
-      expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
-    })
-
-    it("replaces the original term variations", () => {
+    it("replaces the original setting", () => {
       expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
 
 
   describe("when provided to an Up object's toAst method", () => {
-    const up = new Up(configChanges)
+    const up = new Up()
 
     it("does not alter the Up object's original settings", () => {
-      expect(up.toAst(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toAst(markupForConfigChanges, configChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
-    it("is applied", () => {
+    it("replaces the original setting", () => {
       expect(up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
-    })
-
-    it("replaces the original term", () => {
-      expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
 
 
-  const up = new Up(configChanges)
-
-  const whenProvidingChangesAtCreation =
-    up.toAst(markupForConfigChanges)
-
-
   describe('when provided to an Up object at creation', () => {
+    const up = new Up(configChanges)
+
+    const whenProvidingChangesAtCreation =
+      up.toAst(markupForConfigChanges)
+
     it('has the same result as providing the term when calling the default toAst method', () => {
       expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(markupForConfigChanges, configChanges))
     })
@@ -74,7 +65,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(markupForConfigChanges, configChanges))
     })
 
-    it("replaces the original term", () => {
+    it("replaces the original setting", () => {
       expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
   })
