@@ -15,7 +15,7 @@ describe('Double asterisks followed by whitespace with matching double asterisks
 
 
 describe('Double asterisks touching the beginning of a word with matching double asterisks preceded by whitespace', () => {
-  it('do not produce an emphasis node and are preserved as plain text', () => {
+  it('do not produce a stress node and are preserved as plain text', () => {
     expect(Up.toAst('I **believe my **spelling was wrong.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I **believe my **spelling was wrong.')
@@ -25,7 +25,7 @@ describe('Double asterisks touching the beginning of a word with matching double
 
 
 describe('Matching double asterisks each surrounded by whitespace', () => {
-  it('are preserved as plain text', () => {
+  it('do not produce a stress node and are preserved as plain text', () => {
     expect(Up.toAst('I believe ** will win the primary in ** easily.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I believe ** will win the primary in ** easily.')
