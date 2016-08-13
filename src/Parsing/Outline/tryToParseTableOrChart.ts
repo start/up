@@ -63,9 +63,9 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const { config } = args
   const { terms } = config
 
-  const getLabelPattern = (term: string) =>
+  const getLabelPattern = (labels: string[]) =>
     solelyAndIgnoringCapitalization(
-      escapeForRegex(term) + optional(':' + capture(REST_OF_TEXT)))
+      labels.map(escapeForRegex) + optional(':' + capture(REST_OF_TEXT)))
 
   let captionMarkup: string
 

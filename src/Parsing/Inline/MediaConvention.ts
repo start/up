@@ -4,7 +4,7 @@ import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
 export interface MediaConvention {
-  term: (terms: Config.Terms) => string
+  getTerms: (terms: Config.Terms) => Config.Terms.FoundInMarkup
   NodeType: MediaSyntaxNodeType
   startAndDescriptionTokenKind: TokenKind
 }

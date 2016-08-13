@@ -144,16 +144,16 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
-          label: this.config.terms.highlight
+          labels: this.config.terms.highlight
         }, {
           richConvention: SPOILER_CONVENTION,
-          label: this.config.terms.spoiler
+          labels: this.config.terms.spoiler
         }, {
           richConvention: NSFW_CONVENTION,
-          label: this.config.terms.nsfw
+          labels: this.config.terms.nsfw
         }, {
           richConvention: NSFL_CONVENTION,
-          label: this.config.terms.nsfl
+          labels: this.config.terms.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -225,22 +225,22 @@ class Tokenizer {
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      label: string
+      labels: Config.Terms.FoundInMarkup
     }
   ): Convention[] {
-    const { richConvention, label } = args
+    const { richConvention, labels } = args
 
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: this.getLabeledBracketStartPattern(label, bracket) + ANY_WHITESPACE,
+        startsWith: this.getLabeledBracketStartPattern(labels, bracket) + ANY_WHITESPACE,
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
   }
 
-  private getLabeledBracketStartPattern(label: string, bracket: Bracket): string {
-    return bracket.startPattern + escapeForRegex(label) + ':'
+  private getLabeledBracketStartPattern(labels: Config.Terms.FoundInMarkup, bracket: Bracket): string {
+    return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':'
   }
 
   private getConventionForActualBrackets(
@@ -347,7 +347,7 @@ class Tokenizer {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new Convention({
-          startsWith: this.getLabeledBracketStartPattern(media.term(this.config.terms), bracket) + ANY_WHITESPACE,
+          startsWith: this.getLabeledBracketStartPattern(media.getTerms(this.config.terms), bracket) + ANY_WHITESPACE,
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 
