@@ -42,7 +42,6 @@ export class InflectionHandler {
 
   tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
     if (endDelimiter.length === MINOR_INFLECTION_COSE) {
-
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
@@ -64,7 +63,6 @@ export class InflectionHandler {
         }
       }
     } else if (endDelimiter.length === MAJOR_INFLECTION_COST) {
-
       // If an end delimiter is just 2 characters long, it can indicate major inflection, but it can't indicate both
       // major and minor inflection at the same time.
       //
