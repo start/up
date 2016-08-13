@@ -15,10 +15,19 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     invalidMarkupForBlankTerm: string
     equivalentConfigChangesWithEmptyAndBlankVariations: UserProvidedSettings
     configChangesWithOnlyEmptyAndBlankVariations: UserProvidedSettings
+    configChangesWithNoVariations: UserProvidedSettings
     conflictingConfigChanges: UserProvidedSettings
   }
 ): void {
-  const { markupForDefaultSettings, markupForConfigChanges, configChanges, invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations, configChangesWithOnlyEmptyAndBlankVariations, conflictingConfigChanges } = args
+  const {
+    markupForDefaultSettings,
+    markupForConfigChanges,
+    configChanges,
+    invalidMarkupForEmptyTerm,
+    equivalentConfigChangesWithEmptyAndBlankVariations,
+    configChangesWithOnlyEmptyAndBlankVariations,
+    configChangesWithNoVariations,
+    conflictingConfigChanges } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -45,6 +54,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("has no effect if all variations are empty or blank", () => {
       expect(Up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
+
+    it("has no effect if there are no variations", () => {
+      expect(Up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 
 
@@ -67,6 +80,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has no effect if all variations are empty or blank", () => {
       expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+    })
+
+    it("has no effect if there are no variations", () => {
+      expect(up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -102,6 +119,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     it("has no effect if all variations are empty or blank", () => {
       expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
+
+    it("has no effect if there are no variations", () => {
+      expect(up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+    })
   })
 }
 
@@ -120,6 +141,9 @@ describe('The "audio" config term', () => {
     },
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { audio: [null, '', ' \t \t ', undefined] }
+    },
+    configChangesWithNoVariations: {
+      terms: { audio: [] }
     },
     conflictingConfigChanges: {
       terms: { audio: 'sound' }
@@ -143,6 +167,9 @@ describe('The "image" config term', () => {
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { image: [null, '', ' \t \t ', undefined] }
     },
+    configChangesWithNoVariations: {
+      terms: { image: [] }
+    },
     conflictingConfigChanges: {
       terms: { image: 'picture' }
     }
@@ -164,6 +191,9 @@ describe('The "video" config term', () => {
     },
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { video: [null, '', ' \t \t ', undefined] }
+    },
+    configChangesWithNoVariations: {
+      terms: { video: [] }
     },
     conflictingConfigChanges: {
       terms: { video: 'observe' }
@@ -187,6 +217,9 @@ describe('The "highlight" config term', () => {
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { highlight: [null, '', ' \t \t ', undefined] }
     },
+    configChangesWithNoVariations: {
+      terms: { highlight: [] }
+    },
     conflictingConfigChanges: {
       terms: { highlight: 'paint' }
     }
@@ -208,6 +241,9 @@ describe('The "spoiler" config term', () => {
     },
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { spoiler: [null, '', ' \t \t ', undefined] }
+    },
+    configChangesWithNoVariations: {
+      terms: { spoiler: [] }
     },
     conflictingConfigChanges: {
       terms: { spoiler: 'look away' }
@@ -231,6 +267,9 @@ describe('The "nsfw" config term', () => {
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { nsfw: [null, '', ' \t \t ', undefined] }
     },
+    configChangesWithNoVariations: {
+      terms: { nsfw: [] }
+    },
     conflictingConfigChanges: {
       terms: { nsfw: 'look away' }
     }
@@ -252,6 +291,9 @@ describe('The "nsfl" config term', () => {
     },
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { nsfl: [null, '', ' \t \t ', undefined] }
+    },
+    configChangesWithNoVariations: {
+      terms: { nsfl: [] }
     },
     conflictingConfigChanges: {
       terms: { nsfl: 'look away' }
@@ -295,6 +337,9 @@ Chrono Cross;     1999`,
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { table: [null, '', ' \t \t ', undefined] }
     },
+    configChangesWithNoVariations: {
+      terms: { table: [] }
+    },
     conflictingConfigChanges: {
       terms: { table: 'info' }
     }
@@ -336,6 +381,9 @@ Chrono Cross;     1999`,
     },
     configChangesWithOnlyEmptyAndBlankVariations: {
       terms: { chart: [null, '', ' \t \t ', undefined] }
+    },
+    configChangesWithNoVariations: {
+      terms: { chart: [] }
     },
     conflictingConfigChanges: {
       terms: { chart: 'info' }
