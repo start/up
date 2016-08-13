@@ -25,4 +25,29 @@ describe('The "highlight" config term', () => {
 
     expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
   })
+
+  it('ignores any regular expression syntax', () => {
+    const markup = '[+mark+: Ash fights Gary]'
+
+    expect(Up.toAst(markup, { terms: { highlight: '+mark+' } })).to.be.eql(
+      insideDocumentAndParagraph([
+        new HighlightNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
+  })
+
+  it('can have multiple variations', () => {
+    const markup = '[paint: Ash fights Gary][mark: Ash fights Gary]'
+
+    expect(Up.toAst(markup, { terms: { highlight: ['mark', 'paint'] } })).to.be.eql(
+      insideDocumentAndParagraph([
+        new HighlightNode([
+          new PlainTextNode('Ash fights Gary')
+        ]),
+        new HighlightNode([
+          new PlainTextNode('Ash fights Gary')
+        ])
+      ]))
+  })
 })
