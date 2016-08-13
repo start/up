@@ -37,6 +37,24 @@ Chrono Cross;     1999`
       ]))
   })
 
+  it('is case-insensitive even when custom', () => {
+    const uppercase = `
+Data:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+
+    const mixedCase = `
+dAtA:
+
+Game;             Release Date
+Chrono Trigger;   1995
+Chrono Cross;     1999`
+
+    expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
+  })
+
   it('ignores any regular expression syntax', () => {
     const markup = `
 +Data+:
@@ -79,7 +97,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toAst(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
+    expect(Up.toAst(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
       new DocumentNode([
         new TableNode(
           new TableNode.Header([
@@ -110,23 +128,5 @@ Chrono Cross;     1999`
             ])
           ])
       ]))
-  })
-
-  it('is case-insensitive even when custom', () => {
-    const uppercase = `
-Data:
-
-Game;             Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`
-
-    const mixedCase = `
-dAtA:
-
-Game;             Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`
-
-    expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
   })
 })
