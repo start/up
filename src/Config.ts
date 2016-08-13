@@ -195,15 +195,15 @@ function changeTermFoundInMarkup(
     return originalVariations
   }
 
-  const newTermVariations =
+  const normalizedNewVariations =
     // First of all, if the user provided a string, let's convert it to an array.
     ((typeof newVariations === "string") ? [newVariations] : newVariations)
-      // Let's ignore any term variations that are null or empty
+      // Let's ignore any term variations that are null or empty.
       .filter(variation => !!variation)
       // Let's trim the remaining term variations...
-      .map(varation => varation.trim())
-      // ... and let's ignore any term variations that were just whitespace!
+      .map(variation => variation.trim())
+      // ... and then ignore any term variations that were just whitespace!
       .filter(variation => !!variation)
 
-  return newTermVariations.length ? newTermVariations : originalVariations
+  return normalizedNewVariations.length ? normalizedNewVariations : originalVariations
 }
