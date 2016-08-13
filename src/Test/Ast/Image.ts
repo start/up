@@ -77,6 +77,19 @@ describe("The brackets enclosing an image convention's description and URL", () 
 })
 
 
+describe('The term "img"', () => {
+  it('can be used instead of "image"', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'image: ghostly howling',
+      url: 'http://example.com/ghosts.svg',
+      toProduce: new DocumentNode([
+        new ImageNode('ghostly howling', 'http://example.com/ghosts.svg')
+      ])
+    })
+  })
+})
+
+
 context("When an image has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
   specify("The URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
