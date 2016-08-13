@@ -37,7 +37,7 @@ Chrono Cross;     1999`
       ]))
   })
 
-  it('comes from the "table" config term', () => {
+  it('ignores any regular expression syntax', () => {
     const markup = `
 +Data+:
 
@@ -64,7 +64,7 @@ Chrono Cross;     1999`
       ]))
   })
 
-  it('can contain multiple variations', () => {
+  it('can have multiple variations', () => {
     const markup = `
 Info:
 
