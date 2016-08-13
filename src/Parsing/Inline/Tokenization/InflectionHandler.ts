@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from './RichConvention'
-import { RaisedVoiceStartDelimiter } from './RaisedVoiceStartDelimiter'
+import { InflectionStartDelimiter } from './InflectionStartDelimiter'
 import { EncloseWithinRichConventionArgs } from './EncloseWithinRichConventionArgs'
 import { escapeForRegex, patternStartingWith, atLeastOne } from '../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
@@ -16,7 +16,7 @@ export class InflectionHandler {
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for private use. Please see the `clone` method.
-    private openStartDelimiters: RaisedVoiceStartDelimiter[] = [],
+    private openStartDelimiters: InflectionStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
     this.delimiterPattern = this.delimiterPattern ||
@@ -26,7 +26,7 @@ export class InflectionHandler {
 
   addOpenStartDelimiter(delimiter: string, tokenIndex: number) {
     this.openStartDelimiters.push(
-      new RaisedVoiceStartDelimiter(delimiter, tokenIndex))
+      new InflectionStartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -159,15 +159,15 @@ export class InflectionHandler {
     this.args.encloseWithinRichConvention(args)
   }
 
-  private applyEmphasis(startDelimiter: RaisedVoiceStartDelimiter): void {
+  private applyEmphasis(startDelimiter: InflectionStartDelimiter): void {
     this.applyConvention(startDelimiter, EMPHASIS_CONVENTION, EMPHASIS_COST)
   }
 
-  private applyStress(startDelimiter: RaisedVoiceStartDelimiter): void {
+  private applyStress(startDelimiter: InflectionStartDelimiter): void {
     this.applyConvention(startDelimiter, STRESS_CONVENTION, STRESS_COST)
   }
 
-  private applyConvention(startDelimiter: RaisedVoiceStartDelimiter, richConvention: RichConvention, cost: number): void {
+  private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {
     this.encloseWithin({
       richConvention,
       startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -176,7 +176,7 @@ export class InflectionHandler {
     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
   }
 
-  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: RaisedVoiceStartDelimiter, cost: number): void {
+  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: InflectionStartDelimiter, cost: number): void {
     startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {

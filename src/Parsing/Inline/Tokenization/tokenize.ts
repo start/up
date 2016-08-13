@@ -100,10 +100,11 @@ class Tokenizer {
     insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
   })
 
-  // "Raised voices" means emphasis and stress.
+  // Inflection means emphasis, stress, italics, and bold.
   //
-  // We handle emphasis and stress in a manner incompatible with the rest of our conventions, so we throw
-  // all that special logic into the InflectionHandler class. More information can be found in that class.
+  // We handle inflection in a manner incompatible with the rest of our conventions, so we throw all that
+  // special logic into the InflectionHandler class. More information can be found in comments within that
+  // class.
   private inflectionHandlers = ['*', '_'].map(
     delimiterChar => new InflectionHandler({
       delimiterChar,
@@ -714,7 +715,7 @@ class Tokenizer {
       }
     }
 
-    return this.tryToCloseAnyRaisedVoices()
+    return this.tryToCloseAnyOpenInflectionDelimiters()
   }
 
   private shouldClose(context: ConventionContext): boolean {
@@ -775,29 +776,30 @@ class Tokenizer {
     return false
   }
 
-  private tryToCloseAnyRaisedVoices(): boolean {
-    // For a delimiter to close any raised voice conventions, it must look like it's touching the end
-    // of some content (i.e. it must be following a non-whitespace character).
+  private tryToCloseAnyOpenInflectionDelimiters(): boolean {
+    // For a delimiter to close any inflection conventions, it must look like it's touching the end of
+    // some content (i.e. it must be following a non-whitespace character).
     if (!NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)) {
       return false
     }
 
     return this.inflectionHandlers.some(handler => {
-      let didCloseAnyRaisedVoices = false
+      let didCloseAnyOpenDelimiters = false
 
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeConsumingText: delimiter => {
-          didCloseAnyRaisedVoices = handler.tryToCloseAnyOpenDelimiters(delimiter)
+          didCloseAnyOpenDelimiters = handler.tryToCloseAnyOpenDelimiters(delimiter)
 
-          if (!didCloseAnyRaisedVoices) {
+          if (!didCloseAnyOpenDelimiters) {
+            // The delimiter we found didn't close anything! Let's put it back.
             this.markupConsumer.index -= delimiter.length
           }
         }
       })
 
-      return didCloseAnyRaisedVoices
+      return didCloseAnyOpenDelimiters
     })
   }
 
@@ -925,27 +927,27 @@ class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
-      || this.tryToHandleRaisedVoiceStartDelimiter()
+      || this.tryToStartInflectingOrTreatDelimiterAsPlainText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeEnOrEmDash()
       || this.tryToTokenizePlusMinusSign())
   }
 
-  private tryToHandleRaisedVoiceStartDelimiter(): boolean {
+  private tryToStartInflectingOrTreatDelimiterAsPlainText(): boolean {
     return this.inflectionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeConsumingText: (delimiter, charAfterMatch) => {
-          // For a delimiter to open any raiased voices, it must appear to be touching the beginning of some
-          // content (i.e. it must be followed by a non-whitespace character).
+          // For a delimiter to start "inflecting", it must appear to be touching the beginning of some content
+          // (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
             this.flushNonEmptyBufferToPlainTextToken()
             handler.addOpenStartDelimiter(delimiter, this.tokens.length)
           } else {
-            // If the delimiter isn't followed by a non-whitespace character, we treat the delimiter as plain
-            // text. We already know the delimiter wasn't able to close any raised voice conventions, and we
-            // we now know it can't open any, either.
+            // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as plain
+            // text. We already learned the delimiter wasn't able to close any inflection start delimiters, and we
+            // now know it can't open any, either.
             this.buffer += delimiter
           }
         }

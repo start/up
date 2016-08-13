@@ -1,4 +1,4 @@
-export class RaisedVoiceStartDelimiter {
+export class InflectionStartDelimiter {
   constructor(public delimiterText: string, public tokenIndex: number, public unspentLength = delimiterText.length) { }
 
   canAfford(cost: number): boolean {
@@ -27,7 +27,7 @@ export class RaisedVoiceStartDelimiter {
     }
   }
 
-  clone(): RaisedVoiceStartDelimiter {
-    return new RaisedVoiceStartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
+  clone(): InflectionStartDelimiter {
+    return new InflectionStartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
   }
 }
