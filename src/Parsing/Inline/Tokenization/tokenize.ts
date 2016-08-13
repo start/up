@@ -1,4 +1,4 @@
-import { REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHESIZED_CONVENTION, SQUARE_BRACKETED_CONVENTION, ACTION_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -108,6 +108,8 @@ class Tokenizer {
   private inflectionHandlers = ['*', '_'].map(
     delimiterChar => new InflectionHandler({
       delimiterChar,
+      ConventionForMinorInflection: EMPHASIS_CONVENTION,
+      ConventionForMajorInflection: STRESS_CONVENTION,
 
       encloseWithinConvention: (args) => {
         this.closeNakedUrlContextIfOneIsOpen()

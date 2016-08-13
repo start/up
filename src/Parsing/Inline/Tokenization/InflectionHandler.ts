@@ -1,4 +1,3 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { InflectionStartDelimiter } from './InflectionStartDelimiter'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
@@ -12,7 +11,13 @@ export class InflectionHandler {
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
       delimiterChar: string
+      // The convention indicated by surrounding text with a single delimiter character on either side.
+      ConventionForMinorInflection: RichConvention
+      // The convention indicated by surrounding text with double delimiter character on either side.
+      ConventionForMajorInflection: RichConvention
+      // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
+      // A callback to invoke whenever it comes time to treat an dangling start delimiter as plain text. 
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for private use. Please see the `clone` method.
@@ -36,14 +41,14 @@ export class InflectionHandler {
   }
 
   tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
-    if (endDelimiter.length === EMPHASIS_COST) {
+    if (endDelimiter.length === MINOR_INFLECTION_COSE) {
 
-      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) emphasis.
+      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
       //
-      // 1. Can also only indicate emphasis (1 character to spend)
-      // 2. Can indicate both emphasis and stress together (3+ characters to spend)
+      // 1. Can also only indicate minor inflection (1 character to spend)
+      // 2. Can indicate both minor and major inflection together (3+ characters to spend)
       //
       // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
       // that has 2 characters to spend. But this fallback happens later.
@@ -51,21 +56,21 @@ export class InflectionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canOnlyAfford(EMPHASIS_COST) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
-          this.applyEmphasis(startDelimiter)
+        if (startDelimiter.canOnlyAfford(MINOR_INFLECTION_COSE) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
+          this.applyMinorInflection(startDelimiter)
 
-          // Considering this end delimiter could only afford to indicate emphasis, we have nothing left to do.
+          // Considering this end delimiter could only afford to indicate minor inflection, we have nothing left to do.
           return true
         }
       }
-    } else if (endDelimiter.length === STRESS_COST) {
+    } else if (endDelimiter.length === MAJOR_INFLECTION_COST) {
 
-      // If an end delimiter is just 2 characters long, it can indicate stress, but it can't indicate both stress
-      // and emphasis at the same time.
+      // If an end delimiter is just 2 characters long, it can indicate major inflection, but it can't indicate both
+      // major and minor inflection at the same time.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
-      // stress. It's okay if that start delimiter can indicate both stress and emphasis at the same time! As long
-      // as it can indicate stress, we're good. 
+      // major inflection. It's okay if that start delimiter can indicate both major and minor inflection at the same
+      // time! As long as it can indicate major inflection, we're good. 
       //
       // Only if we can't find one, then we'll match with a delimiter that has just 1 character to spend. But this
       // fallback happens later.
@@ -73,10 +78,11 @@ export class InflectionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAfford(STRESS_COST)) {
-          this.applyStress(startDelimiter)
+        if (startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
+          this.applyMajorInflection(startDelimiter)
 
-          // Considering this end delimiter could only afford to indicate stress, we have nothing left to do.
+          // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
+          // do.
           return true
         }
       }
@@ -93,7 +99,7 @@ export class InflectionHandler {
 
       if (unspentEndDelimiterLength >= MIN_SHOUTING_COST && startDelimiter.canAfford(MIN_SHOUTING_COST)) {
         // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
-        // (stressed and emphasized). Shouting delimiters cancel out as many of each other's characters as possible.
+        // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
         //
         // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
         //
@@ -104,12 +110,12 @@ export class InflectionHandler {
         // subsequently matched by other delimiters.
 
         this.encloseWithin({
-          richConvention: EMPHASIS_CONVENTION,
+          richConvention: this.args.ConventionForMinorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
         this.encloseWithin({
-          richConvention: STRESS_CONVENTION,
+          richConvention: this.args.ConventionForMajorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
@@ -122,9 +128,9 @@ export class InflectionHandler {
         continue
       }
 
-      if (unspentEndDelimiterLength >= STRESS_COST && startDelimiter.canAfford(STRESS_COST)) {
-        this.applyStress(startDelimiter)
-        unspentEndDelimiterLength -= STRESS_COST
+      if (unspentEndDelimiterLength >= MAJOR_INFLECTION_COST && startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
+        this.applyMajorInflection(startDelimiter)
+        unspentEndDelimiterLength -= MAJOR_INFLECTION_COST
 
         continue
       }
@@ -132,8 +138,8 @@ export class InflectionHandler {
       // We know we have at least 1 end delimiter character to spend; otherwise, we would have terminated the loop. And we
       // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
       // would have been removed from `startDelimitersFromMostToLeastRecent`.
-      this.applyEmphasis(startDelimiter)
-      unspentEndDelimiterLength -= EMPHASIS_COST
+      this.applyMinorInflection(startDelimiter)
+      unspentEndDelimiterLength -= MINOR_INFLECTION_COSE
     }
 
     return unspentEndDelimiterLength < endDelimiter.length
@@ -159,12 +165,12 @@ export class InflectionHandler {
     this.args.encloseWithinConvention(args)
   }
 
-  private applyEmphasis(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, EMPHASIS_CONVENTION, EMPHASIS_COST)
+  private applyMinorInflection(startDelimiter: InflectionStartDelimiter): void {
+    this.applyConvention(startDelimiter, this.args.ConventionForMinorInflection, MINOR_INFLECTION_COSE)
   }
 
-  private applyStress(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, STRESS_CONVENTION, STRESS_COST)
+  private applyMajorInflection(startDelimiter: InflectionStartDelimiter): void {
+    this.applyConvention(startDelimiter, this.args.ConventionForMajorInflection, MAJOR_INFLECTION_COST)
   }
 
   private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {
@@ -186,6 +192,6 @@ export class InflectionHandler {
 }
 
 
-const EMPHASIS_COST = 1
-const STRESS_COST = 2
-const MIN_SHOUTING_COST = EMPHASIS_COST + STRESS_COST
+const MINOR_INFLECTION_COSE = 1
+const MAJOR_INFLECTION_COST = 2
+const MIN_SHOUTING_COST = MINOR_INFLECTION_COSE + MAJOR_INFLECTION_COST
