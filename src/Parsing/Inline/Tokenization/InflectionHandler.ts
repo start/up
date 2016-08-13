@@ -147,7 +147,7 @@ export class InflectionHandler {
 
   treatDanglingStartDelimitersAsPlainText(): void {
     for (const startDelimiter of this.openStartDelimiters) {
-      if (startDelimiter.isUnused()) {
+      if (startDelimiter.isDangling()) {
         this.args.insertPlainTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }

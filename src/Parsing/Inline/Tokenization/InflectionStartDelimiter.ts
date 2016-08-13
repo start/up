@@ -1,5 +1,8 @@
 export class InflectionStartDelimiter {
-  constructor(public delimiterText: string, public tokenIndex: number, public unspentLength = delimiterText.length) { }
+  constructor(
+    public delimiterText: string,
+    public tokenIndex: number,
+    public unspentLength = delimiterText.length) { }
 
   canAfford(cost: number): boolean {
     return this.unspentLength >= cost
@@ -13,7 +16,8 @@ export class InflectionStartDelimiter {
     this.unspentLength -= cost
   }
 
-  isUnused(): boolean {
+  // A start delimiter is considered dangling if it went completely unmatched.
+  isDangling(): boolean {
     return this.unspentLength === this.delimiterText.length
   }
 
