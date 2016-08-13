@@ -53,6 +53,13 @@ describe('A highlight convention', () => {
     expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
   })
 
+  it('can use the term "mark" instead', () => {
+    const withHighlight = 'After you beat the Elite Four, {highlight: you fight Gary}.'
+    const withMark = 'After you beat the Elite Four, {mark: you fight Gary}.'
+
+    expect(Up.toAst(withHighlight)).to.be.eql(Up.toAst(withMark))
+  })
+
   it('is evaluated for other conventions', () => {
     expect(Up.toAst('After you beat the Elite Four, [highlight: you fight *Gary*].')).to.be.eql(
       insideDocumentAndParagraph([
