@@ -71,13 +71,13 @@ export namespace Config {
   export class Terms {
     audio: Terms.FoundInMarkup = ['audio']
     chart: Terms.FoundInMarkup = ['chart']
-    highlight: Terms.FoundInMarkup = ['highlight']
-    image: Terms.FoundInMarkup = ['image']
+    highlight: Terms.FoundInMarkup = ['highlight', 'mark']
+    image: Terms.FoundInMarkup = ['image', 'img']
     nsfl: Terms.FoundInMarkup = ['nsfl']
     nsfw: Terms.FoundInMarkup = ['nsfw']
     spoiler: Terms.FoundInMarkup = ['spoiler']
     table: Terms.FoundInMarkup = ['table']
-    video: Terms.FoundInMarkup = ['video']
+    video: Terms.FoundInMarkup = ['video', 'vid']
 
     footnote: Terms.FoundInOutput = 'footnote'
     footnoteReference: Terms.FoundInOutput = 'footnote reference'
