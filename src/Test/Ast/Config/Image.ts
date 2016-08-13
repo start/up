@@ -25,6 +25,15 @@ describe('The term that represents image conventions', () => {
     expect(up.toAst(mixedCase)).to.be.eql(up.toAst(lowercase))
   })
 
+  it('is trimmed', () => {
+    const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
+
+    expect(Up.toAst(markup, { terms: { image: ' \t see \t' } })).to.be.eql(
+      new DocumentNode([
+        new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
+      ]))
+  })
+
   it('ignores any regular expression syntax', () => {
     const markup = '[+see+: Chrono Cross logo][https://example.com/cc.png]'
 
