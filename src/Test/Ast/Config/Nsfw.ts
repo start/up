@@ -8,14 +8,14 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 
 
-context('The "nsfl" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
+context('The "nsfw" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
   const up = new Up({
-    terms: { nsfw: 'gross' }
+    terms: { nsfw: 'ruins ending' }
   })
 
-  context('For inline NSFW conventions:', () => {
-    specify('The term is used', () => {
-      expect(up.toAst('[gross: Ash fights Gary]')).to.be.eql(
+  context('For inline NSFW conventions, the term', () => {
+    it('is used', () => {
+      expect(up.toAst('[ruins ending: Ash fights Gary]', { terms: { nsfw: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -23,19 +23,40 @@ context('The "nsfl" config term is used by both inline NSFW conventions and NSFW
         ]))
     })
 
-    specify('The term is case-insensitive, even when custom', () => {
-      const lowercase = '[gross: Ash fights Gary]'
-      const mixedCase = '[gRoSs: Ash fights Gary]'
+    it('is case-insensitive, even when custom', () => {
+      const lowercase = '[ruins ending: Ash fights Gary]'
+      const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+    })
+
+    it('ignores any regular expression syntax', () => {
+      expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineNsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
+    })
+
+    it('can have multiple variations', () => {
+      expect(up.toAst('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
+        insideDocumentAndParagraph([
+          new InlineNsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ]),
+          new InlineNsfwNode([
+            new PlainTextNode('Ash fights Gary')
+          ])
+        ]))
     })
   })
 
 
-  context('For NSFW blocks:', () => {
-    specify('The term is used', () => {
+  context('For NSFW blocks, the term', () => {
+    specify('is used', () => {
       const markup = `
-gross:
+ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
@@ -54,22 +75,68 @@ gross:
         ]))
     })
 
-    specify('The term is case-insensitive, even when custom', () => {
+    it('is case-insensitive, even when custom', () => {
       const lowercase = `
-gross:
+ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
       const mixedCase = `
-gRosS:
+ruINs eNDiNg:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+    })
+
+    it('ignores any regular expression syntax', () => {
+      const markup = `
+*RUINS* ending:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+      expect(Up.toAst(markup, { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
+        new DocumentNode([
+          new NsfwBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new ParagraphNode([
+              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            ])
+          ])
+        ]))
+    })
+
+    it('can contain multiple variations', () => {
+      const markup = `
+LOOK AWAY:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  RUINS ENDING:
+    
+    Luckily, Pikachu ultimately decided to stay.`
+
+      expect(Up.toAst(markup, { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
+        new DocumentNode([
+          new NsfwBlockNode([
+            new ParagraphNode([
+              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new NsfwBlockNode([
+              new ParagraphNode([
+                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+              ])
+            ])
+          ])
+        ]))
     })
   })
 })
