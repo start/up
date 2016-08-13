@@ -24,4 +24,23 @@ describe('The term that represents image conventions', () => {
 
     expect(up.toAst(mixedCase)).to.be.eql(up.toAst(lowercase))
   })
+
+  it('ignores any regular expression syntax', () => {
+    const markup = '[+see+: Chrono Cross logo][https://example.com/cc.png]'
+
+    expect(Up.toAst(markup, { terms: { image: '+see+' } })).to.be.eql(
+      new DocumentNode([
+        new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
+      ]))
+  })
+
+  it('can have multiple variations', () => {
+    const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
+
+    expect(Up.toAst(markup, { terms: { video: ['view', 'look'] } })).to.be.eql(
+      new DocumentNode([
+        new ImageNode('Chrono Cross logo', 'https://example.com/cc.png'),
+        new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
+      ]))
+  })
 })
