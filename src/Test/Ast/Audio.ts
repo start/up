@@ -51,7 +51,7 @@ context('An audio convention that is the only convention on its line is not plac
 
     specify('is the only convention within a link', () => {
       const markup =
-        ' \t {[audio: ghostly howling] (http://example.com/ghosts.ogg)} (hauntedhouse.com) \t '
+        ' \t ([audio: ghostly howling] [http://example.com/ghosts.ogg]) (hauntedhouse.com) \t '
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([

@@ -51,7 +51,7 @@ context('A video that is the only convention on its line is not placed inside a 
 
     specify('is the only convention within a link', () => {
       const markup =
-        ' \t {[video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com) \t '
+        ' \t ([video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com) \t '
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
