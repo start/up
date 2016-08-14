@@ -60,16 +60,16 @@ describe('A link overlapping emphasized text', () => {
 })
 
 
-describe('Italic text overlapping a link', () => {
+describe('Italicized text overlapping a link', () => {
   it('splits the italic node, not the link node', () => {
     expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new EmphasisNode([
+        new ItalicNode([
           new PlainTextNode('not ')
         ]),
         new LinkNode([
-          new EmphasisNode([
+          new ItalicNode([
             new PlainTextNode('care')
           ]),
           new PlainTextNode(' at'),
@@ -80,7 +80,7 @@ describe('Italic text overlapping a link', () => {
 })
 
 
-describe('A link overlapping italic text', () => {
+describe('A link overlapping Italicized text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
