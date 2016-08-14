@@ -11,7 +11,6 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 
 
 describe('An otherwise-valid link with mismatched brackets surrounding its description', () => {
@@ -233,7 +232,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
       ]))
   })
 
-  specify('Actions', () => {
+  specify('Curly brackets', () => {
     expect(Up.toAst('(I know.) {}')).to.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
@@ -247,10 +246,10 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
 
 describe("An almost-link (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
   it('can contain an unclosed square bracket without affecting a link with a square bracketed URL that follows it', () => {
-    expect(Up.toAst('{sigh} (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.be.eql(
+    expect(Up.toAst('[sigh] (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.be.eql(
       insideDocumentAndParagraph([
-        new ActionNode([
-          new PlainTextNode('sigh')
+        new SquareBracketedNode([
+          new PlainTextNode('[sigh]')
         ]),
         new PlainTextNode(' '),
         new ParenthesizedNode([

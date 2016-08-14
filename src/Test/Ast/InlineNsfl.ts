@@ -6,7 +6,6 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Square bracketed text starting with "NSFW:"', () => {
@@ -122,6 +121,8 @@ describe('A NSFL convnetion produced by parentheses', () => {
   })
 })
 
+/*
+TODO: Replace this test
 
 describe('An inline NSFL convention produced by curly brackets', () => {
   it('can contain action text', () => {
@@ -138,7 +139,7 @@ describe('An inline NSFL convention produced by curly brackets', () => {
       ]))
   })
 })
-
+*/
 
 describe('Any whitespace between "NSFL:" and the start of the NSFL content', () => {
   it('is optional', () => {

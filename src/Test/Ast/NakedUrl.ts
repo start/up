@@ -7,7 +7,6 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
@@ -110,17 +109,6 @@ describe('A naked URL', () => {
             new PlainTextNode('archive.org/fake')
           ], 'https://archive.org/fake'),
           new PlainTextNode(']')
-        ])
-      ]))
-  })
-
-  it('is terminated by an action convention closing', () => {
-    expect(Up.toAst('{https://archive.org/fake}')).to.be.eql(
-      insideDocumentAndParagraph([
-        new ActionNode([
-          new LinkNode([
-            new PlainTextNode('archive.org/fake')
-          ], 'https://archive.org/fake')
         ])
       ]))
   })
@@ -319,20 +307,6 @@ describe('Inside square brackets, a naked URL', () => {
             new PlainTextNode('archive.org/fake[url]')
           ], 'https://archive.org/fake[url]'),
           new PlainTextNode(']')
-        ])
-      ]))
-  })
-})
-
-
-describe('Inside an action node, a naked URL', () => {
-  it('can contain matching curly brackets', () => {
-    expect(Up.toAst('{https://archive.org/fake{url}}')).to.be.eql(
-      insideDocumentAndParagraph([
-        new ActionNode([
-          new LinkNode([
-            new PlainTextNode('archive.org/fake{url}')
-          ], 'https://archive.org/fake{url}')
         ])
       ]))
   })

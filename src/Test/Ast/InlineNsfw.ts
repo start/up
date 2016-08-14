@@ -6,7 +6,6 @@ import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Square bracketed text starting with "NSFW:"', () => {
@@ -122,6 +121,8 @@ describe('A NSFW convnetion produced by parentheses', () => {
   })
 })
 
+/*
+TODO: Replace this test
 
 describe('An inline NSFW convention produced by curly brackets', () => {
   it('can contain action text', () => {
@@ -138,7 +139,7 @@ describe('An inline NSFW convention produced by curly brackets', () => {
       ]))
   })
 })
-
+*/
 
 describe('Any whitespace between "NSFW:" and the start of the NSFW content', () => {
   it('is optional', () => {

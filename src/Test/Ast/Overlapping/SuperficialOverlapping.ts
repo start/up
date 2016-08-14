@@ -9,7 +9,6 @@ import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
-import { ActionNode } from'../../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
 

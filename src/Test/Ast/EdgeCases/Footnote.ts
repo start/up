@@ -9,7 +9,6 @@ import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
-import { ActionNode } from '../../../SyntaxNodes/ActionNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 
 
@@ -86,6 +85,8 @@ describe('A footnote produced by square brackets that contains nested square bra
   })
 })
 
+/*
+TODO: Replace this test
 
 describe('A footnote produced by curly brackets that contains nested action text ending together', () => {
   it('produces a footnote containing the nested action text', () => {
@@ -111,6 +112,7 @@ describe('A footnote produced by curly brackets that contains nested action text
       ]))
   })
 })
+*/
 
 
 describe('Inside an outline convention, blockquoted footnote references', () => {

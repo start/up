@@ -6,7 +6,6 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 
 
 describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
@@ -195,6 +194,9 @@ describe('A link produced by parentheses', () => {
 })
 
 
+/*
+TODO: Replace this test
+
 describe('A link produced by curly brackets', () => {
   it('can contain action text', () => {
     expect(Up.toAst('I like {{faints} this site}{https://stackoverflow.com}.')).to.be.eql(
@@ -210,7 +212,7 @@ describe('A link produced by curly brackets', () => {
       ]))
   })
 })
-
+*/
 
 describe("The URL of a link produced by square brackets", () => {
   it('can contain matching unescaped brackets', () => {
