@@ -141,7 +141,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], 1)
 
-    expect(Up.toAst("{NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+    expect(Up.toAst("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineNsfwNode([
@@ -165,7 +165,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ], 1)
 
-      expect(Up.toAst("{NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+      expect(Up.toAst("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
         new DocumentNode([
           new ParagraphNode([
             new InlineNsfwNode([
@@ -190,7 +190,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], 1)
 
-    expect(Up.toAst("{NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+    expect(Up.toAst("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineNsflNode([
@@ -214,7 +214,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], 1)
 
-    expect(Up.toAst("{SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]}")).to.be.eql(
+    expect(Up.toAst("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new DocumentNode([
         new ParagraphNode([
           new InlineSpoilerNode([
