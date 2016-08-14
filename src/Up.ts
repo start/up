@@ -2,7 +2,7 @@ import { DocumentNode } from './SyntaxNodes/DocumentNode'
 import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
-import { getHtml } from './Writers//Html/getHtml'
+import { getHtml } from './Writing//Html/getHtml'
 
 
 export type MarkupOrDocumentNode = string | DocumentNode
