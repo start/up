@@ -804,7 +804,7 @@ class Tokenizer {
   private tryToCloseAnyOpenInflectionDelimiters(): boolean {
     // For a delimiter to close any inflection conventions, it must look like it's touching the end of
     // some content (i.e. it must be following a non-whitespace character).
-    if (!NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)) {
+    if (!this.isPreviousCharacterNonwhitespace()) {
       return false
     }
 
@@ -826,6 +826,10 @@ class Tokenizer {
 
       return didCloseAnyOpenDelimiters
     })
+  }
+
+  private isPreviousCharacterNonwhitespace(): boolean {
+    return NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)
   }
 
   private closeNakedUrlContextIfOneIsOpen(args?: { withinContextAtIndex: number }): void {
