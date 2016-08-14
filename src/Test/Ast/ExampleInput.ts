@@ -11,7 +11,7 @@ describe('Text surrounded by curly brackets', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Press '),
         new ExampleInputNode('esc'),
-        new PlainTextNode('to quit'),
+        new PlainTextNode(' to quit.'),
       ]))
   })
 })
@@ -21,9 +21,9 @@ describe('Example input', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.toAst("Select the {Start Game(s)} menu item.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainTextNode('Select the '),
         new ExampleInputNode('Start Games(s)'),
-        new PlainTextNode('!')
+        new PlainTextNode(' menu item.')
       ]))
   })
 
@@ -32,7 +32,7 @@ describe('Example input', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Select the '),
         new ExampleInputNode('Start Games(s)'),
-        new PlainTextNode('menu item.')
+        new PlainTextNode(' menu item.')
       ]))
   })
 
@@ -42,7 +42,7 @@ describe('Example input', () => {
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
           new ExampleInputNode('}'),
-          new PlainTextNode(' to view paths')
+          new PlainTextNode(' to view paths.')
         ]))
     })
 
@@ -51,7 +51,7 @@ describe('Example input', () => {
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
           new ExampleInputNode('}'),
-          new PlainTextNode(' to view paths')
+          new PlainTextNode(' to view paths.')
         ]))
     })
   })

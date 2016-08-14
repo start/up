@@ -7,6 +7,7 @@ import { last } from '../../CollectionHelpers'
 import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { RevealableConvention } from './RevealableConvention'
 
@@ -84,6 +85,11 @@ class Parser {
 
         case TokenKind.Code: {
           this.nodes.push(new InlineCodeNode(token.value))
+          continue
+        }
+
+        case TokenKind.ExampleInput: {
+          this.nodes.push(new ExampleInputNode(token.value))
           continue
         }
 

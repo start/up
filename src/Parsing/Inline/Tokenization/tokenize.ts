@@ -63,7 +63,10 @@ class Tokenizer {
   private conventions: Convention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
-  // descriptions. They allow matching brackets to be included without having to escape any closing brackets.
+  // descriptions.
+  //
+  // They allow matching brackets to be included without having to escape closing brackets that would
+  // otherwise cut short the URL or media description.
   private rawBracketConventions = this.getRawBracketConventions()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
@@ -128,8 +131,8 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(entireText: string, private config: Config) {
-    this.markupConsumer = new TextConsumer(entireText)
+  constructor(markup: string, private config: Config) {
+    this.markupConsumer = new TextConsumer(markup)
     this.configureConventions()
 
     this.tokenize()
@@ -187,8 +190,26 @@ class Tokenizer {
         }
       ].map(args => this.getRichConventionNotRequiringBacktracking(args)),
 
-      this.nakedUrlConvention
+      this.nakedUrlConvention,
+
+      this.getExampleInputConvention()
     ]
+  }
+
+  // This convention's HTML equivalent is the `<kbd>` element.
+  //
+  // Example usage: Press {esc} to quit.
+  private getExampleInputConvention(): Convention {
+    return new Convention({
+      // Example input cannot be totally blank.
+      startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
+      endsWith: EXAMPLE_INPUT_END_DELIMITER,
+      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      // TODO: Don't use `bufferRawText`
+      insteadOfOpeningRegularConventionsWhileOpen: () => { this.bufferRawText() },
+      beforeClosingItAlwaysFlushesBufferTo: TokenKind.ExampleInput,
+      whenClosingItAlsoClosesInnerConventions: true
+    })
   }
 
   private getFootnoteConventions(): Convention[] {
@@ -1232,6 +1253,13 @@ const PLUS_MINUS_SIGN_PATTERN =
   patternStartingWith(escapeForRegex('+-'))
 
 
+const EXAMPLE_INPUT_START_DELIMITER =
+  escapeForRegex('{')
+
+const EXAMPLE_INPUT_END_DELIMITER =
+  escapeForRegex('}')
+
+
 // Our URL patterns and associated string constants serve two purposes:
 //
 // 1. To apply URL config settings
@@ -1299,6 +1327,8 @@ const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
   WHITESPACE_CHAR, 'h', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
+  EXAMPLE_INPUT_START_DELIMITER,
+  EXAMPLE_INPUT_END_DELIMITER,
   ...[ESCAPER_CHAR, '-', '*', '+'].map(escapeForRegex)
 ]
 
