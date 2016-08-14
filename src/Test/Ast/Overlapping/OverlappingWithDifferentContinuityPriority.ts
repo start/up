@@ -370,7 +370,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
         new LinkNode([
           new PlainTextNode('trash '),
           new SquareBracketedNode([
-            new PlainTextNode('(can')
+            new PlainTextNode('[can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new SquareBracketedNode([
@@ -385,7 +385,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new SquareBracketedNode([
-          new PlainTextNode('(not ')
+          new PlainTextNode('[not ')
         ]),
         new LinkNode([
           new SquareBracketedNode([

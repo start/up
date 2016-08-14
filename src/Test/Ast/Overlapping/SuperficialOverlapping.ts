@@ -9,8 +9,10 @@ import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
+import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
 import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
+import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
@@ -31,14 +33,14 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) overlapping a third (e.g. spoiler)', () => {
-      expect(Up.toAst('[NSFL: {(SPOILER: thwomp} good] friend!) Hi!')).to.be.eql(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a third (e.g. spoiler)', () => {
+      expect(Up.toAst('[NSFL: {(SPOILER: thwomp}(example.com) good] friend!) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new InlineNsflNode([
-              new ActionNode([
+              new LinkNode([
                 new PlainTextNode('thwomp')
-              ]),
+              ], 'https://example.com'),
               new PlainTextNode(' good')
             ]),
             new PlainTextNode(' friend!')
@@ -133,30 +135,30 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
-      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body {squish)}] Hi!')).to.be.eql(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
+      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten {body)}(example.com)] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
-              new PlainTextNode('rotten body '),
-              new ActionNode([
-                new PlainTextNode('squish')
-              ]),
+              new PlainTextNode('rotten '),
+              new LinkNode([
+                new PlainTextNode('body')
+              ], 'https://example.com'),
             ]),
           ]),
           new PlainTextNode(' Hi!')
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, action) being overlapped by a third with lower priority than both (e.g. link)', () => {
-      expect(Up.toAst('(There was another [NSFL: rotten body {squish)(example.com)}] Hi!')).to.be.eql(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a third with lower priority than both (e.g. link)', () => {
+      expect(Up.toAst('(There was another [NSFL: rotten body {NSFW: squish)(example.com)}] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
               new PlainTextNode('rotten body '),
-              new ActionNode([
+              new InlineNsfwNode([
                 new PlainTextNode('squish')
               ]),
             ]),
@@ -166,7 +168,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {stomp++**)}]. Hi!')).to.be.eql(
+      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {NSFW: stomp++**)}]. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new PlainTextNode('There '),
@@ -176,7 +178,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
                 new PlainTextNode('another '),
                 new InlineNsflNode([
                   new PlainTextNode('loud '),
-                  new ActionNode([
+                  new InlineNsfwNode([
                     new PlainTextNode('stomp')
                   ])
                 ])
@@ -187,31 +189,31 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("An inline spoiler and an action convention", () => {
-      expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}')).to.be.eql(
+    specify("An inline spoiler and a link", () => {
+      expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}(example.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Mario fell off the platform. '),
-            new ActionNode([
+            new LinkNode([
               new PlainTextNode('splat')
-            ])
+            ], 'https://example.com')
           ])
         ]))
     })
 
-    specify("An action convention and an inline spoiler", () => {
-      expect(Up.toAst("{loudly sings [SPOILER: Jigglypuff's Lullaby}]")).to.be.eql(
+    specify("A link and an inline spoiler", () => {
+      expect(Up.toAst("{loudly sings [SPOILER: Jigglypuff's Lullaby}(example.com)]")).to.be.eql(
         insideDocumentAndParagraph([
-          new ActionNode([
+          new LinkNode([
             new PlainTextNode('loudly sings '),
             new InlineSpoilerNode([
               new PlainTextNode("Jigglypuff's Lullaby")
             ])
-          ])
+          ], 'https://example.com')
         ]))
     })
 
-    specify("Emphasis and a link whose content is wrapped in square brackets", () => {
+    specify("Emphasis and a link", () => {
       expect(Up.toAst("*I watched it [live*](example.com/replay)")).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
@@ -223,22 +225,22 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A link whose content is wrapped in square brackets and an action convention", () => {
-      expect(Up.toAst('[Mario fell off the platform. {splat](example.com/game-over)}')).to.be.eql(
+    specify("A link and highlighted text", () => {
+      expect(Up.toAst('[Mario fell off the platform. {highlight: splat](example.com/game-over)}')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Mario fell off the platform. '),
-            new ActionNode([
+            new HighlightNode([
               new PlainTextNode('splat')
             ])
           ], 'https://example.com/game-over')
         ]))
     })
 
-    specify("An action convention and a link whose content is wrapped in square brackets", () => {
-      expect(Up.toAst('{loud [thwomp}](example.com/thwomp)')).to.be.eql(
+    specify("Highlighted text and a link", () => {
+      expect(Up.toAst('{highlight: loud [thwomp}](example.com/thwomp)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ActionNode([
+          new HighlightNode([
             new PlainTextNode('loud '),
             new LinkNode([
               new PlainTextNode('thwomp')
