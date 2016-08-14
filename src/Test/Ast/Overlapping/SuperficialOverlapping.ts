@@ -212,6 +212,28 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
+    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single convention that should only be split when necessary', () => {
+      expect(Up.toAst('**There ++was ~~another [NSFL: loud (SPOILER: stomp++**~~]). Hi!')).to.be.eql(
+        insideDocumentAndParagraph([
+          new StressNode([
+            new PlainTextNode('There '),
+            new RevisionInsertionNode([
+              new PlainTextNode('was '),
+              new RevisionDeletionNode([
+                new PlainTextNode('another '),
+                new InlineNsflNode([
+                  new PlainTextNode('loud '),
+                  new InlineSpoilerNode([
+                    new PlainTextNode('stomp')
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          new PlainTextNode('. Hi!')
+        ]))
+    })
+
     specify("An inline spoiler and a link", () => {
       expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}(example.com)')).to.be.eql(
         insideDocumentAndParagraph([
