@@ -20,7 +20,7 @@ import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 // TODO: Organize these tests into contexts for clarity
 
-describe('Overlapping emphasis (using asterisks) and a link', () => {
+describe('Emphasized text overlapping a link', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -40,7 +40,7 @@ describe('Overlapping emphasis (using asterisks) and a link', () => {
 })
 
 
-describe('A link overlapping emphasized text (using asterisks)', () => {
+describe('A link overlapping emphasized text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
