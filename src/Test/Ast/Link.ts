@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 
-describe('Bracketed (square bracketed, curly bracketed, or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
+describe('Bracketed (square bracketed or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
   it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
     expect(Up.toAst('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([

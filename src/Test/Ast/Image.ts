@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
-context('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "image:" immediately followed by another instance of bracketed text', () => {
+context('Bracketed (square bracketed or parenthesized) text starting with "image:" immediately followed by another instance of bracketed text', () => {
   it('produces an image node with the first bracketed text treated as the description and the second treated as the image URL', () => {
     expect(Up.toAst('I would never stay here. [image: haunted house](http://example.com/hauntedhouse.svg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([

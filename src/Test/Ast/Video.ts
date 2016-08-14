@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
-context('Bracketed (square bracketed, curly bracketed, or parenthesized) text starting with "video:" immediately followed by another instance of bracketed text', () => {
+context('Bracketed (square bracketed or parenthesized) text starting with "video:" immediately followed by another instance of bracketed text', () => {
   it('produces a video node with the first bracketed text treated as the description and the second treated as the URL', () => {
     expect(Up.toAst('I would never stay in a house with this. [video: ghosts eating luggage](http://example.com/poltergeists.webm) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
