@@ -183,6 +183,14 @@ export abstract class Writer {
       return this.stress(node)
     }
 
+    if (node instanceof ItalicNode) {
+      return this.italic(node)
+    }
+
+    if (node instanceof BoldNode) {
+      return this.bold(node)
+    }
+
     if (node instanceof InlineCodeNode) {
       return this.inlineCode(node)
     }

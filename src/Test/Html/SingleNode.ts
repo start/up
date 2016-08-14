@@ -645,7 +645,7 @@ describe('A bold node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><n>Ness</b></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><b>Ness</b></p>')
   })
 })
 
