@@ -203,35 +203,69 @@ context('Most inline conventions are not applied if they have no content.', () =
 
 
   context("Due to the nature of the inflection syntax, inflection conventions cannot be empty or blank.", () => {
-    context("Delimiters containing only whitespace are preserved as plain text", () => {
-      specify('Emphasis', () => {
-        // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
-        expect(Up.toAst('Stars! * \t \t *')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainTextNode('Stars! * \t \t *')
-          ]))
+    context("Delimiters containing only whitespace are preserved as plain text.", () => {
+      context('With asterisks:', () => {
+        specify('Emphasis', () => {
+          // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
+          expect(Up.toAst('Stars! * \t \t *')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! * \t \t *')
+            ]))
+        })
+
+        specify('Stress', () => {
+          expect(Up.toAst('Stars! **\t  \t**')).to.eql(
+            // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! **\t  \t**')
+            ]))
+        })
+
+        specify('Shouting (emphasis and stress together)', () => {
+          expect(Up.toAst('Stars! *** \t \t ***')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! *** \t \t ***')
+            ]))
+        })
+
+        specify('Shouting with imbalanced delimiters', () => {
+          expect(Up.toAst('Stars! *****\t  \t***')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! *****\t  \t***')
+            ]))
+        })
       })
 
-      specify('Stress', () => {
-        expect(Up.toAst('Stars! **\t  \t**')).to.eql(
-          // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
-          insideDocumentAndParagraph([
-            new PlainTextNode('Stars! **\t  \t**')
-          ]))
-      })
+      context('With underscores:', () => {
+        specify('Italics', () => {
+          // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
+          expect(Up.toAst('Stars! _ \t \t _')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! _ \t \t _')
+            ]))
+        })
 
-      specify('Shouting (emphasis and stress together)', () => {
-        expect(Up.toAst('Stars! *** \t \t ***')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainTextNode('Stars! *** \t \t ***')
-          ]))
-      })
+        specify('Bold', () => {
+          expect(Up.toAst('Stars! __\t  \t__')).to.eql(
+            // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! __\t  \t__')
+            ]))
+        })
 
-      specify('Shouting with imbalanced delimiters', () => {
-        expect(Up.toAst('Stars! *****\t  \t***')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainTextNode('Stars! *****\t  \t***')
-          ]))
+        specify('Shouting (italics and bold together)', () => {
+          expect(Up.toAst('Stars! ___ \t \t ___')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! ___ \t \t ___')
+            ]))
+        })
+
+        specify('Shouting with imbalanced delimiters', () => {
+          expect(Up.toAst('Stars! _____\t  \t___')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('Stars! _____\t  \t___')
+            ]))
+        })
       })
     })
 
