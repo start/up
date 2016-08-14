@@ -10,6 +10,7 @@ export enum TokenKind {
   HighlightEnd,
   HighlightStart,
   ImageStartAndDescription,
+  InputInstruction,
   ItalicEnd,
   ItalicStart,
   LinkEndAndUrl,

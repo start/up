@@ -82,6 +82,13 @@ context('Most inline conventions are not applied if they have no content.', () =
         ]))
     })
 
+    specify('Input instructions', () => {
+      expect(Up.toAst('{}')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('{}')
+        ]))
+    })
+
     specify('Revision insertion', () => {
       // If the revision insertion delimiters were alone on a line, they would be interpreted as an outline separator streak. 
       expect(Up.toAst('Spiders.++++')).to.eql(
@@ -180,6 +187,13 @@ context('Most inline conventions are not applied if they have no content.', () =
           expect(Up.toAst('[  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('[  \t  \t ]')
+            ]))
+        })
+
+        specify('Input instructions', () => {
+          expect(Up.toAst('{  \t  \t }')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainTextNode('{  \t  \t }')
             ]))
         })
       })
