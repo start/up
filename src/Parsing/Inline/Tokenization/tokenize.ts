@@ -85,23 +85,7 @@ class Tokenizer {
   // Most of our conventions are just thrown in the `conventions` collection (and this one is, too), but we
   // keep a direct reference to the naked URL convention to help us determine whether another convention
   // contains a naked URL.
-  private nakedUrlConvention = new Convention({
-    startsWith: 'http' + optional('s') + '://',
-    isCutShortByWhitespace: true,
-
-    beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-
-    whenOpening: urlScheme => {
-      this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
-    },
-
-    insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
-
-    beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
-    whenClosingItAlsoClosesInnerConventions: true,
-
-    insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
-  })
+  private nakedUrlConvention = this.getNakedUrlConvention()
 
   // Inflection means emphasis, stress, italics, and bold.
   //
@@ -336,6 +320,26 @@ class Tokenizer {
 
       insteadOfFailingWhenLeftUnclosed,
       mustBeDirectlyFollowedBy
+    })
+  }
+
+  private getNakedUrlConvention(): Convention {
+    return new Convention({
+      startsWith: 'http' + optional('s') + '://',
+      isCutShortByWhitespace: true,
+
+      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+
+      whenOpening: urlScheme => {
+        this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
+      },
+
+      insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+
+      beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
+      whenClosingItAlsoClosesInnerConventions: true,
+
+      insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
     })
   }
 
