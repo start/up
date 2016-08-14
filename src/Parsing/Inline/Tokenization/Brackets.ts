@@ -5,5 +5,4 @@ import { Bracket } from './Bracket'
 export const BRACKETS = [
   new Bracket('(', ')'),
   new Bracket('[', ']'),
-  new Bracket('{', '}')
 ]
