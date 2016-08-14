@@ -5,6 +5,7 @@ import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
@@ -135,16 +136,16 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
-      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten {body)}(example.com)] Hi!')).to.be.eql(
+    specify('Two conventions (e.g. NSFL, bold) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
+      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
               new PlainTextNode('rotten '),
-              new LinkNode([
+              new BoldNode([
                 new PlainTextNode('body')
-              ], 'https://example.com'),
+              ]),
             ]),
           ]),
           new PlainTextNode(' Hi!')
@@ -168,7 +169,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud {NSFW: stomp++**)}]. Hi!')).to.be.eql(
+      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud __stomp++**)__]. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new PlainTextNode('There '),
@@ -178,7 +179,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
                 new PlainTextNode('another '),
                 new InlineNsflNode([
                   new PlainTextNode('loud '),
-                  new InlineNsfwNode([
+                  new BoldNode([
                     new PlainTextNode('stomp')
                   ])
                 ])
