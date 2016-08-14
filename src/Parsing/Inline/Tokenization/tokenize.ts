@@ -95,7 +95,7 @@ class Tokenizer {
       this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
     },
 
-    insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferRawText(),
+    insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
 
     beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
     whenClosingItAlsoClosesInnerConventions: true,
@@ -204,12 +204,13 @@ class Tokenizer {
       // Example input cannot be totally blank.
       startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
       endsWith: EXAMPLE_INPUT_END_DELIMITER,
-      
+
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-      
-      // TODO: Don't use `bufferRawText`
-      insteadOfOpeningRegularConventionsWhileOpen: () => { this.bufferRawText() },
-      
+
+      insteadOfOpeningRegularConventionsWhileOpen: () => {
+        this.tryToTokenizeTypographicalConvention() || this.bufferCurrentChar()
+      },
+
       whenClosing: () => {
         // As a rule, example input is always trimmed.
         const exampleInput = this.flushBuffer().trim()
@@ -372,7 +373,7 @@ class Tokenizer {
           endsWith: bracket.endPattern,
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
 
           beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
@@ -387,7 +388,7 @@ class Tokenizer {
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
@@ -509,7 +510,7 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
@@ -553,7 +554,7 @@ class Tokenizer {
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRawText(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: (context) => {
@@ -1233,7 +1234,7 @@ class Tokenizer {
     })
   }
 
-  private bufferRawText(): void {
+  private bufferTextAwareOfRawBrackets(): void {
     const didOpenConvention =
       this.rawBracketConventions.some(convention => this.tryToOpen(convention))
 

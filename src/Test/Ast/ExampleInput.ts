@@ -110,7 +110,7 @@ describe('Example input', () => {
       expect(Up.toAst("Click the {+-5 minutes} button.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Click the '),
-          new ExampleInputNode('± minutes'),
+          new ExampleInputNode('±5 minutes'),
           new PlainTextNode(' button.')
         ]))
     })
