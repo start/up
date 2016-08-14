@@ -1,7 +1,8 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export class InputInstructionNode implements InlineSyntaxNode {
+// Its HTML equivalent is the `<kbd>` element.
+export class ExampleInputNode implements InlineSyntaxNode {
   constructor(public input: string) { }
 
   inlineTextContent(): string {

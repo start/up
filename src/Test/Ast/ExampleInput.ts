@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { InputInstructionNode } from '../../SyntaxNodes/InputInstructionNode'
+import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 
 
 describe('Text surrounded by curly brackets', () => {
@@ -10,19 +10,19 @@ describe('Text surrounded by curly brackets', () => {
     expect(Up.toAst('Press {esc} to quit.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Press '),
-        new InputInstructionNode('esc'),
+        new ExampleInputNode('esc'),
         new PlainTextNode('to quit'),
       ]))
   })
 })
 
 
-describe('An input instruction', () => {
+describe('Example input', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.toAst("Select the {Start Game(s)} menu item.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InputInstructionNode('Start Games(s)'),
+        new ExampleInputNode('Start Games(s)'),
         new PlainTextNode('!')
       ]))
   })
@@ -31,7 +31,7 @@ describe('An input instruction', () => {
     expect(Up.toAst("Select the {  \t Start Game(s) \t  } menu item.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Select the '),
-        new InputInstructionNode('Start Games(s)'),
+        new ExampleInputNode('Start Games(s)'),
         new PlainTextNode('menu item.')
       ]))
   })
@@ -41,7 +41,7 @@ describe('An input instruction', () => {
       expect(Up.toAst("Press {\\}} to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new InputInstructionNode('}'),
+          new ExampleInputNode('}'),
           new PlainTextNode(' to view paths')
         ]))
     })
@@ -50,7 +50,7 @@ describe('An input instruction', () => {
       expect(Up.toAst("Press { \\} } to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new InputInstructionNode('}'),
+          new ExampleInputNode('}'),
           new PlainTextNode(' to view paths')
         ]))
     })
@@ -61,7 +61,7 @@ describe('An input instruction', () => {
       expect(Up.toAst("Press {{} to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new InputInstructionNode('}'),
+          new ExampleInputNode('}'),
           new PlainTextNode(' to view paths')
         ]))
     })
@@ -70,7 +70,7 @@ describe('An input instruction', () => {
       expect(Up.toAst("Press { { } to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new InputInstructionNode('}'),
+          new ExampleInputNode('}'),
           new PlainTextNode(' to view paths')
         ]))
     })
@@ -80,7 +80,7 @@ describe('An input instruction', () => {
     expect(Up.toAst("Press {ctrl}{q} to quit.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InputInstructionNode('Start Games(s)'),
+        new ExampleInputNode('Start Games(s)'),
         new PlainTextNode('!')
       ]))
   })
