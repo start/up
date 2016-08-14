@@ -298,7 +298,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
-      expect(Up.toAst('{SPOILER: There was another [NSFL: rotten body}] (example.com/rotten) Hi!')).to.be.eql(
+      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('There was another '),
