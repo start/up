@@ -740,7 +740,7 @@ class Tokenizer {
       }
     }
 
-    return this.tryToCloseAnyOpenInflectionDelimiters()
+    return this.tryToCloseAnyInflectionConventions()
   }
 
   private shouldClose(context: ConventionContext): boolean {
@@ -801,7 +801,7 @@ class Tokenizer {
     return false
   }
 
-  private tryToCloseAnyOpenInflectionDelimiters(): boolean {
+  private tryToCloseAnyInflectionConventions(): boolean {
     // For a delimiter to close any inflection conventions, it must look like it's touching the end of
     // some content (i.e. it must be following a non-whitespace character).
     if (!this.isPreviousCharacterNonwhitespace()) {
