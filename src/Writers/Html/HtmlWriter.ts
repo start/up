@@ -6,6 +6,8 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
+import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
+import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
@@ -155,6 +157,14 @@ export class HtmlWriter extends Writer {
 
   protected stress(stress: StressNode): string {
     return this.element('strong', stress.children)
+  }
+
+  protected italic(italic: ItalicNode): string {
+    return this.element('i', italic.children)
+  }
+
+  protected bold(bold: BoldNode): string {
+    return this.element('b', bold.children)
   }
 
   protected inlineCode(inlineCode: InlineCodeNode): string {

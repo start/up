@@ -7,6 +7,8 @@ import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
+import { ItalicNode } from '../SyntaxNodes/ItalicNode'
+import { BoldNode } from '../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
@@ -89,6 +91,7 @@ export abstract class Writer {
 
   protected abstract action(action: ActionNode): string
   protected abstract audio(audio: AudioNode): string
+  protected abstract bold(bold: BoldNode): string
   protected abstract blockquote(blockquote: BlockquoteNode): string
   protected abstract codeBlock(codeBlock: CodeBlockNode): string
   protected abstract descriptionList(list: DescriptionListNode): string
@@ -102,6 +105,7 @@ export abstract class Writer {
   protected abstract inlineNsfl(inlineNsfl: InlineNsflNode): string
   protected abstract inlineNsfw(inlineNsfw: InlineNsfwNode): string
   protected abstract inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string
+  protected abstract italic(italic: ItalicNode): string
   protected abstract lineBlock(lineBlock: LineBlockNode): string
   protected abstract link(link: LinkNode): string
   protected abstract nsflBlock(nsflBlock: NsflBlockNode): string
