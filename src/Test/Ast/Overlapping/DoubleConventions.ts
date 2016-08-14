@@ -64,7 +64,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
 
 describe('Nested spoilers (closing at the same time) overlapping a link', () => {
   it('splits the revision deletion node', () => {
-    expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
+    expect(Up.toAst("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new InlineSpoilerNode([
           new PlainTextNode('I know. '),
@@ -86,7 +86,7 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
 
 describe('A link overlapping nested spoilers (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("{I suspect [SPOILER: [SPOILER: you}(example.com/crime-suspects) fight Gary.]] Hi!")).to.be.eql(
+    expect(Up.toAst("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode("I suspect "),
@@ -107,7 +107,7 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 
 describe('A link overlapping an inline NSFL convention containing an inline NSFW convention (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("{I suspect [NSFL: [NSFW: naked you}(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.be.eql(
+    expect(Up.toAst("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode("I suspect "),
