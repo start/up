@@ -62,7 +62,7 @@ context('If a line consists solely of media conventions, those media conventions
 
     specify("One or more media conventions on the line can be left out of the link", () => {
       const markup =
-        ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t {[image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)} (hauntedhouse.com)  \t '
+        ' \t [audio: ghostly howling] [http://example.com/ghosts.ogg] \t ([image: haunted house] [http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com)  \t '
 
       expect(Up.toAst(markup)).to.be.eql(
         new DocumentNode([
