@@ -48,8 +48,7 @@ export function expectEveryPermutationOfBrackets(
 
   const BRACKETS = [
     { open: '(', close: ')' },
-    { open: '[', close: ']' },
-    { open: '{', close: '}' }
+    { open: '[', close: ']' }
   ]
 
   const permutationsBySegment =
