@@ -68,21 +68,21 @@ export function expectEveryPermutationOfBrackets(
 // If `prefix` is '(image: puppy)', and if `valuesBySegment` is:
 //
 // [
-//   ['(dog.gif)', '{dog.gif}'],
-//   ['(pets.com/gallery)', '{pets.com/gallery}', ' \t (pets.com/gallery)', ' \t {pets.com/gallery}']
+//   ['(dog.gif)', '[dog.gif]'],
+//   ['(pets.com/gallery)', '[pets.com/gallery]', ' \t (pets.com/gallery)', ' \t [pets.com/gallery]']
 // ]
 //
 // Then the results are:
 //
 // [
 //   '(image: puppy)(dog.gif)(pets.com/gallery)',
-//   '(image: puppy)(dog.gif){pets.com/gallery}',
+//   '(image: puppy)(dog.gif)[pets.com/gallery]',
 //   '(image: puppy)(dog.gif) \t (pets.com/gallery)',
-//   '(image: puppy)(dog.gif) \t {pets.com/gallery}',
-//   '(image: puppy){dog.gif}(pets.com/gallery)',
-//   '(image: puppy){dog.gif}{pets.com/gallery}',
-//   '(image: puppy){dog.gif} \t (pets.com/gallery)',
-//   '(image: puppy){dog.gif} \t {pets.com/gallery}',
+//   '(image: puppy)(dog.gif) \t [pets.com/gallery]',
+//   '(image: puppy)[dog.gif](pets.com/gallery)',
+//   '(image: puppy)[dog.gif][pets.com/gallery]',
+//   '(image: puppy)[dog.gif] \t (pets.com/gallery)',
+//   '(image: puppy)[dog.gif] \t [pets.com/gallery]',
 // ]
 function everyPermutation(prefix: string, valuesBySegment: string[][]): string[] {
   return (
