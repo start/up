@@ -128,7 +128,7 @@ describe('A link overlapping an inline NSFL convention containing an inline NSFW
 
 describe('An inline NSFW convention nested within an inline NSFL convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
-    expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't {really.]] Good!}(example.com/really-good) Hi!")).to.be.eql(
+    expect(Up.toAst("[NSFL: I know. [NSFW: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('I know. '),
@@ -248,7 +248,7 @@ describe('Emphasis nested within revision deletion, both of which overlap a link
 
 describe('A link that overlaps both an emphasis convention and the revision deletion the emphasis convention is nested within', () => {
   it('splits the revision deletion and emphasis conventions', () => {
-    expect(Up.toAst("In [Texas, ~~*I]{example.com/texas-hurricans} never eat cereal*~~ outside.")).to.be.eql(
+    expect(Up.toAst("In [Texas, ~~*I](example.com/texas-hurricans) never eat cereal*~~ outside.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In '),
         new LinkNode([
@@ -272,7 +272,7 @@ describe('A link that overlaps both an emphasis convention and the revision dele
 
 describe('A link that overlaps nested emphasis conventions', () => {
   it('splits both emphasis conventions', () => {
-    expect(Up.toAst("In [Texas, **I]{example.com/texas-hurricans} never* eat cereal* outside.")).to.be.eql(
+    expect(Up.toAst("In [Texas, **I](example.com/texas-hurricans) never* eat cereal* outside.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In '),
         new LinkNode([
@@ -361,7 +361,7 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
 
 describe('Emphasis nested with an inline spoiler, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {
-    expect(Up.toAst("In Texas, {SPOILER: *I never eat [cereal*} outside](example.com/sun-flakes)")).to.be.eql(
+    expect(Up.toAst("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Texas, '),
         new InlineSpoilerNode([
