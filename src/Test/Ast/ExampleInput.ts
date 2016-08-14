@@ -85,4 +85,33 @@ describe('Example input', () => {
         new PlainTextNode(' to quit.')
       ]))
   })
+
+  context('has all typographical conventions applied, including', () => {
+    specify('en dashes', () => {
+      expect(Up.toAst("Select the { Start Game -- Single Player } menu item.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('Select the '),
+          new ExampleInputNode('Start Game – Single Player'),
+          new PlainTextNode(' menu item.')
+        ]))
+    })
+
+    specify('em dashes', () => {
+      expect(Up.toAst("Select the { Start Game --- Single Player } menu item.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('Select the '),
+          new ExampleInputNode('Start Game — Single Player'),
+          new PlainTextNode(' menu item.')
+        ]))
+    })
+
+    specify('plus-minus signs', () => {
+      expect(Up.toAst("Click the {+-5 minutes} button.")).to.be.eql(
+        insideDocumentAndParagraph([
+          new PlainTextNode('Click the '),
+          new ExampleInputNode('± minutes'),
+          new PlainTextNode(' button.')
+        ]))
+    })
+  })
 })
