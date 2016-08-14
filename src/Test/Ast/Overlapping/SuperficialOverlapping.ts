@@ -33,17 +33,17 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a third (e.g. spoiler)', () => {
-      expect(Up.toAst('[NSFL: {(SPOILER: thwomp}(example.com) good] friend!) Hi!')).to.be.eql(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
+      expect(Up.toAst('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
+          new StressNode([
             new InlineNsflNode([
               new LinkNode([
-                new PlainTextNode('thwomp')
+                new PlainTextNode('Ash')
               ], 'https://example.com'),
-              new PlainTextNode(' good')
+              new PlainTextNode(' is')
             ]),
-            new PlainTextNode(' friend!')
+            new PlainTextNode(' a friend!')
           ]),
           new PlainTextNode(' Hi!')
         ]))
