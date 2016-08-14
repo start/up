@@ -1,7 +1,6 @@
 export { Up as default, Up } from './Up'
 export { UserProvidedSettings } from './UserProvidedSettings'
 
-export { ActionNode } from './SyntaxNodes/ActionNode'
 export { AudioNode } from './SyntaxNodes/AudioNode'
 export { BoldNode } from './SyntaxNodes/BoldNode'
 export { BlockquoteNode } from './SyntaxNodes/BlockquoteNode'

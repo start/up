@@ -15,7 +15,6 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
@@ -711,19 +710,6 @@ describe('A square bracketed node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p><span class="up-square-bracketed">[Koopa Tropa]</span></p>')
-  })
-})
-
-
-describe('An action node', () => {
-  it('produces a <span class="up-action">', () => {
-    const document = new DocumentNode([
-      new ParagraphNode([
-        new ActionNode([new PlainTextNode('dies')])
-      ])
-    ])
-
-    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-action">dies</span></p>')
   })
 })
 

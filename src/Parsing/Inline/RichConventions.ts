@@ -11,7 +11,6 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
-import { ActionNode } from '../../SyntaxNodes/ActionNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
@@ -76,12 +75,6 @@ export const SQUARE_BRACKETED_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: SquareBracketedNode,
   startTokenKind: TokenKind.SquareBracketedStart,
   endTokenKind: TokenKind.SquareBracketedEnd
-}
-
-export const ACTION_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: ActionNode,
-  startTokenKind: TokenKind.ActionStart,
-  endTokenKind: TokenKind.ActionEnd
 }
 
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the

@@ -1,7 +1,5 @@
 export enum TokenKind {
-  ActionEnd = 1,
-  ActionStart,
-  AudioStartAndDescription,
+  AudioStartAndDescription = 1,
   BoldEnd,
   BoldStart,
   Code,

@@ -14,7 +14,6 @@ import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from '../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../SyntaxNodes/SquareBracketedNode'
-import { ActionNode } from '../SyntaxNodes/ActionNode'
 import { HighlightNode } from '../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../SyntaxNodes/InlineNsfwNode'
@@ -89,7 +88,6 @@ export abstract class Writer {
 
   protected abstract writeDocument(document: DocumentNode): string
 
-  protected abstract action(action: ActionNode): string
   protected abstract audio(audio: AudioNode): string
   protected abstract bold(bold: BoldNode): string
   protected abstract blockquote(blockquote: BlockquoteNode): string
@@ -225,10 +223,6 @@ export abstract class Writer {
 
     if (node instanceof SquareBracketedNode) {
       return this.squareBracketed(node)
-    }
-
-    if (node instanceof ActionNode) {
-      return this.action(node)
     }
 
     if (node instanceof HighlightNode) {
