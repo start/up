@@ -196,31 +196,6 @@ class Tokenizer {
     ]
   }
 
-  // This convention's HTML equivalent is the `<kbd>` element.
-  //
-  // Example usage: Press {esc} to quit.
-  private getExampleInputConvention(): Convention {
-    return new Convention({
-      // Example input cannot be totally blank.
-      startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
-      endsWith: EXAMPLE_INPUT_END_DELIMITER,
-
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-
-      insteadOfOpeningRegularConventionsWhileOpen: () => {
-        this.tryToTokenizeTypographicalConvention() || this.bufferCurrentChar()
-      },
-
-      whenClosing: () => {
-        // As a rule, example input is always trimmed.
-        const exampleInput = this.flushBuffer().trim()
-        this.appendNewToken(TokenKind.ExampleInput, exampleInput)
-      },
-
-      whenClosingItAlsoClosesInnerConventions: true
-    })
-  }
-
   private getFootnoteConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
@@ -361,6 +336,29 @@ class Tokenizer {
 
       insteadOfFailingWhenLeftUnclosed,
       mustBeDirectlyFollowedBy
+    })
+  }
+
+  // This convention's HTML equivalent is the `<kbd>` element.
+  //
+  // Example usage: Press {esc} to quit.
+  private getExampleInputConvention(): Convention {
+    return new Convention({
+      // Example input cannot be totally blank.
+      startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
+      endsWith: EXAMPLE_INPUT_END_DELIMITER,
+
+      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+
+      insteadOfOpeningRegularConventionsWhileOpen: () => {
+        this.tryToTokenizeTypographicalConvention() || this.bufferCurrentChar()
+      },
+
+      whenClosing: () => {
+        // As a rule, example input is always trimmed.
+        const exampleInput = this.flushBuffer().trim()
+        this.appendNewToken(TokenKind.ExampleInput, exampleInput)
+      }
     })
   }
 
