@@ -231,16 +231,6 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
         new PlainTextNode(' []')
       ]))
   })
-
-  specify('Curly brackets', () => {
-    expect(Up.toAst('(I know.) {}')).to.eql(
-      insideDocumentAndParagraph([
-        new ParenthesizedNode([
-          new PlainTextNode('(I know.)')
-        ]),
-        new PlainTextNode(' {}')
-      ]))
-  })
 })
 
 

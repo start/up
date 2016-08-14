@@ -131,15 +131,6 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can contain matching curly brackets', () => {
-    expect(Up.toAst('https://archive.org/fake{url}')).to.be.eql(
-      insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('archive.org/fake{url}')
-        ], 'https://archive.org/fake{url}')
-      ]))
-  })
-
   it("can be inside a link", () => {
     expect(Up.toAst('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
       insideDocumentAndParagraph([

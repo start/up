@@ -194,26 +194,6 @@ describe('A link produced by parentheses', () => {
 })
 
 
-/*
-TODO: Replace this test
-
-describe('A link produced by curly brackets', () => {
-  it('can contain action text', () => {
-    expect(Up.toAst('I like {{faints} this site}{https://stackoverflow.com}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new ActionNode([
-            new PlainTextNode('faints')
-          ]),
-          new PlainTextNode(' this site')
-        ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-*/
-
 describe("The URL of a link produced by square brackets", () => {
   it('can contain matching unescaped brackets', () => {
     expect(Up.toAst('Here is a [strange URL][https://google.com/search?q=[hi]].')).to.be.eql(

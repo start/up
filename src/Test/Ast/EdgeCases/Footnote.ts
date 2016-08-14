@@ -85,35 +85,6 @@ describe('A footnote produced by square brackets that contains nested square bra
   })
 })
 
-/*
-TODO: Replace this test
-
-describe('A footnote produced by curly brackets that contains nested action text ending together', () => {
-  it('produces a footnote containing the nested action text', () => {
-    const markup = "{^I'm normal. {eats {dies}} See?}"
-
-    const footnote = new FootnoteNode([
-      new PlainTextNode("I'm normal. "),
-      new ActionNode([
-        new PlainTextNode("eats "),
-        new ActionNode([
-          new PlainTextNode("dies"),
-        ])
-      ]),
-      new PlainTextNode(' See?')
-    ], 1)
-
-    expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
-        new ParagraphNode([
-          footnote
-        ]),
-        new FootnoteBlockNode([footnote])
-      ]))
-  })
-})
-*/
-
 
 describe('Inside an outline convention, blockquoted footnote references', () => {
   it('produce footnote blocks directly after each appropriate convention within the blockquote', () => {

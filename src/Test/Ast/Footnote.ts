@@ -43,17 +43,6 @@ describe('Square bracketed text starting with a caret', () => {
 })
 
 
-describe('Curly bracketed text starting with a caret', () => {
-  it("also produces a footnote node", () => {
-    const footnoteProducedByCurlyBrackets =
-      "I don't eat cereal. {^Well, I do, but I pretend not to.} Never have."
-
-    expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
-      Up.toAst(footnoteProducedByCurlyBrackets))
-  })
-})
-
-
 describe('A word followed by several spaces followed by a footnote', () => {
   it("produces a footnote node directly after the word", () => {
     const markup = "I don't eat cereal.   (^Well, I do, but I pretend not to.)"

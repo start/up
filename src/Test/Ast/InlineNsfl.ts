@@ -36,20 +36,6 @@ describe('Parenthesized text starting with "NSFW:"', () => {
 })
 
 
-describe('Curly bracketed text starting with "NSFW:"', () => {
-  it('is put inside an inline NSFL node', () => {
-    expect(Up.toAst('After you beat the Elite Four, {NSFL: you eat a rotting Gary}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsflNode([
-          new PlainTextNode('you eat a rotting Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-
-
 describe('An NSFL convention', () => {
   it('can use any capitalization of the word "nsfl"', () => {
     const withLowercase = 'After you beat the Elite Four, [nsfl: you eat a rotting Gary].'
@@ -121,25 +107,6 @@ describe('A NSFL convnetion produced by parentheses', () => {
   })
 })
 
-/*
-TODO: Replace this test
-
-describe('An inline NSFL convention produced by curly brackets', () => {
-  it('can contain action text', () => {
-    expect(Up.toAst('After you beat the Elite Four, {NSFL: you still have to eat a rotting Gary {sigh}}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsflNode([
-          new PlainTextNode('you still have to eat a rotting Gary '),
-          new ActionNode([
-            new PlainTextNode('sigh')
-          ])
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-*/
 
 describe('Any whitespace between "NSFL:" and the start of the NSFL content', () => {
   it('is optional', () => {

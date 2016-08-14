@@ -36,20 +36,6 @@ describe('Parenthesized text starting with "NSFW:"', () => {
 })
 
 
-describe('Curly bracketed text starting with "NSFW:"', () => {
-  it('is put inside an inline NSFW node', () => {
-    expect(Up.toAst('After you beat the Elite Four, {NSFW: you wrestle a naked Gary}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsfwNode([
-          new PlainTextNode('you wrestle a naked Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-
-
 describe('An NSFW convention', () => {
   it('can use any capitalization of the word "nsfw"', () => {
     const withLowercase = 'After you beat the Elite Four, [nsfw: you wrestle a naked Gary].'
@@ -121,25 +107,6 @@ describe('A NSFW convnetion produced by parentheses', () => {
   })
 })
 
-/*
-TODO: Replace this test
-
-describe('An inline NSFW convention produced by curly brackets', () => {
-  it('can contain action text', () => {
-    expect(Up.toAst('After you beat the Elite Four, {NSFW: you still have to wrestle a naked Gary {sigh}}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsfwNode([
-          new PlainTextNode('you still have to wrestle a naked Gary '),
-          new ActionNode([
-            new PlainTextNode('sigh')
-          ])
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-*/
 
 describe('Any whitespace between "NSFW:" and the start of the NSFW content', () => {
   it('is optional', () => {

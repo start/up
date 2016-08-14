@@ -36,20 +36,6 @@ describe('Parenthesized text starting with "SPOILER:"', () => {
 })
 
 
-describe('Curly bracketed text starting with "SPOILER:"', () => {
-  it('is put inside an inline spoiler node', () => {
-    expect(Up.toAst('After you beat the Elite Four, {SPOILER: you fight Gary}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineSpoilerNode([
-          new PlainTextNode('you fight Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-
-
 describe('An inline spoiler convention', () => {
   it('can use any capitalization of the word "spoiler"', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
@@ -123,25 +109,6 @@ describe('An inline spoiler produced by parentheses', () => {
   })
 })
 
-/*
-TODO: Replace this test
-
-describe('An inline spoiler produced by curly brackets', () => {
-  it('can contain action text', () => {
-    expect(Up.toAst('After you beat the Elite Four, {SPOILER: you still have to beat Gary {sigh}}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineSpoilerNode([
-          new PlainTextNode('you still have to beat Gary '),
-          new ActionNode([
-            new PlainTextNode('sigh')
-          ])
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-*/
 
 describe('Any whitespace between "SPOILER:" and the start of the spoiler content', () => {
   it('is optional', () => {

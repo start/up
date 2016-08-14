@@ -30,17 +30,6 @@ context('Bracketed text starting with "highlight:" is put inside a highlight nod
         new PlainTextNode('.')
       ]))
   })
-
-  specify('Curly brackets', () => {
-    expect(Up.toAst('After you beat the Elite Four, {highlight: you fight Gary}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight Gary')
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
 })
 
 
@@ -124,25 +113,6 @@ describe('A highlight produced by parentheses', () => {
   })
 })
 
-/*
-TODO: Replace this test:
-
-describe('A highlight produced by curly brackets', () => {
-  it('can contain action text', () => {
-    expect(Up.toAst('After you beat the Elite Four, {highlight: you still have to beat Gary {sigh}}.')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you still have to beat Gary '),
-          new ActionNode([
-            new PlainTextNode('sigh')
-          ])
-        ]),
-        new PlainTextNode('.')
-      ]))
-  })
-})
-*/
 
 describe('Any whitespace between "highlight:" and the start of the highlighted content', () => {
   it('is optional', () => {
