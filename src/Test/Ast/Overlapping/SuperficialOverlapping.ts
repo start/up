@@ -152,10 +152,10 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a third with lower priority than both (e.g. link)', () => {
-      expect(Up.toAst('(There was another [NSFL: rotten body {NSFW: squish)(example.com)}] Hi!')).to.be.eql(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a freely-splittable convention (e.g. revision insertion)', () => {
+      expect(Up.toAst('++There was another [NSFL: rotten body (NSFW: squish++)] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new LinkNode([
+          new RevisionInsertionNode([
             new PlainTextNode('There was another '),
             new InlineNsflNode([
               new PlainTextNode('rotten body '),
@@ -163,7 +163,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
                 new PlainTextNode('squish')
               ]),
             ]),
-          ], 'https://example.com'),
+          ]),
           new PlainTextNode(' Hi!')
         ]))
     })
