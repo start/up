@@ -8,7 +8,6 @@ import { RevisionDeletionNode } from '../../../../SyntaxNodes/RevisionDeletionNo
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
-import { ActionNode } from '../../../../SyntaxNodes/ActionNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../../SyntaxNodes/SquareBracketedNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
@@ -80,13 +79,6 @@ context('Most inline conventions are not applied if they have no content.', () =
       expect(Up.toAst('[]')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('[]')
-        ]))
-    })
-
-    specify('Actions', () => {
-      expect(Up.toAst('{}')).to.eql(
-        insideDocumentAndParagraph([
-          new PlainTextNode('{}')
         ]))
     })
 
@@ -188,13 +180,6 @@ context('Most inline conventions are not applied if they have no content.', () =
           expect(Up.toAst('[  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('[  \t  \t ]')
-            ]))
-        })
-
-        specify('Actions', () => {
-          expect(Up.toAst('{  \t  \t }')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainTextNode('{  \t  \t }')
             ]))
         })
       })
@@ -622,10 +607,10 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with an empty URL', () => {
     it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('{video: Yggdra Union}{}')).to.be.eql(
+      expect(Up.toAst('(video: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
-          new ActionNode([
-            new PlainTextNode('video: Yggdra Union')
+          new ParenthesizedNode([
+            new PlainTextNode('(video: Yggdra Union)')
           ]),
           new PlainTextNode('{}')
         ]))
