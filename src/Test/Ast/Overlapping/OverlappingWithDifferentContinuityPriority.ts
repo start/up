@@ -80,7 +80,7 @@ describe('Italicized text overlapping a link', () => {
 })
 
 
-describe('A link overlapping Italicized text', () => {
+describe('A link overlapping italicized text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
