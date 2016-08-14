@@ -2,8 +2,8 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
+import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 
@@ -12,7 +12,7 @@ describe('Text surrounded by 2 underscores', () => {
     expect(Up.toAst('Hello, __world__!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new BoldNode([
           new PlainTextNode('world')
         ]),
         new PlainTextNode('!')
@@ -21,25 +21,25 @@ describe('Text surrounded by 2 underscores', () => {
 })
 
 
-describe('Stressed text', () => {
+describe('Bold text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.toAst('Hello, __`world`__!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new BoldNode([
           new InlineCodeNode('world')
         ]),
         new PlainTextNode('!')
       ]))
   })
 
-  it('can contain further stressed text', () => {
+  it('can contain further bold text', () => {
     expect(Up.toAst('Hello, __my __little__ world__!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new BoldNode([
           new PlainTextNode('my '),
-          new StressNode([
+          new BoldNode([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')
@@ -48,13 +48,13 @@ describe('Stressed text', () => {
       ]))
   })
 
-  it('can contain emphasized text', () => {
+  it('can contain italicized text', () => {
     expect(Up.toAst('Hello, __my _little_ world__!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new BoldNode([
           new PlainTextNode('my '),
-          new EmphasisNode([
+          new ItalicNode([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')
