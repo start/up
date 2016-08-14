@@ -204,10 +204,18 @@ class Tokenizer {
       // Example input cannot be totally blank.
       startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
       endsWith: EXAMPLE_INPUT_END_DELIMITER,
+      
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      
       // TODO: Don't use `bufferRawText`
       insteadOfOpeningRegularConventionsWhileOpen: () => { this.bufferRawText() },
-      beforeClosingItAlwaysFlushesBufferTo: TokenKind.ExampleInput,
+      
+      whenClosing: () => {
+        // As a rule, example input is always trimmed.
+        const exampleInput = this.flushBuffer().trim()
+        this.appendNewToken(TokenKind.ExampleInput, exampleInput)
+      },
+
       whenClosingItAlsoClosesInnerConventions: true
     })
   }

@@ -22,7 +22,7 @@ describe('Example input', () => {
     expect(Up.toAst("Select the {Start Game(s)} menu item.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Select the '),
-        new ExampleInputNode('Start Games(s)'),
+        new ExampleInputNode('Start Game(s)'),
         new PlainTextNode(' menu item.')
       ]))
   })
@@ -31,7 +31,7 @@ describe('Example input', () => {
     expect(Up.toAst("Select the {  \t Start Game(s) \t  } menu item.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Select the '),
-        new ExampleInputNode('Start Games(s)'),
+        new ExampleInputNode('Start Game(s)'),
         new PlainTextNode(' menu item.')
       ]))
   })
@@ -61,8 +61,8 @@ describe('Example input', () => {
       expect(Up.toAst("Press {{} to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new ExampleInputNode('}'),
-          new PlainTextNode(' to view paths')
+          new ExampleInputNode('{'),
+          new PlainTextNode(' to view paths.')
         ]))
     })
 
@@ -70,8 +70,8 @@ describe('Example input', () => {
       expect(Up.toAst("Press { { } to view paths.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Press '),
-          new ExampleInputNode('}'),
-          new PlainTextNode(' to view paths')
+          new ExampleInputNode('{'),
+          new PlainTextNode(' to view paths.')
         ]))
     })
   })
@@ -79,9 +79,10 @@ describe('Example input', () => {
   it('can be directly followed by another input instruction', () => {
     expect(Up.toAst("Press {ctrl}{q} to quit.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new ExampleInputNode('Start Games(s)'),
-        new PlainTextNode('!')
+        new PlainTextNode('Press '),
+        new ExampleInputNode('ctrl'),
+        new ExampleInputNode('q'),
+        new PlainTextNode(' to quit.')
       ]))
   })
 })
