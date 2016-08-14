@@ -982,8 +982,7 @@ class Tokenizer {
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToStartInflectingOrTreatDelimiterAsPlainText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
-      || this.tryToTokenizeEnOrEmDash()
-      || this.tryToTokenizePlusMinusSign())
+      || this.tryToTokenizeTypographicalConvention())
   }
 
   private tryToStartInflectingOrTreatDelimiterAsPlainText(): boolean {
@@ -1022,6 +1021,10 @@ class Tokenizer {
         this.markupConsumer.index += lengthConsumed
       }
     })
+  }
+
+  private tryToTokenizeTypographicalConvention(): boolean {
+    return this.tryToTokenizeEnOrEmDash() || this.tryToTokenizePlusMinusSign()
   }
 
   private tryToTokenizeEnOrEmDash(): boolean {
