@@ -1,5 +1,3 @@
-/*
-
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
@@ -87,4 +85,3 @@ describe('An input instruction', () => {
       ]))
   })
 })
-*/
