@@ -7,6 +7,7 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
@@ -658,6 +659,19 @@ describe('An inline code node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p><code>then</code></p>')
+  })
+})
+
+
+describe('An example input node', () => {
+  it('produces a <kbd> element', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new ExampleInputNode('esc')
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><kbd>then</kbd></p>')
   })
 })
 
