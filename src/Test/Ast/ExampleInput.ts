@@ -18,7 +18,7 @@ describe('Text surrounded by curly brackets', () => {
 
 
 describe('Example input', () => {
-  it('is not evaluated for other conventions', () => {
+  it('is not evaluated for other (non-typographical) conventions', () => {
     expect(Up.toAst("Select the {Start Game(s)} menu item.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Select the '),
@@ -86,7 +86,8 @@ describe('Example input', () => {
       ]))
   })
 
-  context('has all typographical conventions applied, including', () => {
+
+  context('is evaluated for typographical conventions, including', () => {
     specify('en dashes', () => {
       expect(Up.toAst("Select the { Start Game -- Single Player } menu item.")).to.be.eql(
         insideDocumentAndParagraph([
