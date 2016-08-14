@@ -235,7 +235,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("An inline spoiler and a link", () => {
-      expect(Up.toAst('[SPOILER: Mario fell off the platform. {splat]}(example.com)')).to.be.eql(
+      expect(Up.toAst('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Mario fell off the platform. '),
@@ -247,7 +247,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("A link and an inline spoiler", () => {
-      expect(Up.toAst("{loudly sings [SPOILER: Jigglypuff's Lullaby}(example.com)]")).to.be.eql(
+      expect(Up.toAst("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('loudly sings '),
@@ -271,7 +271,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("A link and highlighted text", () => {
-      expect(Up.toAst('[Mario fell off the platform. {highlight: splat](example.com/game-over)}')).to.be.eql(
+      expect(Up.toAst('[Mario fell off the platform. (highlight: splat][example.com/game-over])')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Mario fell off the platform. '),
@@ -283,7 +283,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("Highlighted text and a link", () => {
-      expect(Up.toAst('{highlight: loud [thwomp}](example.com/thwomp)')).to.be.eql(
+      expect(Up.toAst('(highlight: loud [thwomp)](example.com/thwomp)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('loud '),
