@@ -7,6 +7,8 @@ import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
+import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
@@ -58,8 +60,8 @@ describe('A link overlapping emphasized text (using asterisks)', () => {
 })
 
 
-describe('Overlapping emphasis (using underscores) and a link', () => {
-  it('splits the emphasis node, not the link node', () => {
+describe('Italic text overlapping a link', () => {
+  it('splits the italic node, not the link node', () => {
     expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
@@ -78,18 +80,18 @@ describe('Overlapping emphasis (using underscores) and a link', () => {
 })
 
 
-describe('A link overlapping emphasized text (using underscores)', () => {
+describe('A link overlapping italic text', () => {
   it('splits the emphasis node, not the link node', () => {
     expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
           new PlainTextNode('trash '),
-          new EmphasisNode([
+          new ItalicNode([
             new PlainTextNode('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new EmphasisNode([
+        new ItalicNode([
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
@@ -135,7 +137,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
 })
 
 
-describe('Overlapped stressed (using asterisks) and action text', () => {
+describe('Stressed text overlapping action text', () => {
   it('splits the stress node, not the action node', () => {
     expect(Up.toAst('I **hate {huge** sigh} this.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -155,7 +157,7 @@ describe('Overlapped stressed (using asterisks) and action text', () => {
 })
 
 
-describe('Overlapped stressed (using asterisks) and action text', () => {
+describe('Action text overlapping stressed text', () => {
   it('splits the stress node, not the action node', () => {
     expect(Up.toAst('I {sigh **loudly} sing**.')).to.be.eql(
       insideDocumentAndParagraph([
@@ -175,16 +177,16 @@ describe('Overlapped stressed (using asterisks) and action text', () => {
 })
 
 
-describe('Overlapped stressed (using underscores) and action text', () => {
-  it('splits the stress node, not the action node', () => {
+describe('Bold text overlapping action text', () => {
+  it('splits the bold node, not the action node', () => {
     expect(Up.toAst('I __hate {huge__ sigh} this.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new BoldNode([
           new PlainTextNode('hate ')
         ]),
         new ActionNode([
-          new StressNode([
+          new BoldNode([
             new PlainTextNode('huge')
           ]),
           new PlainTextNode(' sigh')
@@ -195,18 +197,18 @@ describe('Overlapped stressed (using underscores) and action text', () => {
 })
 
 
-describe('Overlapped stressed (using underscores) and action text', () => {
-  it('splits the stress node, not the action node', () => {
+describe('Action text overlapping bold text', () => {
+  it('splits the bold node, not the action node', () => {
     expect(Up.toAst('I {sigh __loudly} sing__.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new ActionNode([
           new PlainTextNode('sigh '),
-          new StressNode([
+          new BoldNode([
             new PlainTextNode('loudly')
           ]),
         ]),
-        new StressNode([
+        new BoldNode([
           new PlainTextNode(' sing')
         ]),
         new PlainTextNode('.')
