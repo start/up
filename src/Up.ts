@@ -31,9 +31,9 @@ export class Up {
 // Though it's never necessary to create instances of the Up class, it's sometimes more
 // convenient.
 //
-// For example, let's say you're parsing an article and its comments. You want to use
-// custom Japanese terms instead of the default English terms, and you want to specify
-// a unique document name for each comment (to prevent ID collisions).
+// For example, let's say you're parsing an article and its comments. For each comment,
+// you want to specify a unique document name (to prevent ID collisions). And for both
+// the article and its comments, you want to use custom Japanese terms. 
 //
 // By creating an instance of the Up class, you can specify those custom Japanese terms
 // just once (in the constructor). Then, when parsing each comment, you only need to

@@ -8,6 +8,8 @@ import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
+import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
+import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
@@ -618,6 +620,32 @@ describe('A stress node', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p><strong>Ness</strong></p>')
+  })
+})
+
+
+describe('An italic node', () => {
+  it('produces an <i> element', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new ItalicNode([new PlainTextNode('Ness')])
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><i>Ness</i></p>')
+  })
+})
+
+
+describe('A bold node', () => {
+  it('produces a <b> element', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new BoldNode([new PlainTextNode('Ness')])
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><n>Ness</b></p>')
   })
 })
 
