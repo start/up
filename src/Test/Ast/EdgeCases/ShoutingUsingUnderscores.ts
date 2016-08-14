@@ -127,7 +127,7 @@ describe('Shouted text inside of emphasized text', () => {
 })
 
 
-describe('A raised voice convention starting with 3 underscores', () => {
+describe('An inflection convention starting with 3 underscores', () => {
   it('can be closed by a single underscore if no other subsequent underscores close it, resulting in emphasized text and no stray underscores in the document', () => {
     expect(Up.toAst('A ___bread_ to believe in')).to.be.eql(
       insideDocumentAndParagraph([
@@ -141,7 +141,7 @@ describe('A raised voice convention starting with 3 underscores', () => {
 })
 
 
-describe('A raised voice convention starting with 3 underscores', () => {
+describe('An inflection convention starting with 3 underscores', () => {
   it('can be closed by double underscores if no other subsequent underscores close it, resulting in bold text and no stray underscores in the document', () => {
     expect(Up.toAst('A ___bread__ to believe in')).to.be.eql(
       insideDocumentAndParagraph([

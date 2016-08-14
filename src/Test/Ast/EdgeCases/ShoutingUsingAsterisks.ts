@@ -127,7 +127,7 @@ describe('Shouted text inside of emphasized text', () => {
 })
 
 
-describe('A raised voice convention starting with 3 asterisks', () => {
+describe('An inflection convention starting with 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.toAst('A ***bread* to believe in')).to.be.eql(
       insideDocumentAndParagraph([
@@ -141,7 +141,7 @@ describe('A raised voice convention starting with 3 asterisks', () => {
 })
 
 
-describe('A raised voice convention starting with 3 asterisks', () => {
+describe('An inflection convention starting with 3 asterisks', () => {
   it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
     expect(Up.toAst('A ***bread** to believe in')).to.be.eql(
       insideDocumentAndParagraph([

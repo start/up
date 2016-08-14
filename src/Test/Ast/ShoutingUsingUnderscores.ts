@@ -300,7 +300,7 @@ describe('Doubly bold text', () => {
 })
 
 
-describe('Two nested raised-voice conventions, both starting with 2 underscores', () => {
+describe('Two nested inflection conventions, both starting with 2 underscores', () => {
   it('can be closed by 3 underscores, resulting in the inner text being bold and the outer text italicized', () => {
     expect(Up.toAst('__He has won __six in a row!___')).to.be.eql(
       insideDocumentAndParagraph([

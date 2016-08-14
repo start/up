@@ -300,7 +300,7 @@ describe('Doubly stressed text', () => {
 })
 
 
-describe('Two nested raised-voice conventions, both starting with 2 asterisks', () => {
+describe('Two nested inflection conventions, both starting with 2 asterisks', () => {
   it('can be closed by 3 asterisks, resulting in the inner text being stressed and the outer text emphasized', () => {
     expect(Up.toAst('**He has won **six in a row!***')).to.be.eql(
       insideDocumentAndParagraph([

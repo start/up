@@ -202,10 +202,10 @@ context('Most inline conventions are not applied if they have no content.', () =
   })
 
 
-  context("Due to the nature of the raised voice syntax, raised voice conventions cannot be empty or blank.", () => {
+  context("Due to the nature of the inflection syntax, inflection conventions cannot be empty or blank.", () => {
     context("Delimiters containing only whitespace are preserved as plain text", () => {
       specify('Emphasis', () => {
-        // If the raised voice delimiters were alone on a line, they would be interpreted as an unordered list.
+        // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
         expect(Up.toAst('Stars! * \t \t *')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! * \t \t *')
@@ -214,7 +214,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
       specify('Stress', () => {
         expect(Up.toAst('Stars! **\t  \t**')).to.eql(
-          // If the raised voice delimiters were alone on a line, they would be interpreted as an outline separator streak.
+          // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! **\t  \t**')
           ]))
