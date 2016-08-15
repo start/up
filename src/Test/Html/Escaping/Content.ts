@@ -36,11 +36,11 @@ describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new DocumentNode([
       new ParagraphNode([
-        new PlainTextNode('John said, "1 and 2 > 0. I can\'t believe it."')
+        new PlainTextNode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>John said, "1 and 2 > 0. I can\'t believe it."</p>')
+    expect(Up.toHtml(document)).to.be.eql('<p>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</p>')
   })
 })
 
@@ -62,11 +62,11 @@ describe('Within an inline code node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new DocumentNode([
       new ParagraphNode([
-        new InlineCodeNode('John said, "1 and 2 > 0. I can\'t believe it."')
+        new InlineCodeNode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><code>John said, "1 and 2 > 0. I can\'t believe it."</code></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
   })
 })
 
