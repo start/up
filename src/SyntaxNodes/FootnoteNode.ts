@@ -18,6 +18,4 @@ export class FootnoteNode extends RichInlineSyntaxNode {
   inlineTextContent(): string {
     return ''
   }
-
-  protected FOOTNOTE_NODE(): void { }
 }

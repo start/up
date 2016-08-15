@@ -7,6 +7,4 @@ export class InlineCodeNode implements InlineSyntaxNode {
   inlineTextContent(): string {
     return this.code
   }
-
-  protected INLINE_CODE_NODE(): void { }
 }

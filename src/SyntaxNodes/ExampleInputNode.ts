@@ -8,6 +8,4 @@ export class ExampleInputNode implements InlineSyntaxNode {
   inlineTextContent(): string {
     return this.input
   }
-
-  protected EXAMPLE_INPUT(): void { }
 }
