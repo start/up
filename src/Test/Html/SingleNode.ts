@@ -723,7 +723,7 @@ describe('A square bracketed node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-square-bracket-parenthetical">[Koopa Tropa]</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-parenthetical up-square-brackets">[Koopa Tropa]</span></p>')
   })
 })
 

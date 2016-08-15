@@ -184,11 +184,11 @@ export class HtmlWriter extends Writer {
   }
 
   protected parenthetical(parenthetical: ParentheticalNode): string {
-    return this.bracketed(parenthetical, 'parenthetical')
+    return this.genericParenthetical(parenthetical)
   }
 
   protected squareBracketParenthetical(squareBracketParenthetical: SquareBracketParentheticalNode): string {
-    return this.bracketed(squareBracketParenthetical, 'square-bracket-parenthetical')
+    return this.genericParenthetical(squareBracketParenthetical, 'square-brackets')
   }
 
   protected highlight(highlight: HighlightNode): string {
@@ -337,8 +337,11 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private bracketed(bracketed: ParentheticalNode | SquareBracketParentheticalNode, bracketName: string): string {
-    return this.element('span', bracketed.children, { class: classAttrValue(bracketName) })
+  private genericParenthetical(parenthetical: ParentheticalNode | SquareBracketParentheticalNode, ...extraCssClassNames: string[]): string {
+    return this.element(
+      'span',
+      parenthetical.children,
+      { class: classAttrValue(...['parenthetical', ...extraCssClassNames]) })
   }
 
   private unorderedListItem(listItem: UnorderedListNode.Item): string {
