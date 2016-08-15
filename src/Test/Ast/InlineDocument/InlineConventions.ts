@@ -19,18 +19,7 @@ import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
-
-/*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
-import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
-import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
-import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
-import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
-import { FootnoteNode } from'../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from'../../../SyntaxNodes/FootnoteBlockNode'
-import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'*/
-
+import { VideoNode } from'../../../SyntaxNodes/VideoNode'
 
 context('Except for footnots, every inline convention is supported in inline documents.', () => {
   context('Supported conventions:', () => {
@@ -212,12 +201,13 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(', though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Video', () => {
+      expect(Up.toInlineDocument('Watch this: [video: cricket meowing] (example.com/meow.webm)')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('Watch this: '),
+          new VideoNode('cricket meowing', 'https://example.com/meow.webm')
+        ]))
+    })
   })
 })
-
-/*
-export { SquareBracketedNode } from './SyntaxNodes/SquareBracketedNode'
-export { StressNode } from './SyntaxNodes/StressNode'
-export { TableNode } from './SyntaxNodes/TableNode'
-export { UnorderedListNode } from './SyntaxNodes/UnorderedListNode'
-export { VideoNode } from './SyntaxNodes/VideoNode'*/
