@@ -12,7 +12,7 @@ import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
 import { NormalParentheticalNode } from'../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from'../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from'../../../SyntaxNodes/SquareParentheticalNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 
@@ -106,7 +106,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Square brackets', () => {
       expect(Up.toDocument('~~[Oh~~ why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new RevisionDeletionNode([
               new PlainTextNode('[Oh')
             ]),
@@ -335,11 +335,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Oh '),
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[why would you do this?')
             ]),
           ]),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode(']')
           ])
         ]))
@@ -399,7 +399,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Revision deletion and square brackets', () => {
     expect(Up.toDocument('~~[Why would you do this?~~]')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new RevisionDeletionNode([
             new PlainTextNode('[Why would you do this?')
           ]),
@@ -423,7 +423,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Square brackets and revision deletion', () => {
     expect(Up.toDocument('[~~Why would you do this?]~~')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('['),
           new RevisionDeletionNode([
             new PlainTextNode('Why would you do this?]')
@@ -494,11 +494,11 @@ context("When most conventions overlap by only the first convention's end delimi
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Oh '),
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[')
             ]),
           ]),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('why would you do this?]')
           ])
         ]))

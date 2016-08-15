@@ -8,7 +8,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 
 
@@ -65,9 +65,9 @@ describe('A footnote produced by square brackets that contains nested square bra
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
-      new SquareBracketParentheticalNode([
+      new SquareParentheticalNode([
         new PlainTextNode("[I don't eat cereal. "),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode("[Well, I do, but I pretend not to.]"),
         ]),
         new PlainTextNode(']')

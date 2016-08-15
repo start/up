@@ -14,7 +14,7 @@ import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../SyntaxNodes/SquareParentheticalNode'
 import { HighlightNode } from '../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../SyntaxNodes/InlineNsfwNode'
@@ -118,7 +118,7 @@ export abstract class Writer {
   protected abstract revisionDeletion(revisionDeletion: RevisionDeletionNode): string
   protected abstract revisionInsertion(revisionInsertion: RevisionInsertionNode): string
   protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
-  protected abstract squareBracketParenthetical(squareBracketParenthetical: SquareBracketParentheticalNode): string
+  protected abstract squareParenthetical(squareParenthetical: SquareParentheticalNode): string
   protected abstract stress(stress: StressNode): string
   protected abstract table(table: TableNode): string
   protected abstract unorderedList(list: UnorderedListNode): string
@@ -227,8 +227,8 @@ export abstract class Writer {
       return this.normalParenthetical(node)
     }
 
-    if (node instanceof SquareBracketParentheticalNode) {
-      return this.squareBracketParenthetical(node)
+    if (node instanceof SquareParentheticalNode) {
+      return this.squareParenthetical(node)
     }
 
     if (node instanceof HighlightNode) {

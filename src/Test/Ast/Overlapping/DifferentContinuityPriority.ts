@@ -15,7 +15,7 @@ import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from'../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from'../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from'../../../SyntaxNodes/SquareParentheticalNode'
 import { FootnoteNode } from'../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from'../../../SyntaxNodes/FootnoteBlockNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
@@ -369,11 +369,11 @@ context('When a link overlaps square bracketed text, the square bracketed text w
         new PlainTextNode('This '),
         new LinkNode([
           new PlainTextNode('trash '),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode(' not]')
         ]),
         new PlainTextNode(' stay here.')
@@ -384,11 +384,11 @@ context('When a link overlaps square bracketed text, the square bracketed text w
     expect(Up.toDocument('I do [not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[not ')
         ]),
         new LinkNode([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('care]')
           ]),
           new PlainTextNode(' at'),

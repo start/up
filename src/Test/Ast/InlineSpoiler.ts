@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
@@ -81,7 +81,7 @@ describe('An inline spoiler produced by square brackets', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
           new PlainTextNode('you fight '),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[and beat]')
           ]),
           new PlainTextNode(' Gary')

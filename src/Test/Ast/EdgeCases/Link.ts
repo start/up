@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 
 
@@ -36,7 +36,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its URL',
     expect(Up.toDocument('I like [this site][https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[this site]')
         ]),
         new PlainTextNode('['),
@@ -53,7 +53,7 @@ describe('A link produced by square brackets', () => {
     expect(Up.toDocument("I [usually] use [Google][https://google.com]!!")).to.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[usually]')
         ]),
         new PlainTextNode(' use '),
@@ -67,7 +67,7 @@ describe('A link produced by square brackets', () => {
   it('can be inside square bracketed text', () => {
     expect(Up.toDocument("[I use [Google][https://google.com]]")).to.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[I use '),
           new LinkNode([
             new PlainTextNode('Google')
@@ -144,7 +144,7 @@ describe('A link missing its final closing bracket', () => {
   it('does not produce a link node and does not prevent conventions from being evaluated afterward', () => {
     expect(Up.toDocument('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[: Do this :]'),
         ]),
         new PlainTextNode('[: smile! Anyway, why is '),
@@ -180,7 +180,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[SPOILER:]')
         ])
       ]))
@@ -193,7 +193,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[NSFW:]')
         ])
       ]))
@@ -206,7 +206,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[NSFL:]')
         ])
       ]))
@@ -238,7 +238,7 @@ describe("An almost-link (with whitespace between its content and URL) terminate
   it('can contain an unclosed square bracket without affecting a link with a square bracketed URL that follows it', () => {
     expect(Up.toDocument('[sigh] (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[sigh]')
         ]),
         new PlainTextNode(' '),

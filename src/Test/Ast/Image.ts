@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -119,7 +119,7 @@ context("When an otherwise-valid image convention's URL starts with whitespace, 
   specify('it does not produce an image node', () => {
     expect(Up.toDocument('[image: scary]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[image: scary]')
         ]),
         new PlainTextNode('( \t tel:5555555555)')

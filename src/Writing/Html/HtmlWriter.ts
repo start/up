@@ -13,7 +13,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
@@ -190,8 +190,8 @@ export class HtmlWriter extends Writer {
     return this.parenthetical(normalParenthetical)
   }
 
-  protected squareBracketParenthetical(squareBracketParenthetical: SquareBracketParentheticalNode): string {
-    return this.parenthetical(squareBracketParenthetical, 'square-brackets')
+  protected squareParenthetical(squareParenthetical: SquareParentheticalNode): string {
+    return this.parenthetical(squareParenthetical, 'square-brackets')
   }
 
   protected highlight(highlight: HighlightNode): string {

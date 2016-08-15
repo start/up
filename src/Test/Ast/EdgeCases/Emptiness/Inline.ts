@@ -9,7 +9,7 @@ import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
 import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../../../SyntaxNodes/SquareParentheticalNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
@@ -26,7 +26,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     specify('Highlights', () => {
       expect(Up.toDocument('[highlight:]')).to.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[highlight:]')
           ])
         ]))
@@ -35,7 +35,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     specify('Spoilers', () => {
       expect(Up.toDocument('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[SPOILER:]')
           ])
         ]))
@@ -44,7 +44,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     specify('NSFW', () => {
       expect(Up.toDocument('[NSFW:]')).to.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[NSFW:]')
           ])
         ]))
@@ -53,7 +53,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     specify('NSFL', () => {
       expect(Up.toDocument('[NSFL:]')).to.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[NSFL:]')
           ])
         ]))
@@ -134,7 +134,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('Highlights', () => {
           expect(Up.toDocument('[highlight:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
-              new SquareBracketParentheticalNode([
+              new SquareParentheticalNode([
                 new PlainTextNode('[highlight:  \t  \t ]')
               ])
             ]))
@@ -143,7 +143,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('Spoilers', () => {
           expect(Up.toDocument('[SPOILER:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
-              new SquareBracketParentheticalNode([
+              new SquareParentheticalNode([
                 new PlainTextNode('[SPOILER:  \t  \t ]')
               ])
             ]))
@@ -161,7 +161,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('NSFL', () => {
           expect(Up.toDocument('[NSFL:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
-              new SquareBracketParentheticalNode([
+              new SquareParentheticalNode([
                 new PlainTextNode('[NSFL:  \t  \t ]')
               ])
             ]))
@@ -308,7 +308,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('[*Yggdra Union*][]')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('['),
             new EmphasisNode([
               new PlainTextNode('Yggdra Union')
@@ -325,7 +325,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
       expect(Up.toDocument('[*Yggdra Union*]( \t )')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('['),
             new EmphasisNode([
               new PlainTextNode('Yggdra Union')
@@ -343,7 +343,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.toDocument('()[https://google.com]')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('()'),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('['),
             new LinkNode([
               new PlainTextNode('google.com')
@@ -408,7 +408,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its bracketed URL is treated as the appropriate bracketed convention", () => {
       expect(Up.toDocument('[*Yggdra Union*](\\ )')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('['),
             new EmphasisNode([
               new PlainTextNode('Yggdra Union')
@@ -449,7 +449,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('[image: Yggdra Union]{}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[image: Yggdra Union]')
           ]),
           new PlainTextNode('{}')
@@ -462,7 +462,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
       expect(Up.toDocument('[image: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[image: Yggdra Union]')
           ]),
           new PlainTextNode('{ \t \t}')
@@ -476,7 +476,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[image: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[image: haunted house]')
             ])
           ])
@@ -487,7 +487,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[image: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[image: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk')
@@ -499,11 +499,11 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[image: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[image: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk '),
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[really]')
             ]),
           ])
@@ -549,7 +549,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[audio: Yggdra Union]')
           ]),
           new PlainTextNode('{ \t \t}')
@@ -563,7 +563,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[audio: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[audio: haunted house]')
             ])
           ])
@@ -574,7 +574,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[audio: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk')
@@ -586,11 +586,11 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[audio: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk '),
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[really]')
             ]),
           ])
@@ -636,7 +636,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[video: Yggdra Union]')
           ]),
           new PlainTextNode('{ \t \t}')
@@ -650,7 +650,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[video: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[video: haunted house]')
             ])
           ])
@@ -661,7 +661,7 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[video: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[video: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk')
@@ -673,11 +673,11 @@ context("Media conventions are handled a bit differently, because they also have
       expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[video: haunted house]')
             ]),
             new PlainTextNode(' was written on the desk '),
-            new SquareBracketParentheticalNode([
+            new SquareParentheticalNode([
               new PlainTextNode('[really]')
             ]),
           ])

@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
@@ -85,7 +85,7 @@ describe('A highlight produced by square brackets', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new HighlightNode([
           new PlainTextNode('you fight '),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[and beat]')
           ]),
           new PlainTextNode(' Gary')

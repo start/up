@@ -15,7 +15,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -163,7 +163,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved my [Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
-          new SquareBracketParentheticalNode([
+          new SquareParentheticalNode([
             new PlainTextNode('[Nintendo]'),
           ]),
           new PlainTextNode(' Game Boy, though I never took it with me when I left home.')

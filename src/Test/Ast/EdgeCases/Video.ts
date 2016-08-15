@@ -9,7 +9,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
+import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
 
 
 describe('A paragraph directly followed by a video on its own line', () => {
@@ -51,7 +51,7 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
     expect(Up.toDocument('I like [video: ghosts][http://example.com/ghosts.webm).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketParentheticalNode([
+        new SquareParentheticalNode([
           new PlainTextNode('[video: ghosts]')
         ]),
         new PlainTextNode('['),
