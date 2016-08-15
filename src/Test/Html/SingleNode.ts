@@ -710,7 +710,7 @@ describe('A parenthesized node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-parenthesized">(Koopa Tropa)</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-parenthetical">(Koopa Tropa)</span></p>')
   })
 })
 

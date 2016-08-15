@@ -184,7 +184,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected parenthetical(parenthetical: ParentheticalNode): string {
-    return this.bracketed(parenthetical, 'parenthesized')
+    return this.bracketed(parenthetical, 'parenthetical')
   }
 
   protected squareBracketed(squareBracketed: SquareBracketedNode): string {
