@@ -343,9 +343,9 @@ class Tokenizer {
     })
   }
 
-  // This convention's HTML equivalent is the `<kbd>` element.
+  // This convention's HTML equivalent is the `<kbd>` element. It represents an example of user input.
   //
-  // Example usage: Press {esc} to quit.
+  // Usage: Press {esc} to quit.
   private getExampleInputConvention(): Convention {
     return new Convention({
       // Example input cannot be totally blank.
