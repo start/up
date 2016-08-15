@@ -5,6 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
@@ -16,7 +17,6 @@ import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-
 
 
 describe('Within a plain text node, all instances of < and &', () => {
@@ -41,6 +41,32 @@ describe('Within a plain text node, >, \', and "', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p>John said, "1 and 2 > 0. I can\'t believe it."</p>')
+  })
+})
+
+
+describe('Within an inline code node, all instances of < and &', () => {
+  it('are escaped by replacing them with &lt; and &amp;', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new InlineCodeNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></p>')
+  })
+})
+
+
+describe('Within an inline code node, >, \', and "', () => {
+  it('are preserved', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new InlineCodeNode('John said, "1 and 2 > 0. I can\'t believe it."')
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><code>John said, "1 and 2 > 0. I can\'t believe it."</code></p>')
   })
 })
 
