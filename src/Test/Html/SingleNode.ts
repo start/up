@@ -671,7 +671,7 @@ describe('An example input node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><kbd>then</kbd></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><kbd>esc</kbd></p>')
   })
 })
 

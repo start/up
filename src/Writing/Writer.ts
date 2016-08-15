@@ -6,6 +6,7 @@ import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { DocumentNode } from '../SyntaxNodes/DocumentNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { ItalicNode } from '../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../SyntaxNodes/BoldNode'
@@ -94,6 +95,7 @@ export abstract class Writer {
   protected abstract codeBlock(codeBlock: CodeBlockNode): string
   protected abstract descriptionList(list: DescriptionListNode): string
   protected abstract emphasis(emphasis: EmphasisNode): string
+  protected abstract exampleInput(exampleInput: ExampleInputNode): string
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
   protected abstract footnoteReference(footnote: FootnoteNode): string
   protected abstract heading(heading: HeadingNode): string
@@ -191,6 +193,10 @@ export abstract class Writer {
 
     if (node instanceof InlineCodeNode) {
       return this.inlineCode(node)
+    }
+
+    if (node instanceof ExampleInputNode) {
+      return this.exampleInput(node)
     }
 
     if (node instanceof FootnoteNode) {
