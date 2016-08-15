@@ -3,6 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 
 
 describe('Text surrounded by curly brackets', () => {
@@ -114,5 +115,26 @@ describe('Example input', () => {
           new PlainTextNode(' button.')
         ]))
     })
+  })
+})
+
+
+describe('An unmatched curly bracket', () => {
+  it('is preserved as plain text', () => {
+    expect(Up.toAst('Yeah... :{ I hate pizza.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Yeah... :{ I hate pizza.')
+      ]))
+  })
+
+  it('does not interfere with subsequent inline conventions', () => {
+    expect(Up.toAst('Yeah... :{ I *hate* pizza.')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Yeah... :{ I '),
+        new EmphasisNode([
+          new PlainTextNode('hate'),
+        ]),
+        new PlainTextNode(' pizza.'),
+      ]))
   })
 })
