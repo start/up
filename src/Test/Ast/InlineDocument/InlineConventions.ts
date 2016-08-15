@@ -251,5 +251,16 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
+
+    specify('A footnote is overlapping another convention', () => {
+      expect(Up.toInlineDocument('I loved my [^ beloved *Nintendo!] Game Boy*, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my'),
+          new EmphasisNode([
+            new PlainTextNode(' Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.')
+        ]))
+    })
   })
 })
