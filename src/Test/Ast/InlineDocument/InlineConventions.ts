@@ -12,6 +12,7 @@ import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
+import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -131,15 +132,21 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(', though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Italic', () => {
+      expect(Up.toInlineDocument('I loved my _Game Boy_, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new ItalicNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { InlineNsflNode } from './SyntaxNodes/InlineNsflNode'
-export { InlineNsfwNode } from './SyntaxNodes/InlineNsfwNode'
-export { InlineSpoilerNode } from './SyntaxNodes/InlineSpoilerNode'
-export { ItalicNode } from './SyntaxNodes/ItalicNode'
-export { LineBlockNode } from './SyntaxNodes/LineBlockNode'
 export { LinkNode } from './SyntaxNodes/LinkNode'
 export { NsflBlockNode } from './SyntaxNodes/NsflBlockNode'
 export { NsfwBlockNode } from './SyntaxNodes/NsfwBlockNode'
