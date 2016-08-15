@@ -37,6 +37,8 @@ import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
+import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
@@ -200,7 +202,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
-      revealableChildren: inlineSpoiler.children,
+      revealable: inlineSpoiler,
       tagNameForGenericContainers: 'span'
     })
   }
@@ -210,7 +212,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
-      revealableChildren: inlineNsfw.children,
+      revealable: inlineNsfw,
       tagNameForGenericContainers: 'span'
     })
   }
@@ -220,7 +222,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
-      revealableChildren: inlineNsfl.children,
+      revealable: inlineNsfl,
       tagNameForGenericContainers: 'span'
     })
   }
@@ -230,7 +232,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
-      revealableChildren: spoilerBlock.children,
+      revealable: spoilerBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(spoilerBlock)
     })
@@ -241,7 +243,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
-      revealableChildren: nsfwBlock.children,
+      revealable: nsfwBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(nsfwBlock)
     })
@@ -252,7 +254,7 @@ export class HtmlWriter extends Writer {
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
-      revealableChildren: nsflBlock.children,
+      revealable: nsflBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(nsflBlock)
     })
@@ -484,7 +486,7 @@ export class HtmlWriter extends Writer {
       conventionName: string
       termForTogglingVisibility: string
       conventionCount: number
-      revealableChildren: SyntaxNode[]
+      revealable: RevealableInlineSyntaxNode | RevealableOutlineSyntaxNode
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
@@ -498,7 +500,7 @@ export class HtmlWriter extends Writer {
       singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
 
     const content =
-      this.element(args.tagNameForGenericContainers, args.revealableChildren)
+      this.element(args.tagNameForGenericContainers, args.revealable.children)
 
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
