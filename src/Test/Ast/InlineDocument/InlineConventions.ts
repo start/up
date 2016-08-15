@@ -14,6 +14,8 @@ import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
+import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -155,15 +157,32 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(', though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Parnetheses', () => {
+      expect(Up.toInlineDocument('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new ParenthesizedNode([
+            new PlainTextNode('(Nintendo)'),
+          ]),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+        ]))
+    })
+
+    specify('Parnetheses', () => {
+      expect(Up.toInlineDocument('I loved my [Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new SquareBracketedNode([
+            new PlainTextNode('[Nintendo]'),
+          ]),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { LinkNode } from './SyntaxNodes/LinkNode'
-export { NsflBlockNode } from './SyntaxNodes/NsflBlockNode'
-export { NsfwBlockNode } from './SyntaxNodes/NsfwBlockNode'
-export { OrderedListNode } from './SyntaxNodes/OrderedListNode'
-export { ParagraphNode } from './SyntaxNodes/ParagraphNode'
 export { ParenthesizedNode } from './SyntaxNodes/ParenthesizedNode'
 export { PlainTextNode } from './SyntaxNodes/PlainTextNode'
 export { RevisionDeletionNode } from './SyntaxNodes/RevisionDeletionNode'
