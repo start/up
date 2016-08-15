@@ -9,5 +9,5 @@ export class ExampleInputNode implements InlineSyntaxNode {
     return this.input
   }
 
-  protected INPUT_INSTRUCTION(): void { }
+  protected EXAMPLE_INPUT(): void { }
 }
