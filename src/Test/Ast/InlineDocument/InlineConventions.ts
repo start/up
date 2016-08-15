@@ -33,35 +33,35 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Bold', () => {
-      expect(Up.toInlineDocument('I loved my __Game Boy__, though I never took it with me when I left the house.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my __Game Boy__, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
           new BoldNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left the house.'),
+          new PlainTextNode(', though I never took it with me when I left home.'),
         ]))
     })
 
     specify('Emphasis', () => {
-      expect(Up.toInlineDocument('I loved my *Game Boy*, though I never took it with me when I left the house.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my *Game Boy*, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
           new EmphasisNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left the house.'),
+          new PlainTextNode(', though I never took it with me when I left home.'),
         ]))
     })
 
     specify('Example input', () => {
-      expect(Up.toInlineDocument('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left the house.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved pressing '),
           new ExampleInputNode('A'),
           new PlainTextNode(' and '),
           new ExampleInputNode('B'),
-          new PlainTextNode(' on my Game Boy, though I never took it with me when I left the house.'),
+          new PlainTextNode(' on my Game Boy, though I never took it with me when I left home.'),
         ]))
     })
   })
