@@ -9,6 +9,9 @@ import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
+import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -95,11 +98,43 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(' elements, though I never used them.'),
         ]))
     })
+
+    specify('Inline NSFL', () => {
+      expect(Up.toInlineDocument('I loved my [NSFL: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new InlineNsflNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
+
+    specify('Inline NSFW', () => {
+      expect(Up.toInlineDocument('I loved my [NSFW: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new InlineNsfwNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
+
+    specify('Inline spoilers', () => {
+      expect(Up.toInlineDocument('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new InlineSpoilerNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { InlineCodeNode } from './SyntaxNodes/InlineCodeNode'
 export { InlineNsflNode } from './SyntaxNodes/InlineNsflNode'
 export { InlineNsfwNode } from './SyntaxNodes/InlineNsfwNode'
 export { InlineSpoilerNode } from './SyntaxNodes/InlineSpoilerNode'
