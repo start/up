@@ -16,7 +16,7 @@ Chart
 Chrono Trigger;      1995
 Chrono Cross;        1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -41,7 +41,7 @@ Chart
 Chrono Trigger;       1995
 Chrono Cross;         1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -69,7 +69,7 @@ Chart
 Chrono Trigger [\\;; 1995
 Chrono Cross;        1999 [\\;`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -94,7 +94,7 @@ Chart
 Chrono Trigger :\\\\; 1995
 Chrono Cross;         1999 :\\\\`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -120,7 +120,7 @@ Chart: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized charts are too useful to leave out.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Chart: my favorite outline convention.')]),
         new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
@@ -140,7 +140,7 @@ Chart: Most common underlines for top-level headings (from most to least common)
 ####
 ****`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -175,7 +175,7 @@ Chart
 Chrono Trigger;     Super NES;              1995
 Chrono Cross;       Playstation;            1999`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -203,7 +203,7 @@ Chart
 Chrono Trigger;     Nintendo\`s Super NES;    1990\`s
 Chrono Cross;       Sony\`s Playstation;      1990\`s`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -231,7 +231,7 @@ Chart
 Square\`s Chrono Trigger;     Super NES;        1990\`s
 Square\s Chrono Cross;        Playstation;      1990\`s`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -262,7 +262,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -290,7 +290,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     {: Playstation;     1999 :}`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -318,7 +318,7 @@ Chart:
 {: Chrono Trigger;    Super :} Nintendo;   1995
 Chrono Cross;         Playstation;         1999`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([

@@ -9,7 +9,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 describe('Text surrounded by 2 asterisks', () => {
   it('is put inside a stress node', () => {
-    expect(Up.toAst('Hello, **world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
@@ -23,7 +23,7 @@ describe('Text surrounded by 2 asterisks', () => {
 
 describe('Stressed text', () => {
   it('is evaluated for inline conventions', () => {
-    expect(Up.toAst('Hello, **`world`**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **`world`**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
@@ -34,7 +34,7 @@ describe('Stressed text', () => {
   })
 
   it('can contain further stressed text', () => {
-    expect(Up.toAst('Hello, **my **little** world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **my **little** world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
@@ -49,7 +49,7 @@ describe('Stressed text', () => {
   })
 
   it('can contain emphasized text', () => {
-    expect(Up.toAst('Hello, **my *little* world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([

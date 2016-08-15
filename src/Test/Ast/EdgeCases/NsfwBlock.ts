@@ -10,7 +10,7 @@ import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 context("A NSFW block's label line does not produce a NSFW block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toAst('NSFW:')).to.be.eql(
+    expect(Up.toDocument('NSFW:')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('NSFW:')
       ]))
@@ -21,7 +21,7 @@ context("A NSFW block's label line does not produce a NSFW block node if it is",
 NSFW:
 No!
 Avoid that initialism!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('NSFW:')]),
@@ -36,7 +36,7 @@ Avoid that initialism!`
 NSFW:
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')
@@ -53,7 +53,7 @@ NSFW:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')
@@ -72,7 +72,7 @@ NSFW:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')

@@ -17,7 +17,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -40,7 +40,7 @@ nSFw:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -61,7 +61,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -82,7 +82,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -104,7 +104,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -128,7 +128,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -149,7 +149,7 @@ NSFW:  \t  \t
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -170,7 +170,7 @@ NSFW  \t  \t
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -197,7 +197,7 @@ NSFW:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -222,7 +222,7 @@ NSFW:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -249,7 +249,7 @@ NSFW:
   }
   \`\`\``
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new CodeBlockNode(
@@ -270,7 +270,7 @@ NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
 That was my favorite episode.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -291,7 +291,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -316,7 +316,7 @@ context('The indentation of a NSFW block can be provided by', () => {
 NSFW:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -331,7 +331,7 @@ NSFW:
 NSFW:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -346,7 +346,7 @@ NSFW:
 NSFW:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
@@ -366,7 +366,7 @@ NSFW:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([

@@ -20,7 +20,7 @@ describe('A footnote reference at the end of a paragraph', () => {
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -48,7 +48,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
       new PlainTextNode(' See?')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote
@@ -75,7 +75,7 @@ describe('A footnote produced by square brackets that contains nested square bra
       new PlainTextNode(' See?')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote
@@ -95,7 +95,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
       new PlainTextNode("Well, I do, but I pretend not to."),
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -142,7 +142,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
       footnoteInsideSecondFootnote
     ], 2)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
@@ -169,7 +169,7 @@ describe('A footnote reference at the beginning of a paragraph', () => {
       new PlainTextNode('I would never eat cereal.')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote,

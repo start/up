@@ -32,7 +32,7 @@ context("A document is not given a table of contents if", () => {
 I enjoy apples
 ==============`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
       ], NO_TABLE_OF_CONTENTS))
@@ -55,7 +55,7 @@ SPOILER:
   
   The chart represents the logic for the \`AND\` operator.`
 
-    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Can you guess what this chart represents?')]),
         new TableNode(
@@ -102,7 +102,7 @@ I enjoy apples
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([heading], tableOfContents))
   })
 
@@ -137,7 +137,7 @@ Chrono Cross;     1999`
     const tableOfContents =
       new UpDocument.TableOfContents([table])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([table], tableOfContents))
   })
 
@@ -173,7 +173,7 @@ Chart: \`AND\` operator logic
     const tableOfContents =
       new UpDocument.TableOfContents([chart])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([chart], tableOfContents))
   })
 })
@@ -199,7 +199,7 @@ Who doesn't?`
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -221,7 +221,7 @@ I enjoy apples
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new OrderedListNode([
@@ -249,7 +249,7 @@ I enjoy apples
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new UnorderedListNode([
@@ -277,7 +277,7 @@ Apples
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new DescriptionListNode([
@@ -305,7 +305,7 @@ Apples are blue`
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new LineBlockNode([
@@ -335,7 +335,7 @@ SPOILER:
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -361,7 +361,7 @@ NSFW:
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -387,7 +387,7 @@ NSFL:
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -412,7 +412,7 @@ I enjoy apples
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -441,7 +441,7 @@ No one!`
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
         heading,
@@ -466,7 +466,7 @@ const reason = "They are cheap and delicious."
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new CodeBlockNode('const reason = "They are cheap and delicious."'),
@@ -490,7 +490,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
         new ParagraphNode([
@@ -518,7 +518,7 @@ Chrono Cross;     1999`
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         heading,
         new TableNode(
@@ -554,7 +554,7 @@ Chart:
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
-    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         heading,
         new TableNode(
@@ -591,7 +591,7 @@ Haunted houses
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
           new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg')
@@ -611,7 +611,7 @@ Haunted houses
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
           new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
@@ -631,7 +631,7 @@ Haunted houses
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
           new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm')
@@ -652,7 +652,7 @@ Haunted houses
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
           new LinkNode([
@@ -694,7 +694,7 @@ I enjoy apples
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new OrderedListNode([
@@ -737,7 +737,7 @@ I enjoy apples
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, costHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new OrderedListNode([
@@ -782,7 +782,7 @@ I enjoy apples
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new UnorderedListNode([
@@ -825,7 +825,7 @@ I enjoy apples
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, costHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new UnorderedListNode([
@@ -872,7 +872,7 @@ Pink lady
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new DescriptionListNode([
@@ -921,7 +921,7 @@ Apple
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
           new DescriptionListNode([
@@ -1018,7 +1018,7 @@ Apple
     const tableOfContents =
       new UpDocument.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
 
-    expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -1052,7 +1052,7 @@ Apple
 > They're cheap
 > -------------`
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           new BlockquoteNode([
             new HeadingNode([new PlainTextNode("They're cheap")], 1)
@@ -1067,7 +1067,7 @@ SPOILER:
   They're cheap
   -------------`
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           new SpoilerBlockNode([
             new HeadingNode([new PlainTextNode("They're cheap")], 1)
@@ -1082,7 +1082,7 @@ NSFW:
   They're cheap
   -------------`
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new HeadingNode([new PlainTextNode("They're cheap")], 1)
@@ -1097,7 +1097,7 @@ NSFL:
   They're cheap
   -------------`
 
-      expect(Up.toAst(markup, { createTableOfContents: true })).to.be.eql(
+      expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           new NsflBlockNode([
             new HeadingNode([new PlainTextNode("They're cheap")], 1)
@@ -1130,7 +1130,7 @@ Chart: Where to buy apples
 Pink Lady;        No;       Yes
 Red Delicious;    No;       No`
 
-    const document = Up.toAst(markup, { createTableOfContents: true })
+    const document = Up.toDocument(markup, { createTableOfContents: true })
 
     const [bestFruitHeading, table, purchasingHeading, chart] = document.children
     const { entries } = document.tableOfContents
@@ -1167,7 +1167,7 @@ Red Delicious;    No;       No`
       Pink Lady;        No;       Yes
       Red Delicious;    No;       No`
 
-    const document = Up.toAst(markup, { createTableOfContents: true })
+    const document = Up.toDocument(markup, { createTableOfContents: true })
 
     const unorderedList = document.children[0] as UnorderedListNode
     const orderedList = unorderedList.items[0].children[1] as OrderedListNode

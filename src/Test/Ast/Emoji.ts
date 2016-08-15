@@ -7,7 +7,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 context('Emojis are always treated like any other other character. This includes when the emoji is within', () => {
   specify('a link URL', () => {
-    expect(Up.toAst("[American flag emoji](https://example.com/empojis/🇺🇸?info)")).to.be.eql(
+    expect(Up.toDocument("[American flag emoji](https://example.com/empojis/🇺🇸?info)")).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode("American flag emoji")
@@ -16,7 +16,7 @@ context('Emojis are always treated like any other other character. This includes
   })
 
   specify('regular text', () => {
-    expect(Up.toAst("Okay. 🙄 I'll eat the tarantula. 🕷")).to.be.eql(
+    expect(Up.toDocument("Okay. 🙄 I'll eat the tarantula. 🕷")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay. 🙄 I'll eat the tarantula. 🕷")
       ]))
@@ -26,7 +26,7 @@ context('Emojis are always treated like any other other character. This includes
 
 describe('Escaped emojis', () => {
   it('are preserved appropriately (rather than split into two pieces)', () => {
-    expect(Up.toAst("Okay. \\🙄 I'll eat the tarantula. \\🕷")).to.be.eql(
+    expect(Up.toDocument("Okay. \\🙄 I'll eat the tarantula. \\🕷")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay. 🙄 I'll eat the tarantula. 🕷")
       ]))

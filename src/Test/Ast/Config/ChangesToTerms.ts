@@ -33,57 +33,57 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
 
   const whenEverythingIsDefault =
-    Up.toAst(markupForDefaultSettings)
+    Up.toDocument(markupForDefaultSettings)
 
 
-  describe("when provided to the default toAst method", () => {
+  describe("when provided to the default toDocument method", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
-      expect(Up.toAst(markupForConfigChanges, configChanges)).to.be.eql(Up.toAst(markupForDefaultSettings))
+      expect(Up.toDocument(markupForConfigChanges, configChanges)).to.be.eql(Up.toDocument(markupForDefaultSettings))
     })
 
     it("replaces the original setting", () => {
-      expect(Up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("has any empty or blank variations ignored", () => {
-      expect(Up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
 
-      expect(Up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(Up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
-      expect(Up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
 
-  describe("when provided to an Up object's toAst method", () => {
+  describe("when provided to an Up object's toDocument method", () => {
     const up = new Up()
 
     it("does not alter the Up object's original settings", () => {
-      expect(up.toAst(markupForConfigChanges, configChanges)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForConfigChanges, configChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("replaces the original setting", () => {
-      expect(up.toAst(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
-      expect(up.toAst(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
 
-      expect(up.toAst(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(up.toAst(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
-      expect(up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 
@@ -92,41 +92,41 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up(configChanges)
 
     const whenProvidingChangesAtCreation =
-      up.toAst(markupForConfigChanges)
+      up.toDocument(markupForConfigChanges)
 
-    it('has the same result as providing the term when calling the default toAst method', () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(Up.toAst(markupForConfigChanges, configChanges))
+    it('has the same result as providing the term when calling the default toDocument method', () => {
+      expect(whenProvidingChangesAtCreation).to.be.eql(Up.toDocument(markupForConfigChanges, configChanges))
     })
 
-    it("has the same result as providing the term when calling the Up object's toAst method", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up().toAst(markupForConfigChanges, configChanges))
+    it("has the same result as providing the term when calling the Up object's toDocument method", () => {
+      expect(whenProvidingChangesAtCreation).to.be.eql(new Up().toDocument(markupForConfigChanges, configChanges))
     })
 
-    it("has the same result as providing the term when calling the Up object's toAst method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toAst(markupForConfigChanges, configChanges))
+    it("has the same result as providing the term when calling the Up object's toDocument method, overwriting the term provided at creation", () => {
+      expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toDocument(markupForConfigChanges, configChanges))
     })
 
     it("replaces the original setting", () => {
-      expect(up.toAst(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
       const up = new Up(equivalentConfigChangesWithEmptyAndBlankVariations)
 
-      expect(up.toAst(invalidMarkupForEmptyTerm)).to.not.be.eql(whenEverythingIsDefault)
-      expect(up.toAst(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(invalidMarkupForEmptyTerm)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
       const up = new Up(configChangesWithOnlyEmptyAndBlankVariations)
 
-      expect(up.toAst(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
       const up = new Up(configChangesWithNoVariations)
 
-      expect(up.toAst(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
     })
   })
 }
@@ -403,7 +403,7 @@ context('Config settings are totally independent. When one setting is changed, t
       terms: { footnote: 'reference' }
     })
 
-    expect(up.toAst('[SPOILER: Ash fights Gary]')).to.be.eql(
+    expect(up.toDocument('[SPOILER: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineSpoilerNode([
           new PlainTextNode('Ash fights Gary')
@@ -413,7 +413,7 @@ context('Config settings are totally independent. When one setting is changed, t
 
   specify('the default Up object', () => {
     const ast =
-      Up.toAst('[SPOILER: Ash fights Gary]', {
+      Up.toDocument('[SPOILER: Ash fights Gary]', {
         terms: { footnote: 'reference' }
       })
 

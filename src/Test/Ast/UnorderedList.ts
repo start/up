@@ -16,7 +16,7 @@ describe('Consecutive bulleted lines', () => {
 * Buy bread
 * Buy tendies`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -46,7 +46,7 @@ context('Unordered list bullets can be:', () => {
 * Hello, world!
 * Goodbye, world!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -68,7 +68,7 @@ context('Unordered list bullets can be:', () => {
 - Hello, world!
 - Goodbye, world!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -90,7 +90,7 @@ context('Unordered list bullets can be:', () => {
 + Hello, world!
 + Goodbye, world!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -112,7 +112,7 @@ context('Unordered list bullets can be:', () => {
 • Hello, world!
 • Goodbye, world!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -136,7 +136,7 @@ context('Unordered list bullets can be:', () => {
 + Buy tendies
 • Buy happiness`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -177,14 +177,14 @@ describe('List items in an unordered list', () => {
 * Hello, world!
 * Goodbye, world!`
 
-    expect(Up.toAst(textWithSeparator)).to.be.eql(Up.toAst(textWithoutSeparator))
+    expect(Up.toDocument(textWithSeparator)).to.be.eql(Up.toDocument(textWithoutSeparator))
   })
 })
 
 
 describe('A single bulleted line', () => {
   it('produces an unordered list node containing a single unordered list item', () => {
-    expect(Up.toAst('* Hello, world!')).to.be.eql(
+    expect(Up.toDocument('* Hello, world!')).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -206,7 +206,7 @@ describe('An indented line immediately following an ordered list item line', () 
 * Roses are red
   Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -243,7 +243,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
 * Goodbye, world!
   ===============`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -286,7 +286,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
-    expect(Up.toAst(itemsWithoutSeparator)).to.be.eql(Up.toAst(itemsWithSeparator))
+    expect(Up.toDocument(itemsWithoutSeparator)).to.be.eql(Up.toDocument(itemsWithSeparator))
   })
 
   it('can contain a nested unordered list that uses the same type of bullet used by its containing list item', () => {
@@ -302,7 +302,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 * Goodbye, world!
   ===============`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -343,7 +343,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 * Roses are red
   Violets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -365,7 +365,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 * Roses are red
 \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -387,7 +387,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 * Roses are red
  \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -419,7 +419,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
   I used to live there.`
 
-    expect(Up.toAst(withMixedIndentation)).to.be.eql(
+    expect(Up.toDocument(withMixedIndentation)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -459,7 +459,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
 describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
-    expect(Up.toAst('* *Hello*, world!')).to.be.eql(
+    expect(Up.toDocument('* *Hello*, world!')).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -482,7 +482,7 @@ describe('An unordered list', () => {
 * Hello, World *1-2*!
 * Goodbye, World *1-2*!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -513,7 +513,7 @@ describe('An unordered list', () => {
 * Goodbye, world!
 Hello, World 1-2!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([

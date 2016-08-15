@@ -16,7 +16,7 @@ describe('An unordered list with a single item', () => {
 * Mittens
 -----------`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OutlineSeparatorNode(),
         new UnorderedListNode([
@@ -42,7 +42,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -86,7 +86,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 - Clinton
 - Sanders`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -128,7 +128,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 - Clinton
 - Sanders`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -167,7 +167,7 @@ describe('A code block in a list item', () => {
   const x = 0
   \`\`\``
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -187,7 +187,7 @@ describe('A code block in a list item', () => {
   const y = 0
   \`\`\``
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([

@@ -15,7 +15,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
 
   context('For inline NSFW conventions, the term', () => {
     it('is used', () => {
-      expect(up.toAst('[ruins ending: Ash fights Gary]', { terms: { nsfw: 'ruins ending' } })).to.be.eql(
+      expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { nsfw: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -27,11 +27,11 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
-      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+      expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
     })
 
     it('is trimmed', () => {
-      expect(up.toAst('[RUINS ending: Ash fights Gary]', { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
+      expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -40,7 +40,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     })
 
     it('ignores inline conventions and regular expression rules', () => {
-      expect(up.toAst('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
+      expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -49,7 +49,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     })
 
     it('can have multiple variations', () => {
-      expect(up.toAst('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
+      expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -71,7 +71,7 @@ ruins ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -99,7 +99,7 @@ ruINs eNDiNg:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toAst(lowercase)).to.be.eql(up.toAst(mixedCase))
+      expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
     })
 
     it('ignores inline conventions and regular expression rules', () => {
@@ -110,7 +110,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(markup, { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
+      expect(Up.toDocument(markup, { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -131,7 +131,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(markup, { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
+      expect(Up.toDocument(markup, { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
@@ -154,7 +154,7 @@ LOOK AWAY:
     
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toAst(markup, { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
+      expect(Up.toDocument(markup, { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([

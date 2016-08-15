@@ -57,7 +57,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[video: something terrible](https://example.com/video.webm) (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[video: something terrible](https://example.com/video.webm) (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -72,7 +72,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[video: email sending] (https://example.com/video.webm) (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[video: email sending] (https://example.com/video.webm) (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('email sending', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -83,7 +83,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[video: local files rustling](https://example.com/video.webm) (file:///)')).to.be.eql(
+      expect(Up.toDocument('[video: local files rustling](https://example.com/video.webm) (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('local files rustling', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -114,7 +114,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[video: email sending] (https://example.com/video.webm) (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[video: email sending] (https://example.com/video.webm) (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('email sending', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -149,7 +149,7 @@ context('A linkified video convention can have whitespace between its video URL 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[video: something terrible](https://example.com/video.webm) (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[video: something terrible](https://example.com/video.webm) (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -160,7 +160,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[video: slash] (https://example.com/video.webm) (/)')).to.be.eql(
+      expect(Up.toDocument('[video: slash] (https://example.com/video.webm) (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('slash', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -191,7 +191,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[video: robots](https://example.com/video.webm) (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[video: robots](https://example.com/video.webm) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('robots', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -246,7 +246,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[video: hash marking](https://example.com/video.webm) (#)')).to.be.eql(
+      expect(Up.toDocument('[video: hash marking](https://example.com/video.webm) (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('hash marking', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -257,7 +257,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[video: something terrible] (https://example.com/video.webm) (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[video: something terrible] (https://example.com/video.webm) (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -268,7 +268,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[video: hash marking](https://example.com/video.webm) (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[video: hash marking](https://example.com/video.webm) (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('hash marking', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -343,7 +343,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[video: 4chan] (https://example.com/video.webm) (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[video: 4chan] (https://example.com/video.webm) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('4chan', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -375,7 +375,7 @@ context('A linkified video convention can have whitespace between its video URL 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[video: usernaming](https://example.com/video.webm) (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[video: usernaming](https://example.com/video.webm) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new VideoNode('usernaming', 'https://example.com/video.webm'),
             new PlainTextNode(' '),
@@ -386,7 +386,7 @@ context('A linkified video convention can have whitespace between its video URL 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[video: usernaming] (https://example.com/video.webm) (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[video: usernaming] (https://example.com/video.webm) (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new VideoNode('usernaming', 'https://example.com/video.webm'),
             new PlainTextNode(' '),
@@ -398,7 +398,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[video: being British](https://example.com/video.webm) (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[video: being British](https://example.com/video.webm) (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('being British', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -409,7 +409,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[video: Ash claiming to be his own father] (https://example.com/video.webm) (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[video: Ash claiming to be his own father] (https://example.com/video.webm) (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('Ash claiming to be his own father', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -420,7 +420,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[video: debilitating sadness](https://example.com/video.webm) (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[video: debilitating sadness](https://example.com/video.webm) (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('debilitating sadness', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -451,7 +451,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[video: yeah] (https://example.com/video.webm) (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[video: yeah] (https://example.com/video.webm) (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('yeah', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -462,7 +462,7 @@ context('A linkified video convention can have whitespace between its video URL 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[video: yeah](https://example.com/video.webm) (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[video: yeah](https://example.com/video.webm) (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('yeah', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
@@ -475,7 +475,7 @@ context('A linkified video convention can have whitespace between its video URL 
 
 
   specify('If none of the conditions are satisfied, the video is not linkified', () => {
-    expect(Up.toAst('[video: something terrible] (https://example.com/video.webm) (really)')).to.be.eql(
+    expect(Up.toDocument('[video: something terrible] (https://example.com/video.webm) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new VideoNode('something terrible', 'https://example.com/video.webm'),
         new PlainTextNode(' '),
@@ -489,7 +489,7 @@ context('A linkified video convention can have whitespace between its video URL 
 
 describe("If there is whitespace between an otherwise-valid linkified video convention's video URL and its linkifying URL", () => {
   it('the video convention is not linkified', () => {
-    expect(Up.toAst('[video: something terrible](https://example.com/video.webm)  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[video: something terrible](https://example.com/video.webm)  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new VideoNode('something terrible', 'https://example.com/video.webm'),
         new PlainTextNode('    '),

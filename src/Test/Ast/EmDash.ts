@@ -14,28 +14,28 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 context('3 consecutive hyphens normally produce an em dash.', () => {
   context('This applies within regular text:', () => {
     specify('Between words', () => {
-      expect(Up.toAst("Okay---I'll eat the tarantula.")).to.be.eql(
+      expect(Up.toDocument("Okay---I'll eat the tarantula.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode("Okay—I'll eat the tarantula.")
         ]))
     })
 
     specify('Following a word', () => {
-      expect(Up.toAst("Okay--- I'll eat the tarantula.")).to.be.eql(
+      expect(Up.toDocument("Okay--- I'll eat the tarantula.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode("Okay— I'll eat the tarantula.")
         ]))
     })
 
     specify('Preceding a word', () => {
-      expect(Up.toAst('"I like Starcraft" ---Mark Twain')).to.be.eql(
+      expect(Up.toDocument('"I like Starcraft" ---Mark Twain')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('"I like Starcraft" —Mark Twain')
         ]))
     })
 
     specify('Surrounded by whitespace', () => {
-      expect(Up.toAst("Okay --- I'll eat the tarantula.")).to.be.eql(
+      expect(Up.toDocument("Okay --- I'll eat the tarantula.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode("Okay — I'll eat the tarantula.")
         ]))
@@ -45,7 +45,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
 
   context('This does not apply within:', () => {
     specify('Link URLs', () => {
-      expect(Up.toAst("[American flag emoji] (https://example.com/empojis/US---flag?info)")).to.be.eql(
+      expect(Up.toDocument("[American flag emoji] (https://example.com/empojis/US---flag?info)")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode("American flag emoji")
@@ -54,14 +54,14 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
     })
 
     specify('Media URLs', () => {
-      expect(Up.toAst('[video: ghosts eating luggage] (http://example.com/polter---geists.webm)')).to.be.eql(
+      expect(Up.toDocument('[video: ghosts eating luggage] (http://example.com/polter---geists.webm)')).to.be.eql(
         new UpDocument([
           new VideoNode('ghosts eating luggage', 'http://example.com/polter---geists.webm')
         ]))
     })
 
     specify('Linkified media URLs', () => {
-      expect(Up.toAst('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final---battle)')).to.be.eql(
+      expect(Up.toDocument('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final---battle)')).to.be.eql(
         new UpDocument([
           new LinkNode([
             new ImageNode('you fight Gary', 'https://example.com/fight.svg')
@@ -70,7 +70,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
     })
 
     specify('Linkified URLs for non-media conventions', () => {
-      expect(Up.toAst('[SPOILER: you fight Gary] (http://example.com/final---battle)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: you fight Gary] (http://example.com/final---battle)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new LinkNode([
@@ -81,7 +81,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
     })
 
     specify('Inline code', () => {
-      expect(Up.toAst("`i---;`")).to.be.eql(
+      expect(Up.toDocument("`i---;`")).to.be.eql(
         insideDocumentAndParagraph([
           new InlineCodeNode('i---;')
         ]))
@@ -93,7 +93,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
 for (let i = items.length - 1; i >= 0; i---) { }
 \`\`\``
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new CodeBlockNode(
             `for (let i = items.length - 1; i >= 0; i---) { }`)
@@ -105,42 +105,42 @@ for (let i = items.length - 1; i >= 0; i---) { }
 
 context('4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash). Any extra hyphens (naturally either 1 or 2) are ignored.', () => {
   specify('4 hyphens produce a single em dash', () => {
-    expect(Up.toAst("Okay----I'll eat the tarantula.")).to.be.eql(
+    expect(Up.toDocument("Okay----I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay—I'll eat the tarantula.")
       ]))
   })
 
   specify('5 hyphens produce a single em dash', () => {
-    expect(Up.toAst("Okay-----I'll eat the tarantula.")).to.be.eql(
+    expect(Up.toDocument("Okay-----I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay—I'll eat the tarantula.")
       ]))
   })
 
   specify('6 hyphens produce 2 em dashes', () => {
-    expect(Up.toAst("Okay, Prof. O------.")).to.be.eql(
+    expect(Up.toDocument("Okay, Prof. O------.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay, Prof. O——.")
       ]))
   })
 
   specify('7 hyphens produce 2 em dashes', () => {
-    expect(Up.toAst("Okay, Prof. O-------.")).to.be.eql(
+    expect(Up.toDocument("Okay, Prof. O-------.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay, Prof. O——.")
       ]))
   })
 
   specify('8 hyphens produce 2 em dashes', () => {
-    expect(Up.toAst("Okay, Prof. --------.")).to.be.eql(
+    expect(Up.toDocument("Okay, Prof. --------.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay, Prof. ——.")
       ]))
   })
 
   specify('9 hyphens produce 3 em dashes', () => {
-    expect(Up.toAst("---------. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")).to.be.eql(
+    expect(Up.toDocument("---------. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("———. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")
       ]))
@@ -150,35 +150,35 @@ context('4 or more consecutive hyphens produce as many em dashes as they can "af
 
 describe("When any of an em dash's hyphens are escaped, that single hyphen is interpreted as a regular dash.", () => {
   specify('Escaping the first of 3 hyphens produces a hyphen followed by an en dash', () => {
-    expect(Up.toAst("My favorite dashes: \\---")).to.be.eql(
+    expect(Up.toDocument("My favorite dashes: \\---")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("My favorite dashes: -–")
       ]))
   })
 
   specify('Escaping the second of 3 hyphens produces 3 hyphens, because there are not 2 consecutive unescaped hyphens', () => {
-    expect(Up.toAst("Okay-\\--I'll eat the tarantula.")).to.be.eql(
+    expect(Up.toDocument("Okay-\\--I'll eat the tarantula.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("Okay---I'll eat the tarantula.")
       ]))
   })
 
   specify('Escaping the third of 3 hyphens produces an en dash followed by a hyphen', () => {
-    expect(Up.toAst("My favorite dashes: --\\-")).to.be.eql(
+    expect(Up.toDocument("My favorite dashes: --\\-")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("My favorite dashes: –-")
       ]))
   })
 
   specify('Escaping the third of 4 hyphens produces an em dash followed by a hyphen', () => {
-    expect(Up.toAst("My favorite dashes: ---\\-")).to.be.eql(
+    expect(Up.toDocument("My favorite dashes: ---\\-")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("My favorite dashes: —-")
       ]))
   })
 
   specify('Escaping the fourth of 5 hyphens produces an em dash followed by a hyphen', () => {
-    expect(Up.toAst("My favorite dashes: ----\\-")).to.be.eql(
+    expect(Up.toDocument("My favorite dashes: ----\\-")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("My favorite dashes: —-")
       ]))

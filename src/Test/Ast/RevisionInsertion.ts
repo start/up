@@ -8,7 +8,7 @@ import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 
 describe('markup surrounded by 2 plus signs', () => {
   it('is put inside a revision insertion node', () => {
-    expect(Up.toAst('I like ++to brush++ my teeth')).to.be.eql(
+    expect(Up.toDocument('I like ++to brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionInsertionNode([
@@ -22,7 +22,7 @@ describe('markup surrounded by 2 plus signs', () => {
 
 describe('A revision insertion', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('I like ++to *regularly* brush++ my teeth')).to.be.eql(
+    expect(Up.toDocument('I like ++to *regularly* brush++ my teeth')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionInsertionNode([
@@ -40,7 +40,7 @@ describe('A revision insertion', () => {
 
 describe('An unmatched revision insertion delimiter', () => {
   it('is preserved as plain text', () => {
-    expect(Up.toAst('I like pizza++but I never eat it.')).to.be.eql(
+    expect(Up.toDocument('I like pizza++but I never eat it.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like pizza++but I never eat it.'),
       ]))

@@ -16,7 +16,7 @@ describe('An otherwise blank line starting with an escaped backslash', () => {
 Roses are red
 \\ \t
 Violets are blue`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -39,7 +39,7 @@ describe('A line starting with an escaped character in a line block', () => {
     const markup = `
 \\Roses are red
 Violets are blue`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -56,7 +56,7 @@ Violets are blue`
     const markup = `
 Roses are red
 \\Violets are blue`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -79,7 +79,7 @@ Violets are blue
 \\#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -110,7 +110,7 @@ Roses are red
 Violets are blue\\
 Lyrics have lines
 And addresses do, too`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -137,7 +137,7 @@ describe('A paragraph directly followed by a line consisting solely of media con
 You'll never believe this fake evidence!
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("You'll never believe this fake evidence!")

@@ -9,35 +9,35 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 describe('A backslash', () => {
   it('causes the following character to be treated as plain text', () => {
-    expect(Up.toAst('Hello, \\world!')).to.be.eql(
+    expect(Up.toDocument('Hello, \\world!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!')
       ]))
   })
 
   it('causes the following backslash to be treated as plain text', () => {
-    expect(Up.toAst('Hello, \\\\!')).to.be.eql(
+    expect(Up.toDocument('Hello, \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\!')
       ]))
   })
 
   it('disables any special meaning of the following character', () => {
-    expect(Up.toAst('Hello, \\*world\\*!')).to.be.eql(
+    expect(Up.toDocument('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, *world*!')
       ]))
   })
 
   it('causes only the following character to be treated as plain text', () => {
-    expect(Up.toAst('Hello, \\\\, meet \\\\!')).to.be.eql(
+    expect(Up.toDocument('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\, meet \\!')
       ]))
   })
 
   it('is ignored if it is the final character of the markup', () => {
-    expect(Up.toAst('Hello, \\')).to.be.eql(
+    expect(Up.toDocument('Hello, \\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, ')
       ]))
@@ -50,7 +50,7 @@ context("Backslashes don't disable line breaks:", () => {
     const markup = `
 Hello, world!\\
 Goodbye, world!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -68,7 +68,7 @@ Goodbye, world!`
 Hello, world!
 \\
 Goodbye, world!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
@@ -84,7 +84,7 @@ Goodbye, world!`
 Hello, world!\\
 
 Goodbye, world!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')

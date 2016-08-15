@@ -12,7 +12,7 @@ describe('The term that represents image conventions', () => {
   it('comes from the "image" config term', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -22,13 +22,13 @@ describe('The term that represents image conventions', () => {
     const lowercase = '[see: Chrono Cross logo][https://example.com/cc.png]'
     const mixedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(up.toAst(mixedCase)).to.be.eql(up.toAst(lowercase))
+    expect(up.toDocument(mixedCase)).to.be.eql(up.toDocument(lowercase))
   })
 
   it('is trimmed', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(Up.toAst(markup, { terms: { image: ' \t see \t' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { image: ' \t see \t' } })).to.be.eql(
       new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -37,7 +37,7 @@ describe('The term that represents image conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*see*: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(Up.toAst(markup, { terms: { image: '*see*' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { image: '*see*' } })).to.be.eql(
       new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -46,7 +46,7 @@ describe('The term that represents image conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
 
-    expect(Up.toAst(markup, { terms: { image: ['view', 'look'] } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { image: ['view', 'look'] } })).to.be.eql(
       new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png'),
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')

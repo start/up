@@ -4,7 +4,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 
 function listStart(textForOrderedList: string): number {
-  const list = Up.toAst(textForOrderedList).children[0] as OrderedListNode
+  const list = Up.toDocument(textForOrderedList).children[0] as OrderedListNode
   return list.start()
 }
 

@@ -24,7 +24,7 @@ import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 context('Most inline conventions are not applied if they have no content.', () => {
   context('Specifically:', () => {
     specify('Highlights', () => {
-      expect(Up.toAst('[highlight:]')).to.eql(
+      expect(Up.toDocument('[highlight:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[highlight:]')
@@ -33,7 +33,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER:]')).to.eql(
+      expect(Up.toDocument('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[SPOILER:]')
@@ -42,7 +42,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('NSFW', () => {
-      expect(Up.toAst('[NSFW:]')).to.eql(
+      expect(Up.toDocument('[NSFW:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[NSFW:]')
@@ -51,7 +51,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('NSFL', () => {
-      expect(Up.toAst('[NSFL:]')).to.eql(
+      expect(Up.toDocument('[NSFL:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[NSFL:]')
@@ -60,7 +60,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Footnotes', () => {
-      expect(Up.toAst('(^)')).to.eql(
+      expect(Up.toDocument('(^)')).to.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
             new PlainTextNode('(^)')
@@ -69,21 +69,21 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Parentheses', () => {
-      expect(Up.toAst('()')).to.eql(
+      expect(Up.toDocument('()')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('()')
         ]))
     })
 
     specify('Square brackets', () => {
-      expect(Up.toAst('[]')).to.eql(
+      expect(Up.toDocument('[]')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('[]')
         ]))
     })
 
     specify('Input instructions', () => {
-      expect(Up.toAst('{}')).to.eql(
+      expect(Up.toDocument('{}')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('{}')
         ]))
@@ -91,7 +91,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
     specify('Revision insertion', () => {
       // If the revision insertion delimiters were alone on a line, they would be interpreted as an outline separator streak. 
-      expect(Up.toAst('Spiders.++++')).to.eql(
+      expect(Up.toDocument('Spiders.++++')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.++++')
         ]))
@@ -99,7 +99,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
     specify('Revision insertion', () => {
       // If the revision deletion delimiters were alone on a line, they would be interpreted as an outline separator streak.
-      expect(Up.toAst('Spiders.~~~~')).to.eql(
+      expect(Up.toDocument('Spiders.~~~~')).to.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Spiders.~~~~')
         ]))
@@ -108,7 +108,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
     context('Of those conventions, only the revision conventions apply when containing only unescaped whitespace.', () => {
       specify('Revision insertion applies.', () => {
-        expect(Up.toAst('no++ ++one')).to.eql(
+        expect(Up.toDocument('no++ ++one')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('no'),
             new RevisionInsertionNode([
@@ -119,7 +119,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('Revision deletion applies.', () => {
-        expect(Up.toAst('e~~ ~~mail')).to.eql(
+        expect(Up.toDocument('e~~ ~~mail')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('e'),
             new RevisionDeletionNode([
@@ -132,7 +132,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
       context("These don't:", () => {
         specify('Highlights', () => {
-          expect(Up.toAst('[highlight:  \t  \t ]')).to.eql(
+          expect(Up.toDocument('[highlight:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new SquareBracketedNode([
                 new PlainTextNode('[highlight:  \t  \t ]')
@@ -141,7 +141,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Spoilers', () => {
-          expect(Up.toAst('[SPOILER:  \t  \t ]')).to.eql(
+          expect(Up.toDocument('[SPOILER:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new SquareBracketedNode([
                 new PlainTextNode('[SPOILER:  \t  \t ]')
@@ -150,7 +150,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('NSFW', () => {
-          expect(Up.toAst('(NSFW:  \t  \t )')).to.eql(
+          expect(Up.toDocument('(NSFW:  \t  \t )')).to.eql(
             insideDocumentAndParagraph([
               new ParenthesizedNode([
                 new PlainTextNode('(NSFW:  \t  \t )')
@@ -159,7 +159,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('NSFL', () => {
-          expect(Up.toAst('[NSFL:  \t  \t ]')).to.eql(
+          expect(Up.toDocument('[NSFL:  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new SquareBracketedNode([
                 new PlainTextNode('[NSFL:  \t  \t ]')
@@ -168,7 +168,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Footnotes', () => {
-          expect(Up.toAst('(^  \t \t )')).to.eql(
+          expect(Up.toDocument('(^  \t \t )')).to.eql(
             insideDocumentAndParagraph([
               new ParenthesizedNode([
                 new PlainTextNode('(^  \t \t )')
@@ -177,21 +177,21 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Parentheses', () => {
-          expect(Up.toAst('(  \t  \t )')).to.eql(
+          expect(Up.toDocument('(  \t  \t )')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('(  \t  \t )')
             ]))
         })
 
         specify('Square brackets', () => {
-          expect(Up.toAst('[  \t  \t ]')).to.eql(
+          expect(Up.toDocument('[  \t  \t ]')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('[  \t  \t ]')
             ]))
         })
 
         specify('Input instructions', () => {
-          expect(Up.toAst('{  \t  \t }')).to.eql(
+          expect(Up.toDocument('{  \t  \t }')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('{  \t  \t }')
             ]))
@@ -206,14 +206,14 @@ context('Most inline conventions are not applied if they have no content.', () =
       context('With asterisks:', () => {
         specify('Emphasis', () => {
           // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
-          expect(Up.toAst('Stars! * \t \t *')).to.eql(
+          expect(Up.toDocument('Stars! * \t \t *')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! * \t \t *')
             ]))
         })
 
         specify('Stress', () => {
-          expect(Up.toAst('Stars! **\t  \t**')).to.eql(
+          expect(Up.toDocument('Stars! **\t  \t**')).to.eql(
             // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! **\t  \t**')
@@ -221,14 +221,14 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Shouting (emphasis and stress together)', () => {
-          expect(Up.toAst('Stars! *** \t \t ***')).to.eql(
+          expect(Up.toDocument('Stars! *** \t \t ***')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! *** \t \t ***')
             ]))
         })
 
         specify('Shouting with imbalanced delimiters', () => {
-          expect(Up.toAst('Stars! *****\t  \t***')).to.eql(
+          expect(Up.toDocument('Stars! *****\t  \t***')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! *****\t  \t***')
             ]))
@@ -238,14 +238,14 @@ context('Most inline conventions are not applied if they have no content.', () =
       context('With underscores:', () => {
         specify('Italics', () => {
           // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
-          expect(Up.toAst('Stars! _ \t \t _')).to.eql(
+          expect(Up.toDocument('Stars! _ \t \t _')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! _ \t \t _')
             ]))
         })
 
         specify('Bold', () => {
-          expect(Up.toAst('Stars! __\t  \t__')).to.eql(
+          expect(Up.toDocument('Stars! __\t  \t__')).to.eql(
             // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! __\t  \t__')
@@ -253,14 +253,14 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Shouting (italics and bold together)', () => {
-          expect(Up.toAst('Stars! ___ \t \t ___')).to.eql(
+          expect(Up.toDocument('Stars! ___ \t \t ___')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! ___ \t \t ___')
             ]))
         })
 
         specify('Shouting with imbalanced delimiters', () => {
-          expect(Up.toAst('Stars! _____\t  \t___')).to.eql(
+          expect(Up.toDocument('Stars! _____\t  \t___')).to.eql(
             insideDocumentAndParagraph([
               new PlainTextNode('Stars! _____\t  \t___')
             ]))
@@ -271,28 +271,28 @@ context('Most inline conventions are not applied if they have no content.', () =
 
     context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
       specify('1 character', () => {
-        expect(Up.toAst('*')).to.eql(
+        expect(Up.toDocument('*')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('*')
           ]))
       })
 
       specify('2 characters', () => {
-        expect(Up.toAst('**')).to.eql(
+        expect(Up.toDocument('**')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('**')
           ]))
       })
 
       specify('3 characters', () => {
-        expect(Up.toAst('Stars! ***')).to.eql(
+        expect(Up.toDocument('Stars! ***')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! ***')
           ]))
       })
 
       specify('4 characters', () => {
-        expect(Up.toAst('Stars! ****')).to.eql(
+        expect(Up.toDocument('Stars! ****')).to.eql(
           insideDocumentAndParagraph([
             new PlainTextNode('Stars! ****')
           ]))
@@ -306,7 +306,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise-valid link...', () => {
   describe('with an empty URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[*Yggdra Union*][]')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*][]')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('['),
@@ -323,7 +323,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with a blank URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
-      expect(Up.toAst('[*Yggdra Union*]( \t )')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*]( \t )')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('['),
@@ -340,7 +340,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with empty content', () => {
     it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toAst('()[https://google.com]')).to.be.eql(
+      expect(Up.toDocument('()[https://google.com]')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('()'),
           new SquareBracketedNode([
@@ -357,7 +357,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with blank content', () => {
     it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toAst('[ \t ](https://google.com)')).to.be.eql(
+      expect(Up.toDocument('[ \t ](https://google.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('[ \t ]'),
           new ParenthesizedNode([
@@ -374,7 +374,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with empty content and an empty URL', () => {
     it('is treated as consecutive empty brackets', () => {
-      expect(Up.toAst('Hello, [][]!')).to.be.eql(
+      expect(Up.toDocument('Hello, [][]!')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Hello, [][]!')
         ]))
@@ -384,7 +384,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with blank content and a blank URL', () => {
     it('is treated as consecutive blank brackets', () => {
-      expect(Up.toAst('Beep boop, [ ][\t]!')).to.be.eql(
+      expect(Up.toDocument('Beep boop, [ ][\t]!')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Beep boop, [ ][\t]!')
         ]))
@@ -394,7 +394,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with escaped blank content', () => {
     specify('produces a link with its URL as its content', () => {
-      expect(Up.toAst('[\\ ][https://google.com]')).to.be.eql(
+      expect(Up.toDocument('[\\ ][https://google.com]')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('https://google.com')
@@ -406,7 +406,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with an escaped blank URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toAst('[*Yggdra Union*](\\ )')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*](\\ )')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('['),
@@ -427,7 +427,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 context("Media conventions are handled a bit differently, because they also have URL.", () => {
   describe('An image with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[image:][http://example.com/hauntedhouse.svg]')).to.be.eql(
+      expect(Up.toDocument('[image:][http://example.com/hauntedhouse.svg]')).to.be.eql(
         new UpDocument([
           new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
@@ -437,7 +437,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.be.eql(
+      expect(Up.toDocument('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.be.eql(
         new UpDocument([
           new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
@@ -447,7 +447,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with an empty URL', () => {
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[image: Yggdra Union]{}')).to.be.eql(
+      expect(Up.toDocument('[image: Yggdra Union]{}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[image: Yggdra Union]')
@@ -460,7 +460,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with a blank URL', () => {
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
-      expect(Up.toAst('[image: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[image: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[image: Yggdra Union]')
@@ -473,7 +473,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not an image. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toAst('[image: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -484,7 +484,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toAst('[image: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -496,7 +496,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toAst('[image: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -514,7 +514,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+      expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
         new UpDocument([
           new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
@@ -524,7 +524,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+      expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
         new UpDocument([
           new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
@@ -534,7 +534,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty URL', () => {
     it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('(audio: Yggdra Union){}')).to.be.eql(
+      expect(Up.toDocument('(audio: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
             new PlainTextNode('(audio: Yggdra Union)')
@@ -547,7 +547,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty URL', () => {
     it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[audio: Yggdra Union]')
@@ -560,7 +560,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toAst('[audio: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -571,7 +571,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toAst('[audio: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -583,7 +583,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toAst('[audio: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -601,7 +601,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[video:][http://example.com/hauntedhouse.webm]')).to.be.eql(
+      expect(Up.toDocument('[video:][http://example.com/hauntedhouse.webm]')).to.be.eql(
         new UpDocument([
           new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
@@ -611,7 +611,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toAst('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.be.eql(
+      expect(Up.toDocument('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.be.eql(
         new UpDocument([
           new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
@@ -621,7 +621,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with an empty URL', () => {
     it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('(video: Yggdra Union){}')).to.be.eql(
+      expect(Up.toDocument('(video: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
             new PlainTextNode('(video: Yggdra Union)')
@@ -634,7 +634,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with a blank URL', () => {
     it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toAst('[video: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[video: Yggdra Union]')
@@ -647,7 +647,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toAst('[video: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -658,7 +658,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toAst('[video: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house] was written on the desk')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -670,7 +670,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toAst('[video: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
@@ -690,7 +690,7 @@ context("Media conventions are handled a bit differently, because they also have
 context("Conventions aren't linkified if the bracketed URL is...", () => {
   context('Empty:', () => {
     specify('highlight', () => {
-      expect(Up.toAst('[highlight: Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[highlight: Ash fights Gary]()')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('Ash fights Gary')
@@ -700,7 +700,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER: Ash fights Gary]{}')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Ash fights Gary]{}')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
@@ -710,7 +710,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFW', () => {
-      expect(Up.toAst('[NSFW: Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[NSFW: Ash fights Gary]()')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -720,7 +720,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFL', () => {
-      expect(Up.toAst('[NSFL: Ash fights Gary][]')).to.be.eql(
+      expect(Up.toDocument('[NSFL: Ash fights Gary][]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('Ash fights Gary')
@@ -734,7 +734,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         new PlainTextNode('Ash fights Gary')
       ], 1)
 
-      expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[^ Ash fights Gary]()')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             footnote,
@@ -745,7 +745,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Audio', () => {
-      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('()')
@@ -753,7 +753,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Images', () => {
-      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
         insideDocumentAndParagraph([
           new ImageNode('Ash fights Gary', 'https://example.com/image'),
           new PlainTextNode('[]')
@@ -761,7 +761,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Videos', () => {
-      expect(Up.toAst('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('Ash fights Gary', 'https://example.com/video'),
           new PlainTextNode('{}')
@@ -771,7 +771,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
   context('Blank:', () => {
     specify('Highlights', () => {
-      expect(Up.toAst('[highlight: Ash fights Gary]{\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[highlight: Ash fights Gary]{\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('Ash fights Gary')
@@ -781,7 +781,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Spoilers', () => {
-      expect(Up.toAst('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Ash fights Gary')
@@ -791,7 +791,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFW', () => {
-      expect(Up.toAst('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash fights Gary')
@@ -801,7 +801,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFL', () => {
-      expect(Up.toAst('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
+      expect(Up.toDocument('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('Ash fights Gary')
@@ -815,7 +815,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         new PlainTextNode('Ash fights Gary')
       ], 1)
 
-      expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             footnote,
@@ -826,7 +826,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Audio', () => {
-      expect(Up.toAst('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('(\t \t \t)')
@@ -834,7 +834,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Images', () => {
-      expect(Up.toAst('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.be.eql(
+      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.be.eql(
         insideDocumentAndParagraph([
           new ImageNode('Ash fights Gary', 'https://example.com/image'),
           new PlainTextNode('[\t \t \t]')
@@ -842,7 +842,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Videos', () => {
-      expect(Up.toAst('[video: Ash fights Gary](example.com/video){\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){\t \t \t}')).to.be.eql(
         insideDocumentAndParagraph([
           new VideoNode('Ash fights Gary', 'https://example.com/video'),
           new PlainTextNode('{\t \t \t}')
@@ -854,7 +854,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
 describe('Revision insertion containing an empty revision deletion', () => {
   it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
-    expect(Up.toAst('I built a trail: ++~~~~++')).to.be.eql(
+    expect(Up.toDocument('I built a trail: ++~~~~++')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I built a trail: '),
         new RevisionInsertionNode([
@@ -867,7 +867,7 @@ describe('Revision insertion containing an empty revision deletion', () => {
 
 describe('An inline spoiler convention with escaped blank content', () => {
   it('produces an inline spoiler node containing its content (whitespace)', () => {
-    expect(Up.toAst("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
+    expect(Up.toDocument("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('The moral of this severely exciting, enriching story is '),
         new InlineSpoilerNode([
@@ -881,7 +881,7 @@ describe('An inline spoiler convention with escaped blank content', () => {
 
 describe('An otherwise-linkified NSFW convention with escaped blank content', () => {
   it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
-    expect(Up.toAst("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.be.eql(
+    expect(Up.toDocument("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("On Professor Oak's right arm is a tattoo of "),
         new InlineNsfwNode([

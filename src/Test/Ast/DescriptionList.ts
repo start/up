@@ -14,7 +14,7 @@ describe('A non-indented line followed by an indented line', () => {
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -39,7 +39,7 @@ Cyndaquil
 Torchic
   The first three starter Fire Pokemon`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -64,7 +64,7 @@ describe("A term in a description list", () => {
 Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -91,7 +91,7 @@ describe("A description in a description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -127,7 +127,7 @@ Gary
   A young man with a great sense of smell.
 `
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -169,7 +169,7 @@ describe("A description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -200,7 +200,7 @@ Poem
   Roses are red
   Violets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -228,7 +228,7 @@ Poem
 \tRoses are red
 \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -256,7 +256,7 @@ Poem
  \tRoses are red
  \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -296,7 +296,7 @@ Address
  
  \tI used to live there.`
 
-  expect(Up.toAst(markup)).to.be.eql(
+  expect(Up.toDocument(markup)).to.be.eql(
     new UpDocument([
       new DescriptionListNode([
         new DescriptionListNode.Item([

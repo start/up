@@ -9,7 +9,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 
 describe('A typical line of text', () => {
   it('produces a paragraph node', () => {
-    expect(Up.toAst("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")).to.be.eql(
+    expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
       ]))
@@ -19,7 +19,7 @@ describe('A typical line of text', () => {
 
 describe('Paragraphs', () => {
   it('can contain inline conventions', () => {
-    expect(Up.toAst("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
+    expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
         new EmphasisNode([
@@ -37,7 +37,7 @@ context('Between paragraphs, 1 or 2 empty or blank lines provide separation with
 Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
@@ -50,7 +50,7 @@ Pokemon Moon has a Mew under a truck.
 
 
 Pokemon Sun is a truck.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
@@ -62,7 +62,7 @@ Pokemon Sun is a truck.`
 Pokemon Moon has a Mew under a truck.
  \t \t 
 Pokemon Sun is a truck.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
@@ -75,7 +75,7 @@ Pokemon Moon has a Mew under a truck.
   \t \t 
 \t \t 
 Pokemon Sun is a truck.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),

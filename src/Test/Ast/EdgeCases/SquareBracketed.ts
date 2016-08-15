@@ -14,7 +14,7 @@ import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 context('Square bracketed text can be directly followed by whitespace followed by', () => {
   context('an inline spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
           new SquareBracketedNode([
@@ -29,7 +29,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
           new SquareBracketedNode([
@@ -52,7 +52,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new PlainTextNode('Lying.')
       ], 1)
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
@@ -73,7 +73,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new PlainTextNode('Definitely lying.')
       ], 1)
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
@@ -91,7 +91,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
 
   context('an image', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image: Gary] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image: Gary] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
           new SquareBracketedNode([
@@ -104,7 +104,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toAst('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
           new SquareBracketedNode([

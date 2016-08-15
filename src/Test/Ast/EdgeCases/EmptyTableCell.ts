@@ -15,7 +15,7 @@ Table:
 Chrono Trigger
 Starcraft`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -44,7 +44,7 @@ Chrono Trigger
 ;
 Starcraft`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([

@@ -10,7 +10,7 @@ import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toAst('SPOILER:')).to.be.eql(
+    expect(Up.toDocument('SPOILER:')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('SPOILER:')
       ]))
@@ -21,7 +21,7 @@ context("A spoiler block's label line does not produce a spoiler block node if i
 Spoiler:
 No!
 Roses don't glow!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Spoiler:')]),
@@ -36,7 +36,7 @@ Roses don't glow!`
 Spoiler:
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
@@ -53,7 +53,7 @@ Spoiler:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')
@@ -72,7 +72,7 @@ Spoiler:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Spoiler:')

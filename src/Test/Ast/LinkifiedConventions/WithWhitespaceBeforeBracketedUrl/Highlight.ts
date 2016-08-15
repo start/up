@@ -41,7 +41,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[highlight: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[highlight: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('something terrible')
@@ -58,7 +58,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[highlight: email] (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[highlight: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('email')
@@ -71,7 +71,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[highlight: local files] (file:///)')).to.be.eql(
+      expect(Up.toDocument('[highlight: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('local files')
@@ -99,7 +99,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[highlight: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[highlight: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('email')
@@ -131,7 +131,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[highlight: something terrible] (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[highlight: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('something terrible')
@@ -144,7 +144,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[highlight: slash] (/)')).to.be.eql(
+      expect(Up.toDocument('[highlight: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('slash')
@@ -172,7 +172,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[highlight: yeah] (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[highlight: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('yeah')
@@ -219,7 +219,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[highlight: hash mark] (#)')).to.be.eql(
+      expect(Up.toDocument('[highlight: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('hash mark')
@@ -232,7 +232,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[highlight: something terrible] (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[highlight: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('something terrible')
@@ -245,7 +245,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[highlight: yeah] (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[highlight: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('yeah')
@@ -307,7 +307,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[highlight: that place] (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[highlight: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('that place')
@@ -336,7 +336,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[highlight: username] (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[highlight: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new HighlightNode([
               new PlainTextNode('username')
@@ -349,7 +349,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[highlight: username] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[highlight: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new HighlightNode([
               new PlainTextNode('username')
@@ -363,7 +363,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[highlight: top-level domain] (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[highlight: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('top-level domain')
@@ -376,7 +376,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[highlight: Ash is not his own father] (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[highlight: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('Ash is not his own father')
@@ -389,7 +389,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[highlight: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[highlight: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('debilitating sadness')
@@ -417,7 +417,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[highlight: yeah] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[highlight: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('yeah')
@@ -430,7 +430,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[highlight: yeah] (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[highlight: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('yeah')
@@ -445,7 +445,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
 
   specify('If none of the conditions are satisfied, the highlight is not linkified', () => {
-    expect(Up.toAst('[highlight: something terrible] (really)')).to.be.eql(
+    expect(Up.toDocument('[highlight: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new HighlightNode([
           new PlainTextNode('something terrible')
@@ -461,7 +461,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
 describe('If there is nothing but whitspace between a highlight and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the highlight is not linkified', () => {
-    expect(Up.toAst('[highlight: something terrible]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[highlight: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new HighlightNode([
           new PlainTextNode('something terrible')

@@ -9,7 +9,7 @@ import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 describe('A backslash that is the first character in a paragraph', () => {
   it('correctly escapes the next character', () => {
-    expect(Up.toAst('\\*So many* Tuesdays')).to.be.eql(
+    expect(Up.toDocument('\\*So many* Tuesdays')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('*So many* Tuesdays')
       ]))
@@ -23,7 +23,7 @@ describe("A backslash that is the first character in a line block's first line",
 \\Roses are red
 Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
@@ -40,7 +40,7 @@ describe("A backslash that is the first character in a line block's second line"
 Roses are red
 \\Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
@@ -53,7 +53,7 @@ Roses are red
 
 describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
-    expect(Up.toAst('\\\\\\\\')).to.be.eql(
+    expect(Up.toDocument('\\\\\\\\')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('\\\\')
       ]))
@@ -63,7 +63,7 @@ describe('4 consecutive backslashes', () => {
 
 describe('An escaped character', () => {
   it('can immediately follow inline code', () => {
-    expect(Up.toAst('`pennsylvania()`\\ ')).to.be.eql(
+    expect(Up.toDocument('`pennsylvania()`\\ ')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineCodeNode('pennsylvania()'),
         new PlainTextNode(' ')

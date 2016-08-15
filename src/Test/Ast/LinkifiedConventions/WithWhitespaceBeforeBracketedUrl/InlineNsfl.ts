@@ -41,7 +41,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[NSFL: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('something terrible')
@@ -58,7 +58,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[NSFL: email] (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('email')
@@ -71,7 +71,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[NSFL: local files] (file:///)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('local files')
@@ -118,7 +118,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[NSFL: something terrible] (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('something terrible')
@@ -131,7 +131,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[NSFL: slash] (/)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('slash')
@@ -159,7 +159,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[NSFL: yeah] (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('yeah')
@@ -206,7 +206,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[NSFL: hash mark] (#)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('hash mark')
@@ -219,7 +219,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[NSFL: something terrible] (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('something terrible')
@@ -232,7 +232,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[NSFL: yeah] (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('yeah')
@@ -294,7 +294,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[NSFL: that place] (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('that place')
@@ -322,7 +322,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[NSFL: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('email')
@@ -337,7 +337,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[NSFL: username] (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[NSFL: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new InlineNsflNode([
               new PlainTextNode('username')
@@ -350,7 +350,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[NSFL: username] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[NSFL: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new InlineNsflNode([
               new PlainTextNode('username')
@@ -364,7 +364,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[NSFL: top-level domain] (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('top-level domain')
@@ -377,7 +377,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[NSFL: Ash is not his own father] (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('Ash is not his own father')
@@ -390,7 +390,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[NSFL: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('debilitating sadness')
@@ -418,7 +418,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[NSFL: yeah] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('yeah')
@@ -431,7 +431,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[NSFL: yeah] (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[NSFL: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsflNode([
             new PlainTextNode('yeah')
@@ -446,7 +446,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
 
   specify('If none of the conditions are satisfied, the NSFL convention is not linkified', () => {
-    expect(Up.toAst('[NSFL: something terrible] (really)')).to.be.eql(
+    expect(Up.toDocument('[NSFL: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('something terrible')
@@ -462,7 +462,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
 
 describe('If there is nothing but whitspace between an inline NSFL convention and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the NSFL convention is not linkified', () => {
-    expect(Up.toAst('[NSFL: something terrible]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[NSFL: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('something terrible')

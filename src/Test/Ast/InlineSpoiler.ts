@@ -10,7 +10,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 describe('Square bracketed text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -24,7 +24,7 @@ describe('Square bracketed text starting with "SPOILER:"', () => {
 
 describe('Parenthesized text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
-    expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -41,11 +41,11 @@ describe('An inline spoiler convention', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
     const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
 
-    expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
+    expect(Up.toDocument(withLowercase)).to.be.eql(Up.toDocument(withRandomCase))
   })
 
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight *Gary*].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight *Gary*].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -59,7 +59,7 @@ describe('An inline spoiler convention', () => {
   })
 
   it('can be nested within another spoiler convention', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -76,7 +76,7 @@ describe('An inline spoiler convention', () => {
 
 describe('An inline spoiler produced by square brackets', () => {
   it('can contain square bracketed text', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -94,7 +94,7 @@ describe('An inline spoiler produced by square brackets', () => {
 
 describe('An inline spoiler produced by parentheses', () => {
   it('can contain parenthesized text', () => {
-    expect(Up.toAst('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -112,7 +112,7 @@ describe('An inline spoiler produced by parentheses', () => {
 
 describe('Any whitespace between "SPOILER:" and the start of the spoiler content', () => {
   it('is optional', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -123,7 +123,7 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
   })
 
   it('is ignored', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: \t  \t you fight Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: \t  \t you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([

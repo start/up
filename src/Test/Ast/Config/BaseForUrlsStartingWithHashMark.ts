@@ -36,7 +36,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to image URLs that start with a hash mark', () => {
     const markup = '[image: Chrono Cross logo](#cc-logo.png)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/page#cc-logo.png')
       ]))
@@ -45,7 +45,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to audio URLs that start with a hash mark', () => {
     const markup = '[audio: Chrono Cross ending theme](#radical dreamers.mp3)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new AudioNode('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
       ]))
@@ -54,7 +54,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to video URLs that start with a hash mark', () => {
     const markup = '[video: Chrono Cross ending cinematic][#radical dreamers.webm]'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new VideoNode('Chrono Cross ending cinematic', 'https://example.com/page#radical dreamers.webm')
       ]))
@@ -63,7 +63,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified spoiler URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineSpoilerNode([
@@ -77,7 +77,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified NSFW URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [NSFW: Blue Sky meth](#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsfwNode([
@@ -91,7 +91,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified NSFL URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [NSFL: Blue Sky meth](#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsflNode([
@@ -111,7 +111,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -125,7 +125,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified audio URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg)(#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -137,7 +137,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified image URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png)(#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -149,7 +149,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified video URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm)(#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -161,7 +161,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to link URLs that start with a hash mark when the link content and URL are separated by whitespace', () => {
     const markup = '[Chrono Cross] (#wiki/Chrono_Chross)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -172,7 +172,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified spoiler URLs that start with a hash mark when the spoiler part and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth] (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineSpoilerNode([
@@ -186,7 +186,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified NSFW URLs that start with a hash mark when the NSFW part and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [NSFW: Blue Sky meth] (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsfwNode([
@@ -200,7 +200,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified NSFL URLs that start with a hash mark when the NSFL part and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [NSFL: Blue Sky meth] (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new InlineNsflNode([
@@ -220,7 +220,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], 1)
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -234,7 +234,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified audio URLs that start with a hash mark when the audio part and the linkifying URL are separated by whitespace', () => {
     const markup = 'Walter White produces [audio: Blue Sky meth](https://blueskymeth/sizzling.ogg) (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -246,7 +246,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified image URLs that start with a hash mark when the image part and the linkifying URL are separated by whitespace', () => {
     const markup = 'Walter White produces [image: Blue Sky meth](https://blueskymeth/sizzling.png) (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -258,7 +258,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is prefixed to linkified video URLs that start with a hash mark when the video part and the linkifying URL are separated by whitespace', () => {
     const markup = 'Walter White produces [video: Blue Sky meth](https://blueskymeth/sizzling.webm) (#wiki/Blue_Sky)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
@@ -270,7 +270,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is not prefixed to schemeless URLs not starting with a hash mark (the default URL scheme is prefixed instead)', () => {
     const markup = '[Chrono Cross](localhost/#wiki/Chrono_Chross)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')
@@ -281,7 +281,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
   it('is not prefixed to URLs that have a scheme (which by definition cannot start with a hash mark)', () => {
     const markup = '[Chrono Cross](my-app:localhost/wiki/Chrono_Chross)'
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Chrono Cross')

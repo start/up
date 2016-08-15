@@ -4,7 +4,7 @@ import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
 
 
 function listOrder(textForOrderedList: string): OrderedListNode.Order {
-  const list = Up.toAst(textForOrderedList).children[0] as OrderedListNode
+  const list = Up.toDocument(textForOrderedList).children[0] as OrderedListNode
   return list.order()
 }
 

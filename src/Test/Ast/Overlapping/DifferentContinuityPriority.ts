@@ -25,7 +25,7 @@ import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 describe('Emphasized text overlapping a link', () => {
   it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+    expect(Up.toDocument('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new EmphasisNode([
@@ -45,7 +45,7 @@ describe('Emphasized text overlapping a link', () => {
 
 describe('A link overlapping emphasized text', () => {
   it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -65,7 +65,7 @@ describe('A link overlapping emphasized text', () => {
 
 describe('Italicized text overlapping a link', () => {
   it('splits the italic node, not the link node', () => {
-    expect(Up.toAst('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
+    expect(Up.toDocument('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new ItalicNode([
@@ -85,7 +85,7 @@ describe('Italicized text overlapping a link', () => {
 
 describe('A link overlapping italicized text', () => {
   it('splits the emphasis node, not the link node', () => {
-    expect(Up.toAst('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash _can][https://en.wikipedia.org/wiki/Waste_container] not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -105,7 +105,7 @@ describe('A link overlapping italicized text', () => {
 
 context('When a link overlaps stressed text, the stressed text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash **can](https://en.wikipedia.org/wiki/Waste_container) not** stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash **can](https://en.wikipedia.org/wiki/Waste_container) not** stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -122,7 +122,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
   })
 
   it('The italicized text opens first', () => {
-    expect(Up.toAst('I do **not (care** at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do **not (care** at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new StressNode([
@@ -142,7 +142,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
 
 context('When a link overlaps italicized text, the italicized text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash _can](https://en.wikipedia.org/wiki/Waste_container) not_ stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash _can](https://en.wikipedia.org/wiki/Waste_container) not_ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -159,7 +159,7 @@ context('When a link overlaps italicized text, the italicized text will always b
   })
 
   it('The italicized text opens first', () => {
-    expect(Up.toAst('I do _not (care_ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do _not (care_ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new ItalicNode([
@@ -179,7 +179,7 @@ context('When a link overlaps italicized text, the italicized text will always b
 
 context('When a link overlaps bold text, the bold text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash __can](https://en.wikipedia.org/wiki/Waste_container) not__ stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash __can](https://en.wikipedia.org/wiki/Waste_container) not__ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -196,7 +196,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
   })
 
   it('The bold text opens first', () => {
-    expect(Up.toAst('I do __not (care__ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do __not (care__ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new BoldNode([
@@ -216,7 +216,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
 
 context('When a link overlaps highlighted text, the highlighted text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash (highlight: can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash (highlight: can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -233,7 +233,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
   })
 
   it('The highlight opens first', () => {
-    expect(Up.toAst('I do [highlight: not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do [highlight: not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new HighlightNode([
@@ -253,7 +253,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
 
 context('When a link overlaps revision deletion, the revision deletion will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash ~~can](https://en.wikipedia.org/wiki/Waste_container) not~~ stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash ~~can](https://en.wikipedia.org/wiki/Waste_container) not~~ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -270,7 +270,7 @@ context('When a link overlaps revision deletion, the revision deletion will alwa
   })
 
   it('The revision deletion opens first', () => {
-    expect(Up.toAst('I do ~~not (care~~ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do ~~not (care~~ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new RevisionDeletionNode([
@@ -290,7 +290,7 @@ context('When a link overlaps revision deletion, the revision deletion will alwa
 
 context('When a link overlaps revision insertion, the revision insertion will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash ++can](https://en.wikipedia.org/wiki/Waste_container) not++ stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash ++can](https://en.wikipedia.org/wiki/Waste_container) not++ stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -307,7 +307,7 @@ context('When a link overlaps revision insertion, the revision insertion will al
   })
 
   it('The revision deletion opens first', () => {
-    expect(Up.toAst('I do ++not (care++ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do ++not (care++ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new RevisionInsertionNode([
@@ -327,7 +327,7 @@ context('When a link overlaps revision insertion, the revision insertion will al
 
 context('When a link overlaps parenthesized text, the parenthesized text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This [trash (can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.be.eql(
+    expect(Up.toDocument('This [trash (can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -344,7 +344,7 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
   })
 
   it('The parenthesized text opens first', () => {
-    expect(Up.toAst('I do (not [care) at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do (not [care) at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new ParenthesizedNode([
@@ -364,7 +364,7 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
 
 context('When a link overlaps square bracketed text, the square bracketed text will always be split. This includes when:', () => {
   it('The link opens first', () => {
-    expect(Up.toAst('This (trash [can)(https://en.wikipedia.org/wiki/Waste_container) not] stay here.')).to.be.eql(
+    expect(Up.toDocument('This (trash [can)(https://en.wikipedia.org/wiki/Waste_container) not] stay here.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This '),
         new LinkNode([
@@ -381,7 +381,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
   })
 
   it('The square bracketed text opens first', () => {
-    expect(Up.toAst('I do [not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
+    expect(Up.toDocument('I do [not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
         new SquareBracketedNode([
@@ -401,7 +401,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
 
 describe('An inline spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
-    expect(Up.toAst('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+    expect(Up.toDocument('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineSpoilerNode([
           new PlainTextNode('Gary loses to '),
@@ -422,7 +422,7 @@ describe('A link that overlaps an inline spoiler', () => {
     const markup =
       'In Pokémon Red, [Gary Oak (SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -452,7 +452,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new InlineSpoilerNode([
@@ -478,7 +478,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
         ]),
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -497,7 +497,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
 
 describe('An inline NSFW convention that overlaps a link', () => {
   it("splits the link node, not the NSFW node", () => {
-    expect(Up.toAst('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+    expect(Up.toDocument('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsfwNode([
           new PlainTextNode('Gary loses to '),
@@ -518,7 +518,7 @@ describe('A link that overlaps an inline NSFW convention', () => {
     const markup =
       'In Pokémon Red, [Gary Oak (NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -548,7 +548,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new InlineNsfwNode([
@@ -574,7 +574,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
         ]),
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -592,7 +592,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
 
 describe('An inline NSFL convention that overlaps a link', () => {
   it("splits the link node, not the NSFL node", () => {
-    expect(Up.toAst('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
+    expect(Up.toDocument('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('Gary loses to '),
@@ -613,7 +613,7 @@ describe('A link that overlaps an inline NSFL convention', () => {
     const markup =
       'In Pokémon Red, [Gary Oak (NSFL: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In Pokémon Red, '),
         new LinkNode([
@@ -643,7 +643,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new InlineNsflNode([
@@ -669,7 +669,7 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
         ])
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),

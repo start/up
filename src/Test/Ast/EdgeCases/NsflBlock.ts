@@ -10,7 +10,7 @@ import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 context("A NSFL block's label line does not produce a NSFL block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toAst('NSFL:')).to.be.eql(
+    expect(Up.toDocument('NSFL:')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('NSFL:')
       ]))
@@ -21,7 +21,7 @@ context("A NSFL block's label line does not produce a NSFL block node if it is",
 NSFL:
 No!
 Avoid that initialism!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('NSFL:')]),
@@ -36,7 +36,7 @@ Avoid that initialism!`
 NSFL:
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFL:')
@@ -53,7 +53,7 @@ NSFL:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFL:')
@@ -72,7 +72,7 @@ NSFL:
 
 
 No!`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFL:')

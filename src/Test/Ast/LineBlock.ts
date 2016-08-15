@@ -20,7 +20,7 @@ describe('Consecutive non-blank lines', () => {
 Roses are red
 Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -44,7 +44,7 @@ Violets are **blue**
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -73,7 +73,7 @@ Roses are red
  \\\t\t
 Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -105,7 +105,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -143,7 +143,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -178,7 +178,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -210,7 +210,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -252,7 +252,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -296,7 +296,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -340,7 +340,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
@@ -380,7 +380,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([

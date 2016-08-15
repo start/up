@@ -19,7 +19,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
+    expect(Up.toDocument(footnoteProducedByParentheses)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -37,8 +37,8 @@ describe('Square bracketed text starting with a caret', () => {
     const footnoteProducedBySquareBrackets =
       "I don't eat cereal. [^Well, I do, but I pretend not to.] Never have."
 
-    expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
-      Up.toAst(footnoteProducedBySquareBrackets))
+    expect(Up.toDocument(footnoteProducedByParentheses)).to.be.eql(
+      Up.toDocument(footnoteProducedBySquareBrackets))
   })
 })
 
@@ -51,7 +51,7 @@ describe('A word followed by several spaces followed by a footnote', () => {
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -73,7 +73,7 @@ describe('A footnote', () => {
       new PlainTextNode(', but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
+    expect(Up.toDocument("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -93,7 +93,7 @@ describe('A footnote', () => {
       new PlainTextNode(', but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
+    expect(Up.toDocument("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new StressNode([
@@ -115,7 +115,7 @@ describe('A footnote', () => {
       new PlainTextNode(', but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
+    expect(Up.toDocument("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new StressNode([
@@ -147,7 +147,7 @@ describe('A footnote', () => {
       new PlainTextNode(" Never have."),
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
@@ -169,7 +169,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
+    expect(Up.toDocument("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),

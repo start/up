@@ -41,7 +41,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[NSFW: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('something terrible')
@@ -58,7 +58,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[NSFW: email] (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('email')
@@ -71,7 +71,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[NSFW: local files] (file:///)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('local files')
@@ -118,7 +118,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[NSFW: something terrible] (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('something terrible')
@@ -131,7 +131,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[NSFW: slash] (/)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('slash')
@@ -159,7 +159,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[NSFW: yeah] (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('yeah')
@@ -206,7 +206,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[NSFW: hash mark] (#)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('hash mark')
@@ -219,7 +219,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[NSFW: something terrible] (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('something terrible')
@@ -232,7 +232,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[NSFW: yeah] (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('yeah')
@@ -294,7 +294,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[NSFW: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('email')
@@ -307,7 +307,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[NSFW: that place] (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('that place')
@@ -336,7 +336,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[NSFW: username] (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[NSFW: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new InlineNsfwNode([
               new PlainTextNode('username')
@@ -349,7 +349,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[NSFW: username] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[NSFW: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new InlineNsfwNode([
               new PlainTextNode('username')
@@ -363,7 +363,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[NSFW: top-level domain] (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('top-level domain')
@@ -376,7 +376,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[NSFW: Ash is not his own father] (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('Ash is not his own father')
@@ -389,7 +389,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[NSFW: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('debilitating sadness')
@@ -417,7 +417,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[NSFW: yeah] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('yeah')
@@ -430,7 +430,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[NSFW: yeah] (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfwNode([
             new PlainTextNode('yeah')
@@ -445,7 +445,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 
   specify('If none of the conditions are satisfied, the NSFW convention is not linkified', () => {
-    expect(Up.toAst('[NSFW: something terrible] (really)')).to.be.eql(
+    expect(Up.toDocument('[NSFW: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsfwNode([
           new PlainTextNode('something terrible')
@@ -461,7 +461,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
 
 describe('If there is nothing but whitspace between an inline NSFW convention and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the NSFW convention is not linkified', () => {
-    expect(Up.toAst('[NSFW: something terrible]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[NSFW: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsfwNode([
           new PlainTextNode('something terrible')

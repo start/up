@@ -18,7 +18,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toAst(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -52,7 +52,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toAst(uppercase)).to.be.eql(up.toAst(mixedCase))
+    expect(up.toDocument(uppercase)).to.be.eql(up.toDocument(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -63,7 +63,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup, { terms: { table: ' \t data \t '}})).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { table: ' \t data \t '}})).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -90,7 +90,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup, { terms: { table: '*data*'}})).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { table: '*data*'}})).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -124,7 +124,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([

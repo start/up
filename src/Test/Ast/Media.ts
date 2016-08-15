@@ -12,7 +12,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -24,7 +24,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -36,7 +36,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -50,7 +50,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)] (hauntedhouse.com)  \t '
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -64,7 +64,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [audio: ghostly howling] [http://example.com/ghosts.ogg] \t ([image: haunted house] [http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com)  \t '
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
           new LinkNode([
@@ -78,7 +78,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')

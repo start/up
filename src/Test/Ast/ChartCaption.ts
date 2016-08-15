@@ -16,7 +16,7 @@ Chart: \`AND\` operator logic
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -53,7 +53,7 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -87,7 +87,7 @@ Chart: Games in the Chrono series
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -111,7 +111,7 @@ Chart: Games in the Chrono series
 
         Release Date`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -133,7 +133,7 @@ context("When there isn't a colon after the term for 'chart' in a chart's label 
 Chart the numbers.
 
 Do it now; I'm tired of waiting.`
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
         new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),

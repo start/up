@@ -25,7 +25,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         ], 'http://example.com/luckycharms')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -72,7 +72,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
       ], 2)
     ]
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -94,7 +94,7 @@ describe('A footnote directly followed by a media convention', () => {
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -116,7 +116,7 @@ describe('A footnote directly followed by an inline spoiler', () => {
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -140,7 +140,7 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -164,7 +164,7 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
         new PlainTextNode('Well, I do, but I pretend not to.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -188,7 +188,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
         new PlainTextNode('He called her.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote,
@@ -211,7 +211,7 @@ describe("When an otherwise-valid linkified spoiler's URL starts with whitespace
         new PlainTextNode('He called her.')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote,

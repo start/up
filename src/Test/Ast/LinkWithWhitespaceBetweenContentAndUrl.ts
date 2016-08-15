@@ -37,7 +37,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[agreed] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[agreed]')
@@ -54,7 +54,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[email] (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[email]')
@@ -67,7 +67,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[local files] (file:///)')).to.be.eql(
+      expect(Up.toDocument('[local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[local files]')
@@ -93,7 +93,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[email] (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[email]')
@@ -123,7 +123,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (/r9k/ inspires geniune pity)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -136,7 +136,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[slash] (/)')).to.be.eql(
+      expect(Up.toDocument('[slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[slash]')
@@ -162,7 +162,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[yeah] (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -205,7 +205,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[hash mark] (#)')).to.be.eql(
+      expect(Up.toDocument('[hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[hash mark]')
@@ -218,7 +218,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[yeah] (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -231,7 +231,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[yeah] (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -287,7 +287,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[that place] (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[that place]')
@@ -314,7 +314,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[username] (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
               new PlainTextNode('[username]')
@@ -327,7 +327,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[username] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new SquareBracketedNode([
               new PlainTextNode('[username]')
@@ -341,7 +341,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[top-level domain] (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[top-level domain]')
@@ -354,7 +354,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[Ash is not his own father] (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[Ash is not his own father]')
@@ -367,7 +367,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[debilitating sadness]')
@@ -393,7 +393,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[yeah] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -406,7 +406,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[yeah] (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new PlainTextNode('[yeah]')
@@ -421,7 +421,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 
   specify('If none of the conditions are satisfied, no link node is produced', () => {
-    expect(Up.toAst('[no] (really)')).to.be.eql(
+    expect(Up.toDocument('[no] (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new PlainTextNode('[no]')
@@ -437,7 +437,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
 
 describe('If there is nothing but whitspace between an inline spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the spoiler convention is not linkified', () => {
-    expect(Up.toAst('[something terrible]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new PlainTextNode('[something terrible]')

@@ -17,7 +17,7 @@ Chart: AND operator logic
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -49,7 +49,7 @@ Chart:
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -79,7 +79,7 @@ Chart
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -116,7 +116,7 @@ Final Fantasy II; 1988
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -151,7 +151,7 @@ Chart:
  \t Chrono Trigger\t ;\t   1995
  \t Chrono Cross\t ;\t     1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -184,7 +184,7 @@ Chart: AND operator logic
 1;true;false
 0;false;false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -223,7 +223,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -265,7 +265,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -307,7 +307,7 @@ Wednesday
 Thursday
 Friday`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -344,7 +344,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -392,7 +392,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -429,7 +429,7 @@ Chart:
 Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -461,7 +461,7 @@ Final Fantasy II;       1988 (almost 1989)
 Chrono Trigger;         1995
 Chrono Cross;           1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -503,7 +503,7 @@ Chart:
 Final Fantasy\\; Final Fantasy II;  Square [\\; Soft
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -531,7 +531,7 @@ Chart:  \t  \t  \t
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -561,7 +561,7 @@ Chart:  \t  \t  \t
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -594,7 +594,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -622,7 +622,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     [: Playstation;     1999 :]`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -650,7 +650,7 @@ Chart:
 [: Chrono Trigger;    Super :] Nintendo;   1995
 Chrono Cross;         Playstation;         1999`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([
@@ -678,7 +678,7 @@ Chart
 
 	      Release Date`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new TableNode(
           new TableNode.Header([

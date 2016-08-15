@@ -19,7 +19,7 @@ import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
   context('This includes:', () => {
     specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
-      expect(Up.toAst('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
+      expect(Up.toDocument('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new StressNode([
@@ -35,7 +35,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
-      expect(Up.toAst('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.be.eql(
+      expect(Up.toDocument('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new InlineNsflNode([
@@ -51,7 +51,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify('Revision deletion and revision insertion', () => {
-      expect(Up.toAst('~~++Oh~~ why would you do this?++')).to.be.eql(
+      expect(Up.toDocument('~~++Oh~~ why would you do this?++')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new RevisionDeletionNode([
@@ -63,7 +63,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify("A link whose content is wrapped in square brackets and emphasis", () => {
-      expect(Up.toAst("*[Yes*, I watched it live](example.com/replay).")).to.be.eql(
+      expect(Up.toDocument("*[Yes*, I watched it live](example.com/replay).")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new EmphasisNode([
@@ -76,7 +76,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
-      expect(Up.toAst("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.be.eql(
+      expect(Up.toDocument("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
             new LinkNode([
@@ -92,7 +92,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toAst('~~(Oh~~ why would you do this?)')).to.be.eql(
+      expect(Up.toDocument('~~(Oh~~ why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
           new ParenthesizedNode([
             new RevisionDeletionNode([
@@ -104,7 +104,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify('Square brackets', () => {
-      expect(Up.toAst('~~[Oh~~ why would you do this?]')).to.be.eql(
+      expect(Up.toDocument('~~[Oh~~ why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
           new SquareBracketedNode([
             new RevisionDeletionNode([
@@ -121,7 +121,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
 context('When most otherwise-nested conventions overlap by only their end delimiters, they nest without being split.', () => {
   context('This includes:', () => {
     specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) being overlapped by a third (e.g. revision deletion)', () => {
-      expect(Up.toAst('~~Hello **good ++friend!~~++** Hi!')).to.be.eql(
+      expect(Up.toDocument('~~Hello **good ++friend!~~++** Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Hello '),
@@ -137,7 +137,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Two conventions (e.g. NSFL, bold) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
-      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.be.eql(
+      expect(Up.toDocument('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('There was another '),
@@ -153,7 +153,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a freely-splittable convention (e.g. revision insertion)', () => {
-      expect(Up.toAst('++There was another [NSFL: rotten body (NSFW: squish++)] Hi!')).to.be.eql(
+      expect(Up.toDocument('++There was another [NSFL: rotten body (NSFW: squish++)] Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('There was another '),
@@ -169,7 +169,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud __stomp++**)__]. Hi!')).to.be.eql(
+      expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)__]. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new PlainTextNode('There '),
@@ -191,7 +191,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single freely-splittable convention', () => {
-      expect(Up.toAst('**There ++was (SPOILER: another [NSFL: loud __stomp++**)]__. Hi!')).to.be.eql(
+      expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)]__. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new PlainTextNode('There '),
@@ -213,7 +213,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single convention that should only be split when necessary', () => {
-      expect(Up.toAst('**There ++was ~~another [NSFL: loud (SPOILER: stomp++**~~]). Hi!')).to.be.eql(
+      expect(Up.toDocument('**There ++was ~~another [NSFL: loud (SPOILER: stomp++**~~]). Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new PlainTextNode('There '),
@@ -235,7 +235,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("An inline spoiler and a link", () => {
-      expect(Up.toAst('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('Mario fell off the platform. '),
@@ -247,7 +247,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("A link and an inline spoiler", () => {
-      expect(Up.toAst("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.be.eql(
+      expect(Up.toDocument("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('loudly sings '),
@@ -259,7 +259,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("Emphasis and a link", () => {
-      expect(Up.toAst("*I watched it [live*](example.com/replay)")).to.be.eql(
+      expect(Up.toDocument("*I watched it [live*](example.com/replay)")).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
             new PlainTextNode('I watched it '),
@@ -271,7 +271,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("A link and highlighted text", () => {
-      expect(Up.toAst('[Mario fell off the platform. (highlight: splat][example.com/game-over])')).to.be.eql(
+      expect(Up.toDocument('[Mario fell off the platform. (highlight: splat][example.com/game-over])')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Mario fell off the platform. '),
@@ -283,7 +283,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("Highlighted text and a link", () => {
-      expect(Up.toAst('(highlight: loud [thwomp)](example.com/thwomp)')).to.be.eql(
+      expect(Up.toDocument('(highlight: loud [thwomp)](example.com/thwomp)')).to.be.eql(
         insideDocumentAndParagraph([
           new HighlightNode([
             new PlainTextNode('loud '),
@@ -298,7 +298,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
-      expect(Up.toAst('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.be.eql(
+      expect(Up.toDocument('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new PlainTextNode('There was another '),
@@ -316,7 +316,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toAst('++Oh (why would you do this?++)')).to.be.eql(
+      expect(Up.toDocument('++Oh (why would you do this?++)')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh '),
@@ -331,7 +331,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toAst('~~Oh [why would you do this?~~]')).to.be.eql(
+      expect(Up.toDocument('~~Oh [why would you do this?~~]')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Oh '),
@@ -351,7 +351,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost.', () => {
   context('This includes:', () => {
     specify('Revision insertion and stress', () => {
-      expect(Up.toAst('++**Why would you do this?++**')).to.be.eql(
+      expect(Up.toDocument('++**Why would you do this?++**')).to.be.eql(
         insideDocumentAndParagraph([
           new StressNode([
             new RevisionInsertionNode([
@@ -362,7 +362,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
 
     specify('An inline spoiler and emphasis', () => {
-      expect(Up.toAst('[SPOILER: *Why would you do this?]*')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: *Why would you do this?]*')).to.be.eql(
         insideDocumentAndParagraph([
           new EmphasisNode([
             new InlineSpoilerNode([
@@ -373,7 +373,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
 
     specify('Emphasis and an inline spoiler', () => {
-      expect(Up.toAst('*[SPOILER: Why would you do this?*]')).to.be.eql(
+      expect(Up.toDocument('*[SPOILER: Why would you do this?*]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
             new EmphasisNode([
@@ -385,7 +385,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   })
 
   specify('Revision insertion and parentheses', () => {
-    expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
+    expect(Up.toDocument('++(Why would you do this?++)')).to.be.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
           new RevisionInsertionNode([
@@ -397,7 +397,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   })
 
   specify('Revision deletion and square brackets', () => {
-    expect(Up.toAst('~~[Why would you do this?~~]')).to.be.eql(
+    expect(Up.toDocument('~~[Why would you do this?~~]')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new RevisionDeletionNode([
@@ -409,7 +409,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   })
 
   specify('Parentheses and revision insertion', () => {
-    expect(Up.toAst('++(Why would you do this?++)')).to.be.eql(
+    expect(Up.toDocument('++(Why would you do this?++)')).to.be.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
           new RevisionInsertionNode([
@@ -421,7 +421,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   })
 
   specify('Square brackets and revision deletion', () => {
-    expect(Up.toAst('[~~Why would you do this?]~~')).to.be.eql(
+    expect(Up.toDocument('[~~Why would you do this?]~~')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new PlainTextNode('['),
@@ -437,7 +437,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
 context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second", () => {
   context('This includes:', () => {
     specify('Revision insertion and revision deletion', () => {
-      expect(Up.toAst('++Oh ~~++why would you do this?~~')).to.be.eql(
+      expect(Up.toDocument('++Oh ~~++why would you do this?~~')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh ')
@@ -449,7 +449,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Revision insertion and a link whose content is wrapped in square brackets', () => {
-      expect(Up.toAst('++Oh [++why would you do this?](example.com)')).to.be.eql(
+      expect(Up.toDocument('++Oh [++why would you do this?](example.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh ')
@@ -461,7 +461,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('A link whose content is wrapped in square brackets and revision deletion', () => {
-      expect(Up.toAst('[Well, well, ~~](example.com) why would you do this?~~')).to.be.eql(
+      expect(Up.toDocument('[Well, well, ~~](example.com) why would you do this?~~')).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
             new PlainTextNode('Well, well, ')
@@ -475,7 +475,7 @@ context("When most conventions overlap by only the first convention's end delimi
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toAst('++Oh (++why would you do this?)')).to.be.eql(
+      expect(Up.toDocument('++Oh (++why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh '),
@@ -490,7 +490,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toAst('~~Oh [~~why would you do this?]')).to.be.eql(
+      expect(Up.toDocument('~~Oh [~~why would you do this?]')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Oh '),

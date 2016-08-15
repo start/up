@@ -42,7 +42,7 @@ Dummy Header Cell
 ${cellMarkup};`
 
   const table =
-    Up.toAst(markup).children[0] as TableNode
+    Up.toDocument(markup).children[0] as TableNode
 
   return table.rows[0].cells[0].isNumeric()
 }

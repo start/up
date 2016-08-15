@@ -15,7 +15,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('Emphasis overlapping a linkified spoiler', () => {
   it('splits the emphasis node', () => {
-    expect(Up.toAst('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new EmphasisNode([
@@ -37,7 +37,7 @@ describe('Emphasis overlapping a linkified spoiler', () => {
 
 describe('A linkified spoiler overlapping revision deletion', () => {
   it('splits the revision deletion node', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -71,7 +71,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
         ])
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
@@ -103,7 +103,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
         new PlainTextNode(' is his last name')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new InlineNsflNode([

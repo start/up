@@ -14,7 +14,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('A naked URL containing another URL', () => {
   it("produces a single link node. In the link's contnet, the second URL's scheme is preserved", () => {
-    expect(Up.toAst('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.be.eql(
+    expect(Up.toDocument('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('web.archive.org/web/19961222145127/http://www.nintendo.com/')
@@ -26,7 +26,7 @@ describe('A naked URL containing another URL', () => {
 
 describe('A naked URL following an open parenthesis', () => {
   it("can contain an escaped closing parenthesis", () => {
-    expect(Up.toAst('(https://nintendo.com\\)')).to.be.eql(
+    expect(Up.toDocument('(https://nintendo.com\\)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('('),
         new LinkNode([
@@ -39,7 +39,7 @@ describe('A naked URL following an open parenthesis', () => {
 
 describe('A naked URL following an open square bracket', () => {
   it("can contain an escaped closing square bracket", () => {
-    expect(Up.toAst('[https://nintendo.com\\]')).to.be.eql(
+    expect(Up.toDocument('[https://nintendo.com\\]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('['),
         new LinkNode([
@@ -52,7 +52,7 @@ describe('A naked URL following an open square bracket', () => {
 
 describe('A naked URL following an open square bracket', () => {
   it("can contain an escaped closing square bracket", () => {
-    expect(Up.toAst('{https://nintendo.com\\}')).to.be.eql(
+    expect(Up.toDocument('{https://nintendo.com\\}')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('{'),
         new LinkNode([
@@ -75,7 +75,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
       new PlainTextNode(' is my favorite site')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote
@@ -103,7 +103,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
       ], 'https://w3.org'),
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote
@@ -133,7 +133,7 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
       ], 'https://w3.org'),
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           footnote
@@ -148,7 +148,7 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
 
 describe('A paragraph ending with a naked URL scheme (without the rest of the URL)', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('This is a URL scheme: http://')).to.be.eql(
+    expect(Up.toDocument('This is a URL scheme: http://')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('This is a URL scheme: http://')
       ]))
@@ -158,7 +158,7 @@ describe('A paragraph ending with a naked URL scheme (without the rest of the UR
 
 describe('A naked URL scheme followed by a space', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('http:// ')).to.be.eql(
+    expect(Up.toDocument('http:// ')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('http:// ')
       ]))
@@ -168,7 +168,7 @@ describe('A naked URL scheme followed by a space', () => {
 
 describe('A naked URL scheme (only) immediately followed by another convention closing', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toAst('++A URL scheme: http://++')).to.be.eql(
+    expect(Up.toDocument('++A URL scheme: http://++')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('A URL scheme: http://')
@@ -186,7 +186,7 @@ describe('A naked URL followed by a space then a footnote', () => {
       new PlainTextNode('An old search engine.')
     ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new LinkNode([
@@ -202,7 +202,7 @@ describe('A naked URL followed by a space then a footnote', () => {
 
 describe('A naked URL inside a link', () => {
   it("does not need a space between itself and the closing bracket that follows", () => {
-    expect(Up.toAst('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.be.eql(
+    expect(Up.toDocument('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('Trust me: '),
@@ -217,7 +217,7 @@ describe('A naked URL inside a link', () => {
 
 describe('A naked URL terminated by another convention closing, followed by a non-whitespace character,', () => {
   it('does not prevent other conventions from being evaluated afterward', () => {
-    expect(Up.toAst('I found a weird site (https://archive.org/fake). It had *way* too many tarantulas.')).to.be.eql(
+    expect(Up.toDocument('I found a weird site (https://archive.org/fake). It had *way* too many tarantulas.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I found a weird site '),
         new ParenthesizedNode([

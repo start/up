@@ -8,7 +8,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 
 describe('Text surrounded by single underscores', () => {
   it('is put inside an italic node', () => {
-    expect(Up.toAst('Hello, _world_!!')).to.be.eql(
+    expect(Up.toDocument('Hello, _world_!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new ItalicNode([
@@ -21,7 +21,7 @@ describe('Text surrounded by single underscores', () => {
 
 describe('Text separated from surrounding underscores by whitespace', () => {
   it('is not put inside an italic node', () => {
-    expect(Up.toAst('Birdie Sanders _ won _ Wisconsin')).to.be.eql(
+    expect(Up.toDocument('Birdie Sanders _ won _ Wisconsin')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Birdie Sanders _ won _ Wisconsin'),
       ]))
@@ -31,7 +31,7 @@ describe('Text separated from surrounding underscores by whitespace', () => {
 
 describe('Italicized text', () => {
   it('is evaluated for inline conventions', () => {
-    expect(Up.toAst('Hello, _`world`_!')).to.be.eql(
+    expect(Up.toDocument('Hello, _`world`_!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new ItalicNode([
@@ -42,7 +42,7 @@ describe('Italicized text', () => {
   })
 
   it('can contain further italicized text', () => {
-    expect(Up.toAst('Hello, _my _little_ world_!')).to.be.eql(
+    expect(Up.toDocument('Hello, _my _little_ world_!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new ItalicNode([
@@ -57,7 +57,7 @@ describe('Italicized text', () => {
   })
 
   it('can contain stressed text', () => {
-    expect(Up.toAst('Hello, _my __little__ world_!')).to.be.eql(
+    expect(Up.toDocument('Hello, _my __little__ world_!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new ItalicNode([
@@ -74,7 +74,7 @@ describe('Italicized text', () => {
 
 describe('Double underscores followed by two separate single closing underscores', () => {
   it('produces 2 nested emphasis nodes', () => {
-    expect(Up.toAst('__Warning:_ never feed this tarantula_')).to.be.eql(
+    expect(Up.toDocument('__Warning:_ never feed this tarantula_')).to.be.eql(
       insideDocumentAndParagraph([
         new ItalicNode([
           new ItalicNode([

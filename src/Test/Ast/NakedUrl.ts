@@ -13,7 +13,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 context("Some naked URLs produce links. The content of those links is the URL without its scheme.", () => {
   context('For a naked URL to produce a link, it must either:', () => {
     specify('Start with "https://', () => {
-      expect(Up.toAst('Check out https://archive.org')).to.be.eql(
+      expect(Up.toDocument('Check out https://archive.org')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Check out '),
           new LinkNode([
@@ -23,7 +23,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
     })
 
     specify('Start with "http://', () => {
-      expect(Up.toAst('Check out https://archive.org')).to.be.eql(
+      expect(Up.toDocument('Check out https://archive.org')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('Check out '),
           new LinkNode([
@@ -36,14 +36,14 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 
   context('A naked URL will not produce a link if:', () => {
     specify("It consists solely of 'http://'", () => {
-      expect(Up.toAst('http://')).to.be.eql(
+      expect(Up.toDocument('http://')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('http://')
         ]))
     })
 
     specify("It consists solely of 'https://'", () => {
-      expect(Up.toAst('https://')).to.be.eql(
+      expect(Up.toDocument('https://')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('https://')
         ]))
@@ -52,14 +52,14 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 
 
   specify("It has a scheme other than 'https://' or 'http://", () => {
-    expect(Up.toAst('ftp://google.com')).to.be.eql(
+    expect(Up.toDocument('ftp://google.com')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('ftp://google.com')
       ]))
   })
 
   specify("It doesn't have both forward slashes", () => {
-    expect(Up.toAst('In the homepage field, you can use either http:/mailto:')).to.be.eql(
+    expect(Up.toDocument('In the homepage field, you can use either http:/mailto:')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('In the homepage field, you can use either http:/mailto:')
       ]))
@@ -69,7 +69,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 
 describe('A naked URL', () => {
   it('is terminated by a space', () => {
-    expect(Up.toAst('https://archive.org is exciting')).to.be.eql(
+    expect(Up.toDocument('https://archive.org is exciting')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('archive.org')
@@ -79,7 +79,7 @@ describe('A naked URL', () => {
   })
 
   it('can contain escaped spaces', () => {
-    expect(Up.toAst('https://archive.org/fake\\ url')).to.be.eql(
+    expect(Up.toDocument('https://archive.org/fake\\ url')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('archive.org/fake url')
@@ -88,7 +88,7 @@ describe('A naked URL', () => {
   })
 
   it('is terminated by a parenthesized convention closing', () => {
-    expect(Up.toAst('(https://archive.org/fake)')).to.be.eql(
+    expect(Up.toDocument('(https://archive.org/fake)')).to.be.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
           new PlainTextNode('('),
@@ -101,7 +101,7 @@ describe('A naked URL', () => {
   })
 
   it('is terminated by a square bracketed convention closing', () => {
-    expect(Up.toAst('[https://archive.org/fake]')).to.be.eql(
+    expect(Up.toDocument('[https://archive.org/fake]')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new PlainTextNode('['),
@@ -114,7 +114,7 @@ describe('A naked URL', () => {
   })
 
   it('can contain matching parentheses', () => {
-    expect(Up.toAst('https://archive.org/fake(url)')).to.be.eql(
+    expect(Up.toDocument('https://archive.org/fake(url)')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('archive.org/fake(url)')
@@ -123,7 +123,7 @@ describe('A naked URL', () => {
   })
 
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('https://archive.org/fake[url]')).to.be.eql(
+    expect(Up.toDocument('https://archive.org/fake[url]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('archive.org/fake[url]')
@@ -132,7 +132,7 @@ describe('A naked URL', () => {
   })
 
   it("can be inside a link", () => {
-    expect(Up.toAst('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
+    expect(Up.toDocument('[https://inner.example.com/fake][https://outer.example.com/real]')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new LinkNode([
@@ -143,7 +143,7 @@ describe('A naked URL', () => {
   })
 
   it("is terminated by revision insertion closing", () => {
-    expect(Up.toAst('++I love... https://archive.org/fake++!')).to.be.eql(
+    expect(Up.toDocument('++I love... https://archive.org/fake++!')).to.be.eql(
       insideDocumentAndParagraph([
         new RevisionInsertionNode([
           new PlainTextNode('I love... '),
@@ -156,7 +156,7 @@ describe('A naked URL', () => {
   })
 
   it('is terminated by emphasis closing', () => {
-    expect(Up.toAst('*I love... https://archive.org/fake*!')).to.be.eql(
+    expect(Up.toDocument('*I love... https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I love... '),
@@ -169,7 +169,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by stress closing', () => {
-    expect(Up.toAst('**I love https://archive.org/fake**!')).to.be.eql(
+    expect(Up.toDocument('**I love https://archive.org/fake**!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('I love '),
@@ -182,7 +182,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by shouting closing', () => {
-    expect(Up.toAst('***I love https://archive.org/fake***!')).to.be.eql(
+    expect(Up.toDocument('***I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new EmphasisNode([
@@ -197,7 +197,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by 3 or more asterisks closing emphasis', () => {
-    expect(Up.toAst('*I love https://archive.org/fake***!')).to.be.eql(
+    expect(Up.toDocument('*I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I love '),
@@ -210,7 +210,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by 3 or more asterisks closing emphasis', () => {
-    expect(Up.toAst('**I love https://archive.org/fake***!')).to.be.eql(
+    expect(Up.toDocument('**I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('I love '),
@@ -223,7 +223,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by emphasis (starting with 2 asterisks) closing with 1 asterisk', () => {
-    expect(Up.toAst('**I love https://archive.org/fake*!')).to.be.eql(
+    expect(Up.toDocument('**I love https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I love '),
@@ -236,7 +236,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by emphasis (starting with 3+ asterisks) closing with 1 asterisk', () => {
-    expect(Up.toAst('***I love https://archive.org/fake*!')).to.be.eql(
+    expect(Up.toDocument('***I love https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
         new EmphasisNode([
           new PlainTextNode('I love '),
@@ -249,7 +249,7 @@ describe('A naked URL', () => {
   })
 
   it('is closed by stress (starting with 3+ asterisks) closing with 2 asterisks', () => {
-    expect(Up.toAst('***I love https://archive.org/fake**!')).to.be.eql(
+    expect(Up.toDocument('***I love https://archive.org/fake**!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode('I love '),
@@ -262,7 +262,7 @@ describe('A naked URL', () => {
   })
 
   it("can contain unescaped asterisks if not inside an emphasis convention", () => {
-    expect(Up.toAst('https://example.org/a*normal*url')).to.be.eql(
+    expect(Up.toDocument('https://example.org/a*normal*url')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('example.org/a*normal*url')
@@ -274,7 +274,7 @@ describe('A naked URL', () => {
 
 describe('Inside parantheses, a naked URL', () => {
   it('can contain matching parentheses', () => {
-    expect(Up.toAst('(https://archive.org/fake(url))')).to.be.eql(
+    expect(Up.toDocument('(https://archive.org/fake(url))')).to.be.eql(
       insideDocumentAndParagraph([
         new ParenthesizedNode([
           new PlainTextNode('('),
@@ -290,7 +290,7 @@ describe('Inside parantheses, a naked URL', () => {
 
 describe('Inside square brackets, a naked URL', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toAst('[https://archive.org/fake[url]]')).to.be.eql(
+    expect(Up.toDocument('[https://archive.org/fake[url]]')).to.be.eql(
       insideDocumentAndParagraph([
         new SquareBracketedNode([
           new PlainTextNode('['),

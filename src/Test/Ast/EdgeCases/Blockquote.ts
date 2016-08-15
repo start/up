@@ -9,21 +9,21 @@ import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
 
 describe('A single blank blockquoted line', () => {
   it('does not require any trailing whitespace after the blockquote delimiter', () => {
-    expect(Up.toAst('>')).to.be.eql(
+    expect(Up.toDocument('>')).to.be.eql(
       new UpDocument([
         new BlockquoteNode([])
       ]))
   })
 
   it('may have a trailing space after the blockquote delimiter', () => {
-    expect(Up.toAst('> ')).to.be.eql(
+    expect(Up.toDocument('> ')).to.be.eql(
       new UpDocument([
         new BlockquoteNode([])
       ]))
   })
 
   it('may have a trailing tab after the blockquote delimiter', () => {
-    expect(Up.toAst('>\t')).to.be.eql(
+    expect(Up.toDocument('>\t')).to.be.eql(
       new UpDocument([
         new BlockquoteNode([])
       ]))
@@ -38,7 +38,7 @@ describe('A single line blockquote', () => {
 > I choose you!
 ---------------`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OutlineSeparatorNode(),
         new BlockquoteNode([

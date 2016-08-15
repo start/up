@@ -57,7 +57,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[audio: something terrible](https://example.com/sounds.ogg) (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg) (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -72,7 +72,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toAst('[audio: email sending] (https://example.com/sounds.ogg) (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[audio: email sending] (https://example.com/sounds.ogg) (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('email sending', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -83,7 +83,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toAst('[audio: local files rustling](https://example.com/sounds.ogg) (file:///)')).to.be.eql(
+      expect(Up.toDocument('[audio: local files rustling](https://example.com/sounds.ogg) (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('local files rustling', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -114,7 +114,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toAst('[audio: email sending] (https://example.com/sounds.ogg) (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[audio: email sending] (https://example.com/sounds.ogg) (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('email sending', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -149,7 +149,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[audio: something terrible](https://example.com/sounds.ogg) (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg) (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -160,7 +160,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toAst('[audio: slash] (https://example.com/sounds.ogg) (/)')).to.be.eql(
+      expect(Up.toDocument('[audio: slash] (https://example.com/sounds.ogg) (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('slash', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -191,7 +191,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toAst('[audio: robots](https://example.com/sounds.ogg) (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[audio: robots](https://example.com/sounds.ogg) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('robots', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -246,7 +246,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toAst('[audio: hash marking](https://example.com/sounds.ogg) (#)')).to.be.eql(
+      expect(Up.toDocument('[audio: hash marking](https://example.com/sounds.ogg) (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('hash marking', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -257,7 +257,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toAst('[audio: something terrible] (https://example.com/sounds.ogg) (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[audio: something terrible] (https://example.com/sounds.ogg) (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -268,7 +268,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toAst('[audio: hash marking](https://example.com/sounds.ogg) (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[audio: hash marking](https://example.com/sounds.ogg) (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('hash marking', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -343,7 +343,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toAst('[audio: 4chan] (https://example.com/sounds.ogg) (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[audio: 4chan] (https://example.com/sounds.ogg) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('4chan', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -375,7 +375,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toAst('[audio: usernaming](https://example.com/sounds.ogg) (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[audio: usernaming](https://example.com/sounds.ogg) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new AudioNode('usernaming', 'https://example.com/sounds.ogg'),
             new PlainTextNode(' '),
@@ -386,7 +386,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toAst('[audio: usernaming] (https://example.com/sounds.ogg) (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[audio: usernaming] (https://example.com/sounds.ogg) (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new AudioNode('usernaming', 'https://example.com/sounds.ogg'),
             new PlainTextNode(' '),
@@ -398,7 +398,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toAst('[audio: being British](https://example.com/sounds.ogg) (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[audio: being British](https://example.com/sounds.ogg) (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('being British', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -409,7 +409,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toAst('[audio: Ash claiming to be his own father] (https://example.com/sounds.ogg) (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[audio: Ash claiming to be his own father] (https://example.com/sounds.ogg) (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('Ash claiming to be his own father', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -420,7 +420,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toAst('[audio: debilitating sadness](https://example.com/sounds.ogg) (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[audio: debilitating sadness](https://example.com/sounds.ogg) (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('debilitating sadness', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -451,7 +451,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toAst('[audio: yeah] (https://example.com/sounds.ogg) (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[audio: yeah] (https://example.com/sounds.ogg) (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('yeah', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -462,7 +462,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toAst('[audio: yeah](https://example.com/sounds.ogg) (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[audio: yeah](https://example.com/sounds.ogg) (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new AudioNode('yeah', 'https://example.com/sounds.ogg'),
           new PlainTextNode(' '),
@@ -475,7 +475,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
 
   specify('If none of the conditions are satisfied, the audio convention is not linkified', () => {
-    expect(Up.toAst('[audio: something terrible] (https://example.com/sounds.ogg) (really)')).to.be.eql(
+    expect(Up.toDocument('[audio: something terrible] (https://example.com/sounds.ogg) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
         new PlainTextNode(' '),
@@ -489,7 +489,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
 
 describe("If there is whitespace between an otherwise-valid linkified audio convention's audio URL and its linkifying URL", () => {
   it('the audio convention is not linkified', () => {
-    expect(Up.toAst('[audio: something terrible](https://example.com/sounds.ogg)  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg)  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new AudioNode('something terrible', 'https://example.com/sounds.ogg'),
         new PlainTextNode('    '),

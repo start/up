@@ -8,7 +8,7 @@ import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 
 describe('Text surrounded by square brackets', () => {
   it('is put inside a square bracketed node with the square brackets preserved as plain text', () => {
-    expect(Up.toAst('I like [certain types of] pizza')).to.be.eql(
+    expect(Up.toDocument('I like [certain types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new SquareBracketedNode([
@@ -22,7 +22,7 @@ describe('Text surrounded by square brackets', () => {
 
 describe('Square bracketed text', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('I like [certain *types* of] pizza')).to.be.eql(
+    expect(Up.toDocument('I like [certain *types* of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new SquareBracketedNode([
@@ -40,7 +40,7 @@ describe('Square bracketed text', () => {
 
 describe('Nested square brackets (starting at the same time)', () => {
   it("produce nested square bracketed nodes with first opening bracket outside of the inner node", () => {
-    expect(Up.toAst('I like [[certain] types of] pizza')).to.be.eql(
+    expect(Up.toDocument('I like [[certain] types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new SquareBracketedNode([
@@ -58,7 +58,7 @@ describe('Nested square brackets (starting at the same time)', () => {
 
 describe('Nested square brackets (ending at the same time)', () => {
   it("produce nested square bracketed nodes with last closing square bracket outside of the inner node", () => {
-    expect(Up.toAst('I like [certain [types of]] pizza')).to.be.eql(
+    expect(Up.toDocument('I like [certain [types of]] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new SquareBracketedNode([
@@ -76,7 +76,7 @@ describe('Nested square brackets (ending at the same time)', () => {
 
 describe('Two left square brackets followed by a single right square bracket', () => {
   it('produces bracketed text starting from the second left square bracket', () => {
-    expect(Up.toAst(':[ I like [certain *types* of] pizza')).to.be.eql(
+    expect(Up.toDocument(':[ I like [certain *types* of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':[ I like '),
         new SquareBracketedNode([
@@ -94,7 +94,7 @@ describe('Two left square brackets followed by a single right square bracket', (
 
 describe('A left square bracket followed by two right square brackets', () => {
   it('produces bracketed text ending with the first right square bracket', () => {
-    expect(Up.toAst('I like [certain *types* of] pizza :]')).to.be.eql(
+    expect(Up.toDocument('I like [certain *types* of] pizza :]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new SquareBracketedNode([
@@ -112,7 +112,7 @@ describe('A left square bracket followed by two right square brackets', () => {
 
 describe('A square bracket followed by whitespace', () => {
   it('does not open a square bracketed convention', () => {
-    expect(Up.toAst("I can't eat most pizza. 8o[ But I can have some! 8o]")).to.be.eql(
+    expect(Up.toDocument("I can't eat most pizza. 8o[ But I can have some! 8o]")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I can't eat most pizza. 8o[ But I can have some! 8o]")
       ]))

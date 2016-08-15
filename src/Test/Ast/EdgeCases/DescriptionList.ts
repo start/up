@@ -21,7 +21,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
@@ -83,7 +83,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([

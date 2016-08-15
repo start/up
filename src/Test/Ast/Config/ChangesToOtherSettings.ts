@@ -32,48 +32,48 @@ function itWorksAsAdvertised(
 
 
   context('is disabled by default', () => {
-    specify('when the default toAst method is called', () => {
-      expect(Up.toAst(markup)).to.be.eql(documentWhenSettingIsNotChanged)
+    specify('when the default toDocument method is called', () => {
+      expect(Up.toDocument(markup)).to.be.eql(documentWhenSettingIsNotChanged)
     })
 
-    specify('when the toAst method is called on an Up object', () => {
-      expect(new Up().toAst(markup)).to.be.eql(documentWhenSettingIsNotChanged)
+    specify('when the toDocument method is called on an Up object', () => {
+      expect(new Up().toDocument(markup)).to.be.eql(documentWhenSettingIsNotChanged)
     })
   })
 
 
   context('works when enabled', () => {
-    specify('when calling the default toAst method', () => {
-      expect(Up.toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+    specify('when calling the default toDocument method', () => {
+      expect(Up.toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
-      expect(new Up(configWithSettingChanged).toAst(markup)).to.be.eql(documentWhenChangeIsApplied)
+      expect(new Up(configWithSettingChanged).toDocument(markup)).to.be.eql(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the toAst method on an Up object', () => {
-      expect(new Up().toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+    specify('when calling the toDocument method on an Up object', () => {
+      expect(new Up().toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the toAst method on an Up object that had the setting explictly set to default when the object was created', () => {
-      expect(new Up(configWithSettingSetToDefault).toAst(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+    specify('when calling the toDocument method on an Up object that had the setting explictly set to default when the object was created', () => {
+      expect(new Up(configWithSettingSetToDefault).toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
     })
   })
 
 
-  specify('can be set back to default when calling the toAst method on an Up object that had the setting changed when the object was created', () => {
-    expect(new Up(configWithSettingChanged).toAst(markup, configWithSettingSetToDefault)).to.be.eql(documentWhenSettingIsNotChanged)
+  specify('can be set back to default when calling the toDocument method on an Up object that had the setting changed when the object was created', () => {
+    expect(new Up(configWithSettingChanged).toDocument(markup, configWithSettingSetToDefault)).to.be.eql(documentWhenSettingIsNotChanged)
   })
 
 
   context('does not affect subsequent calls when provided', () => {
-    specify('when calling the default toAst method', () => {
-      expect(Up.toAst(markup, configWithSettingChanged)).to.be.not.eql(Up.toAst(markup))
+    specify('when calling the default toDocument method', () => {
+      expect(Up.toDocument(markup, configWithSettingChanged)).to.be.not.eql(Up.toDocument(markup))
     })
 
-    specify('when calling the toAst method on an Up object', () => {
+    specify('when calling the toDocument method on an Up object', () => {
       const up = new Up()
-      expect(up.toAst(markup, configWithSettingChanged)).to.be.not.eql(up.toAst(markup))
+      expect(up.toDocument(markup, configWithSettingChanged)).to.be.not.eql(up.toDocument(markup))
     })
   })
 }

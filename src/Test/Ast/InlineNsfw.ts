@@ -10,7 +10,7 @@ import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
 
 describe('Square bracketed text starting with "NSFW:"', () => {
   it('is put inside an inline NSFW node', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -24,7 +24,7 @@ describe('Square bracketed text starting with "NSFW:"', () => {
 
 describe('Parenthesized text starting with "NSFW:"', () => {
   it('is put inside a nsfw node', () => {
-    expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -41,11 +41,11 @@ describe('An NSFW convention', () => {
     const withLowercase = 'After you beat the Elite Four, [nsfw: you wrestle a naked Gary].'
     const withRandomCase = 'After you beat the Elite Four, [NsFW: you wrestle a naked Gary].'
 
-    expect(Up.toAst(withLowercase)).to.be.eql(Up.toAst(withRandomCase))
+    expect(Up.toDocument(withLowercase)).to.be.eql(Up.toDocument(withRandomCase))
   })
 
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [image: naked Gary](https://example.com/ummmm.png)].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: you wrestle [image: naked Gary](https://example.com/ummmm.png)].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -57,7 +57,7 @@ describe('An NSFW convention', () => {
   })
 
   it('can be nested within another NSFW convention', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [NSFW: a naked Gary]].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: you wrestle [NSFW: a naked Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -74,7 +74,7 @@ describe('An NSFW convention', () => {
 
 describe('An inline NSFW convention produced by square brackets', () => {
   it('can contain square bracketed text', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: you wrestle [and beat] a naked Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: you wrestle [and beat] a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -92,7 +92,7 @@ describe('An inline NSFW convention produced by square brackets', () => {
 
 describe('A NSFW convnetion produced by parentheses', () => {
   it('can contain parenthesized text', () => {
-    expect(Up.toAst('After you beat the Elite Four, (NSFW: you wrestle (and beat) a naked Gary).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, (NSFW: you wrestle (and beat) a naked Gary).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -110,7 +110,7 @@ describe('A NSFW convnetion produced by parentheses', () => {
 
 describe('Any whitespace between "NSFW:" and the start of the NSFW content', () => {
   it('is optional', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW:you wrestle a naked Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW:you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -121,7 +121,7 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
   })
 
   it('is ignored', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: \t  \t you wrestle a naked Gary].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: \t  \t you wrestle a naked Gary].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([

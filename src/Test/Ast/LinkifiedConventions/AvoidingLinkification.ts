@@ -21,7 +21,7 @@ import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
   specify('Spoilers', () => {
-    expect(Up.toAst('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
@@ -42,7 +42,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('NSFW', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
@@ -63,7 +63,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('NSFL', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -93,7 +93,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
         ], 'http://example.com/luckycharms')
       ], 1)
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal"),
@@ -113,7 +113,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Audio', () => {
-    expect(Up.toAst('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
@@ -132,7 +132,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Images', () => {
-    expect(Up.toAst('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
@@ -151,7 +151,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Videos', () => {
-    expect(Up.toAst('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
@@ -173,7 +173,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
 
 context('The following conventions cannot be linkified', () => {
   specify('Links', () => {
-    expect(Up.toAst('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
@@ -192,7 +192,7 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Revision insertion', () => {
-    expect(Up.toAst('After you beat the Elite Four, ++you fight Gary++ (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, ++you fight Gary++ (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new RevisionInsertionNode([
@@ -211,7 +211,7 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Revision deletion', () => {
-    expect(Up.toAst('After you beat the Elite Four, you fight Gary ~~Ketchum~~ (https://example.com).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, you fight Gary ~~Ketchum~~ (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, you fight Gary '),
         new RevisionDeletionNode([
@@ -230,7 +230,7 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Inline code', () => {
-    expect(Up.toAst("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.be.eql(
+    expect(Up.toDocument("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I look forward to '),
         new InlineCodeNode('--strictNullChecks'),
@@ -249,7 +249,7 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Naked URLs', () => {
-    expect(Up.toAst('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.be.eql(
+    expect(Up.toDocument('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.be.eql(
       insideDocumentAndParagraph([
         new LinkNode([
           new PlainTextNode('goo.gl/7y3XBV')
@@ -266,7 +266,7 @@ context('The following conventions cannot be linkified', () => {
   })
 
   specify('Regular text (e.g. a word)', () => {
-    expect(Up.toAst('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
+    expect(Up.toDocument('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('The Mini-NES comes out November eleventh '),
         new ParenthesizedNode([

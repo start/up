@@ -8,7 +8,7 @@ import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 
 describe('Text surrounded by 2 tildes', () => {
   it('is put inside a revision deletion node', () => {
-    expect(Up.toAst('I like ~~certain types of~~ pizza')).to.be.eql(
+    expect(Up.toDocument('I like ~~certain types of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionDeletionNode([
@@ -22,7 +22,7 @@ describe('Text surrounded by 2 tildes', () => {
 
 describe('A revision deletion', () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toAst('I like ~~certain *types* of~~ pizza')).to.be.eql(
+    expect(Up.toDocument('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new RevisionDeletionNode([
@@ -40,7 +40,7 @@ describe('A revision deletion', () => {
 
 describe('An unmatched revision deletion delimiter', () => {
   it('is preserved as plain text', () => {
-    expect(Up.toAst('I like pizza~~but I never eat it.')).to.be.eql(
+    expect(Up.toDocument('I like pizza~~but I never eat it.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like pizza~~but I never eat it.'),
       ]))

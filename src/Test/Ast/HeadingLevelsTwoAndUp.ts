@@ -18,7 +18,7 @@ Hello, world!
 Goodbye, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -33,7 +33,7 @@ Hello, world!
 Goodbye, world!
 = = = = = = = =`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -51,7 +51,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -70,7 +70,7 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
@@ -114,7 +114,7 @@ Real-Time Strategy Game Boy Games Published By Nintendo
 Warlocked
 - - - - -`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Interactive Software')], 1),
         new HeadingNode([new PlainTextNode('Video Games')], 2),
@@ -140,7 +140,7 @@ Goodbye, world!
 * Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -166,7 +166,7 @@ Goodbye, world!
 #) Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -193,7 +193,7 @@ Awkward
   Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -221,7 +221,7 @@ Goodbye, world!
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
@@ -245,7 +245,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 > * Umm, I forgot my keys.
 >   =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -273,7 +273,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > > Umm, I forgot my keys.
 > > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),
@@ -300,7 +300,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new BlockquoteNode([
           new HeadingNode([new PlainTextNode('Hello, world!')], 1),

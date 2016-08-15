@@ -59,7 +59,7 @@ export function expectEveryPermutationOfBrackets(
             prefix + wrapInBracket(segment.text, bracket)))))
 
   for (const permutation of everyPermutation('', permutationsBySegment)) {
-    expect(Up.toAst(permutation)).to.be.eql(toProduce)
+    expect(Up.toDocument(permutation)).to.be.eql(toProduce)
   }
 }
 

@@ -15,8 +15,8 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  toAst(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
-    return toAst(markup, this.config.withChanges(extraSettings))
+  toDocument(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
+    return toDocument(markup, this.config.withChanges(extraSettings))
   }
 
   toHtml(MarkupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
@@ -41,8 +41,8 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function toAst(markup: string, settings?: UserProvidedSettings): UpDocument {
-    return defaultUp.toAst(markup, settings)
+  export function toDocument(markup: string, settings?: UserProvidedSettings): UpDocument {
+    return defaultUp.toDocument(markup, settings)
   }
 
   export function toHtml(MarkupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
@@ -51,14 +51,14 @@ export namespace Up {
 }
 
 
-function toAst(markup: string, config: Config): UpDocument {
+function toDocument(markup: string, config: Config): UpDocument {
   return parseDocument(markup, config)
 }
 
 function toHtml(MarkupOrDocument: MarkupOrDocument, config: Config): string {
   const document =
     typeof MarkupOrDocument === 'string'
-      ? toAst(MarkupOrDocument, config)
+      ? toDocument(MarkupOrDocument, config)
       : MarkupOrDocument
 
   return getHtml(document, config)

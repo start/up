@@ -29,7 +29,7 @@ const NO_SPECIFIED_SOURCE_LINE_NUMBER: number = undefined
 
 context('When the "createSourceMap" config setting is not set to true', () => {
   specify('no source maps are produced', () => {
-    expect(Up.toAst("I enjoy apples.")).to.be.eql(
+    expect(Up.toDocument("I enjoy apples.")).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode('I enjoy apples.')], NO_SPECIFIED_SOURCE_LINE_NUMBER),
       ]))
@@ -43,7 +43,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
   })
 
   specify("The source line numbers start at 1.", () => {
-    expect(up.toAst('Hi!')).to.be.eql(
+    expect(up.toDocument('Hi!')).to.be.eql(
       new UpDocument([
         new ParagraphNode([new PlainTextNode("Hi!")], 1)
       ]))
@@ -55,7 +55,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
       const markup = `
 I actually start on the second line.`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new ParagraphNode([new PlainTextNode("I actually start on the second line.")], 2)
         ]))
@@ -66,7 +66,7 @@ I actually start on the second line.`
 
 I actually start on the third line.`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new ParagraphNode([new PlainTextNode("I actually start on the third line.")], 3)
         ]))
@@ -81,7 +81,7 @@ I actually start on the third line.`
 
 I actually start on the seventh line.`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new ParagraphNode([new PlainTextNode("I actually start on the seventh line.")], 7)
         ]))
@@ -96,7 +96,7 @@ I actually start on the seventh line.`
 I enjoy apples
 ==============`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
           ]))
@@ -108,7 +108,7 @@ I enjoy apples
 I enjoy apples
 ==============`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
           ]))
@@ -124,7 +124,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -154,7 +154,7 @@ Chart: \`AND\` operator logic
 1;      true;   false
 0;      false;  false`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -184,7 +184,7 @@ Chart: \`AND\` operator logic
 
 2. They're delicious`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -203,7 +203,7 @@ Chart: \`AND\` operator logic
 
 * They're delicious`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
@@ -225,7 +225,7 @@ Bananas
 Peaches
   They're also delicious.`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
@@ -250,7 +250,7 @@ Peaches
 Roses are read
 Apples are blue`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new LineBlockNode([
             new LineBlockNode.Line([
@@ -268,7 +268,7 @@ Apples are blue`
 SPOILER:
   Who doesn't?`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new SpoilerBlockNode([
             new ParagraphNode([new PlainTextNode("Who doesn't?")], 3)
@@ -282,7 +282,7 @@ NSFW:
 
   Who doesn't?`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([new PlainTextNode("Who doesn't?")], 4)
@@ -297,7 +297,7 @@ NSFL:
 
   Who doesn't?`
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsflBlockNode([
             new ParagraphNode([new PlainTextNode("Who doesn't?")], 5)
@@ -308,7 +308,7 @@ NSFL:
     specify('Blockquotes (and the outline nodes they contain)', () => {
       const markup = `
 > Who doesn't?`
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new BlockquoteNode([
             new ParagraphNode([new PlainTextNode("Who doesn't?")], 2)
@@ -320,7 +320,7 @@ NSFL:
       specify('A streak', () => {
         const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new OutlineSeparatorNode(1),
           ]))
@@ -334,7 +334,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new ParagraphNode([new PlainTextNode("The end.")], 2),
             new OutlineSeparatorNode(3),
@@ -355,7 +355,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new ParagraphNode([new PlainTextNode("The end.")], 2),
             new OutlineSeparatorNode(3),
@@ -380,7 +380,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new ParagraphNode([new PlainTextNode("The end.")], 2),
             new OutlineSeparatorNode(3),
@@ -395,7 +395,7 @@ No, really. That was it.`
 const reason = "They are cheap and delicious."
 \`\`\``
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new CodeBlockNode('const reason = "They are cheap and delicious."', 2),
         ]))
@@ -411,7 +411,7 @@ Chrono Cross;     1999`
 
       const NO_CAPTION: TableNode.Caption = undefined
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -440,7 +440,7 @@ Chart:
 
       const NO_CAPTION: TableNode.Caption = undefined
 
-      expect(up.toAst(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new TableNode(
             new TableNode.Header([
@@ -463,21 +463,21 @@ Chart:
 
     context('Media nodes are given a source line number if they were "outlined":', () => {
       specify('Audio nodes', () => {
-        expect(up.toAst('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
+        expect(up.toDocument('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
           new UpDocument([
             new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1)
           ]))
       })
 
       specify('Images', () => {
-        expect(up.toAst('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
+        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
           new UpDocument([
             new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1)
           ]))
       })
 
       specify('Videos', () => {
-        expect(up.toAst('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
+        expect(up.toDocument('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
           new UpDocument([
             new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
           ]))
@@ -487,7 +487,7 @@ Chart:
 
     describe('A link containing an "outlined" media node', () => {
       it('is given a source line number (but the media node it contains is not)', () => {
-        expect(up.toAst('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
+        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
           new UpDocument([
             new LinkNode([
               new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
@@ -502,7 +502,7 @@ Chart:
         const markup =
           '[image: haunted house](example.com/hauntedhouse.svg) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house] (example.com/hauntedhouse.webm)'
 
-        expect(up.toAst(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1),
             new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
@@ -525,7 +525,7 @@ I do eat apples, though.`
       new PlainTextNode('Well, I do, but I pretend not to.')
     ], 1)
 
-    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -563,7 +563,7 @@ The best apple
   
 Pink lady.`
 
-    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
         new ParagraphNode([new PlainTextNode("Don't you?")], 6),
@@ -599,7 +599,7 @@ Pink lady
   
   > Really.`
 
-    expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
         new ParagraphNode([new PlainTextNode("Don't you?")], 6),

@@ -16,7 +16,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
 describe('An inline NSFL convention followed immediately by a parenthesized/bracketd URL', () => {
   it('produces an inline NSFL node whose contents are put inside a link pointing to that URL', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary](http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you eat rotting Gary](http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -49,7 +49,7 @@ describe('Any NSFL convention followed immediately by a parenthesized/bracketed 
 
 describe('An inline NSFL convention directly followed by another NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFL: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -66,7 +66,7 @@ describe('An inline NSFL convention directly followed by another NSFL convention
 
 describe('An inline NSFL convention directly followed by an inline spoiler convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][SPOILER: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you eat rotting Gary][SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -83,7 +83,7 @@ describe('An inline NSFL convention directly followed by an inline spoiler conve
 
 describe('An inline NSFL convention directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFW: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you eat rotting Gary][NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -100,7 +100,7 @@ describe('An inline NSFL convention directly followed by an inline NSFW conventi
 
 describe('An inline NSFL convention directly followed by a media convention', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('After you beat the Elite Four, [NSFL: you eat rotting Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [NSFL: you eat rotting Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsflNode([
@@ -122,7 +122,7 @@ describe('An inline NSFL convention directly followed by a footnote', () => {
       ], 1)
     ]
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
@@ -139,7 +139,7 @@ describe('An inline NSFL convention directly followed by a footnote', () => {
 
 describe('An otherwise-valid linkified NSFL convention with its URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.toAst('[NSFL: he called her](\\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[NSFL: he called her](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('he called her')
@@ -154,7 +154,7 @@ describe('An otherwise-valid linkified NSFL convention with its URL escaped', ()
 
 context("When an otherwise-valid linkified NSFL convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the NSFL convention is not linkified', () => {
-    expect(Up.toAst('[NSFL: he called her]( \t \\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[NSFL: he called her]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new InlineNsflNode([
           new PlainTextNode('he called her')

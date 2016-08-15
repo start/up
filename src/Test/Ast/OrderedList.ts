@@ -15,7 +15,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
 # Hello, world!
 # Goodbye, world!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -40,7 +40,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 #. Hello, Lavender Town!
 #. Goodbye, Lavender Town!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -65,7 +65,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
 #) Hello, Celadon City!
 #) Goodbye, Celadon City!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -90,7 +90,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 1. Hello, Celadon City!
 2. Goodbye, Celadon City!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -115,7 +115,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 1) Hello, Celadon City!
 2) Goodbye, Celadon City!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -136,7 +136,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 
 describe('A single line bulleted by an integer followed by a period', () => {
   it('does not produce an ordered list', () => {
-    expect(Up.toAst('1783. Not a good year for Great Britain.')).to.be.eql(
+    expect(Up.toDocument('1783. Not a good year for Great Britain.')).to.be.eql(
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode('1783. Not a good year for Great Britain.')
@@ -148,7 +148,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 
 describe('A single line bulleted by a number sign', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
-    expect(Up.toAst('# Hello, world!')).to.be.eql(
+    expect(Up.toDocument('# Hello, world!')).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -164,7 +164,7 @@ describe('A single line bulleted by a number sign', () => {
 
 describe('A single line bulleted by a number sign followed by a period', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
-    expect(Up.toAst('#. Hello, Lavender Town!')).to.be.eql(
+    expect(Up.toDocument('#. Hello, Lavender Town!')).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -180,7 +180,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 
 describe('A single line bulleted by a number sign followed by a closing parenthesis', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
-    expect(Up.toAst('#) Hello, Celadon City!')).to.be.eql(
+    expect(Up.toDocument('#) Hello, Celadon City!')).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -196,7 +196,7 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
 
 describe('A single line bulleted by an integer followed by a closing parenthesis', () => {
   it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
-    expect(Up.toAst('1) Hello, Celadon City!')).to.be.eql(
+    expect(Up.toDocument('1) Hello, Celadon City!')).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -219,7 +219,7 @@ describe('The 5 different bullet types', () => {
 #. Hello, Cherrygrove City!
 # Hello, Camphrier Town!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -259,7 +259,7 @@ describe('An ordered list', () => {
 # Hello, World *1-2*!
 # Goodbye, World *1-2*!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -290,7 +290,7 @@ describe('An ordered list', () => {
 # Goodbye, world!
 Hello, World 1-2!`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -320,7 +320,7 @@ describe('An indented line immediately following an ordered list item line', () 
 # Roses are red
   Violets are blue`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -357,7 +357,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
 # Goodbye, world!
   ===============`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -400,7 +400,7 @@ describe('An ordered list item containing multiple indented lines', () => {
 
 # Goodbye, world!
   ===============`
-    expect(Up.toAst(itemsWithoutSeparator)).to.be.eql(Up.toAst(itemsWithSeparator))
+    expect(Up.toDocument(itemsWithoutSeparator)).to.be.eql(Up.toDocument(itemsWithSeparator))
   })
 
   it('can contain a nested ordered list that uses the same type of bullet used by its containing list item', () => {
@@ -416,7 +416,7 @@ describe('An ordered list item containing multiple indented lines', () => {
 # Goodbye, world!
   ===============`
 
-    expect(Up.toAst(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -457,7 +457,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
 # Roses are red
   Violets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -479,7 +479,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
 # Roses are red
 \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -501,7 +501,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
 # Roses are red
  \tViolets are blue`
 
-      expect(Up.toAst(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -533,7 +533,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
 
   I used to live there.`
 
-    expect(Up.toAst(withMixedIndentation)).to.be.eql(
+    expect(Up.toDocument(withMixedIndentation)).to.be.eql(
       new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
