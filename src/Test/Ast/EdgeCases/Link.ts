@@ -10,7 +10,7 @@ import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 
 
 describe('An otherwise-valid link with mismatched brackets surrounding its description', () => {
@@ -18,7 +18,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its descr
     expect(Up.toDocument('I like [this site}(https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like [this site}'),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('stackoverflow.com')
@@ -176,7 +176,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
   specify('Spoilers', () => {
     expect(Up.toDocument('(I know.) [SPOILER:]')).to.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
@@ -189,7 +189,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
   specify('NSFW', () => {
     expect(Up.toDocument('(I know.) [NSFW:]')).to.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
@@ -202,7 +202,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
   specify('NSFL', () => {
     expect(Up.toDocument('(I know.) [NSFL:]')).to.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' '),
@@ -215,7 +215,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
   specify('Parentheses', () => {
     expect(Up.toDocument('(I know.) ()')).to.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' ()')
@@ -225,7 +225,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
   specify('Square brackets', () => {
     expect(Up.toDocument('(I know.) []')).to.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know.)')
         ]),
         new PlainTextNode(' []')
@@ -242,7 +242,7 @@ describe("An almost-link (with whitespace between its content and URL) terminate
           new PlainTextNode('[sigh]')
         ]),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com/sad:[')

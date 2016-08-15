@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
-import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
 describe('Square bracketed text starting with "SPOILER:"', () => {
@@ -99,7 +99,7 @@ describe('An inline spoiler produced by parentheses', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
           new PlainTextNode('you fight '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(and beat)')
           ]),
           new PlainTextNode(' Gary')

@@ -8,7 +8,7 @@ import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
-import { ParentheticalNode } from'../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from'../../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from'../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
@@ -256,17 +256,17 @@ describe('Overlapped stressed and highlighted text', () => {
 
 
 describe('Overlapped stressed and parenthesized text', () => {
-  it('splits the parenthetical node because it opened second', () => {
+  it('splits the normal parenthetical node because it opened second', () => {
     expect(Up.toDocument('I **love (drinking** whole) milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(drinking')
           ])
         ]),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode(' whole)')
         ]),
         new PlainTextNode(' milk.')

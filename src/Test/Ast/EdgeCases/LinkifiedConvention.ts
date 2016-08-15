@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 
 
 describe("An almost-linkified spoiler (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
@@ -15,7 +15,7 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
           new PlainTextNode('Ash dies')
         ]),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com/ending:[')

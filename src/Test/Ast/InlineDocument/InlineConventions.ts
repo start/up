@@ -14,7 +14,7 @@ import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
@@ -152,7 +152,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(Nintendo)'),
           ]),
           new PlainTextNode(' Game Boy, though I never took it with me when I left home.')

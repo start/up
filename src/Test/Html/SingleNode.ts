@@ -14,7 +14,7 @@ import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -702,11 +702,11 @@ describe('A revision deletion node', () => {
 })
 
 
-describe('A parenthetical node', () => {
+describe('A normal parenthetical node', () => {
   it('produces a <span class="up-parenthetical">', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new ParentheticalNode([new PlainTextNode('(Koopa Tropa)')])
+        new NormalParentheticalNode([new PlainTextNode('(Koopa Tropa)')])
       ])
     ])
 

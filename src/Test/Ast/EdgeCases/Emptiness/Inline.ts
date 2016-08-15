@@ -8,7 +8,7 @@ import { RevisionDeletionNode } from '../../../../SyntaxNodes/RevisionDeletionNo
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
-import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from '../../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
@@ -62,7 +62,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     specify('Footnotes', () => {
       expect(Up.toDocument('(^)')).to.eql(
         insideDocumentAndParagraph([
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(^)')
           ])
         ]))
@@ -152,7 +152,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('NSFW', () => {
           expect(Up.toDocument('(NSFW:  \t  \t )')).to.eql(
             insideDocumentAndParagraph([
-              new ParentheticalNode([
+              new NormalParentheticalNode([
                 new PlainTextNode('(NSFW:  \t  \t )')
               ])
             ]))
@@ -170,7 +170,7 @@ context('Most inline conventions are not applied if they have no content.', () =
         specify('Footnotes', () => {
           expect(Up.toDocument('(^  \t \t )')).to.eql(
             insideDocumentAndParagraph([
-              new ParentheticalNode([
+              new NormalParentheticalNode([
                 new PlainTextNode('(^  \t \t )')
               ])
             ]))
@@ -360,7 +360,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.toDocument('[ \t ](https://google.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('[ \t ]'),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('google.com')
@@ -415,7 +415,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
             ]),
             new PlainTextNode(']')
           ]),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('( )')
           ])
         ]))
@@ -536,7 +536,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('(audio: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(audio: Yggdra Union)')
           ]),
           new PlainTextNode('{}')
@@ -623,7 +623,7 @@ context("Media conventions are handled a bit differently, because they also have
     it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
       expect(Up.toDocument('(video: Yggdra Union){}')).to.be.eql(
         insideDocumentAndParagraph([
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(video: Yggdra Union)')
           ]),
           new PlainTextNode('{}')
@@ -887,7 +887,7 @@ describe('An otherwise-linkified NSFW convention with escaped blank content', ()
         new InlineNsfwNode([
           new PlainTextNode('a naked Mr. Mime')
         ]),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('( )')
         ])
       ]))

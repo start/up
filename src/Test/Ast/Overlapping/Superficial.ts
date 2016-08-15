@@ -11,7 +11,7 @@ import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
-import { ParentheticalNode } from'../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from'../../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from'../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
@@ -94,7 +94,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Parentheses', () => {
       expect(Up.toDocument('~~(Oh~~ why would you do this?)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new RevisionDeletionNode([
               new PlainTextNode('(Oh')
             ]),
@@ -320,11 +320,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(why would you do this?')
             ]),
           ]),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode(')')
           ])
         ]))
@@ -387,7 +387,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Revision insertion and parentheses', () => {
     expect(Up.toDocument('++(Why would you do this?++)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new RevisionInsertionNode([
             new PlainTextNode('(Why would you do this?')
           ]),
@@ -411,7 +411,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Parentheses and revision insertion', () => {
     expect(Up.toDocument('++(Why would you do this?++)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new RevisionInsertionNode([
             new PlainTextNode('(Why would you do this?')
           ]),
@@ -479,11 +479,11 @@ context("When most conventions overlap by only the first convention's end delimi
         insideDocumentAndParagraph([
           new RevisionInsertionNode([
             new PlainTextNode('Oh '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(')
             ]),
           ]),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('why would you do this?)')
           ])
         ]))

@@ -9,7 +9,7 @@ import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -144,7 +144,7 @@ describe('An otherwise-valid linkified highlight with its URL escaped', () => {
         new HighlightNode([
           new PlainTextNode('he called her')
         ]),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '..
 import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
 
 
@@ -61,7 +61,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('stackoverflow.com')
@@ -76,7 +76,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('email sending', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:)')
           ]),
         ]))
@@ -87,7 +87,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('local files rustling', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(file:///)')
           ]),
         ]))
@@ -118,7 +118,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('email sending', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ]),
         ]))
@@ -153,7 +153,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/ created it)')
           ]),
         ]))
@@ -164,7 +164,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('slash', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/)')
           ]),
         ]))
@@ -195,7 +195,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('robots', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/)')
           ]),
         ]))
@@ -250,7 +250,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('hash marking', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#)')
           ]),
         ]))
@@ -261,7 +261,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('something terrible', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ]),
         ]))
@@ -272,7 +272,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('hash marking', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2)')
           ]),
         ]))
@@ -347,7 +347,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('4chan', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
@@ -379,7 +379,7 @@ context('A linkified video convention can have whitespace between its video URL 
           insideDocumentAndParagraph([
             new VideoNode('usernaming', 'https://example.com/video.webm'),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith5)')
             ]),
           ]))
@@ -390,7 +390,7 @@ context('A linkified video convention can have whitespace between its video URL 
           insideDocumentAndParagraph([
             new VideoNode('usernaming', 'https://example.com/video.webm'),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith-kline)')
             ]),
           ]))
@@ -402,7 +402,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('being British', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(.co.uk)')
           ]),
         ]))
@@ -413,7 +413,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('Ash claiming to be his own father', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(um..uh)')
           ]),
         ]))
@@ -424,7 +424,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('debilitating sadness', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ]),
         ]))
@@ -455,7 +455,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('yeah', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ]),
         ]))
@@ -466,7 +466,7 @@ context('A linkified video convention can have whitespace between its video URL 
         insideDocumentAndParagraph([
           new VideoNode('yeah', 'https://example.com/video.webm'),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com)')
           ]),
         ]))
@@ -479,7 +479,7 @@ context('A linkified video convention can have whitespace between its video URL 
       insideDocumentAndParagraph([
         new VideoNode('something terrible', 'https://example.com/video.webm'),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(really)')
         ]),
       ]))
@@ -493,7 +493,7 @@ describe("If there is whitespace between an otherwise-valid linkified video conv
       insideDocumentAndParagraph([
         new VideoNode('something terrible', 'https://example.com/video.webm'),
         new PlainTextNode('    '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')

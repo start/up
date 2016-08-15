@@ -12,7 +12,7 @@ import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -185,12 +185,12 @@ export class HtmlWriter extends Writer {
     return this.element('del', revisionDeletion.children)
   }
 
-  protected parenthetical(parenthetical: ParentheticalNode): string {
-    return this.genericParenthetical(parenthetical)
+  protected normalParenthetical(normalParenthetical: NormalParentheticalNode): string {
+    return this.parenthetical(normalParenthetical)
   }
 
   protected squareBracketParenthetical(squareBracketParenthetical: SquareBracketParentheticalNode): string {
-    return this.genericParenthetical(squareBracketParenthetical, 'square-brackets')
+    return this.parenthetical(squareBracketParenthetical, 'square-brackets')
   }
 
   protected highlight(highlight: HighlightNode): string {
@@ -339,7 +339,7 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private genericParenthetical(parenthetical: ParentheticalNode | SquareBracketParentheticalNode, ...extraCssClassNames: string[]): string {
+  private parenthetical(parenthetical: NormalParentheticalNode | SquareBracketParentheticalNode, ...extraCssClassNames: string[]): string {
     return this.element(
       'span',
       parenthetical.children,

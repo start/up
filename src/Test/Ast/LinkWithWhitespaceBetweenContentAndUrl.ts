@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
-import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
 context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -43,7 +43,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[agreed]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('stackoverflow.com')
@@ -60,7 +60,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[email]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:)')
           ])
         ]))
@@ -73,7 +73,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[local files]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(file:///)')
           ])
         ]))
@@ -99,7 +99,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[email]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ])
         ]))
@@ -129,7 +129,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/ inspires geniune pity)')
           ])
         ]))
@@ -142,7 +142,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[slash]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/)')
           ])
         ]))
@@ -168,7 +168,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/)')
           ])
         ]))
@@ -211,7 +211,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[hash mark]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#)')
           ])
         ]))
@@ -224,7 +224,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ])
         ]))
@@ -237,7 +237,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2)')
           ])
         ]))
@@ -293,7 +293,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[that place]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org-terrifying)')
           ])
         ]))
@@ -320,7 +320,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
               new PlainTextNode('[username]')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith5)')
             ])
           ]))
@@ -333,7 +333,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
               new PlainTextNode('[username]')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith-kline)')
             ])
           ]))
@@ -347,7 +347,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[top-level domain]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(.co.uk)')
           ])
         ]))
@@ -360,7 +360,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[Ash is not his own father]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(um..uh)')
           ])
         ]))
@@ -373,7 +373,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[debilitating sadness]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ])
         ]))
@@ -399,7 +399,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ])
         ]))
@@ -412,7 +412,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
             new PlainTextNode('[yeah]')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com)')
           ])
         ]))
@@ -427,7 +427,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
           new PlainTextNode('[no]')
         ]),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(really)')
         ])
       ]))
@@ -443,7 +443,7 @@ describe('If there is nothing but whitspace between an inline spoiler and a brac
           new PlainTextNode('[something terrible]')
         ]),
         new PlainTextNode('    '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')

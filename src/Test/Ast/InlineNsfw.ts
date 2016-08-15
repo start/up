@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
-import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
 describe('Square bracketed text starting with "NSFW:"', () => {
@@ -97,7 +97,7 @@ describe('A NSFW convnetion produced by parentheses', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(and beat)')
           ]),
           new PlainTextNode(' a naked Gary')

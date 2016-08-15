@@ -3,16 +3,16 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 
 
 describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
-  it('splits the stress node, with 1 part inside both parenthetical nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthetical nodes', () => {
+  it('splits the stress node, with 1 part inside both normal parenthetical nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both normal parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.)) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know. '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode("(Well, I don't "),
             new StressNode([
               new PlainTextNode('really.)')
@@ -31,12 +31,12 @@ describe('Overlapped doubly parenthesized text (closing at the same time) and st
 
 
 describe('Overlapped doubly parenthesized text (closing at different times) and stress', () => {
-  it('splits the stress node, with 1 part inside both parenthetical nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both parenthetical nodes', () => {
+  it('splits the stress node, with 1 part inside both normal parenthetical nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both normal parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.) So there.) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(I know. '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode("(Well, I don't "),
             new StressNode([
               new PlainTextNode('really.)')
@@ -60,15 +60,15 @@ describe('Overlapped stress and doubly parenthesized text (opening at the same t
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode("I need to sleep. "),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode("(So"),
             ])
           ])
         ]),
-        new ParentheticalNode([
-          new ParentheticalNode([
+        new NormalParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode(" what?)"),
           ]),
           new PlainTextNode(" It's late.)")
@@ -84,15 +84,15 @@ describe('Overlapped stress and doubly parenthesized text (opening at different 
       insideDocumentAndParagraph([
         new StressNode([
           new PlainTextNode("I need to sleep. "),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(I know. '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode("(Well"),
             ])
           ])
         ]),
-        new ParentheticalNode([
-          new ParentheticalNode([
+        new NormalParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode(", I don't really.)"),
           ]),
           new PlainTextNode(')')

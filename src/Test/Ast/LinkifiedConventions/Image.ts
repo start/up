@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -151,7 +151,7 @@ describe('An otherwise-valid linkified image convention with its linkifying URL 
     expect(Up.toDocument('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new ImageNode('phone call', 'https://example.com/phonecall.svg'),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

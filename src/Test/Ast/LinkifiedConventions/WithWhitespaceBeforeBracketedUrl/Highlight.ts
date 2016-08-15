@@ -3,7 +3,7 @@ import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
 import { HighlightNode } from '../../../../SyntaxNodes/HighlightNode'
 
 
@@ -47,7 +47,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('stackoverflow.com')
@@ -64,7 +64,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('email')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:)')
           ]),
         ]))
@@ -77,7 +77,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('local files')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(file:///)')
           ]),
         ]))
@@ -105,7 +105,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('email')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ]),
         ]))
@@ -137,7 +137,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/ created it)')
           ]),
         ]))
@@ -150,7 +150,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('slash')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/)')
           ]),
         ]))
@@ -178,7 +178,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/)')
           ]),
         ]))
@@ -225,7 +225,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('hash mark')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#)')
           ]),
         ]))
@@ -238,7 +238,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ]),
         ]))
@@ -251,7 +251,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2)')
           ]),
         ]))
@@ -313,7 +313,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('that place')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
@@ -342,7 +342,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
               new PlainTextNode('username')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith5)')
             ]),
           ]))
@@ -355,7 +355,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
               new PlainTextNode('username')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith-kline)')
             ]),
           ]))
@@ -369,7 +369,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('top-level domain')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(.co.uk)')
           ]),
         ]))
@@ -382,7 +382,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('Ash is not his own father')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(um..uh)')
           ]),
         ]))
@@ -395,7 +395,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('debilitating sadness')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ]),
         ]))
@@ -423,7 +423,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ]),
         ]))
@@ -436,7 +436,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com)')
           ]),
         ]))
@@ -451,7 +451,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
           new PlainTextNode('something terrible')
         ]),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(really)')
         ]),
       ]))
@@ -467,7 +467,7 @@ describe('If there is nothing but whitspace between a highlight and a bracketed 
           new PlainTextNode('something terrible')
         ]),
         new PlainTextNode('    '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')

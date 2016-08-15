@@ -3,7 +3,7 @@ import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
 import { InlineNsflNode } from '../../../../SyntaxNodes/InlineNsflNode'
 
 
@@ -47,7 +47,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('stackoverflow.com')
@@ -64,7 +64,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('email')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:)')
           ]),
         ]))
@@ -77,7 +77,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('local files')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(file:///)')
           ])
         ]))
@@ -124,7 +124,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/ created it)')
           ])
         ]))
@@ -137,7 +137,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('slash')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/)')
           ])
         ]))
@@ -165,7 +165,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(/r9k/)')
           ]),
         ]))
@@ -212,7 +212,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('hash mark')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#)')
           ])
         ]))
@@ -225,7 +225,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('something terrible')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ])
         ]))
@@ -238,7 +238,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(#starcraft2)')
           ])
         ]))
@@ -300,7 +300,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('that place')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org-terrifying)')
           ])
         ]))
@@ -328,7 +328,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('email')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ])
         ]))
@@ -343,7 +343,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
               new PlainTextNode('username')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith5)')
             ]),
           ]))
@@ -356,7 +356,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
               new PlainTextNode('username')
             ]),
             new PlainTextNode(' '),
-            new ParentheticalNode([
+            new NormalParentheticalNode([
               new PlainTextNode('(john.e.smith-kline)')
             ])
           ]))
@@ -370,7 +370,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('top-level domain')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(.co.uk)')
           ])
         ]))
@@ -383,7 +383,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('Ash is not his own father')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(um..uh)')
           ])
         ]))
@@ -396,7 +396,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('debilitating sadness')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ])
         ]))
@@ -424,7 +424,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ])
         ]))
@@ -437,7 +437,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
             new PlainTextNode('yeah')
           ]),
           new PlainTextNode(' '),
-          new ParentheticalNode([
+          new NormalParentheticalNode([
             new PlainTextNode('(ign.com)')
           ]),
         ]))
@@ -452,7 +452,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
           new PlainTextNode('something terrible')
         ]),
         new PlainTextNode(' '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('(really)')
         ])
       ]))
@@ -468,7 +468,7 @@ describe('If there is nothing but whitspace between an inline NSFL convention an
           new PlainTextNode('something terrible')
         ]),
         new PlainTextNode('    '),
-        new ParentheticalNode([
+        new NormalParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')

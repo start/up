@@ -13,7 +13,7 @@ import { BoldNode } from '../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
-import { ParentheticalNode } from '../SyntaxNodes/ParentheticalNode'
+import { NormalParentheticalNode } from '../SyntaxNodes/NormalParentheticalNode'
 import { SquareBracketParentheticalNode } from '../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from '../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
@@ -113,7 +113,7 @@ export abstract class Writer {
   protected abstract orderedList(list: OrderedListNode): string
   protected abstract outlineSeparator(separator: OutlineSeparatorNode): string
   protected abstract paragraph(paragraph: ParagraphNode): string
-  protected abstract parenthetical(parenthetical: ParentheticalNode): string
+  protected abstract normalParenthetical(normalParenthetical: NormalParentheticalNode): string
   protected abstract plainText(plainText: PlainTextNode): string
   protected abstract revisionDeletion(revisionDeletion: RevisionDeletionNode): string
   protected abstract revisionInsertion(revisionInsertion: RevisionInsertionNode): string
@@ -223,8 +223,8 @@ export abstract class Writer {
       return this.revisionInsertion(node)
     }
 
-    if (node instanceof ParentheticalNode) {
-      return this.parenthetical(node)
+    if (node instanceof NormalParentheticalNode) {
+      return this.normalParenthetical(node)
     }
 
     if (node instanceof SquareBracketParentheticalNode) {
