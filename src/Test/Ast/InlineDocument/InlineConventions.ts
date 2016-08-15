@@ -38,7 +38,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new BoldNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode('though I never took it with me when I left house.'),
+          new PlainTextNode(', though I never took it with me when I left house.'),
         ]))
     })
   })

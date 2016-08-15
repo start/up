@@ -3,6 +3,7 @@ import { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
 import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
+import { parseInlineDocument } from './Parsing/parseInlineDocument'
 import { getHtml } from './Writing//Html/getHtml'
 
 
@@ -82,8 +83,8 @@ function toHtml(markupOrDocument: MarkupOrDocument, config: Config): string {
   return getHtml(document, config)
 }
 
-function toInlineDocument(_markup: string, _config: Config): InlineUpDocument {
-  throw new Error("Not implemented")
+function toInlineDocument(markup: string, config: Config): InlineUpDocument {
+  return parseInlineDocument(markup, config)
 }
 
 function toInlineHtml(_markupOrDocument: MarkupOrDocument, _config: Config): string {
