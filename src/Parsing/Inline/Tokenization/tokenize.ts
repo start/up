@@ -33,6 +33,15 @@ export function tokenize(markup: string, config: Config): Token[] {
   return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
 }
 
+// This function is identical to the `tokenize` function, except footnotes are treated as parentheticals
+// of the appropriate bracket type.
+//
+// In other words, footnotes produced by parentheses [^ like this] are treated as square-bracket
+// parentheticals, and footnotes produced by parentheses (^ like this) are treated as regular parentheticals.
+export function tokenizeForInlineDocument(_markup: string, _config: Config): Token[] {
+  throw new Error("Not implemented")
+}
+
 const LEADING_WHITESPACE_PATTERN =
   patternStartingWith(ANY_WHITESPACE)
 
