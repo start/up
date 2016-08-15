@@ -65,13 +65,13 @@ export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.FootnoteEnd
 }
 
-export const PARENTHESIZED_CONVENTION: RichConventionWithoutExtraFields = {
+export const PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: ParentheticalNode,
   startTokenKind: TokenKind.ParenthesizedStart,
   endTokenKind: TokenKind.ParenthesizedEnd
 }
 
-export const SQUARE_BRACKETED_CONVENTION: RichConventionWithoutExtraFields = {
+export const SQUARE_BRACKET_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: SquareBracketParentheticalNode,
   startTokenKind: TokenKind.SquareBracketedStart,
   endTokenKind: TokenKind.SquareBracketedEnd
