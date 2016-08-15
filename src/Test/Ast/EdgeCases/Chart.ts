@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
@@ -17,7 +17,7 @@ Chrono Trigger;      1995
 Chrono Cross;        1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -42,7 +42,7 @@ Chrono Trigger;       1995
 Chrono Cross;         1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -70,7 +70,7 @@ Chrono Trigger [\\;; 1995
 Chrono Cross;        1999 [\\;`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -95,7 +95,7 @@ Chrono Trigger :\\\\; 1995
 Chrono Cross;         1999 :\\\\`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -121,7 +121,7 @@ Chart: my favorite outline convention.
 
 I almost didn't include them; however, I realized charts are too useful to leave out.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Chart: my favorite outline convention.')]),
         new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
       ]))
@@ -141,7 +141,7 @@ Chart: Most common underlines for top-level headings (from most to least common)
 ****`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -176,7 +176,7 @@ Chrono Trigger;     Super NES;              1995
 Chrono Cross;       Playstation;            1999`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -204,7 +204,7 @@ Chrono Trigger;     Nintendo\`s Super NES;    1990\`s
 Chrono Cross;       Sony\`s Playstation;      1990\`s`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -232,7 +232,7 @@ Square\`s Chrono Trigger;     Super NES;        1990\`s
 Square\s Chrono Cross;        Playstation;      1990\`s`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -263,7 +263,7 @@ Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -291,7 +291,7 @@ Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     {: Playstation;     1999 :}`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),
@@ -319,7 +319,7 @@ Chart:
 Chrono Cross;         Playstation;         1999`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new TableNode(
             new TableNode.Header([
               new TableNode.Header.Cell([]),

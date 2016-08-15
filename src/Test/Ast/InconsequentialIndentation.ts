@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -23,7 +23,7 @@ context('Ordered list item bullets can have a single leading space. This include
 * Goodbye, Celadon City!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -45,7 +45,7 @@ context('Ordered list item bullets can have a single leading space. This include
  - Hello, Celadon City!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -68,7 +68,7 @@ context('Ordered list item bullets can have a single leading space. This include
 - No, really. Goodbye.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -96,7 +96,7 @@ context('Ordered list item bullets can have a single leading space. This include
  - No, really. Goodbye.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -126,7 +126,7 @@ context('Ordered list item bullets can have a single leading space. This include
 * Goodbye, Celadon City!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -148,7 +148,7 @@ context('Ordered list item bullets can have a single leading space. This include
  - Hello, Celadon City!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -171,7 +171,7 @@ context('Ordered list item bullets can have a single leading space. This include
 - No, really. Goodbye.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -199,7 +199,7 @@ context('Ordered list item bullets can have a single leading space. This include
  - No, really. Goodbye.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -230,7 +230,7 @@ Charmeleon
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
@@ -251,7 +251,7 @@ Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
@@ -273,7 +273,7 @@ Charizard
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
@@ -299,7 +299,7 @@ Skeltals are white
  You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -328,7 +328,7 @@ Roses are red
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -361,7 +361,7 @@ context("Indentation does not matter for a code block's fences, though it does m
           \`\`\`\`\`\`\`\`\`\`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode(
           `  function factorial(n: number): number {
     return (
@@ -382,7 +382,7 @@ context('For some outline conventions, all extra indentation is ignored:', () =>
   \t\t\t\t Aren't you this way?`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I'm just a normal guy who eats only when it's raining outside.")
         ]),
@@ -401,7 +401,7 @@ Hello, world!
  \t ~~~~~~~~~~~~~~~`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([new PlainTextNode('Hello, world!')], 1),
         new HeadingNode([new PlainTextNode('Hello, core!')], 1),
       ]))
@@ -416,7 +416,7 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -437,7 +437,7 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -458,7 +458,7 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsflBlockNode([
           new ParagraphNode([
             new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -483,7 +483,7 @@ Hello, world!
  \t  Chrono Cross; 1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -518,7 +518,7 @@ Hello, world!
   0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -546,7 +546,7 @@ Hello, world!
 > I like blankets, too.`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new BlockquoteNode([
             new ParagraphNode([
               new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -565,7 +565,7 @@ Hello, world!
 \t \t > I like blankets, too.`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new BlockquoteNode([
             new ParagraphNode([
               new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -585,7 +585,7 @@ Hello, world!
 > I like poems! They're comfy and easy to write!`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new BlockquoteNode([
             new LineBlockNode([
               new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
@@ -605,7 +605,7 @@ Hello, world!
 >\t I like blankets, too.`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new BlockquoteNode([
             new ParagraphNode([
               new PlainTextNode("I like shorts! They're comfy and easy to wear!")
@@ -628,7 +628,7 @@ context("Within list items, extra indentation for outline conventions is ignored
  \t\t How are we today?`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -649,7 +649,7 @@ context("Within list items, extra indentation for outline conventions is ignored
  \t\t Now.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -671,7 +671,7 @@ Charmander
 \t Does not evolve into Kadabra.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
@@ -12,7 +12,7 @@ describe("The text in an inline NSFW convention's label", () => {
       terms: { toggleNsfw: 'show/hide' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -38,7 +38,7 @@ describe("The text in a NSFW block's label", () => {
       terms: { toggleNsfw: 'show/hide' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new NsfwBlockNode([])
     ])
 

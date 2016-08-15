@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -13,7 +13,7 @@ describe("A footnote reference's ID", () => {
       terms: { footnoteReference: 'ref' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -31,7 +31,7 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       terms: { footnoteReference: 'ref' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new FootnoteBlockNode([
         new FootnoteNode([
           new PlainTextNode("Arwings")

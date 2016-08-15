@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
@@ -12,7 +12,7 @@ describe("The text in an inline NSFL convention's label", () => {
       terms: { toggleNsfl: 'show/hide' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -38,7 +38,7 @@ describe("The text in a NSFL block's label", () => {
       terms: { toggleNsfl: 'show/hide' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new NsflBlockNode([])
     ])
 

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../../Helpers'
-import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
@@ -26,7 +26,7 @@ context('A linkified image convention can have whitespace between its image URL 
           prefixes: WITH_WHITESPACE,
           text: 'app:wiki/terrible-thing'
         }],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new ImageNode('something terrible', 'https://example.com/image.png')
         ], 'app:wiki/terrible-thing')
@@ -48,7 +48,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
@@ -105,7 +105,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: 'tel:5555555555'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('spooky phone call', 'https://example.com/image.png')
           ], 'tel:5555555555')
@@ -138,7 +138,7 @@ context('A linkified image convention can have whitespace between its image URL 
           prefixes: WITH_WHITESPACE,
           text: '/wiki/something-terrible'
         }],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new ImageNode('something terrible', 'https://example.com/image.png')
         ], '/wiki/something-terrible')
@@ -182,7 +182,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: '/3'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('Model 3 theft', 'https://example.com/image.png')
           ], '/3')
@@ -215,7 +215,7 @@ context('A linkified image convention can have whitespace between its image URL 
           prefixes: WITH_WHITESPACE,
           text: '#wiki/something-terrible'
         }],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new ImageNode('something terrible', 'https://example.com/image.png')
         ], '#wiki/something-terrible')
@@ -237,7 +237,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: '#3'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('Model 3 theft', 'https://example.com/image.png')
           ], '#3')
@@ -292,7 +292,7 @@ context('A linkified image convention can have whitespace between its image URL 
           prefixes: WITH_WHITESPACE,
           text: 'https://chrono-trigger.wiki'
         }],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new ImageNode('Chrono Trigger', 'https://example.com/image.png')
         ], 'https://chrono-trigger.wiki')
@@ -314,7 +314,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
@@ -334,7 +334,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: 'advancewars.wikia.com/'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/')
@@ -365,7 +365,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: '88.8888.cn'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('good luck', 'https://example.com/image.png')
           ], 'https://88.8888.cn')
@@ -442,7 +442,7 @@ context('A linkified image convention can have whitespace between its image URL 
             prefixes: WITH_WHITESPACE,
             text: 'example.com/321...blastoff/1'
           }],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new ImageNode('rocket ship', 'https://example.com/image.png')
           ], 'https://example.com/321...blastoff/1')
@@ -518,7 +518,7 @@ describe("An image convention's linkifying URL, when separated from its image UR
           prefixes: WITH_WHITESPACE,
           text: 'stackoverflow.com/search=something\\ very\\ terrible'
         }],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new ImageNode('something terrible', 'https://example.com/image.png')
         ], 'https://stackoverflow.com/search=something very terrible')

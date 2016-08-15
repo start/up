@@ -21,14 +21,21 @@ context('The Up library is exported two ways.', () => {
 })
 
 
-context('Every syntax node class is exported, as well as the two document classes:', () => {
+context('Both document classes are exported:', () => {
+  specifyEveryClassShouldBeExported([
+    'UpDocument',
+    'InlineUpDocument'
+  ])
+})
+
+
+context('Every syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([
     'AudioNode',
     'BoldNode',
     'BlockquoteNode',
     'CodeBlockNode',
     'DescriptionListNode',
-    'DocumentNode',
     'EmphasisNode',
     'ExampleInputNode',
     'FootnoteBlockNode',
@@ -40,7 +47,6 @@ context('Every syntax node class is exported, as well as the two document classe
     'InlineNsflNode',
     'InlineNsfwNode',
     'InlineSpoilerNode',
-    'InlineUpDocument',
     'ItalicNode',
     'LineBlockNode',
     'LinkNode',
@@ -61,7 +67,6 @@ context('Every syntax node class is exported, as well as the two document classe
     'VideoNode'
   ])
 })
-
 
 context('Every base syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([

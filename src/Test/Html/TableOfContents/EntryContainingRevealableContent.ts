@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -19,13 +19,13 @@ context("Within the table of contents, the IDs of revealable content elements do
       ], 1)
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineSpoilerNode([new PlainTextNode('Never')]),
           new PlainTextNode(' eat apples.'),
         ]),
         heading,
-      ], new DocumentNode.TableOfContents([heading]))
+      ], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -79,13 +79,13 @@ context("Within the table of contents, the IDs of revealable content elements do
         ]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsfwNode([new PlainTextNode('Never')]),
           new PlainTextNode(' eat apples.'),
         ]),
         table
-      ], new DocumentNode.TableOfContents([table]))
+      ], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -145,13 +145,13 @@ context("Within the table of contents, the IDs of revealable content elements do
         ]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsflNode([new PlainTextNode('Never')]),
           new PlainTextNode(' eat apples.'),
         ]),
         table
-      ], new DocumentNode.TableOfContents([table]))
+      ], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'

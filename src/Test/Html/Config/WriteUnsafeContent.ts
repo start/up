@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -16,7 +16,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
   context('Links produce <a> elements even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ParagraphNode([
           new LinkNode([
             new PlainTextNode('Click me!')
@@ -29,7 +29,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ParagraphNode([
           new LinkNode([
             new PlainTextNode('Click me!')
@@ -42,7 +42,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ParagraphNode([
           new LinkNode([
             new PlainTextNode('Click me!')
@@ -55,7 +55,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ParagraphNode([
           new LinkNode([
             new PlainTextNode('Click me!')
@@ -70,7 +70,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
 
   specify('Because unsafe links produce <a> elements, any links nested inside unsafe lnks do not produce <a> elements.', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new LinkNode([
@@ -87,7 +87,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -96,7 +96,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -105,7 +105,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -114,7 +114,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -126,7 +126,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
   context('Audio conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -137,7 +137,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -148,7 +148,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -159,7 +159,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -173,7 +173,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
   context('Video conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -184,7 +184,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -195,7 +195,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -206,7 +206,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'vbscript:malicious')
       ])
 

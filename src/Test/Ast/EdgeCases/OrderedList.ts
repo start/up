@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
@@ -17,7 +17,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 -----------`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new OutlineSeparatorNode(),
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -37,7 +37,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 -----------`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new OutlineSeparatorNode(),
           new OrderedListNode([
             new OrderedListNode.Item([
@@ -60,7 +60,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 ----------------------------------------`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new HeadingNode([
             new PlainTextNode('1783. Not a good year for Great Britain.')
           ], 1)
@@ -81,7 +81,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 # Sanders`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -123,7 +123,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 # Sanders`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -161,7 +161,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #. Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -183,7 +183,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #) Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -205,7 +205,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #) Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -226,7 +226,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 context("When an ordered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
   specify('An integer followed by a closing parenthesis', () => {
     expect(Up.toAst('1) 1783. Not a good year for Great Britain.')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -239,7 +239,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign', () => {
     expect(Up.toAst('# 1783. Not a good year for Great Britain.')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -252,7 +252,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign followed by a period', () => {
     expect(Up.toAst('#. 1783. Not a good year for Great Britain.')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -265,7 +265,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign followed by a closing parenthesis', () => {
     expect(Up.toAst('#) 1783. Not a good year for Great Britain.')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -295,7 +295,7 @@ I enjoy apples
    Very delicious.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
           new OrderedListNode.Item([

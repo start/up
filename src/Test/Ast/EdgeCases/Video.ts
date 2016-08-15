@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -18,7 +18,7 @@ describe('A paragraph directly followed by a video on its own line', () => {
 Do not pour the spiders into your sister's cereal.
 [video: spiders crawling out of mouth][http://example.com/spiders.webm]`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Do not pour the spiders into your sister's cereal.")
         ]),
@@ -66,14 +66,14 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
 context('Unmatched opening parentheses in a video description have no affect on', () => {
   specify('parentheses surounding the URL', () => {
     expect(Up.toAst('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new VideoNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.toAst('([video: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new ParenthesizedNode([
             new PlainTextNode('('),
@@ -95,7 +95,7 @@ describe("Unmatched opening parentheses in a video URL", () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),

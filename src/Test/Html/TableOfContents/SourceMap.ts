@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
@@ -13,7 +13,7 @@ context("When an item referenced by the table of contents has a source line numb
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
 
     const document =
-      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -46,7 +46,7 @@ context("When an item referenced by the table of contents has a source line numb
         ]), 4)
 
     const document =
-      new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+      new UpDocument([table], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -85,7 +85,7 @@ context("When an item referenced by the table of contents has a source line numb
         ]), 3)
 
     const document =
-      new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
+      new UpDocument([chart], new UpDocument.TableOfContents([chart]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'

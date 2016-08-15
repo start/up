@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 describe('The term that represents image conventions', () => {
@@ -13,7 +13,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -29,7 +29,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(Up.toAst(markup, { terms: { image: ' \t see \t' } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -38,7 +38,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[*see*: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(Up.toAst(markup, { terms: { image: '*see*' } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -47,7 +47,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
 
     expect(Up.toAst(markup, { terms: { image: ['view', 'look'] } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png'),
         new ImageNode('Chrono Cross logo', 'https://example.com/cc.png')
       ]))

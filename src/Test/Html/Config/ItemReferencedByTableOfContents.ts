@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
@@ -15,7 +15,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
     const document =
-      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     expect(up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'

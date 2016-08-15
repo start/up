@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
@@ -76,7 +76,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),
@@ -104,7 +104,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),
@@ -134,7 +134,7 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),
@@ -187,7 +187,7 @@ describe('A naked URL followed by a space then a footnote', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new LinkNode([
             new PlainTextNode('google.com')

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
@@ -19,7 +19,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -64,7 +64,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.toAst(markup, { terms: { table: ' \t data \t '}})).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -91,7 +91,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.toAst(markup, { terms: { table: '*data*'}})).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -125,7 +125,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.toAst(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),

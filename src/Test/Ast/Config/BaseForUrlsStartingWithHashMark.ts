@@ -12,7 +12,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 const up = new Up({
@@ -37,7 +37,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     const markup = '[image: Chrono Cross logo](#cc-logo.png)'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://example.com/page#cc-logo.png')
       ]))
   })
@@ -46,7 +46,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     const markup = '[audio: Chrono Cross ending theme](#radical dreamers.mp3)'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
       ]))
   })
@@ -55,7 +55,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     const markup = '[video: Chrono Cross ending cinematic][#radical dreamers.webm]'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new VideoNode('Chrono Cross ending cinematic', 'https://example.com/page#radical dreamers.webm')
       ]))
   })
@@ -112,7 +112,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     ], 1)
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -221,7 +221,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
     ], 1)
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,

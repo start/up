@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
@@ -28,7 +28,7 @@ describe('A footnote in a paragph', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -54,7 +54,7 @@ describe('A paragraph with two footnotes', () => {
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnotes[0],
@@ -78,7 +78,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -108,7 +108,7 @@ Violets are blue (^Neither is this line. I think my mom made it up.)`
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode("Roses are red"),
@@ -153,7 +153,7 @@ describe('Footnotes in unordered list items', () => {
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
 
           new UnorderedListNode.Item([
@@ -205,7 +205,7 @@ describe('Footnotes in a blockquote', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new BlockquoteNode([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal."),
@@ -238,7 +238,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new BlockquoteNode([
 
           new UnorderedListNode([
@@ -285,7 +285,7 @@ SPOILER:
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode("This ruins the movie."),
@@ -319,7 +319,7 @@ SPOILER:
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
 
           new UnorderedListNode([
@@ -366,7 +366,7 @@ NSFW:
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode("This ruins the movie."),
@@ -400,7 +400,7 @@ NSFW:
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsfwBlockNode([
 
           new UnorderedListNode([
@@ -447,7 +447,7 @@ NSFL:
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsflBlockNode([
           new ParagraphNode([
             new PlainTextNode("This ruins the movie."),
@@ -481,7 +481,7 @@ NSFL:
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new NsflBlockNode([
 
           new UnorderedListNode([
@@ -530,7 +530,7 @@ Final Fantasy II;   1988`
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -571,7 +571,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
     ], 2)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -619,7 +619,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
     ], 3)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -681,7 +681,7 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
     ], 5)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -731,7 +731,7 @@ describe('Footnotes in ordered list items', () => {
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([
@@ -784,7 +784,7 @@ Gary
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -853,7 +853,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       ], 3)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -912,7 +912,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     ], 3)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -985,7 +985,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     ], 5)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -1050,7 +1050,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     ], 2)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
           firstFootnote,
@@ -1099,7 +1099,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     ], 2)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
           firstFootnote,
@@ -1145,7 +1145,7 @@ I don't eat (^Or touch.) pumpkins.`
     ], 4)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,

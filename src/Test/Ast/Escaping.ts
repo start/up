@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -51,7 +51,7 @@ context("Backslashes don't disable line breaks:", () => {
 Hello, world!\\
 Goodbye, world!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Hello, world!')
@@ -69,7 +69,7 @@ Hello, world!
 \\
 Goodbye, world!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ]),
@@ -85,7 +85,7 @@ Hello, world!\\
 
 Goodbye, world!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Hello, world!')
         ]),

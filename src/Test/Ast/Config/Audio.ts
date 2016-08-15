@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 describe('The term that represents video conventions', () => {
@@ -13,7 +13,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -29,7 +29,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(Up.toAst(markup, { terms: { audio: ' \t listen \t ' } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -38,7 +38,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[*listen*: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(Up.toAst(markup, { terms: { audio: '*listen*' } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -47,7 +47,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[hear: chanting at Nevada caucus](https://example.com/audio.ogg) [listen: chanting at Nevada caucus](https://example.com/audio.ogg)'
 
     expect(Up.toAst(markup, { terms: { audio: ['hear', 'listen'] } })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
         new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))

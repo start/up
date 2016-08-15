@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -55,14 +55,14 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
 
     specify('Media URLs', () => {
       expect(Up.toAst('[video: ghosts eating luggage] (http://example.com/polter--geists.webm)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new VideoNode('ghosts eating luggage', 'http://example.com/polter--geists.webm')
         ]))
     })
 
     specify('Linkified media URLs', () => {
       expect(Up.toAst('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final--battle)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new LinkNode([
             new ImageNode('you fight Gary', 'https://example.com/fight.svg')
           ], 'http://example.com/final--battle')
@@ -94,7 +94,7 @@ for (let i = items.length - 1; i >= 0; i--) { }
 \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new CodeBlockNode(
             `for (let i = items.length - 1; i >= 0; i--) { }`)
         ]))

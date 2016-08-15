@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
@@ -17,7 +17,7 @@ Roses are red
 \\ \t
 Violets are blue`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -40,7 +40,7 @@ describe('A line starting with an escaped character in a line block', () => {
 \\Roses are red
 Violets are blue`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -57,7 +57,7 @@ Violets are blue`
 Roses are red
 \\Violets are blue`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -80,7 +80,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -111,7 +111,7 @@ Violets are blue\\
 Lyrics have lines
 And addresses do, too`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red'),
@@ -138,7 +138,7 @@ You'll never believe this fake evidence!
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("You'll never believe this fake evidence!")
         ]),

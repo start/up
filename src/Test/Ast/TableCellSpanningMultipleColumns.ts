@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
@@ -19,7 +19,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')], 1),
@@ -57,7 +57,7 @@ Game;               Publisher;;                       Release Date
 Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -86,7 +86,7 @@ Game;               Director;;;                                             Rele
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -120,7 +120,7 @@ Command & Conquer;  Westwood Studios;;                      August 31, 1995
 Starcraft;          Blizzard;;                              March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -169,7 +169,7 @@ Command & Conquer;  Westwood Studios;;;                                     Augu
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -216,7 +216,7 @@ Game;               Publisher;;
 Terranigma;         Nintendo;             Enix`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -243,7 +243,7 @@ Game;               Director;;;
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -275,7 +275,7 @@ Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;;`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -319,7 +319,7 @@ Command & Conquer;  Westwood Studios;;;
 Starcraft;          Blizzard;;;`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -361,7 +361,7 @@ Game;               Publisher;; \t \t
 Terranigma;         Nintendo;             Enix`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -392,7 +392,7 @@ Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;; \t \t`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -434,7 +434,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([], 2),
@@ -473,7 +473,7 @@ Jogged on track;          Deadlifts;          Walked on track;            March 
 Swam laps;                Sprints on track;   Treaded water;              March 14, 2018`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([], 3),
@@ -516,7 +516,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
@@ -561,7 +561,7 @@ Jogged on track;          Deadlifts;            Walked on track;            Marc
 Swam laps;                Sprints on track;     Treaded water;              March 14, 2018`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
@@ -607,7 +607,7 @@ Game;               Director;         ;;                                    Rele
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -642,7 +642,7 @@ Command & Conquer;  Westwood Studios;                       ;;              Augu
 Starcraft;          Blizzard;                               ;;                March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),

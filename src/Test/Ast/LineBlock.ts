@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -21,7 +21,7 @@ Roses are red
 Violets are blue`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -45,7 +45,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -74,7 +74,7 @@ Roses are red
 Violets are blue`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -106,7 +106,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -144,7 +144,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -179,7 +179,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -211,7 +211,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -253,7 +253,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -297,7 +297,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -341,7 +341,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')
@@ -381,7 +381,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('1234 Spooky Street')

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -38,7 +38,7 @@ Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
@@ -51,7 +51,7 @@ Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
@@ -63,7 +63,7 @@ Pokemon Moon has a Mew under a truck.
  \t \t 
 Pokemon Sun is a truck.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))
@@ -76,7 +76,7 @@ Pokemon Moon has a Mew under a truck.
 \t \t 
 Pokemon Sun is a truck.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
       ]))

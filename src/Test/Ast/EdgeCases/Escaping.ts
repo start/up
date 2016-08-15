@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
@@ -24,7 +24,7 @@ describe("A backslash that is the first character in a line block's first line",
 Violets are blue`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Violets are blue')])
@@ -41,7 +41,7 @@ Roses are red
 \\Violets are blue`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
           new LineBlockNode.Line([new PlainTextNode('Violets are blue')])

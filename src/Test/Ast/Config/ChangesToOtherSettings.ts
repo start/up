@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -19,8 +19,8 @@ import { UserProvidedSettings } from '../../../UserProvidedSettings'
 function itWorksAsAdvertised(
   args: {
     markup: string,
-    documentWhenChangeIsApplied: DocumentNode
-    documentWhenSettingIsNotChanged: DocumentNode
+    documentWhenChangeIsApplied: UpDocument
+    documentWhenSettingIsNotChanged: UpDocument
     configWithSettingChanged: UserProvidedSettings
     configWithSettingSetToDefault: UserProvidedSettings
   }
@@ -85,13 +85,13 @@ describe('The "createTableOfContents" config term', () => {
 Very important
 ==============`,
 
-    documentWhenChangeIsApplied: new DocumentNode([
+    documentWhenChangeIsApplied: new UpDocument([
       new HeadingNode([new PlainTextNode('Very important')], 1)
-    ], new DocumentNode.TableOfContents([
+    ], new UpDocument.TableOfContents([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ])),
 
-    documentWhenSettingIsNotChanged: new DocumentNode([
+    documentWhenSettingIsNotChanged: new UpDocument([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ]),
 
@@ -112,11 +112,11 @@ describe('The "createSourceMap" config term', () => {
 Very important
 ==============`,
 
-    documentWhenChangeIsApplied: new DocumentNode([
+    documentWhenChangeIsApplied: new UpDocument([
       new HeadingNode([new PlainTextNode('Very important')], 1, 2)
     ]),
 
-    documentWhenSettingIsNotChanged: new DocumentNode([
+    documentWhenSettingIsNotChanged: new UpDocument([
       new HeadingNode([new PlainTextNode('Very important')], 1)
     ]),
 
@@ -135,13 +135,13 @@ describe('The "defaultUrlScheme" config term', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
-    documentWhenChangeIsApplied: new DocumentNode([
+    documentWhenChangeIsApplied: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new DocumentNode([
+    documentWhenSettingIsNotChanged: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], 'https://example.com/users')
       ])
@@ -162,13 +162,13 @@ describe('The "baseForUrlsStartingWithSlash" config term', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
-    documentWhenChangeIsApplied: new DocumentNode([
+    documentWhenChangeIsApplied: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new DocumentNode([
+    documentWhenSettingIsNotChanged: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], '/users')
       ])
@@ -189,13 +189,13 @@ describe('The "baseForUrlsStartingWithHashMark" config term', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 
-    documentWhenChangeIsApplied: new DocumentNode([
+    documentWhenChangeIsApplied: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see#users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new DocumentNode([
+    documentWhenSettingIsNotChanged: new UpDocument([
       new ParagraphNode([
         new LinkNode([new PlainTextNode('See users')], '#users')
       ])

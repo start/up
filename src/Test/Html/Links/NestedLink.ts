@@ -4,7 +4,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
@@ -12,7 +12,7 @@ import { TableNode } from '../../../SyntaxNodes/TableNode'
 
 context('Inside a link', () => {
   specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Google'),
@@ -26,7 +26,7 @@ context('Inside a link', () => {
   })
 
   specify("a nested link does not produce another <a> element. The nested link's contents are included directly inside the outer link", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Google is probably not '),
@@ -48,7 +48,7 @@ context('Links nested within table of contents entries do not produce <a> elemen
       ], 1)
 
     const document =
-      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -81,7 +81,7 @@ context('Links nested within table of contents entries do not produce <a> elemen
         ]))
 
     const document =
-      new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+      new UpDocument([table], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -120,7 +120,7 @@ context('Links nested within table of contents entries do not produce <a> elemen
         ]))
 
     const document =
-      new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
+      new UpDocument([chart], new UpDocument.TableOfContents([chart]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -141,7 +141,7 @@ context('Links nested within table of contents entries do not produce <a> elemen
 
 context("Even when a link is nested deep within another link, it doesn't produce an <a> element. This is true for", () => {
   specify("regular links inside another link", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new EmphasisNode([
@@ -159,7 +159,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
   })
 
   specify("footnotes inside a link", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new EmphasisNode([
@@ -185,7 +185,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       ], 1)
 
     const document =
-      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -220,7 +220,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
         ]))
 
     const document =
-      new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+      new UpDocument([table], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -261,7 +261,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
         ]))
 
     const document =
-      new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
+      new UpDocument([chart], new UpDocument.TableOfContents([chart]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -282,7 +282,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
 
 context('When severeal links are nested within each other', () => {
   specify('only the outermost link produces an <a> element', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new LinkNode([
@@ -302,7 +302,7 @@ context('When severeal links are nested within each other', () => {
 
 context('When a link contains 2 or more inner links', () => {
   specify("neither inner link produces an <a> element", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new LinkNode([new PlainTextNode('Google is probably not ')], 'https://google.co.nz'),

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -91,7 +91,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toAst('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new AudioNode('Ash fights Gary', 'https://example.com/audio.ogg')
         ]))
     })
@@ -109,7 +109,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], 1)
 
       expect(up.toAst('[^listen^: I guess this means "listen up"?]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ]))
@@ -124,7 +124,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toAst('[^look^: Ash fights Gary](example.com/image.svg)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ImageNode('Ash fights Gary', 'https://example.com/image.svg')
         ]))
     })
@@ -142,7 +142,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], 1)
 
       expect(up.toAst('[^look^: I guess this means "look up"?]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ]))
@@ -157,7 +157,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toAst('[^watch^: Ash fights Gary](example.com/video.webm)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new VideoNode('Ash fights Gary', 'https://example.com/video.webm')
         ]))
     })
@@ -175,7 +175,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], 1)
 
       expect(up.toAst('[^watch^: I guess this means "watch up"?]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([footnote]),
           new FootnoteBlockNode([footnote])
         ]))

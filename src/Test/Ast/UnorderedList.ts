@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -17,7 +17,7 @@ describe('Consecutive bulleted lines', () => {
 * Buy tendies`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -47,7 +47,7 @@ context('Unordered list bullets can be:', () => {
 * Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -69,7 +69,7 @@ context('Unordered list bullets can be:', () => {
 - Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -91,7 +91,7 @@ context('Unordered list bullets can be:', () => {
 + Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -113,7 +113,7 @@ context('Unordered list bullets can be:', () => {
 • Goodbye, world!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -137,7 +137,7 @@ context('Unordered list bullets can be:', () => {
 • Buy happiness`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -185,7 +185,7 @@ describe('List items in an unordered list', () => {
 describe('A single bulleted line', () => {
   it('produces an unordered list node containing a single unordered list item', () => {
     expect(Up.toAst('* Hello, world!')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -207,7 +207,7 @@ describe('An indented line immediately following an ordered list item line', () 
   Violets are blue`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new HeadingNode([
@@ -244,7 +244,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
   ===============`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new HeadingNode([
@@ -303,7 +303,7 @@ describe('An unordered list item containing multiple indented lines', () => {
   ===============`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new HeadingNode([
@@ -344,7 +344,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
   Violets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new LineBlockNode([
@@ -366,7 +366,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 \tViolets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new LineBlockNode([
@@ -388,7 +388,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
  \tViolets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new LineBlockNode([
@@ -420,7 +420,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
   I used to live there.`
 
     expect(Up.toAst(withMixedIndentation)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new LineBlockNode([
@@ -460,7 +460,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     expect(Up.toAst('* *Hello*, world!')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -483,7 +483,7 @@ describe('An unordered list', () => {
 * Goodbye, World *1-2*!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -514,7 +514,7 @@ describe('An unordered list', () => {
 Hello, World 1-2!`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([

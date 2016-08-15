@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from'../../../index'
 import { insideDocumentAndParagraph } from'.././Helpers'
-import { DocumentNode } from'../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from'../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from'../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
@@ -453,7 +453,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineSpoilerNode([
             new PlainTextNode('Gary loses to Ash'),
@@ -479,7 +479,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
@@ -549,7 +549,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsfwNode([
             new PlainTextNode('Gary loses to Ash')
@@ -575,7 +575,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,
@@ -644,7 +644,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsflNode([
             new PlainTextNode('Gary loses to Ash'),
@@ -670,7 +670,7 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Eventually, I will think of one'),
           footnote,

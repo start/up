@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -36,7 +36,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
         { text: 'https://example.com/fight.webm' },
         { text: 'http://example.com/finalbattle' }
       ],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new VideoNode('you fight Gary', 'https://example.com/fight.webm')
         ], 'http://example.com/finalbattle')
@@ -52,7 +52,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.webm' },
           { text: 'http://example.com/final battle' }
         ],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new VideoNode('you fight Gary', 'https://example.com/fight.webm')
           ], 'http://example.com/final battle')
@@ -67,7 +67,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.webm' },
           { text: ' \t \t http://example.com/final battle' }
         ],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new VideoNode('you fight Gary', 'https://example.com/fight.webm')
           ], 'http://example.com/final battle')
@@ -134,7 +134,7 @@ describe('A video directly followed by a footnote', () => {
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
           new VideoNode('you fight Gary', 'https://example.com/fight.webm'),

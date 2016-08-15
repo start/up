@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
@@ -13,7 +13,7 @@ context('If a line consists solely of media conventions, those media conventions
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
@@ -25,7 +25,7 @@ context('If a line consists solely of media conventions, those media conventions
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
@@ -37,7 +37,7 @@ context('If a line consists solely of media conventions, those media conventions
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
@@ -51,7 +51,7 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)] (hauntedhouse.com)  \t '
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -65,7 +65,7 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [audio: ghostly howling] [http://example.com/ghosts.ogg] \t ([image: haunted house] [http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com)  \t '
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -79,7 +79,7 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new LinkNode([
             new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
           ], 'https://ghosts.com'),

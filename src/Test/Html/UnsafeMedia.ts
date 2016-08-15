@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
@@ -9,7 +9,7 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 context('By default, media with unsafe URLs schemes produce no HTML.', () => {
   context('Images produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -17,7 +17,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -25,7 +25,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -33,7 +33,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -43,7 +43,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
   context('Audio conventions produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -51,7 +51,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -59,7 +59,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -67,7 +67,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -77,7 +77,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
   context('Videos produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -85,7 +85,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'data:malicious')
       ])
 
@@ -93,7 +93,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'file:malicious')
       ])
 
@@ -101,7 +101,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -114,7 +114,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 context("When determining whether a media's URL is unsafe, the capitalization of the scheme does not matter.", () => {
   context('Images produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'jaVascriPt:malicious')
       ])
 
@@ -122,7 +122,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'DatA:malicious')
       ])
 
@@ -130,7 +130,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'fiLE:malicious')
       ])
 
@@ -138,7 +138,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new ImageNode('Uh-oh!', 'vBscRipt:malicious')
       ])
 
@@ -148,7 +148,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
   context('Audio conventions produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'JavascriPT:malicious')
       ])
 
@@ -156,7 +156,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'DAta:malicious')
       ])
 
@@ -164,7 +164,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'fILe:malicious')
       ])
 
@@ -172,7 +172,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new AudioNode('Uh-oh!', 'vbScrIPt:malicious')
       ])
 
@@ -182,7 +182,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
   context('Videos produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'jAvAscript:malicious')
       ])
 
@@ -190,7 +190,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('data', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'dATa:malicious')
       ])
 
@@ -198,7 +198,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('file', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'FiLe:malicious')
       ])
 
@@ -206,7 +206,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
     })
 
     specify('vbscript', () => {
-      const document = new DocumentNode([
+      const document = new UpDocument([
         new VideoNode('Uh-oh!', 'VbscripT:malicious')
       ])
 
@@ -218,7 +218,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
 context("An image's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -227,7 +227,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
   })
 
   specify('data-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -236,7 +236,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
   })
 
   specify('file-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -245,7 +245,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
   })
 
   specify('vbscript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('Uh-oh!', 'vbscript-app:stuff')
     ])
 
@@ -257,7 +257,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 
 context("An audio convention's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -268,7 +268,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
   })
 
   specify('data-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -279,7 +279,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
   })
 
   specify('file-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -290,7 +290,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
   })
 
   specify('vbscript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('Uh-oh!', 'vbscript-app:stuff')
     ])
 
@@ -304,7 +304,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 
 context("A video's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -315,7 +315,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
   })
 
   specify('data-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -326,7 +326,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
   })
 
   specify('file-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -337,7 +337,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
   })
 
   specify('vbscript-app', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('Uh-oh!', 'vbscript-app:stuff')
     ])
 

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -72,7 +72,7 @@ ruins ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -111,7 +111,7 @@ RUINS ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(markup, { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -132,7 +132,7 @@ RUINS ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(markup, { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -155,7 +155,7 @@ LOOK AWAY:
     Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(markup, { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')

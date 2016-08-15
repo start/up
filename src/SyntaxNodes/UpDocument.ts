@@ -3,14 +3,14 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 
 
-export class DocumentNode extends OutlineSyntaxNodeContainer {
-  constructor(children: OutlineSyntaxNode[], public tableOfContents?: DocumentNode.TableOfContents) {
+export class UpDocument extends OutlineSyntaxNodeContainer {
+  constructor(children: OutlineSyntaxNode[], public tableOfContents?: UpDocument.TableOfContents) {
     super(children)
   }
 }
 
 
-export namespace DocumentNode {
+export namespace UpDocument {
   export class TableOfContents {
     constructor(public entries: OutlineSyntaxNode[]) { }
   }
@@ -26,8 +26,8 @@ export function createDocument(
     children: OutlineSyntaxNode[]
     createTableOfContents: boolean
   }
-): DocumentNode {
-  const document = new DocumentNode(args.children)
+): UpDocument {
+  const document = new UpDocument(args.children)
   insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
 
   if (args.createTableOfContents) {
@@ -35,7 +35,7 @@ export function createDocument(
 
     // An empty table of contents wouldn't be very useful! Let's avoid creating them.
     if (tableOfContentsEntries.length) {
-      document.tableOfContents = new DocumentNode.TableOfContents(tableOfContentsEntries)
+      document.tableOfContents = new UpDocument.TableOfContents(tableOfContentsEntries)
     }
   }
 

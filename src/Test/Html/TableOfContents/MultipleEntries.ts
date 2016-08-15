@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
@@ -57,9 +57,9 @@ context('When a table of contents has multiple entries', () => {
         ]))
 
     const tableOfContents =
-      new DocumentNode.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
+      new UpDocument.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       bestFruitHeading,
 
       new UnorderedListNode([

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
@@ -29,10 +29,10 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
       ], 1)
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         heading,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
-      ], new DocumentNode.TableOfContents([heading]))
+      ], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -92,10 +92,10 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
         ]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         table,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
-      ], new DocumentNode.TableOfContents([table]))
+      ], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -161,10 +161,10 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
         ]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         chart,
         new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
-      ], new DocumentNode.TableOfContents([chart]))
+      ], new UpDocument.TableOfContents([chart]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'

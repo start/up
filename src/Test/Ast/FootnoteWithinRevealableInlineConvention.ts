@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -24,7 +24,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], 2)
 
       expect(Up.toAst("I'm normal. (^Really.) [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -54,7 +54,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], 2)
 
       expect(Up.toAst("I'm normal. (^Really.) [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -84,7 +84,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], 2)
 
       expect(Up.toAst("I'm normal. (^Really.) [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -113,7 +113,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], 1)
 
     expect(Up.toAst("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Beating the game isn't a quick process."),
           footnote
@@ -142,7 +142,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], 1)
 
     expect(Up.toAst("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsfwNode([
             new PlainTextNode("I'm normal."),
@@ -166,7 +166,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], 1)
 
       expect(Up.toAst("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new InlineNsfwNode([
               new InlineSpoilerNode([
@@ -191,7 +191,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], 1)
 
     expect(Up.toAst("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineNsflNode([
             new InlineNsfwNode([
@@ -215,7 +215,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], 1)
 
     expect(Up.toAst("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new InlineSpoilerNode([
             new InlineNsflNode([

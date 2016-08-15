@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
@@ -15,7 +15,7 @@ Chart:
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -43,7 +43,7 @@ Command & Conquer;  Westwood Studios;;;                                     Augu
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -87,7 +87,7 @@ Thursday;     Really;                   Todd finished his work
 Friday;;                                Printer had ink`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),

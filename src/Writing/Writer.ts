@@ -3,7 +3,7 @@ import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { ImageNode } from '../SyntaxNodes/ImageNode'
 import { AudioNode } from '../SyntaxNodes/AudioNode'
 import { VideoNode } from '../SyntaxNodes/VideoNode'
-import { DocumentNode } from '../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
@@ -56,7 +56,7 @@ export abstract class Writer {
   private _result: string
 
   constructor(
-    protected document: DocumentNode,
+    protected document: UpDocument,
     protected config: Config) { }
 
   get result(): string {
@@ -87,7 +87,7 @@ export abstract class Writer {
       .replace(WHITESPACE_PATTERN, '-')
   }
 
-  protected abstract writeDocument(document: DocumentNode): string
+  protected abstract writeDocument(document: UpDocument): string
 
   protected abstract audio(audio: AudioNode): string
   protected abstract bold(bold: BoldNode): string

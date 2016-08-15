@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -15,7 +15,7 @@ Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
@@ -40,7 +40,7 @@ Torchic
   The first three starter Fire Pokemon`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
@@ -65,7 +65,7 @@ Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
@@ -92,7 +92,7 @@ Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
@@ -128,7 +128,7 @@ Gary
 `
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
@@ -170,7 +170,7 @@ Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
@@ -201,7 +201,7 @@ Poem
   Violets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -229,7 +229,7 @@ Poem
 \tViolets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -257,7 +257,7 @@ Poem
  \tViolets are blue`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -297,7 +297,7 @@ Address
  \tI used to live there.`
 
   expect(Up.toAst(markup)).to.be.eql(
-    new DocumentNode([
+    new UpDocument([
       new DescriptionListNode([
         new DescriptionListNode.Item([
           new DescriptionListNode.Item.Term([

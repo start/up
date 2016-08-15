@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
@@ -19,7 +19,7 @@ Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -63,7 +63,7 @@ Final Fantasy;      1987;               This game has some interesting bugs.
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -13,7 +13,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    document: DocumentNode
+    document: UpDocument
     configChanges: UserProvidedSettings
     conflictingConfigChanges: UserProvidedSettings
   }
@@ -80,7 +80,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -97,7 +97,7 @@ describe('The "documentName" config setting', () => {
 
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -118,7 +118,7 @@ describe('The "footnote reference" config term', () => {
 
 describe('The "footnote" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -139,7 +139,7 @@ describe('The "footnote" config term', () => {
 
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new InlineSpoilerNode([])
       ])
@@ -160,7 +160,7 @@ describe('The "toggleSpoiler" config term', () => {
 
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new InlineNsfwNode([])
       ])
@@ -181,7 +181,7 @@ describe('The "toggleNsfw" config term', () => {
 
 describe('The "toggleNsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new InlineNsflNode([])
       ])
@@ -204,9 +204,9 @@ describe('The "tableOfContents" config setting', () => {
   const heading = new HeadingNode([], 1)
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode(
+    document: new UpDocument(
       [heading],
-      new DocumentNode.TableOfContents([heading])),
+      new UpDocument.TableOfContents([heading])),
     configChanges: {
       terms: {
         tableOfContents: 'In This Article'
@@ -223,7 +223,7 @@ describe('The "tableOfContents" config setting', () => {
 
 describe('The "writeUnsafeContent" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new DocumentNode([
+    document: new UpDocument([
       new ParagraphNode([
         new LinkNode([], 'javascript:malicious')
       ])

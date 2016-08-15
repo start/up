@@ -2,13 +2,13 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
 context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These unsafe URL schemes are:', () => {
   specify('javascript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -20,7 +20,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
   })
 
   specify('data', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -32,7 +32,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
   })
 
   specify('file', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -44,7 +44,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
   })
 
   specify('vbscript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -59,7 +59,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 
 context('Though by default, links with unsafe schemes produce no HTML, link URLs can contain unsafe schemes:', () => {
   specify('javascript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -71,7 +71,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
   })
 
   specify('data', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -83,7 +83,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
   })
 
   specify('file', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -95,7 +95,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
   })
 
   specify('vbscript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -110,7 +110,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 
 context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -122,7 +122,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
   })
 
   specify('data', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -134,7 +134,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
   })
 
   specify('file', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -146,7 +146,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
   })
 
   specify('vbscript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -161,7 +161,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 
 describe('By default, a safe link nested inside an unsafe link', () => {
   it('produces an <a> element', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new LinkNode([
@@ -178,7 +178,7 @@ describe('By default, a safe link nested inside an unsafe link', () => {
 
 context("A link's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -191,7 +191,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
   })
 
   specify('data', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -204,7 +204,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
   })
 
   specify('file', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')
@@ -217,7 +217,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
   })
 
   specify('vbscript', () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
           new PlainTextNode('Click me!')

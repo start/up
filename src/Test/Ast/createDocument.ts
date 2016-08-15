@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { createDocument  } from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
@@ -30,7 +30,7 @@ context("The getFinalizedDocument function is exported for users who want help m
     })
 
     expect(document).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           new FootnoteNode([new PlainTextNode('Well, I do, but I pretend not to.')], 1),
@@ -70,7 +70,7 @@ context("The getFinalizedDocument function is exported for users who want help m
     })
 
     expect(document).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -83,7 +83,7 @@ context("The getFinalizedDocument function is exported for users who want help m
           ])
         ])
       ],
-        new DocumentNode.TableOfContents([
+        new UpDocument.TableOfContents([
           new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
           new HeadingNode([new PlainTextNode("They're cheap")], 2),
           new HeadingNode([new PlainTextNode("They're delicious")], 2)
@@ -109,7 +109,7 @@ context("The getFinalizedDocument function is exported for users who want help m
     })
 
     expect(document).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new OrderedListNode([
           new OrderedListNode.Item([
@@ -144,7 +144,7 @@ context("The getFinalizedDocument function is exported for users who want help m
     })
 
     expect(document).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
@@ -164,7 +164,7 @@ context("The getFinalizedDocument function is exported for users who want help m
           ])
         ])
       ],
-        new DocumentNode.TableOfContents([
+        new UpDocument.TableOfContents([
           new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
         ])))
   })

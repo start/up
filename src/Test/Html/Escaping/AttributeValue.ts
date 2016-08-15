@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -14,7 +14,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
   specify("src attribute of links", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([], 'https://example.com/?x&y&z="hi"')
       ])
@@ -25,7 +25,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of audio elements (and of their fallback links)", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
@@ -34,7 +34,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
@@ -43,7 +43,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of images", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('', 'https://example.com/?x&y&z="hi"')
     ])
 
@@ -52,7 +52,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("title attribute of audio elements", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
@@ -61,7 +61,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("title attribute of videos", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
@@ -70,7 +70,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("alt and title attributes of images", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ImageNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
@@ -83,7 +83,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       terms: { footnoteReference: 'look "up" & read & remember' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
       ])
@@ -104,7 +104,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       terms: { footnote: 'look "down" & read & learn' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new FootnoteBlockNode([
         new FootnoteNode([], 2)
       ])
@@ -125,7 +125,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       terms: { footnote: 'look "down" & read & learn' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -146,7 +146,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       terms: { footnoteReference: 'look "up" & read & remember' }
     })
 
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
@@ -171,7 +171,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
     const document =
-      new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     expect(up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -187,7 +187,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
 describe("Within a link's href attribute, <, ', and >", () => {
   it("are not escaped", () => {
-    const document = new DocumentNode([
+    const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([], "https://example.com/?z='<span>'")
       ])

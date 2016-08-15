@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -20,7 +20,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
     ], 1)
 
     expect(Up.toAst(footnoteProducedByParentheses)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -52,7 +52,7 @@ describe('A word followed by several spaces followed by a footnote', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote
@@ -74,7 +74,7 @@ describe('A footnote', () => {
     ], 1)
 
     expect(Up.toAst("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -94,7 +94,7 @@ describe('A footnote', () => {
     ], 1)
 
     expect(Up.toAst("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new StressNode([
             new PlainTextNode("I don't eat cereal."),
@@ -116,7 +116,7 @@ describe('A footnote', () => {
     ], 1)
 
     expect(Up.toAst("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new StressNode([
             new EmphasisNode([
@@ -148,7 +148,7 @@ describe('A footnote', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
           outerFootnote,
@@ -170,7 +170,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
     ], 1)
 
     expect(Up.toAst("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,

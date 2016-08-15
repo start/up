@@ -10,7 +10,7 @@ import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 
 
 
@@ -31,7 +31,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     const markup = '[image: Chrono Cross logo](prod-web-2/cc-logo.png)'
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
       ]))
   })
@@ -40,7 +40,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     const markup = '[audio: Chrono Cross ending theme](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
@@ -49,7 +49,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     const markup = '[video: Chrono Cross ending cinematic](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new VideoNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
@@ -78,7 +78,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,

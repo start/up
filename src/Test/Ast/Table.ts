@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
@@ -17,7 +17,7 @@ Chrono Trigger;1995
 Chrono Cross;1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -51,7 +51,7 @@ Chrono Trigger;1995
 Chrono Cross;1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -90,7 +90,7 @@ Table:
  \t Chrono Cross\t ;\t 1999 \t `
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -135,7 +135,7 @@ Chrono Cross;1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -181,7 +181,7 @@ Chrono Cross;1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -224,7 +224,7 @@ Chrono Trigger
 Chrono Cross`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')])
@@ -252,7 +252,7 @@ Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -304,7 +304,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -345,7 +345,7 @@ Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -379,7 +379,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -420,7 +420,7 @@ Final Fantasy\\; Final Fantasy II;  Square
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -450,7 +450,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -480,7 +480,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -507,7 +507,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -537,7 +537,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('[: Game')]),
@@ -564,7 +564,7 @@ Game;                 Release Date
 Chrono Cross;         1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -591,7 +591,7 @@ Table
 Game;           Release Date`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),

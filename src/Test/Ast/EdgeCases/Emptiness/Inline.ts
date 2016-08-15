@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph } from '../../Helpers'
-import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../../SyntaxNodes/ParagraphNode'
 import { RevisionInsertionNode } from '../../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../../SyntaxNodes/RevisionDeletionNode'
@@ -428,7 +428,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('An image with an empty description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[image:][http://example.com/hauntedhouse.svg]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
     })
@@ -438,7 +438,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('An image with a blank description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ImageNode('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
     })
@@ -474,7 +474,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not an image. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
       expect(Up.toAst('[image: haunted house]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[image: haunted house]')
@@ -485,7 +485,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
       expect(Up.toAst('[image: haunted house] was written on the desk')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[image: haunted house]')
@@ -497,7 +497,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
       expect(Up.toAst('[image: haunted house] was written on the desk [really]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[image: haunted house]')
@@ -515,7 +515,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('An audio convention with an empty description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
     })
@@ -525,7 +525,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('An audio convention with a blank description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
     })
@@ -561,7 +561,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
       expect(Up.toAst('[audio: haunted house]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[audio: haunted house]')
@@ -572,7 +572,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
       expect(Up.toAst('[audio: haunted house] was written on the desk')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[audio: haunted house]')
@@ -584,7 +584,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
       expect(Up.toAst('[audio: haunted house] was written on the desk [really]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[audio: haunted house]')
@@ -602,7 +602,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('A video with an empty description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[video:][http://example.com/hauntedhouse.webm]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
     })
@@ -612,7 +612,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe('A video with a blank description', () => {
     it('has its URL treated as its description', () => {
       expect(Up.toAst('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new VideoNode('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
     })
@@ -648,7 +648,7 @@ context("Media conventions are handled a bit differently, because they also have
   describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
       expect(Up.toAst('[video: haunted house]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[video: haunted house]')
@@ -659,7 +659,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
       expect(Up.toAst('[video: haunted house] was written on the desk')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[video: haunted house]')
@@ -671,7 +671,7 @@ context("Media conventions are handled a bit differently, because they also have
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
       expect(Up.toAst('[video: haunted house] was written on the desk [really]')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new SquareBracketedNode([
               new PlainTextNode('[video: haunted house]')
@@ -735,7 +735,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       ], 1)
 
       expect(Up.toAst('[^ Ash fights Gary]()')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             footnote,
             new PlainTextNode('()')
@@ -816,7 +816,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       ], 1)
 
       expect(Up.toAst('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             footnote,
             new PlainTextNode('(\t \t \t)')

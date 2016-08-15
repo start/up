@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
@@ -22,7 +22,7 @@ context('A code block preserves all indentation when it is', () => {
 \`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode(
           `  if (x < 0) {
 \t\treturn false
@@ -42,7 +42,7 @@ SPOILER:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -62,7 +62,7 @@ SPOILER:
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -82,7 +82,7 @@ SPOILER:
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -105,7 +105,7 @@ NSFW:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -125,7 +125,7 @@ NSFW:
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -145,7 +145,7 @@ NSFW:
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsfwBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -168,7 +168,7 @@ NSFL:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsflBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -188,7 +188,7 @@ NSFL:
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsflBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -208,7 +208,7 @@ NSFL:
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new NsflBlockNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -230,7 +230,7 @@ NSFL:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
               new CodeBlockNode(
@@ -251,7 +251,7 @@ NSFL:
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
               new CodeBlockNode(
@@ -272,7 +272,7 @@ NSFL:
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new OrderedListNode([
             new OrderedListNode.Item([
               new CodeBlockNode(
@@ -296,7 +296,7 @@ NSFL:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new CodeBlockNode(
@@ -317,7 +317,7 @@ NSFL:
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new CodeBlockNode(
@@ -338,7 +338,7 @@ NSFL:
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new UnorderedListNode([
             new UnorderedListNode.Item([
               new CodeBlockNode(
@@ -363,7 +363,7 @@ Lesson 1
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -390,7 +390,7 @@ Lesson 1
 \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -417,7 +417,7 @@ Lesson 1
  \t\`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new DescriptionListNode([
             new DescriptionListNode.Item([
               new DescriptionListNode.Item.Term([
@@ -446,7 +446,7 @@ Lesson 1
 > \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new BlockquoteNode([
             new CodeBlockNode(
               `  if (x < 0) {
@@ -469,7 +469,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >\`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new BlockquoteNode([
           new CodeBlockNode(
             `\tif (x < 0) {
@@ -488,7 +488,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >\`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new BlockquoteNode([
           new CodeBlockNode(
             `if (x < 0) {

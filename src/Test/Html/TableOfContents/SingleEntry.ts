@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
@@ -15,7 +15,7 @@ context('When a document has a table of contents, its first HTML element is <nav
           new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
         const document =
-          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+          new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -32,7 +32,7 @@ context('When a document has a table of contents, its first HTML element is <nav
           new HeadingNode([new PlainTextNode('I enjoy apples')], 2)
 
         const document =
-          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+          new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -49,7 +49,7 @@ context('When a document has a table of contents, its first HTML element is <nav
           new HeadingNode([new PlainTextNode('I enjoy apples')], 3)
 
         const document =
-          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+          new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -66,7 +66,7 @@ context('When a document has a table of contents, its first HTML element is <nav
           new HeadingNode([new PlainTextNode('I enjoy apples')], 4)
 
         const document =
-          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+          new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -83,7 +83,7 @@ context('When a document has a table of contents, its first HTML element is <nav
           new HeadingNode([new PlainTextNode('I enjoy apples')], 5)
 
         const document =
-          new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+          new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -101,7 +101,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
 
           const document =
-            new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+            new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
           expect(Up.toHtml(document)).to.be.eql(
             '<nav class="up-table-of-contents">'
@@ -118,7 +118,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
 
           const document =
-            new DocumentNode([heading], new DocumentNode.TableOfContents([heading]))
+            new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
           expect(Up.toHtml(document)).to.be.eql(
             '<nav class="up-table-of-contents">'
@@ -152,7 +152,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new TableNode.Caption([new PlainTextNode('Influential games')]))
 
         const document =
-          new DocumentNode([table], new DocumentNode.TableOfContents([table]))
+          new UpDocument([table], new UpDocument.TableOfContents([table]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -189,7 +189,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new TableNode.Caption([new PlainTextNode('AND operator logic')]))
 
         const document =
-          new DocumentNode([chart], new DocumentNode.TableOfContents([chart]))
+          new UpDocument([chart], new UpDocument.TableOfContents([chart]))
 
         expect(Up.toHtml(document)).to.be.eql(
           '<nav class="up-table-of-contents">'
@@ -214,12 +214,12 @@ context('When a document has a table of contents, its first HTML element is <nav
         new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
 
       const document =
-        new DocumentNode([
+        new UpDocument([
           headingInTableOfContents,
           new BlockquoteNode([
             new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
           ])
-        ], new DocumentNode.TableOfContents([headingInTableOfContents]))
+        ], new UpDocument.TableOfContents([headingInTableOfContents]))
 
       expect(Up.toHtml(document)).to.be.eql(
         '<nav class="up-table-of-contents">'
@@ -254,7 +254,7 @@ context('When a document has a table of contents, its first HTML element is <nav
         new TableNode.Caption([new PlainTextNode('Influential games')]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         tableInTableOfContents,
         new BlockquoteNode([
           new TableNode(
@@ -275,7 +275,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
         ])
       ],
-        new DocumentNode.TableOfContents([tableInTableOfContents]))
+        new UpDocument.TableOfContents([tableInTableOfContents]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'
@@ -320,7 +320,7 @@ context('When a document has a table of contents, its first HTML element is <nav
         new TableNode.Caption([new PlainTextNode('AND operator logic')]))
 
     const document =
-      new DocumentNode([
+      new UpDocument([
         chartInTableOfContents,
         new BlockquoteNode([
           new TableNode(
@@ -341,7 +341,7 @@ context('When a document has a table of contents, its first HTML element is <nav
             new TableNode.Caption([new PlainTextNode('AND operator logic')]))
         ])
       ],
-        new DocumentNode.TableOfContents([chartInTableOfContents]))
+        new UpDocument.TableOfContents([chartInTableOfContents]))
 
     expect(Up.toHtml(document)).to.be.eql(
       '<nav class="up-table-of-contents">'

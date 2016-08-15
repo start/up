@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
@@ -16,7 +16,7 @@ describe('An outline separator streak', () => {
 Not me. Us!
 @---------@`
     expect(Up.toAst(markup)).to.eql(
-      new DocumentNode([
+      new UpDocument([
         new OutlineSeparatorNode(),
         new HeadingNode([
           new PlainTextNode('Not me. Us!')
@@ -31,7 +31,7 @@ Not me. Us!
 Not me. Us!
 -----------`
     expect(Up.toAst(markup)).to.eql(
-      new DocumentNode([
+      new UpDocument([
         new OutlineSeparatorNode(),
         new HeadingNode([
           new PlainTextNode('Not me. Us!')
@@ -45,7 +45,7 @@ describe('A streak of asterisks with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
     const markup = '* * * * * *'
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OutlineSeparatorNode()
       ]))
   })
@@ -56,7 +56,7 @@ describe('A streak of number signs with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
     const markup = '# # # # # #'
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OutlineSeparatorNode()
       ]))
   })
@@ -70,7 +70,7 @@ describe('A streak of asterisks with spaces between', () => {
 * Gloves
 * * * * * *`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -96,7 +96,7 @@ describe('A streak of number signs with spaces between', () => {
 # Gloves
 # # # # # #`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OrderedListNode([
           new OrderedListNode.Item([
             new ParagraphNode([

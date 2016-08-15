@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
-import { DocumentNode } from '../../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 
 
 describe('An empty document', () => {
   it('produces an empty document node', () => {
-    expect(Up.toAst('')).to.eql(new DocumentNode([]))
+    expect(Up.toAst('')).to.eql(new UpDocument([]))
   })
 })
 
@@ -18,6 +18,6 @@ describe('A document with only blank lines', () => {
       
       
 `
-    expect(Up.toAst(markup)).to.eql(new DocumentNode([]))
+    expect(Up.toAst(markup)).to.eql(new UpDocument([]))
   })
 })

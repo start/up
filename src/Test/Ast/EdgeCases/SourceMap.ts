@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
@@ -18,7 +18,7 @@ describe('When a blockquote starts with a blank line', () => {
 >
 > Well, aside from you.`
     expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new BlockquoteNode([
           new ParagraphNode([new PlainTextNode("Who doesn't?")], 3),
           new ParagraphNode([new PlainTextNode("Well, aside from you.")], 5)
@@ -34,7 +34,7 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
       '[image: haunted house](example.com/hauntedhouse.svg)(example.com/gallery) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house](example.com/hauntedhouse.webm)'
 
     expect(Up.toAst(markup, { createSourceMap: true })).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LinkNode([
           new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg'),
         ], 'https://example.com/gallery', 1),

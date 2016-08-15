@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -22,7 +22,7 @@ NSFW:
 No!
 Avoid that initialism!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([new PlainTextNode('NSFW:')]),
           new LineBlockNode.Line([new PlainTextNode('No!')]),
@@ -37,7 +37,7 @@ NSFW:
 
 No!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')
         ]),
@@ -54,7 +54,7 @@ NSFW:
 
 No!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')
         ]),
@@ -73,7 +73,7 @@ NSFW:
 
 No!`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('NSFW:')
         ]),

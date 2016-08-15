@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
@@ -18,7 +18,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -41,7 +41,7 @@ sPoiLeR:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -62,7 +62,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -83,7 +83,7 @@ SPOILER
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -105,7 +105,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -129,7 +129,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -150,7 +150,7 @@ SPOILER:  \t  \t
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -171,7 +171,7 @@ SPOILER  \t  \t
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -198,7 +198,7 @@ SPOILER:
     Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -223,7 +223,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new ParagraphNode([
               new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -250,7 +250,7 @@ SPOILER:
   \`\`\``
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new SpoilerBlockNode([
             new CodeBlockNode(
               `function nthFibonacci(n: number): number {
@@ -271,7 +271,7 @@ SPOILER:
 That was my favorite episode.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -292,7 +292,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a '),
@@ -317,7 +317,7 @@ SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -332,7 +332,7 @@ SPOILER:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -347,7 +347,7 @@ SPOILER:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -367,7 +367,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new SpoilerBlockNode([
           new ParagraphNode([
             new PlainTextNode('Well...')

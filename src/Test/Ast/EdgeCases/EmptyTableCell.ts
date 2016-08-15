@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
@@ -16,7 +16,7 @@ Chrono Trigger
 Starcraft`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
               new TableNode.Header.Cell([])
@@ -45,7 +45,7 @@ Chrono Trigger
 Starcraft`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')])

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
@@ -17,7 +17,7 @@ describe('An unordered list with a single item', () => {
 -----------`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new OutlineSeparatorNode(),
         new UnorderedListNode([
           new UnorderedListNode.Item([
@@ -43,7 +43,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -87,7 +87,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -129,7 +129,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new ParagraphNode([
@@ -168,7 +168,7 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new CodeBlockNode('const x = 0')
@@ -188,7 +188,7 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')

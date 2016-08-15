@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -21,7 +21,7 @@ describe('A footnote reference at the end of a paragraph', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote
@@ -49,7 +49,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),
@@ -76,7 +76,7 @@ describe('A footnote produced by square brackets that contains nested square bra
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),
@@ -96,7 +96,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new UnorderedListNode([
           new UnorderedListNode.Item([
             new BlockquoteNode([
@@ -143,7 +143,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
     ], 2)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("Me? I'm totally normal."),
           firstFootnote,
@@ -170,7 +170,7 @@ describe('A footnote reference at the beginning of a paragraph', () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote,
           new PlainTextNode(" I'm a normal breakfast eater, just like you.")

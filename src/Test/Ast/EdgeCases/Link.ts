@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -128,7 +128,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
     ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote
         ]),

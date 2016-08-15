@@ -2,7 +2,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
@@ -71,7 +71,7 @@ export class HtmlWriter extends Writer {
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
 
-  protected writeDocument(document: DocumentNode): string {
+  protected writeDocument(document: UpDocument): string {
     const tableOfContents =
       document.tableOfContents
         ? this.tableOfContents(document.tableOfContents)
@@ -345,7 +345,7 @@ export class HtmlWriter extends Writer {
     return this.element('li', listItem.children)
   }
 
-  private tableOfContents(tableOfContents: DocumentNode.TableOfContents): string {
+  private tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
     this.isInsideTableOfContents = true
 
     const html =

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
@@ -16,7 +16,7 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('My pies never turn out quite right.')
         ]),
@@ -35,7 +35,7 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new LineBlockNode([
           new LineBlockNode.Line([
             new PlainTextNode('Roses are red')
@@ -62,7 +62,7 @@ const pie = 3.5
 My pies never turn out quite right.`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode('const pie = 3.5'),
         new ParagraphNode([
           new PlainTextNode('My pies never turn out quite right.')
@@ -78,14 +78,14 @@ context('A code block with containing zero lines of code produces an empty code 
 \`\`\`
 \`\`\``
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
     expect(Up.toAst('```')).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode(''),
       ]))
   })
@@ -110,7 +110,7 @@ function factorial(n: number): number {
 document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode('Check out the code below!')
         ]),
@@ -134,7 +134,7 @@ describe('Within a code block, a streak of backticks matching the start streak b
  \`\`\`
 \`\`\``
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new CodeBlockNode(' ```'),
       ]))
   })

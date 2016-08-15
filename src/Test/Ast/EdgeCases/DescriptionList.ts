@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
@@ -22,7 +22,7 @@ Lee Chang-ho
   An above average go player
 `
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
@@ -84,7 +84,7 @@ Lee Chang-ho
   An above average go player
 `
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new DescriptionListNode([
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([

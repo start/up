@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
@@ -17,7 +17,7 @@ Chart: \`AND\` operator logic
 0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -54,7 +54,7 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 0;      false;  false`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -88,7 +88,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -112,7 +112,7 @@ Chart: Games in the Chrono series
         Release Date`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([]),
@@ -134,7 +134,7 @@ Chart the numbers.
 
 Do it now; I'm tired of waiting.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
         new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
       ]))

@@ -12,7 +12,7 @@ import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 const up = new Up({
@@ -36,7 +36,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     const markup = '[image: Chrono Cross logo](cc-logo.png)'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
       ]))
   })
@@ -45,7 +45,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     const markup = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new AudioNode('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
       ]))
   })
@@ -54,7 +54,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     const markup = '[video: Chrono Cross ending cinematic](radical dreamers.webm)'
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new VideoNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ]))
   })
@@ -111,7 +111,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     ], 1)
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -220,7 +220,7 @@ describe('The "defaultUrlScheme" config setting', () => {
     ], 1)
 
     expect(up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,

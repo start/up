@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -53,7 +53,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       ], 1)
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
             new SquareBracketedNode([
@@ -74,7 +74,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       ], 1)
 
       expect(Up.toAst(markup)).to.be.eql(
-        new DocumentNode([
+        new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
             new SquareBracketedNode([

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
@@ -26,7 +26,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -50,7 +50,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Well, I do, but I pretend not to.',
       url: 'http://example.com/luckycharms',
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])
@@ -73,7 +73,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnotes[0],
@@ -95,7 +95,7 @@ describe('A footnote directly followed by a media convention', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -117,7 +117,7 @@ describe('A footnote directly followed by an inline spoiler', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -141,7 +141,7 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -165,7 +165,7 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("I don't eat cereal."),
           footnote,
@@ -189,7 +189,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote,
           new ParenthesizedNode([
@@ -212,7 +212,7 @@ describe("When an otherwise-valid linkified spoiler's URL starts with whitespace
       ], 1)
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           footnote,
           new PlainTextNode('( \t tel:5555555555)')
@@ -235,7 +235,7 @@ context("If there's no whitespace between a footnote and its bracketed URL", () 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Well, I do, but I pretend not to.',
       url: ' \t \thttp://example.com/luckycharms',
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new ParagraphNode([footnote]),
         new FootnoteBlockNode([footnote])
       ])

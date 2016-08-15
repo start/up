@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { DocumentNode } from '../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
@@ -18,7 +18,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -52,7 +52,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -87,7 +87,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -124,7 +124,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -152,7 +152,7 @@ Table: Games in the Chrono series
 Game;           Release Date`
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new TableNode(
           new TableNode.Header([
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
@@ -174,7 +174,7 @@ Table the proposal.
 
 Do it now; I'm tired of waiting.`
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([new PlainTextNode('Table the proposal.')]),
         new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
       ]))

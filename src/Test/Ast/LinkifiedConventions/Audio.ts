@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
-import { DocumentNode } from '../../../SyntaxNodes/DocumentNode'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -36,7 +36,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
         { text: 'https://example.com/fight.ogg' },
         { text: 'http://example.com/finalbattle' }
       ],
-      toProduce: new DocumentNode([
+      toProduce: new UpDocument([
         new LinkNode([
           new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
         ], 'http://example.com/finalbattle')
@@ -52,7 +52,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.ogg' },
           { text: 'http://example.com/final battle' }
         ],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
           ], 'http://example.com/final battle')
@@ -67,7 +67,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.ogg' },
           { text: ' \t \thttp://example.com/final battle' }
         ],
-        toProduce: new DocumentNode([
+        toProduce: new UpDocument([
           new LinkNode([
             new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
           ], 'http://example.com/final battle')
@@ -134,7 +134,7 @@ describe('An audio convention directly followed by a footnote', () => {
     ]
 
     expect(Up.toAst(markup)).to.be.eql(
-      new DocumentNode([
+      new UpDocument([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
           new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
