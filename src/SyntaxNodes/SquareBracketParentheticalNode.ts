@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class SquareBracketedNode extends RichInlineSyntaxNode {
+export class SquareBracketParentheticalNode extends RichInlineSyntaxNode {
   protected SQUARE_BRACKETED_NODE(): void { }
 }

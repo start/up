@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 
 
 describe('Text surrounded by square brackets', () => {
@@ -11,7 +11,7 @@ describe('Text surrounded by square brackets', () => {
     expect(Up.toDocument('I like [certain types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[certain types of]')
         ]),
         new PlainTextNode(' pizza')
@@ -25,7 +25,7 @@ describe('Square bracketed text', () => {
     expect(Up.toDocument('I like [certain *types* of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[certain '),
           new EmphasisNode([
             new PlainTextNode('types')
@@ -43,9 +43,9 @@ describe('Nested square brackets (starting at the same time)', () => {
     expect(Up.toDocument('I like [[certain] types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('['),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[certain]')
           ]),
           new PlainTextNode(' types of]')
@@ -61,9 +61,9 @@ describe('Nested square brackets (ending at the same time)', () => {
     expect(Up.toDocument('I like [certain [types of]] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[certain '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[types of]')
           ]),
           new PlainTextNode(']')
@@ -79,7 +79,7 @@ describe('Two left square brackets followed by a single right square bracket', (
     expect(Up.toDocument(':[ I like [certain *types* of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':[ I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[certain '),
           new EmphasisNode([
             new PlainTextNode('types')
@@ -97,7 +97,7 @@ describe('A left square bracket followed by two right square brackets', () => {
     expect(Up.toDocument('I like [certain *types* of] pizza :]')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[certain '),
           new EmphasisNode([
             new PlainTextNode('types')

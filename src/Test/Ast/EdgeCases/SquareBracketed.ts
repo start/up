@@ -7,7 +7,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 
@@ -17,7 +17,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       expect(Up.toDocument('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[the one and only]')
           ]),
           new PlainTextNode(' '),
@@ -32,7 +32,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       expect(Up.toDocument('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[the one and only]')
           ]),
           new PlainTextNode(' '),
@@ -56,7 +56,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new SquareBracketedNode([
+            new SquareBracketParentheticalNode([
               new PlainTextNode('[or oatmeal]')
             ]),
             footnote,
@@ -77,7 +77,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new SquareBracketedNode([
+            new SquareBracketParentheticalNode([
               new PlainTextNode('[or oatmeal]')
             ]),
             footnote,
@@ -94,7 +94,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       expect(Up.toDocument('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image: Gary] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[in Pokémon Red/Blue/Yellow]')
           ]),
           new PlainTextNode(' '),
@@ -107,7 +107,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
       expect(Up.toDocument('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[in Pokémon Red/Blue/Yellow]')
           ]),
           new PlainTextNode(' '),

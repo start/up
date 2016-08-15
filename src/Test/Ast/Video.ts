@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 
 
@@ -119,7 +119,7 @@ context("When an otherwise-valid video's URL starts with whitespace, and the fir
   specify('it does not produce an video node', () => {
     expect(Up.toDocument('[video: scary]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[video: scary]')
         ]),
         new PlainTextNode('( \t tel:5555555555)')

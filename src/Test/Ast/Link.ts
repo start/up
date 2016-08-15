@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundConte
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
@@ -68,7 +68,7 @@ describe('An otherwise-valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
     expect(Up.toDocument('[call me](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[call me]')
         ]),
         new ParentheticalNode([
@@ -83,7 +83,7 @@ context("When an otherwise-valid link's URL starts with whitespace, and the firs
   specify('it does not produce a link node', () => {
     expect(Up.toDocument('[call me]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode('[call me]')
         ]),
         new PlainTextNode('( \t tel:5555555555)')
@@ -166,7 +166,7 @@ describe('A link produced by square brackets', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[only one]')
           ]),
           new PlainTextNode(' site')

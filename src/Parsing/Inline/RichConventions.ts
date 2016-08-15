@@ -9,7 +9,7 @@ import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { TokenKind } from './Tokenization/TokenKind'
@@ -72,7 +72,7 @@ export const PARENTHESIZED_CONVENTION: RichConventionWithoutExtraFields = {
 }
 
 export const SQUARE_BRACKETED_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: SquareBracketedNode,
+  NodeType: SquareBracketParentheticalNode,
   startTokenKind: TokenKind.SquareBracketedStart,
   endTokenKind: TokenKind.SquareBracketedEnd
 }

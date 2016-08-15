@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
@@ -79,7 +79,7 @@ describe('An inline NSFW convention produced by square brackets', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineNsfwNode([
           new PlainTextNode('you wrestle '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[and beat]')
           ]),
           new PlainTextNode(' a naked Gary')

@@ -9,7 +9,7 @@ import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { ParentheticalNode } from'../../../SyntaxNodes/ParentheticalNode'
-import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from'../../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
 
@@ -282,11 +282,11 @@ describe('Overlapped stressed and square bracketed text', () => {
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new SquareBracketedNode([
+          new SquareBracketParentheticalNode([
             new PlainTextNode('[drinking')
           ])
         ]),
-        new SquareBracketedNode([
+        new SquareBracketParentheticalNode([
           new PlainTextNode(' whole]')
         ]),
         new PlainTextNode(' milk.')

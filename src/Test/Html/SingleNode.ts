@@ -15,7 +15,7 @@ import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
-import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
+import { SquareBracketParentheticalNode } from '../../SyntaxNodes/SquareBracketParentheticalNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
@@ -719,7 +719,7 @@ describe('A square bracketed node', () => {
   it('produces a <span class="up-square-bracketed">', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new SquareBracketedNode([new PlainTextNode('[Koopa Tropa]')])
+        new SquareBracketParentheticalNode([new PlainTextNode('[Koopa Tropa]')])
       ])
     ])
 
