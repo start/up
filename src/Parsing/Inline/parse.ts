@@ -170,7 +170,6 @@ class Parser {
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
-          // If this is a footnote, and if this footnote is within any revealable inline conventions...
           if ((richConvention === FOOTNOTE_CONVENTION)) {
             if (this.isParsingForInlineDocument) {
               // As a rule, footnotes are omitted from inline documents.

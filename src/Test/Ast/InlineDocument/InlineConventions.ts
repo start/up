@@ -21,6 +21,7 @@ import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
 import { VideoNode } from'../../../SyntaxNodes/VideoNode'
 
+
 context('Except for footnots, every inline convention is supported in inline documents.', () => {
   context('Supported conventions:', () => {
     specify('Audio', () => {
