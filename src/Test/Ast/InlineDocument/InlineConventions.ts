@@ -214,9 +214,22 @@ context('Except for footnots, every inline convention is supported in inline doc
 
   context('Footnotes are totally omitted from inline documents. This includes when:', () => {
     specify('A footnote is at the top level of the document', () => {
-      expect(Up.toInlineDocument('I loved my Game Boy [^ blah blah blah, blah], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my Game Boy, though I never took it with me when I left home.')
+        ]))
+    })
+
+    specify('A footnote is nested within other inline conventions', () => {
+      expect(Up.toInlineDocument('I loved my [*Nintendo (^ game company) Game Boy*] (example.com/gb), though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new LinkNode([
+            new EmphasisNode([
+              new PlainTextNode('Nintendo Game Boy')
+            ])
+          ], 'https://example.com/gb'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
   })
