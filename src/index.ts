@@ -1,12 +1,14 @@
 export { Up as default, Up } from './Up'
 export { UserProvidedSettings } from './UserProvidedSettings'
 
+export { DocumentNode, createDocument } from './SyntaxNodes/DocumentNode'
+export { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
+
 export { AudioNode } from './SyntaxNodes/AudioNode'
 export { BoldNode } from './SyntaxNodes/BoldNode'
 export { BlockquoteNode } from './SyntaxNodes/BlockquoteNode'
 export { CodeBlockNode } from './SyntaxNodes/CodeBlockNode'
 export { DescriptionListNode } from './SyntaxNodes/DescriptionListNode'
-export { DocumentNode, createDocument } from './SyntaxNodes/DocumentNode'
 export { EmphasisNode } from './SyntaxNodes/EmphasisNode'
 export { ExampleInputNode } from './SyntaxNodes/ExampleInputNode'
 export { FootnoteBlockNode } from './SyntaxNodes/FootnoteBlockNode'
