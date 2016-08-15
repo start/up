@@ -340,11 +340,13 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
-    return this.element(
-      'span',
-      parenthetical.children,
-      { class: classAttrValue(...['parenthetical', ...extraCssClassNames]) })
+  private parenthetical(parenthetical: ParentheticalSyntaxNode, cssClassName?: string): string {
+    const attrs =
+      cssClassName
+        ? { class: classAttrValue(cssClassName) }
+        : {}
+
+    return this.element('small', parenthetical.children, attrs)
   }
 
   private unorderedListItem(listItem: UnorderedListNode.Item): string {
