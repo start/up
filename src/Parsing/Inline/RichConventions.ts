@@ -67,14 +67,14 @@ export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
 
 export const PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: ParentheticalNode,
-  startTokenKind: TokenKind.ParenthesizedStart,
-  endTokenKind: TokenKind.ParenthesizedEnd
+  startTokenKind: TokenKind.ParentheticalStart,
+  endTokenKind: TokenKind.ParentheticalEnd
 }
 
 export const SQUARE_BRACKET_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: SquareBracketParentheticalNode,
-  startTokenKind: TokenKind.SquareBracketedStart,
-  endTokenKind: TokenKind.SquareBracketedEnd
+  startTokenKind: TokenKind.SquareBracketParentheticalStart,
+  endTokenKind: TokenKind.SquareBracketParentheticalEnd
 }
 
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
