@@ -256,7 +256,7 @@ describe('Overlapped stressed and highlighted text', () => {
 
 
 describe('Overlapped stressed and parenthesized text', () => {
-  it('splits the parenthesized node because it opened second', () => {
+  it('splits the parenthetical node because it opened second', () => {
     expect(Up.toDocument('I **love (drinking** whole) milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),

@@ -7,7 +7,7 @@ import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 
 
 describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
-  it('splits the stress node, with 1 part inside both parenthesized nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
+  it('splits the stress node, with 1 part inside both parenthetical nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.)) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
         new ParentheticalNode([
@@ -31,7 +31,7 @@ describe('Overlapped doubly parenthesized text (closing at the same time) and st
 
 
 describe('Overlapped doubly parenthesized text (closing at different times) and stress', () => {
-  it('splits the stress node, with 1 part inside both parenthesized nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both parenthesized nodes', () => {
+  it('splits the stress node, with 1 part inside both parenthetical nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.) So there.) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
         new ParentheticalNode([

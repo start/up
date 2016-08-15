@@ -702,7 +702,7 @@ describe('A revision deletion node', () => {
 })
 
 
-describe('A parenthesized node', () => {
+describe('A parenthetical node', () => {
   it('produces a <span class="up-parenthesized">', () => {
     const document = new UpDocument([
       new ParagraphNode([
