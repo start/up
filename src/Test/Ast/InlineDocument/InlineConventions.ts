@@ -213,52 +213,75 @@ context('Except for footnots, every inline convention is supported in inline doc
   })
 
 
-  context('Footnotes are totally omitted from inline documents. This includes when:', () => {
-    specify('A footnote is at the top level of the document', () => {
+  context('Footnotes footnotes are treated as parentheticals of the appropriate bracket type. This includes when:', () => {
+    specify('A footnote produced by square brackets is at the top level of the document', () => {
       expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
-          new PlainTextNode('I loved my Game Boy, though I never took it with me when I left home.')
-        ]))
-    })
-    specify('Multiple footnotes are at the top level of the document', () => {
-      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never [^ well, maybe once] took it with me when I left home.')).to.be.eql(
-        new InlineUpDocument([
-          new PlainTextNode('I loved my Game Boy, though I never took it with me when I left home.')
-        ]))
-    })
-
-    specify('A footnote is nested within other inline conventions', () => {
-      expect(Up.toInlineDocument('I loved my [*Nintendo (^ game company) Game Boy*] (example.com/gb), though I never took it with me when I left home.')).to.be.eql(
-        new InlineUpDocument([
-          new PlainTextNode('I loved my '),
-          new LinkNode([
-            new EmphasisNode([
-              new PlainTextNode('Nintendo Game Boy')
-            ])
-          ], 'https://example.com/gb'),
+          new PlainTextNode('I loved my Game Boy '),
+          new SquareParentheticalNode([
+            new PlainTextNode('[from Nintendo]')
+          ]),
           new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
-    specify('Multiple footnotes are nested within other inline conventions', () => {
-      expect(Up.toInlineDocument('I loved my [*Nintendo (^ game company) Game Boy (^ video game system)*] (example.com/gb), though I never took it with me when I left home.')).to.be.eql(
+    specify('A footnote produced by parentheses is at the top level of the document', () => {
+      expect(Up.toInlineDocument('I loved my Game Boy (^ from Nintendo), though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
-          new PlainTextNode('I loved my '),
-          new LinkNode([
-            new EmphasisNode([
-              new PlainTextNode('Nintendo Game Boy')
-            ])
-          ], 'https://example.com/gb'),
+          new PlainTextNode('I loved my Game Boy '),
+          new NormalParentheticalNode([
+            new PlainTextNode('(from Nintendo)')
+          ]),
           new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
-    specify('A footnote is overlapping another convention', () => {
-      expect(Up.toInlineDocument('I loved my [^ beloved *Nintendo!] Game Boy*, though I never took it with me when I left home.')).to.be.eql(
+    specify('Both kinds of footnotes are at the top level of the document', () => {
+      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
-          new PlainTextNode('I loved my'),
-          new EmphasisNode([
-            new PlainTextNode(' Game Boy'),
+          new PlainTextNode('I loved my Game Boy '),
+          new SquareParentheticalNode([
+            new PlainTextNode('[from Nintendo]')
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+          new NormalParentheticalNode([
+            new PlainTextNode('(well, maybe once)')
+          ]),
+          new PlainTextNode(' took it with me when I left home.')
+        ]))
+    })
+
+    specify('Both kinds of footnotes are nested within other inline conventions', () => {
+      expect(Up.toInlineDocument('[SPOILER: *I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.*]')).to.be.eql(
+        new InlineUpDocument([
+          new InlineSpoilerNode([
+            new EmphasisNode([
+              new PlainTextNode('I loved my Game Boy '),
+              new SquareParentheticalNode([
+                new PlainTextNode('[from Nintendo]')
+              ]),
+              new PlainTextNode(', though I never took it with me when I left home.'),
+              new NormalParentheticalNode([
+                new PlainTextNode('(well, maybe once)')
+              ]),
+              new PlainTextNode(' took it with me when I left home.')
+            ])
+          ])
+        ]))
+    })
+
+    specify('A footnote is overlapped by another convention with continuity priority equal to that of parenthetical conventions (and naturally less than that of footnotes)', () => {
+      expect(Up.toInlineDocument('I loved **my very own [^ beloved** Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved '),
+          new StressNode([
+            new PlainTextNode('my very own'),
+            new SquareParentheticalNode([
+              new PlainTextNode('[beloved')
+            ])
+          ]),
+          new SquareParentheticalNode([
+            new PlainTextNode('Nintendo ]')
           ]),
           new PlainTextNode(', though I never took it with me when I left home.')
         ]))
