@@ -17,7 +17,7 @@ export namespace UpDocument {
 }
 
 
-// This function returns a document node with:
+// This function returns a document object with:
 //
 // 1. Footnotes extracted into footnote blocks
 // 2. A table of contents (if it's asked to create one)

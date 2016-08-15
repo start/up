@@ -4,14 +4,14 @@ import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 
 
 describe('An empty document', () => {
-  it('produces an empty document node', () => {
+  it('produces an empty document object', () => {
     expect(Up.toDocument('')).to.eql(new UpDocument([]))
   })
 })
 
 
 describe('A document with only blank lines', () => {
-  it('produces an empty document node', () => {
+  it('produces an empty document object', () => {
     const markup = `     
 
 \t       
