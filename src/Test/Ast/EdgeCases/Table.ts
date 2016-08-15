@@ -177,7 +177,7 @@ Underline
 
 
 context("Outline conventions are evaluated before inline conventions, so table cells' delimiters are evaluated before their inline contents.", () => {
-  context('Inline code delimiters do not interfere with', () => {
+  context('Inline code delimiters do not interfere with delimiters for', () => {
     specify('Header cells', () => {
       const markup = `
 Table
@@ -207,7 +207,7 @@ Chrono Cross;         1999`
 
     specify('Row cells', () => {
       const markup = `
-Table:
+Table
 
 Game;                         Release Decade
 Square\`s Chrono Trigger;     1990\`s
