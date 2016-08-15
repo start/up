@@ -7,7 +7,7 @@ import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
 context("Some naked URLs produce links. The content of those links is the URL without its scheme.", () => {
@@ -90,7 +90,7 @@ describe('A naked URL', () => {
   it('is terminated by a parenthesized convention closing', () => {
     expect(Up.toDocument('(https://archive.org/fake)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -276,7 +276,7 @@ describe('Inside parantheses, a naked URL', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toDocument('(https://archive.org/fake(url))')).to.be.eql(
       insideDocumentAndParagraph([
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('archive.org/fake(url)')

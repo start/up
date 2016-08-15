@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
 context('Bracketed text starting with "highlight:" is put inside a highlight node. The brackets can be:', () => {
@@ -103,7 +103,7 @@ describe('A highlight produced by parentheses', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new HighlightNode([
           new PlainTextNode('you fight '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(and beat)')
           ]),
           new PlainTextNode(' Gary')

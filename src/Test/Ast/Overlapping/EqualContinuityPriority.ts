@@ -8,7 +8,7 @@ import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
-import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from'../../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
 import { HighlightNode } from'../../../SyntaxNodes/HighlightNode'
 
@@ -262,11 +262,11 @@ describe('Overlapped stressed and parenthesized text', () => {
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(drinking')
           ])
         ]),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode(' whole)')
         ]),
         new PlainTextNode(' milk.')

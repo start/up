@@ -12,7 +12,7 @@ import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -183,8 +183,8 @@ export class HtmlWriter extends Writer {
     return this.element('del', revisionDeletion.children)
   }
 
-  protected parenthesized(parenthesized: ParenthesizedNode): string {
-    return this.bracketed(parenthesized, 'parenthesized')
+  protected parenthetical(parenthetical: ParentheticalNode): string {
+    return this.bracketed(parenthetical, 'parenthesized')
   }
 
   protected squareBracketed(squareBracketed: SquareBracketedNode): string {
@@ -337,7 +337,7 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private bracketed(bracketed: ParenthesizedNode | SquareBracketedNode, bracketName: string): string {
+  private bracketed(bracketed: ParentheticalNode | SquareBracketedNode, bracketName: string): string {
     return this.element('span', bracketed.children, { class: classAttrValue(bracketName) })
   }
 

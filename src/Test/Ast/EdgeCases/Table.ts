@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 
 
@@ -167,7 +167,7 @@ Underline
           ],
           new TableNode.Caption([
             new PlainTextNode('Most common underlines for top-level headings '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(from most to least common)')
             ])
           ]))

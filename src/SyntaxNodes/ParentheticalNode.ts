@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class ParenthesizedNode extends RichInlineSyntaxNode {
+export class ParentheticalNode extends RichInlineSyntaxNode {
   protected PARENTHESIZED_NODE(): void { }
 }

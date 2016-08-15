@@ -14,7 +14,7 @@ import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
@@ -706,7 +706,7 @@ describe('A parenthesized node', () => {
   it('produces a <span class="up-parenthesized">', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new ParenthesizedNode([new PlainTextNode('(Koopa Tropa)')])
+        new ParentheticalNode([new PlainTextNode('(Koopa Tropa)')])
       ])
     ])
 

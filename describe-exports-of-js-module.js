@@ -54,7 +54,7 @@ context('Every syntax node class is exported:', () => {
     'NsfwBlockNode',
     'OrderedListNode',
     'ParagraphNode',
-    'ParenthesizedNode',
+    'ParentheticalNode',
     'PlainTextNode',
     'RevisionDeletionNode',
     'RevisionInsertionNode',

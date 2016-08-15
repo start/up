@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -30,7 +30,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           ], 'https://example.com/finalbattle')
         ]),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -51,7 +51,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           ], 'https://example.com/finalbattle')
         ]),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -72,7 +72,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           ], 'https://example.com/finalbattle')
         ]),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -99,7 +99,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new PlainTextNode("I don't eat cereal"),
           footnote,
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('example.com/cereal-problems')
@@ -120,7 +120,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -139,7 +139,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new ImageNode('you fight Gary', 'https://example.com/fight.svg')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -158,7 +158,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new VideoNode('you fight Gary', 'https://example.com/fight.webm')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -180,7 +180,7 @@ context('The following conventions cannot be linkified', () => {
           new PlainTextNode('you fight Gary')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -199,7 +199,7 @@ context('The following conventions cannot be linkified', () => {
           new PlainTextNode('you fight Gary')
         ]),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -218,7 +218,7 @@ context('The following conventions cannot be linkified', () => {
           new PlainTextNode('Ketchum')
         ]),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')
@@ -237,7 +237,7 @@ context('The following conventions cannot be linkified', () => {
         new PlainTextNode(' and '),
         new InlineCodeNode('--noUnusedParameters'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
@@ -255,7 +255,7 @@ context('The following conventions cannot be linkified', () => {
           new PlainTextNode('goo.gl/7y3XBV')
         ], 'https://goo.gl/7y3XBV'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('www.nintendo.co.uk')
@@ -269,7 +269,7 @@ context('The following conventions cannot be linkified', () => {
     expect(Up.toDocument('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('The Mini-NES comes out November eleventh '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')

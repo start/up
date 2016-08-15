@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -310,7 +310,7 @@ Chrono Cross;       1999`
             new TableNode.Header.Cell([new PlainTextNode('Game')]),
             new TableNode.Header.Cell([
               new PlainTextNode('Release Date '),
-              new ParenthesizedNode([
+              new ParentheticalNode([
                 new PlainTextNode('(year only)')
               ])
             ])
@@ -393,7 +393,7 @@ Chrono Cross;       1999`
               new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
               new TableNode.Row.Cell([
                 new PlainTextNode('1988 '),
-                new ParenthesizedNode([
+                new ParentheticalNode([
                   new PlainTextNode('(almost 1989)')
                 ])
               ])

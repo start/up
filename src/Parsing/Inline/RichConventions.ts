@@ -10,7 +10,7 @@ import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
@@ -66,7 +66,7 @@ export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
 }
 
 export const PARENTHESIZED_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: ParenthesizedNode,
+  NodeType: ParentheticalNode,
   startTokenKind: TokenKind.ParenthesizedStart,
   endTokenKind: TokenKind.ParenthesizedEnd
 }

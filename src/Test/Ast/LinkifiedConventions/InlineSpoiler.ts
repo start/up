@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -144,7 +144,7 @@ describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
         new InlineSpoilerNode([
           new PlainTextNode('he called her')
         ]),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

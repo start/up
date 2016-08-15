@@ -5,7 +5,7 @@ import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -59,7 +59,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('('),
               new LinkNode([
                 new PlainTextNode('stackoverflow.com')
@@ -81,7 +81,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(mailto:)')
             ])
           ]),
@@ -99,7 +99,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(file:///)')
             ])
           ]),
@@ -135,7 +135,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(mailto:daniel@wants.email)')
             ])
           ]),
@@ -175,7 +175,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(/r9k/ was talking about it)'),
             ])
           ]),
@@ -193,7 +193,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(/)')
             ])
           ]),
@@ -229,7 +229,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(/r9k/)')
             ])
           ]),
@@ -287,7 +287,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(#starcraft2 was never trending)')
             ])
           ]),
@@ -305,7 +305,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(#)')
             ])
           ]),
@@ -323,7 +323,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(#starcraft2)')
             ])
           ]),
@@ -399,7 +399,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(4chan.org-terrifying)')
             ])
           ]),
@@ -436,7 +436,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             new ParagraphNode([
               footnote,
               new PlainTextNode(' '),
-              new ParenthesizedNode([
+              new ParentheticalNode([
                 new PlainTextNode('(john.e.smith5)')
               ])
             ]),
@@ -454,7 +454,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             new ParagraphNode([
               footnote,
               new PlainTextNode(' '),
-              new ParenthesizedNode([
+              new ParentheticalNode([
                 new PlainTextNode('(john.e.smith-kline)')
               ])
             ]),
@@ -473,7 +473,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(.co.uk)')
             ])
           ]),
@@ -491,7 +491,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(um..uh)')
             ])
           ]),
@@ -509,7 +509,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(4chan.org../r9k/)')
             ])
           ]),
@@ -545,7 +545,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(ign.com had some hilarious forums)')
             ])
           ]),
@@ -563,7 +563,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new ParagraphNode([
             footnote,
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(ign.com)')
             ])
           ]),
@@ -583,7 +583,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new ParagraphNode([
           footnote,
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(really)')
           ])
         ]),
@@ -604,7 +604,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
         new ParagraphNode([
           footnote,
           new PlainTextNode('    '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('example.com')

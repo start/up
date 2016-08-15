@@ -7,7 +7,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 
@@ -17,7 +17,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
       expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(the one and only)')
           ]),
           new PlainTextNode(' '),
@@ -32,7 +32,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
       expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER:Gary Oak].')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(the one and only)')
           ]),
           new PlainTextNode(' '),
@@ -56,7 +56,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(or oatmeal)')
             ]),
             footnote,
@@ -77,7 +77,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
         new UpDocument([
           new ParagraphNode([
             new PlainTextNode("I don't eat cereal "),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(or oatmeal)')
             ]),
             footnote,
@@ -94,7 +94,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
       expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image: Gary] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
           ]),
           new PlainTextNode(' '),
@@ -107,7 +107,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
       expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
         insideDocumentAndParagraph([
           new PlainTextNode('After you beat the Elite Four, you have to face Gary '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(in Pokémon Red/Blue/Yellow)')
           ]),
           new PlainTextNode(' '),

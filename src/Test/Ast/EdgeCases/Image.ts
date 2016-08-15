@@ -8,7 +8,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 
 
@@ -33,7 +33,7 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
     expect(Up.toDocument('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like [image: ghosts}'),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com/ghosts.svg')
@@ -75,7 +75,7 @@ context('Unmatched opening parentheses in an image description have no affect on
     expect(Up.toDocument('([image: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
       new UpDocument([
         new ParagraphNode([
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('('),
             new ImageNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
             new PlainTextNode(')'),

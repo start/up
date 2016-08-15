@@ -7,7 +7,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 
@@ -38,9 +38,9 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
 
     const footnote = new FootnoteNode([
       new PlainTextNode("I'm normal. "),
-      new ParenthesizedNode([
+      new ParentheticalNode([
         new PlainTextNode("(I don't eat cereal. "),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode("(Well, I do, but I pretend not to.)"),
         ]),
         new PlainTextNode(')')

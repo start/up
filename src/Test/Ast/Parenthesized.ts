@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
 describe('Text surrounded by parentheses', () => {
@@ -11,7 +11,7 @@ describe('Text surrounded by parentheses', () => {
     expect(Up.toDocument('I like (certain types of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(certain types of)')
         ]),
         new PlainTextNode(' pizza')
@@ -25,7 +25,7 @@ describe('Parenthesized text', () => {
     expect(Up.toDocument('I like (certain *types* of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')
@@ -43,9 +43,9 @@ describe('Nested parentheses (starting at the same time)', () => {
     expect(Up.toDocument('I like ((certain) types of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(certain)')
           ]),
           new PlainTextNode(' types of)')
@@ -61,9 +61,9 @@ describe('Nested parentheses (ending at the same time)', () => {
     expect(Up.toDocument('I like (certain (types of)) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(certain '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(types of)')
           ]),
           new PlainTextNode(')')
@@ -79,7 +79,7 @@ describe('Two left parentheses followed by a single right square parenthesis', (
     expect(Up.toDocument(':( I like (certain *types* of) pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode(':( I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')
@@ -97,7 +97,7 @@ describe('A left parenthesis followed by two right parentheses', () => {
     expect(Up.toDocument('I like (certain *types* of) pizza :)')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(certain '),
           new EmphasisNode([
             new PlainTextNode('types')

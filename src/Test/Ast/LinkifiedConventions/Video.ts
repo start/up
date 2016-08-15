@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -151,7 +151,7 @@ describe('An otherwise-valid linkified video convention with its linkifying URL 
     expect(Up.toDocument('[video: phone call](https://example.com/phonecall.webm)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new VideoNode('phone call', 'https://example.com/phonecall.webm'),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

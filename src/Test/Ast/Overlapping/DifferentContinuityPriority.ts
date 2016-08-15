@@ -14,7 +14,7 @@ import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
-import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from'../../../SyntaxNodes/ParentheticalNode'
 import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
 import { FootnoteNode } from'../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from'../../../SyntaxNodes/FootnoteBlockNode'
@@ -332,11 +332,11 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
         new PlainTextNode('This '),
         new LinkNode([
           new PlainTextNode('trash '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode(' not)')
         ]),
         new PlainTextNode(' stay here.')
@@ -347,11 +347,11 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
     expect(Up.toDocument('I do (not [care) at](https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(not ')
         ]),
         new LinkNode([
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('care)')
           ]),
           new PlainTextNode(' at'),

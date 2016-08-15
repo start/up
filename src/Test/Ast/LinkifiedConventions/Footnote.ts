@@ -9,7 +9,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 
@@ -192,7 +192,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
       new UpDocument([
         new ParagraphNode([
           footnote,
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(tel:5555555555)')
           ]),
         ]),

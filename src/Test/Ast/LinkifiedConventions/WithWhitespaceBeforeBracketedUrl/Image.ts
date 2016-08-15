@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '..
 import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { ParenthesizedNode } from '../../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../../SyntaxNodes/ParentheticalNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
 
 
@@ -61,7 +61,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('('),
             new LinkNode([
               new PlainTextNode('stackoverflow.com')
@@ -76,7 +76,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('email sending', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(mailto:)')
           ]),
         ]))
@@ -87,7 +87,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('local files rustling', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(file:///)')
           ]),
         ]))
@@ -118,7 +118,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('email sending', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(mailto:daniel@wants.email)')
           ]),
         ]))
@@ -153,7 +153,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(/r9k/ created it)')
           ]),
         ]))
@@ -164,7 +164,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('slash', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(/)')
           ]),
         ]))
@@ -195,7 +195,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('robots', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(/r9k/)')
           ]),
         ]))
@@ -250,7 +250,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('hash marking', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(#)')
           ]),
         ]))
@@ -261,7 +261,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('something terrible', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(#starcraft2 was never trending)')
           ]),
         ]))
@@ -272,7 +272,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('hash marking', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(#starcraft2)')
           ]),
         ]))
@@ -347,7 +347,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('4chan', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(4chan.org-terrifying)')
           ]),
         ]))
@@ -379,7 +379,7 @@ context('A linkified image convention can have whitespace between its image URL 
           insideDocumentAndParagraph([
             new ImageNode('usernaming', 'https://example.com/image.png'),
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(john.e.smith5)')
             ]),
           ]))
@@ -390,7 +390,7 @@ context('A linkified image convention can have whitespace between its image URL 
           insideDocumentAndParagraph([
             new ImageNode('usernaming', 'https://example.com/image.png'),
             new PlainTextNode(' '),
-            new ParenthesizedNode([
+            new ParentheticalNode([
               new PlainTextNode('(john.e.smith-kline)')
             ]),
           ]))
@@ -402,7 +402,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('being British', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(.co.uk)')
           ]),
         ]))
@@ -413,7 +413,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('Ash claiming to be his own father', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(um..uh)')
           ]),
         ]))
@@ -424,7 +424,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('debilitating sadness', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(4chan.org../r9k/)')
           ]),
         ]))
@@ -455,7 +455,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('yeah', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(ign.com had some hilarious forums)')
           ]),
         ]))
@@ -466,7 +466,7 @@ context('A linkified image convention can have whitespace between its image URL 
         insideDocumentAndParagraph([
           new ImageNode('yeah', 'https://example.com/image.png'),
           new PlainTextNode(' '),
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(ign.com)')
           ]),
         ]))
@@ -479,7 +479,7 @@ context('A linkified image convention can have whitespace between its image URL 
       insideDocumentAndParagraph([
         new ImageNode('something terrible', 'https://example.com/image.png'),
         new PlainTextNode(' '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(really)')
         ]),
       ]))
@@ -493,7 +493,7 @@ describe("If there is whitespace between an otherwise-valid linkified image conv
       insideDocumentAndParagraph([
         new ImageNode('something terrible', 'https://example.com/image.png'),
         new PlainTextNode('    '),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('('),
           new LinkNode([
             new PlainTextNode('example.com')

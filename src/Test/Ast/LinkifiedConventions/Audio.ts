@@ -9,7 +9,7 @@ import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
-import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../../SyntaxNodes/ParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -151,7 +151,7 @@ describe('An otherwise-valid linkified audio convention with its linkifying URL 
     expect(Up.toDocument('[audio: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
         new AudioNode('phone call', 'https://example.com/phonecall.ogg'),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))

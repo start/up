@@ -5,7 +5,7 @@ import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { SquareBracketedNode } from '../../SyntaxNodes/SquareBracketedNode'
-import { ParenthesizedNode } from '../../SyntaxNodes/ParenthesizedNode'
+import { ParentheticalNode } from '../../SyntaxNodes/ParentheticalNode'
 
 
 describe('Bracketed (square bracketed or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
@@ -71,7 +71,7 @@ describe('An otherwise-valid link with its URL escaped', () => {
         new SquareBracketedNode([
           new PlainTextNode('[call me]')
         ]),
-        new ParenthesizedNode([
+        new ParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
       ]))
@@ -183,7 +183,7 @@ describe('A link produced by parentheses', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
-          new ParenthesizedNode([
+          new ParentheticalNode([
             new PlainTextNode('(only one)')
           ]),
           new PlainTextNode(' site')
