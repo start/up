@@ -39,6 +39,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
 import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
+import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 
@@ -339,7 +340,7 @@ export class HtmlWriter extends Writer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private parenthetical(parenthetical: NormalParentheticalNode | SquareBracketParentheticalNode, ...extraCssClassNames: string[]): string {
+  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
     return this.element(
       'span',
       parenthetical.children,
