@@ -6,6 +6,7 @@ import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
+import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -64,15 +65,21 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(' on my Game Boy, though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Highlight', () => {
+      expect(Up.toInlineDocument('I loved my [highlight: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new HighlightNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { ExampleInputNode } from './SyntaxNodes/ExampleInputNode'
-export { FootnoteBlockNode } from './SyntaxNodes/FootnoteBlockNode'
-export { FootnoteNode } from './SyntaxNodes/FootnoteNode'
-export { HeadingNode } from './SyntaxNodes/HeadingNode'
-export { HighlightNode } from './SyntaxNodes/HighlightNode'
 export { ImageNode } from './SyntaxNodes/ImageNode'
 export { InlineCodeNode } from './SyntaxNodes/InlineCodeNode'
 export { InlineNsflNode } from './SyntaxNodes/InlineNsflNode'
