@@ -38,7 +38,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new BoldNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -49,7 +49,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new EmphasisNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -60,7 +60,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new ExampleInputNode('A'),
           new PlainTextNode(' and '),
           new ExampleInputNode('B'),
-          new PlainTextNode(' on my Game Boy, though I never took it with me when I left home.'),
+          new PlainTextNode(' on my Game Boy, though I never took it with me when I left home.')
         ]))
     })
 
@@ -71,7 +71,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new HighlightNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -99,7 +99,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new InlineNsflNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -110,7 +110,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new InlineNsfwNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -121,7 +121,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new InlineSpoilerNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -132,7 +132,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new ItalicNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -143,7 +143,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new LinkNode([
             new PlainTextNode('Game Boy'),
           ], 'https://example.com/gb'),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -154,7 +154,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new ParenthesizedNode([
             new PlainTextNode('(Nintendo)'),
           ]),
-          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.')
         ]))
     })
 
@@ -165,7 +165,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new SquareBracketedNode([
             new PlainTextNode('[Nintendo]'),
           ]),
-          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.')
         ]))
     })
 
@@ -176,7 +176,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new RevisionDeletionNode([
             new PlainTextNode('Nintendo'),
           ]),
-          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.')
         ]))
     })
 
@@ -187,7 +187,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new RevisionInsertionNode([
             new PlainTextNode('Nintendo'),
           ]),
-          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.')
         ]))
     })
 
@@ -198,7 +198,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new StressNode([
             new PlainTextNode('Game Boy'),
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never took it with me when I left home.')
         ]))
     })
 
@@ -207,6 +207,16 @@ context('Except for footnots, every inline convention is supported in inline doc
         new InlineUpDocument([
           new PlainTextNode('Watch this: '),
           new VideoNode('cricket meowing', 'https://example.com/meow.webm')
+        ]))
+    })
+  })
+
+
+  context('Footnotes are totally omitted from inline documents. This includes when:', () => {
+    specify('A footnote is at the top level of the document', () => {
+      expect(Up.toInlineDocument('I loved my Game Boy [^ blah blah blah, blah], though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my Game Boy, though I never took it with me when I left home.')
         ]))
     })
   })
