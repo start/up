@@ -21,7 +21,7 @@ export namespace UpDocument {
 //
 // 1. Footnotes extracted into footnote blocks
 // 2. A table of contents (if it's asked to create one)
-export function createDocument(
+export function createUpDocument(
   args: {
     children: OutlineSyntaxNode[]
     createTableOfContents: boolean
