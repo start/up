@@ -227,7 +227,8 @@ class Parser {
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
       until: args.fromHereUntil,
-      ancestorRevealableInlineConventions: outerRevealableConventions
+      ancestorRevealableInlineConventions: outerRevealableConventions,
+      isParsingForInlineDocument: this.isParsingForInlineDocument
     })
 
     this.tokenIndex += result.countTokensParsed
