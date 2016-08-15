@@ -703,7 +703,7 @@ describe('A revision deletion node', () => {
 
 
 describe('A parenthetical node', () => {
-  it('produces a <span class="up-parenthesized">', () => {
+  it('produces a <span class="up-parenthetical">', () => {
     const document = new UpDocument([
       new ParagraphNode([
         new ParentheticalNode([new PlainTextNode('(Koopa Tropa)')])
@@ -716,14 +716,14 @@ describe('A parenthetical node', () => {
 
 
 describe('A square bracketed node', () => {
-  it('produces a <span class="up-square-bracketed">', () => {
+  it('produces a <span class="up-square-bracket-parenthetical">', () => {
     const document = new UpDocument([
       new ParagraphNode([
         new SquareBracketParentheticalNode([new PlainTextNode('[Koopa Tropa]')])
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-square-bracketed">[Koopa Tropa]</span></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><span class="up-square-bracket-parenthetical">[Koopa Tropa]</span></p>')
   })
 })
 

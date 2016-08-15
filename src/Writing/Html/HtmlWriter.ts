@@ -188,7 +188,7 @@ export class HtmlWriter extends Writer {
   }
 
   protected squareBracketParenthetical(squareBracketParenthetical: SquareBracketParentheticalNode): string {
-    return this.bracketed(squareBracketParenthetical, 'square-bracketed')
+    return this.bracketed(squareBracketParenthetical, 'square-bracket-parenthetical')
   }
 
   protected highlight(highlight: HighlightNode): string {
