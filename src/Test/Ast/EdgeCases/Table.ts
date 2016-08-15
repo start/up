@@ -174,3 +174,62 @@ Underline
       ]))
   })
 })
+
+
+context('Outline conventions are evaluated before inline conventions, so table cells delimiters are evaluated before their inline contents.', () => {
+  context('Inline code delimiters do not interfere with', () => {
+    specify('Header cells', () => {
+      const markup = `
+Table
+
+Game\`s Title;        Game\`s Release Date
+Chrono Trigger;       1995
+Chrono Cross;         1999`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([new PlainTextNode('Game`s Title')]),
+              new TableNode.Header.Cell([new PlainTextNode('Game`s Release Date')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              ]),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ])
+            ])
+        ]))
+    })
+
+        specify('Row cells', () => {
+      const markup = `
+Table:
+
+Game;                         Release Decade
+Square\`s Chrono Trigger;     1990\`s
+Square\`s Chrono Cross;       1990\`s`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([new PlainTextNode('Game')]),
+              new TableNode.Header.Cell([new PlainTextNode('Release Decade')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Square`s Chrono Trigger')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ]),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Square`s Chrono Cross')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ])
+            ])
+        ]))
+    })
+  })
+})
