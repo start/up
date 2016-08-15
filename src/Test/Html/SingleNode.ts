@@ -715,7 +715,7 @@ describe('A normal parenthetical node', () => {
 })
 
 
-describe('A square bracketed node', () => {
+describe('A square parenthetical node', () => {
   it('produces a <small class="up-square-brackets"> element', () => {
     const document = new UpDocument([
       new ParagraphNode([

@@ -7,7 +7,7 @@ import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNo
 
 
 describe('Text surrounded by square brackets', () => {
-  it('is put inside a square bracketed node with the square brackets preserved as plain text', () => {
+  it('is put inside a square parenthetical node with the square brackets preserved as plain text', () => {
     expect(Up.toDocument('I like [certain types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -39,7 +39,7 @@ describe('Square bracketed text', () => {
 
 
 describe('Nested square brackets (starting at the same time)', () => {
-  it("produce nested square bracketed nodes with first opening bracket outside of the inner node", () => {
+  it("produce nested square parenthetical nodes with first opening bracket outside of the inner node", () => {
     expect(Up.toDocument('I like [[certain] types of] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
@@ -57,7 +57,7 @@ describe('Nested square brackets (starting at the same time)', () => {
 
 
 describe('Nested square brackets (ending at the same time)', () => {
-  it("produce nested square bracketed nodes with last closing square bracket outside of the inner node", () => {
+  it("produce nested square parenthetical nodes with last closing square bracket outside of the inner node", () => {
     expect(Up.toDocument('I like [certain [types of]] pizza')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
