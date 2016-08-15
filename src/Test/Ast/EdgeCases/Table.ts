@@ -176,7 +176,7 @@ Underline
 })
 
 
-context('Outline conventions are evaluated before inline conventions, so table cells delimiters are evaluated before their inline contents.', () => {
+context("Outline conventions are evaluated before inline conventions, so table cells' delimiters are evaluated before their inline contents.", () => {
   context('Inline code delimiters do not interfere with', () => {
     specify('Header cells', () => {
       const markup = `
