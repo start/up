@@ -163,3 +163,92 @@ Chart: Most common underlines for top-level headings (from most to least common)
       ]))
   })
 })
+
+
+context("Outline conventions are evaluated before inline conventions, so chart cells' delimiters are evaluated before their inline contents.", () => {
+  context('Inline code delimiters do not interfere with delimiters for', () => {
+    specify('Header cells', () => {
+      const markup = `
+Chart
+
+                    Game\`s Platform;       Game\`s Release Date
+Chrono Trigger;     Super NES;              1995
+Chrono Cross;       Playstation;            1999`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('Game`s Platform')]),
+              new TableNode.Header.Cell([new PlainTextNode('Game`s Release Date')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Super NES')]),
+                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
+                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            ])
+        ]))
+    })
+
+    specify('Row cells', () => {
+      const markup = `
+Chart
+
+                    Platform;                 Release Decade
+Chrono Trigger;     Nintendo\`s Super NES;    1990\`s
+Chrono Cross;       Sony\`s Playstation;      1990\`s`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('Platform')]),
+              new TableNode.Header.Cell([new PlainTextNode('Release Decade')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Nintendo\`s Super NES')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Sony\`s Playstation')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            ])
+        ]))
+    })
+
+    specify('Row header cells', () => {
+      const markup = `
+Chart
+
+                              Platform;         Release Decade
+Square\`s Chrono Trigger;     Super NES;        1990\`s
+Square\s Chrono Cross;        Playstation;      1990\`s`
+
+      expect(Up.toAst(markup)).to.be.eql(
+        new DocumentNode([
+          new TableNode(
+            new TableNode.Header([
+              new TableNode.Header.Cell([]),
+              new TableNode.Header.Cell([new PlainTextNode('Platform')]),
+              new TableNode.Header.Cell([new PlainTextNode('Release Decade')])
+            ]), [
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Super NES')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Square\`s Chrono Trigger')])),
+              new TableNode.Row([
+                new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
+                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              ], new TableNode.Header.Cell([new PlainTextNode('Square\s Chrono Cross')]))
+            ])
+        ]))
+    })
+  })
+})
