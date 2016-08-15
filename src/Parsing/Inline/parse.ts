@@ -20,17 +20,6 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
   }).result.nodes
 }
 
-// Returns a collection of inline syntax nodes representing inline conventions.
-//
-// Any footnotes are omitted.
-export function parseForInlineDocument(tokens: Token[]): InlineSyntaxNode[] {
-  return new Parser({
-    tokens,
-    ancestorRevealableInlineConventions: [],
-    isParsingForInlineDocument: true
-  }).result.nodes
-}
-
 
 // This includes every rich convention except for links. Links have that pesky URL.
 const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
@@ -64,7 +53,6 @@ class Parser {
 
   private tokens: Token[]
   private ancestorRevealableInlineConventions: RevealableConvention[]
-  private isParsingForInlineDocument: boolean
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
@@ -74,12 +62,10 @@ class Parser {
       tokens: Token[]
       until?: TokenKind
       ancestorRevealableInlineConventions: RevealableConvention[]
-      isParsingForInlineDocument?: boolean
     }
   ) {
     this.tokens = args.tokens
     this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
-    this.isParsingForInlineDocument = args.isParsingForInlineDocument
     const endTokenKind = args.until
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
@@ -170,24 +156,17 @@ class Parser {
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
-          if ((richConvention === FOOTNOTE_CONVENTION)) {
-            if (this.isParsingForInlineDocument) {
-              // As a rule, footnotes are omitted from inline documents.
-              continue TokenLoop
-            }
-
-            if (this.ancestorRevealableInlineConventions.length) {
-              // Okay, we're dealing with a footnote that is within a revealable inline convention.
-              //
-              // To prevent this footnote's contents from being exposed within its footnote block, we put its
-              // children directly inside the syntax node representing its closest revealable ancestor. This
-              // stays true to the markup author's original intent.
-              //
-              // On a side note, any footnotes within revealable *outline* conventions are placed into a footnote
-              // block inside the revealable outline convention. This serves the same purpose. 
-              const closestRevealableAncestorConvention = last(this.ancestorRevealableInlineConventions)
-              children = [new closestRevealableAncestorConvention.NodeType(children)]
-            }
+          if ((richConvention === FOOTNOTE_CONVENTION) && this.ancestorRevealableInlineConventions.length) {
+            // Okay, we're dealing with a footnote that is within a revealable inline convention.
+            //
+            // To prevent this footnote's contents from being exposed within its footnote block, we put its
+            // children directly inside the syntax node representing its closest revealable ancestor. This
+            // stays true to the markup author's original intent.
+            //
+            // On a side note, any footnotes within revealable *outline* conventions are placed into a footnote
+            // block inside the revealable outline convention. This serves the same purpose. 
+            const closestRevealableAncestorConvention = last(this.ancestorRevealableInlineConventions)
+            children = [new closestRevealableAncestorConvention.NodeType(children)]
           }
 
           this.nodes.push(new richConvention.NodeType(children))
@@ -227,7 +206,6 @@ class Parser {
       tokens: this.tokens.slice(this.countTokensParsed),
       until: args.fromHereUntil,
       ancestorRevealableInlineConventions: outerRevealableConventions,
-      isParsingForInlineDocument: this.isParsingForInlineDocument
     })
 
     this.tokenIndex += result.countTokensParsed

@@ -36,8 +36,10 @@ export function tokenize(markup: string, config: Config): Token[] {
 // This function is identical to the `tokenize` function, except footnotes are treated as parentheticals
 // of the appropriate bracket type.
 //
-// In other words, footnotes produced by parentheses [^ like this] are treated as square-bracket
-// parentheticals, and footnotes produced by parentheses (^ like this) are treated as regular parentheticals.
+// In other words:
+//
+// 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
+// 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
 export function tokenizeForInlineDocument(_markup: string, _config: Config): Token[] {
   throw new Error("Not implemented")
 }
