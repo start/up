@@ -5,6 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -90,6 +91,32 @@ describe('Within an inline code node, >, \', and "', () => {
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
+  })
+})
+
+
+describe('Within an example input node, all instances of < and &', () => {
+  it('are escaped by replacing them with &lt; and &amp;', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new ExampleInputNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><kbd>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</kbd></p>')
+  })
+})
+
+
+describe('Within an example input node, >, \', and "', () => {
+  it('are preserved', () => {
+    const document = new DocumentNode([
+      new ParagraphNode([
+        new ExampleInputNode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+      ])
+    ])
+
+    expect(Up.toHtml(document)).to.be.eql('<p><kbd>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</kbd></p>')
   })
 })
 
