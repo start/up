@@ -693,11 +693,11 @@ describe('A revision deletion node', () => {
   it('produces a <del> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new RevisionDeletionNode([new PlainTextNode('Koopa Tropa')])
+        new RevisionDeletionNode([new PlainTextNode('Koopa Troopa')])
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><del>Koopa Tropa</del></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><del>Koopa Troopa</del></p>')
   })
 })
 
@@ -706,11 +706,11 @@ describe('A normal parenthetical node', () => {
   it('produces a <small> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new NormalParentheticalNode([new PlainTextNode('(Koopa Tropa)')])
+        new NormalParentheticalNode([new PlainTextNode('(Koopa Troopa)')])
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><small>(Koopa Tropa)</small></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><small>(Koopa Troopa)</small></p>')
   })
 })
 
@@ -719,11 +719,11 @@ describe('A square parenthetical node', () => {
   it('produces a <small class="up-square-brackets"> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new SquareParentheticalNode([new PlainTextNode('[Koopa Tropa]')])
+        new SquareParentheticalNode([new PlainTextNode('[Koopa Troopa]')])
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><small class="up-square-brackets">[Koopa Tropa]</small></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><small class="up-square-brackets">[Koopa Troopa]</small></p>')
   })
 })
 
