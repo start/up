@@ -18,9 +18,9 @@ import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
+import { StressNode } from'../../../SyntaxNodes/StressNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
-import { StressNode } from'../../../SyntaxNodes/StressNode'
 import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
@@ -201,14 +201,21 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Stress', () => {
+      expect(Up.toInlineDocument('I loved my **Game Boy**, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new StressNode([
+            new PlainTextNode('Game Boy'),
+          ]),
+          new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { RevisionDeletionNode } from './SyntaxNodes/RevisionDeletionNode'
-export { RevisionInsertionNode } from './SyntaxNodes/RevisionInsertionNode'
-export { OutlineSeparatorNode } from './SyntaxNodes/OutlineSeparatorNode'
-export { SpoilerBlockNode } from './SyntaxNodes/SpoilerBlockNode'
 export { SquareBracketedNode } from './SyntaxNodes/SquareBracketedNode'
 export { StressNode } from './SyntaxNodes/StressNode'
 export { TableNode } from './SyntaxNodes/TableNode'
