@@ -8,6 +8,7 @@ import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -85,11 +86,19 @@ context('Except for footnots, every inline convention is supported in inline doc
           new ImageNode('cricket sewing', 'https://example.com/sew.ogg')
         ]))
     })
+
+    specify('Inline code', () => {
+      expect(Up.toInlineDocument('I loved `<dl>` elements, though I never used them.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved '),
+          new InlineCodeNode('<dl>'),
+          new PlainTextNode(' elements, though I never used them.'),
+        ]))
+    })
   })
 })
 
 /*
-export { ImageNode } from './SyntaxNodes/ImageNode'
 export { InlineCodeNode } from './SyntaxNodes/InlineCodeNode'
 export { InlineNsflNode } from './SyntaxNodes/InlineNsflNode'
 export { InlineNsfwNode } from './SyntaxNodes/InlineNsfwNode'
