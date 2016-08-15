@@ -1,4 +1,5 @@
 import { UpDocument } from './SyntaxNodes/UpDocument'
+import { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
 import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
@@ -6,6 +7,7 @@ import { getHtml } from './Writing//Html/getHtml'
 
 
 export type MarkupOrDocument = string | UpDocument
+export type InlineMarkupOrInlineDocument = string | UpDocument
 
 
 export class Up {
@@ -19,8 +21,16 @@ export class Up {
     return toDocument(markup, this.config.withChanges(extraSettings))
   }
 
-  toHtml(MarkupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
-    return toHtml(MarkupOrDocument, this.config.withChanges(extraSettings))
+  toHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
+    return toHtml(markupOrDocument, this.config.withChanges(extraSettings))
+  }
+
+  toInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
+    return toInlineDocument(markup, this.config.withChanges(extraSettings))
+  }
+
+  toInlineHtml(markupOrDocument: InlineMarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
+    return toInlineHtml(markupOrDocument, this.config.withChanges(extraSettings))
   }
 }
 
@@ -45,8 +55,16 @@ export namespace Up {
     return defaultUp.toDocument(markup, settings)
   }
 
-  export function toHtml(MarkupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.toHtml(MarkupOrDocument, settings)
+  export function toHtml(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.toHtml(markupOrDocument, settings)
+  }
+
+  export function toInlineDocument(markup: string, settings?: UserProvidedSettings): InlineUpDocument {
+    return defaultUp.toInlineDocument(markup, settings)
+  }
+
+  export function toInlineHtml(markupOrDocument: InlineMarkupOrInlineDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.toInlineHtml(markupOrDocument, settings)
   }
 }
 
@@ -55,11 +73,19 @@ function toDocument(markup: string, config: Config): UpDocument {
   return parseDocument(markup, config)
 }
 
-function toHtml(MarkupOrDocument: MarkupOrDocument, config: Config): string {
+function toHtml(markupOrDocument: MarkupOrDocument, config: Config): string {
   const document =
-    typeof MarkupOrDocument === 'string'
-      ? toDocument(MarkupOrDocument, config)
-      : MarkupOrDocument
+    typeof markupOrDocument === 'string'
+      ? toDocument(markupOrDocument, config)
+      : markupOrDocument
 
   return getHtml(document, config)
+}
+
+function toInlineDocument(_markup: string, _config: Config): InlineUpDocument {
+  throw new Error("Not implemented")
+}
+
+function toInlineHtml(_markupOrDocument: MarkupOrDocument, _config: Config): string {
+  throw new Error("Not implemented")
 }
