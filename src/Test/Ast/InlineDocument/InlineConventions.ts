@@ -7,6 +7,7 @@ import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
+import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -74,6 +75,14 @@ context('Except for footnots, every inline convention is supported in inline doc
             new PlainTextNode('Game Boy'),
           ]),
           new PlainTextNode(', though I never took it with me when I left home.'),
+        ]))
+    })
+
+    specify('Images', () => {
+      expect(Up.toInlineDocument('Look at this: [image: cricket sewing] (example.com/sew.ogg)')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('Look at this: '),
+          new ImageNode('cricket sewing', 'https://example.com/sew.ogg')
         ]))
     })
   })
