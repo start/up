@@ -16,6 +16,8 @@ import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { ParenthesizedNode } from '../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from '../../../SyntaxNodes/SquareBracketedNode'
+import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
+import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 
 /*import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
@@ -23,8 +25,6 @@ import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from'../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from'../../../SyntaxNodes/InlineNsflNode'
-import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
 import { ParenthesizedNode } from'../../../SyntaxNodes/ParenthesizedNode'
 import { SquareBracketedNode } from'../../../SyntaxNodes/SquareBracketedNode'
 import { FootnoteNode } from'../../../SyntaxNodes/FootnoteNode'
@@ -169,7 +169,7 @@ context('Except for footnots, every inline convention is supported in inline doc
         ]))
     })
 
-    specify('Parnetheses', () => {
+    specify('Square brackets', () => {
       expect(Up.toInlineDocument('I loved my [Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
@@ -179,12 +179,32 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
         ]))
     })
+
+    specify('Revision deletion', () => {
+      expect(Up.toInlineDocument('I loved my ~~Nintendo~~ Game Boy, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new RevisionDeletionNode([
+            new PlainTextNode('Nintendo'),
+          ]),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+        ]))
+    })
+
+    specify('Revision insertion', () => {
+      expect(Up.toInlineDocument('I loved my ++Nintendo++ Game Boy, though I never took it with me when I left home.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainTextNode('I loved my '),
+          new RevisionInsertionNode([
+            new PlainTextNode('Nintendo'),
+          ]),
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.'),
+        ]))
+    })
   })
 })
 
 /*
-export { ParenthesizedNode } from './SyntaxNodes/ParenthesizedNode'
-export { PlainTextNode } from './SyntaxNodes/PlainTextNode'
 export { RevisionDeletionNode } from './SyntaxNodes/RevisionDeletionNode'
 export { RevisionInsertionNode } from './SyntaxNodes/RevisionInsertionNode'
 export { OutlineSeparatorNode } from './SyntaxNodes/OutlineSeparatorNode'
