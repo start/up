@@ -600,13 +600,13 @@ describe('An outline separator node', () => {
 
 describe('An emphasis node', () => {
   it('produces an <em> element', () => {
-    const documentnode = new UpDocument([
+    const document = new UpDocument([
       new ParagraphNode([
         new EmphasisNode([new PlainTextNode('Always')])
       ])
     ])
 
-    expect(Up.toHtml(documentnode)).to.be.eql('<p><em>Always</em></p>')
+    expect(Up.toHtml(document)).to.be.eql('<p><em>Always</em></p>')
   })
 })
 
@@ -743,13 +743,13 @@ describe('A link node', () => {
 
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
-    const documentnode = new UpDocument([
+    const document = new UpDocument([
       new ParagraphNode([
         new FootnoteNode([], 3)
       ])
     ])
 
-    expect(Up.toHtml(documentnode)).to.be.eql(
+    expect(Up.toHtml(document)).to.be.eql(
       '<p>'
       + '<sup class="up-footnote-reference" id="up-footnote-reference-3">'
       + '<a href="#up-footnote-3">3</a>'

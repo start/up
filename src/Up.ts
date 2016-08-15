@@ -5,7 +5,7 @@ import { parseDocument } from './Parsing/parseDocument'
 import { getHtml } from './Writing//Html/getHtml'
 
 
-export type MarkupOrDocumentNode = string | UpDocument
+export type MarkupOrDocument = string | UpDocument
 
 
 export class Up {
@@ -19,8 +19,8 @@ export class Up {
     return toAst(markup, this.config.withChanges(extraSettings))
   }
 
-  toHtml(markupOrDocumentNode: MarkupOrDocumentNode, extraSettings?: UserProvidedSettings): string {
-    return toHtml(markupOrDocumentNode, this.config.withChanges(extraSettings))
+  toHtml(MarkupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
+    return toHtml(MarkupOrDocument, this.config.withChanges(extraSettings))
   }
 }
 
@@ -45,8 +45,8 @@ export namespace Up {
     return defaultUp.toAst(markup, settings)
   }
 
-  export function toHtml(markupOrDocumentNode: MarkupOrDocumentNode, settings?: UserProvidedSettings): string {
-    return defaultUp.toHtml(markupOrDocumentNode, settings)
+  export function toHtml(MarkupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.toHtml(MarkupOrDocument, settings)
   }
 }
 
@@ -55,11 +55,11 @@ function toAst(markup: string, config: Config): UpDocument {
   return parseDocument(markup, config)
 }
 
-function toHtml(markupOrDocumentNode: MarkupOrDocumentNode, config: Config): string {
+function toHtml(MarkupOrDocument: MarkupOrDocument, config: Config): string {
   const document =
-    typeof markupOrDocumentNode === 'string'
-      ? toAst(markupOrDocumentNode, config)
-      : markupOrDocumentNode
+    typeof MarkupOrDocument === 'string'
+      ? toAst(MarkupOrDocument, config)
+      : MarkupOrDocument
 
   return getHtml(document, config)
 }
