@@ -18,6 +18,8 @@ import { getIndentedBlock } from './getIndentedBlock'
 //     
 // Description list items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole description list, not just the list item. 
+//
+// TODO: Better handle edge-case of lines consisting solely of escaped whitespace.
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: DescriptionListNode.Item[] = []
