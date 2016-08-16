@@ -14,12 +14,11 @@ import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { TextConsumer } from './TextConsumer'
+import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { Convention } from './Convention'
-import { TokenizableRichConventionArgs } from './TokenizableRichConventionArgs'
+import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimAbsolutelyAllOuterWhitespace } from './trimAbsolutelyAllOuterWhitespace'
 
@@ -40,7 +39,7 @@ export function tokenize(markup: string, config: Config): Token[] {
 // 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
 // 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
-  return new Tokenizer(markup, config, true).tokens
+  return new Tokenizer(markup, config).tokens
 }
 
 
@@ -122,13 +121,12 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(
-    markup: string,
-    private config: Config,
-    private isTokenizingInlineDocument = false
-  ) {
-    this.markupConsumer = new TextConsumer(trimAbsolutelyAllOuterWhitespace(markup))
+  constructor(markup: string, private config: Config) {
+    this.markupConsumer =
+      new TextConsumer(trimAbsolutelyAllOuterWhitespace(markup))
+
     this.configureConventions()
+
     this.tokenize()
   }
 
@@ -189,19 +187,12 @@ class Tokenizer {
   }
 
   private getFootnoteConventions(): Convention[] {
-    return BRACKETS.map(bracket => {
-      const args: TokenizableRichConventionArgs = {
+    return BRACKETS.map(bracket =>
+      this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
         startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
         endsWith: bracket.endPattern
-      } 
-
-      if (this.isTokenizingInlineDocument) {
-        // TODO
-      }
-
-      return this.getTokenizableRichConvention(args)
-    })
+      }))
   }
 
   private getLinkContentConventions(): Convention[] {
@@ -282,7 +273,19 @@ class Tokenizer {
     })
   }
 
-  private getTokenizableRichConvention(args: TokenizableRichConventionArgs): Convention {
+  private getTokenizableRichConvention(
+    args: {
+      richConvention: RichConvention
+      startsWith: string
+      endsWith: string
+      startPatternContainsATerm?: boolean
+      whenOpening?: OnTextMatch
+      isMeaningfulWhenItContainsOnlyWhitespace?: boolean
+      insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
+      whenClosing?: OnConventionEvent
+      mustBeDirectlyFollowedBy?: Convention[]
+    }
+  ): Convention {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
