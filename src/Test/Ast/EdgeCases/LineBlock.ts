@@ -143,7 +143,7 @@ My favorite kind is 2%.`
       ]))
   })
 
-  specify('A line starting with a space and followed by escaped whitespace', () => {
+  specify('A line starting with a single space (i.e. not indented) and followed by escaped whitespace', () => {
     const markup =
       `
 I drink milk.
