@@ -39,7 +39,7 @@ export function tokenize(markup: string, config: Config): Token[] {
 // 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
 // 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
-  return new Tokenizer(markup, config).tokens
+  return new Tokenizer(markup, config, true).tokens
 }
 
 
@@ -121,16 +121,16 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(markup: string, private config: Config) {
+  constructor(markup: string, private config: Config, isTokenizingInlineDocument = false) {
     this.markupConsumer =
       new TextConsumer(trimAbsolutelyAllOuterWhitespace(markup))
 
-    this.configureConventions()
+    this.configureConventions(isTokenizingInlineDocument)
 
     this.tokenize()
   }
 
-  private configureConventions(): void {
+  private configureConventions(isTokenizingInlineDocument: boolean): void {
     this.conventions = [
       ...concat([
         {
@@ -150,7 +150,10 @@ class Tokenizer {
 
       ...this.getMediaDescriptionConventions(),
 
-      ...this.getFootnoteConventions(),
+      ...(
+        isTokenizingInlineDocument
+          ? this.getFootnoteConventionsForInlineDocuments()
+          : this.getFootnoteConventions()),
 
       ...this.getLinkifyingUrlConventions(),
 
@@ -187,6 +190,19 @@ class Tokenizer {
   }
 
   private getFootnoteConventions(): Convention[] {
+    return BRACKETS.map(bracket =>
+      this.getTokenizableRichConvention({
+        richConvention: FOOTNOTE_CONVENTION,
+        startsWith: this.getFootnoteStartDelimiter(bracket),
+        endsWith: this.getFootnotEndDelimiter(bracket)
+      }))
+  }
+
+  //Footnotes, by definition, represent content that should not appear inline.
+  //
+  // In inline documents, this purpose can't be fulfilled, so we treat footnotes as parentheticals
+  // of the appropriate bracket type. 
+  private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
