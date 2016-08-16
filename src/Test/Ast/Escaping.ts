@@ -68,22 +68,6 @@ Goodbye, world!`
       ]))
   })
 
-  specify('On an otherwise-empty line between paragraphs', () => {
-    const markup = `
-Hello, world!
-\\
-Goodbye, world!`
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
-        ]),
-        new ParagraphNode([
-          new PlainTextNode('Goodbye, world!')
-        ])
-      ]))
-  })
-
   specify('At the end of a paragraph', () => {
     const markup = `
 Hello, world!\\
