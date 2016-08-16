@@ -121,11 +121,8 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(markup: string, private config: Config) {
-    this.markupConsumer =
-      new TextConsumer(markup.replace(LEADING_WHITESPACE_PATTERN, ''))
-
+    this.markupConsumer = new TextConsumer(markup.trim())
     this.configureConventions()
-
     this.tokenize()
   }
 
@@ -1259,9 +1256,6 @@ function repeat(text: string, count: number): string {
   return new Array(count + 1).join(text)
 }
 
-
-const LEADING_WHITESPACE_PATTERN =
-  patternStartingWith(ANY_WHITESPACE)
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
