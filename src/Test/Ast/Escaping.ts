@@ -5,27 +5,32 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 
 
 describe('A backslash', () => {
-  it('causes the following character to be treated as plain text', () => {
+  it('disables any special behavior of the character that follows, preserving the other character as plain text', () => {
+    expect(Up.toDocument('Hello, \\*world\\*!')).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode('Hello, *world*!')
+      ]))
+  })
+
+  it("has no effect if the following character didn't have any special behavior to begin with", () => {
     expect(Up.toDocument('Hello, \\world!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, world!')
       ]))
   })
 
-  it('causes the following backslash to be treated as plain text', () => {
-    expect(Up.toDocument('Hello, \\\\!')).to.be.eql(
+  it('can disable the special behavior of another backslash', () => {
+    expect(Up.toDocument('Hello, \\\\*world*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, \\!')
-      ]))
-  })
-
-  it('disables any special meaning of the following character', () => {
-    expect(Up.toDocument('Hello, \\*world\\*!')).to.be.eql(
-      insideDocumentAndParagraph([
-        new PlainTextNode('Hello, *world*!')
+        new PlainTextNode('Hello, \\'),
+        new EmphasisNode([
+          new PlainTextNode('world')
+        ]),
+        new PlainTextNode('!')
       ]))
   })
 
@@ -37,9 +42,9 @@ describe('A backslash', () => {
   })
 
   it('is ignored if it is the final character of the markup', () => {
-    expect(Up.toDocument('Hello, \\')).to.be.eql(
+    expect(Up.toDocument('Hello, Bob.\\')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, ')
+        new PlainTextNode('Hello, Bob.')
       ]))
   })
 })
