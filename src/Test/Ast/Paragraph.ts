@@ -17,9 +17,45 @@ describe('A typical line of text', () => {
 })
 
 
-describe('Paragraphs', () => {
+describe('A paragraph', () => {
   it('can contain inline conventions', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new EmphasisNode([
+          new PlainTextNode('everyone')
+        ]),
+        new PlainTextNode(" like that?")
+      ]))
+  })
+})
+
+
+context('Trailing whitespace in a paragraph is completely inconsequential. This is true when the trailing whitespace is:', () => {
+  specify('Not escaped', () => {
+    expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?  \t  \t ")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new EmphasisNode([
+          new PlainTextNode('everyone')
+        ]),
+        new PlainTextNode(" like that?")
+      ]))
+  })
+
+  specify('Escaped', () => {
+    expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\ \t  ")).to.be.eql(
+      insideDocumentAndParagraph([
+        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new EmphasisNode([
+          new PlainTextNode('everyone')
+        ]),
+        new PlainTextNode(" like that?")
+      ]))
+  })
+
+  specify('Both escaped and not escaped', () => {
+    expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that? \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
         new EmphasisNode([
