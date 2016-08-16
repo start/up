@@ -27,6 +27,25 @@ You'll never believe this fake evidence!
 })
 
 
+describe('A paragraph directly following a line consisting solely of media conventions', () => {
+  it('does not produce a line block node', () => {
+    const markup = `
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
+You'll never believe this fake evidence!`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ])
+      ]))
+  })
+})
+
+
 describe('A paragraph directly sandwiched by lines consisting solely of media conventions', () => {
   it('does not produce a line block node', () => {
     const markup = `
