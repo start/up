@@ -125,38 +125,42 @@ You'll never believe this fake evidence!
 })
 
 
-context('No line block is produced when two paragraphs are separated:', () => {
-    specify('A line starting with backslash and otherwise consisting solely of whitespace', () => {
+context("A line consisting of escaped whitespace is not included in a line block, but it doesn't terminate it, either.", () => {
+  specify('A line starting with backslash and otherwise consisting solely of whitespace', () => {
     const markup =
       `
-I drink milk.
+Roses are red
 \\ \t
-My favorite kind is 2%.`
+Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('I drink milk.')
-        ]),
-        new ParagraphNode([
-          new PlainTextNode('My favorite kind is 2%.')
-        ]),
+        new LineBlockNode([
+          new LineBlockNode.Line([
+            new PlainTextNode('Roses are red'),
+          ]),
+          new LineBlockNode.Line([
+            new PlainTextNode('Violets are blue'),
+          ])
+        ])
       ]))
   })
 
   specify('A line starting with a single space (i.e. not indented) and followed by escaped whitespace', () => {
     const markup =
       `
-I drink milk.
+Roses are red
  \\   \\  \\\t  \t   
-My favorite kind is 2%.`
+Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('I drink milk.')
-        ]),
-        new ParagraphNode([
-          new PlainTextNode('My favorite kind is 2%.')
-        ]),
+        new LineBlockNode([
+          new LineBlockNode.Line([
+            new PlainTextNode('Roses are red'),
+          ]),
+          new LineBlockNode.Line([
+            new PlainTextNode('Violets are blue'),
+          ])
+        ])
       ]))
   })
 })
