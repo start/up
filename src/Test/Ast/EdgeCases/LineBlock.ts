@@ -125,12 +125,29 @@ You'll never believe this fake evidence!
 })
 
 
-describe('When two paragraphs are separated by a line starting with escaped whitespace', () => {
-  it('no line block is produced', () => {
+context('No line block is produced when two paragraphs are separated:', () => {
+    specify('A line starting with backslash and otherwise consisting solely of whitespace', () => {
     const markup =
       `
 I drink milk.
 \\ \t
+My favorite kind is 2%.`
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode('I drink milk.')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('My favorite kind is 2%.')
+        ]),
+      ]))
+  })
+
+  specify('A line starting with a space and followed by escaped whitespace', () => {
+    const markup =
+      `
+I drink milk.
+ \\   \\  \\\t  \t   
 My favorite kind is 2%.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
