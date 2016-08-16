@@ -159,14 +159,14 @@ class Tokenizer {
       ...[
         {
           richConvention: PARENTHETICAL_CONVENTION,
-          startsWith: '(',
-          endsWith: ')'
+          open: '(',
+          close: ')'
         }, {
           richConvention: SQUARE_BRACKET_PARENTHETICAL_CONVENTION,
-          startsWith: '[',
-          endsWith: ']'
+          open: '[',
+          close: ']'
         }
-      ].map(args => this.getConventionForActualBrackets(args)),
+      ].map(args => this.getParentheticalConvention(args)),
 
       ...[
         {
@@ -231,22 +231,22 @@ class Tokenizer {
     return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':'
   }
 
-  private getConventionForActualBrackets(
+  private getParentheticalConvention(
     args: {
       richConvention: RichConvention
-      startsWith: string
-      endsWith: string
+      open: string
+      close: string
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith } = args
+    const { richConvention, open, close } = args
 
     return this.getTokenizableRichConvention({
       richConvention,
-      startsWith: escapeForRegex(startsWith) + NOT_FOLLOWED_BY_WHITESPACE,
-      endsWith: escapeForRegex(endsWith),
+      startsWith: escapeForRegex(open) + NOT_FOLLOWED_BY_WHITESPACE,
+      endsWith: escapeForRegex(close),
 
-      whenOpening: () => { this.buffer += startsWith },
-      whenClosing: () => { this.buffer += endsWith },
+      whenOpening: () => { this.buffer += open },
+      whenClosing: () => { this.buffer += close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /*  Neither fail nor do anything special  */ }
     })
@@ -613,8 +613,8 @@ class Tokenizer {
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.buffer += bracket.start },
-      whenClosing: () => { this.buffer += bracket.end },
+      whenOpening: () => { this.buffer += bracket.open },
+      whenClosing: () => { this.buffer += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     }))

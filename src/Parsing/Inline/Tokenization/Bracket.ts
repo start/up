@@ -5,8 +5,8 @@ export class Bracket {
   startPattern: string
   endPattern: string
 
-  constructor(public start: string, public end: string) {
-    this.startPattern = escapeForRegex(start)
-    this.endPattern = escapeForRegex(end)
+  constructor(public open: string, public close: string) {
+    this.startPattern = escapeForRegex(open)
+    this.endPattern = escapeForRegex(close)
   }
 }
