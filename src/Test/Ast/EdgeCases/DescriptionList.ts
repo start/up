@@ -19,11 +19,7 @@ Squirtles are blue
 Confuse Ray
 Lick
 Night Shade
-  Ghost type moves.
-  
-Gary
-  A young man with a great sense of smell.
-`
+  Ghost type moves.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -56,15 +52,6 @@ Gary
               new ParagraphNode([
                 new PlainTextNode('Ghost type moves.')
               ])
-            ])),
-
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
-          ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A young man with a great sense of smell.')
-              ])
             ]))
         ])
       ]))
@@ -84,11 +71,7 @@ Squirtles are blue
 Confuse Ray
 Lick
 Night Shade
-  Ghost type moves.
-  
-Gary
-  A young man with a great sense of smell.
-`
+  Ghost type moves.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -124,15 +107,6 @@ Gary
             new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('Ghost type moves.')
-              ])
-            ])),
-
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
-          ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A young man with a great sense of smell.')
               ])
             ]))
         ])
