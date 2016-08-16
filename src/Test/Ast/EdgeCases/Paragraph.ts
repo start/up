@@ -90,10 +90,10 @@ You'll never believe this fake evidence!
 describe('A paragraph directly following several (non-indented) lines consisting solely of escaped whitespace', () => {
   it('produces a paragraph node', () => {
     const markup = `
-You'll never believe this fake evidence!
-\\   \t\\   \\  \t \\\t 
+    \\   \t\\   \\  \t \\\t 
 \\   \\  \t \\\t 
- \\   \\  \t \\\t `
+ \\   \\  \t \\\t 
+You'll never believe this fake evidence!`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
