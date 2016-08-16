@@ -9,31 +9,6 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 
 
-describe('An otherwise blank line starting with an escaped backslash', () => {
-  it('can be the second line in a line block', () => {
-    const markup =
-      `
-Roses are red
-\\ \t
-Violets are blue`
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new LineBlockNode.Line([
-            new PlainTextNode(' \t')
-          ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
-          ]),
-        ]),
-      ]))
-  })
-})
-
-
 describe('A line starting with an escaped character in a line block', () => {
   it('does not impact the parsing of the next line', () => {
     const markup = `
@@ -145,6 +120,26 @@ You'll never believe this fake evidence!
         new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      ]))
+  })
+})
+
+
+describe('When two paragraphs are separated by a line starting with escaped whitespace', () => {
+  it('no line block is produced', () => {
+    const markup =
+      `
+I drink milk.
+\\ \t
+My favorite kind is 2%.`
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode('I drink milk.')
+        ]),
+        new ParagraphNode([
+          new PlainTextNode('My favorite kind is 2%.')
+        ]),
       ]))
   })
 })
