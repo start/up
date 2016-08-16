@@ -66,7 +66,7 @@ And addresses do, too`
       ]))
   })
 
-  it('can be blank if at least one of the whitespace characters is escaped', () => {
+  it('cannot be blank, even when whitespace is escaped', () => {
     const markup = `
 Roses are red
  \\\t\t
@@ -75,20 +75,12 @@ Violets are blue`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
-          ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('\t\t')
-          ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('\t\t')
-          ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
-          ]),
+        new ParagraphNode([
+          new PlainTextNode('Roses are red')
         ]),
+        new ParagraphNode([
+          new PlainTextNode('Violets are blue')
+        ])
       ]))
   })
 })
