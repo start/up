@@ -61,10 +61,15 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       }
     })
 
-    // If a line consisted solely of a single backslash, it doesn't generate any syntax nodes. We
-    // consider those lines to be blank.
-    if (!wasLineConsumed || !inlineNodes.length) {
+    // The line was blank. Let's bail!
+    if (!wasLineConsumed) {
       break
+    }
+
+    // If a line consists solely of escaped whitespace, it doesn't generate any syntax nodes. We
+    // ignore these lines, but they don't terminate line blocks.
+    if (!inlineNodes.length) {
+      continue
     }
 
     isOnFirstLine = false
