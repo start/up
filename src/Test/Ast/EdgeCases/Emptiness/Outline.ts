@@ -21,3 +21,16 @@ describe('A document with only blank lines', () => {
     expect(Up.toDocument(markup)).to.eql(new UpDocument([]))
   })
 })
+
+
+describe('A document with only escaped blank lines', () => {
+  it('produces an empty document object', () => {
+    const markup = `     
+ \\ \t
+\\\t       
+\\   \\ \\       
+\\\t    \\       
+ \\ `
+    expect(Up.toDocument(markup)).to.eql(new UpDocument([]))
+  })
+})
