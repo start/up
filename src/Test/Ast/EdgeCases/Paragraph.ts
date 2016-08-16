@@ -103,3 +103,24 @@ You'll never believe this fake evidence!
       ]))
   })
 })
+
+
+describe('A paragraph sandwiched by several (non-indented) lines consisting solely of escaped whitespace', () => {
+  it('produces a paragraph node', () => {
+    const markup = `
+  \\   \t\\   \\  \t \\\t 
+\\   \\  \t \\\t 
+ \\   \\  \t \\\t 
+You'll never believe this fake evidence!
+\\   \t\\   \\  \t \\\t 
+\\   \\  \t \\\t 
+ \\   \\  \t \\\t `
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ])
+      ]))
+  })
+})
