@@ -158,9 +158,9 @@ describe('A paragraph ending with a naked URL scheme (without the rest of the UR
 
 describe('A naked URL scheme followed by a space', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toDocument('http:// ')).to.be.eql(
+    expect(Up.toDocument('http:// is my favorite URL scheme.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('http:// ')
+        new PlainTextNode('http:// is my favorite URL scheme.')
       ]))
   })
 })
