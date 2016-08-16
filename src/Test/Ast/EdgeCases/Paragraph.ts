@@ -67,3 +67,21 @@ You'll never believe this fake evidence!
       ]))
   })
 })
+
+
+describe('A paragraph directly followed by several lines consisting solely of escaped whitespace', () => {
+  it('does not produce a line block node', () => {
+    const markup = `
+You'll never believe this fake evidence!
+\\   \\  \t \\\t 
+  \\   \\  \t \\\t 
+\t\\   \\  \t \\\t `
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ])
+      ]))
+  })
+})
