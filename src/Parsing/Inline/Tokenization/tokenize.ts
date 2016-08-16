@@ -9,6 +9,7 @@ import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
+import { trimLeadingWhitespace, trimTrailingWhitespace } from '../../../StringHelpers'
 import { Bracket } from './Bracket'
 import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
@@ -121,7 +122,8 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(markup: string, private config: Config) {
-    this.markupConsumer = new TextConsumer(markup.trim())
+    // TODO: Remove. Just makin' sure the helpers work!
+    this.markupConsumer = new TextConsumer(trimLeadingWhitespace(trimTrailingWhitespace(markup)))
     this.configureConventions()
     this.tokenize()
   }
