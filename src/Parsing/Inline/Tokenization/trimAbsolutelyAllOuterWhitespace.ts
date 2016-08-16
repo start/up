@@ -13,12 +13,12 @@ export function trimAbsolutelyAllOuterWhitespace(markup: string): string {
 
 
 // For now, the escaper character is always going to be a backslash, which requires escaping
-// for inclusion in regular expressions. I don't know what other variable name to use here.
-const ESCAPER =
+// for inclusion in regular expressions.
+const ESCAPER_PATTERN =
   escapeForRegex(ESCAPER_CHAR)
 
 const CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE =
-  optional(ESCAPER) + SOME_WHITESPACE
+  optional(ESCAPER_PATTERN) + SOME_WHITESPACE
 
 const ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
   patternStartingWith(
@@ -62,4 +62,4 @@ const ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
   patternEndingWith(
     WHITESPACE_CHAR
     + everyOptional(CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE)
-    + optional(ESCAPER))
+    + optional(ESCAPER_PATTERN))
