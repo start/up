@@ -190,9 +190,17 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startsWith: ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE,
-        endsWith: bracket.endPattern
+        startsWith: this.getFootnoteStartDelimiter(bracket),
+        endsWith: this.getFootnotEndDelimiter(bracket)
       }))
+  }
+
+  private getFootnoteStartDelimiter(bracket: Bracket): string {
+    return ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE
+  }
+
+  private getFootnotEndDelimiter(bracket: Bracket): string {
+    return bracket.endPattern
   }
 
   private getLinkContentConventions(): Convention[] {
