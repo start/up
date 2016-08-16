@@ -1,5 +1,5 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { tokenize } from './Tokenization/tokenize'
+import { tokenize, tokenizeForInlineDocument } from './Tokenization/tokenize'
 import { parse } from './parse'
 import { Config } from '../../Config'
 
@@ -16,5 +16,5 @@ export function getInlineNodes(markup: string, config: Config): InlineSyntaxNode
 // 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
 // 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
 export function getInlineNodesForInlineDocument(markup: string, config: Config): InlineSyntaxNode[] {
-  return parse(tokenize(markup, config))
+  return parse(tokenizeForInlineDocument(markup, config))
 }

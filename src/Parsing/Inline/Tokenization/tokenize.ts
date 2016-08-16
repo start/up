@@ -27,10 +27,7 @@ import { InflectionHandler } from './InflectionHandler'
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
 export function tokenize(markup: string, config: Config): Token[] {
-  const textWithoutLeadingWhitespace =
-    markup.replace(LEADING_WHITESPACE_PATTERN, '')
-
-  return new Tokenizer(textWithoutLeadingWhitespace, config).tokens
+  return new Tokenizer(markup, config).tokens
 }
 
 // This function is identical to the `tokenize` function, except footnotes are treated as parentheticals
@@ -40,12 +37,9 @@ export function tokenize(markup: string, config: Config): Token[] {
 //
 // 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
 // 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
-export function tokenizeForInlineDocument(_markup: string, _config: Config): Token[] {
-  throw new Error("Not implemented")
+export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
+  return new Tokenizer(markup, config).tokens
 }
-
-const LEADING_WHITESPACE_PATTERN =
-  patternStartingWith(ANY_WHITESPACE)
 
 
 class Tokenizer {
@@ -127,7 +121,9 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(markup: string, private config: Config) {
-    this.markupConsumer = new TextConsumer(markup)
+    this.markupConsumer =
+      new TextConsumer(markup.replace(LEADING_WHITESPACE_PATTERN, ''))
+
     this.configureConventions()
 
     this.tokenize()
@@ -1263,6 +1259,9 @@ function repeat(text: string, count: number): string {
   return new Array(count + 1).join(text)
 }
 
+
+const LEADING_WHITESPACE_PATTERN =
+  patternStartingWith(ANY_WHITESPACE)
 
 const WHITESPACE_CHAR_PATTERN =
   new RegExp(WHITESPACE_CHAR)
