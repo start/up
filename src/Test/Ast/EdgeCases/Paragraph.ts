@@ -1,0 +1,28 @@
+import { expect } from 'chai'
+import Up from '../../../index'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+
+
+
+describe('A paragraph directly followed by a line consisting solely of media conventions', () => {
+  it('does not produce a line block node', () => {
+    const markup = `
+You'll never believe this fake evidence!
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ]),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      ]))
+  })
+})
