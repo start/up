@@ -3,7 +3,6 @@ import { SOME_WHITESPACE, WHITESPACE_CHAR } from '../../PatternPieces'
 import { ESCAPER_CHAR } from '../../Strings'
 
 
-
 // For inline markup, any outer whitespace is considered meaningless, even when it's escaped.
 export function trimAllOuterEscapedAndUnescapedWhitespace(markup: string): string {
   return markup
