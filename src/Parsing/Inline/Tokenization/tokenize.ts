@@ -172,15 +172,13 @@ class Tokenizer {
         {
           richConvention: REVISION_DELETION_CONVENTION,
           startsWith: '~~',
-          endsWith: '~~',
-          isMeaningfulWhenItContainsOnlyWhitespace: true
+          endsWith: '~~'
         }, {
           richConvention: REVISION_INSERTION_CONVENTION,
           startsWith: '++',
-          endsWith: '++',
-          isMeaningfulWhenItContainsOnlyWhitespace: true
+          endsWith: '++'
         }
-      ].map(args => this.getRichConventionNotRequiringBacktracking(args)),
+      ].map(args => this.getRevisionConvention(args)),
 
       this.nakedUrlConvention,
 
@@ -252,23 +250,22 @@ class Tokenizer {
     })
   }
 
-  private getRichConventionNotRequiringBacktracking(
+  private getRevisionConvention(
     args: {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
       cannotStartWithWhitespace?: boolean
-      isMeaningfulWhenItContainsOnlyWhitespace?: boolean
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace, isMeaningfulWhenItContainsOnlyWhitespace } = args
+    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace } = args
 
     return this.getTokenizableRichConvention({
       richConvention,
       startsWith: escapeForRegex(startsWith) + (cannotStartWithWhitespace ? NOT_FOLLOWED_BY_WHITESPACE : ''),
       endsWith: escapeForRegex(endsWith),
 
-      isMeaningfulWhenItContainsOnlyWhitespace,
+      isMeaningfulWhenItContainsOnlyWhitespace: true,
 
       insteadOfFailingWhenLeftUnclosed: (context) => {
         this.insertPlainTextTokenAtContextStart(startsWith, context)
