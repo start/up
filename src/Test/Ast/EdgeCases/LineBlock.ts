@@ -164,3 +164,26 @@ Violets are blue`
       ]))
   })
 })
+
+
+describe('Within a line block, consecutive lines consisting solely of escaped whitespace', () => {
+  it("are not included in the line block, but they don't terminate it, either", () => {
+    const markup = `
+Roses are red
+ \\\t\t
+ \\\t\t
+Skeltals are white`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new LineBlockNode([
+          new LineBlockNode.Line([
+            new PlainTextNode('Roses are red')
+          ]),
+          new LineBlockNode.Line([
+            new PlainTextNode('Skeltals are white')
+          ])
+        ])
+      ]))
+  })
+})

@@ -65,24 +65,6 @@ And addresses do, too`
         ]),
       ]))
   })
-
-  it('cannot be blank, even when whitespace is escaped', () => {
-    const markup = `
-Roses are red
- \\\t\t
- \\\t\t
-Violets are blue`
-
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Roses are red')
-        ]),
-        new ParagraphNode([
-          new PlainTextNode('Violets are blue')
-        ])
-      ]))
-  })
 })
 
 
@@ -397,7 +379,7 @@ You're in for a fright`
           ]),
           new LineBlockNode.Line([
             new PlainTextNode("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
