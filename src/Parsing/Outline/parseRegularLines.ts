@@ -95,9 +95,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
 
   switch (inlineNodesPerRegularLine.length) {
     case 0:
-      // If we only consumed only 1 line, and if that single line either produced no inline syntax
-      // nodes or was promoted to the outline, then there won't any other lines left over to produce
-      // a paragraph or a line block.
+      // If we didn't consume any regular lines, we can't produce a paragraph or a line block.
       args.then(inlineNodesPromotedToOutline, lengthConsumed)
       return
 
