@@ -4,7 +4,8 @@ import { ESCAPER_CHAR } from '../../Strings'
 
 
 // For inline markup, any outer whitespace is considered meaningless, even when it's escaped.
-export function trimAllOuterEscapedAndUnescapedWhitespace(markup: string): string {
+// This function strips it all away.
+export function trimAbsolutelyAllOuterWhitespace(markup: string): string {
   return markup
     .replace(ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
     .replace(ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
