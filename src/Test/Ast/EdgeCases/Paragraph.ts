@@ -9,7 +9,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 
 
 describe('A paragraph directly followed by a line consisting solely of media conventions', () => {
-  it('does not produce a line block node', () => {
+  it('produces a paragraph node', () => {
     const markup = `
 You'll never believe this fake evidence!
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
@@ -28,7 +28,7 @@ You'll never believe this fake evidence!
 
 
 describe('A paragraph directly following a line consisting solely of media conventions', () => {
-  it('does not produce a line block node', () => {
+  it('produces a paragraph node', () => {
     const markup = `
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
 You'll never believe this fake evidence!`
@@ -47,7 +47,7 @@ You'll never believe this fake evidence!`
 
 
 describe('A paragraph directly sandwiched by lines consisting solely of media conventions', () => {
-  it('does not produce a line block node', () => {
+  it('produces a paragraph node', () => {
     const markup = `
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
 You'll never believe this fake evidence!
@@ -69,13 +69,13 @@ You'll never believe this fake evidence!
 })
 
 
-describe('A paragraph directly followed by several lines consisting solely of escaped whitespace', () => {
-  it('does not produce a line block node', () => {
+describe('A paragraph directly followed by several (non-indented) lines consisting solely of escaped whitespace', () => {
+  it('produces a paragraph node', () => {
     const markup = `
 You'll never believe this fake evidence!
 \\   \\  \t \\\t 
-  \\   \\  \t \\\t 
-\t\\   \\  \t \\\t `
+ \\   \\  \t \\\t 
+\\   \t\\   \\  \t \\\t `
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
