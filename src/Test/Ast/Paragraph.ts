@@ -5,6 +5,9 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
 describe('A typical line of text', () => {
@@ -65,7 +68,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
       ]))
   })
 
-  specify('Both escaped and not escaped and following a backslash itself following an escaped backslash', () => {
+  specify('Both escaped and not escaped, all following a backslash itself following an escaped backslash', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\\\\\  \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
@@ -126,6 +129,67 @@ Pokemon Sun is a truck.`
       new UpDocument([
         new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
         new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
+      ]))
+  })
+})
+
+
+describe('A paragraph directly followed by a line consisting solely of media conventions', () => {
+  it('produces a paragraph node', () => {
+    const markup = `
+You'll never believe this fake evidence!
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ]),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      ]))
+  })
+})
+
+
+describe('A paragraph directly following a line consisting solely of media conventions', () => {
+  it('produces a paragraph node', () => {
+    const markup = `
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
+You'll never believe this fake evidence!`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ])
+      ]))
+  })
+})
+
+
+describe('A paragraph directly sandwiched by lines consisting solely of media conventions', () => {
+  it('produces a paragraph node', () => {
+    const markup = `
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]
+You'll never believe this fake evidence!
+[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new ParagraphNode([
+          new PlainTextNode("You'll never believe this fake evidence!")
+        ]),
+        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 })
