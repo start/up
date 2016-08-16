@@ -34,8 +34,8 @@ context("In inline documents, all outer whitespace is considered meaningless, ev
         ]))
     })
   })
-  
-  
+
+
   context("Leading whitespace:", () => {
     specify('Not escaped', () => {
       expect(Up.toInlineDocument("  \t  \t I'm just a normal guy who only eats when it's raining. Isn't everyone like that?")).to.be.eql(
@@ -64,5 +64,13 @@ context("In inline documents, all outer whitespace is considered meaningless, ev
           new PlainTextNode("\\I'm just a normal guy who only eats when it's raining. Isn't everyone like that?")
         ]))
     })
+  })
+
+
+  specify("Both trailing and leading whitespace together, in the most absurd arrangement possible", () => {
+    expect(Up.toInlineDocument("  \t  \\\t  \\  \\\\I'm just a normal guy who only eats when it's raining. Isn't everyone like that?\\\\\\  \t \\ \\\t  \t ")).to.be.eql(
+      new InlineUpDocument([
+        new PlainTextNode("\\I'm just a normal guy who only eats when it's raining. Isn't everyone like that?\\")
+      ]))
   })
 })
