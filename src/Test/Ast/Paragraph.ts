@@ -65,7 +65,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
       ]))
   })
 
-  specify('Escaped and following a backslash itself following an escaped backslash', () => {
+  specify('Both escaped and not escaped and following a backslash itself following an escaped backslash', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\\\\\  \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
