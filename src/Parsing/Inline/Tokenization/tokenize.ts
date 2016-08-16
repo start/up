@@ -9,7 +9,6 @@ import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
-import { trimLeadingWhitespace, trimTrailingWhitespace } from '../../../StringHelpers'
 import { Bracket } from './Bracket'
 import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
@@ -21,6 +20,7 @@ import { Token } from './Token'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
+import { trimAllOuterEscapedAndUnescapedWhitespace } from './trimAllOuterEscapedAndUnescapedWhitespace'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -122,9 +122,12 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(markup: string, private config: Config) {
-    // TODO: Remove. Just makin' sure the helpers work!
-    this.markupConsumer = new TextConsumer(trimLeadingWhitespace(trimTrailingWhitespace(markup)))
+    this.markupConsumer =
+      new TextConsumer(
+        trimAllOuterEscapedAndUnescapedWhitespace(markup))
+
     this.configureConventions()
+
     this.tokenize()
   }
 
@@ -688,6 +691,11 @@ class Tokenizer {
 
   private tryToCollectEscapedChar(): boolean {
     if (this.markupConsumer.currentChar === ESCAPER_CHAR) {
+      // The next character (if there is one) is preserved as plain text.
+      //
+      // If there are no more characters, we're done! We don't preserve the `ESCAPER_CHAR`,
+      // because those are only preserved if they are themselves escaped.
+
       this.markupConsumer.index += 1
       return this.markupConsumer.done() || this.bufferCurrentChar()
     }
