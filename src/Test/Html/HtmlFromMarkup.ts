@@ -56,7 +56,7 @@ LOOK AWAY
       + '<label for="reply-104-spoiler-1">toggle spoiler</label>'
       + '<input id="reply-104-spoiler-1" type="checkbox">'
       + '<span>'
-      + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
+      + 'Blue steals a Red Delicious from Red.'
       + '</span>'
       + '</span>')
   })

@@ -84,8 +84,8 @@ export class HtmlWriter extends Writer {
     return tableOfContents + this.writeAll(document.children)
   }
 
-  protected writeInlineDocument(_inlineDocument: InlineUpDocument): string {
-    throw new Error("Not implimented")
+  protected writeInlineDocument(inlineDocument: InlineUpDocument): string {
+    return this.writeAll(inlineDocument.children)
   }
 
   protected blockquote(blockquote: BlockquoteNode): string {
