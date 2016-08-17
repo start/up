@@ -148,7 +148,7 @@ export class HtmlWriter extends Writer {
     return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
-  protected heading(heading: HeadingNode): string {
+  protected heading(heading: HeadingNode, _ordinalInTableOfContents?: number): string {
     return this.element(
       'h' + Math.min(6, heading.level),
       heading.children,
@@ -294,7 +294,7 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected table(table: TableNode): string {
+  protected table(table: TableNode, _ordinalInTableOfContents?: number): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),

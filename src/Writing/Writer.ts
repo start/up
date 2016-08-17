@@ -108,7 +108,7 @@ export abstract class Writer {
   protected abstract exampleInput(exampleInput: ExampleInputNode): string
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
   protected abstract footnoteReference(footnote: FootnoteNode): string
-  protected abstract heading(heading: HeadingNode): string
+  protected abstract heading(heading: HeadingNode, ordinalInTableOfContents?: number): string
   protected abstract highlight(highlight: HighlightNode): string
   protected abstract image(image: ImageNode): string
   protected abstract inlineCode(inlineCode: InlineCodeNode): string
@@ -130,7 +130,7 @@ export abstract class Writer {
   protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
   protected abstract squareParenthetical(squareParenthetical: SquareParentheticalNode): string
   protected abstract stress(stress: StressNode): string
-  protected abstract table(table: TableNode): string
+  protected abstract table(table: TableNode, ordinalInTableOfContents?: number): string
   protected abstract unorderedList(list: UnorderedListNode): string
   protected abstract video(video: VideoNode): string
 
