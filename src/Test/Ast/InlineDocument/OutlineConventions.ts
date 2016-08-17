@@ -34,9 +34,9 @@ context('Inline documents completely ignore outline conventions. This includes:'
   })
 
   specify('Code blocks', () => {
-    expect(Up.toInlineDocument('```')).to.be.eql(
+    expect(Up.toInlineDocument('`````````')).to.be.eql(
       new InlineUpDocument([
-        new PlainTextNode('```')
+        new PlainTextNode('`````````')
       ]))
   })
 })
