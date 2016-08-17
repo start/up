@@ -213,13 +213,13 @@ context('Except for footnots, every inline convention is supported in inline doc
   })
 
 
-  context('Footnotes footnotes are treated as parentheticals of the appropriate bracket type. This includes when:', () => {
+  context('Footnotes in inline documents are treated as normal parentheticals. This includes when:', () => {
     specify('A footnote produced by square brackets is at the top level of the document', () => {
       expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my Game Boy '),
-          new SquareParentheticalNode([
-            new PlainTextNode('[from Nintendo]')
+          new NormalParentheticalNode([
+            new PlainTextNode('(from Nintendo)')
           ]),
           new PlainTextNode(', though I never took it with me when I left home.')
         ]))
@@ -240,8 +240,8 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my Game Boy '),
-          new SquareParentheticalNode([
-            new PlainTextNode('[from Nintendo]')
+          new NormalParentheticalNode([
+            new PlainTextNode('(from Nintendo)')
           ]),
           new PlainTextNode(', though I never took it with me when I left home.'),
           new NormalParentheticalNode([
@@ -258,7 +258,7 @@ context('Except for footnots, every inline convention is supported in inline doc
             new EmphasisNode([
               new PlainTextNode('I loved my Game Boy '),
               new SquareParentheticalNode([
-                new PlainTextNode('[from Nintendo]')
+                new PlainTextNode('(from Nintendo)')
               ]),
               new PlainTextNode(', though I never took it with me when I left home.'),
               new NormalParentheticalNode([
@@ -276,8 +276,8 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainTextNode('I loved '),
           new StressNode([
             new PlainTextNode('my very own'),
-            new SquareParentheticalNode([
-              new PlainTextNode('[beloved')
+            new NormalParentheticalNode([
+              new PlainTextNode('(beloved)')
             ])
           ]),
           new SquareParentheticalNode([

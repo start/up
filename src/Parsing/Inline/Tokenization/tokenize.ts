@@ -31,13 +31,8 @@ export function tokenize(markup: string, config: Config): Token[] {
   return new Tokenizer(markup, config).tokens
 }
 
-// This function is identical to the `tokenize` function, except footnotes are treated as parentheticals
-// of the appropriate bracket type.
-//
-// In other words:
-//
-// 1. Footnotes produced by square brackets [^ like this] are treated as square-bracket parentheticals.
-// 2. Footnotes produced by parentheses (^ like this) are treated as normal parentheticals.
+// This function is identical to the `tokenize` function, except footnotes are treated as normal
+// parentheticals.
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
   return new Tokenizer(markup, config, true).tokens
 }
@@ -200,8 +195,7 @@ class Tokenizer {
 
   //Footnotes, by definition, represent content that should not appear inline.
   //
-  // In inline documents, this purpose can't be fulfilled, so we treat footnotes as parentheticals
-  // of the appropriate bracket type. 
+  // In inline documents, this purpose can't be fulfilled, so we treat footnotes as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
