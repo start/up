@@ -50,8 +50,7 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 // process:
 //
 // 1. The provided configuration settings
-// 2. The table of contents (if there is one)
-// 3. An easy way to generate unique IDs using the provided configuration settings
+// 2. An easy way to generate unique IDs using the provided configuration settings
 //
 // Writers are designed to be single-use, so a new instance must be created every time a new
 // document is written. This makes it a bit simpler to write concrete writer classes, because
