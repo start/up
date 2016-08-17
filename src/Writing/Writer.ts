@@ -36,6 +36,7 @@ import { HeadingNode } from '../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
 import { OutlineSeparatorNode } from '../SyntaxNodes/OutlineSeparatorNode'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
+import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
@@ -160,6 +161,14 @@ export abstract class Writer {
       return this.paragraph(node)
     }
 
+    if (node instanceof HeadingNode) {
+      return this.heading(node, this.getOrdinalOfEntryInTableOfContents(node))
+    }
+
+    if (node instanceof TableNode) {
+      return this.table(node, this.getOrdinalOfEntryInTableOfContents(node))
+    }
+
     if (node instanceof BlockquoteNode) {
       return this.blockquote(node)
     }
@@ -182,10 +191,6 @@ export abstract class Writer {
 
     if (node instanceof CodeBlockNode) {
       return this.codeBlock(node)
-    }
-
-    if (node instanceof HeadingNode) {
-      return this.heading(node)
     }
 
     if (node instanceof OutlineSeparatorNode) {
@@ -222,10 +227,6 @@ export abstract class Writer {
 
     if (node instanceof FootnoteBlockNode) {
       return this.footnoteBlock(node)
-    }
-
-    if (node instanceof TableNode) {
-      return this.table(node)
     }
 
     if (node instanceof MediaSyntaxNode) {
@@ -301,6 +302,20 @@ export abstract class Writer {
 
   private isUrlAllowed(url: string): boolean {
     return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+  }
+
+  // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
+  //
+  // Returns null if there isn't an entry in the table of contents for the node.  
+  private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
+    if (!this.documentTableOfContents) {
+      return null
+    }
+
+    const index =
+      this.documentTableOfContents.entries.indexOf(node)
+
+    return (index >= 0) ? (index + 1) : null
   }
 }
 

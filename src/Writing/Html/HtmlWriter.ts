@@ -148,11 +148,11 @@ export class HtmlWriter extends Writer {
     return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
-  protected heading(heading: HeadingNode, _ordinalInTableOfContents?: number): string {
+  protected heading(heading: HeadingNode, ordinalOfEntryInTableOfContents?: number): string {
     return this.element(
       'h' + Math.min(6, heading.level),
       heading.children,
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(heading))
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(heading, ordinalOfEntryInTableOfContents))
   }
 
   protected outlineSeparator(separator: OutlineSeparatorNode): string {
@@ -294,14 +294,14 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected table(table: TableNode, _ordinalInTableOfContents?: number): string {
+  protected table(table: TableNode, ordinalOfEntryInTableOfContents?: number): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),
         this.tableHeader(table.header),
         table.rows.map(row => this.tableRow(row)).join('')
       ],
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(table))
+      this.getAttrsForElementPossiblyReferencedByTableOfContents(table, ordinalOfEntryInTableOfContents))
   }
 
   protected link(link: LinkNode): string {
@@ -582,11 +582,8 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
-  private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode): AttrsWithPossibleId {
+  private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode, ordinalOfEntryInTableOfContents: number): AttrsWithPossibleId {
     const attrs: AttrsWithPossibleId = {}
-
-    const ordinalOfEntryInTableOfContents =
-      this.getOrdinalOfEntryInTableOfContents(node)
 
     if (ordinalOfEntryInTableOfContents) {
       attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
@@ -597,20 +594,6 @@ export class HtmlWriter extends Writer {
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
     return this.getId(this.config.terms.itemReferencedByTableOfContents, ordinal)
-  }
-
-  // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
-  //
-  // Returns null if there isn't an entry in the table of contents for the node.  
-  private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
-    if (!this.documentTableOfContents) {
-      return null
-    }
-
-    const index =
-      this.documentTableOfContents.entries.indexOf(node)
-
-    return (index >= 0) ? (index + 1) : null
   }
 
   private footnoteId(referenceNumber: number): string {
