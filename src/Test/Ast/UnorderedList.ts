@@ -85,28 +85,6 @@ context('Unordered list bullets can be:', () => {
       ]))
   })
 
-  specify('Plus signs', () => {
-    const markup = `
-+ Hello, world!
-+ Goodbye, world!`
-
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
-            ])
-          ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Goodbye, world!')
-            ])
-          ])
-        ])
-      ]))
-  })
-
   specify('Actual bullet characters', () => {
     const markup = `
 • Hello, world!
@@ -133,7 +111,6 @@ context('Unordered list bullets can be:', () => {
     const markup = `
 * Buy milk
 - Buy bread
-+ Buy tendies
 • Buy happiness`
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -147,11 +124,6 @@ context('Unordered list bullets can be:', () => {
           new UnorderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Buy bread')
-            ])
-          ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Buy tendies')
             ])
           ]),
           new UnorderedListNode.Item([
