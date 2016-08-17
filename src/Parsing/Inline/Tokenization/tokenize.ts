@@ -188,14 +188,19 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
-        startsWith: this.getFootnoteStartDelimiter(bracket),
+        // For regular footnotes (i.e. these), we collapse any leading whitespace.
+        //
+        // We don't do this for footnotes in inline documents, however. For more information about footnotes
+        // in inline documents, see the `getFootnoteConventionsForInlineDocuments` method.
+        startsWith: ANY_WHITESPACE + this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket)
       }))
   }
 
-  //Footnotes, by definition, represent content that should not appear inline.
+  // Footnotes, by definition, represent content that should not appear inline.
   //
-  // In inline documents, this purpose can't be fulfilled, so we treat footnotes as normal parentheticals.
+  // In inline documents, this purpose can't be fulfilled, so we do the next best thing: we treat footnotes
+  // as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
@@ -203,13 +208,6 @@ class Tokenizer {
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
         whenOpening: () => {
-          // TODO:
-          //
-          // We add a leading space because we don't want the parenthetical we produce to be touching the
-          // previous word.
-          //
-          // The footnote start delimiter consumes any leading whitespace, ad the author of the markup might
-          // not have included a space between the footnote and the  previous word
           this.buffer += '('
         },
         whenClosing: () => {
@@ -219,7 +217,7 @@ class Tokenizer {
   }
 
   private getFootnoteStartDelimiter(bracket: Bracket): string {
-    return ANY_WHITESPACE + bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE
+    return bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE
   }
 
   private getFootnotEndDelimiter(bracket: Bracket): string {

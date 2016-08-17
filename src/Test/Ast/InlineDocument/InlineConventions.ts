@@ -257,7 +257,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new InlineSpoilerNode([
             new EmphasisNode([
               new PlainTextNode('I loved my Game Boy '),
-              new SquareParentheticalNode([
+              new NormalParentheticalNode([
                 new PlainTextNode('(from Nintendo)')
               ]),
               new PlainTextNode(', though I never '),
