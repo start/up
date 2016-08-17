@@ -37,7 +37,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 
 
-describe('An empty document node', () => {
+describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {
     expect(Up.toHtml(new UpDocument([]))).to.be.eql('')
   })
