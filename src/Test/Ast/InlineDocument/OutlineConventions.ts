@@ -39,4 +39,11 @@ context('Inline documents completely ignore outline conventions. This includes:'
         new PlainTextNode('`````````')
       ]))
   })
+
+  specify('Headings', () => {
+    expect(Up.toInlineDocument('Sneaky Snek\n=~=~=~=~=~=')).to.be.eql(
+      new InlineUpDocument([
+        new PlainTextNode('Sneaky Snek\n=~=~=~=~=~=')
+      ]))
+  })
 })
