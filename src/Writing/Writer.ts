@@ -57,17 +57,12 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 // document is written. This makes it a bit simpler to write concrete writer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Writer {
-  protected documentTableOfContents: UpDocument.TableOfContents
   private _result: string
 
   constructor(
     private document: EitherTypeOfUpDocument,
     protected config: Config
-  ) {
-    if (document instanceof UpDocument) {
-      this.documentTableOfContents = document.tableOfContents
-    }
-  }
+  ) { }
 
   get result(): string {
     this._result =
@@ -109,7 +104,7 @@ export abstract class Writer {
   protected abstract exampleInput(exampleInput: ExampleInputNode): string
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
   protected abstract footnoteReference(footnote: FootnoteNode): string
-  protected abstract heading(heading: HeadingNode, ordinalInTableOfContents?: number): string
+  protected abstract heading(heading: HeadingNode, ordinalOfEntryInTableOfContents?: number): string
   protected abstract highlight(highlight: HighlightNode): string
   protected abstract image(image: ImageNode): string
   protected abstract inlineCode(inlineCode: InlineCodeNode): string
@@ -131,7 +126,7 @@ export abstract class Writer {
   protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
   protected abstract squareParenthetical(squareParenthetical: SquareParentheticalNode): string
   protected abstract stress(stress: StressNode): string
-  protected abstract table(table: TableNode, ordinalInTableOfContents?: number): string
+  protected abstract table(table: TableNode, ordinalOfEntryInTableOfContents?: number): string
   protected abstract unorderedList(list: UnorderedListNode): string
   protected abstract video(video: VideoNode): string
 
@@ -308,14 +303,16 @@ export abstract class Writer {
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
   private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
-    if (!this.documentTableOfContents) {
-      return null
+    const { document } = this
+
+    if ((document instanceof UpDocument) && document.tableOfContents) {
+      const indexOfEntry =
+        document.tableOfContents.entries.indexOf(node)
+
+      return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
     }
 
-    const index =
-      this.documentTableOfContents.entries.indexOf(node)
-
-    return (index >= 0) ? (index + 1) : null
+    return null
   }
 }
 
