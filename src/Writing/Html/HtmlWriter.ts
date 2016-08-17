@@ -1,8 +1,10 @@
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Writer } from '.././Writer'
+import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
@@ -33,7 +35,6 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { Writer } from '.././Writer'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
@@ -81,6 +82,10 @@ export class HtmlWriter extends Writer {
         : ''
 
     return tableOfContents + this.writeAll(document.children)
+  }
+
+  protected writeInlineDocument(_inlineDocument: InlineUpDocument): string {
+    throw new Error("Not implimented")
   }
 
   protected blockquote(blockquote: BlockquoteNode): string {
@@ -598,12 +603,12 @@ export class HtmlWriter extends Writer {
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
   private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
-    if (!this.document.tableOfContents) {
+    if (!this.documentTableOfContents) {
       return null
     }
 
     const index =
-      this.document.tableOfContents.entries.indexOf(node)
+      this.documentTableOfContents.entries.indexOf(node)
 
     return (index >= 0) ? (index + 1) : null
   }

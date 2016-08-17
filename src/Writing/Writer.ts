@@ -1,9 +1,10 @@
+import { UpDocument } from '../SyntaxNodes/UpDocument'
+import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { ImageNode } from '../SyntaxNodes/ImageNode'
 import { AudioNode } from '../SyntaxNodes/AudioNode'
 import { VideoNode } from '../SyntaxNodes/VideoNode'
-import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
@@ -40,28 +41,36 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
 
 
+export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
+
 // This class provides dyanmic dispatch for writing every type of syntax node.
 //
 // Additionally, it provides access to the following goodies throughout the entire writing
 // process:
 //
 // 1. The provided configuration settings
-// 2. The document syntax node and its table of contents
+// 2. The table of contents (if there is one)
 // 3. An easy way to generate unique IDs using the provided configuration settings
 //
-// Writers are designed to be single use, so a new instance must be created every time a new
+// Writers are designed to be single-use, so a new instance must be created every time a new
 // document is written. This makes it a bit simpler to write concrete writer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Writer {
+  protected documentTableOfContents: UpDocument.TableOfContents
   private _result: string
 
   constructor(
-    protected document: UpDocument,
-    protected config: Config) { }
+    private document: EitherTypeOfUpDocument,
+    protected config: Config
+  ) {
+    if (document instanceof UpDocument) {
+      this.documentTableOfContents = document.tableOfContents
+    }
+  }
 
   get result(): string {
     this._result =
-      this._result || this.writeDocument(this.document)
+      this._result || this.writeEitherTypeOfDocument(this.document)
 
     return this._result
   }
@@ -87,7 +96,8 @@ export abstract class Writer {
       .replace(WHITESPACE_PATTERN, '-')
   }
 
-  protected abstract writeDocument(document: UpDocument): string
+  protected abstract writeDocument(document: EitherTypeOfUpDocument): string
+  protected abstract writeInlineDocument(inlineDocument: InlineUpDocument): string
 
   protected abstract audio(audio: AudioNode): string
   protected abstract bold(bold: BoldNode): string
@@ -123,6 +133,13 @@ export abstract class Writer {
   protected abstract table(table: TableNode): string
   protected abstract unorderedList(list: UnorderedListNode): string
   protected abstract video(video: VideoNode): string
+
+  private writeEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
+    return (
+      document instanceof UpDocument
+        ? this.writeDocument(document)
+        : this.writeInlineDocument(document))
+  }
 
   private dispatchWrite(node: SyntaxNode): string {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class

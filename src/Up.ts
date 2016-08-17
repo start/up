@@ -4,11 +4,11 @@ import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
 import { parseInlineDocument } from './Parsing/parseInlineDocument'
-import { getHtml } from './Writing//Html/getHtml'
+import { getHtml, getInlineHtml } from './Writing//Html/getHtml'
 
 
 export type MarkupOrDocument = string | UpDocument
-export type InlineMarkupOrInlineDocument = string | UpDocument
+export type MarkupOrInlineDocument = string | InlineUpDocument
 
 
 export class Up {
@@ -30,8 +30,8 @@ export class Up {
     return toInlineDocument(markup, this.config.withChanges(extraSettings))
   }
 
-  toInlineHtml(markupOrDocument: InlineMarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
-    return toInlineHtml(markupOrDocument, this.config.withChanges(extraSettings))
+  toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
+    return toInlineHtml(markupOrInlineDocument, this.config.withChanges(extraSettings))
   }
 }
 
@@ -64,8 +64,8 @@ export namespace Up {
     return defaultUp.toInlineDocument(markup, settings)
   }
 
-  export function toInlineHtml(markupOrDocument: InlineMarkupOrInlineDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.toInlineHtml(markupOrDocument, settings)
+  export function toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.toInlineHtml(markupOrInlineDocument, settings)
   }
 }
 
@@ -87,6 +87,11 @@ function toInlineDocument(markup: string, config: Config): InlineUpDocument {
   return parseInlineDocument(markup, config)
 }
 
-function toInlineHtml(_markupOrDocument: MarkupOrDocument, _config: Config): string {
-  throw new Error("Not implemented")
+function toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, config: Config): string {
+    const inlineDocument =
+    typeof markupOrInlineDocument === 'string'
+      ? toInlineDocument(markupOrInlineDocument, config)
+      : markupOrInlineDocument
+
+  return getInlineHtml(inlineDocument, config)
 }
