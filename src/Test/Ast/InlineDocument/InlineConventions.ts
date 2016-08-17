@@ -243,7 +243,7 @@ context('Except for footnots, every inline convention is supported in inline doc
           new NormalParentheticalNode([
             new PlainTextNode('(from Nintendo)')
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.'),
+          new PlainTextNode(', though I never '),
           new NormalParentheticalNode([
             new PlainTextNode('(well, maybe once)')
           ]),
@@ -260,7 +260,7 @@ context('Except for footnots, every inline convention is supported in inline doc
               new SquareParentheticalNode([
                 new PlainTextNode('(from Nintendo)')
               ]),
-              new PlainTextNode(', though I never took it with me when I left home.'),
+              new PlainTextNode(', though I never '),
               new NormalParentheticalNode([
                 new PlainTextNode('(well, maybe once)')
               ]),
@@ -275,15 +275,15 @@ context('Except for footnots, every inline convention is supported in inline doc
         new InlineUpDocument([
           new PlainTextNode('I loved '),
           new StressNode([
-            new PlainTextNode('my very own'),
+            new PlainTextNode('my very own '),
             new NormalParentheticalNode([
-              new PlainTextNode('(beloved)')
+              new PlainTextNode('(beloved')
             ])
           ]),
-          new SquareParentheticalNode([
-            new PlainTextNode('Nintendo ]')
+          new NormalParentheticalNode([
+            new PlainTextNode(' Nintendo)')
           ]),
-          new PlainTextNode(', though I never took it with me when I left home.')
+          new PlainTextNode(' Game Boy, though I never took it with me when I left home.')
         ]))
     })
   })

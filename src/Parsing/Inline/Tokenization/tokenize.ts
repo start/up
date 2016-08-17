@@ -199,9 +199,22 @@ class Tokenizer {
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
-        richConvention: FOOTNOTE_CONVENTION,
+        richConvention: PARENTHETICAL_CONVENTION,
         startsWith: this.getFootnoteStartDelimiter(bracket),
-        endsWith: this.getFootnotEndDelimiter(bracket)
+        endsWith: this.getFootnotEndDelimiter(bracket),
+        whenOpening: () => {
+          // TODO:
+          //
+          // We add a leading space because we don't want the parenthetical we produce to be touching the
+          // previous word.
+          //
+          // The footnote start delimiter consumes any leading whitespace, ad the author of the markup might
+          // not have included a space between the footnote and the  previous word
+          this.buffer += '('
+        },
+        whenClosing: () => {
+          this.buffer += ')'
+        }
       }))
   }
 
