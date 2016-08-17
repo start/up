@@ -505,10 +505,18 @@ export class HtmlWriter extends Writer {
       htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
 
     const checkbox =
-      singleTagHtmlElement('input', { id: checkboxId, type: 'checkbox' })
+      singleTagHtmlElement(
+        'input', {
+          id: checkboxId,
+          type: 'checkbox',
+          role: 'button'
+        })
 
-    const content =
-      this.element(args.tagNameForGenericContainers, args.revealable.children)
+    const revealableContent =
+      this.element(
+        args.tagNameForGenericContainers,
+        args.revealable.children,
+        { role: 'alert' })
 
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
@@ -517,7 +525,7 @@ export class HtmlWriter extends Writer {
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
-      [label, checkbox, content],
+      [label, checkbox, revealableContent],
       attrsForOuterContainer)
   }
 

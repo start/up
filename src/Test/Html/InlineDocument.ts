@@ -199,9 +199,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
       ])
 
       const html =
-        ''
-        + '<mark>45.9%</mark>'
-        + ''
+        '<mark>45.9%</mark>'
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
     })
@@ -215,13 +213,11 @@ context('In an inline document, every inline syntax node produces the same HTML 
       ])
 
       const html =
-        ''
-        + '<span class="up-spoiler up-revealable">'
+        '<span class="up-spoiler up-revealable">'
         + '<label for="up-spoiler-1">toggle spoiler</label>'
         + '<input id="up-spoiler-1" type="checkbox">'
         + '<span>45.9%</span>'
         + '</span>'
-        + ''
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
     })
@@ -235,13 +231,11 @@ context('In an inline document, every inline syntax node produces the same HTML 
       ])
 
       const html =
-        ''
-        + '<span class="up-nsfw up-revealable">'
+        '<span class="up-nsfw up-revealable">'
         + '<label for="up-nsfw-1">toggle NSFW</label>'
         + '<input id="up-nsfw-1" type="checkbox">'
         + '<span>naked Gary</span>'
         + '</span>'
-        + ''
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
     })
@@ -255,13 +249,11 @@ context('In an inline document, every inline syntax node produces the same HTML 
       ])
 
       const html =
-        ''
-        + '<span class="up-nsfl up-revealable">'
+        '<span class="up-nsfl up-revealable">'
         + '<label for="up-nsfl-1">toggle NSFL</label>'
         + '<input id="up-nsfl-1" type="checkbox">'
         + '<span>rotting Gary</span>'
         + '</span>'
-        + ''
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
     })
