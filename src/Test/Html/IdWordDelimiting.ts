@@ -4,9 +4,9 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-/*import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
+import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+/*import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -40,13 +40,45 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65'})).to.be.eql(html)
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for inline NSFW conventions', () => {
+      const document = new UpDocument([
+        new ParagraphNode([
+          new InlineNsfwNode([new PlainTextNode('45.9%')])
+        ])
+      ])
+
+      const html =
+        '<p>'
+        + '<span class="up-nsfw up-revealable">'
+        + '<label for="thread-11-reply-65-nsfw-1">toggle NSFW</label>'
+        + '<input id="thread-11-reply-65-nsfw-1" role="button" type="checkbox">'
+        + '<span role="alert">45.9%</span>'
+        + '</span>'
+        + '</p>'
+
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for inline NSFL conventions', () => {
+      const document = new UpDocument([
+        new ParagraphNode([
+          new InlineNsflNode([new PlainTextNode('45.9%')])
+        ])
+      ])
+
+      const html =
+        '<p>'
+        + '<span class="up-nsfl up-revealable">'
+        + '<label for="thread-11-reply-65-nsfl-1">toggle NSFL</label>'
+        + '<input id="thread-11-reply-65-nsfl-1" role="button" type="checkbox">'
+        + '<span role="alert">45.9%</span>'
+        + '</span>'
+        + '</p>'
+
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for spoiler blocks', () => {
