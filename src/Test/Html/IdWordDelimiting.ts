@@ -206,6 +206,27 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
     })
+    specify('Footnotes and footnote references', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1)
+
+      const document = new UpDocument([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(
+        '<p>'
+        + '<sup class="up-footnote-reference" id="thread-11-reply-65-footnote-reference-1">'
+        + '<a href="#thread-11-reply-65-footnote-1">1</a>'
+        + '</sup>'
+        + '</p>'
+        + '<dl class="up-footnotes">'
+        + '<dt id="thread-11-reply-65-footnote-1"><a href="#thread-11-reply-65-footnote-reference-1">1</a></dt>'
+        + '<dd>Well, I do, but I pretend not to.</dd>'
+        + '</dl>')
+    })
 
     specify('The ID of elements referenced by the table of contents', () => {
       const heading =
