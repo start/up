@@ -24,7 +24,7 @@ To support this, we require every outline syntax node class to offer a `sourceLi
 
 However, even though `sourceLineNumber` is required, it should be optional in each constructor!
 
-We indicate this with:
+We indicate this by doing:
 
 `````
 constructor(
@@ -33,8 +33,7 @@ constructor(
 )
 `````
 
-... Because if we did the natural thing and instead used:
-
+... Because if we did the natural thing instead:
 
 `````
 constructor(
