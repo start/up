@@ -1,16 +1,16 @@
-/*import { expect } from 'chai'
+import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
+/*import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'*/
+import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'*/
 
 
 context('Words within HTML IDs are delimited by hyphens.', () => {
@@ -25,6 +25,22 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
   context('This applies to the "documentName" configuration setting, which is prefixed to every ID:', () => {
     specify('The ID of the checkboxes for inline spoilers', () => {
+      const document = new UpDocument([
+        new ParagraphNode([
+          new InlineSpoilerNode([new PlainTextNode('45.9%')])
+        ])
+      ])
+
+      const html =
+        '<p>'
+        + '<span class="up-spoiler up-revealable">'
+        + '<label for="thread-11-reply-65-spoiler-1">toggle spoiler</label>'
+        + '<input id="thread-11-reply-65-spoiler-1" role="button" type="checkbox">'
+        + '<span role="alert">45.9%</span>'
+        + '</span>'
+        + '</p>'
+
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65'})).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for inline NSFW conventions', () => {
