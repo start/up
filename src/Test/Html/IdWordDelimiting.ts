@@ -10,15 +10,40 @@ import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-
-/*import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'*/
+import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
+import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
 
 context('Words within HTML IDs are delimited by hyphens.', () => {
   context('This applies to terms appearing in IDs:', () => {
     specify('The "footnote" term', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1)
+
+      const document = new UpDocument([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+
+      const config = {
+        terms: {
+          footnote: 'some extra info'
+        }
+      }
+
+      expect(Up.toHtml(document, config)).to.be.eql(
+        '<p>'
+        + '<sup class="up-footnote-reference" id="up-footnote-reference-1">'
+        + '<a href="#up-some-extra-info-1">1</a>'
+        + '</sup>'
+        + '</p>'
+        + '<dl class="up-footnotes">'
+        + '<dt id="up-some-extra-info-1"><a href="#up-footnote-reference-1">1</a></dt>'
+        + '<dd>Well, I do, but I pretend not to.</dd>'
+        + '</dl>')
     })
+
 
     specify('The "footnoteReference" term', () => {
     })
