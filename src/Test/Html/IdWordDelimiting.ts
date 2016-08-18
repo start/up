@@ -9,6 +9,8 @@ import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+
 /*import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'*/
 
@@ -19,6 +21,29 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The "footnoteReference" term', () => {
+    })
+
+    specify('The "itemReferencedByTableOfContents" term', () => {
+      const heading =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+      const document =
+        new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+
+      const config = {
+        terms: {
+          itemReferencedByTableOfContents: 'table of contents entry'
+        }
+      }
+
+      expect(Up.toHtml(document, config)).to.be.eql(
+        '<nav class="up-table-of-contents">'
+        + '<h1>Table of Contents</h1>'
+        + '<ul>'
+        + '<li><h2><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h2></li>'
+        + '</ul>'
+        + '</nav>'
+        + '<h1 id="up-table-of-contents-entry-1">I enjoy apples</h1>')
     })
   })
 
@@ -106,7 +131,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       ])
 
       const html =
-         '<div class="up-nsfw up-revealable">'
+        '<div class="up-nsfw up-revealable">'
         + '<label for="thread-11-reply-65-nsfw-1">toggle NSFW</label>'
         + '<input id="thread-11-reply-65-nsfw-1" role="button" type="checkbox">'
         + '<div role="alert"><p>45.9%</p></div>'
@@ -123,7 +148,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       ])
 
       const html =
-         '<div class="up-nsfl up-revealable">'
+        '<div class="up-nsfl up-revealable">'
         + '<label for="thread-11-reply-65-nsfl-1">toggle NSFL</label>'
         + '<input id="thread-11-reply-65-nsfl-1" role="button" type="checkbox">'
         + '<div role="alert"><p>45.9%</p></div>'
@@ -133,6 +158,20 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of elements referenced by the table of contents', () => {
+      const heading =
+        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+
+      const document =
+        new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+
+      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(
+        '<nav class="up-table-of-contents">'
+        + '<h1>Table of Contents</h1>'
+        + '<ul>'
+        + '<li><h2><a href="#thread-11-reply-65-item-1">I enjoy apples</a></h2></li>'
+        + '</ul>'
+        + '</nav>'
+        + '<h1 id="thread-11-reply-65-item-1">I enjoy apples</h1>')
     })
   })
 })
