@@ -1,12 +1,11 @@
 Pointless empty methods
 -----------------------
 
-
 We want our syntax node classes to be considered distinct by TypeScript's type system.
 
 Unfortunately for us, TypeScript uses [structural typing](https://en.wikipedia.org/wiki/Structural_type_system), which means type compatibility is determined *only* by an object's structure.
 
-To get around this, syntax node classes that would otherwise be considered equivalent are each given a unique "anti-structural-typing" method.
+To work around this, syntax node classes that would otherwise be considered equivalent are each given a unique "anti-structural-typing" method.
 
 These methods are:
 
@@ -20,7 +19,7 @@ Inexplicably defaulting fields to `undefined` in constructor signatures
 
 Up supports optional source mapping.
 
-To support this, we require every outline syntax node class to offer a `sourceLineNumber`. This is acheived simply by having the `OutlineSyntaxNode` interface require the field.
+To support source mapping, we require every outline syntax node class to offer a `sourceLineNumber`. This is acheived simply by having the `OutlineSyntaxNode` interface require the field.
 
 However, even though `sourceLineNumber` is required, it should be optional in each constructor!
 
