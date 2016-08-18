@@ -22,8 +22,8 @@ describe("The text in an inline NSFW convention's label", () => {
       '<p>'
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">show/hide</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<span></span>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
 
@@ -45,8 +45,8 @@ describe("The text in a NSFW block's label", () => {
     const html =
       '<div class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">show/hide</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<div></div>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert"></div>'
       + '</div>'
 
     expect(up.toHtml(document)).to.be.eql(html)

@@ -53,8 +53,8 @@ export class HtmlWriter extends Writer {
   //
   // <span class="up-spoiler up-revealable">
   //   <label for="up-spoiler-1">toggle spoiler</label>
-  //   <input id="up-spoiler-1" type="checkbox">
-  //   <span>Ash fights Gary</span>
+  //   <input id="up-spoiler-1" role="button" type="checkbox">
+  //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
   // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its

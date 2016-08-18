@@ -170,7 +170,7 @@ context('A table (or chart) row cell is numeric if its text content (ignoring fo
     })
 
     specify('inline code containing a non-numeric word', () => {
-      expectTableCellNotToBeNumeric('`<div>`')
+      expectTableCellNotToBeNumeric('`<div role="alert">`')
     })
 
     specify('a link to a numeric URL whose content is a non-numeric word', () => {

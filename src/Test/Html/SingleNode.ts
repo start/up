@@ -441,7 +441,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
 
 describe('A line block node', () => {
-  it('produces a <div class="up-lines"> containing a <div> element for each line', () => {
+  it('produces a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
     const document = new UpDocument([
       new LineBlockNode([
         new LineBlockNode.Line([
@@ -853,7 +853,7 @@ describe('A highlight node', () => {
 
 
 describe('An inline spoiler node', () => {
-  it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span> element containing the spoiler contents', () => {
+  it('produces an outer <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
     const document = new UpDocument([
       new ParagraphNode([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
@@ -864,8 +864,8 @@ describe('An inline spoiler node', () => {
       '<p>'
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<span>45.9%</span>'
+      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
 
@@ -875,7 +875,7 @@ describe('An inline spoiler node', () => {
 
 
 describe('An inline NSFW node', () => {
-  it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span> element containing the NSFW contents', () => {
+  it('produces an outer <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFW contents', () => {
     const document = new UpDocument([
       new ParagraphNode([
         new InlineNsfwNode([new PlainTextNode('naked Gary')])
@@ -886,8 +886,8 @@ describe('An inline NSFW node', () => {
       '<p>'
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<span>naked Gary</span>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<span role="alert">naked Gary</span>'
       + '</span>'
       + '</p>'
 
@@ -897,7 +897,7 @@ describe('An inline NSFW node', () => {
 
 
 describe('An inline NSFL node', () => {
-  it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span> element containing the NSFL contents', () => {
+  it('produces an outer <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFL contents', () => {
     const document = new UpDocument([
       new ParagraphNode([
         new InlineNsflNode([new PlainTextNode('rotting Gary')])
@@ -908,8 +908,8 @@ describe('An inline NSFL node', () => {
       '<p>'
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span>rotting Gary</span>'
+      + '<input id="up-nsfl-1" role="button" type="checkbox">'
+      + '<span role="alert">rotting Gary</span>'
       + '</span>'
       + '</p>'
 
@@ -919,7 +919,7 @@ describe('An inline NSFL node', () => {
 
 
 describe('A spoiler block node', () => {
-  it('produces the same HTML as an inline spoiler node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
       new SpoilerBlockNode([
         new ParagraphNode([
@@ -931,8 +931,8 @@ describe('A spoiler block node', () => {
     const html =
       '<div class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'
@@ -943,7 +943,7 @@ describe('A spoiler block node', () => {
 
 
 describe('A NSFW block node', () => {
-  it('produces the same HTML as an inline NSFW node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline NSFW node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
       new NsfwBlockNode([
         new ParagraphNode([
@@ -955,8 +955,8 @@ describe('A NSFW block node', () => {
     const html =
       '<div class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'
@@ -967,7 +967,7 @@ describe('A NSFW block node', () => {
 
 
 describe('A NSFL block node', () => {
-  it('produces the same HTML as an inline NSFL node, but with <div>s instead of <span>s', () => {
+  it('produces the same HTML as an inline NSFL node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
       new NsflBlockNode([
         new ParagraphNode([
@@ -979,8 +979,8 @@ describe('A NSFL block node', () => {
     const html =
       '<div class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-nsfl-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'

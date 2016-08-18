@@ -207,7 +207,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('An inline spoiler node', () => {
-    it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span> element containing the spoiler contents', () => {
+    it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span role="alert"> element containing the spoiler contents', () => {
       const inlineDocument = new InlineUpDocument([
         new InlineSpoilerNode([new PlainTextNode('45.9%')])
       ])
@@ -215,8 +215,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
       const html =
         '<span class="up-spoiler up-revealable">'
         + '<label for="up-spoiler-1">toggle spoiler</label>'
-        + '<input id="up-spoiler-1" type="checkbox">'
-        + '<span>45.9%</span>'
+        + '<input id="up-spoiler-1" role="button" type="checkbox">'
+        + '<span role="alert">45.9%</span>'
         + '</span>'
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
@@ -225,7 +225,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('An inline NSFW node', () => {
-    it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span> element containing the NSFW contents', () => {
+    it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span role="alert"> element containing the NSFW contents', () => {
       const inlineDocument = new InlineUpDocument([
         new InlineNsfwNode([new PlainTextNode('naked Gary')])
       ])
@@ -233,8 +233,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
       const html =
         '<span class="up-nsfw up-revealable">'
         + '<label for="up-nsfw-1">toggle NSFW</label>'
-        + '<input id="up-nsfw-1" type="checkbox">'
-        + '<span>naked Gary</span>'
+        + '<input id="up-nsfw-1" role="button" type="checkbox">'
+        + '<span role="alert">naked Gary</span>'
         + '</span>'
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)
@@ -243,7 +243,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('An inline NSFL node', () => {
-    it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span> element containing the NSFL contents', () => {
+    it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span role="alert"> element containing the NSFL contents', () => {
       const inlineDocument = new InlineUpDocument([
         new InlineNsflNode([new PlainTextNode('rotting Gary')])
       ])
@@ -251,8 +251,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
       const html =
         '<span class="up-nsfl up-revealable">'
         + '<label for="up-nsfl-1">toggle NSFL</label>'
-        + '<input id="up-nsfl-1" type="checkbox">'
-        + '<span>rotting Gary</span>'
+        + '<input id="up-nsfl-1" role="button" type="checkbox">'
+        + '<span role="alert">rotting Gary</span>'
         + '</span>'
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(html)

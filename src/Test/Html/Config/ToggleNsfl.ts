@@ -22,8 +22,8 @@ describe("The text in an inline NSFL convention's label", () => {
       '<p>'
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">show/hide</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<span></span>'
+      + '<input id="up-nsfl-1" role="button" type="checkbox">'
+      + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
 
@@ -45,8 +45,8 @@ describe("The text in a NSFL block's label", () => {
     const html =
       '<div class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">show/hide</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<div></div>'
+      + '<input id="up-nsfl-1" role="button" type="checkbox">'
+      + '<div role="alert"></div>'
       + '</div>'
 
     expect(up.toHtml(document)).to.be.eql(html)

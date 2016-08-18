@@ -333,8 +333,8 @@ context('When an outline syntax node has a source line number, its outermost ele
     const html =
       '<div class="up-spoiler up-revealable" data-up-source-line="2">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p data-up-source-line="3">John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'
@@ -354,8 +354,8 @@ context('When an outline syntax node has a source line number, its outermost ele
     const html =
       '<div class="up-nsfw up-revealable" data-up-source-line="1">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p data-up-source-line="2">John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'
@@ -375,8 +375,8 @@ context('When an outline syntax node has a source line number, its outermost ele
     const html =
       '<div class="up-nsfl up-revealable" data-up-source-line="2">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-nsfl-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p data-up-source-line="4">John Carmack is a decent programmer.</p>'
       + '</div>'
       + '</div>'

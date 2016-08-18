@@ -33,8 +33,8 @@ LOOK AWAY
       + '<h1 data-up-source-line="4" id="up-item-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" type="checkbox">'
-      + '<div>'
+      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
       + '</div>'
       + '</div>')
@@ -54,8 +54,8 @@ LOOK AWAY
       'After beating the Elite Four, '
       + '<span class="up-spoiler up-revealable">'
       + '<label for="reply-104-spoiler-1">toggle spoiler</label>'
-      + '<input id="reply-104-spoiler-1" type="checkbox">'
-      + '<span>'
+      + '<input id="reply-104-spoiler-1" role="button" type="checkbox">'
+      + '<span role="alert">'
       + 'Blue steals a Red Delicious from Red.'
       + '</span>'
       + '</span>')
