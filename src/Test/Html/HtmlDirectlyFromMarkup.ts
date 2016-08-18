@@ -3,7 +3,7 @@ import Up from '../../index'
 
 
 context("You can produce HTML directly from markup!", () => {
-  specify('If you provide the toHtml method with markup, it (internally) calls the toDocument method for you using configuration you provide.', () => {
+  specify('If you provide the toHtml method with markup, it (internally) calls the toDocument method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -40,7 +40,7 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the toInlineHtml method with markup, it (internally) calls the toInlineDocument method for you using configuration you provide.', () => {
+  specify('If you provide the toInlineHtml method with markup, it (internally) calls the toInlineDocument method for you using configuration you provide', () => {
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
     const html = Up.toInlineHtml(markup, {
