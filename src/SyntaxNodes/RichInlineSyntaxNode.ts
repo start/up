@@ -1,11 +1,10 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { getInlineTextContent } from './getInlineTextContent'
 
 
 export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer implements InlineSyntaxNode {
   inlineTextContent(): string {
-    return this.children
-      .map(child => child.inlineTextContent())
-      .join('')
+    return getInlineTextContent(this.children)
   }
 }
