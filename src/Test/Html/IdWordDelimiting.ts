@@ -46,6 +46,31 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
 
     specify('The "footnoteReference" term', () => {
+      const footnote = new FootnoteNode([
+        new PlainTextNode('Well, I do, but I pretend not to.')
+      ], 1)
+
+      const document = new UpDocument([
+        new ParagraphNode([footnote]),
+        new FootnoteBlockNode([footnote])
+      ])
+
+      const config = {
+        terms: {
+          footnoteReference: 'original footnote location'
+        }
+      }
+
+      expect(Up.toHtml(document, config)).to.be.eql(
+        '<p>'
+        + '<sup class="up-footnote-reference" id="up-original-footnote-location-1">'
+        + '<a href="#up-footnote-1">1</a>'
+        + '</sup>'
+        + '</p>'
+        + '<dl class="up-footnotes">'
+        + '<dt id="up-footnote-1"><a href="#up-original-footnote-location-1">1</a></dt>'
+        + '<dd>Well, I do, but I pretend not to.</dd>'
+        + '</dl>')
     })
 
     specify('The "itemReferencedByTableOfContents" term', () => {
