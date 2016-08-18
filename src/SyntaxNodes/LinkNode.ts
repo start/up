@@ -21,6 +21,4 @@ export class LinkNode extends RichInlineSyntaxNode implements OutlineSyntaxNode 
   descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
-
-  protected LINK_NODE(): void { }
 }
