@@ -6,7 +6,7 @@ import { ParagraphNode } from'../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
-import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { Stress } from'../../../SyntaxNodes/Stress'
 import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { InlineSpoilerNode } from'../../../SyntaxNodes/InlineSpoilerNode'
@@ -110,11 +110,11 @@ context('When a link overlaps stressed text, the stressed text will always be sp
         new PlainTextNode('This '),
         new LinkNode([
           new PlainTextNode('trash '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
@@ -125,11 +125,11 @@ context('When a link overlaps stressed text, the stressed text will always be sp
     expect(Up.toDocument('I do **not (care** at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('not ')
         ]),
         new LinkNode([
-          new StressNode([
+          new Stress([
             new PlainTextNode('care')
           ]),
           new PlainTextNode(' at'),

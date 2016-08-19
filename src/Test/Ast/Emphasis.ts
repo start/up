@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by single asterisks', () => {
@@ -62,7 +62,7 @@ describe('Emphasized text', () => {
         new PlainTextNode('Hello, '),
         new Emphasis([
           new PlainTextNode('my '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')

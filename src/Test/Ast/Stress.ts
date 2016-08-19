@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
@@ -12,7 +12,7 @@ describe('Text surrounded by 2 asterisks', () => {
     expect(Up.toDocument('Hello, **world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('world')
         ]),
         new PlainTextNode('!')
@@ -26,7 +26,7 @@ describe('Stressed text', () => {
     expect(Up.toDocument('Hello, **`world`**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new Stress([
           new InlineCode('world')
         ]),
         new PlainTextNode('!')
@@ -37,9 +37,9 @@ describe('Stressed text', () => {
     expect(Up.toDocument('Hello, **my **little** world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('my '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')
@@ -52,7 +52,7 @@ describe('Stressed text', () => {
     expect(Up.toDocument('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('my '),
           new Emphasis([
             new PlainTextNode('little')

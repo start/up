@@ -10,7 +10,7 @@ import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { Stress } from '../../../SyntaxNodes/Stress'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
@@ -270,7 +270,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
     const document = new UpDocument([
       new ParagraphNode([
         new Emphasis([
-          new StressNode([
+          new Stress([
             new RevisionDeletionNode([
               new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])

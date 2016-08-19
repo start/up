@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { Stress } from '../../../SyntaxNodes/Stress'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
@@ -17,7 +17,7 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
     expect(Up.toDocument('I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('covertly '),
@@ -304,17 +304,17 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
           new PlainTextNode('Gary, '),
           new Emphasis([
             new PlainTextNode('my '),
-            new StressNode([
+            new Stress([
               new PlainTextNode('very'),
             ])
           ])
         ], 'https://example.com/rhyme'),
         new Emphasis([
-          new StressNode([
+          new Stress([
             new PlainTextNode(' dear')
           ]),
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' friend')
         ]),
         new PlainTextNode('.')
@@ -334,7 +334,7 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
             new PlainTextNode('my '),
             new Emphasis([
               new PlainTextNode('own '),
-              new StressNode([
+              new Stress([
                 new PlainTextNode('very'),
               ]),
             ]),
@@ -342,15 +342,15 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
         ], 'https://example.com/rhyme'),
         new Emphasis([
           new Emphasis([
-            new StressNode([
+            new Stress([
               new PlainTextNode(' dear'),
             ]),
           ]),
-          new StressNode([
+          new Stress([
             new PlainTextNode(' and kind')
           ]),
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' friend')
         ]),
         new PlainTextNode('.')

@@ -8,7 +8,7 @@ import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
-import { StressNode } from '../SyntaxNodes/StressNode'
+import { Stress } from '../SyntaxNodes/Stress'
 import { ItalicNode } from '../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../SyntaxNodes/BoldNode'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
@@ -124,7 +124,7 @@ export abstract class Writer {
   protected abstract revisionInsertion(revisionInsertion: RevisionInsertionNode): string
   protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
   protected abstract squareParenthetical(squareParenthetical: SquareParentheticalNode): string
-  protected abstract stress(stress: StressNode): string
+  protected abstract stress(stress: Stress): string
   protected abstract table(table: TableNode, ordinalOfEntryInTableOfContents?: number): string
   protected abstract unorderedList(list: UnorderedListNode): string
   protected abstract video(video: VideoNode): string
@@ -195,7 +195,7 @@ export abstract class Writer {
       return this.emphasis(node)
     }
 
-    if (node instanceof StressNode) {
+    if (node instanceof Stress) {
       return this.stress(node)
     }
 

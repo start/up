@@ -8,7 +8,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -615,7 +615,7 @@ describe('A stress node', () => {
   it('produces a <strong> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new StressNode([new PlainTextNode('Ness')])
+        new Stress([new PlainTextNode('Ness')])
       ])
     ])
 

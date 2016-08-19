@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { Stress } from '../../../SyntaxNodes/Stress'
 import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../../SyntaxNodes/BoldNode'
 
@@ -49,7 +49,7 @@ describe('Text surrounded by double asterisk and double underscores on each side
     expect(Up.toDocument('Koopas! **__Mario is on his way!__** Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
-        new StressNode([
+        new Stress([
           new BoldNode([
             new PlainTextNode('Mario is on his way!'),
           ]),

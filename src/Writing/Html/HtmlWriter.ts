@@ -8,7 +8,7 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -163,7 +163,7 @@ export class HtmlWriter extends Writer {
     return this.element('em', emphasis.children)
   }
 
-  protected stress(stress: StressNode): string {
+  protected stress(stress: Stress): string {
     return this.element('strong', stress.children)
   }
 

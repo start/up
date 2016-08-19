@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -96,7 +96,7 @@ describe('A footnote', () => {
     expect(Up.toDocument("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
-          new StressNode([
+          new Stress([
             new PlainTextNode("I don't eat cereal."),
             footnote,
             new PlainTextNode(" Never have."),
@@ -118,7 +118,7 @@ describe('A footnote', () => {
     expect(Up.toDocument("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
       new UpDocument([
         new ParagraphNode([
-          new StressNode([
+          new Stress([
             new Emphasis([
               new PlainTextNode("I don't eat cereal."),
               footnote,

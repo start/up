@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { Stress } from '../../../SyntaxNodes/Stress'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 
@@ -159,7 +159,7 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
     expect(Up.toDocument('I **love ~~covertly {{ ++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('covertly {{ '),
@@ -187,7 +187,7 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
     expect(Up.toDocument('I **love ~~covertly ++drinking** {{ whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('covertly '),

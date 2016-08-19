@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../../SyntaxNodes/StressNode'
+import { Stress } from '../../../SyntaxNodes/Stress'
 
 
 describe('Text surrounded by 2 asterisks to its left and 1 asterisk to its right', () => {
@@ -53,7 +53,7 @@ describe('Text surrounded by 3 asterisks to its left and 2 asterisks to its righ
     expect(Up.toDocument('Xamarin is now ***free**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')
@@ -81,7 +81,7 @@ describe('Text surrounded by 2 asterisk to its left and 3 asterisks to its right
     expect(Up.toDocument('Xamarin is now **free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')

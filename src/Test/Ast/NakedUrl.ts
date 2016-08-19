@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -171,7 +171,7 @@ describe('A naked URL', () => {
   it('is closed by stress closing', () => {
     expect(Up.toDocument('**I love https://archive.org/fake**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -184,7 +184,7 @@ describe('A naked URL', () => {
   it('is closed by shouting closing', () => {
     expect(Up.toDocument('***I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('I love '),
             new LinkNode([
@@ -212,7 +212,7 @@ describe('A naked URL', () => {
   it('is closed by 3 or more asterisks closing emphasis', () => {
     expect(Up.toDocument('**I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -251,7 +251,7 @@ describe('A naked URL', () => {
   it('is closed by stress (starting with 3+ asterisks) closing with 2 asterisks', () => {
     expect(Up.toDocument('***I love https://archive.org/fake**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')

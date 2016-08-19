@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from'.././Helpers'
 import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
-import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { Stress } from'../../../SyntaxNodes/Stress'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
@@ -22,7 +22,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       expect(Up.toDocument('**++~~Hello++ good** friend!~~ Hi!')).to.be.eql(
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
-            new StressNode([
+            new Stress([
               new RevisionInsertionNode([
                 new PlainTextNode('Hello')
               ]),
@@ -37,7 +37,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
       expect(Up.toDocument('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new StressNode([
+          new Stress([
             new InlineNsflNode([
               new LinkNode([
                 new PlainTextNode('Ash')
@@ -125,7 +125,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new RevisionDeletionNode([
             new PlainTextNode('Hello '),
-            new StressNode([
+            new Stress([
               new PlainTextNode('good '),
               new RevisionInsertionNode([
                 new PlainTextNode('friend!')
@@ -171,7 +171,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
       expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)__]. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new StressNode([
+          new Stress([
             new PlainTextNode('There '),
             new RevisionInsertionNode([
               new PlainTextNode('was '),
@@ -193,7 +193,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single freely-splittable convention', () => {
       expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)]__. Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new StressNode([
+          new Stress([
             new PlainTextNode('There '),
             new RevisionInsertionNode([
               new PlainTextNode('was '),
@@ -215,7 +215,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single convention that should only be split when necessary', () => {
       expect(Up.toDocument('**There ++was ~~another [NSFL: loud (SPOILER: stomp++**~~]). Hi!')).to.be.eql(
         insideDocumentAndParagraph([
-          new StressNode([
+          new Stress([
             new PlainTextNode('There '),
             new RevisionInsertionNode([
               new PlainTextNode('was '),
@@ -353,7 +353,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     specify('Revision insertion and stress', () => {
       expect(Up.toDocument('++**Why would you do this?++**')).to.be.eql(
         insideDocumentAndParagraph([
-          new StressNode([
+          new Stress([
             new RevisionInsertionNode([
               new PlainTextNode('Why would you do this?')
             ])

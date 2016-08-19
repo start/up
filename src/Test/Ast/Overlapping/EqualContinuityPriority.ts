@@ -3,7 +3,7 @@ import Up from'../../../index'
 import { insideDocumentAndParagraph } from'.././Helpers'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
-import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { Stress } from'../../../SyntaxNodes/Stress'
 import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
@@ -20,7 +20,7 @@ describe('Overlapped stressed and deleted text', () => {
     expect(Up.toDocument('I **love ~~drinking** whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('drinking')
@@ -42,11 +42,11 @@ describe('Overlapped deleted and stressed text', () => {
         new PlainTextNode('I '),
         new RevisionDeletionNode([
           new PlainTextNode('love '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('drinking')
           ])
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -62,11 +62,11 @@ describe('Overlapped emphasized and stressed text', () => {
         new PlainTextNode('I '),
         new Emphasis([
           new PlainTextNode('love '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('drinking')
           ])
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -80,7 +80,7 @@ describe('Overlapped stressed and emphasized text', () => {
     expect(Up.toDocument('I **love *drinking** whole* milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new Emphasis([
             new PlainTextNode('drinking')
@@ -142,11 +142,11 @@ describe('Overlapped bold and stressed text', () => {
         new PlainTextNode('I '),
         new BoldNode([
           new PlainTextNode('love '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('drinking')
           ])
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -160,7 +160,7 @@ describe('Overlapped stressed and bold text', () => {
     expect(Up.toDocument('I **love __drinking** whole__ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new BoldNode([
             new PlainTextNode('drinking')
@@ -222,11 +222,11 @@ describe('Overlapped highlighted and stressed text', () => {
         new PlainTextNode('I '),
         new HighlightNode([
           new PlainTextNode('love '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('drinking')
           ])
         ]),
-        new StressNode([
+        new Stress([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -240,7 +240,7 @@ describe('Overlapped stressed and highlighted text', () => {
     expect(Up.toDocument('I **love [highlight: drinking** whole] milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new HighlightNode([
             new PlainTextNode('drinking')
@@ -260,7 +260,7 @@ describe('Overlapped stressed and parenthesized text', () => {
     expect(Up.toDocument('I **love (drinking** whole) milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new NormalParentheticalNode([
             new PlainTextNode('(drinking')
@@ -280,7 +280,7 @@ describe('Overlapped stressed and square bracketed text', () => {
     expect(Up.toDocument('I **love [drinking** whole] milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('love '),
           new SquareParentheticalNode([
             new PlainTextNode('[drinking')

@@ -1,5 +1,5 @@
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
@@ -24,7 +24,7 @@ export const EMPHASIS_CONVENTION: RichConventionWithoutExtraFields = {
 }
 
 export const STRESS_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: StressNode,
+  NodeType: Stress,
   startTokenKind: TokenKind.StressStart,
   endTokenKind: TokenKind.StressEnd
 }

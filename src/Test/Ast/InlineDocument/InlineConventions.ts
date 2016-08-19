@@ -18,7 +18,7 @@ import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParenthetica
 import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from'../../../SyntaxNodes/RevisionDeletionNode'
-import { StressNode } from'../../../SyntaxNodes/StressNode'
+import { Stress } from'../../../SyntaxNodes/Stress'
 import { VideoNode } from'../../../SyntaxNodes/VideoNode'
 
 
@@ -196,7 +196,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved my **Game Boy**, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('Game Boy'),
           ]),
           new PlainTextNode(', though I never took it with me when I left home.')
@@ -274,7 +274,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved **my very own [^ beloved** Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('my very own '),
             new NormalParentheticalNode([
               new PlainTextNode('(beloved')

@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 
 
 describe('Text surrounded by 3 asterisks', () => {
@@ -11,7 +11,7 @@ describe('Text surrounded by 3 asterisks', () => {
     expect(Up.toDocument('Xamarin is now ***free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('free'),
           ])
@@ -27,7 +27,7 @@ describe('Shouted text', () => {
     expect(Up.toDocument('Koopas! ******Mario is on his way!****** Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('Mario is on his way!'),
           ])
@@ -40,7 +40,7 @@ describe('Shouted text', () => {
     expect(Up.toDocument('Koopas! ******Mario is on his way!********* Grab your shells!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('Mario is on his way!'),
           ])
@@ -53,7 +53,7 @@ describe('Shouted text', () => {
     expect(Up.toDocument('Hello, ***my* world**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('my'),
           ]),
@@ -68,7 +68,7 @@ describe('Shouted text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new Emphasis([
-          new StressNode([
+          new Stress([
             new PlainTextNode('my'),
           ]),
           new PlainTextNode(' world')
@@ -85,7 +85,7 @@ describe('Shouted text inside of emphasized text', () => {
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainTextNode('Please '),
-          new StressNode([
+          new Stress([
             new Emphasis([
               new PlainTextNode('stop eating the cardboard'),
             ])
@@ -101,9 +101,9 @@ describe('Shouted text inside of stressed text', () => {
   it('produces the typical shouted syntax nodes nested within another stress node', () => {
     expect(Up.toDocument('**Please ***stop eating the cardboard*** immediately**')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('Please '),
-          new StressNode([
+          new Stress([
             new Emphasis([
               new PlainTextNode('stop eating the cardboard'),
             ])
@@ -120,7 +120,7 @@ describe('Text that is both emphasized and stressed', () => {
     expect(Up.toDocument('Xamarin is **now *free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('now '),
           new Emphasis([
             new PlainTextNode('free')
@@ -134,7 +134,7 @@ describe('Text that is both emphasized and stressed', () => {
     expect(Up.toDocument('Xamarin is **now *free****!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is '),
-        new StressNode([
+        new Stress([
           new PlainTextNode('now '),
           new Emphasis([
             new PlainTextNode('free')
@@ -151,7 +151,7 @@ describe('Shouted text starting with 3 asterisks with its emphasis ended early',
     expect(Up.toDocument('Well, ***Xamarin* is now free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
-        new StressNode([
+        new Stress([
           new Emphasis([
             new PlainTextNode('Xamarin')
           ]),
@@ -169,7 +169,7 @@ describe('Shouted text starting with 3 asterisks with its stress ended early', (
       insideDocumentAndParagraph([
         new PlainTextNode('Well, '),
         new Emphasis([
-          new StressNode([
+          new Stress([
             new PlainTextNode('Xamarin')
           ]),
           new PlainTextNode(' is now free')
@@ -186,7 +186,7 @@ describe('Text that is emphasized then stressed', () => {
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainTextNode('He has won '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('six in a row!')
           ])
         ])
@@ -198,7 +198,7 @@ describe('Text that is emphasized then stressed', () => {
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainTextNode('He has won '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('six in a row!')
           ])
         ])
@@ -211,7 +211,7 @@ describe('Text that is stressed then emphasized', () => {
   it('can be closed by 3 asterisks', () => {
     expect(Up.toDocument('**He has won *six in a row!***')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('He has won '),
           new Emphasis([
             new PlainTextNode('six in a row!')
@@ -223,7 +223,7 @@ describe('Text that is stressed then emphasized', () => {
   it('can be closed by 4 or more asterisks', () => {
     expect(Up.toDocument('**He has won *six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('He has won '),
           new Emphasis([
             new PlainTextNode('six in a row!')
@@ -277,9 +277,9 @@ describe('Doubly stressed text', () => {
   it('can be closed by 4 asterisks', () => {
     expect(Up.toDocument('**He has won **six in a row!****')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('He has won '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('six in a row!')
           ])
         ])
@@ -289,9 +289,9 @@ describe('Doubly stressed text', () => {
   it('can be closed by 5 or more asterisks', () => {
     expect(Up.toDocument('**He has won **six in a row!*****')).to.be.eql(
       insideDocumentAndParagraph([
-        new StressNode([
+        new Stress([
           new PlainTextNode('He has won '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('six in a row!')
           ])
         ])
@@ -306,7 +306,7 @@ describe('Two nested inflection conventions, both starting with 2 asterisks', ()
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainTextNode('He has won '),
-          new StressNode([
+          new Stress([
             new PlainTextNode('six in a row!')
           ])
         ])

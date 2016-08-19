@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
@@ -52,7 +52,7 @@ And addresses do, too`
           ]),
           new LineBlockNode.Line([
             new PlainTextNode('Violets are '),
-            new StressNode([
+            new Stress([
               new PlainTextNode('blue')
             ])
           ]),

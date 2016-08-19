@@ -9,7 +9,7 @@ import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -45,7 +45,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A stress node', () => {
     it('produces a <strong> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new StressNode([new PlainTextNode('Ness')])
+        new Stress([new PlainTextNode('Ness')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<strong>Ness</strong>')

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { StressNode } from '../../SyntaxNodes/StressNode'
+import { Stress } from '../../SyntaxNodes/Stress'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
@@ -82,7 +82,7 @@ Goodbye, world!
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new HeadingNode([
-          new StressNode([new PlainTextNode('Hello')]),
+          new Stress([new PlainTextNode('Hello')]),
           new PlainTextNode(', world!'),
         ], 1)
       ]))
