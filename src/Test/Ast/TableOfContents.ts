@@ -23,6 +23,7 @@ import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
 import { Link } from '../../SyntaxNodes/Link'
 
+
 const NO_TABLE_OF_CONTENTS: UpDocument.TableOfContents = undefined
 
 
