@@ -75,6 +75,7 @@ export namespace Config {
     image: Terms.FoundInMarkup = ['image', 'img']
     nsfl: Terms.FoundInMarkup = ['nsfl']
     nsfw: Terms.FoundInMarkup = ['nsfw']
+    reference: Terms.FoundInMarkup = ['reference', 'ref']
     spoiler: Terms.FoundInMarkup = ['spoiler']
     table: Terms.FoundInMarkup = ['table']
     video: Terms.FoundInMarkup = ['video', 'vid']

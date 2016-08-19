@@ -44,7 +44,7 @@ Not quite true. For example, see [reference: soda].`
 
     const sodaHeading =
       new Heading([
-        new PlainText('I like soda')
+        new PlainText('I drink soda')
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
