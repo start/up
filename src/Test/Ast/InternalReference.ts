@@ -52,7 +52,7 @@ Not quite true. For example, see [reference: soda].`
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
-        ]),        
+        ]),
         new Heading([
           new PlainText('I never lie')
         ], 1),
@@ -62,5 +62,112 @@ Not quite true. For example, see [reference: soda].`
           new PlainText('.')
         ])
       ]))
+  })
+})
+
+
+describe('The text snippet referenced by an internal reference', () => {
+  context('is evaluated for typographical conventions:', () => {
+    specify('En dashes', () => {
+      const markup = `
+I drink soda--exclusively
+=========================
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [reference: I drink soda--exclusively].`
+
+      const sodaHeading =
+        new Heading([
+          new PlainText('I drink soda–exclusively')
+        ], 1)
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          new Heading([
+            new PlainText('I never lie')
+          ], 1),
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new InternalReference('I drink soda–exclusively', sodaHeading),
+            new PlainText('.')
+          ])
+        ]))
+    })
+
+    specify('Em dashes', () => {
+      const markup = `
+I drink soda---exclusively
+=========================
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [reference: I drink soda---exclusively].`
+
+      const sodaHeading =
+        new Heading([
+          new PlainText('I drink soda—exclusively')
+        ], 1)
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          new Heading([
+            new PlainText('I never lie')
+          ], 1),
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new InternalReference('I drink soda—exclusively', sodaHeading),
+            new PlainText('.')
+          ])
+        ]))
+    })
+
+    specify('Plus-minus signs', () => {
+      const markup = `
+Daily, I drink 9 cans of soda +-2
+======================================
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [reference: I drink 9 cans of soda +-2].`
+
+      const sodaHeading =
+        new Heading([
+          new PlainText('Daily, I drink 9 cans of soda ±2')
+        ], 1)
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          new Heading([
+            new PlainText('I never lie')
+          ], 1),
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new InternalReference('I drink 9 cans of soda ±2', sodaHeading),
+            new PlainText('.')
+          ])
+        ]))
+    })
   })
 })
