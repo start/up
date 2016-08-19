@@ -71,7 +71,7 @@ export const PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.ParentheticalEnd
 }
 
-export const SQUARE_BRACKET_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
+export const SQUARE_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: SquareParenthetical,
   startTokenKind: TokenKind.SquareBracketParentheticalStart,
   endTokenKind: TokenKind.SquareBracketParentheticalEnd
