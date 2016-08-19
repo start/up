@@ -127,6 +127,8 @@ class Tokenizer {
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
     this.conventions = [
+      this.nakedUrlConvention,
+
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
@@ -142,6 +144,8 @@ class Tokenizer {
           labels: this.config.terms.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
+
+      ...this.getInternalReferenceConventions(),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -166,6 +170,8 @@ class Tokenizer {
         }
       ].map(args => this.getParentheticalConvention(args)),
 
+      this.getExampleInputConvention(),
+
       ...[
         {
           richConvention: REVISION_DELETION_CONVENTION,
@@ -176,13 +182,7 @@ class Tokenizer {
           startsWith: '++',
           endsWith: '++'
         }
-      ].map(args => this.getRevisionConvention(args)),
-
-      this.nakedUrlConvention,
-
-      this.getExampleInputConvention(),
-
-      ...this.getInternalReferenceConventions()
+      ].map(args => this.getRevisionConvention(args))
     ]
   }
 
@@ -251,8 +251,8 @@ class Tokenizer {
       this.getTokenizableRichConvention({
         richConvention,
         startsWith: this.getLabeledBracketStartPattern(labels, bracket) + ANY_WHITESPACE,
-        endsWith: bracket.endPattern,
-        startPatternContainsATerm: true
+        startPatternContainsATerm: true,
+        endsWith: bracket.endPattern
       }))
   }
 
@@ -308,8 +308,8 @@ class Tokenizer {
     args: {
       richConvention: RichConvention
       startsWith: string
-      endsWith: string
       startPatternContainsATerm?: boolean
+      endsWith: string
       whenOpening?: OnTextMatch
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
@@ -317,7 +317,7 @@ class Tokenizer {
       mustBeDirectlyFollowedBy?: Convention[]
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, startPatternContainsATerm, endsWith, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
       // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
@@ -395,7 +395,6 @@ class Tokenizer {
       },
 
       whenClosing: () => {
-        // As a rule, example input is always trimmed.
         const exampleInput = this.flushBuffer().trim()
         this.appendNewToken(TokenKind.ExampleInput, exampleInput)
       }
@@ -404,12 +403,15 @@ class Tokenizer {
 
   // This convention represents a reference to an item worthy of inclusion in the table of contents.
   //
+  // Usage: For more information, see [reference: shading]
+  //
   // When written to an output format (e.g. HTML), it should serve as a link to that item.
   private getInternalReferenceConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       new Convention({
         // Internal references cannot be totally blank.
         startsWith: this.getLabeledBracketStartPattern(this.config.terms.reference, bracket) + ANY_WHITESPACE,
+        startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
         beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -421,7 +423,6 @@ class Tokenizer {
         },
 
         whenClosing: () => {
-          // As a rule, internal reference text is always trimmed.
           const textSnippetFromReferencedItem = this.flushBuffer().trim()
           this.appendNewToken(TokenKind.InternalReference, textSnippetFromReferencedItem)
         }
