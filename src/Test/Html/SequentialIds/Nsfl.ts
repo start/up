@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe("Inline NSFL conventions and NSFL blocks", () => {
@@ -86,7 +86,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
           ]),
           new PlainTextNode('. We meet for the '),
           new InlineNsflNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('eighth')
             ])
           ]),

@@ -36,7 +36,7 @@ context('Every syntax node class is exported:', () => {
     'BlockquoteNode',
     'CodeBlockNode',
     'DescriptionListNode',
-    'EmphasisNode',
+    'Emphasis',
     'ExampleInputNode',
     'FootnoteBlockNode',
     'FootnoteNode',

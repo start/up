@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 
 
@@ -11,7 +11,7 @@ describe('Text surrounded by 2 asterisks to its left and 1 asterisk to its right
     expect(Up.toDocument('Xamarin is now **free*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')
@@ -25,7 +25,7 @@ describe('Text surrounded by 1 asterisk to its left and 2 asterisks to its right
     expect(Up.toDocument('Xamarin is now *free**!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')
@@ -39,7 +39,7 @@ describe('Text surrounded by 3 asterisks to its left and 1 asterisk to its right
     expect(Up.toDocument('Xamarin is now ***free*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')
@@ -67,7 +67,7 @@ describe('Text surrounded by 1 asterisk to its left and 3 asterisks to its right
     expect(Up.toDocument('Xamarin is now *free***!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Xamarin is now '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('free'),
         ]),
         new PlainTextNode('!')

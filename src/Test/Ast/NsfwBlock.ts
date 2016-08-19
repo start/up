@@ -3,7 +3,7 @@ import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
@@ -296,7 +296,7 @@ NSFW:
         new NsfwBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('very')
             ]),
             new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),

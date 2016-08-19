@@ -3,7 +3,7 @@ import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -69,7 +69,7 @@ Chrono Cross;   1999`
           ],
           new TableNode.Caption([
             new PlainTextNode('Games in the '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Chrono')
             ]),
             new PlainTextNode(' series'),
@@ -104,7 +104,7 @@ Chrono Cross;   1999`
           ],
           new TableNode.Caption([
             new PlainTextNode('Games in the '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Chrono')
             ]),
             new PlainTextNode(' series'),

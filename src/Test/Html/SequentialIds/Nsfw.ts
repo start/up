@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe("Inline NSFW conventions and NSFW blocks", () => {
@@ -86,7 +86,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
           ]),
           new PlainTextNode('. We meet for the '),
           new InlineNsfwNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('eighth')
             ])
           ]),

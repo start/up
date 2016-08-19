@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 
 
@@ -27,7 +27,7 @@ describe('Square bracketed text', () => {
         new PlainTextNode('I like '),
         new SquareParentheticalNode([
           new PlainTextNode('[certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of]')
@@ -81,7 +81,7 @@ describe('Two left square brackets followed by a single right square bracket', (
         new PlainTextNode(':[ I like '),
         new SquareParentheticalNode([
           new PlainTextNode('[certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of]')
@@ -99,7 +99,7 @@ describe('A left square bracket followed by two right square brackets', () => {
         new PlainTextNode('I like '),
         new SquareParentheticalNode([
           new PlainTextNode('[certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of]')

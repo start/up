@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
@@ -144,7 +144,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
     const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Google'),
             new FootnoteNode([new PlainTextNode('A really old search engine.')], 2)
           ])
@@ -162,7 +162,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
     const document = new UpDocument([
       new ParagraphNode([
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Google is probably not '),
             new LinkNode([new PlainTextNode('Bing')], 'https://bing.com')
           ])
@@ -179,7 +179,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
   specify('the table of contents entry for a heading', () => {
     const heading =
       new HeadingNode([
-        new EmphasisNode([
+        new Emphasis([
           new LinkNode([new PlainTextNode('I enjoy apples')], 'https://google.com')
         ])
       ], 1)
@@ -214,7 +214,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
           ])
         ],
         new TableNode.Caption([
-          new EmphasisNode([
+          new Emphasis([
             new LinkNode([new PlainTextNode('Influential games')], 'https://google.com')
           ])
         ]))
@@ -255,7 +255,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
           ], new TableNode.Header.Cell([new PlainTextNode('0')]))
         ],
         new TableNode.Caption([
-          new EmphasisNode([
+          new Emphasis([
             new LinkNode([new PlainTextNode('AND operator logic')], 'https://google.com')
           ])
         ]))

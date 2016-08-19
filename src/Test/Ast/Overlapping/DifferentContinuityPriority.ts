@@ -5,7 +5,7 @@ import { UpDocument } from'../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from'../../../SyntaxNodes/ParagraphNode'
 import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
 import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
@@ -28,11 +28,11 @@ describe('Emphasized text overlapping a link', () => {
     expect(Up.toDocument('I do *not [care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('not ')
         ]),
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('care')
           ]),
           new PlainTextNode(' at'),
@@ -50,11 +50,11 @@ describe('A link overlapping emphasized text', () => {
         new PlainTextNode('This '),
         new LinkNode([
           new PlainTextNode('trash '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
@@ -44,9 +44,9 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
   it('splits the revision deletion node', () => {
     expect(Up.toDocument("*I know. *Well, I don't ~~really.** Ha!~~ Hi!")).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I know. '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode("Well, I don't "),
             new RevisionDeletionNode([
               new PlainTextNode('really.')
@@ -152,9 +152,9 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
   it('splits the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
     expect(Up.toDocument("*I know. *Well, I don't ~~really.* So there.* Ha!~~ Hi!")).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I know. '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode("Well, I don't "),
             new RevisionDeletionNode([
               new PlainTextNode('really.')
@@ -179,14 +179,14 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at th
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new PlainTextNode("I need to sleep. "),
-          new EmphasisNode([
-            new EmphasisNode([
+          new Emphasis([
+            new Emphasis([
               new PlainTextNode("So"),
             ])
           ])
         ]),
-        new EmphasisNode([
-          new EmphasisNode([
+        new Emphasis([
+          new Emphasis([
             new PlainTextNode(" what?"),
           ]),
           new PlainTextNode(" It's early.")
@@ -203,15 +203,15 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at di
       insideDocumentAndParagraph([
         new RevisionDeletionNode([
           new PlainTextNode("I need to sleep. "),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode("Uhhh... "),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode("So"),
             ])
           ])
         ]),
-        new EmphasisNode([
-          new EmphasisNode([
+        new Emphasis([
+          new Emphasis([
             new PlainTextNode(" what?"),
           ]),
           new PlainTextNode(" It's early.")
@@ -228,13 +228,13 @@ describe('Emphasis nested within revision deletion, both of which overlap a link
       insideDocumentAndParagraph([
         new PlainTextNode('In Texas, '),
         new RevisionDeletionNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('I never eat '),
           ]),
         ]),
         new LinkNode([
           new RevisionDeletionNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('cereal')
             ])
           ]),
@@ -254,13 +254,13 @@ describe('A link that overlaps both an emphasis convention and the revision dele
         new LinkNode([
           new PlainTextNode('Texas, '),
           new RevisionDeletionNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('I'),
             ]),
           ]),
         ], 'https://example.com/texas-hurricans'),
         new RevisionDeletionNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode(' never eat cereal')
           ])
         ]),
@@ -277,14 +277,14 @@ describe('A link that overlaps nested emphasis conventions', () => {
         new PlainTextNode('In '),
         new LinkNode([
           new PlainTextNode('Texas, '),
-          new EmphasisNode([
-            new EmphasisNode([
+          new Emphasis([
+            new Emphasis([
               new PlainTextNode('I'),
             ])
           ])
         ], 'https://example.com/texas-hurricans'),
-        new EmphasisNode([
-          new EmphasisNode([
+        new Emphasis([
+          new Emphasis([
             new PlainTextNode(' never')
           ]),
           new PlainTextNode(' eat cereal')
@@ -302,14 +302,14 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
         new PlainTextNode('Hello '),
         new LinkNode([
           new PlainTextNode('Gary, '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('my '),
             new StressNode([
               new PlainTextNode('very'),
             ])
           ])
         ], 'https://example.com/rhyme'),
-        new EmphasisNode([
+        new Emphasis([
           new StressNode([
             new PlainTextNode(' dear')
           ]),
@@ -330,9 +330,9 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
         new PlainTextNode('Hello '),
         new LinkNode([
           new PlainTextNode('Gary, '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('my '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('own '),
               new StressNode([
                 new PlainTextNode('very'),
@@ -340,8 +340,8 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
             ]),
           ])
         ], 'https://example.com/rhyme'),
-        new EmphasisNode([
-          new EmphasisNode([
+        new Emphasis([
+          new Emphasis([
             new StressNode([
               new PlainTextNode(' dear'),
             ]),
@@ -365,11 +365,11 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
       insideDocumentAndParagraph([
         new PlainTextNode('In Texas, '),
         new InlineSpoilerNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('I never eat '),
           ]),
           new LinkNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('cereal')
             ]),
           ], 'https://example.com/sun-flakes'),
@@ -387,12 +387,12 @@ describe('Emphasis overlapping a linkified NSFL convention', () => {
     expect(Up.toDocument('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('not ')
         ]),
         new InlineNsflNode([
           new LinkNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('care')
             ]),
             new PlainTextNode(' at'),
@@ -412,12 +412,12 @@ describe('A linkified spoiler overlapping emphasized text', () => {
         new InlineSpoilerNode([
           new LinkNode([
             new PlainTextNode('trash '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('can')
             ]),
           ], 'https://en.wikipedia.org/wiki/Waste_container'),
         ]),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')
@@ -435,15 +435,15 @@ describe('An inline spoiler overlapping an emphasis convention split in two (by 
           new PlainTextNode('old '),
           new LinkNode([
             new PlainTextNode('trash '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('can')
             ]),
           ], 'https://en.wikipedia.org/wiki/Waste_container'),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode(' certainly')
           ]),
         ]),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' not')
         ]),
         new PlainTextNode(' stay here.')

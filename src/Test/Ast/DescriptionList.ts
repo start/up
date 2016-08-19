@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -71,7 +71,7 @@ Ash *"Little Marco"* Ketchum
           new DescriptionListNode.Item([
             new DescriptionListNode.Item.Term([
               new PlainTextNode('Ash '),
-              new EmphasisNode([new PlainTextNode('"Little Marco"')]),
+              new Emphasis([new PlainTextNode('"Little Marco"')]),
               new PlainTextNode(' Ketchum')
             ])
           ],
@@ -103,7 +103,7 @@ Ash Ketchum
             new DescriptionListNode.Item.Description([
               new ParagraphNode([
                 new PlainTextNode('A famous Pokemon Trainer '),
-                new EmphasisNode([new PlainTextNode('probably')]),
+                new Emphasis([new PlainTextNode('probably')]),
                 new PlainTextNode(' from Pallet Town')
               ])
             ]))

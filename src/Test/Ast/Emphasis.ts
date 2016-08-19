@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
@@ -11,7 +11,7 @@ describe('Text surrounded by single asterisks', () => {
     expect(Up.toDocument('Hello, *world*!!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('world')
         ]),
         new PlainTextNode('!!')
@@ -34,7 +34,7 @@ describe('Emphasized text', () => {
     expect(Up.toDocument('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new EmphasisNode([
+        new Emphasis([
           new InlineCode('world')
         ]),
         new PlainTextNode('!')
@@ -45,9 +45,9 @@ describe('Emphasized text', () => {
     expect(Up.toDocument('Hello, *my *little* world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('my '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')
@@ -60,7 +60,7 @@ describe('Emphasized text', () => {
     expect(Up.toDocument('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('my '),
           new StressNode([
             new PlainTextNode('little')
@@ -76,8 +76,8 @@ describe('Double asterisks followed by two separate single closing asterisks', (
   it('produces 2 nested emphasis nodes', () => {
     expect(Up.toDocument('**Warning:* never feed this tarantula*')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
-          new EmphasisNode([
+        new Emphasis([
+          new Emphasis([
             new PlainTextNode('Warning:'),
           ]),
           new PlainTextNode(' never feed this tarantula')

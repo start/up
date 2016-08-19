@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
 describe('Text surrounded by curly brackets', () => {
@@ -131,7 +131,7 @@ describe('An unmatched curly bracket', () => {
     expect(Up.toDocument('Yeah... :{ I *hate* pizza.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Yeah... :{ I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('hate'),
         ]),
         new PlainTextNode(' pizza.'),

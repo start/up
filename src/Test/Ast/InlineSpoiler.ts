@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -50,7 +50,7 @@ describe('An inline spoiler convention', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new InlineSpoilerNode([
           new PlainTextNode('you fight '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Gary')
           ]),
         ]),

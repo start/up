@@ -3,7 +3,7 @@ import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
@@ -140,7 +140,7 @@ describe('A blockquote', () => {
           ]),
           new ParagraphNode([
             new PlainTextNode('Goodbye, '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('world')
             ]),
             new PlainTextNode('!')
@@ -277,7 +277,7 @@ describe('Within a blockquote, 3 or more blank lines', () => {
           new OutlineSeparatorNode(),
           new ParagraphNode([
             new PlainTextNode('Goodbye, '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('world')
             ]),
             new PlainTextNode('!')
@@ -311,7 +311,7 @@ describe('A single line blockquote', () => {
             new BlockquoteNode([
               new ParagraphNode([
                 new PlainTextNode('Hello, '),
-                new EmphasisNode([
+                new Emphasis([
                   new PlainTextNode('world')
                 ]),
                 new PlainTextNode('!!')

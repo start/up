@@ -3,7 +3,7 @@ import Up from'../../../index'
 import { insideDocumentAndParagraph } from'.././Helpers'
 import { LinkNode } from'../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { RevisionInsertionNode } from'../../../SyntaxNodes/RevisionInsertionNode'
@@ -66,7 +66,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       expect(Up.toDocument("*[Yes*, I watched it live](example.com/replay).")).to.be.eql(
         insideDocumentAndParagraph([
           new LinkNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Yes'),
             ]),
             new PlainTextNode(", I watched it live")
@@ -78,7 +78,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
       expect(Up.toDocument("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.be.eql(
         insideDocumentAndParagraph([
-          new EmphasisNode([
+          new Emphasis([
             new LinkNode([
               new PlainTextNode('Yes, I watched it live'),
             ], 'https://example.com/replay'),
@@ -261,7 +261,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify("Emphasis and a link", () => {
       expect(Up.toDocument("*I watched it [live*](example.com/replay)")).to.be.eql(
         insideDocumentAndParagraph([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('I watched it '),
             new LinkNode([
               new PlainTextNode("live")
@@ -364,7 +364,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     specify('An inline spoiler and emphasis', () => {
       expect(Up.toDocument('[SPOILER: *Why would you do this?]*')).to.be.eql(
         insideDocumentAndParagraph([
-          new EmphasisNode([
+          new Emphasis([
             new InlineSpoilerNode([
               new PlainTextNode('Why would you do this?')
             ])
@@ -376,7 +376,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.toDocument('*[SPOILER: Why would you do this?*]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoilerNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Why would you do this?')
             ])
           ])

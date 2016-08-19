@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe("Inline spoilers and spoiler blocks", () => {
@@ -86,7 +86,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
           ]),
           new PlainTextNode('. We meet for the '),
           new InlineSpoilerNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('eighth')
             ])
           ]),

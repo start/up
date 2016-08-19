@@ -7,7 +7,7 @@ import { RevisionInsertionNode } from '../../../../SyntaxNodes/RevisionInsertion
 import { RevisionDeletionNode } from '../../../../SyntaxNodes/RevisionDeletionNode'
 import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { EmphasisNode } from '../../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../../SyntaxNodes/Emphasis'
 import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
 import { SquareParentheticalNode } from '../../../../SyntaxNodes/SquareParentheticalNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
@@ -310,7 +310,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
         insideDocumentAndParagraph([
           new SquareParentheticalNode([
             new PlainTextNode('['),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Yggdra Union')
             ]),
             new PlainTextNode(']')
@@ -327,7 +327,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
         insideDocumentAndParagraph([
           new SquareParentheticalNode([
             new PlainTextNode('['),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Yggdra Union')
             ]),
             new PlainTextNode(']')
@@ -410,7 +410,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
         insideDocumentAndParagraph([
           new SquareParentheticalNode([
             new PlainTextNode('['),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('Yggdra Union')
             ]),
             new PlainTextNode(']')

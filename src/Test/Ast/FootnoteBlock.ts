@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
@@ -1033,7 +1033,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.')
@@ -1080,7 +1080,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const firstInnerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do'),
       ]),
       footnoteInsideFirstInnerFootnote,
@@ -1124,7 +1124,7 @@ I don't eat (^Or touch.) pumpkins.`
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.'),

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from'../../../index'
 import { insideDocumentAndParagraph } from'.././Helpers'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { StressNode } from'../../../SyntaxNodes/StressNode'
 import { ItalicNode } from'../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
@@ -60,7 +60,7 @@ describe('Overlapped emphasized and stressed text', () => {
     expect(Up.toDocument('I *love **drinking* whole** milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('love '),
           new StressNode([
             new PlainTextNode('drinking')
@@ -82,11 +82,11 @@ describe('Overlapped stressed and emphasized text', () => {
         new PlainTextNode('I '),
         new StressNode([
           new PlainTextNode('love '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('drinking')
           ])
         ]),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -102,11 +102,11 @@ describe('Overlapped italicized and emphasized text', () => {
         new PlainTextNode('I '),
         new ItalicNode([
           new PlainTextNode('love '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('drinking')
           ])
         ]),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')
@@ -120,7 +120,7 @@ describe('Overlapped emphasized and italicized text', () => {
     expect(Up.toDocument('I *love _drinking* whole_ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('love '),
           new ItalicNode([
             new PlainTextNode('drinking')
@@ -180,7 +180,7 @@ describe('Overlapped emphasized and inserted text', () => {
     expect(Up.toDocument('I *love ++drinking* whole++ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('love '),
           new RevisionInsertionNode([
             new PlainTextNode('drinking')
@@ -202,11 +202,11 @@ describe('Overlapped inserted and emphasized text', () => {
         new PlainTextNode('I '),
         new RevisionInsertionNode([
           new PlainTextNode('love '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('drinking')
           ])
         ]),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk.')

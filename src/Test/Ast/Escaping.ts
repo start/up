@@ -5,7 +5,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
 describe('A backslash', () => {
@@ -27,7 +27,7 @@ describe('A backslash', () => {
     expect(Up.toDocument('Hello, \\\\*world*!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, \\'),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('world')
         ]),
         new PlainTextNode('!')

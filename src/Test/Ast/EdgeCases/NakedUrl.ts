@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 
@@ -228,7 +228,7 @@ describe('A naked URL terminated by another convention closing, followed by a no
           new PlainTextNode(')')
         ]),
         new PlainTextNode('. It had '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('way')
         ]),
         new PlainTextNode(' too many tarantulas.')

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../../SyntaxNodes/BoldNode'
@@ -34,7 +34,7 @@ describe('Text surrounded by an underscore and an asterisk on each side', () => 
       insideDocumentAndParagraph([
         new PlainTextNode('Koopas! '),
         new ItalicNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Mario is on his way!'),
           ]),
         ]),

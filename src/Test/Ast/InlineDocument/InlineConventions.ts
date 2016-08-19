@@ -4,7 +4,7 @@ import { InlineUpDocument } from'../../../SyntaxNodes/InlineUpDocument'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
 import { AudioNode } from '../../../SyntaxNodes/AudioNode'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
-import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
@@ -47,7 +47,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved my *Game Boy*, though I never took it with me when I left home.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved my '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Game Boy'),
           ]),
           new PlainTextNode(', though I never took it with me when I left home.')
@@ -255,7 +255,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('[SPOILER: *I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.*]')).to.be.eql(
         new InlineUpDocument([
           new InlineSpoilerNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('I loved my Game Boy '),
               new NormalParentheticalNode([
                 new PlainTextNode('(from Nintendo)')

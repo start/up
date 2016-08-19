@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe('An unmatched asterisk', () => {
@@ -16,7 +16,7 @@ describe('An unmatched asterisk', () => {
   it('does not create an emphasis node, even when following 2 matching asterisks', () => {
     expect(Up.toDocument('*Hello*, *world!')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('Hello'),
         ]),
         new PlainTextNode(', *world!')

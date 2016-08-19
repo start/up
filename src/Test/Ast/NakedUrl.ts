@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
@@ -158,7 +158,7 @@ describe('A naked URL', () => {
   it('is terminated by emphasis closing', () => {
     expect(Up.toDocument('*I love... https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I love... '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -185,7 +185,7 @@ describe('A naked URL', () => {
     expect(Up.toDocument('***I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
         new StressNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('I love '),
             new LinkNode([
               new PlainTextNode('archive.org/fake')
@@ -199,7 +199,7 @@ describe('A naked URL', () => {
   it('is closed by 3 or more asterisks closing emphasis', () => {
     expect(Up.toDocument('*I love https://archive.org/fake***!')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -225,7 +225,7 @@ describe('A naked URL', () => {
   it('is closed by emphasis (starting with 2 asterisks) closing with 1 asterisk', () => {
     expect(Up.toDocument('**I love https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')
@@ -238,7 +238,7 @@ describe('A naked URL', () => {
   it('is closed by emphasis (starting with 3+ asterisks) closing with 1 asterisk', () => {
     expect(Up.toDocument('***I love https://archive.org/fake*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('I love '),
           new LinkNode([
             new PlainTextNode('archive.org/fake')

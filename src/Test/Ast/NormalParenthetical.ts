@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
 
@@ -27,7 +27,7 @@ describe('Parenthesized text', () => {
         new PlainTextNode('I like '),
         new NormalParentheticalNode([
           new PlainTextNode('(certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of)')
@@ -81,7 +81,7 @@ describe('Two left parentheses followed by a single right square parenthesis', (
         new PlainTextNode(':( I like '),
         new NormalParentheticalNode([
           new PlainTextNode('(certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of)')
@@ -99,7 +99,7 @@ describe('A left parenthesis followed by two right parentheses', () => {
         new PlainTextNode('I like '),
         new NormalParentheticalNode([
           new PlainTextNode('(certain '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('types')
           ]),
           new PlainTextNode(' of)')

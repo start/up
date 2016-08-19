@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -67,7 +67,7 @@ describe('A footnote', () => {
   it('is evaluated for inline conventions', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.')
@@ -87,7 +87,7 @@ describe('A footnote', () => {
   it('can be nested within an inline convention', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.')
@@ -109,7 +109,7 @@ describe('A footnote', () => {
   it('can be nested within multiple inline convention', () => {
     const footnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.')
@@ -119,7 +119,7 @@ describe('A footnote', () => {
       new UpDocument([
         new ParagraphNode([
           new StressNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode("I don't eat cereal."),
               footnote,
               new PlainTextNode(" Never have."),
@@ -135,7 +135,7 @@ describe('A footnote', () => {
 
     const innerFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.'),

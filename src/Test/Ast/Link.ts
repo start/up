@@ -3,7 +3,7 @@ import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
 
@@ -98,7 +98,7 @@ describe("A link's contents", () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('this')
           ]),
           new PlainTextNode(' site')

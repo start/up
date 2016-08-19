@@ -1,4 +1,4 @@
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
@@ -18,7 +18,7 @@ import { RevealableConvention } from './RevealableConvention'
 
 
 export const EMPHASIS_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: EmphasisNode,
+  NodeType: Emphasis,
   startTokenKind: TokenKind.EmphasisStart,
   endTokenKind: TokenKind.EmphasisEnd
 }

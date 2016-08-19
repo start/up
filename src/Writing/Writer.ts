@@ -6,7 +6,7 @@ import { ImageNode } from '../SyntaxNodes/ImageNode'
 import { AudioNode } from '../SyntaxNodes/AudioNode'
 import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { ItalicNode } from '../SyntaxNodes/ItalicNode'
@@ -99,7 +99,7 @@ export abstract class Writer {
   protected abstract blockquote(blockquote: BlockquoteNode): string
   protected abstract codeBlock(codeBlock: CodeBlockNode): string
   protected abstract descriptionList(list: DescriptionListNode): string
-  protected abstract emphasis(emphasis: EmphasisNode): string
+  protected abstract emphasis(emphasis: Emphasis): string
   protected abstract exampleInput(exampleInput: ExampleInputNode): string
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
   protected abstract footnoteReference(footnote: FootnoteNode): string
@@ -191,7 +191,7 @@ export abstract class Writer {
       return this.outlineSeparator(node)
     }
 
-    if (node instanceof EmphasisNode) {
+    if (node instanceof Emphasis) {
       return this.emphasis(node)
     }
 

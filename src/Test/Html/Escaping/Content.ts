@@ -9,7 +9,7 @@ import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../../SyntaxNodes/StressNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
@@ -269,7 +269,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
   it('are escaped once', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new EmphasisNode([
+        new Emphasis([
           new StressNode([
             new RevisionDeletionNode([
               new PlainTextNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')

@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
@@ -25,7 +25,7 @@ describe('A paragraph', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(" like that?")
@@ -39,7 +39,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?  \t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(" like that?")
@@ -50,7 +50,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\ \t  ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(" like that?")
@@ -61,7 +61,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that? \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(" like that?")
@@ -72,7 +72,7 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\\\\\  \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(" like that?\\")

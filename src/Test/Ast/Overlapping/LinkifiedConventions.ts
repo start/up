@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -18,12 +18,12 @@ describe('Emphasis overlapping a linkified spoiler', () => {
     expect(Up.toDocument('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('only ')
         ]),
         new InlineSpoilerNode([
           new LinkNode([
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('you')
             ]),
             new PlainTextNode(' fight Gary')

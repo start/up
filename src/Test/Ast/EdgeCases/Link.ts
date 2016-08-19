@@ -6,7 +6,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
@@ -148,7 +148,7 @@ describe('A link missing its final closing bracket', () => {
           new PlainTextNode('[: Do this :]'),
         ]),
         new PlainTextNode('[: smile! Anyway, why is '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('everyone')
         ]),
         new PlainTextNode(' greeting mother earth?')

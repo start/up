@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 
 
@@ -27,7 +27,7 @@ describe('A revision insertion', () => {
         new PlainTextNode('I like '),
         new RevisionInsertionNode([
           new PlainTextNode('to '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('regularly')
           ]),
           new PlainTextNode(' brush')

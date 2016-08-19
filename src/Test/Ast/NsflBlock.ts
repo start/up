@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 
@@ -296,7 +296,7 @@ NSFL:
         new NsflBlockNode([
           new ParagraphNode([
             new PlainTextNode('With a '),
-            new EmphasisNode([
+            new Emphasis([
               new PlainTextNode('very')
             ]),
             new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),

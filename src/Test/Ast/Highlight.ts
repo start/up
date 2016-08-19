@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
 import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -54,7 +54,7 @@ describe('A highlight convention', () => {
         new PlainTextNode('After you beat the Elite Four, '),
         new HighlightNode([
           new PlainTextNode('you fight '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('Gary')
           ]),
         ]),

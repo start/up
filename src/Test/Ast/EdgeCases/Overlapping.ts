@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
 
 
@@ -12,7 +12,7 @@ describe('A paragraph with 2 separate instances of overlapped conventions', () =
     expect(Up.toDocument('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('drinking')
@@ -22,7 +22,7 @@ describe('A paragraph with 2 separate instances of overlapped conventions', () =
           new PlainTextNode(' whole')
         ]),
         new PlainTextNode(' milk. I '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('love '),
           new RevisionDeletionNode([
             new PlainTextNode('drinking')
@@ -44,21 +44,21 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I do '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('not '),
         ]),
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('care'),
           ]),
           new PlainTextNode(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new PlainTextNode(' all. I do '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('not '),
         ]),
         new LinkNode([
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('care'),
           ]),
           new PlainTextNode(' at'),

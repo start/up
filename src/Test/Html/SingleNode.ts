@@ -6,7 +6,7 @@ import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
@@ -602,7 +602,7 @@ describe('An emphasis node', () => {
   it('produces an <em> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new EmphasisNode([new PlainTextNode('Always')])
+        new Emphasis([new PlainTextNode('Always')])
       ])
     ])
 

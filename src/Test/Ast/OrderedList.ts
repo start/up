@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
@@ -265,7 +265,7 @@ describe('An ordered list', () => {
           new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Hello, World '),
-              new EmphasisNode([
+              new Emphasis([
                 new PlainTextNode('1-2')
               ]),
               new PlainTextNode('!')
@@ -274,7 +274,7 @@ describe('An ordered list', () => {
           new OrderedListNode.Item([
             new ParagraphNode([
               new PlainTextNode('Goodbye, World '),
-              new EmphasisNode([
+              new Emphasis([
                 new PlainTextNode('1-2')
               ]),
               new PlainTextNode('!')

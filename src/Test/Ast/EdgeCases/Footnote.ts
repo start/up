@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
@@ -121,7 +121,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
 
     const footnoteInsideFirstFootnote = new FootnoteNode([
       new PlainTextNode('Well, I '),
-      new EmphasisNode([
+      new Emphasis([
         new PlainTextNode('do')
       ]),
       new PlainTextNode(', but I pretend not to.'),

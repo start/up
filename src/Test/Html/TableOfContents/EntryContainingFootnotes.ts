@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { TableNode } from '../../../SyntaxNodes/TableNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -22,7 +22,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
         new PlainTextNode('I enjoy apples'),
         topLevelFootnote,
         new PlainTextNode(' '),
-        new EmphasisNode([
+        new Emphasis([
           new PlainTextNode('and you should too'),
           nestedFootnote
         ])
@@ -85,7 +85,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
           new PlainTextNode('I enjoy apples'),
           topLevelFootnote,
           new PlainTextNode(' '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('and you should too'),
             nestedFootnote
           ])
@@ -154,7 +154,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
           new PlainTextNode('I enjoy apples'),
           topLevelFootnote,
           new PlainTextNode(' '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('and you should too'),
             nestedFootnote
           ])

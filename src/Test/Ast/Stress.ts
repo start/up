@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
+import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
@@ -54,7 +54,7 @@ describe('Stressed text', () => {
         new PlainTextNode('Hello, '),
         new StressNode([
           new PlainTextNode('my '),
-          new EmphasisNode([
+          new Emphasis([
             new PlainTextNode('little')
           ]),
           new PlainTextNode(' world')
