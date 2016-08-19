@@ -3,8 +3,8 @@ import { coalesce } from './CollectionHelpers'
 
 
 export class Config {
-  createTableOfContents = false
   createSourceMap = false
+  writeTableOfContents = false
   writeUnsafeContent = false
   documentName = 'up'
   defaultUrlScheme = 'https://'

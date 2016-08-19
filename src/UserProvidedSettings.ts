@@ -1,6 +1,6 @@
 export interface UserProvidedSettings {
-  createTableOfContents?: boolean
   createSourceMap?: boolean
+  writeTableOfContents?: boolean
   writeUnsafeContent?: boolean
   documentName?: string
   defaultUrlScheme?: string
