@@ -18,8 +18,8 @@ export class ConventionContext {
   }
 
   doInsteadOfTryingToOpenRegularConventions(): boolean {
-    if (this.convention.insteadOfOpeningRegularConventionsWhileOpen) {
-      this.convention.insteadOfOpeningRegularConventionsWhileOpen(this)
+    if (this.convention.insteadOfOpeningNormalConventionsWhileOpen) {
+      this.convention.insteadOfOpeningNormalConventionsWhileOpen(this)
       return true
     }
 
