@@ -63,11 +63,11 @@ class Tokenizer {
   // 3. Link URL conventions (explained below)
   private conventions: Convention[]
 
-  // These bracket conventions don't produce special tokens, and they can only appear inside URLs or media
-  // descriptions.
+  // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or other
+  // areas that ignore normal conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
-  // otherwise cut short the URL or media description.
+  // otherwise cut short the URL (or media description, or internal reference, etc.)
   private rawBracketConventions = this.getRawBracketConventions()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
@@ -180,7 +180,9 @@ class Tokenizer {
 
       this.nakedUrlConvention,
 
-      this.getExampleInputConvention()
+      this.getExampleInputConvention(),
+
+      ...this.getInternalReferenceConventions()
     ]
   }
 
@@ -368,7 +370,7 @@ class Tokenizer {
         this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
       },
 
-      insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+      insteadOfOpeningRegularConventionsWhileOpen: () => this.bufferRegularTextAwareOfRawBrackets(),
 
       beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
       whenClosingItAlsoClosesInnerConventions: true,
@@ -400,6 +402,32 @@ class Tokenizer {
     })
   }
 
+  // This convention represents a reference to an item worthy of inclusion in the table of contents.
+  //
+  // When written to an output format (e.g. HTML), it should serve as a link to that item.
+  private getInternalReferenceConventions(): Convention[] {
+    return BRACKETS.map(bracket =>
+      new Convention({
+        // Internal references cannot be totally blank.
+        startsWith: this.getLabeledBracketStartPattern(this.config.terms.reference, bracket) + ANY_WHITESPACE,
+        endsWith: bracket.endPattern,
+
+        beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+
+        insteadOfOpeningRegularConventionsWhileOpen: () => {
+          // Because this convention is bracketed, it needs to keep track of internal raw brackets (to avoid 
+          // being closed prematurely)
+          this.tryToTokenizeTypographicalConvention() || this.bufferRegularTextAwareOfRawBrackets()
+        },
+
+        whenClosing: () => {
+          // As a rule, internal reference text is always trimmed.
+          const textSnippetFromReferencedItem = this.flushBuffer().trim()
+          this.appendNewToken(TokenKind.InternalReference, textSnippetFromReferencedItem)
+        }
+      }))
+  }
+
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
@@ -409,7 +437,7 @@ class Tokenizer {
           endsWith: bracket.endPattern,
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+          insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRegularTextAwareOfRawBrackets(),
 
           beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
@@ -424,7 +452,7 @@ class Tokenizer {
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRegularTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
@@ -546,7 +574,7 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRegularTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
@@ -590,7 +618,7 @@ class Tokenizer {
       whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
-      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferTextAwareOfRawBrackets(),
+      insteadOfClosingOuterConventionsWhileOpen: () => this.bufferRegularTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: (context) => {
@@ -1275,7 +1303,7 @@ class Tokenizer {
     })
   }
 
-  private bufferTextAwareOfRawBrackets(): void {
+  private bufferRegularTextAwareOfRawBrackets(): void {
     const didOpenConvention =
       this.rawBracketConventions.some(convention => this.tryToOpen(convention))
 

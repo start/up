@@ -8,6 +8,7 @@ import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
+import { InternalReference } from '../../SyntaxNodes/InternalReference'
 import { Link } from '../../SyntaxNodes/Link'
 import { RevealableConvention } from './RevealableConvention'
 
@@ -90,6 +91,11 @@ class Parser {
 
         case TokenKind.ExampleInput: {
           this.nodes.push(new ExampleInput(token.value))
+          continue
+        }
+
+        case TokenKind.InternalReference: {
+          this.nodes.push(new InternalReference(token.value))
           continue
         }
 

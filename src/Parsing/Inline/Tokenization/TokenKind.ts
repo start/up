@@ -10,6 +10,7 @@ export enum TokenKind {
   FootnoteStart,
   HighlightEnd,
   HighlightStart,
+  InternalReference,
   ImageStartAndDescription,
   ItalicEnd,
   ItalicStart,
