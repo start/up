@@ -42,5 +42,3 @@ constructor(
 `````
 
 ... TypeScript would complain that the field is optional, which is incompatible with `OutlineSyntaxNode`.
-
-We use that same trick for other fields, too (e.g. footnote reference numbers).

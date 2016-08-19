@@ -39,10 +39,7 @@ export class OrderedList implements OutlineSyntaxNode {
 
 export namespace OrderedList {
   export class Item extends OutlineSyntaxNodeContainer {
-    constructor(
-      public children: OutlineSyntaxNode[],
-      public ordinal: number = undefined
-    ) {
+    constructor(public children: OutlineSyntaxNode[], public ordinal?: number) {
       super(children)
     }
 

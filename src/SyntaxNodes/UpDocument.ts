@@ -4,10 +4,7 @@ import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertF
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
-  constructor(
-    children: OutlineSyntaxNode[],
-    public tableOfContents: UpDocument.TableOfContents = undefined
-  ) {
+  constructor(children: OutlineSyntaxNode[], public tableOfContents?: UpDocument.TableOfContents) {
     super(children)
   }
 }
