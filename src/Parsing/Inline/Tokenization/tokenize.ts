@@ -250,14 +250,14 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: this.getLabeledBracketStartPattern(labels, bracket) + ANY_WHITESPACE,
+        startsWith: this.getLabeledBracketStartPattern(labels, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern
       }))
   }
 
   private getLabeledBracketStartPattern(labels: Config.Terms.FoundInMarkup, bracket: Bracket): string {
-    return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':'
+    return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':' + ANY_WHITESPACE
   }
 
   private getParentheticalConvention(
@@ -410,7 +410,7 @@ class Tokenizer {
     return BRACKETS.map(bracket =>
       new Convention({
         // Internal references cannot be totally blank.
-        startsWith: this.getLabeledBracketStartPattern(this.config.terms.reference, bracket) + ANY_WHITESPACE,
+        startsWith: this.getLabeledBracketStartPattern(this.config.terms.reference, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
@@ -433,7 +433,7 @@ class Tokenizer {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new Convention({
-          startsWith: this.getLabeledBracketStartPattern(media.labels(this.config.terms), bracket) + ANY_WHITESPACE,
+          startsWith: this.getLabeledBracketStartPattern(media.labels(this.config.terms), bracket),
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 
