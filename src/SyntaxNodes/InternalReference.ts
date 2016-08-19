@@ -8,7 +8,7 @@ export class InternalReference implements InlineSyntaxNode {
     public referencedItem: OutlineSyntaxNode) { }
 
   // TODO
-  inlineTextContent(): string {
+  text(): string {
     return ''
   }
 }

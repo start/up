@@ -5,7 +5,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 export class ExampleInput implements InlineSyntaxNode {
   constructor(public input: string) { }
 
-  inlineTextContent(): string {
+  text(): string {
     return this.input
   }
 }

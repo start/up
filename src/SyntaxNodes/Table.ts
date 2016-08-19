@@ -67,7 +67,7 @@ export namespace Table {
     export class Cell extends Table.Cell {
       isNumeric(): boolean {
         const textContent = this.children
-          .map(child => child.inlineTextContent())
+          .map(child => child.text())
           .join('')
 
         return HAS_DIGIT_PATTERN.test(textContent) && !HAS_NON_NUMERIC_CHARACTER_PATTERN.test(textContent)

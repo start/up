@@ -10,7 +10,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     public url: string,
     public sourceLineNumber: number = undefined) { }
 
-  inlineTextContent(): string {
+  text(): string {
     return ''
   }
 

@@ -1,3 +1,3 @@
 export interface InlineSyntaxNode {
-  inlineTextContent(): string
+  text(): string
 }
