@@ -2,16 +2,16 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { Image } from '../../../SyntaxNodes/Image'
+import { Video } from '../../../SyntaxNodes/Video'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
@@ -23,8 +23,8 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('inline spoilers can be produced using the term', () => {
       expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -32,7 +32,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline spoiler start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^lookaway^: Not finished typi')
+          new PlainText('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -46,8 +46,8 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('inline NSFW conventions can be produced using the term', () => {
       expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -55,7 +55,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline NSFW start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^lookaway^: Not finished typi')
+          new PlainText('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -69,8 +69,8 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('inline NSFL conventions can be produced using the term', () => {
       expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -78,7 +78,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline NSFL start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^lookaway^: Not finished typi')
+          new PlainText('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -99,19 +99,19 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched audio start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^listen^: Ash fights Ga')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^listen^: Ash fights Ga')
+          new PlainText('[^listen^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be audio convention without its bracketed URL produces a footnote instead', () => {
-      const footnote = new FootnoteNode([
-        new PlainTextNode('listen^: I guess this means "listen up"?')
+      const footnote = new Footnote([
+        new PlainText('listen^: I guess this means "listen up"?')
       ], 1)
 
       expect(up.toDocument('[^listen^: I guess this means "listen up"?]')).to.be.eql(
         new UpDocument([
-          new ParagraphNode([footnote]),
-          new FootnoteBlockNode([footnote])
+          new Paragraph([footnote]),
+          new FootnoteBlock([footnote])
         ]))
     })
   })
@@ -125,26 +125,26 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toDocument('[^look^: Ash fights Gary](example.com/image.svg)')).to.be.eql(
         new UpDocument([
-          new ImageNode('Ash fights Gary', 'https://example.com/image.svg')
+          new Image('Ash fights Gary', 'https://example.com/image.svg')
         ]))
     })
 
     specify('an unmatched image start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^look^: Ash fights Ga')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^look^: Ash fights Ga')
+          new PlainText('[^look^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
-      const footnote = new FootnoteNode([
-        new PlainTextNode('look^: I guess this means "look up"?')
+      const footnote = new Footnote([
+        new PlainText('look^: I guess this means "look up"?')
       ], 1)
 
       expect(up.toDocument('[^look^: I guess this means "look up"?]')).to.be.eql(
         new UpDocument([
-          new ParagraphNode([footnote]),
-          new FootnoteBlockNode([footnote])
+          new Paragraph([footnote]),
+          new FootnoteBlock([footnote])
         ]))
     })
   })
@@ -158,26 +158,26 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toDocument('[^watch^: Ash fights Gary](example.com/video.webm)')).to.be.eql(
         new UpDocument([
-          new VideoNode('Ash fights Gary', 'https://example.com/video.webm')
+          new Video('Ash fights Gary', 'https://example.com/video.webm')
         ]))
     })
 
     specify('an unmatched image start delimiter is treated as plain text', () => {
       expect(up.toDocument('[^watch^: Ash fights Ga')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('[^watch^: Ash fights Ga')
+          new PlainText('[^watch^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
-      const footnote = new FootnoteNode([
-        new PlainTextNode('watch^: I guess this means "watch up"?')
+      const footnote = new Footnote([
+        new PlainText('watch^: I guess this means "watch up"?')
       ], 1)
 
       expect(up.toDocument('[^watch^: I guess this means "watch up"?]')).to.be.eql(
         new UpDocument([
-          new ParagraphNode([footnote]),
-          new FootnoteBlockNode([footnote])
+          new Paragraph([footnote]),
+          new FootnoteBlock([footnote])
         ]))
     })
   })

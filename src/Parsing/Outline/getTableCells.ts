@@ -1,4 +1,4 @@
-import { TableNode } from '../../SyntaxNodes/TableNode'
+import { Table } from '../../SyntaxNodes/Table'
 import { patternStartingWith, atLeastOne } from '../PatternHelpers'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { Config } from '../../Config'
@@ -6,20 +6,20 @@ import { last } from '../../CollectionHelpers'
 import { ESCAPER_CHAR } from '../Strings'
 
 
-// `TableNode.Cell` is an abstract class extended by both`TableNode.Header.Cell` and
-// `TableNode.Row.Cell`.
+// `Table.Cell` is an abstract class extended by both`Table.Header.Cell` and
+// `Table.Row.Cell`.
 //
-// `TableNode.Cell` gets exported with our library's module. Conceivably, it could be
+// `Table.Cell` gets exported with our library's module. Conceivably, it could be
 // used for some sort of processing or analysis of the abstract syntax tree. However,
 // Up library users should never need to instantiate objects of that class, so it would
 // be misleading to export it as non-abstract.
 //
 // During parsing, however, we do need to create objects that can later be converted to
 // eaither header cells or row cells. Hence this fun little class. 
-export class TableCell extends TableNode.Cell { }
+export class TableCell extends Table.Cell { }
 
 
-export function getTableCells(row: string, config: Config): TableNode.Cell[] {
+export function getTableCells(row: string, config: Config): Table.Cell[] {
   // We trim the contents of each cell, which means trimming the whole row isn't strictly
   // necessary. However, doing so (or at least trimming the end of the strimg) makes it a
   // bit easier for us to tell when a row ends with a single unescaped semicolon.

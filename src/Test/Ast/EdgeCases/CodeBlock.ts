@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('A code block', () => {
@@ -17,10 +17,10 @@ const pie = 3.5
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('My pies never turn out quite right.')
+        new Paragraph([
+          new PlainText('My pies never turn out quite right.')
         ]),
-        new CodeBlockNode('const pie = 3.5')
+        new CodeBlock('const pie = 3.5')
       ]))
   })
 
@@ -36,21 +36,21 @@ const pie = 3.5
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are white')
+          new LineBlock.Line([
+            new PlainText('Violets are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('My pies just never')
+          new LineBlock.Line([
+            new PlainText('My pies just never')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Turn out quite right')
+          new LineBlock.Line([
+            new PlainText('Turn out quite right')
           ])
         ]),
-        new CodeBlockNode('const pie = 3.5')
+        new CodeBlock('const pie = 3.5')
       ]))
   })
 
@@ -63,9 +63,9 @@ My pies never turn out quite right.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode('const pie = 3.5'),
-        new ParagraphNode([
-          new PlainTextNode('My pies never turn out quite right.')
+        new CodeBlock('const pie = 3.5'),
+        new Paragraph([
+          new PlainText('My pies never turn out quite right.')
         ])
       ]))
   })
@@ -79,14 +79,14 @@ context('A code block with containing zero lines of code produces an empty code 
 \`\`\``
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(''),
+        new CodeBlock(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
     expect(Up.toDocument('```')).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(''),
+        new CodeBlock(''),
       ]))
   })
 })
@@ -111,17 +111,17 @@ document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Check out the code below!')
+        new Paragraph([
+          new PlainText('Check out the code below!')
         ]),
-        new CodeBlockNode(
+        new CodeBlock(
           `function factorial(n: number): number {
   return (
     n <= 1
       ? 1
       : n * factorial(n - 1))
 }`),
-        new CodeBlockNode("document.write('The factorial of 5 is: ' + factorial(5))")
+        new CodeBlock("document.write('The factorial of 5 is: ' + factorial(5))")
       ]))
   })
 })
@@ -135,7 +135,7 @@ describe('Within a code block, a streak of backticks matching the start streak b
 \`\`\``
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(' ```'),
+        new CodeBlock(' ```'),
       ]))
   })
 })

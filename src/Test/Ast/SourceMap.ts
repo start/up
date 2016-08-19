@@ -1,27 +1,27 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { Table } from '../../SyntaxNodes/Table'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
+import { Link } from '../../SyntaxNodes/Link'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 const NO_SPECIFIED_SOURCE_LINE_NUMBER: number = undefined
@@ -31,7 +31,7 @@ context('When the "createSourceMap" config setting is not set to true', () => {
   specify('no source maps are produced', () => {
     expect(Up.toDocument("I enjoy apples.")).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('I enjoy apples.')], NO_SPECIFIED_SOURCE_LINE_NUMBER),
+        new Paragraph([new PlainText('I enjoy apples.')], NO_SPECIFIED_SOURCE_LINE_NUMBER),
       ]))
   })
 })
@@ -45,7 +45,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
   specify("The source line numbers start at 1.", () => {
     expect(up.toDocument('Hi!')).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Hi!")], 1)
+        new Paragraph([new PlainText("Hi!")], 1)
       ]))
   })
 
@@ -57,7 +57,7 @@ I actually start on the second line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new ParagraphNode([new PlainTextNode("I actually start on the second line.")], 2)
+          new Paragraph([new PlainText("I actually start on the second line.")], 2)
         ]))
     })
 
@@ -68,7 +68,7 @@ I actually start on the third line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new ParagraphNode([new PlainTextNode("I actually start on the third line.")], 3)
+          new Paragraph([new PlainText("I actually start on the third line.")], 3)
         ]))
     })
 
@@ -83,7 +83,7 @@ I actually start on the seventh line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new ParagraphNode([new PlainTextNode("I actually start on the seventh line.")], 7)
+          new Paragraph([new PlainText("I actually start on the seventh line.")], 7)
         ]))
     })
   })
@@ -98,7 +98,7 @@ I enjoy apples
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
+            new Heading([new PlainText('I enjoy apples')], 1, 2)
           ]))
       })
 
@@ -110,7 +110,7 @@ I enjoy apples
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2)
+            new Heading([new PlainText('I enjoy apples')], 1, 2)
           ]))
       })
     })
@@ -126,22 +126,22 @@ Chrono Cross;     1999`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Release Date')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1995')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1999')])
               ])
             ],
-            new TableNode.Caption([
-              new PlainTextNode('Games in the Chrono series')
+            new Table.Caption([
+              new PlainText('Games in the Chrono series')
             ]), 2)
         ]))
     })
@@ -156,24 +156,24 @@ Chart: \`AND\` operator logic
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('1')]),
+              new Table.Header.Cell([new PlainText('0')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('true')]),
+                new Table.Row.Cell([new PlainText('false')]),
+              ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('false')]),
+                new Table.Row.Cell([new PlainText('false')])
+              ], new Table.Header.Cell([new PlainText('0')]))
             ],
-            new TableNode.Caption([
+            new Table.Caption([
               new InlineCode('AND'),
-              new PlainTextNode(' operator logic')
+              new PlainText(' operator logic')
             ]), 2)
         ]))
     })
@@ -186,12 +186,12 @@ Chart: \`AND\` operator logic
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new ParagraphNode([new PlainTextNode("They're cheap")], 2)
+          new OrderedList([
+            new OrderedList.Item([
+              new Paragraph([new PlainText("They're cheap")], 2)
             ], 1),
-            new OrderedListNode.Item([
-              new ParagraphNode([new PlainTextNode("They're delicious")], 4)
+            new OrderedList.Item([
+              new Paragraph([new PlainText("They're delicious")], 4)
             ], 2)
           ], 2)
         ]))
@@ -205,12 +205,12 @@ Chart: \`AND\` operator logic
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new ParagraphNode([new PlainTextNode("They're cheap")], 2)
+          new UnorderedList([
+            new UnorderedList.Item([
+              new Paragraph([new PlainText("They're cheap")], 2)
             ]),
-            new UnorderedListNode.Item([
-              new ParagraphNode([new PlainTextNode("They're delicious")], 4)
+            new UnorderedList.Item([
+              new Paragraph([new PlainText("They're delicious")], 4)
             ])
           ], 2)
         ]))
@@ -227,19 +227,19 @@ Peaches
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Apples')])
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([new PlainText('Apples')])
             ],
-              new DescriptionListNode.Item.Description([
-                new ParagraphNode([new PlainTextNode("They're delicious.")], 3)
+              new DescriptionList.Item.Description([
+                new Paragraph([new PlainText("They're delicious.")], 3)
               ])),
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Bananas')]),
-              new DescriptionListNode.Item.Term([new PlainTextNode('Peaches')])
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([new PlainText('Bananas')]),
+              new DescriptionList.Item.Term([new PlainText('Peaches')])
             ],
-              new DescriptionListNode.Item.Description([
-                new ParagraphNode([new PlainTextNode("They're also delicious.")], 7)
+              new DescriptionList.Item.Description([
+                new Paragraph([new PlainText("They're also delicious.")], 7)
               ]))
           ], 2)
         ]))
@@ -252,12 +252,12 @@ Apples are blue`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new LineBlockNode([
-            new LineBlockNode.Line([
-              new PlainTextNode("Roses are read")
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are read")
             ]),
-            new LineBlockNode.Line([
-              new PlainTextNode("Apples are blue")
+            new LineBlock.Line([
+              new PlainText("Apples are blue")
             ])
           ], 2)
         ]))
@@ -270,8 +270,8 @@ SPOILER:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 3)
+          new SpoilerBlock([
+            new Paragraph([new PlainText("Who doesn't?")], 3)
           ], 2)
         ]))
     })
@@ -284,8 +284,8 @@ NSFW:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 4)
+          new NsfwBlock([
+            new Paragraph([new PlainText("Who doesn't?")], 4)
           ], 2)
         ]))
     })
@@ -299,8 +299,8 @@ NSFL:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 5)
+          new NsflBlock([
+            new Paragraph([new PlainText("Who doesn't?")], 5)
           ], 2)
         ]))
     })
@@ -310,8 +310,8 @@ NSFL:
 > Who doesn't?`
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new BlockquoteNode([
-            new ParagraphNode([new PlainTextNode("Who doesn't?")], 2)
+          new Blockquote([
+            new Paragraph([new PlainText("Who doesn't?")], 2)
           ], 2)
         ]))
     })
@@ -322,7 +322,7 @@ NSFL:
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new OutlineSeparatorNode(1),
+            new OutlineSeparator(1),
           ]))
       })
 
@@ -336,9 +336,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new ParagraphNode([new PlainTextNode("The end.")], 2),
-            new OutlineSeparatorNode(3),
-            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 6)
+            new Paragraph([new PlainText("The end.")], 2),
+            new OutlineSeparator(3),
+            new Paragraph([new PlainText("No, really. That was it.")], 6)
           ]))
       })
 
@@ -357,9 +357,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new ParagraphNode([new PlainTextNode("The end.")], 2),
-            new OutlineSeparatorNode(3),
-            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 11)
+            new Paragraph([new PlainText("The end.")], 2),
+            new OutlineSeparator(3),
+            new Paragraph([new PlainText("No, really. That was it.")], 11)
           ]))
       })
 
@@ -382,9 +382,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new ParagraphNode([new PlainTextNode("The end.")], 2),
-            new OutlineSeparatorNode(3),
-            new ParagraphNode([new PlainTextNode("No, really. That was it.")], 15)
+            new Paragraph([new PlainText("The end.")], 2),
+            new OutlineSeparator(3),
+            new Paragraph([new PlainText("No, really. That was it.")], 15)
           ]))
       })
     })
@@ -397,7 +397,7 @@ const reason = "They are cheap and delicious."
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlockNode('const reason = "They are cheap and delicious."', 2),
+          new CodeBlock('const reason = "They are cheap and delicious."', 2),
         ]))
     })
 
@@ -409,22 +409,22 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-      const NO_CAPTION: TableNode.Caption = undefined
+      const NO_CAPTION: Table.Caption = undefined
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Release Date')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1995')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1999')])
               ])
             ], NO_CAPTION, 2)
         ]))
@@ -438,24 +438,24 @@ Chart:
 1;      true;   false
 0;      false;  false`
 
-      const NO_CAPTION: TableNode.Caption = undefined
+      const NO_CAPTION: Table.Caption = undefined
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('1')]),
+              new Table.Header.Cell([new PlainText('0')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('true')]),
+                new Table.Row.Cell([new PlainText('false')]),
+              ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('false')]),
+                new Table.Row.Cell([new PlainText('false')])
+              ], new Table.Header.Cell([new PlainText('0')]))
             ], NO_CAPTION, 2)
         ]))
     })
@@ -472,14 +472,14 @@ Chart:
       specify('Images', () => {
         expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
           new UpDocument([
-            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1)
+            new Image('haunted house', 'https://example.com/hauntedhouse.svg', 1)
           ]))
       })
 
       specify('Videos', () => {
         expect(up.toDocument('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
           new UpDocument([
-            new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+            new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
           ]))
       })
     })
@@ -489,8 +489,8 @@ Chart:
       it('is given a source line number (but the media node it contains is not)', () => {
         expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
           new UpDocument([
-            new LinkNode([
-              new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+            new Link([
+              new Image('haunted house', 'https://example.com/hauntedhouse.svg')
             ], 'https://example.com/gallery', 1)
           ]))
       })
@@ -504,9 +504,9 @@ Chart:
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1),
+            new Image('haunted house', 'https://example.com/hauntedhouse.svg', 1),
             new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
-            new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+            new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
           ]))
       })
     })
@@ -521,19 +521,19 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
 I do eat apples, though.`
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainText(" Never have."),
         ], 2),
-        new FootnoteBlockNode([footnote]),
-        new ParagraphNode([new PlainTextNode('I do eat apples, though.')], 4)
+        new FootnoteBlock([footnote]),
+        new Paragraph([new PlainText('I do eat apples, though.')], 4)
       ]))
   })
 })
@@ -565,16 +565,16 @@ Pink lady.`
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
-        new ParagraphNode([new PlainTextNode("Don't you?")], 6),
-        new LineBlockNode([
-          new LineBlockNode.Line([new PlainTextNode('Roses are red')]),
-          new LineBlockNode.Line([new PlainTextNode('Apples are blue')])
+        new Heading([new PlainText('I enjoy apples')], 1, 2),
+        new Paragraph([new PlainText("Don't you?")], 6),
+        new LineBlock([
+          new LineBlock.Line([new PlainText('Roses are red')]),
+          new LineBlock.Line([new PlainText('Apples are blue')])
         ], 8),
-        new HeadingNode([new PlainTextNode("The best fruit")], 2, 12),
-        new ParagraphNode([new PlainTextNode('Apples.')], 15),
-        new HeadingNode([new PlainTextNode("The best apple")], 2, 18),
-        new ParagraphNode([new PlainTextNode('Pink lady.')], 21)
+        new Heading([new PlainText("The best fruit")], 2, 12),
+        new Paragraph([new PlainText('Apples.')], 15),
+        new Heading([new PlainText("The best apple")], 2, 18),
+        new Paragraph([new PlainText('Pink lady.')], 21)
       ]))
   })
 
@@ -601,23 +601,23 @@ Pink lady
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1, 2),
-        new ParagraphNode([new PlainTextNode("Don't you?")], 6),
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
-          ], new DescriptionListNode.Item.Description([
-            new HeadingNode([new PlainTextNode("The best fruit")], 2, 9),
-            new SpoilerBlockNode([
-              new ParagraphNode([new PlainTextNode('Really.')], 13)
+        new Heading([new PlainText('I enjoy apples')], 1, 2),
+        new Paragraph([new PlainText("Don't you?")], 6),
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Apple')])
+          ], new DescriptionList.Item.Description([
+            new Heading([new PlainText("The best fruit")], 2, 9),
+            new SpoilerBlock([
+              new Paragraph([new PlainText('Really.')], 13)
             ], 12)
           ])),
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
-          ], new DescriptionListNode.Item.Description([
-            new HeadingNode([new PlainTextNode("The best apple")], 2, 16),
-            new BlockquoteNode([
-              new ParagraphNode([new PlainTextNode('Really.')], 19)
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Pink lady')])
+          ], new DescriptionList.Item.Description([
+            new Heading([new PlainText("The best apple")], 2, 16),
+            new Blockquote([
+              new Paragraph([new PlainText('Really.')], 19)
             ], 19)
           ]))
         ], 8)

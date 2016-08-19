@@ -2,34 +2,34 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { Link } from '../../../SyntaxNodes/Link'
+import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe('Emphasis overlapping a linkified spoiler', () => {
   it('splits the emphasis node', () => {
     expect(Up.toDocument('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
+        new PlainText('After you beat the Elite Four, '),
         new Emphasis([
-          new PlainTextNode('only ')
+          new PlainText('only ')
         ]),
-        new InlineSpoilerNode([
-          new LinkNode([
+        new InlineSpoiler([
+          new Link([
             new Emphasis([
-              new PlainTextNode('you')
+              new PlainText('you')
             ]),
-            new PlainTextNode(' fight Gary')
+            new PlainText(' fight Gary')
           ], 'http://example.com/finalbattle')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -39,19 +39,19 @@ describe('A linkified spoiler overlapping revision deletion', () => {
   it('splits the revision deletion node', () => {
     expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('you fight Gary '),
-            new RevisionDeletionNode([
-              new PlainTextNode('Ketchum')
+        new PlainText('After you beat the Elite Four, '),
+        new InlineSpoiler([
+          new Link([
+            new PlainText('you fight Gary '),
+            new RevisionDeletion([
+              new PlainText('Ketchum')
             ])
           ], 'http://example.com/finalbattle')
         ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' and then the credits roll')
+        new RevisionDeletion([
+          new PlainText(' and then the credits roll')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -62,28 +62,28 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
     const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] [example.com] footnote that overlaps an inline NSFL convention.'
 
     const footnote =
-      new FootnoteNode([
-        new PlainTextNode('reasonable '),
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('and realistic')
+      new Footnote([
+        new PlainText('reasonable '),
+        new InlineNsfl([
+          new Link([
+            new PlainText('and realistic')
           ], 'https://example.com')
         ])
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Eventually, I will think of one'),
+        new Paragraph([
+          new PlainText('Eventually, I will think of one'),
           footnote,
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode(' example of a')
+          new InlineNsfl([
+            new Link([
+              new PlainText(' example of a')
             ], 'https://example.com')
           ]),
-          new PlainTextNode(' footnote that overlaps an inline NSFL convention.')
+          new PlainText(' footnote that overlaps an inline NSFL convention.')
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -94,26 +94,26 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
     const markup = '[NSFL: Gary loses to Ash (^Ketchum] (example.com) is his last name)'
 
     const footnote =
-      new FootnoteNode([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('Ketchum')
+      new Footnote([
+        new InlineNsfl([
+          new Link([
+            new PlainText('Ketchum')
           ], 'https://example.com')
         ]),
-        new PlainTextNode(' is his last name')
+        new PlainText(' is his last name')
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Gary loses to Ash'),
+        new Paragraph([
+          new InlineNsfl([
+            new Link([
+              new PlainText('Gary loses to Ash'),
             ], 'https://example.com')
           ]),
           footnote
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })

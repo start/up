@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 
 
 context('The "nsfw" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
@@ -17,8 +17,8 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     it('is used', () => {
       expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { nsfw: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -33,8 +33,8 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     it('is trimmed', () => {
       expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -42,8 +42,8 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     it('ignores inline conventions and regular expression rules', () => {
       expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -51,11 +51,11 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     it('can have multiple variations', () => {
       expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ]),
-          new InlineNsfwNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfw([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -73,12 +73,12 @@ ruins ending:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -112,12 +112,12 @@ RUINS ending:
 
       expect(Up.toDocument(markup, { terms: { nsfw: ' \t ruins ending \t ' } })).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -133,12 +133,12 @@ RUINS ending:
 
       expect(Up.toDocument(markup, { terms: { nsfw: '*ruins* ending' } })).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -156,13 +156,13 @@ LOOK AWAY:
 
       expect(Up.toDocument(markup, { terms: { nsfw: ['look away', 'ruins ending'] } })).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsfwBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new NsfwBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

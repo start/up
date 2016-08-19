@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Video } from '../../../SyntaxNodes/Video'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { Link } from '../../../SyntaxNodes/Link'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
 describe('A paragraph directly followed by a video on its own line', () => {
@@ -19,10 +19,10 @@ Do not pour the spiders into your sister's cereal.
 [video: spiders crawling out of mouth][http://example.com/spiders.webm]`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Do not pour the spiders into your sister's cereal.")
+        new Paragraph([
+          new PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
-        new VideoNode('spiders crawling out of mouth', 'http://example.com/spiders.webm'),
+        new Video('spiders crawling out of mouth', 'http://example.com/spiders.webm'),
       ]))
   })
 })
@@ -32,15 +32,15 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce an video node', () => {
     expect(Up.toDocument('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like [video: ghosts}'),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com/ghosts.webm')
+        new PlainText('I like [video: ghosts}'),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com/ghosts.webm')
           ], 'http://example.com/ghosts.webm'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -50,13 +50,13 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce a video node', () => {
     expect(Up.toDocument('I like [video: ghosts][http://example.com/ghosts.webm).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new SquareParentheticalNode([
-          new PlainTextNode('[video: ghosts]')
+        new PlainText('I like '),
+        new SquareParenthetical([
+          new PlainText('[video: ghosts]')
         ]),
-        new PlainTextNode('['),
-        new LinkNode([
-          new PlainTextNode('example.com/ghosts.webm).')
+        new PlainText('['),
+        new Link([
+          new PlainText('example.com/ghosts.webm).')
         ], 'http://example.com/ghosts.webm).'),
       ]))
   })
@@ -67,18 +67,18 @@ context('Unmatched opening parentheses in a video description have no affect on'
   specify('parentheses surounding the URL', () => {
     expect(Up.toDocument('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
       new UpDocument([
-        new VideoNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+        new Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.toDocument('([video: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new VideoNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new PlainTextNode(')'),
+        new Paragraph([
+          new NormalParenthetical([
+            new PlainText('('),
+            new Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new PlainText(')'),
           ])
         ])
       ]))
@@ -90,16 +90,16 @@ describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[video: West Virginia exit polling][https://example.com/a(normal(url])'
 
-    const footnote = new FootnoteNode([
-      new VideoNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    const footnote = new Footnote([
+      new Video('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnote
         ])
       ]))

@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 
 context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
@@ -17,8 +17,8 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     it('is used', () => {
       expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { nsfl: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -33,8 +33,8 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     it('ignores inline conventions and regular expression rules', () => {
       expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { nsfl: ' \t ruins ending \t ' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -42,8 +42,8 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     it('ignores inline conventions and regular expression rules', () => {
       expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { nsfl: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -51,11 +51,11 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     it('can have multiple variations', () => {
       expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfl: ['look away', 'ruins ending'] } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ]),
-          new InlineNsflNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineNsfl([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -73,12 +73,12 @@ ruins ending:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -112,12 +112,12 @@ RUINS ending:
 
       expect(Up.toDocument(markup, { terms: { nsfl: ' \t ruins ending \t ' } })).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -133,12 +133,12 @@ RUINS ending:
 
       expect(Up.toDocument(markup, { terms: { nsfl: '*ruins* ending' } })).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -156,13 +156,13 @@ LOOK AWAY:
 
       expect(Up.toDocument(markup, { terms: { nsfl: ['look away', 'ruins ending'] } })).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsflBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new NsflBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

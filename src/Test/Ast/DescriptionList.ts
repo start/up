@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 
 
 describe('A non-indented line followed by an indented line', () => {
@@ -17,13 +17,13 @@ Charmander
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Charmander')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
             ]))
         ])
@@ -42,15 +42,15 @@ Torchic
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Cyndaquil')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Torchic')])
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Charmander')]),
+            new DescriptionList.Item.Term([new PlainText('Cyndaquil')]),
+            new DescriptionList.Item.Term([new PlainText('Torchic')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('The first three starter Fire Pokemon')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('The first three starter Fire Pokemon')
               ])
             ]))
         ])
@@ -67,17 +67,17 @@ Ash *"Little Marco"* Ketchum
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Ash '),
-              new Emphasis([new PlainTextNode('"Little Marco"')]),
-              new PlainTextNode(' Ketchum')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Ash '),
+              new Emphasis([new PlainText('"Little Marco"')]),
+              new PlainText(' Ketchum')
             ])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ])
@@ -94,17 +94,17 @@ Ash Ketchum
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Ash Ketchum')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Ash Ketchum')
             ])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A famous Pokemon Trainer '),
-                new Emphasis([new PlainTextNode('probably')]),
-                new PlainTextNode(' from Pallet Town')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A famous Pokemon Trainer '),
+                new Emphasis([new PlainText('probably')]),
+                new PlainText(' from Pallet Town')
               ])
             ]))
         ])
@@ -130,32 +130,32 @@ Gary
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Night Shade')])
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Term([new PlainText('Lick')]),
+            new DescriptionList.Item.Term([new PlainText('Night Shade')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Ghost type moves.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Ghost type moves.')
               ])
             ])),
 
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Gary')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A young man with a great sense of smell.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A young man with a great sense of smell.')
               ])
             ]))
         ])
@@ -172,20 +172,20 @@ Ash Ketchum
 The secret to eternal youth is to join a cartoon.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Ash Ketchum')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Ash Ketchum')
             ])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('A famous Pokemon Trainer from Pallet Town.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ]),
-        new ParagraphNode([
-          new PlainTextNode('The secret to eternal youth is to join a cartoon.')
+        new Paragraph([
+          new PlainText('The secret to eternal youth is to join a cartoon.')
         ])
       ]))
   })
@@ -203,19 +203,19 @@ Poem
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Poem')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Poem')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new LineBlockNode([
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Roses are red'),
+              new DescriptionList.Item.Description([
+                new LineBlock([
+                  new LineBlock.Line([
+                    new PlainText('Roses are red'),
                   ]),
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Violets are blue')
+                  new LineBlock.Line([
+                    new PlainText('Violets are blue')
                   ])
                 ])
               ]))
@@ -231,19 +231,19 @@ Poem
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Poem')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Poem')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new LineBlockNode([
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Roses are red'),
+              new DescriptionList.Item.Description([
+                new LineBlock([
+                  new LineBlock.Line([
+                    new PlainText('Roses are red'),
                   ]),
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Violets are blue')
+                  new LineBlock.Line([
+                    new PlainText('Violets are blue')
                   ])
                 ])
               ]))
@@ -259,19 +259,19 @@ Poem
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Poem')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Poem')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new LineBlockNode([
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Roses are red'),
+              new DescriptionList.Item.Description([
+                new LineBlock([
+                  new LineBlock.Line([
+                    new PlainText('Roses are red'),
                   ]),
-                  new LineBlockNode.Line([
-                    new PlainTextNode('Violets are blue')
+                  new LineBlock.Line([
+                    new PlainText('Violets are blue')
                   ])
                 ])
               ]))
@@ -299,44 +299,44 @@ Address
 
   expect(Up.toDocument(markup)).to.be.eql(
     new UpDocument([
-      new DescriptionListNode([
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([
-            new PlainTextNode('Poem')
+      new DescriptionList([
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([
+            new PlainText('Poem')
           ])
         ],
-          new DescriptionListNode.Item.Description([
-            new LineBlockNode([
-              new LineBlockNode.Line([
-                new PlainTextNode('Roses are red')
+          new DescriptionList.Item.Description([
+            new LineBlock([
+              new LineBlock.Line([
+                new PlainText('Roses are red')
               ]),
-              new LineBlockNode.Line([
-                new PlainTextNode('Violets are blue')
+              new LineBlock.Line([
+                new PlainText('Violets are blue')
               ])
             ]),
-            new ParagraphNode([
-              new PlainTextNode('I really like this one.')
+            new Paragraph([
+              new PlainText('I really like this one.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode("I think it's my favorite.")
+            new Paragraph([
+              new PlainText("I think it's my favorite.")
             ])
           ])),
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([
-            new PlainTextNode('Address')
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([
+            new PlainText('Address')
           ])
         ],
-          new DescriptionListNode.Item.Description([
-            new LineBlockNode([
-              new LineBlockNode.Line([
-                new PlainTextNode('1234 Spooky Street')
+          new DescriptionList.Item.Description([
+            new LineBlock([
+              new LineBlock.Line([
+                new PlainText('1234 Spooky Street')
               ]),
-              new LineBlockNode.Line([
-                new PlainTextNode('Pepe, PA 17101')
+              new LineBlock.Line([
+                new PlainText('Pepe, PA 17101')
               ])
             ]),
-            new ParagraphNode([
-              new PlainTextNode('I used to live there.')
+            new Paragraph([
+              new PlainText('I used to live there.')
             ])
           ]))
       ])
@@ -360,43 +360,43 @@ Lee Chang-ho
 `
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('League of Legends')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('League of Legends')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A multiplayer online battle arena game')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A multiplayer online battle arena game')
             ])
           ])),
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('StarCraft 2')
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('StarCraft 2')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A real-time strategy game')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A real-time strategy game')
             ])
           ]))
         ]),
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Magnus Carlsen')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Magnus Carlsen')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('An above average chess player')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('An above average chess player')
             ])
           ])),
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Lee Chang-ho')
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Lee Chang-ho')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('An above average go player')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('An above average go player')
             ])
           ]))
         ])
@@ -422,44 +422,44 @@ Lee Chang-ho
 `
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('League of Legends')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('League of Legends')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A multiplayer online battle arena game')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A multiplayer online battle arena game')
             ])
           ])),
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('StarCraft 2')
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('StarCraft 2')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A real-time strategy game')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A real-time strategy game')
             ])
           ]))
         ]),
-        new OutlineSeparatorNode(),
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Magnus Carlsen')
+        new OutlineSeparator(),
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Magnus Carlsen')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('An above average chess player')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('An above average chess player')
             ])
           ])),
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Lee Chang-ho')
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([
+              new PlainText('Lee Chang-ho')
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('An above average go player')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('An above average go player')
             ])
           ]))
         ])

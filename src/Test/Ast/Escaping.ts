@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
@@ -12,39 +12,39 @@ describe('A backslash', () => {
   it('disables any special behavior of the character that follows, preserving the other character as plain text', () => {
     expect(Up.toDocument('Hello, \\*world\\*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, *world*!')
+        new PlainText('Hello, *world*!')
       ]))
   })
 
   it("has no effect if the following character didn't have any special behavior to begin with", () => {
     expect(Up.toDocument('Hello, \\world!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, world!')
+        new PlainText('Hello, world!')
       ]))
   })
 
   it('can disable the special behavior of another backslash', () => {
     expect(Up.toDocument('Hello, \\\\*world*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, \\'),
+        new PlainText('Hello, \\'),
         new Emphasis([
-          new PlainTextNode('world')
+          new PlainText('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('causes only the following character to be treated as plain text', () => {
     expect(Up.toDocument('Hello, \\\\, meet \\\\!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, \\, meet \\!')
+        new PlainText('Hello, \\, meet \\!')
       ]))
   })
 
   it('is ignored if it is the final character of the markup', () => {
     expect(Up.toDocument('Hello, Bob.\\')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, Bob.')
+        new PlainText('Hello, Bob.')
       ]))
   })
 })
@@ -57,12 +57,12 @@ Hello, world!\\
 Goodbye, world!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Hello, world!')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Hello, world!')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Goodbye, world!')
+          new LineBlock.Line([
+            new PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -75,11 +75,11 @@ Hello, world!\\
 Goodbye, world!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
+        new Paragraph([
+          new PlainText('Hello, world!')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('Goodbye, world!')
+        new Paragraph([
+          new PlainText('Goodbye, world!')
         ])
       ]))
   })

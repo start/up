@@ -1,20 +1,20 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 
 
 describe('Text surrounded by 2 tildes', () => {
   it('is put inside a revision deletion node', () => {
     expect(Up.toDocument('I like ~~certain types of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new RevisionDeletionNode([
-          new PlainTextNode('certain types of')
+        new PlainText('I like '),
+        new RevisionDeletion([
+          new PlainText('certain types of')
         ]),
-        new PlainTextNode(' pizza')
+        new PlainText(' pizza')
       ]))
   })
 })
@@ -24,15 +24,15 @@ describe('A revision deletion', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toDocument('I like ~~certain *types* of~~ pizza')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new RevisionDeletionNode([
-          new PlainTextNode('certain '),
+        new PlainText('I like '),
+        new RevisionDeletion([
+          new PlainText('certain '),
           new Emphasis([
-            new PlainTextNode('types')
+            new PlainText('types')
           ]),
-          new PlainTextNode(' of')
+          new PlainText(' of')
         ]),
-        new PlainTextNode(' pizza')
+        new PlainText(' pizza')
       ]))
   })
 })
@@ -42,7 +42,7 @@ describe('An unmatched revision deletion delimiter', () => {
   it('is preserved as plain text', () => {
     expect(Up.toDocument('I like pizza~~but I never eat it.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like pizza~~but I never eat it.'),
+        new PlainText('I like pizza~~but I never eat it.'),
       ]))
   })
 })

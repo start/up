@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { TableNode } from '../../SyntaxNodes/TableNode'
+import { Table } from '../../SyntaxNodes/Table'
 
 
-// Both tables and charts are represented by instances of the `TableNode` class. Likewise, both
-// table row cells and chart row cells are represented by instances of `TableNode.Row.Cell`.
+// Both tables and charts are represented by instances of the `Table` class. Likewise, both
+// table row cells and chart row cells are represented by instances of `Table.Row.Cell`.
 //
 // To test whether a row cell is numeric, we call its `isNumeric` method, which evaluates the
 // cell's contents and returns the result.
@@ -42,7 +42,7 @@ Dummy Header Cell
 ${cellMarkup};`
 
   const table =
-    Up.toDocument(markup).children[0] as TableNode
+    Up.toDocument(markup).children[0] as Table
 
   return table.rows[0].cells[0].isNumeric()
 }

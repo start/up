@@ -1,40 +1,40 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { Table } from '../../SyntaxNodes/Table'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 describe('A footnote in a paragph', () => {
   it("produces a footnote block node after the paragraph", () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have.")
+          new PlainText(" Never have.")
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -45,23 +45,23 @@ describe('A paragraph with two footnotes', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)"
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode('Well, I do, but I pretend not to.')
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode('Except for Mondays.')
+      new Footnote([
+        new PlainText('Except for Mondays.')
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnotes[0],
-          new PlainTextNode(" Never have."),
+          new PlainText(" Never have."),
           footnotes[1]
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -73,18 +73,18 @@ describe('Footnotes in a heading', () => {
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ------`
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Heading([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have.")
+          new PlainText(" Never have.")
         ], 1),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnote
         ])
       ]))
@@ -99,27 +99,27 @@ Roses are red (^This is not my line.)
 Violets are blue (^Neither is this line. I think my mom made it up.)`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode('This is not my line.')
+      new Footnote([
+        new PlainText('This is not my line.')
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode('Neither is this line. I think my mom made it up.')
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode("Roses are red"),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText("Roses are red"),
             footnotes[0],
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("Violets are blue"),
+          new LineBlock.Line([
+            new PlainText("Violets are blue"),
             footnotes[1]
           ])
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -138,58 +138,58 @@ describe('Footnotes in unordered list items', () => {
   Violets are blue (^Neither is this line. I think my mom made it up.)`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2),
-      new FootnoteNode([
-        new PlainTextNode('This is not my line.')
+      new Footnote([
+        new PlainText('This is not my line.')
       ], 3),
-      new FootnoteNode([
-        new PlainTextNode('Neither is this line. I think my mom made it up.')
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
       ], 4)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
+        new UnorderedList([
 
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
               footnotes[0],
-              new PlainTextNode(" Never have.")
+              new PlainText(" Never have.")
             ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ]),
 
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat"),
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat"),
               footnotes[1],
-              new PlainTextNode(" pumpkins.")
+              new PlainText(" pumpkins.")
             ])
           ]),
 
-          new UnorderedListNode.Item([
-            new LineBlockNode([
-              new LineBlockNode.Line([
-                new PlainTextNode("Roses are red"),
+          new UnorderedList.Item([
+            new LineBlock([
+              new LineBlock.Line([
+                new PlainText("Roses are red"),
                 footnotes[2]
               ]),
-              new LineBlockNode.Line([
-                new PlainTextNode("Violets are blue"),
+              new LineBlock.Line([
+                new PlainText("Violets are blue"),
                 footnotes[3]
               ])
             ]),
           ])
         ]),
 
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -200,19 +200,19 @@ describe('Footnotes in a blockquote', () => {
     const markup = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote =
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode("I don't eat cereal."),
+        new Blockquote([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
             footnote,
-            new PlainTextNode(" Never have.")
+            new PlainText(" Never have.")
           ]),
-          new FootnoteBlockNode([footnote])
+          new FootnoteBlock([footnote])
         ])
       ]))
   })
@@ -229,42 +229,42 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 > * I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
+        new Blockquote([
 
-          new UnorderedListNode([
+          new UnorderedList([
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat cereal."),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have.")
+                new PlainText(" Never have.")
               ]),
-              new ParagraphNode([
-                new PlainTextNode("It's too expensive.")
+              new Paragraph([
+                new PlainText("It's too expensive.")
               ])
             ]),
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ])
             ])
 
           ]),
 
-          new FootnoteBlockNode(footnotes)
+          new FootnoteBlock(footnotes)
 
         ])
       ]))
@@ -280,18 +280,18 @@ SPOILER:
   This ruins the movie. [^ And this is a fun fact.]`
 
     const footnote =
-      new FootnoteNode([
-        new PlainTextNode("And this is a fun fact.")
+      new Footnote([
+        new PlainText("And this is a fun fact.")
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode("This ruins the movie."),
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote])
+          new FootnoteBlock([footnote])
         ])
       ]))
   })
@@ -310,42 +310,42 @@ SPOILER:
   * I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
+        new SpoilerBlock([
 
-          new UnorderedListNode([
+          new UnorderedList([
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat cereal."),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have."),
+                new PlainText(" Never have."),
               ]),
-              new ParagraphNode([
-                new PlainTextNode("It's too expensive.")
+              new Paragraph([
+                new PlainText("It's too expensive.")
               ])
             ]),
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ])
             ])
 
           ]),
 
-          new FootnoteBlockNode(footnotes)
+          new FootnoteBlock(footnotes)
 
         ])
       ]))
@@ -361,18 +361,18 @@ NSFW:
   This ruins the movie. [^ And this is a fun fact.]`
 
     const footnote =
-      new FootnoteNode([
-        new PlainTextNode("And this is a fun fact.")
+      new Footnote([
+        new PlainText("And this is a fun fact.")
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode("This ruins the movie."),
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote])
+          new FootnoteBlock([footnote])
         ])
       ]))
   })
@@ -391,42 +391,42 @@ NSFW:
   * I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
+        new NsfwBlock([
 
-          new UnorderedListNode([
+          new UnorderedList([
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat cereal."),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have."),
+                new PlainText(" Never have."),
               ]),
-              new ParagraphNode([
-                new PlainTextNode("It's too expensive.")
+              new Paragraph([
+                new PlainText("It's too expensive.")
               ])
             ]),
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ])
             ])
 
           ]),
 
-          new FootnoteBlockNode(footnotes)
+          new FootnoteBlock(footnotes)
 
         ])
       ]))
@@ -442,18 +442,18 @@ NSFL:
   This ruins the movie. [^ And this is a fun fact.]`
 
     const footnote =
-      new FootnoteNode([
-        new PlainTextNode("And this is a fun fact.")
+      new Footnote([
+        new PlainText("And this is a fun fact.")
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode("This ruins the movie."),
+        new NsflBlock([
+          new Paragraph([
+            new PlainText("This ruins the movie."),
             footnote,
           ]),
-          new FootnoteBlockNode([footnote])
+          new FootnoteBlock([footnote])
         ])
       ]))
   })
@@ -472,42 +472,42 @@ NSFL:
   * I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
+        new NsflBlock([
 
-          new UnorderedListNode([
+          new UnorderedList([
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat cereal."),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
                 footnotes[0],
-                new PlainTextNode(" Never have.")
+                new PlainText(" Never have.")
               ]),
-              new ParagraphNode([
-                new PlainTextNode("It's too expensive.")
+              new Paragraph([
+                new PlainText("It's too expensive.")
               ])
             ]),
 
-            new UnorderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnotes[1],
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ])
             ])
 
           ]),
 
-          new FootnoteBlockNode(footnotes)
+          new FootnoteBlock(footnotes)
 
         ])
       ]))
@@ -525,28 +525,28 @@ Game;               Release Date [^ Only the year]
 Final Fantasy;      1987
 Final Fantasy II;   1988`
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Only the year')
+    const footnote = new Footnote([
+      new PlainText('Only the year')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date'), footnote])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date'), footnote])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy')]),
+              new Table.Row.Cell([new PlainText('1987')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+              new Table.Row.Cell([new PlainText('1988')])
             ])
           ]),
 
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -562,32 +562,32 @@ Game;               Release Date [^ Only the year]
 Final Fantasy;      1987
 Final Fantasy II;   1988 [^ Almost 1989]`
 
-    const headerFootnote = new FootnoteNode([
-      new PlainTextNode('Only the year')
+    const headerFootnote = new Footnote([
+      new PlainText('Only the year')
     ], 1)
 
-    const rowFootnote = new FootnoteNode([
-      new PlainTextNode('Almost 1989')
+    const rowFootnote = new Footnote([
+      new PlainText('Almost 1989')
     ], 2)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy')]),
+              new Table.Row.Cell([new PlainText('1987')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988'), rowFootnote])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+              new Table.Row.Cell([new PlainText('1988'), rowFootnote])
             ])
           ]),
 
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           headerFootnote,
           rowFootnote
         ])
@@ -606,41 +606,41 @@ Game;               Release Date [^ Only the year]
 Final Fantasy;      1987
 Final Fantasy II;   1988 [^ Almost 1989]`
 
-    const captionFootnote = new FootnoteNode([
-      new PlainTextNode('ファイナルファンタジ in Japan')
+    const captionFootnote = new Footnote([
+      new PlainText('ファイナルファンタジ in Japan')
     ], 1)
 
-    const headerFootnote = new FootnoteNode([
-      new PlainTextNode('Only the year')
+    const headerFootnote = new Footnote([
+      new PlainText('Only the year')
     ], 2)
 
-    const rowFootnote = new FootnoteNode([
-      new PlainTextNode('Almost 1989')
+    const rowFootnote = new Footnote([
+      new PlainText('Almost 1989')
     ], 3)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-              new TableNode.Row.Cell([new PlainTextNode('1987')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy')]),
+              new Table.Row.Cell([new PlainText('1987')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-              new TableNode.Row.Cell([new PlainTextNode('1988'), rowFootnote])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+              new Table.Row.Cell([new PlainText('1988'), rowFootnote])
             ])
           ],
-          new TableNode.Caption([
-            new PlainTextNode('Final Fantasy'),
+          new Table.Caption([
+            new PlainText('Final Fantasy'),
             captionFootnote,
-            new PlainTextNode(' in the 1980s')
+            new PlainText(' in the 1980s')
           ])),
 
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           captionFootnote,
           headerFootnote,
           rowFootnote
@@ -660,47 +660,47 @@ Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 Final Fantasy;                                        1987 [^ Same year as Mega Man]
 Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
 
-    const captionFootnote = new FootnoteNode([
-      new PlainTextNode('ファイナルファンタジ in Japan')
+    const captionFootnote = new Footnote([
+      new PlainText('ファイナルファンタジ in Japan')
     ], 1)
 
-    const headerFootnote = new FootnoteNode([
-      new PlainTextNode('Only the year')
+    const headerFootnote = new Footnote([
+      new PlainText('Only the year')
     ], 2)
 
-    const firstRowFootnote = new FootnoteNode([
-      new PlainTextNode('Same year as Mega Man')
+    const firstRowFootnote = new Footnote([
+      new PlainText('Same year as Mega Man')
     ], 3)
 
-    const secondRowHeaderCellFootnote = new FootnoteNode([
-      new PlainTextNode('Japan uses the numeral 2')
+    const secondRowHeaderCellFootnote = new Footnote([
+      new PlainText('Japan uses the numeral 2')
     ], 4)
 
-    const secondRowFootnote = new FootnoteNode([
-      new PlainTextNode('Almost 1989')
+    const secondRowFootnote = new Footnote([
+      new PlainText('Almost 1989')
     ], 5)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date'), headerFootnote])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987'), firstRowFootnote])
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988'), secondRowFootnote])
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II'), secondRowHeaderCellFootnote]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987'), firstRowFootnote])
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988'), secondRowFootnote])
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
           ],
-          new TableNode.Caption([
-            new PlainTextNode('Final Fantasy'),
+          new Table.Caption([
+            new PlainText('Final Fantasy'),
             captionFootnote,
-            new PlainTextNode(' in the 1980s')
+            new PlainText(' in the 1980s')
           ])),
 
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           captionFootnote,
           headerFootnote,
           firstRowFootnote,
@@ -722,36 +722,36 @@ describe('Footnotes in ordered list items', () => {
 2) I don't eat (^Or touch.) pumpkins.`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to.")
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch.")
+      new Footnote([
+        new PlainText("Or touch.")
       ], 2)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
               footnotes[0],
-              new PlainTextNode(" Never have.")
+              new PlainText(" Never have.")
             ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ], 1),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat"),
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat"),
               footnotes[1],
-              new PlainTextNode(" pumpkins.")
+              new PlainText(" pumpkins.")
             ])
           ], 2)
         ]),
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -772,54 +772,54 @@ Gary
   A young man with a great sense of smell. (^Or maybe Ash simply smelled really good.)`
 
     const footnotes = [
-      new FootnoteNode([
-        new PlainTextNode("What happens to the creature if the seed is never planted?")
+      new Footnote([
+        new PlainText("What happens to the creature if the seed is never planted?")
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("This probably wasn't a reference to the family of plants.")
+      new Footnote([
+        new PlainText("This probably wasn't a reference to the family of plants.")
       ], 2),
-      new FootnoteNode([
-        new PlainTextNode("Or maybe Ash simply smelled really good.")
+      new Footnote([
+        new PlainText("Or maybe Ash simply smelled really good.")
       ], 3)
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A strange seed was planted on its back at birth.'),
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth.'),
               footnotes[0],
-              new PlainTextNode(' The plant sprouts and grows with this Pokémon.')
+              new PlainText(' The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-            new DescriptionListNode.Item.Term([
-              new PlainTextNode('Night Shade'),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Term([new PlainText('Lick')]),
+            new DescriptionList.Item.Term([
+              new PlainText('Night Shade'),
               footnotes[1]
             ])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('Ghost type moves.')
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('Ghost type moves.')
             ])
           ])),
 
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Gary')])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A young man with a great sense of smell.'),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Gary')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A young man with a great sense of smell.'),
               footnotes[2]
             ])
           ]))
         ]),
 
-        new FootnoteBlockNode(footnotes)
+        new FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -839,48 +839,48 @@ describe("In a document, footnotes' reference numbers", () => {
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnotesInUnorderedList = [
-      new FootnoteNode([
-        new PlainTextNode("Well, I do, but I pretend not to."),
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to."),
       ], 1),
-      new FootnoteNode([
-        new PlainTextNode("Or touch."),
+      new Footnote([
+        new PlainText("Or touch."),
       ], 2)
     ]
 
     const footnoteInParagraph =
-      new FootnoteNode([
-        new PlainTextNode("It's actually been a dream of mine ever since I was young."),
+      new Footnote([
+        new PlainText("It's actually been a dream of mine ever since I was young."),
       ], 3)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
               footnotesInUnorderedList[0],
-              new PlainTextNode(" Never have.")
+              new PlainText(" Never have.")
             ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat"),
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat"),
               footnotesInUnorderedList[1],
-              new PlainTextNode(" pumpkins.")
+              new PlainText(" pumpkins.")
             ])
           ])
         ]),
-        new FootnoteBlockNode(footnotesInUnorderedList),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("I wear glasses"),
+        new FootnoteBlock(footnotesInUnorderedList),
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText("I wear glasses"),
           footnoteInParagraph,
-          new PlainTextNode(" even while working out."),
+          new PlainText(" even while working out."),
         ]),
-        new FootnoteBlockNode([footnoteInParagraph])
+        new FootnoteBlock([footnoteInParagraph])
       ]))
   })
 })
@@ -899,50 +899,50 @@ describe("Within an outline convention, a blockquoted footnote that follows a no
 
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
-    const footnoteInUnorderedList = new FootnoteNode([
-      new PlainTextNode("Well, I do, but I pretend not to.")
+    const footnoteInUnorderedList = new Footnote([
+      new PlainText("Well, I do, but I pretend not to.")
     ], 1)
 
-    const footnoteInBlockquote = new FootnoteNode([
-      new PlainTextNode("Or touch.")
+    const footnoteInBlockquote = new Footnote([
+      new PlainText("Or touch.")
     ], 2)
 
-    const footnoteInParagraph = new FootnoteNode([
-      new PlainTextNode("It's actually been a dream of mine ever since I was young.")
+    const footnoteInParagraph = new Footnote([
+      new PlainText("It's actually been a dream of mine ever since I was young.")
     ], 3)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
               footnoteInUnorderedList,
-              new PlainTextNode(" Never have.")
+              new PlainText(" Never have.")
             ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ]),
-          new UnorderedListNode.Item([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+          new UnorderedList.Item([
+            new Blockquote([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnoteInBlockquote,
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ]),
-              new FootnoteBlockNode([footnoteInBlockquote])
+              new FootnoteBlock([footnoteInBlockquote])
             ])
           ])
         ]),
-        new FootnoteBlockNode([footnoteInUnorderedList]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("I wear glasses"),
+        new FootnoteBlock([footnoteInUnorderedList]),
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText("I wear glasses"),
           footnoteInParagraph,
-          new PlainTextNode(" even while working out."),
+          new PlainText(" even while working out."),
         ]),
-        new FootnoteBlockNode([footnoteInParagraph])
+        new FootnoteBlock([footnoteInParagraph])
       ]))
   })
 })
@@ -961,67 +961,67 @@ describe("Within an outline convention, a blockquoted nested footnote that follo
 
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
-    const nestedFootnoteInUnorderedList = new FootnoteNode([
-      new PlainTextNode("On Mondays.")
+    const nestedFootnoteInUnorderedList = new Footnote([
+      new PlainText("On Mondays.")
     ], 4)
 
-    const footnoteInUnorderedList = new FootnoteNode([
-      new PlainTextNode("Well, I do, but I pretend"),
+    const footnoteInUnorderedList = new Footnote([
+      new PlainText("Well, I do, but I pretend"),
       nestedFootnoteInUnorderedList,
-      new PlainTextNode(' not to.')
+      new PlainText(' not to.')
     ], 1)
 
-    const nestedFootnoteInBlockquote = new FootnoteNode([
-      new PlainTextNode("Or smell.")
+    const nestedFootnoteInBlockquote = new Footnote([
+      new PlainText("Or smell.")
     ], 3)
 
-    const footnoteInBlockquote = new FootnoteNode([
-      new PlainTextNode("Or touch."),
+    const footnoteInBlockquote = new Footnote([
+      new PlainText("Or touch."),
       nestedFootnoteInBlockquote
     ], 2)
 
-    const footnoteInParagraph = new FootnoteNode([
-      new PlainTextNode("It's actually been a dream of mine ever since I was young.")
+    const footnoteInParagraph = new Footnote([
+      new PlainText("It's actually been a dream of mine ever since I was young.")
     ], 5)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode("I don't eat cereal."),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
               footnoteInUnorderedList,
-              new PlainTextNode(" Never have.")
+              new PlainText(" Never have.")
             ]),
-            new ParagraphNode([
-              new PlainTextNode("It's too expensive.")
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ]),
-          new UnorderedListNode.Item([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat"),
+          new UnorderedList.Item([
+            new Blockquote([
+              new Paragraph([
+                new PlainText("I don't eat"),
                 footnoteInBlockquote,
-                new PlainTextNode(" pumpkins.")
+                new PlainText(" pumpkins.")
               ]),
-              new FootnoteBlockNode([
+              new FootnoteBlock([
                 footnoteInBlockquote,
                 nestedFootnoteInBlockquote
               ])
             ])
           ])
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnoteInUnorderedList,
           nestedFootnoteInUnorderedList
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("I wear glasses"),
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText("I wear glasses"),
           footnoteInParagraph,
-          new PlainTextNode(" even while working out.")
+          new PlainText(" even while working out.")
         ]),
-        new FootnoteBlockNode([footnoteInParagraph])
+        new FootnoteBlock([footnoteInParagraph])
       ]))
   })
 })
@@ -1031,33 +1031,33 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
   it('appear in their footnote block after any non-nested footnotes (and are assigned reference numbers after any non-nested footnotes)', () => {
     const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
 
-    const footnoteInsideFirstFootnote = new FootnoteNode([
-      new PlainTextNode('Well, I '),
+    const footnoteInsideFirstFootnote = new Footnote([
+      new PlainText('Well, I '),
       new Emphasis([
-        new PlainTextNode('do')
+        new PlainText('do')
       ]),
-      new PlainTextNode(', but I pretend not to.')
+      new PlainText(', but I pretend not to.')
     ], 3)
 
-    const firstFootnote = new FootnoteNode([
-      new PlainTextNode("That said, I don't eat cereal."),
+    const firstFootnote = new Footnote([
+      new PlainText("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainTextNode(" Never have.")
+      new PlainText(" Never have.")
     ], 1)
 
-    const secondFootnote = new FootnoteNode([
-      new PlainTextNode("Probably."),
+    const secondFootnote = new Footnote([
+      new PlainText("Probably."),
     ], 2)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Me? I'm totally normal."),
+        new Paragraph([
+          new PlainText("Me? I'm totally normal."),
           firstFootnote,
-          new PlainTextNode(" Really."),
+          new PlainText(" Really."),
           secondFootnote,
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           firstFootnote,
           secondFootnote,
           footnoteInsideFirstFootnote
@@ -1070,43 +1070,43 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do* (^Only on Mondays...) but I pretend not to.) Never have. (^At least you've never seen me.)) Really. (^Probably.)"
 
     const footnoteInsideFirstInnerFootnote =
-      new FootnoteNode([
-        new PlainTextNode("Only on Mondays..."),
+      new Footnote([
+        new PlainText("Only on Mondays..."),
       ], 5)
 
-    const secondInnerFootnote = new FootnoteNode([
-      new PlainTextNode("At least you've never seen me.")
+    const secondInnerFootnote = new Footnote([
+      new PlainText("At least you've never seen me.")
     ], 4)
 
-    const firstInnerFootnote = new FootnoteNode([
-      new PlainTextNode('Well, I '),
+    const firstInnerFootnote = new Footnote([
+      new PlainText('Well, I '),
       new Emphasis([
-        new PlainTextNode('do'),
+        new PlainText('do'),
       ]),
       footnoteInsideFirstInnerFootnote,
-      new PlainTextNode(' but I pretend not to.')
+      new PlainText(' but I pretend not to.')
     ], 3)
 
-    const firstFootnote = new FootnoteNode([
-      new PlainTextNode("That said, I don't eat cereal."),
+    const firstFootnote = new Footnote([
+      new PlainText("That said, I don't eat cereal."),
       firstInnerFootnote,
-      new PlainTextNode(" Never have."),
+      new PlainText(" Never have."),
       secondInnerFootnote,
     ], 1)
 
-    const secondFootnote = new FootnoteNode([
-      new PlainTextNode("Probably."),
+    const secondFootnote = new Footnote([
+      new PlainText("Probably."),
     ], 2)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Me? I'm totally normal."),
+        new Paragraph([
+          new PlainText("Me? I'm totally normal."),
           firstFootnote,
-          new PlainTextNode(" Really."),
+          new PlainText(" Really."),
           secondFootnote
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           firstFootnote,
           secondFootnote,
           firstInnerFootnote,
@@ -1122,47 +1122,47 @@ Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I p
 
 I don't eat (^Or touch.) pumpkins.`
 
-    const footnoteInsideFirstFootnote = new FootnoteNode([
-      new PlainTextNode('Well, I '),
+    const footnoteInsideFirstFootnote = new Footnote([
+      new PlainText('Well, I '),
       new Emphasis([
-        new PlainTextNode('do')
+        new PlainText('do')
       ]),
-      new PlainTextNode(', but I pretend not to.'),
+      new PlainText(', but I pretend not to.'),
     ], 3)
 
-    const firstFootnoteInFirstParagraph = new FootnoteNode([
-      new PlainTextNode("That said, I don't eat cereal."),
+    const firstFootnoteInFirstParagraph = new Footnote([
+      new PlainText("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainTextNode(" Never have.")
+      new PlainText(" Never have.")
     ], 1)
 
-    const secondFootnoteInFirstParagraph = new FootnoteNode([
-      new PlainTextNode("Probably.")
+    const secondFootnoteInFirstParagraph = new Footnote([
+      new PlainText("Probably.")
     ], 2)
 
-    const footnoteInSecondParagraph = new FootnoteNode([
-      new PlainTextNode("Or touch.")
+    const footnoteInSecondParagraph = new Footnote([
+      new PlainText("Or touch.")
     ], 4)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Me? I'm totally normal."),
+        new Paragraph([
+          new PlainText("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,
-          new PlainTextNode(" Really."),
+          new PlainText(" Really."),
           secondFootnoteInFirstParagraph,
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           firstFootnoteInFirstParagraph,
           secondFootnoteInFirstParagraph,
           footnoteInsideFirstFootnote
         ]),
-        new ParagraphNode([
-          new PlainTextNode("I don't eat"),
+        new Paragraph([
+          new PlainText("I don't eat"),
           footnoteInSecondParagraph,
-          new PlainTextNode(' pumpkins.')
+          new PlainText(' pumpkins.')
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnoteInSecondParagraph
         ])
       ]))

@@ -1,59 +1,59 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { OrderedList } from '../../../SyntaxNodes/OrderedList'
+import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
+import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Table } from '../../../SyntaxNodes/Table'
 
 
 context('When a table of contents has multiple entries', () => {
   specify('the ID of each element referenced by the table of contents ends with a number corresponding to its ordinal (1-based) in the table of contents', () => {
     const bestFruitHeading =
-      new HeadingNode([new PlainTextNode('The best fruit')], 1)
+      new Heading([new PlainText('The best fruit')], 1)
 
     const table =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Apple')]),
-          new TableNode.Header.Cell([new PlainTextNode('Description')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Apple')]),
+          new Table.Header.Cell([new PlainText('Description')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Pink Lady')]),
-            new TableNode.Row.Cell([new PlainTextNode('Very crisp and sweet')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Pink Lady')]),
+            new Table.Row.Cell([new PlainText('Very crisp and sweet')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Red Delicious')]),
-            new TableNode.Row.Cell([new PlainTextNode('Very mushy and bland')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Red Delicious')]),
+            new Table.Row.Cell([new PlainText('Very mushy and bland')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Apple varieties')
+        new Table.Caption([
+          new PlainText('Apple varieties')
         ]))
 
     const purchasingHeading =
-      new HeadingNode([new PlainTextNode('Purchasing')], 2)
+      new Heading([new PlainText('Purchasing')], 2)
 
     const chart =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('Target')]),
-          new TableNode.Header.Cell([new PlainTextNode('Walmart')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('Target')]),
+          new Table.Header.Cell([new PlainText('Walmart')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('No')]),
-            new TableNode.Row.Cell([new PlainTextNode('Yes')])
-          ], new TableNode.Header.Cell([new PlainTextNode('Pink Lady')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('No')]),
-            new TableNode.Row.Cell([new PlainTextNode('No')])
-          ], new TableNode.Header.Cell([new PlainTextNode('Red Delicious')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('No')]),
+            new Table.Row.Cell([new PlainText('Yes')])
+          ], new Table.Header.Cell([new PlainText('Pink Lady')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('No')]),
+            new Table.Row.Cell([new PlainText('No')])
+          ], new Table.Header.Cell([new PlainText('Red Delicious')]))
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Where to buy apples')
+        new Table.Caption([
+          new PlainText('Where to buy apples')
         ]))
 
     const tableOfContents =
@@ -62,16 +62,16 @@ context('When a table of contents has multiple entries', () => {
     const document = new UpDocument([
       bestFruitHeading,
 
-      new UnorderedListNode([
-        new UnorderedListNode.Item([
+      new UnorderedList([
+        new UnorderedList.Item([
 
-          new OrderedListNode([
-            new OrderedListNode.Item([
+          new OrderedList([
+            new OrderedList.Item([
 
-              new DescriptionListNode([
-                new DescriptionListNode.Item([
-                  new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
-                ], new DescriptionListNode.Item.Description([
+              new DescriptionList([
+                new DescriptionList.Item([
+                  new DescriptionList.Item.Term([new PlainText('Apple')])
+                ], new DescriptionList.Item.Description([
                   table,
                   purchasingHeading,
                   chart

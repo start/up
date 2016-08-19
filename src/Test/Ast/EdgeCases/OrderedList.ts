@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { OrderedList } from '../../../SyntaxNodes/OrderedList'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
 
 
 describe('An ordered list with a single item can be sandwched by identical outline separator streaks without producing a heading.', () => {
@@ -18,15 +18,15 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode('Mittens')
+          new OutlineSeparator(),
+          new OrderedList([
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText('Mittens')
               ])
             ])
           ]),
-          new OutlineSeparatorNode()
+          new OutlineSeparator()
         ]))
     })
 
@@ -38,15 +38,15 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new ParagraphNode([
-                new PlainTextNode('Mittens')
+          new OutlineSeparator(),
+          new OrderedList([
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText('Mittens')
               ])
             ], 1)
           ]),
-          new OutlineSeparatorNode()
+          new OutlineSeparator()
         ]))
     })
   })
@@ -61,8 +61,8 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new HeadingNode([
-            new PlainTextNode('1783. Not a good year for Great Britain.')
+          new Heading([
+            new PlainText('1783. Not a good year for Great Britain.')
           ], 1)
         ]))
     })
@@ -82,27 +82,27 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Iowa')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Iowa')
             ])
           ]),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('New Hampshire')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('New Hampshire')
             ])
           ])
         ]),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Clinton')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Clinton')
             ])
           ]),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Sanders')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Sanders')
             ])
           ])
         ]),
@@ -124,28 +124,28 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Iowa')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Iowa')
             ])
           ]),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('New Hampshire')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('New Hampshire')
             ])
           ])
         ]),
-        new OutlineSeparatorNode(),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Clinton')
+        new OutlineSeparator(),
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Clinton')
             ])
           ]),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Sanders')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Sanders')
             ])
           ])
         ]),
@@ -162,15 +162,15 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Hello, world!')
             ])
           ], 10),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Goodbye, world!')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Goodbye, world!')
             ])
           ])
         ])
@@ -184,15 +184,15 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Hello, world!')
             ])
           ], -20),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Goodbye, world!')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Goodbye, world!')
             ])
           ])
         ])
@@ -206,15 +206,15 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Hello, world!')
             ])
           ], 0),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Goodbye, world!')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Goodbye, world!')
             ])
           ])
         ])
@@ -227,10 +227,10 @@ context("When an ordered list has just one item, that item can start with an int
   specify('An integer followed by a closing parenthesis', () => {
     expect(Up.toDocument('1) 1783. Not a good year for Great Britain.')).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('1783. Not a good year for Great Britain.')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('1783. Not a good year for Great Britain.')
             ])
           ], 1)
         ])
@@ -240,10 +240,10 @@ context("When an ordered list has just one item, that item can start with an int
   specify('A number sign', () => {
     expect(Up.toDocument('# 1783. Not a good year for Great Britain.')).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('1783. Not a good year for Great Britain.')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -253,10 +253,10 @@ context("When an ordered list has just one item, that item can start with an int
   specify('A number sign followed by a period', () => {
     expect(Up.toDocument('#. 1783. Not a good year for Great Britain.')).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('1783. Not a good year for Great Britain.')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -266,10 +266,10 @@ context("When an ordered list has just one item, that item can start with an int
   specify('A number sign followed by a closing parenthesis', () => {
     expect(Up.toDocument('#) 1783. Not a good year for Great Britain.')).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('1783. Not a good year for Great Britain.')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -296,15 +296,15 @@ I enjoy apples
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new HeadingNode([new PlainTextNode("They're cheap")], 2),
-            new ParagraphNode([new PlainTextNode("Very cheap.")])
+        new Heading([new PlainText('I enjoy apples')], 1),
+        new OrderedList([
+          new OrderedList.Item([
+            new Heading([new PlainText("They're cheap")], 2),
+            new Paragraph([new PlainText("Very cheap.")])
           ], 1),
-          new OrderedListNode.Item([
-            new HeadingNode([new PlainTextNode("They're delicious")], 2),
-            new ParagraphNode([new PlainTextNode("Very delicious.")])
+          new OrderedList.Item([
+            new Heading([new PlainText("They're delicious")], 2),
+            new Paragraph([new PlainText("Very delicious.")])
           ], 2)
         ])
       ]))

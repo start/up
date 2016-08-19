@@ -2,13 +2,13 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
+import { Link } from '../../../SyntaxNodes/Link'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -81,8 +81,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ]),
     configChanges: {
@@ -98,8 +98,8 @@ describe('The "documentName" config setting', () => {
 describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ]),
     configChanges: {
@@ -119,8 +119,8 @@ describe('The "footnote reference" config term', () => {
 describe('The "footnote" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ]),
     configChanges: {
@@ -140,8 +140,8 @@ describe('The "footnote" config term', () => {
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
+      new Paragraph([
+        new InlineSpoiler([])
       ])
     ]),
     configChanges: {
@@ -161,8 +161,8 @@ describe('The "toggleSpoiler" config term', () => {
 describe('The "toggleNsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([])
+      new Paragraph([
+        new InlineNsfw([])
       ])
     ]),
     configChanges: {
@@ -182,8 +182,8 @@ describe('The "toggleNsfw" config term', () => {
 describe('The "toggleNsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([])
+      new Paragraph([
+        new InlineNsfl([])
       ])
     ]),
     configChanges: {
@@ -201,7 +201,7 @@ describe('The "toggleNsfl" config term', () => {
 
 
 describe('The "tableOfContents" config setting', () => {
-  const heading = new HeadingNode([], 1)
+  const heading = new Heading([], 1)
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument(
@@ -224,8 +224,8 @@ describe('The "tableOfContents" config setting', () => {
 describe('The "writeUnsafeContent" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([], 'javascript:malicious')
+      new Paragraph([
+        new Link([], 'javascript:malicious')
       ])
     ]),
     configChanges: {

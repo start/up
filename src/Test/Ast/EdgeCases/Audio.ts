@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Audio } from '../../../SyntaxNodes/Audio'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { Link } from '../../../SyntaxNodes/Link'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
 describe('A paragraph directly followed by audio on its own line', () => {
@@ -19,8 +19,8 @@ Do not pour the spiders into your sister's cereal.
 [audio: six seconds of screaming][http://example.com/screaming.ogg]`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Do not pour the spiders into your sister's cereal.")
+        new Paragraph([
+          new PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
         new Audio('six seconds of screaming', 'http://example.com/screaming.ogg'),
       ]))
@@ -32,15 +32,15 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
   it('does not produce an audio node', () => {
     expect(Up.toDocument('I like [audio: ghosts}(http://example.com/ghosts.ogg).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like [audio: ghosts}'),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com/ghosts.ogg')
+        new PlainText('I like [audio: ghosts}'),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com/ghosts.ogg')
           ], 'http://example.com/ghosts.ogg'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -50,13 +50,13 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
   it('does not produce an audio node', () => {
     expect(Up.toDocument('I like [audio: ghosts][http://example.com/ghosts.ogg).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new SquareParentheticalNode([
-          new PlainTextNode('[audio: ghosts]')
+        new PlainText('I like '),
+        new SquareParenthetical([
+          new PlainText('[audio: ghosts]')
         ]),
-        new PlainTextNode('['),
-        new LinkNode([
-          new PlainTextNode('example.com/ghosts.ogg).')
+        new PlainText('['),
+        new Link([
+          new PlainText('example.com/ghosts.ogg).')
         ], 'http://example.com/ghosts.ogg).'),
       ]))
   })
@@ -74,11 +74,11 @@ context('Unmatched opening parentheses in an audio description have no affect on
   specify('parentheses that follow the convention', () => {
     expect(Up.toDocument('([audio: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
+        new Paragraph([
+          new NormalParenthetical([
+            new PlainText('('),
             new Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new PlainTextNode(')'),
+            new PlainText(')'),
           ])
         ])
       ]))
@@ -90,16 +90,16 @@ describe("Unmatched opening parentheses in an audio URL", () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 
-    const footnote = new FootnoteNode([
+    const footnote = new Footnote([
       new Audio('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnote
         ])
       ]))

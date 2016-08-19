@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -11,11 +11,11 @@ describe('Text surrounded by 2 asterisks', () => {
   it('is put inside a stress node', () => {
     expect(Up.toDocument('Hello, **world**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Stress([
-          new PlainTextNode('world')
+          new PlainText('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 })
@@ -25,40 +25,40 @@ describe('Stressed text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.toDocument('Hello, **`world`**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Stress([
           new InlineCode('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain further stressed text', () => {
     expect(Up.toDocument('Hello, **my **little** world**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Stress([
-          new PlainTextNode('my '),
+          new PlainText('my '),
           new Stress([
-            new PlainTextNode('little')
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain emphasized text', () => {
     expect(Up.toDocument('Hello, **my *little* world**!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Stress([
-          new PlainTextNode('my '),
+          new PlainText('my '),
           new Emphasis([
-            new PlainTextNode('little')
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })})

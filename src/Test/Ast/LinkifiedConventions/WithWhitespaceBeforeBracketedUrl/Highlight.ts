@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
-import { HighlightNode } from '../../../../SyntaxNodes/HighlightNode'
+import { Link } from '../../../../SyntaxNodes/Link'
+import { PlainText } from '../../../../SyntaxNodes/PlainText'
+import { NormalParenthetical } from '../../../../SyntaxNodes/NormalParenthetical'
+import { Highlight } from '../../../../SyntaxNodes/Highlight'
 
 
 context('A linkified highlight can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -14,9 +14,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
-        new HighlightNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new Highlight([
+          new Link([
+            new PlainText('something terrible')
           ], 'app:wiki/terrible-thing')
         ])
       ])
@@ -31,9 +31,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new Highlight([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -43,16 +43,16 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[highlight: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('something terrible')
+          new Highlight([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('stackoverflow.com')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new PlainTextNode(' is nice)')
+            new PlainText(' is nice)')
           ]),
         ]))
     })
@@ -60,12 +60,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('there must be somethng after the scheme', () => {
       expect(Up.toDocument('[highlight: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('email')
+          new Highlight([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:)')
           ]),
         ]))
     })
@@ -73,12 +73,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toDocument('[highlight: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('local files')
+          new Highlight([
+            new PlainText('local files')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(file:///)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(file:///)')
           ]),
         ]))
     })
@@ -89,9 +89,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('spooky phone call')
+          new Highlight([
+            new Link([
+              new PlainText('spooky phone call')
             ], 'tel:5555555555')
           ])
         ])
@@ -101,12 +101,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the scheme must not be escaped', () => {
       expect(Up.toDocument('[highlight: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('email')
+          new Highlight([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:daniel@wants.email)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -119,9 +119,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new HighlightNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new Highlight([
+          new Link([
+            new PlainText('something terrible')
           ], '/wiki/something-terrible')
         ])
       ])
@@ -133,12 +133,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[highlight: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('something terrible')
+          new Highlight([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/ created it)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -146,12 +146,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must have something after the slash', () => {
       expect(Up.toDocument('[highlight: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('slash')
+          new Highlight([
+            new PlainText('slash')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/)')
           ]),
         ]))
     })
@@ -162,9 +162,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '/3',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new Highlight([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '/3')
           ])
         ])
@@ -174,12 +174,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must not have its slash escaped', () => {
       expect(Up.toDocument('[highlight: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('yeah')
+          new Highlight([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/)')
           ]),
         ]))
     })
@@ -192,9 +192,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new HighlightNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new Highlight([
+          new Link([
+            new PlainText('something terrible')
           ], '#wiki/something-terrible')
         ])
       ])
@@ -209,9 +209,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '#3',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new Highlight([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '#3')
           ])
         ])
@@ -221,12 +221,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must have something after the hash mark', () => {
       expect(Up.toDocument('[highlight: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('hash mark')
+          new Highlight([
+            new PlainText('hash mark')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#)')
           ]),
         ]))
     })
@@ -234,12 +234,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[highlight: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('something terrible')
+          new Highlight([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2 was never trending)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -247,12 +247,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     it('must not have its hashmark escaped', () => {
       expect(Up.toDocument('[highlight: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('yeah')
+          new Highlight([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2)')
           ]),
         ]))
     })
@@ -265,9 +265,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
-        new HighlightNode([
-          new LinkNode([
-            new PlainTextNode('Chrono Trigger')
+        new Highlight([
+          new Link([
+            new PlainText('Chrono Trigger')
           ], 'https://chrono-trigger.wiki')
         ])
       ])
@@ -282,9 +282,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new Highlight([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -297,9 +297,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new Highlight([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/')
           ])
         ])
@@ -309,12 +309,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       expect(Up.toDocument('[highlight: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('that place')
+          new Highlight([
+            new PlainText('that place')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org-terrifying)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -325,9 +325,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('Good luck!')
+          new Highlight([
+            new Link([
+              new PlainText('Good luck!')
             ], 'https://88.8888.cn')
           ])
         ])
@@ -338,12 +338,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
       specify('No numbers', () => {
         expect(Up.toDocument('[highlight: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
-            new HighlightNode([
-              new PlainTextNode('username')
+            new Highlight([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith5)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith5)')
             ]),
           ]))
       })
@@ -351,12 +351,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
       specify('No hyphens', () => {
         expect(Up.toDocument('[highlight: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
-            new HighlightNode([
-              new PlainTextNode('username')
+            new Highlight([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith-kline)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -365,12 +365,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the URL must start with a letter or a number, not a period', () => {
       expect(Up.toDocument('[highlight: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('top-level domain')
+          new Highlight([
+            new PlainText('top-level domain')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(.co.uk)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(.co.uk)')
           ]),
         ]))
     })
@@ -378,12 +378,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       expect(Up.toDocument('[highlight: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('Ash is not his own father')
+          new Highlight([
+            new PlainText('Ash is not his own father')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(um..uh)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(um..uh)')
           ]),
         ]))
     })
@@ -391,12 +391,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       expect(Up.toDocument('[highlight: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('debilitating sadness')
+          new Highlight([
+            new PlainText('debilitating sadness')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org../r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org../r9k/)')
           ]),
         ]))
     })
@@ -407,9 +407,9 @@ context('A linkified highlight can have whitespace between itself and its bracke
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
-          new HighlightNode([
-            new LinkNode([
-              new PlainTextNode('rocket ship')
+          new Highlight([
+            new Link([
+              new PlainText('rocket ship')
             ], 'https://example.com/321...blastoff/1')
           ])
         ])
@@ -419,12 +419,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[highlight: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('yeah')
+          new Highlight([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com had some hilarious forums)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -432,12 +432,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
     specify('the domain part must not be escaped', () => {
       expect(Up.toDocument('[highlight: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
-          new HighlightNode([
-            new PlainTextNode('yeah')
+          new Highlight([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com)')
           ]),
         ]))
     })
@@ -447,12 +447,12 @@ context('A linkified highlight can have whitespace between itself and its bracke
   specify('If none of the conditions are satisfied, the highlight is not linkified', () => {
     expect(Up.toDocument('[highlight: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('something terrible')
+        new Highlight([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('(really)')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('(really)')
         ]),
       ]))
   })
@@ -463,16 +463,16 @@ describe('If there is nothing but whitspace between a highlight and a bracketed 
   it('the highlight is not linkified', () => {
     expect(Up.toDocument('[highlight: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('something terrible')
+        new Highlight([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode('    '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText('    '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -486,9 +486,9 @@ describe("A linkified highlight's URL, when separated from its content by whites
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
-        new HighlightNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new Highlight([
+          new Link([
+            new PlainText('something terrible')
           ], 'https://stackoverflow.com/search=something very terrible')
         ])
       ])

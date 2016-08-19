@@ -1,40 +1,40 @@
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { Writer } from '.././Writer'
 import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { Link } from '../../SyntaxNodes/Link'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Video } from '../../SyntaxNodes/Video'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
+import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../../SyntaxNodes/BoldNode'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
+import { Table } from '../../SyntaxNodes/Table'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
@@ -88,18 +88,18 @@ export class HtmlWriter extends Writer {
     return this.writeAll(inlineDocument.children)
   }
 
-  protected blockquote(blockquote: BlockquoteNode): string {
+  protected blockquote(blockquote: Blockquote): string {
     return this.element('blockquote', blockquote.children, attrsFor(blockquote))
   }
 
-  protected unorderedList(list: UnorderedListNode): string {
+  protected unorderedList(list: UnorderedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
       list.items.map(listItem => this.unorderedListItem(listItem)),
       attrsFor(list))
   }
 
-  protected orderedList(list: OrderedListNode): string {
+  protected orderedList(list: OrderedList): string {
     const attrs: { start?: number, reversed?: any } = {}
 
     const start = list.start()
@@ -108,7 +108,7 @@ export class HtmlWriter extends Writer {
       attrs.start = start
     }
 
-    if (list.order() === OrderedListNode.Order.Descrending) {
+    if (list.order() === OrderedList.Order.Descrending) {
       attrs.reversed = NO_ATTRIBUTE_VALUE
     }
 
@@ -118,14 +118,14 @@ export class HtmlWriter extends Writer {
       attrsFor(list, attrs))
   }
 
-  protected descriptionList(list: DescriptionListNode): string {
+  protected descriptionList(list: DescriptionList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       list.items.map(item => this.descriptionListItem(item)),
       attrsFor(list))
   }
 
-  protected lineBlock(lineBlock: LineBlockNode): string {
+  protected lineBlock(lineBlock: LineBlock): string {
     const attrs =
       attrsFor(
         lineBlock,
@@ -137,25 +137,25 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected codeBlock(codeBlock: CodeBlockNode): string {
+  protected codeBlock(codeBlock: CodeBlock): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
       [htmlElement('code', codeBlock.code)],
       attrsFor(codeBlock))
   }
 
-  protected paragraph(paragraph: ParagraphNode): string {
+  protected paragraph(paragraph: Paragraph): string {
     return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
-  protected heading(heading: HeadingNode, ordinalOfEntryInTableOfContents?: number): string {
+  protected heading(heading: Heading, ordinalOfEntryInTableOfContents?: number): string {
     return this.element(
       'h' + Math.min(6, heading.level),
       heading.children,
       this.getAttrsForElementPossiblyReferencedByTableOfContents(heading, ordinalOfEntryInTableOfContents))
   }
 
-  protected outlineSeparator(separator: OutlineSeparatorNode): string {
+  protected outlineSeparator(separator: OutlineSeparator): string {
     return singleTagHtmlElement('hr', attrsFor(separator))
   }
 
@@ -167,11 +167,11 @@ export class HtmlWriter extends Writer {
     return this.element('strong', stress.children)
   }
 
-  protected italic(italic: ItalicNode): string {
+  protected italic(italic: Italic): string {
     return this.element('i', italic.children)
   }
 
-  protected bold(bold: BoldNode): string {
+  protected bold(bold: Bold): string {
     return this.element('b', bold.children)
   }
 
@@ -179,31 +179,31 @@ export class HtmlWriter extends Writer {
     return htmlElement('code', inlineCode.code)
   }
 
-  protected exampleInput(exampleInput: ExampleInputNode): string {
+  protected exampleInput(exampleInput: ExampleInput): string {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  protected revisionInsertion(revisionInsertion: RevisionInsertionNode): string {
+  protected revisionInsertion(revisionInsertion: RevisionInsertion): string {
     return this.element('ins', revisionInsertion.children)
   }
 
-  protected revisionDeletion(revisionDeletion: RevisionDeletionNode): string {
+  protected revisionDeletion(revisionDeletion: RevisionDeletion): string {
     return this.element('del', revisionDeletion.children)
   }
 
-  protected normalParenthetical(normalParenthetical: NormalParentheticalNode): string {
+  protected normalParenthetical(normalParenthetical: NormalParenthetical): string {
     return this.parenthetical(normalParenthetical)
   }
 
-  protected squareParenthetical(squareParenthetical: SquareParentheticalNode): string {
+  protected squareParenthetical(squareParenthetical: SquareParenthetical): string {
     return this.parenthetical(squareParenthetical, 'square-brackets')
   }
 
-  protected highlight(highlight: HighlightNode): string {
+  protected highlight(highlight: Highlight): string {
     return this.element('mark', highlight.children)
   }
 
-  protected inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string {
+  protected inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
     return this.revealable({
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
@@ -213,7 +213,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected inlineNsfw(inlineNsfw: InlineNsfwNode): string {
+  protected inlineNsfw(inlineNsfw: InlineNsfw): string {
     return this.revealable({
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
@@ -223,7 +223,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected inlineNsfl(inlineNsfl: InlineNsflNode): string {
+  protected inlineNsfl(inlineNsfl: InlineNsfl): string {
     return this.revealable({
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
@@ -233,7 +233,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected spoilerBlock(spoilerBlock: SpoilerBlockNode): string {
+  protected spoilerBlock(spoilerBlock: SpoilerBlock): string {
     return this.revealable({
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.toggleSpoiler,
@@ -244,7 +244,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfwBlock(nsfwBlock: NsfwBlockNode): string {
+  protected nsfwBlock(nsfwBlock: NsfwBlock): string {
     return this.revealable({
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.toggleNsfw,
@@ -255,7 +255,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsflBlock(nsflBlock: NsflBlockNode): string {
+  protected nsflBlock(nsflBlock: NsflBlock): string {
     return this.revealable({
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.toggleNsfl,
@@ -266,23 +266,23 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected footnoteReference(footnote: FootnoteNode): string {
+  protected footnoteReference(footnote: Footnote): string {
     if (this.isInsideTableOfContents) {
       // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
       return ''
     }
 
-    const innerLinkNode = this.footnoteReferenceInnerLink(footnote)
+    const innerLink = this.footnoteReferenceInnerLink(footnote)
 
     return this.element(
       'sup',
-      [innerLinkNode], {
+      [innerLink], {
         id: this.footnoteReferenceId(footnote.referenceNumber),
         class: classAttrValue('footnote-reference')
       })
   }
 
-  protected footnoteBlock(footnoteBlock: FootnoteBlockNode): string {
+  protected footnoteBlock(footnoteBlock: FootnoteBlock): string {
     const attrs =
       attrsFor(
         footnoteBlock,
@@ -294,7 +294,7 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected table(table: TableNode, ordinalOfEntryInTableOfContents?: number): string {
+  protected table(table: Table, ordinalOfEntryInTableOfContents?: number): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),
@@ -304,7 +304,7 @@ export class HtmlWriter extends Writer {
       this.getAttrsForElementPossiblyReferencedByTableOfContents(table, ordinalOfEntryInTableOfContents))
   }
 
-  protected link(link: LinkNode): string {
+  protected link(link: Link): string {
     if (this.isInsideLink) {
       return this.writeAll(link.children)
     }
@@ -321,7 +321,7 @@ export class HtmlWriter extends Writer {
     return html
   }
 
-  protected image(image: ImageNode): string {
+  protected image(image: Image): string {
     const attrs =
       attrsFor(
         image, {
@@ -337,11 +337,11 @@ export class HtmlWriter extends Writer {
     return this.playableMediaElement(audio, 'audio')
   }
 
-  protected video(video: VideoNode): string {
+  protected video(video: Video): string {
     return this.playableMediaElement(video, 'video')
   }
 
-  protected plainText(plainText: PlainTextNode): string {
+  protected plainText(plainText: PlainText): string {
     return escapeHtmlContent(plainText.content)
   }
 
@@ -354,7 +354,7 @@ export class HtmlWriter extends Writer {
     return this.element('small', parenthetical.children, attrs)
   }
 
-  private unorderedListItem(listItem: UnorderedListNode.Item): string {
+  private unorderedListItem(listItem: UnorderedList.Item): string {
     return this.element('li', listItem.children)
   }
 
@@ -376,44 +376,44 @@ export class HtmlWriter extends Writer {
 
   private tableOfContentsTitle(): string {
     return this.write(
-      new HeadingNode([
-        new PlainTextNode(this.config.terms.tableOfContents)], 1))
+      new Heading([
+        new PlainText(this.config.terms.tableOfContents)], 1))
   }
 
   private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string {
     const listItems =
       entries.map((entry, index) =>
-        new UnorderedListNode.Item([
+        new UnorderedList.Item([
           this.nodeRepresentingTableOfContentsEntry(entry, index)
         ]))
 
-    return this.write(new UnorderedListNode(listItems))
+    return this.write(new UnorderedList(listItems))
   }
 
   private nodeRepresentingTableOfContentsEntry(entry: OutlineSyntaxNode, indexOfEntry: number): OutlineSyntaxNode {
     const ordinal = indexOfEntry + 1
 
-    if (entry instanceof HeadingNode) {
-      return new HeadingNode(
+    if (entry instanceof Heading) {
+      return new Heading(
         [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
         entry.level + 1)
     }
 
-    if (entry instanceof TableNode) {
+    if (entry instanceof Table) {
       return this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
     }
 
     throw new Error('Unrecognized tables of contents entry')
   }
 
-  private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): LinkNode {
+  private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): Link {
     const idOfElement =
       this.idOfElementReferencedByTableOfContents(ordinalTableOfContentsEntry)
 
-    return new LinkNode(children, internalFragmentUrl(idOfElement))
+    return new Link(children, internalFragmentUrl(idOfElement))
   }
 
-  private orderedListItem(listItem: OrderedListNode.Item): string {
+  private orderedListItem(listItem: OrderedList.Item): string {
     const attrs: { value?: number } = {}
 
     if (listItem.ordinal != null) {
@@ -423,33 +423,33 @@ export class HtmlWriter extends Writer {
     return this.element('li', listItem.children, attrs)
   }
 
-  private descriptionListItem(listItem: DescriptionListNode.Item): string {
+  private descriptionListItem(listItem: DescriptionList.Item): string {
     return (
       listItem.terms.map(term => this.descriptionTerm(term)).join('')
       + this.description(listItem.description))
   }
 
-  private descriptionTerm(term: DescriptionListNode.Item.Term): string {
+  private descriptionTerm(term: DescriptionList.Item.Term): string {
     return this.element('dt', term.children)
   }
 
-  private description(description: DescriptionListNode.Item.Description): string {
+  private description(description: DescriptionList.Item.Description): string {
     return this.element('dd', description.children)
   }
 
-  private line(line: LineBlockNode.Line): string {
+  private line(line: LineBlock.Line): string {
     return this.element('div', line.children)
   }
 
-  private footnoteReferenceInnerLink(footnoteReference: FootnoteNode): LinkNode {
+  private footnoteReferenceInnerLink(footnoteReference: Footnote): Link {
     const referenceNumber = footnoteReference.referenceNumber
 
-    return new LinkNode(
-      [new PlainTextNode(referenceNumber.toString())],
+    return new Link(
+      [new PlainText(referenceNumber.toString())],
       internalFragmentUrl(this.footnoteId(referenceNumber)))
   }
 
-  private footnote(footnote: FootnoteNode): string {
+  private footnote(footnote: Footnote): string {
     const termHtml =
       this.element(
         'dt',
@@ -462,15 +462,15 @@ export class HtmlWriter extends Writer {
     return termHtml + descriptionHtml
   }
 
-  private footnoteLinkBackToReference(footnote: FootnoteNode): LinkNode {
+  private footnoteLinkBackToReference(footnote: Footnote): Link {
     const referenceNumber = footnote.referenceNumber
 
-    return new LinkNode(
-      [new PlainTextNode(referenceNumber.toString())],
+    return new Link(
+      [new PlainText(referenceNumber.toString())],
       internalFragmentUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
-  private playableMediaElement(media: Audio | VideoNode, tagName: string): string {
+  private playableMediaElement(media: Audio | Video, tagName: string): string {
     const { url, description } = media
 
     const attrs =
@@ -485,8 +485,8 @@ export class HtmlWriter extends Writer {
     return this.element(tagName, this.playableMediaFallback(description, url), attrs)
   }
 
-  private playableMediaFallback(content: string, url: string): LinkNode[] {
-    return [new LinkNode([new PlainTextNode(content)], url)]
+  private playableMediaFallback(content: string, url: string): Link[] {
+    return [new Link([new PlainText(content)], url)]
   }
 
   private revealable(
@@ -529,7 +529,7 @@ export class HtmlWriter extends Writer {
       attrsForOuterContainer)
   }
 
-  private tableCaption(caption: TableNode.Caption): string {
+  private tableCaption(caption: Table.Caption): string {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren(
@@ -537,7 +537,7 @@ export class HtmlWriter extends Writer {
         : '')
   }
 
-  private tableHeader(header: TableNode.Header): string {
+  private tableHeader(header: Table.Header): string {
     const headerRow =
       htmlElementWithAlreadyEscapedChildren(
         'tr',
@@ -547,13 +547,13 @@ export class HtmlWriter extends Writer {
   }
 
   private tableHeaderCell(
-    cell: TableNode.Header.Cell,
+    cell: Table.Header.Cell,
     scope: 'col' | 'row'
   ): string {
     return this.tableCell('th', cell, { scope })
   }
 
-  private tableRow(row: TableNode.Row): string {
+  private tableRow(row: Table.Row): string {
     const cells =
       row.cells.map(cell => this.tableRowCell(cell))
 
@@ -564,7 +564,7 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren('tr', cells)
   }
 
-  private tableRowCell(cell: TableNode.Row.Cell): string {
+  private tableRowCell(cell: Table.Row.Cell): string {
     const attrs: { class?: string } = {}
 
     if (cell.isNumeric()) {
@@ -574,7 +574,7 @@ export class HtmlWriter extends Writer {
     return this.tableCell('td', cell, attrs)
   }
 
-  private tableCell(tagName: string, cell: TableNode.Cell, attrs: any = {}): string {
+  private tableCell(tagName: string, cell: Table.Cell, attrs: any = {}): string {
     if (cell.countColumnsSpanned > 1) {
       attrs.colspan = cell.countColumnsSpanned
     }

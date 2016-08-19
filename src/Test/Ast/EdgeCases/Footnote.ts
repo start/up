@@ -1,32 +1,32 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
-import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { Blockquote } from '../../../SyntaxNodes/Blockquote'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
+import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 
 
 describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -36,24 +36,24 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
   it('produces a footnote containing the nested parenthesized text', () => {
     const markup = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode("I'm normal. "),
-      new NormalParentheticalNode([
-        new PlainTextNode("(I don't eat cereal. "),
-        new NormalParentheticalNode([
-          new PlainTextNode("(Well, I do, but I pretend not to.)"),
+    const footnote = new Footnote([
+      new PlainText("I'm normal. "),
+      new NormalParenthetical([
+        new PlainText("(I don't eat cereal. "),
+        new NormalParenthetical([
+          new PlainText("(Well, I do, but I pretend not to.)"),
         ]),
-        new PlainTextNode(')')
+        new PlainText(')')
       ]),
-      new PlainTextNode(' See?')
+      new PlainText(' See?')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -63,24 +63,24 @@ describe('A footnote produced by square brackets that contains nested square bra
   it('produces a footnote containing the nested square bracketed text', () => {
     const markup = "[^I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]"
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode("I'm normal. "),
-      new SquareParentheticalNode([
-        new PlainTextNode("[I don't eat cereal. "),
-        new SquareParentheticalNode([
-          new PlainTextNode("[Well, I do, but I pretend not to.]"),
+    const footnote = new Footnote([
+      new PlainText("I'm normal. "),
+      new SquareParenthetical([
+        new PlainText("[I don't eat cereal. "),
+        new SquareParenthetical([
+          new PlainText("[Well, I do, but I pretend not to.]"),
         ]),
-        new PlainTextNode(']')
+        new PlainText(']')
       ]),
-      new PlainTextNode(' See?')
+      new PlainText(' See?')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })
@@ -91,21 +91,21 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
     const markup = `
 * > I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode("Well, I do, but I pretend not to."),
+    const footnote = new Footnote([
+      new PlainText("Well, I do, but I pretend not to."),
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode("I don't eat cereal."),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Blockquote([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
                 footnote,
-                new PlainTextNode(" Never have."),
+                new PlainText(" Never have."),
               ]),
-              new FootnoteBlockNode([footnote])
+              new FootnoteBlock([footnote])
             ])
           ])
         ])
@@ -119,38 +119,38 @@ describe('A footnote with inner footnotes followed by another footnote with inne
     const markup =
       "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably. (^No.))"
 
-    const footnoteInsideFirstFootnote = new FootnoteNode([
-      new PlainTextNode('Well, I '),
+    const footnoteInsideFirstFootnote = new Footnote([
+      new PlainText('Well, I '),
       new Emphasis([
-        new PlainTextNode('do')
+        new PlainText('do')
       ]),
-      new PlainTextNode(', but I pretend not to.'),
+      new PlainText(', but I pretend not to.'),
     ], 3)
 
-    const firstFootnote = new FootnoteNode([
-      new PlainTextNode("That said, I don't eat cereal."),
+    const firstFootnote = new Footnote([
+      new PlainText("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainTextNode(" Never have."),
+      new PlainText(" Never have."),
     ], 1)
 
-    const footnoteInsideSecondFootnote = new FootnoteNode([
-      new PlainTextNode("No."),
+    const footnoteInsideSecondFootnote = new Footnote([
+      new PlainText("No."),
     ], 4)
 
-    const secondFootnote = new FootnoteNode([
-      new PlainTextNode("Probably."),
+    const secondFootnote = new Footnote([
+      new PlainText("Probably."),
       footnoteInsideSecondFootnote
     ], 2)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Me? I'm totally normal."),
+        new Paragraph([
+          new PlainText("Me? I'm totally normal."),
           firstFootnote,
-          new PlainTextNode(" Really."),
+          new PlainText(" Really."),
           secondFootnote,
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           firstFootnote,
           secondFootnote,
           footnoteInsideFirstFootnote,
@@ -165,17 +165,17 @@ describe('A footnote reference at the beginning of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('I would never eat cereal.')
+    const footnote = new Footnote([
+      new PlainText('I would never eat cereal.')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote,
-          new PlainTextNode(" I'm a normal breakfast eater, just like you.")
+          new PlainText(" I'm a normal breakfast eater, just like you.")
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 })

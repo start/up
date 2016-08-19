@@ -3,27 +3,27 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { concat } from '../CollectionHelpers'
 
 
-export class OrderedListNode implements OutlineSyntaxNode {
+export class OrderedList implements OutlineSyntaxNode {
   constructor(
-    public items: OrderedListNode.Item[],
+    public items: OrderedList.Item[],
     public sourceLineNumber: number = undefined) { }
 
   start(): number {
     return this.items[0].ordinal
   }
 
-  order(): OrderedListNode.Order {
+  order(): OrderedList.Order {
     const withExplicitOrdinals =
       this.items.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
-      return OrderedListNode.Order.Ascending
+      return OrderedList.Order.Ascending
     }
 
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? OrderedListNode.Order.Descrending
-        : OrderedListNode.Order.Ascending)
+        ? OrderedList.Order.Descrending
+        : OrderedList.Order.Ascending)
   }
 
   shouldBeIncludedInTableOfContents(): boolean {
@@ -37,7 +37,7 @@ export class OrderedListNode implements OutlineSyntaxNode {
 }
 
 
-export namespace OrderedListNode {
+export namespace OrderedList {
   export class Item extends OutlineSyntaxNodeContainer {
     constructor(public children: OutlineSyntaxNode[], public ordinal?: number) {
       super(children)

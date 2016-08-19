@@ -1,31 +1,31 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
+import { Blockquote } from '../../../SyntaxNodes/Blockquote'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
 
 
 describe('A single blank blockquoted line', () => {
   it('does not require any trailing whitespace after the blockquote delimiter', () => {
     expect(Up.toDocument('>')).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([])
+        new Blockquote([])
       ]))
   })
 
   it('may have a trailing space after the blockquote delimiter', () => {
     expect(Up.toDocument('> ')).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([])
+        new Blockquote([])
       ]))
   })
 
   it('may have a trailing tab after the blockquote delimiter', () => {
     expect(Up.toDocument('>\t')).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([])
+        new Blockquote([])
       ]))
   })
 })
@@ -40,13 +40,13 @@ describe('A single line blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('I choose you!')
+        new OutlineSeparator(),
+        new Blockquote([
+          new Paragraph([
+            new PlainText('I choose you!')
           ])
         ]),
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })

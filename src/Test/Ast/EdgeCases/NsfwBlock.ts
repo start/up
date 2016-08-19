@@ -2,17 +2,17 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
 
 
 context("A NSFW block's label line does not produce a NSFW block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.toDocument('NSFW:')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('NSFW:')
+        new PlainText('NSFW:')
       ]))
   })
 
@@ -23,10 +23,10 @@ No!
 Avoid that initialism!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([new PlainTextNode('NSFW:')]),
-          new LineBlockNode.Line([new PlainTextNode('No!')]),
-          new LineBlockNode.Line([new PlainTextNode("Avoid that initialism!")]),
+        new LineBlock([
+          new LineBlock.Line([new PlainText('NSFW:')]),
+          new LineBlock.Line([new PlainText('No!')]),
+          new LineBlock.Line([new PlainText("Avoid that initialism!")]),
         ])
       ]))
   })
@@ -38,11 +38,11 @@ NSFW:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('NSFW:')
+        new Paragraph([
+          new PlainText('NSFW:')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })
@@ -55,11 +55,11 @@ NSFW:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('NSFW:')
+        new Paragraph([
+          new PlainText('NSFW:')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })
@@ -74,12 +74,12 @@ NSFW:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('NSFW:')
+        new Paragraph([
+          new PlainText('NSFW:')
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })

@@ -1,29 +1,29 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Stress } from '../../../SyntaxNodes/Stress'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 
 
 describe('Overlapped doubly parenthesized text (closing at the same time) and stress', () => {
   it('splits the stress node, with 1 part inside both normal parenthetical nodes (up to the first closing parenthesis), 1 part only enclosing the second closing parenthesis, and 1 part following both normal parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.)) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
-        new NormalParentheticalNode([
-          new PlainTextNode('(I know. '),
-          new NormalParentheticalNode([
-            new PlainTextNode("(Well, I don't "),
+        new NormalParenthetical([
+          new PlainText('(I know. '),
+          new NormalParenthetical([
+            new PlainText("(Well, I don't "),
             new Stress([
-              new PlainTextNode('really.)')
+              new PlainText('really.)')
             ])
           ]),
           new Stress([
-            new PlainTextNode(')')
+            new PlainText(')')
           ])
         ]),
         new Stress([
-          new PlainTextNode(' Ha!')
+          new PlainText(' Ha!')
         ]),
       ]))
   })
@@ -34,20 +34,20 @@ describe('Overlapped doubly parenthesized text (closing at different times) and 
   it('splits the stress node, with 1 part inside both normal parenthetical nodes (up to first closing parenthesis), 1 part enclosing up to the second closing parenthesis, and 1 part following both normal parenthetical nodes', () => {
     expect(Up.toDocument("(I know. (Well, I don't **really.) So there.) Ha!**")).to.be.eql(
       insideDocumentAndParagraph([
-        new NormalParentheticalNode([
-          new PlainTextNode('(I know. '),
-          new NormalParentheticalNode([
-            new PlainTextNode("(Well, I don't "),
+        new NormalParenthetical([
+          new PlainText('(I know. '),
+          new NormalParenthetical([
+            new PlainText("(Well, I don't "),
             new Stress([
-              new PlainTextNode('really.)')
+              new PlainText('really.)')
             ])
           ]),
           new Stress([
-            new PlainTextNode(' So there.)')
+            new PlainText(' So there.)')
           ])
         ]),
         new Stress([
-          new PlainTextNode(' Ha!')
+          new PlainText(' Ha!')
         ]),
       ]))
   })
@@ -59,19 +59,19 @@ describe('Overlapped stress and doubly parenthesized text (opening at the same t
     expect(Up.toDocument("**I need to sleep. ((So** what?) It's late.)")).to.be.eql(
       insideDocumentAndParagraph([
         new Stress([
-          new PlainTextNode("I need to sleep. "),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new NormalParentheticalNode([
-              new PlainTextNode("(So"),
+          new PlainText("I need to sleep. "),
+          new NormalParenthetical([
+            new PlainText('('),
+            new NormalParenthetical([
+              new PlainText("(So"),
             ])
           ])
         ]),
-        new NormalParentheticalNode([
-          new NormalParentheticalNode([
-            new PlainTextNode(" what?)"),
+        new NormalParenthetical([
+          new NormalParenthetical([
+            new PlainText(" what?)"),
           ]),
-          new PlainTextNode(" It's late.)")
+          new PlainText(" It's late.)")
         ]),
       ]))
   })
@@ -83,19 +83,19 @@ describe('Overlapped stress and doubly parenthesized text (opening at different 
     expect(Up.toDocument("**I need to sleep. (I know. (Well**, I don't really.))")).to.be.eql(
       insideDocumentAndParagraph([
         new Stress([
-          new PlainTextNode("I need to sleep. "),
-          new NormalParentheticalNode([
-            new PlainTextNode('(I know. '),
-            new NormalParentheticalNode([
-              new PlainTextNode("(Well"),
+          new PlainText("I need to sleep. "),
+          new NormalParenthetical([
+            new PlainText('(I know. '),
+            new NormalParenthetical([
+              new PlainText("(Well"),
             ])
           ])
         ]),
-        new NormalParentheticalNode([
-          new NormalParentheticalNode([
-            new PlainTextNode(", I don't really.)"),
+        new NormalParenthetical([
+          new NormalParenthetical([
+            new PlainText(", I don't really.)"),
           ]),
-          new PlainTextNode(')')
+          new PlainText(')')
         ]),
       ]))
   })

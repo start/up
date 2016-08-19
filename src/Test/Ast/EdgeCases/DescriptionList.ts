@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { DescriptionListNode } from '../../../SyntaxNodes/DescriptionListNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 
 
 context('A block of would-be terms in a description list terminates the list if:', () => {
@@ -23,34 +23,34 @@ Night Shade
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ]))
         ]),
 
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode("Charmanders're red")
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText("Charmanders're red")
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("Squirtles are blue")
+          new LineBlock.Line([
+            new PlainText("Squirtles are blue")
           ]),
         ]),
 
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Night Shade')])
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Term([new PlainText('Lick')]),
+            new DescriptionList.Item.Term([new PlainText('Night Shade')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Ghost type moves.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Ghost type moves.')
               ])
             ]))
         ])
@@ -75,38 +75,38 @@ Night Shade
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-          ], new DescriptionListNode.Item.Description([
-            new ParagraphNode([
-              new PlainTextNode('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ]))
         ]),
 
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode("Charmanders're red")
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText("Charmanders're red")
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("Squirtles are blue")
+          new LineBlock.Line([
+            new PlainText("Squirtles are blue")
           ]),
         ]),
 
-        new ParagraphNode([
-          new PlainTextNode("Isn't that a good poem?")
+        new Paragraph([
+          new PlainText("Isn't that a good poem?")
         ]),
 
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-            new DescriptionListNode.Item.Term([new PlainTextNode('Night Shade')])
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Term([new PlainText('Lick')]),
+            new DescriptionList.Item.Term([new PlainText('Night Shade')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([
-                new PlainTextNode('Ghost type moves.')
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Ghost type moves.')
               ])
             ]))
         ])

@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 
 
 context('Between paragraphs', () => {
@@ -17,12 +17,12 @@ Goodbye, world!`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
+        new Paragraph([
+          new PlainText('Hello, world!')
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('Goodbye, world!')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('Goodbye, world!')
         ]),
       ]))
   })
@@ -41,12 +41,12 @@ Goodbye, world!`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
+        new Paragraph([
+          new PlainText('Hello, world!')
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('Goodbye, world!')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('Goodbye, world!')
         ])
       ]))
   })
@@ -66,8 +66,8 @@ Hello, world!`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
+        new Paragraph([
+          new PlainText('Hello, world!')
         ])
       ]))
   })
@@ -87,8 +87,8 @@ Hello, world!
 `
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, world!')
+        new Paragraph([
+          new PlainText('Hello, world!')
         ])
       ]))
   })
@@ -101,7 +101,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -115,9 +115,9 @@ describe('An outline separator streak', () => {
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('60.4%')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('60.4%')
         ])
       ]))
   })
@@ -127,14 +127,14 @@ describe('An outline separator streak', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 
   it('can contain as few as 3 non-whitespace characters', () => {
     expect(Up.toDocument('= - ~')).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 
@@ -153,12 +153,12 @@ Hello.
 Goodbye.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello.')
+        new Paragraph([
+          new PlainText('Hello.')
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('Goodbye.')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('Goodbye.')
         ]),
       ]))
   })
@@ -173,7 +173,7 @@ describe('Consecutive separator streaks', () => {
 =============================================`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -189,9 +189,9 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode("And that's my story.")
+          new OutlineSeparator(),
+          new Paragraph([
+            new PlainText("And that's my story.")
           ])
         ]))
     })
@@ -204,9 +204,9 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode("And that's my story.")
+          new OutlineSeparator(),
+          new Paragraph([
+            new PlainText("And that's my story.")
           ])
         ]))
     })
@@ -222,9 +222,9 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode("And that's my story.")
+          new OutlineSeparator(),
+          new Paragraph([
+            new PlainText("And that's my story.")
           ])
         ]))
     })
@@ -237,9 +237,9 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode("And that's my story.")
+          new OutlineSeparator(),
+          new Paragraph([
+            new PlainText("And that's my story.")
           ])
         ]))
     })
@@ -259,7 +259,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 
@@ -279,7 +279,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })

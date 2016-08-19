@@ -1,14 +1,14 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { concat } from '../../CollectionHelpers'
 
 
 export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): UpDocument {
   return new UpDocument([
-    new ParagraphNode(nodes)
+    new Paragraph(nodes)
   ])
 }
 

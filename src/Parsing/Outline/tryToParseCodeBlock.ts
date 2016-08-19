@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { streakOf } from '../PatternHelpers'
 import { OUTPUT_LINE_BREAK } from '../Strings'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -62,7 +62,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   }
 
   args.then(
-    [new CodeBlockNode(codeLines.join(OUTPUT_LINE_BREAK))],
+    [new CodeBlock(codeLines.join(OUTPUT_LINE_BREAK))],
     markupLineConsumer.countLinesConsumed)
 
   return true

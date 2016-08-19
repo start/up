@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The main heading within the table of contents', () => {
@@ -12,7 +12,7 @@ describe('The main heading within the table of contents', () => {
     })
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

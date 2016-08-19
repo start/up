@@ -2,25 +2,25 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { Link } from '../../SyntaxNodes/Link'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Video } from '../../SyntaxNodes/Video'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
+import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../../SyntaxNodes/BoldNode'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
+import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
 
 
 describe('An empty inline document', () => {
@@ -34,7 +34,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An emphasis node', () => {
     it('produces an <em> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new Emphasis([new PlainTextNode('Always')])
+        new Emphasis([new PlainText('Always')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<em>Always</em>')
@@ -45,7 +45,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A stress node', () => {
     it('produces a <strong> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new Stress([new PlainTextNode('Ness')])
+        new Stress([new PlainText('Ness')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<strong>Ness</strong>')
@@ -56,7 +56,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An italic node', () => {
     it('produces an <i> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new ItalicNode([new PlainTextNode('Ness')])
+        new Italic([new PlainText('Ness')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<i>Ness</i>')
@@ -67,7 +67,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A bold node', () => {
     it('produces a <b> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new BoldNode([new PlainTextNode('Ness')])
+        new Bold([new PlainText('Ness')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<b>Ness</b>')
@@ -89,7 +89,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An example input node', () => {
     it('produces a <kbd> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new ExampleInputNode('esc')
+        new ExampleInput('esc')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<kbd>esc</kbd>')
@@ -100,7 +100,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A revision insertion node', () => {
     it('produces an <ins> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new RevisionInsertionNode([new PlainTextNode('Wario')])
+        new RevisionInsertion([new PlainText('Wario')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<ins>Wario</ins>')
@@ -111,7 +111,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A revision deletion node', () => {
     it('produces a <del> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new RevisionDeletionNode([new PlainTextNode('Koopa Troopa')])
+        new RevisionDeletion([new PlainText('Koopa Troopa')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<del>Koopa Troopa</del>')
@@ -122,7 +122,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A normal parenthetical node', () => {
     it('produces a <small> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new NormalParentheticalNode([new PlainTextNode('(Koopa Troopa)')])
+        new NormalParenthetical([new PlainText('(Koopa Troopa)')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<small>(Koopa Troopa)</small>')
@@ -133,7 +133,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A square parenthetical node', () => {
     it('produces a <small class="up-square-brackets"> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new SquareParentheticalNode([new PlainTextNode('[Koopa Troopa]')])
+        new SquareParenthetical([new PlainText('[Koopa Troopa]')])
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<small class="up-square-brackets">[Koopa Troopa]</small>')
@@ -144,7 +144,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A link node', () => {
     it('produces an <a> element with its href attribute set to its URL', () => {
       const inlineDocument = new InlineUpDocument([
-        new LinkNode([new PlainTextNode('Google')], 'https://google.com')
+        new Link([new PlainText('Google')], 'https://google.com')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<a href="https://google.com">Google</a>')
@@ -155,7 +155,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An image node', () => {
     it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
       const inlineDocument = new InlineUpDocument([
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(
@@ -181,7 +181,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A video node', () => {
     it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
       const inlineDocument = new InlineUpDocument([
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(
@@ -195,7 +195,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A highlight node', () => {
     it('produces a <mark> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new HighlightNode([new PlainTextNode('45.9%')])
+        new Highlight([new PlainText('45.9%')])
       ])
 
       const html =
@@ -209,7 +209,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline spoiler node', () => {
     it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span role="alert"> element containing the spoiler contents', () => {
       const inlineDocument = new InlineUpDocument([
-        new InlineSpoilerNode([new PlainTextNode('45.9%')])
+        new InlineSpoiler([new PlainText('45.9%')])
       ])
 
       const html =
@@ -227,7 +227,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline NSFW node', () => {
     it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span role="alert"> element containing the NSFW contents', () => {
       const inlineDocument = new InlineUpDocument([
-        new InlineNsfwNode([new PlainTextNode('naked Gary')])
+        new InlineNsfw([new PlainText('naked Gary')])
       ])
 
       const html =
@@ -245,7 +245,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline NSFL node', () => {
     it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span role="alert"> element containing the NSFL contents', () => {
       const inlineDocument = new InlineUpDocument([
-        new InlineNsflNode([new PlainTextNode('rotting Gary')])
+        new InlineNsfl([new PlainText('rotting Gary')])
       ])
 
       const html =

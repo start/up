@@ -3,9 +3,9 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { concat } from '../CollectionHelpers'
 
 
-export class UnorderedListNode implements OutlineSyntaxNode {
+export class UnorderedList implements OutlineSyntaxNode {
   constructor(
-    public items: UnorderedListNode.Item[],
+    public items: UnorderedList.Item[],
     public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
@@ -19,7 +19,7 @@ export class UnorderedListNode implements OutlineSyntaxNode {
 }
 
 
-export namespace UnorderedListNode {
+export namespace UnorderedList {
   export class Item extends OutlineSyntaxNodeContainer {
     protected UNORDERED_LIST_ITEM(): void { }
   }

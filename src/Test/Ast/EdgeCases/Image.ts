@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Image } from '../../../SyntaxNodes/Image'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../../SyntaxNodes/SquareParentheticalNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { Link } from '../../../SyntaxNodes/Link'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
 describe('A paragraph directly followed by an image on its own line', () => {
@@ -19,10 +19,10 @@ Do not pour the spiders into your sister's cereal.
 [image: sister arraigned on charges][http://example.com/court.jpg]`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("Do not pour the spiders into your sister's cereal.")
+        new Paragraph([
+          new PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
-        new ImageNode('sister arraigned on charges', 'http://example.com/court.jpg'),
+        new Image('sister arraigned on charges', 'http://example.com/court.jpg'),
       ]))
   })
 })
@@ -32,15 +32,15 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
   it('does not produce an image node', () => {
     expect(Up.toDocument('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like [image: ghosts}'),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com/ghosts.svg')
+        new PlainText('I like [image: ghosts}'),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com/ghosts.svg')
           ], 'http://example.com/ghosts.svg'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -50,13 +50,13 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
   it('does not produce a image node', () => {
     expect(Up.toDocument('I like [image: ghosts][http://example.com/ghosts.svg).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new SquareParentheticalNode([
-          new PlainTextNode('[image: ghosts]')
+        new PlainText('I like '),
+        new SquareParenthetical([
+          new PlainText('[image: ghosts]')
         ]),
-        new PlainTextNode('['),
-        new LinkNode([
-          new PlainTextNode('example.com/ghosts.svg).')
+        new PlainText('['),
+        new Link([
+          new PlainText('example.com/ghosts.svg).')
         ], 'http://example.com/ghosts.svg).'),
       ]))
   })
@@ -67,18 +67,18 @@ context('Unmatched opening parentheses in an image description have no affect on
   specify('parentheses surounding the URL', () => {
     expect(Up.toDocument('[image: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
       new UpDocument([
-        new ImageNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+        new Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.toDocument('([image: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new ImageNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new PlainTextNode(')'),
+        new Paragraph([
+          new NormalParenthetical([
+            new PlainText('('),
+            new Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new PlainText(')'),
           ])
         ])
       ]))
@@ -90,16 +90,16 @@ describe("Unmatched opening parentheses in an image URL", () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
 
-    const footnote = new FootnoteNode([
-      new ImageNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    const footnote = new Footnote([
+      new Image('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
+        new Paragraph([
           footnote
         ]),
-        new FootnoteBlockNode([
+        new FootnoteBlock([
           footnote
         ])
       ]))
@@ -111,9 +111,9 @@ describe("A line consistingly solely of a link that contains both an image and r
   it("is placed into a paragraph node", () => {
     expect(Up.toDocument('[Look: (image: haunted house)(example.com/hauntedhouse.svg)] [example.com]')).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Look: '),
-          new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+        new Link([
+          new PlainText('Look: '),
+          new Image('haunted house', 'https://example.com/hauntedhouse.svg')
         ], 'https://example.com')
       ]))
   })

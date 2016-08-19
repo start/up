@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Heading } from '../../SyntaxNodes/Heading'
 
 
 describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
@@ -16,7 +16,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 })
@@ -30,7 +30,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 
@@ -41,7 +41,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 })
@@ -56,7 +56,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 
@@ -69,8 +69,8 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Hello, world!')]),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
+        new Paragraph([new PlainText('Hello, world!')]),
+        new Heading([new PlainText('Goodbye, world!')], 1),
       ]))
   })
 
@@ -81,9 +81,9 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([
-          new Stress([new PlainTextNode('Hello')]),
-          new PlainTextNode(', world!'),
+        new Heading([
+          new Stress([new PlainText('Hello')]),
+          new PlainText(', world!'),
         ], 1)
       ]))
   })
@@ -99,8 +99,8 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new OutlineSeparator(),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 
@@ -112,8 +112,8 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new OutlineSeparator(),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 
@@ -125,7 +125,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 
@@ -137,7 +137,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
+        new Heading([new PlainText('Hello, world!')], 1),
       ]))
   })
 })

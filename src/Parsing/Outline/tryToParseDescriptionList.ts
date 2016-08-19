@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { getInlineNodes } from '../Inline/getInlineNodes'
 import { getOutlineNodes } from './getOutlineNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
@@ -22,7 +22,7 @@ import { getIndentedBlock } from './getIndentedBlock'
 // TODO: Better handle edge-case of lines consisting solely of escaped whitespace.
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  const listItems: DescriptionListNode.Item[] = []
+  const listItems: DescriptionList.Item[] = []
   let countLinesConsumed = 0
 
   while (!markupLineConsumer.done()) {
@@ -83,10 +83,10 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const terms =
-      markupPerTerm.map(term => new DescriptionListNode.Item.Term(getInlineNodes(term, args.config)))
+      markupPerTerm.map(term => new DescriptionList.Item.Term(getInlineNodes(term, args.config)))
 
     const description =
-      new DescriptionListNode.Item.Description(
+      new DescriptionList.Item.Description(
         getOutlineNodes({
           markupLines: descriptionLines,
           sourceLineNumber: sourceLineNumberForDescription,
@@ -94,7 +94,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
           config: args.config
         }))
 
-    listItems.push(new DescriptionListNode.Item(terms, description))
+    listItems.push(new DescriptionList.Item(terms, description))
 
     if (shouldTerminateList) {
       break
@@ -106,7 +106,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   }
 
   args.then(
-    [new DescriptionListNode(listItems)],
+    [new DescriptionList(listItems)],
     countLinesConsumed)
 
   return true

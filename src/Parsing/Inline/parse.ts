@@ -1,14 +1,14 @@
 import { LINK_CONVENTION, EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, PARENTHETICAL_CONVENTION, SQUARE_BRACKET_PARENTHETICAL_CONVENTION } from './RichConventions'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { isWhitespace } from '../isWhitespace'
 import { last } from '../../CollectionHelpers'
 import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
+import { Link } from '../../SyntaxNodes/Link'
 import { RevealableConvention } from './RevealableConvention'
 
 
@@ -79,7 +79,7 @@ class Parser {
         }
 
         case TokenKind.PlainText: {
-          this.nodes.push(new PlainTextNode(token.value))
+          this.nodes.push(new PlainText(token.value))
           continue
         }
 
@@ -89,7 +89,7 @@ class Parser {
         }
 
         case TokenKind.ExampleInput: {
-          this.nodes.push(new ExampleInputNode(token.value))
+          this.nodes.push(new ExampleInput(token.value))
           continue
         }
 
@@ -102,14 +102,14 @@ class Parser {
 
           if (!urlAfterScheme) {
             // There's no point in creating a link for a URL scheme alone, so we treat the scheme as plain text
-            this.nodes.push(new PlainTextNode(urlScheme))
+            this.nodes.push(new PlainText(urlScheme))
             continue
           }
 
           const url = urlScheme + urlAfterScheme
 
           this.nodes.push(
-            new LINK_CONVENTION.NodeType([new PlainTextNode(urlAfterScheme)], url))
+            new LINK_CONVENTION.NodeType([new PlainText(urlAfterScheme)], url))
 
           continue
         }
@@ -124,10 +124,10 @@ class Parser {
 
           if (isContentBlank) {
             // If the link has blank content, we use the URL for the content
-            children = [new PlainTextNode(url)]
+            children = [new PlainText(url)]
           }
 
-          this.nodes.push(new LinkNode(children, url))
+          this.nodes.push(new Link(children, url))
           continue
         }
       }
@@ -181,7 +181,7 @@ class Parser {
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTextNodes(this.nodes)
+      nodes: combineConsecutivePlainTexts(this.nodes)
     }
   }
 
@@ -218,13 +218,13 @@ function isBlank(nodes: InlineSyntaxNode[]): boolean {
   return nodes.every(isWhitespace)
 }
 
-function combineConsecutivePlainTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+function combineConsecutivePlainTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   const resultNodes: InlineSyntaxNode[] = []
 
   for (const node of nodes) {
     const lastNode = last(resultNodes)
 
-    if ((node instanceof PlainTextNode) && (lastNode instanceof PlainTextNode)) {
+    if ((node instanceof PlainText) && (lastNode instanceof PlainText)) {
       lastNode.content += node.content
       continue
     }

@@ -1,14 +1,14 @@
-import { FootnoteNode } from './FootnoteNode'
+import { Footnote } from './Footnote'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class FootnoteBlockNode implements OutlineSyntaxNode {
+export class FootnoteBlock implements OutlineSyntaxNode {
   get sourceLineNumber(): number {
     // The source line number of a footnote block wouldn't be particulalry meaninful.
     return undefined
   }
 
-  constructor(public footnotes: FootnoteNode[]) { }
+  constructor(public footnotes: Footnote[]) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false

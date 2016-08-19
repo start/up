@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class FootnoteNode extends RichInlineSyntaxNode {
+export class Footnote extends RichInlineSyntaxNode {
   constructor(children: InlineSyntaxNode[], public referenceNumber?: number) {
     super(children)
   }

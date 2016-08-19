@@ -1,33 +1,33 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 
 context('Bracketed text starting with "highlight:" is put inside a highlight node. The brackets can be:', () => {
  specify('Square brackets', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Parentheses', () => {
     expect(Up.toDocument('After you beat the Elite Four, (highlight: you fight Gary).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -51,28 +51,28 @@ describe('A highlight convention', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: you fight *Gary*].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight '),
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight '),
           new Emphasis([
-            new PlainTextNode('Gary')
+            new PlainText('Gary')
           ]),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('can be nested within another highlight convention', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: you fight [highlight: Gary]].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight '),
-          new HighlightNode([
-            new PlainTextNode('Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight '),
+          new Highlight([
+            new PlainText('Gary')
           ]),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -82,15 +82,15 @@ describe('A highlight produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: you fight [and beat] Gary].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight '),
-          new SquareParentheticalNode([
-            new PlainTextNode('[and beat]')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight '),
+          new SquareParenthetical([
+            new PlainText('[and beat]')
           ]),
-          new PlainTextNode(' Gary')
+          new PlainText(' Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -100,15 +100,15 @@ describe('A highlight produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.toDocument('After you beat the Elite Four, (highlight: you fight (and beat) Gary).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(and beat)')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight '),
+          new NormalParenthetical([
+            new PlainText('(and beat)')
           ]),
-          new PlainTextNode(' Gary')
+          new PlainText(' Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -118,22 +118,22 @@ describe('Any whitespace between "highlight:" and the start of the highlighted c
   it('is optional', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight:you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('is ignored', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: \t  \t you fight Gary].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new HighlightNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Highlight([
+          new PlainText('you fight Gary')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })

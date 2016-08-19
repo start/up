@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { getInlineNodes } from '../Inline/getInlineNodes'
@@ -91,7 +91,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
 
   const lengthConsumed = markupLineConsumer.countLinesConsumed
 
-  let resultOfAnyRegularLines: ParagraphNode | LineBlockNode
+  let resultOfAnyRegularLines: Paragraph | LineBlock
 
   switch (inlineNodesPerRegularLine.length) {
     case 0:
@@ -100,14 +100,14 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       return
 
     case 1:
-      resultOfAnyRegularLines = new ParagraphNode(inlineNodesPerRegularLine[0])
+      resultOfAnyRegularLines = new Paragraph(inlineNodesPerRegularLine[0])
       break
 
     default: {
       const lineBlockLines = inlineNodesPerRegularLine
-        .map(inlineNodes => new LineBlockNode.Line(inlineNodes))
+        .map(inlineNodes => new LineBlock.Line(inlineNodes))
 
-      resultOfAnyRegularLines = new LineBlockNode(lineBlockLines)
+      resultOfAnyRegularLines = new LineBlock(lineBlockLines)
       break
     }
   }

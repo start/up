@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Table } from '../../../SyntaxNodes/Table'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('A table header consisting only of a semicolon', () => {
@@ -17,15 +17,15 @@ Starcraft`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-              new TableNode.Header.Cell([])
+        new Table(
+          new Table.Header([
+              new Table.Header.Cell([])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
             ])
           ])
       ]))
@@ -46,18 +46,18 @@ Starcraft`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([])
+            new Table.Row([
+              new Table.Row.Cell([])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
             ])
           ])
       ]))

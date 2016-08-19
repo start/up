@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 
 context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
@@ -17,8 +17,8 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     it('is used', () => {
       expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { spoiler: 'ruins ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -33,8 +33,8 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     it('is trimmed', () => {
       expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { spoiler: ' \t ruins ending \t ' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -42,8 +42,8 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     it('ignores inline conventions and regular expression rules', () => {
       expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -51,11 +51,11 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     it('can have multiple variations', () => {
       expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ]),
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash fights Gary')
+          new InlineSpoiler([
+            new PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -73,12 +73,12 @@ ruins ending:
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -112,12 +112,12 @@ ruINs eNDiNg:
 
       expect(Up.toDocument(markup, { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -135,13 +135,13 @@ LOOK AWAY:
 
       expect(Up.toDocument(markup, { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new SpoilerBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new SpoilerBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

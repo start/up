@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../../SyntaxNodes/OrderedListNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../../SyntaxNodes/OrderedList'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { Heading } from '../../../SyntaxNodes/Heading'
 
 
 describe('An outline separator streak', () => {
@@ -17,9 +17,9 @@ Not me. Us!
 @---------@`
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new HeadingNode([
-          new PlainTextNode('Not me. Us!')
+        new OutlineSeparator(),
+        new Heading([
+          new PlainText('Not me. Us!')
         ], 1)
       ]))
   })
@@ -32,9 +32,9 @@ Not me. Us!
 -----------`
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new HeadingNode([
-          new PlainTextNode('Not me. Us!')
+        new OutlineSeparator(),
+        new Heading([
+          new PlainText('Not me. Us!')
         ], 1)
       ]))
   })
@@ -46,7 +46,7 @@ describe('A streak of asterisks with spaces between', () => {
     const markup = '* * * * * *'
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -57,7 +57,7 @@ describe('A streak of number signs with spaces between', () => {
     const markup = '# # # # # #'
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -71,19 +71,19 @@ describe('A streak of asterisks with spaces between', () => {
 * * * * * *`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Mittens')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Mittens')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Gloves')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Gloves')
             ])
           ])
         ]),
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -97,19 +97,19 @@ describe('A streak of number signs with spaces between', () => {
 # # # # # #`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Mittens')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Mittens')
             ])
           ]),
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Gloves')
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Gloves')
             ])
           ])
         ]),
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })

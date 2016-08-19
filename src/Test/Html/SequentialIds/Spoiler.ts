@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
@@ -12,25 +12,25 @@ describe("Inline spoilers and spoiler blocks", () => {
   it("have sequential IDs", () => {
     const node =
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('The main character defeats the bad guy.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('The main character defeats the bad guy.')
           ]),
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('The hero was unambiguously '),
-              new InlineSpoilerNode([
-                new PlainTextNode('good '),
-                new InlineSpoilerNode([
-                  new PlainTextNode('and righteous.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('The hero was unambiguously '),
+              new InlineSpoiler([
+                new PlainText('good '),
+                new InlineSpoiler([
+                  new PlainText('and righteous.')
                 ])
               ])
             ])
           ])
         ]),
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Everyone lived happily ever after, except for the bad men.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('Everyone lived happily ever after, except for the bad men.')
           ])
         ])
       ])
@@ -79,25 +79,25 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
     const node =
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineSpoilerNode([
-            new PlainTextNode('Red')
+        new Paragraph([
+          new PlainText('Hello, '),
+          new InlineSpoiler([
+            new PlainText('Red')
           ]),
-          new PlainTextNode('. We meet for the '),
-          new InlineSpoilerNode([
+          new PlainText('. We meet for the '),
+          new InlineSpoiler([
             new Emphasis([
-              new PlainTextNode('eighth')
+              new PlainText('eighth')
             ])
           ]),
-          new PlainTextNode(' time.')
+          new PlainText(' time.')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineSpoilerNode([
-            new PlainTextNode('Blue')
+        new Paragraph([
+          new PlainText('Hello, '),
+          new InlineSpoiler([
+            new PlainText('Blue')
           ]),
-          new PlainTextNode('.'),
+          new PlainText('.'),
         ])
       ])
 
@@ -113,17 +113,17 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 
     const node =
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('After you beat the Elite Four, you have to face your rival.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('After you beat the Elite Four, you have to face your rival.')
           ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode("But the game isn't over yet!")
+        new Paragraph([
+          new PlainText("But the game isn't over yet!")
         ]),
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Once you beat your rival, you can finally enter Cerulean Cave.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])
         ])
       ])

@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Table } from '../../../SyntaxNodes/Table'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe("A table header cell", () => {
@@ -18,18 +18,18 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game [;')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game [;')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
             ])
           ])
       ]))
@@ -45,18 +45,18 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game :\\')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game :\\')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
             ])
           ])
       ]))
@@ -75,18 +75,18 @@ Chrono Cross;         1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger [;')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger [;')]),
+              new Table.Row.Cell([new PlainText('1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
             ])
           ])
       ]))
@@ -102,18 +102,18 @@ Chrono Cross;           1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger :\\')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger :\\')]),
+              new Table.Row.Cell([new PlainText('1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
             ])
           ])
       ]))
@@ -130,8 +130,8 @@ Table: my favorite outline convention.
 I almost didn't include them; however, I realized tables are too useful to leave out.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Table: my favorite outline convention.')]),
-        new ParagraphNode([new PlainTextNode("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
+        new Paragraph([new PlainText('Table: my favorite outline convention.')]),
+        new Paragraph([new PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
       ]))
   })
 })
@@ -151,24 +151,24 @@ Underline
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Underline')]),
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Underline')]),
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('====')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('====')]),
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('####')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('####')]),
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('****')]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('****')]),
             ])
           ],
-          new TableNode.Caption([
-            new PlainTextNode('Most common underlines for top-level headings '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(from most to least common)')
+          new Table.Caption([
+            new PlainText('Most common underlines for top-level headings '),
+            new NormalParenthetical([
+              new PlainText('(from most to least common)')
             ])
           ]))
       ]))
@@ -188,18 +188,18 @@ Chrono Cross;         1999`
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game`s Title')]),
-              new TableNode.Header.Cell([new PlainTextNode('Game`s Release Date')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game`s Title')]),
+              new Table.Header.Cell([new PlainText('Game`s Release Date')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1995')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1999')])
               ])
             ])
         ]))
@@ -215,18 +215,18 @@ Square\`s Chrono Cross;       1990\`s`
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Decade')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Release Decade')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Square`s Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Square`s Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1990`s')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Square`s Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1990`s')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Square`s Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1990`s')])
               ])
             ])
         ]))
@@ -245,18 +245,18 @@ Chrono Cross;     1999`
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('{: Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date :}')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('{: Game')]),
+              new Table.Header.Cell([new PlainText('Release Date :}')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1995')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1999')])
               ])
             ])
         ]))
@@ -272,18 +272,18 @@ Chrono Cross;         1999`
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Release Date')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('{: Chrono Trigger')]),
-                new TableNode.Row.Cell([new PlainTextNode('1995 :}')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('{: Chrono Trigger')]),
+                new Table.Row.Cell([new PlainText('1995 :}')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-                new TableNode.Row.Cell([new PlainTextNode('1999')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Chrono Cross')]),
+                new Table.Row.Cell([new PlainText('1999')])
               ])
             ])
         ]))

@@ -1,7 +1,7 @@
 import { MediaConvention } from './MediaConvention'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
 import { TokenKind } from './Tokenization/TokenKind'
 
 
@@ -13,12 +13,12 @@ export const AUDIO_CONVENTION: MediaConvention = {
 
 export const IMAGE_CONVENTION: MediaConvention = {
   labels: terms => terms.image,
-  NodeType: ImageNode,
+  NodeType: Image,
   startAndDescriptionTokenKind: TokenKind.ImageStartAndDescription
 }
 
 export const VIDEO_CONVENTION: MediaConvention = {
   labels: terms => terms.video,
-  NodeType: VideoNode,
+  NodeType: Video,
   startAndDescriptionTokenKind: TokenKind.VideoStartAndDescription
 }

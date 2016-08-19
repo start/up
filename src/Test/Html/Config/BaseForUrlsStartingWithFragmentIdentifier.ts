@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 
@@ -15,8 +15,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
   it("does not affect a footnote reference's link to its footnote", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -26,12 +26,12 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
   it("does not affect a footnote's link back to its reference", () => {
     const document = new UpDocument([
-      new FootnoteBlockNode([
-        new FootnoteNode([
-          new PlainTextNode("Arwings"),
+      new FootnoteBlock([
+        new Footnote([
+          new PlainText("Arwings"),
         ], 2),
-        new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
+        new Footnote([
+          new PlainText("Killer Bees"),
         ], 3),
       ])
     ])

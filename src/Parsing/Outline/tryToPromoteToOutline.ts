@@ -1,6 +1,6 @@
 import { isWhitespace } from '../isWhitespace'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { Link } from '../../SyntaxNodes/Link'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
@@ -11,7 +11,7 @@ import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
 // whitespace), the link counts as media. In that situation, the link itself is placed directly into
 // the outline.
 export type InlineSyntaxNodePromotableToOutline =
-  MediaSyntaxNode | LinkNode
+  MediaSyntaxNode | Link
 
 
 export function tryToPromoteToOutline(
@@ -29,11 +29,11 @@ export function tryToPromoteToOutline(
       continue
     }
 
-    if (inlineNode instanceof LinkNode) {
+    if (inlineNode instanceof Link) {
       const wasAbleToPromoteChildrenToOutline = tryToPromoteToOutline({
         inlineNodes: inlineNode.children,
         then: promotableChildren => {
-          promotedNodes.push(new LinkNode(promotableChildren, inlineNode.url))
+          promotedNodes.push(new Link(promotableChildren, inlineNode.url))
         }
       })
 

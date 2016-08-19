@@ -1,17 +1,17 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { Image } from '../../../SyntaxNodes/Image'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Video } from '../../../SyntaxNodes/Video'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { Link } from '../../../SyntaxNodes/Link'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
@@ -26,8 +26,8 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'my-app:wiki/Chrono_Chross')
       ]))
   })
@@ -37,7 +37,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ImageNode('Chrono Cross logo', 'my-app:cc-logo.png')
+        new Image('Chrono Cross logo', 'my-app:cc-logo.png')
       ]))
   })
 
@@ -55,7 +55,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new VideoNode('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
+        new Video('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ]))
   })
 
@@ -64,10 +64,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineSpoiler([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -78,10 +78,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineNsfwNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineNsfw([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -92,10 +92,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineNsfl([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -104,20 +104,20 @@ describe('The "defaultUrlScheme" config setting', () => {
   it("is prefixed to schemeless linkified footnote URLs", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
 
-    const footnote = new FootnoteNode([
-      new LinkNode([
-        new PlainTextNode('Well, I eat one.')
+    const footnote = new Footnote([
+      new Link([
+        new PlainText('Well, I eat one.')
       ], 'my-app:cereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainText(" Never have."),
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 
@@ -126,8 +126,8 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
+        new PlainText('Walter White produces '),
+        new Link([
           new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki/Blue_Sky')
       ]))
@@ -138,9 +138,9 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
-          new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new PlainText('Walter White produces '),
+        new Link([
+          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -150,9 +150,9 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
-          new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new PlainText('Walter White produces '),
+        new Link([
+          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -162,8 +162,8 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'my-app:example.wiki/Chrono_Chross')
       ]))
   })
@@ -173,10 +173,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineSpoiler([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -187,10 +187,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineNsfwNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineNsfw([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -201,10 +201,10 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineNsfl([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -213,20 +213,20 @@ describe('The "defaultUrlScheme" config setting', () => {
   it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
 
-    const footnote = new FootnoteNode([
-      new LinkNode([
-        new PlainTextNode('Well, I eat one.')
+    const footnote = new Footnote([
+      new Link([
+        new PlainText('Well, I eat one.')
       ], 'my-app:cereals.com/lucky-charms?show=nutrition')
     ], 1)
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainText(" Never have."),
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 
@@ -235,8 +235,8 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
+        new PlainText('Walter White produces '),
+        new Link([
           new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
@@ -247,9 +247,9 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
-          new ImageNode('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new PlainText('Walter White produces '),
+        new Link([
+          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })
@@ -259,9 +259,9 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new LinkNode([
-          new VideoNode('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new PlainText('Walter White produces '),
+        new Link([
+          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })
@@ -271,8 +271,8 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'their-app:localhost/wiki/Chrono_Chross')
       ]))
   })

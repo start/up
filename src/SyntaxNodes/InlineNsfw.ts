@@ -1,6 +1,6 @@
 import { RevealableInlineSyntaxNode } from './RevealableInlineSyntaxNode'
 
 
-export class InlineNsfwNode extends RevealableInlineSyntaxNode {
+export class InlineNsfw extends RevealableInlineSyntaxNode {
   protected INLINE_NSFW(): void { }
 }

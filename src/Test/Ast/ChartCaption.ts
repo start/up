@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Table } from '../../SyntaxNodes/Table'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context("A chart caption is exactly like a table caption.", () => {
@@ -18,27 +18,27 @@ Chart: \`AND\` operator logic
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')])),
           ],
 
-          new TableNode.Caption([
+          new Table.Caption([
             new InlineCode('AND'),
-            new PlainTextNode(' operator logic')
+            new PlainText(' operator logic')
           ]))
       ]))
   })
@@ -55,24 +55,24 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')])),
           ],
-          new TableNode.Caption([
+          new Table.Caption([
             new InlineCode('AND'),
-            new PlainTextNode(' operator logic')
+            new PlainText(' operator logic')
           ]))
       ]))
   })
@@ -89,19 +89,19 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ],
-          new TableNode.Caption([new PlainTextNode('Games in the Chrono series')]))
+          new Table.Caption([new PlainText('Games in the Chrono series')]))
       ]))
   })
 
@@ -113,14 +113,14 @@ Chart: Games in the Chrono series
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]),
           [],
-          new TableNode.Caption([
-            new PlainTextNode('Games in the Chrono series')
+          new Table.Caption([
+            new PlainText('Games in the Chrono series')
           ]))
       ]))
   })
@@ -135,8 +135,8 @@ Chart the numbers.
 Do it now; I'm tired of waiting.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Chart the numbers.')]),
-        new ParagraphNode([new PlainTextNode("Do it now; I'm tired of waiting.")]),
+        new Paragraph([new PlainText('Chart the numbers.')]),
+        new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),
       ]))
   })
 })

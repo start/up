@@ -1,6 +1,6 @@
 import { MediaSyntaxNode } from './MediaSyntaxNode'
 
 
-export class ImageNode extends MediaSyntaxNode {
+export class Image extends MediaSyntaxNode {
   protected IMAGE(): void { }
 }

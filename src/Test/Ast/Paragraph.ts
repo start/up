@@ -2,19 +2,19 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
 
 
 describe('A typical line of text', () => {
   it('produces a paragraph node', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
+        new PlainText("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
       ]))
   })
 })
@@ -24,11 +24,11 @@ describe('A paragraph', () => {
   it('can contain inline conventions', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Emphasis([
-          new PlainTextNode('everyone')
+          new PlainText('everyone')
         ]),
-        new PlainTextNode(" like that?")
+        new PlainText(" like that?")
       ]))
   })
 })
@@ -38,44 +38,44 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
   specify('Not escaped', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?  \t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Emphasis([
-          new PlainTextNode('everyone')
+          new PlainText('everyone')
         ]),
-        new PlainTextNode(" like that?")
+        new PlainText(" like that?")
       ]))
   })
 
   specify('Escaped', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\ \t  ")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Emphasis([
-          new PlainTextNode('everyone')
+          new PlainText('everyone')
         ]),
-        new PlainTextNode(" like that?")
+        new PlainText(" like that?")
       ]))
   })
 
   specify('Both escaped and not escaped', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that? \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Emphasis([
-          new PlainTextNode('everyone')
+          new PlainText('everyone')
         ]),
-        new PlainTextNode(" like that?")
+        new PlainText(" like that?")
       ]))
   })
 
   specify('Both escaped and not escaped, all following a backslash itself following an escaped backslash', () => {
     expect(Up.toDocument("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\\\\\  \t \\ \\\t  \t ")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Emphasis([
-          new PlainTextNode('everyone')
+          new PlainText('everyone')
         ]),
-        new PlainTextNode(" like that?\\")
+        new PlainText(" like that?\\")
       ]))
   })
 })
@@ -89,8 +89,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
+        new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
+        new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -102,8 +102,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
+        new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
+        new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -114,8 +114,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
+        new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
+        new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -127,8 +127,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Pokemon Moon has a Mew under a truck.')]),
-        new ParagraphNode([new PlainTextNode('Pokemon Sun is a truck.')]),
+        new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
+        new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
   })
 })
@@ -142,12 +142,12 @@ You'll never believe this fake evidence!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("You'll never believe this fake evidence!")
+        new Paragraph([
+          new PlainText("You'll never believe this fake evidence!")
         ]),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 })
@@ -162,10 +162,10 @@ You'll never believe this fake evidence!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new ParagraphNode([
-          new PlainTextNode("You'll never believe this fake evidence!")
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new Paragraph([
+          new PlainText("You'll never believe this fake evidence!")
         ])
       ]))
   })
@@ -182,14 +182,14 @@ You'll never believe this fake evidence!
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new ParagraphNode([
-          new PlainTextNode("You'll never believe this fake evidence!")
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new Paragraph([
+          new PlainText("You'll never believe this fake evidence!")
         ]),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 })

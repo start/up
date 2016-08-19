@@ -3,18 +3,18 @@ import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { Link } from '../../SyntaxNodes/Link'
 
 
 context('Bracketed (square bracketed or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
   it('produces an audio node with the first bracketed text treated as the description and the second treated as the audio URL', () => {
     expect(Up.toDocument('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I would never stay in a house with these sounds. '),
+        new PlainText('I would never stay in a house with these sounds. '),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new PlainTextNode(' Would you?')
+        new PlainText(' Would you?')
       ]))
   })
 })
@@ -43,7 +43,7 @@ context('An audio convention that is the only convention on its line is not plac
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
           ], 'https://hauntedhouse.com'),
         ]))
@@ -55,7 +55,7 @@ context('An audio convention that is the only convention on its line is not plac
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
           ], 'https://hauntedhouse.com'),
         ]))
@@ -106,10 +106,10 @@ context("When an otherwise-valid audio convention's URL starts with whitespace, 
   specify('it does not produce an audio node', () => {
     expect(Up.toDocument('[audio: scary]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareParentheticalNode([
-          new PlainTextNode('[audio: scary]')
+        new SquareParenthetical([
+          new PlainText('[audio: scary]')
         ]),
-        new PlainTextNode('( \t tel:5555555555)')
+        new PlainText('( \t tel:5555555555)')
       ]))
   })
 })

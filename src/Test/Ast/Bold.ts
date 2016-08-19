@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../../SyntaxNodes/BoldNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
@@ -11,11 +11,11 @@ describe('Text surrounded by 2 underscores', () => {
   it('is put inside a stress node', () => {
     expect(Up.toDocument('Hello, __world__!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new BoldNode([
-          new PlainTextNode('world')
+        new PlainText('Hello, '),
+        new Bold([
+          new PlainText('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 })
@@ -25,41 +25,41 @@ describe('Bold text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.toDocument('Hello, __`world`__!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new BoldNode([
+        new PlainText('Hello, '),
+        new Bold([
           new InlineCode('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain further bold text', () => {
     expect(Up.toDocument('Hello, __my __little__ world__!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new BoldNode([
-          new PlainTextNode('my '),
-          new BoldNode([
-            new PlainTextNode('little')
+        new PlainText('Hello, '),
+        new Bold([
+          new PlainText('my '),
+          new Bold([
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain italicized text', () => {
     expect(Up.toDocument('Hello, __my _little_ world__!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
-        new BoldNode([
-          new PlainTextNode('my '),
-          new ItalicNode([
-            new PlainTextNode('little')
+        new PlainText('Hello, '),
+        new Bold([
+          new PlainText('my '),
+          new Italic([
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 })

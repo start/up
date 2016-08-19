@@ -2,20 +2,20 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Link } from '../../../SyntaxNodes/Link'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { Image } from '../../../SyntaxNodes/Image'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
@@ -23,63 +23,63 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   specify('Spoilers', () => {
     expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new InlineSpoiler([
+          new Link([
+            new PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('NSFW', () => {
     expect(Up.toDocument('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsfwNode([
-          new LinkNode([
-            new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new InlineNsfw([
+          new Link([
+            new PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('NSFL', () => {
     expect(Up.toDocument('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new InlineNsfl([
+          new Link([
+            new PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
@@ -87,85 +87,85 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
     const markup = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
 
     const footnote =
-      new FootnoteNode([
-        new LinkNode([
-          new PlainTextNode('Well, I do, but I pretend not to.')
+      new Footnote([
+        new Link([
+          new PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
       ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal"),
+        new Paragraph([
+          new PlainText("I don't eat cereal"),
           footnote,
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('example.com/cereal-problems')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('example.com/cereal-problems')
             ], 'https://example.com/cereal-problems'),
-            new PlainTextNode(')'),
+            new PlainText(')'),
           ]),
-          new PlainTextNode(" and I never have."),
+          new PlainText(" and I never have."),
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 
   specify('Audio', () => {
     expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new LinkNode([
+        new PlainText('After you beat the Elite Four, '),
+        new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/finalbattle'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Images', () => {
     expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new LinkNode([
-          new ImageNode('you fight Gary', 'https://example.com/fight.svg')
+        new PlainText('After you beat the Elite Four, '),
+        new Link([
+          new Image('you fight Gary', 'https://example.com/fight.svg')
         ], 'https://example.com/finalbattle'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Videos', () => {
     expect(Up.toDocument('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new LinkNode([
-          new VideoNode('you fight Gary', 'https://example.com/fight.webm')
+        new PlainText('After you beat the Elite Four, '),
+        new Link([
+          new Video('you fight Gary', 'https://example.com/fight.webm')
         ], 'https://example.com/finalbattle'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -175,92 +175,92 @@ context('The following conventions cannot be linkified', () => {
   specify('Links', () => {
     expect(Up.toDocument('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new LinkNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new Link([
+          new PlainText('you fight Gary')
         ], 'https://example.com/finalbattle'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Revision insertion', () => {
     expect(Up.toDocument('After you beat the Elite Four, ++you fight Gary++ (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new RevisionInsertionNode([
-          new PlainTextNode('you fight Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new RevisionInsertion([
+          new PlainText('you fight Gary')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Revision deletion', () => {
     expect(Up.toDocument('After you beat the Elite Four, you fight Gary ~~Ketchum~~ (https://example.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, you fight Gary '),
-        new RevisionDeletionNode([
-          new PlainTextNode('Ketchum')
+        new PlainText('After you beat the Elite Four, you fight Gary '),
+        new RevisionDeletion([
+          new PlainText('Ketchum')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Inline code', () => {
     expect(Up.toDocument("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I look forward to '),
+        new PlainText('I look forward to '),
         new InlineCode('--strictNullChecks'),
-        new PlainTextNode(' and '),
+        new PlainText(' and '),
         new InlineCode('--noUnusedParameters'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
           ], "https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript"),
-          new PlainTextNode(')'),
+          new PlainText(')'),
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   specify('Naked URLs', () => {
     expect(Up.toDocument('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('goo.gl/7y3XBV')
+        new Link([
+          new PlainText('goo.gl/7y3XBV')
         ], 'https://goo.gl/7y3XBV'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('www.nintendo.co.uk')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('www.nintendo.co.uk')
           ], 'https://www.nintendo.co.uk'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -268,13 +268,13 @@ context('The following conventions cannot be linkified', () => {
   specify('Regular text (e.g. a word)', () => {
     expect(Up.toDocument('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('The Mini-NES comes out November eleventh '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')
+        new PlainText('The Mini-NES comes out November eleventh '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')
           ], 'http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })

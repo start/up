@@ -1,22 +1,22 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 
 describe('An inline spoiler convention', () => {
   it('can be the first convention inside another spoiler convention using same bracket type', () => {
     expect(Up.toDocument('After you beat the Elite Four, [SPOILER: [SPOILER: Gary] fights you].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('After you beat the Elite Four, '),
-        new InlineSpoilerNode([
-          new InlineSpoilerNode([
-            new PlainTextNode('Gary')
+        new PlainText('After you beat the Elite Four, '),
+        new InlineSpoiler([
+          new InlineSpoiler([
+            new PlainText('Gary')
           ]),
-          new PlainTextNode(' fights you')
+          new PlainText(' fights you')
         ]),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })

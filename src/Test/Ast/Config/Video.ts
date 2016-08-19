@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { Video } from '../../../SyntaxNodes/Video'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+        new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
 
@@ -30,7 +30,7 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { video: ' \t watch \t ' } })).to.be.eql(
       new UpDocument([
-        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+        new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
 
@@ -39,7 +39,7 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { video: '*watch*' } })).to.be.eql(
       new UpDocument([
-        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+        new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
 
@@ -48,8 +48,8 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { video: ['view', 'watch'] } })).to.be.eql(
       new UpDocument([
-        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm'),
-        new VideoNode('Nevada caucus footage', 'https://example.com/video.webm')
+        new Video('Nevada caucus footage', 'https://example.com/video.webm'),
+        new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
 })

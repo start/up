@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 
 
 describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
@@ -19,12 +19,12 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -42,12 +42,12 @@ sPoiLeR:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -63,12 +63,12 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -84,12 +84,12 @@ SPOILER
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -106,12 +106,12 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -130,12 +130,12 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -151,12 +151,12 @@ SPOILER:  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -172,12 +172,12 @@ SPOILER  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -199,13 +199,13 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new SpoilerBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new SpoilerBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])
@@ -224,13 +224,13 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new OutlineSeparatorNode(),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new OutlineSeparator(),
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -251,8 +251,8 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new CodeBlockNode(
+          new SpoilerBlock([
+            new CodeBlock(
               `function nthFibonacci(n: number): number {
   return (
     n <= 2
@@ -272,13 +272,13 @@ That was my favorite episode.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode('That was my favorite episode.')
+        new Paragraph([
+          new PlainText('That was my favorite episode.')
         ])
       ]))
   })
@@ -293,16 +293,16 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a '),
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a '),
             new Emphasis([
-              new PlainTextNode('very')
+              new PlainText('very')
             ]),
-            new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+            new PlainText(' sad song playing in the background, Ash said goodbye to Pikachu.'),
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -318,9 +318,9 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -333,9 +333,9 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -348,9 +348,9 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -368,15 +368,15 @@ SPOILER:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Well...')
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText('Well...')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))

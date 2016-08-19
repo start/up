@@ -1,6 +1,6 @@
 import { ParentheticalSyntaxNode } from './ParentheticalSyntaxNode'
 
 
-export class NormalParentheticalNode extends ParentheticalSyntaxNode {
+export class NormalParenthetical extends ParentheticalSyntaxNode {
   protected NORMAL_PARENTHETICAL(): void { }
 }

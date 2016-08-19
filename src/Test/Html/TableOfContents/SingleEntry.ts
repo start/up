@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Table } from '../../../SyntaxNodes/Table'
+import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 
 
 context('When a document has a table of contents, its first HTML element is <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
@@ -12,7 +12,7 @@ context('When a document has a table of contents, its first HTML element is <nav
     context("For heading entries, the link's content is the heading's content, and the link is placed inside a new heading element 1 level higher than the original heading.", () => {
       specify('A level 1 heading entry is placed in an <h2>', () => {
         const heading =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+          new Heading([new PlainText('I enjoy apples')], 1)
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -29,7 +29,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
       specify('A level 2 heading entry is placed in an <h3>', () => {
         const heading =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 2)
+          new Heading([new PlainText('I enjoy apples')], 2)
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -46,7 +46,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
       specify('A level 3 heading entry is placed in an <h4>', () => {
         const heading =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 3)
+          new Heading([new PlainText('I enjoy apples')], 3)
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -63,7 +63,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
       specify('A level 4 heading entry entry contains an <h5>', () => {
         const heading =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 4)
+          new Heading([new PlainText('I enjoy apples')], 4)
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -80,7 +80,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
       specify('A level 5 heading entry is placed in an <h6>', () => {
         const heading =
-          new HeadingNode([new PlainTextNode('I enjoy apples')], 5)
+          new Heading([new PlainText('I enjoy apples')], 5)
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -98,7 +98,7 @@ context('When a document has a table of contents, its first HTML element is <nav
       context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
         specify('A level 6 heading entry is placed in an <h6>', () => {
           const heading =
-            new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
+            new Heading([new PlainText('I enjoy apples')], 6)
 
           const document =
             new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -115,7 +115,7 @@ context('When a document has a table of contents, its first HTML element is <nav
 
         specify('A level 10 heading entry is placed in an <h6>', () => {
           const heading =
-            new HeadingNode([new PlainTextNode('I enjoy apples')], 6)
+            new Heading([new PlainText('I enjoy apples')], 6)
 
           const document =
             new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -135,21 +135,21 @@ context('When a document has a table of contents, its first HTML element is <nav
     context("For charts and table entries (both of which must have a caption to be included in the table of contents), the link's content is the caption's content.", () => {
       specify('A table entry contains only a link reflecting its caption', () => {
         const table =
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Developer')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Developer')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-                new TableNode.Row.Cell([new PlainTextNode('Square')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                new Table.Row.Cell([new PlainText('Square')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-                new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+                new Table.Row.Cell([new PlainText('Nintendo')])
               ])
             ],
-            new TableNode.Caption([new PlainTextNode('Influential games')]))
+            new Table.Caption([new PlainText('Influential games')]))
 
         const document =
           new UpDocument([table], new UpDocument.TableOfContents([table]))
@@ -171,22 +171,22 @@ context('When a document has a table of contents, its first HTML element is <nav
 
       specify('A chart entry contains only a link reflecting its caption', () => {
         const chart =
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('1')]),
+              new Table.Header.Cell([new PlainText('0')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('true')]),
+                new Table.Row.Cell([new PlainText('false')]),
+              ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('false')]),
+                new Table.Row.Cell([new PlainText('false')])
+              ], new Table.Header.Cell([new PlainText('0')]))
             ],
-            new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+            new Table.Caption([new PlainText('AND operator logic')]))
 
         const document =
           new UpDocument([chart], new UpDocument.TableOfContents([chart]))
@@ -211,13 +211,13 @@ context('When a document has a table of contents, its first HTML element is <nav
   context("The table of contents has no effect on elements that aren't referenced by it, even when syntax nodes represented by those elements are otherwise identical.", () => {
     specify("Other headings are not affected", () => {
       const headingInTableOfContents =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const document =
         new UpDocument([
           headingInTableOfContents,
-          new BlockquoteNode([
-            new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+          new Blockquote([
+            new Heading([new PlainText('I enjoy apples')], 1)
           ])
         ], new UpDocument.TableOfContents([headingInTableOfContents]))
 
@@ -237,41 +237,41 @@ context('When a document has a table of contents, its first HTML element is <nav
 
   specify("Other tables are not affected", () => {
     const tableInTableOfContents =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Developer')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new PlainText('Square')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new PlainText('Nintendo')])
           ])
         ],
-        new TableNode.Caption([new PlainTextNode('Influential games')]))
+        new Table.Caption([new PlainText('Influential games')]))
 
     const document =
       new UpDocument([
         tableInTableOfContents,
-        new BlockquoteNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([new PlainTextNode('Game')]),
-              new TableNode.Header.Cell([new PlainTextNode('Developer')])
+        new Blockquote([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game')]),
+              new Table.Header.Cell([new PlainText('Developer')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-                new TableNode.Row.Cell([new PlainTextNode('Square')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                new Table.Row.Cell([new PlainText('Square')])
               ]),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-                new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+                new Table.Row.Cell([new PlainText('Nintendo')])
               ])
             ],
-            new TableNode.Caption([new PlainTextNode('Influential games')]))
+            new Table.Caption([new PlainText('Influential games')]))
 
         ])
       ],
@@ -302,43 +302,43 @@ context('When a document has a table of contents, its first HTML element is <nav
 
   specify("Other charts are not affected", () => {
     const chartInTableOfContents =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('1')]),
+          new Table.Header.Cell([new PlainText('0')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('true')]),
+            new Table.Row.Cell([new PlainText('false')]),
+          ], new Table.Header.Cell([new PlainText('1')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('false')]),
+            new Table.Row.Cell([new PlainText('false')])
+          ], new Table.Header.Cell([new PlainText('0')]))
         ],
-        new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+        new Table.Caption([new PlainText('AND operator logic')]))
 
     const document =
       new UpDocument([
         chartInTableOfContents,
-        new BlockquoteNode([
-          new TableNode(
-            new TableNode.Header([
-              new TableNode.Header.Cell([]),
-              new TableNode.Header.Cell([new PlainTextNode('1')]),
-              new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Blockquote([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('1')]),
+              new Table.Header.Cell([new PlainText('0')])
             ]), [
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('true')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-              ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-              new TableNode.Row([
-                new TableNode.Row.Cell([new PlainTextNode('false')]),
-                new TableNode.Row.Cell([new PlainTextNode('false')])
-              ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('true')]),
+                new Table.Row.Cell([new PlainText('false')]),
+              ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('false')]),
+                new Table.Row.Cell([new PlainText('false')])
+              ], new Table.Header.Cell([new PlainText('0')]))
             ],
-            new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+            new Table.Caption([new PlainText('AND operator logic')]))
         ])
       ],
         new UpDocument.TableOfContents([chartInTableOfContents]))

@@ -4,9 +4,9 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { concat } from '../CollectionHelpers'
 
 
-export class DescriptionListNode implements OutlineSyntaxNode {
+export class DescriptionList implements OutlineSyntaxNode {
   constructor(
-    public items: DescriptionListNode.Item[],
+    public items: DescriptionList.Item[],
     public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
@@ -20,11 +20,11 @@ export class DescriptionListNode implements OutlineSyntaxNode {
 }
 
 
-export namespace DescriptionListNode {
+export namespace DescriptionList {
   export class Item {
     constructor(
-      public terms: DescriptionListNode.Item.Term[],
-      public description: DescriptionListNode.Item.Description) { }
+      public terms: DescriptionList.Item.Term[],
+      public description: DescriptionList.Item.Description) { }
 
     descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
       return this.description.descendantsToIncludeInTableOfContents()

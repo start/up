@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
 
 
 context('A code block preserves all indentation when it is', () => {
@@ -23,7 +23,7 @@ context('A code block preserves all indentation when it is', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(
+        new CodeBlock(
           `  if (x < 0) {
 \t\treturn false
   }`),
@@ -43,8 +43,8 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new CodeBlockNode(
+          new SpoilerBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -63,8 +63,8 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new CodeBlockNode(
+          new SpoilerBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -83,8 +83,8 @@ SPOILER:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new CodeBlockNode(
+          new SpoilerBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -106,8 +106,8 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new CodeBlockNode(
+          new NsfwBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -126,8 +126,8 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new CodeBlockNode(
+          new NsfwBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -146,8 +146,8 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new CodeBlockNode(
+          new NsfwBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -169,8 +169,8 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new CodeBlockNode(
+          new NsflBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -189,8 +189,8 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new CodeBlockNode(
+          new NsflBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -209,8 +209,8 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new CodeBlockNode(
+          new NsflBlock([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -231,9 +231,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new CodeBlockNode(
+          new OrderedList([
+            new OrderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -252,9 +252,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new CodeBlockNode(
+          new OrderedList([
+            new OrderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -273,9 +273,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OrderedListNode([
-            new OrderedListNode.Item([
-              new CodeBlockNode(
+          new OrderedList([
+            new OrderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -297,9 +297,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new CodeBlockNode(
+          new UnorderedList([
+            new UnorderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -318,9 +318,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new CodeBlockNode(
+          new UnorderedList([
+            new UnorderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -339,9 +339,9 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new CodeBlockNode(
+          new UnorderedList([
+            new UnorderedList.Item([
+              new CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -364,14 +364,14 @@ Lesson 1
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Lesson 1')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Lesson 1')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new CodeBlockNode(
+              new DescriptionList.Item.Description([
+                new CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -391,14 +391,14 @@ Lesson 1
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Lesson 1')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Lesson 1')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new CodeBlockNode(
+              new DescriptionList.Item.Description([
+                new CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -418,14 +418,14 @@ Lesson 1
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([
-                new PlainTextNode('Lesson 1')
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Lesson 1')
               ])
             ],
-              new DescriptionListNode.Item.Description([
-                new CodeBlockNode(
+              new DescriptionList.Item.Description([
+                new CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -447,8 +447,8 @@ Lesson 1
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new BlockquoteNode([
-            new CodeBlockNode(
+          new Blockquote([
+            new CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -470,8 +470,8 @@ context('When a code block is nested within a blockquote that has no spaces afte
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new CodeBlockNode(
+        new Blockquote([
+          new CodeBlock(
             `\tif (x < 0) {
 \t\treturn false
 \t}`),
@@ -489,8 +489,8 @@ context('When a code block is nested within a blockquote that has no spaces afte
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new CodeBlockNode(
+        new Blockquote([
+          new CodeBlock(
             `if (x < 0) {
  return false
 }`),

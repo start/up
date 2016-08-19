@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -10,11 +10,11 @@ describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.toDocument('Hello, *world*!!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
-          new PlainTextNode('world')
+          new PlainText('world')
         ]),
-        new PlainTextNode('!!')
+        new PlainText('!!')
       ]))
   })
 })
@@ -23,7 +23,7 @@ describe('Text separated from surrounding asterisks by whitespace', () => {
   it('is not put inside an emphasis node', () => {
     expect(Up.toDocument('Birdie Sanders * won * Wisconsin')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Birdie Sanders * won * Wisconsin'),
+        new PlainText('Birdie Sanders * won * Wisconsin'),
       ]))
   })
 })
@@ -33,41 +33,41 @@ describe('Emphasized text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.toDocument('Hello, *`world`*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
           new InlineCode('world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain further emphasized text', () => {
     expect(Up.toDocument('Hello, *my *little* world*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
-          new PlainTextNode('my '),
+          new PlainText('my '),
           new Emphasis([
-            new PlainTextNode('little')
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 
   it('can contain stressed text', () => {
     expect(Up.toDocument('Hello, *my **little** world*!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
-          new PlainTextNode('my '),
+          new PlainText('my '),
           new Stress([
-            new PlainTextNode('little')
+            new PlainText('little')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 })
@@ -78,9 +78,9 @@ describe('Double asterisks followed by two separate single closing asterisks', (
       insideDocumentAndParagraph([
         new Emphasis([
           new Emphasis([
-            new PlainTextNode('Warning:'),
+            new PlainText('Warning:'),
           ]),
-          new PlainTextNode(' never feed this tarantula')
+          new PlainText(' never feed this tarantula')
         ])
       ]))
   })

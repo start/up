@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../../Helpers'
 import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
-import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
+import { Link } from '../../../../SyntaxNodes/Link'
+import { PlainText } from '../../../../SyntaxNodes/PlainText'
+import { NormalParenthetical } from '../../../../SyntaxNodes/NormalParenthetical'
+import { Image } from '../../../../SyntaxNodes/Image'
 
 
 const WHTIESPACE = ' \t\t '
@@ -27,8 +27,8 @@ context('A linkified image convention can have whitespace between its image URL 
           text: 'app:wiki/terrible-thing'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/image.png')
+        new Link([
+          new Image('something terrible', 'https://example.com/image.png')
         ], 'app:wiki/terrible-thing')
       ])
     })
@@ -49,8 +49,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/image.png')
+          new Link([
+            new Image('Advance Wars', 'https://example.com/image.png')
           ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
       })
@@ -59,14 +59,14 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('stackoverflow.com')
+          new Image('something terrible', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new PlainTextNode(' is nice)')
+            new PlainText(' is nice)')
           ]),
         ]))
     })
@@ -74,10 +74,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('there must be somethng after the scheme', () => {
       expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('email sending', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:)')
+          new Image('email sending', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:)')
           ]),
         ]))
     })
@@ -85,10 +85,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toDocument('[image: local files rustling](https://example.com/image.png) (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('local files rustling', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(file:///)')
+          new Image('local files rustling', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(file:///)')
           ]),
         ]))
     })
@@ -106,8 +106,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: 'tel:5555555555'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('spooky phone call', 'https://example.com/image.png')
+          new Link([
+            new Image('spooky phone call', 'https://example.com/image.png')
           ], 'tel:5555555555')
         ])
       })
@@ -116,10 +116,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the scheme must not be escaped', () => {
       expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('email sending', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:daniel@wants.email)')
+          new Image('email sending', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -139,8 +139,8 @@ context('A linkified image convention can have whitespace between its image URL 
           text: '/wiki/something-terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/image.png')
+        new Link([
+          new Image('something terrible', 'https://example.com/image.png')
         ], '/wiki/something-terrible')
       ])
     })
@@ -151,10 +151,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/ created it)')
+          new Image('something terrible', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -162,10 +162,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must have something after the slash', () => {
       expect(Up.toDocument('[image: slash] (https://example.com/image.png) (/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('slash', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/)')
+          new Image('slash', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/)')
           ]),
         ]))
     })
@@ -183,8 +183,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: '/3'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('Model 3 theft', 'https://example.com/image.png')
+          new Link([
+            new Image('Model 3 theft', 'https://example.com/image.png')
           ], '/3')
         ])
       })
@@ -193,10 +193,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must not have its slash escaped', () => {
       expect(Up.toDocument('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('robots', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/)')
+          new Image('robots', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/)')
           ]),
         ]))
     })
@@ -216,8 +216,8 @@ context('A linkified image convention can have whitespace between its image URL 
           text: '#wiki/something-terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/image.png')
+        new Link([
+          new Image('something terrible', 'https://example.com/image.png')
         ], '#wiki/something-terrible')
       ])
     })
@@ -238,8 +238,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: '#3'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('Model 3 theft', 'https://example.com/image.png')
+          new Link([
+            new Image('Model 3 theft', 'https://example.com/image.png')
           ], '#3')
         ])
       })
@@ -248,10 +248,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must have something after the hash mark', () => {
       expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (#)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('hash marking', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#)')
+          new Image('hash marking', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#)')
           ]),
         ]))
     })
@@ -259,10 +259,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('something terrible', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2 was never trending)')
+          new Image('something terrible', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -270,10 +270,10 @@ context('A linkified image convention can have whitespace between its image URL 
     it('must not have its hashmark escaped', () => {
       expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('hash marking', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2)')
+          new Image('hash marking', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2)')
           ]),
         ]))
     })
@@ -293,8 +293,8 @@ context('A linkified image convention can have whitespace between its image URL 
           text: 'https://chrono-trigger.wiki'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
-          new ImageNode('Chrono Trigger', 'https://example.com/image.png')
+        new Link([
+          new Image('Chrono Trigger', 'https://example.com/image.png')
         ], 'https://chrono-trigger.wiki')
       ])
     })
@@ -315,8 +315,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/image.png')
+          new Link([
+            new Image('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
       })
@@ -335,8 +335,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: 'advancewars.wikia.com/'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('Advance Wars', 'https://example.com/image.png')
+          new Link([
+            new Image('Advance Wars', 'https://example.com/image.png')
           ], 'https://advancewars.wikia.com/')
         ])
       })
@@ -345,10 +345,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       expect(Up.toDocument('[image: 4chan] (https://example.com/image.png) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('4chan', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org-terrifying)')
+          new Image('4chan', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -366,8 +366,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: '88.8888.cn'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('good luck', 'https://example.com/image.png')
+          new Link([
+            new Image('good luck', 'https://example.com/image.png')
           ], 'https://88.8888.cn')
         ])
       })
@@ -377,10 +377,10 @@ context('A linkified image convention can have whitespace between its image URL 
       specify('No numbers', () => {
         expect(Up.toDocument('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
-            new ImageNode('usernaming', 'https://example.com/image.png'),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith5)')
+            new Image('usernaming', 'https://example.com/image.png'),
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith5)')
             ]),
           ]))
       })
@@ -388,10 +388,10 @@ context('A linkified image convention can have whitespace between its image URL 
       specify('No hyphens', () => {
         expect(Up.toDocument('[image: usernaming] (https://example.com/image.png) (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
-            new ImageNode('usernaming', 'https://example.com/image.png'),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith-kline)')
+            new Image('usernaming', 'https://example.com/image.png'),
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -400,10 +400,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL must start with a letter or a number, not a period', () => {
       expect(Up.toDocument('[image: being British](https://example.com/image.png) (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('being British', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(.co.uk)')
+          new Image('being British', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(.co.uk)')
           ]),
         ]))
     })
@@ -411,10 +411,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       expect(Up.toDocument('[image: Ash claiming to be his own father] (https://example.com/image.png) (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('Ash claiming to be his own father', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(um..uh)')
+          new Image('Ash claiming to be his own father', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(um..uh)')
           ]),
         ]))
     })
@@ -422,10 +422,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       expect(Up.toDocument('[image: debilitating sadness](https://example.com/image.png) (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('debilitating sadness', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org../r9k/)')
+          new Image('debilitating sadness', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org../r9k/)')
           ]),
         ]))
     })
@@ -443,8 +443,8 @@ context('A linkified image convention can have whitespace between its image URL 
             text: 'example.com/321...blastoff/1'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
-            new ImageNode('rocket ship', 'https://example.com/image.png')
+          new Link([
+            new Image('rocket ship', 'https://example.com/image.png')
           ], 'https://example.com/321...blastoff/1')
         ])
       })
@@ -453,10 +453,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[image: yeah] (https://example.com/image.png) (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('yeah', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com had some hilarious forums)')
+          new Image('yeah', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -464,10 +464,10 @@ context('A linkified image convention can have whitespace between its image URL 
     specify('the domain part must not be escaped', () => {
       expect(Up.toDocument('[image: yeah](https://example.com/image.png) (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
-          new ImageNode('yeah', 'https://example.com/image.png'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com)')
+          new Image('yeah', 'https://example.com/image.png'),
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com)')
           ]),
         ]))
     })
@@ -477,10 +477,10 @@ context('A linkified image convention can have whitespace between its image URL 
   specify('If none of the conditions are satisfied, the image is not linkified', () => {
     expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (really)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ImageNode('something terrible', 'https://example.com/image.png'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('(really)')
+        new Image('something terrible', 'https://example.com/image.png'),
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('(really)')
         ]),
       ]))
   })
@@ -491,14 +491,14 @@ describe("If there is whitespace between an otherwise-valid linkified image conv
   it('the image convention is not linkified', () => {
     expect(Up.toDocument('[image: something terrible](https://example.com/image.png)  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
-        new ImageNode('something terrible', 'https://example.com/image.png'),
-        new PlainTextNode('    '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new Image('something terrible', 'https://example.com/image.png'),
+        new PlainText('    '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -519,8 +519,8 @@ describe("An image convention's linkifying URL, when separated from its image UR
           text: 'stackoverflow.com/search=something\\ very\\ terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
-          new ImageNode('something terrible', 'https://example.com/image.png')
+        new Link([
+          new Image('something terrible', 'https://example.com/image.png')
         ], 'https://stackoverflow.com/search=something very terrible')
       ])
     })

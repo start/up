@@ -1,40 +1,40 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { Link } from '../../SyntaxNodes/Link'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { Video } from '../../SyntaxNodes/Video'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
+import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../../SyntaxNodes/BoldNode'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { Table } from '../../SyntaxNodes/Table'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 
 
 describe('An empty document', () => {
@@ -47,7 +47,7 @@ describe('An empty document', () => {
 describe('A paragraph node', () => {
   it('produces a <p> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([new PlainTextNode('Nimble navigator')])
+      new Paragraph([new PlainText('Nimble navigator')])
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p>Nimble navigator</p>')
@@ -58,15 +58,15 @@ describe('A paragraph node', () => {
 describe('An unordered list node', () => {
   it('produces an <ul> element containing an <li> element for each list item', () => {
     const document = new UpDocument([
-      new UnorderedListNode([
-        new UnorderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new UnorderedList([
+        new UnorderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ])
         ]),
-        new UnorderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new UnorderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ])
         ])
       ])
@@ -84,15 +84,15 @@ describe('An unordered list node', () => {
 describe('An ordered list node', () => {
   it('produces an <ol> element containing an <li> element for each list item', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ])
         ]),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ])
         ])
       ])
@@ -110,15 +110,15 @@ describe('An ordered list node', () => {
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ])
         ]),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ])
         ], 5)
       ])
@@ -136,15 +136,15 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ])
         ], 3),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ])
         ])
       ])
@@ -162,15 +162,15 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> element is given the "reversed" attribute', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ])
         ], 0),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ])
         ], -1)
       ])
@@ -188,20 +188,20 @@ describe('When an ordered list node is in descending order', () => {
 describe('A description list', () => {
   it('produces a <dl> element containing a <dt> element for each term, and a <dd> element for each description', () => {
     const document = new UpDocument([
-      new DescriptionListNode([
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-        ], new DescriptionListNode.Item.Description([
-          new ParagraphNode([
-            new PlainTextNode('A grass type Pokemon')
+      new DescriptionList([
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+        ], new DescriptionList.Item.Description([
+          new Paragraph([
+            new PlainText('A grass type Pokemon')
           ])
         ])),
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-          new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-        ], new DescriptionListNode.Item.Description([
-          new ParagraphNode([
-            new PlainTextNode('Ghost type moves')
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Term([new PlainText('Lick')]),
+        ], new DescriptionList.Item.Description([
+          new Paragraph([
+            new PlainText('Ghost type moves')
           ])
         ]))
       ])
@@ -222,21 +222,21 @@ describe('A description list', () => {
 describe('A table', () => {
   it('produces a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Developer')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new PlainText('Square')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new PlainText('Nintendo')])
           ])
         ],
-        new TableNode.Caption([new PlainTextNode('Influential Games')]))
+        new Table.Caption([new PlainText('Influential Games')]))
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -253,21 +253,21 @@ describe('A table', () => {
 context('When a table has rows with cells with numeric values', () => {
   specify('the <td> element produced for those cells have the "up-numeric" class', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Release Date')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+            new Table.Row.Cell([new PlainText('1995')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-            new TableNode.Row.Cell([new PlainTextNode('1999')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Chrono Cross')]),
+            new Table.Row.Cell([new PlainText('1999')])
           ])
         ],
-        new TableNode.Caption([new PlainTextNode('Games in the Chrono series')]))
+        new Table.Caption([new PlainText('Games in the Chrono series')]))
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -284,10 +284,10 @@ context('When a table has rows with cells with numeric values', () => {
 describe('A table without a caption or any rows', () => {
   it('produces a <table> element that does not contain a <caption> element or any <tr> outside of its <thead>', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Release Date')])
         ]), [])
     ])
 
@@ -302,10 +302,10 @@ describe('A table without a caption or any rows', () => {
 context('When a table header has cells spanning multiple columns', () => {
   specify('the <th> element for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')], 5),
-          new TableNode.Header.Cell([new PlainTextNode('Developer')], 3)
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')], 5),
+          new Table.Header.Cell([new PlainText('Developer')], 3)
         ]), [])
     ])
 
@@ -320,21 +320,21 @@ context('When a table header has cells spanning multiple columns', () => {
 context('When a table has rows with cells spanning multiple columns', () => {
   specify('the <td> elements for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
-          new TableNode.Header.Cell([new PlainTextNode('Anaerobic Exercise')]),
-          new TableNode.Header.Cell([new PlainTextNode('Cooldown')]),
-          new TableNode.Header.Cell([new PlainTextNode('Date')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
+          new Table.Header.Cell([new PlainText('Anaerobic Exercise')]),
+          new Table.Header.Cell([new PlainText('Cooldown')]),
+          new Table.Header.Cell([new PlainText('Date')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
-            new TableNode.Row.Cell([new PlainTextNode('Swam laps')], 2),
-            new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Jogged on track')]),
+            new Table.Row.Cell([new PlainText('Swam laps')], 2),
+            new Table.Row.Cell([new PlainText('March 11, 2018')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Ran in neighborhood')], 3),
-            new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Ran in neighborhood')], 3),
+            new Table.Row.Cell([new PlainText('March 12, 2018')])
           ])
         ])
     ])
@@ -352,20 +352,20 @@ context('When a table has rows with cells spanning multiple columns', () => {
 context('When a table cell has a numeric value and spans multiple columns', () => {
   specify('the <td> element produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Year Development Started')]),
-          new TableNode.Header.Cell([new PlainTextNode('Year Released')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Year Development Started')]),
+          new Table.Header.Cell([new PlainText('Year Released')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')]),
-            new TableNode.Row.Cell([new PlainTextNode('1989')], 2)
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+            new Table.Row.Cell([new PlainText('1989')], 2)
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-            new TableNode.Row.Cell([new PlainTextNode('1993')]),
-            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+            new Table.Row.Cell([new PlainText('1993')]),
+            new Table.Row.Cell([new PlainText('1995')])
           ])
         ])
     ])
@@ -383,22 +383,22 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
   specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('1')]),
+          new Table.Header.Cell([new PlainText('0')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('true')]),
+            new Table.Row.Cell([new PlainText('false')]),
+          ], new Table.Header.Cell([new PlainText('1')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('false')]),
+            new Table.Row.Cell([new PlainText('false')])
+          ], new Table.Header.Cell([new PlainText('0')]))
         ],
-        new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+        new Table.Caption([new PlainText('AND operator logic')]))
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -412,18 +412,18 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
   specify('When a row header cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('Most Common Word')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('Most Common Word')])
         ]), [
-          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Monday')], 2)),
-          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Tuesday')], 2)),
-          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Wednesday')], 2)),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Really')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
-          new TableNode.Row([], new TableNode.Header.Cell([new PlainTextNode('Friday')], 2)),
+          new Table.Row([], new Table.Header.Cell([new PlainText('Monday')], 2)),
+          new Table.Row([], new Table.Header.Cell([new PlainText('Tuesday')], 2)),
+          new Table.Row([], new Table.Header.Cell([new PlainText('Wednesday')], 2)),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Really')]),
+          ], new Table.Header.Cell([new PlainText('Thursday')])),
+          new Table.Row([], new Table.Header.Cell([new PlainText('Friday')], 2)),
         ])
     ])
 
@@ -443,12 +443,12 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
     const document = new UpDocument([
-      new LineBlockNode([
-        new LineBlockNode.Line([
-          new PlainTextNode('Hollow')
+      new LineBlock([
+        new LineBlock.Line([
+          new PlainText('Hollow')
         ]),
-        new LineBlockNode.Line([
-          new PlainTextNode('Fangs')
+        new LineBlock.Line([
+          new PlainText('Fangs')
         ])
       ])
     ])
@@ -465,7 +465,7 @@ describe('A line block node', () => {
 describe('A code block node', () => {
   it('produces a <pre> element containing a <code> element containing the code', () => {
     const document = new UpDocument([
-      new CodeBlockNode('color = Color.Green')
+      new CodeBlock('color = Color.Green')
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
@@ -476,9 +476,9 @@ describe('A code block node', () => {
 describe('A blockquote node', () => {
   it('produces a <blockquote> element', () => {
     const document = new UpDocument([
-      new BlockquoteNode([
-        new ParagraphNode([
-          new PlainTextNode('Centipede')
+      new Blockquote([
+        new Paragraph([
+          new PlainText('Centipede')
         ])
       ])
     ])
@@ -491,7 +491,7 @@ describe('A blockquote node', () => {
 describe('A level 1 heading node', () => {
   it('produces an <h1> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 1)
+      new Heading([new PlainText('Bulbasaur')], 1)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h1>Bulbasaur</h1>')
@@ -502,7 +502,7 @@ describe('A level 1 heading node', () => {
 describe('A level 2 heading node', () => {
   it('produces an <h2> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Ivysaur')], 2)
+      new Heading([new PlainText('Ivysaur')], 2)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h2>Ivysaur</h2>')
@@ -513,7 +513,7 @@ describe('A level 2 heading node', () => {
 describe('A level 3 heading node', () => {
   it('produces an <h3> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Venusaur')], 3)
+      new Heading([new PlainText('Venusaur')], 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h3>Venusaur</h3>')
@@ -524,7 +524,7 @@ describe('A level 3 heading node', () => {
 describe('A level 4 heading node', () => {
   it('produces an <h4>', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Charmander')], 4)
+      new Heading([new PlainText('Charmander')], 4)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h4>Charmander</h4>')
@@ -535,7 +535,7 @@ describe('A level 4 heading node', () => {
 describe('A level 5 heading node', () => {
   it('produces an <h5> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Charmeleon')], 5)
+      new Heading([new PlainText('Charmeleon')], 5)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h5>Charmeleon</h5>')
@@ -546,7 +546,7 @@ describe('A level 5 heading node', () => {
 describe('A level 6 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Charizard')], 6)
+      new Heading([new PlainText('Charizard')], 6)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Charizard</h6>')
@@ -557,7 +557,7 @@ describe('A level 6 heading node', () => {
 describe('A level 7 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Squirtle')], 7)
+      new Heading([new PlainText('Squirtle')], 7)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Squirtle</h6>')
@@ -568,7 +568,7 @@ describe('A level 7 heading node', () => {
 describe('A level 8 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Wartortle')], 8)
+      new Heading([new PlainText('Wartortle')], 8)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Wartortle</h6>')
@@ -579,7 +579,7 @@ describe('A level 8 heading node', () => {
 describe('A level 9 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Blastoise')], 9)
+      new Heading([new PlainText('Blastoise')], 9)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Blastoise</h6>')
@@ -590,7 +590,7 @@ describe('A level 9 heading node', () => {
 describe('An outline separator node', () => {
   it('produces an <hr> element', () => {
     const document = new UpDocument([
-      new OutlineSeparatorNode()
+      new OutlineSeparator()
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<hr>')
@@ -601,8 +601,8 @@ describe('An outline separator node', () => {
 describe('An emphasis node', () => {
   it('produces an <em> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new Emphasis([new PlainTextNode('Always')])
+      new Paragraph([
+        new Emphasis([new PlainText('Always')])
       ])
     ])
 
@@ -614,8 +614,8 @@ describe('An emphasis node', () => {
 describe('A stress node', () => {
   it('produces a <strong> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new Stress([new PlainTextNode('Ness')])
+      new Paragraph([
+        new Stress([new PlainText('Ness')])
       ])
     ])
 
@@ -627,8 +627,8 @@ describe('A stress node', () => {
 describe('An italic node', () => {
   it('produces an <i> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new ItalicNode([new PlainTextNode('Ness')])
+      new Paragraph([
+        new Italic([new PlainText('Ness')])
       ])
     ])
 
@@ -640,8 +640,8 @@ describe('An italic node', () => {
 describe('A bold node', () => {
   it('produces a <b> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new BoldNode([new PlainTextNode('Ness')])
+      new Paragraph([
+        new Bold([new PlainText('Ness')])
       ])
     ])
 
@@ -653,7 +653,7 @@ describe('A bold node', () => {
 describe('An inline code node', () => {
   it('produces a <code> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
+      new Paragraph([
         new InlineCode('then')
       ])
     ])
@@ -666,8 +666,8 @@ describe('An inline code node', () => {
 describe('An example input node', () => {
   it('produces a <kbd> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new ExampleInputNode('esc')
+      new Paragraph([
+        new ExampleInput('esc')
       ])
     ])
 
@@ -679,8 +679,8 @@ describe('An example input node', () => {
 describe('A revision insertion node', () => {
   it('produces an <ins> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new RevisionInsertionNode([new PlainTextNode('Wario')])
+      new Paragraph([
+        new RevisionInsertion([new PlainText('Wario')])
       ])
     ])
 
@@ -692,8 +692,8 @@ describe('A revision insertion node', () => {
 describe('A revision deletion node', () => {
   it('produces a <del> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new RevisionDeletionNode([new PlainTextNode('Koopa Troopa')])
+      new Paragraph([
+        new RevisionDeletion([new PlainText('Koopa Troopa')])
       ])
     ])
 
@@ -705,8 +705,8 @@ describe('A revision deletion node', () => {
 describe('A normal parenthetical node', () => {
   it('produces a <small> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new NormalParentheticalNode([new PlainTextNode('(Koopa Troopa)')])
+      new Paragraph([
+        new NormalParenthetical([new PlainText('(Koopa Troopa)')])
       ])
     ])
 
@@ -718,8 +718,8 @@ describe('A normal parenthetical node', () => {
 describe('A square parenthetical node', () => {
   it('produces a <small class="up-square-brackets"> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new SquareParentheticalNode([new PlainTextNode('[Koopa Troopa]')])
+      new Paragraph([
+        new SquareParenthetical([new PlainText('[Koopa Troopa]')])
       ])
     ])
 
@@ -731,8 +731,8 @@ describe('A square parenthetical node', () => {
 describe('A link node', () => {
   it('produces an <a> element with its href attribute set to its URL', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('Google')], 'https://google.com')
+      new Paragraph([
+        new Link([new PlainText('Google')], 'https://google.com')
       ])
     ])
 
@@ -744,8 +744,8 @@ describe('A link node', () => {
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -762,7 +762,7 @@ describe('A footnote node', () => {
 describe('A footnote block node', () => {
   it('produces a <dl class="up-footnotes">', () => {
     const document = new UpDocument([
-      new FootnoteBlockNode([])
+      new FootnoteBlock([])
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<dl class="up-footnotes"></dl>')
@@ -773,12 +773,12 @@ describe('A footnote block node', () => {
 describe("Each footnote in a footnote block", () => {
   it("produce a <dt> element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> element containing the footnote contents", () => {
     const document = new UpDocument([
-      new FootnoteBlockNode([
-        new FootnoteNode([
-          new PlainTextNode("Arwings"),
+      new FootnoteBlock([
+        new Footnote([
+          new PlainText("Arwings"),
         ], 2),
-        new FootnoteNode([
-          new PlainTextNode("Killer Bees"),
+        new Footnote([
+          new PlainText("Killer Bees"),
         ], 3),
       ])
     ])
@@ -797,7 +797,7 @@ describe("Each footnote in a footnote block", () => {
 describe('An image node', () => {
   it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
     const document = new UpDocument([
-      new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      new Image('haunted house', 'http://example.com/hauntedhouse.svg')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -823,7 +823,7 @@ describe('An audio node', () => {
 describe('A video node', () => {
   it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
     const document = new UpDocument([
-      new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -837,8 +837,8 @@ describe('A video node', () => {
 describe('A highlight node', () => {
   it('produces a <mark> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new HighlightNode([new PlainTextNode('45.9%')])
+      new Paragraph([
+        new Highlight([new PlainText('45.9%')])
       ])
     ])
 
@@ -855,8 +855,8 @@ describe('A highlight node', () => {
 describe('An inline spoiler node', () => {
   it('produces an outer <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([new PlainTextNode('45.9%')])
+      new Paragraph([
+        new InlineSpoiler([new PlainText('45.9%')])
       ])
     ])
 
@@ -877,8 +877,8 @@ describe('An inline spoiler node', () => {
 describe('An inline NSFW node', () => {
   it('produces an outer <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFW contents', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([new PlainTextNode('naked Gary')])
+      new Paragraph([
+        new InlineNsfw([new PlainText('naked Gary')])
       ])
     ])
 
@@ -899,8 +899,8 @@ describe('An inline NSFW node', () => {
 describe('An inline NSFL node', () => {
   it('produces an outer <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFL contents', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([new PlainTextNode('rotting Gary')])
+      new Paragraph([
+        new InlineNsfl([new PlainText('rotting Gary')])
       ])
     ])
 
@@ -921,9 +921,9 @@ describe('An inline NSFL node', () => {
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
-      new SpoilerBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new SpoilerBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ])
       ])
     ])
@@ -945,9 +945,9 @@ describe('A spoiler block node', () => {
 describe('A NSFW block node', () => {
   it('produces the same HTML as an inline NSFW node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
-      new NsfwBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new NsfwBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ])
       ])
     ])
@@ -969,9 +969,9 @@ describe('A NSFW block node', () => {
 describe('A NSFL block node', () => {
   it('produces the same HTML as an inline NSFL node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new UpDocument([
-      new NsflBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new NsflBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ])
       ])
     ])

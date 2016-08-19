@@ -2,8 +2,8 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
-export class LineBlockNode implements OutlineSyntaxNode {
-  constructor(public lines: LineBlockNode.Line[], public sourceLineNumber: number = undefined) { }
+export class LineBlock implements OutlineSyntaxNode {
+  constructor(public lines: LineBlock.Line[], public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
     return false
@@ -15,7 +15,7 @@ export class LineBlockNode implements OutlineSyntaxNode {
 }
 
 
-export namespace LineBlockNode {
+export namespace LineBlock {
   export class Line extends InlineSyntaxNodeContainer {
     protected LINE_BLOCK_LINE(): void { }
   }

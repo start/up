@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { Link } from '../../SyntaxNodes/Link'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
 
 
 context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {
@@ -15,8 +15,8 @@ context('If a line consists solely of media conventions, those media conventions
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -27,8 +27,8 @@ context('If a line consists solely of media conventions, those media conventions
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -39,8 +39,8 @@ context('If a line consists solely of media conventions, those media conventions
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -52,10 +52,10 @@ context('If a line consists solely of media conventions, those media conventions
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com')
         ]))
     })
@@ -67,9 +67,9 @@ context('If a line consists solely of media conventions, those media conventions
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-          new LinkNode([
-            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          new Link([
+            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com')
         ]))
     })
@@ -80,14 +80,14 @@ context('If a line consists solely of media conventions, those media conventions
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
           ], 'https://ghosts.com'),
-          new LinkNode([
-            new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+          new Link([
+            new Image('haunted house', 'http://example.com/hauntedhouse.svg')
           ], 'https://hauntedhouse.com'),
-          new LinkNode([
-            new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          new Link([
+            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://poltergeists.com')
         ]))
     })

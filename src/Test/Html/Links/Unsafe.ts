@@ -1,17 +1,17 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Link } from '../../../SyntaxNodes/Link'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 
 
 context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These unsafe URL schemes are:', () => {
   specify('javascript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'javascript:malicious')
       ])
     ])
@@ -21,9 +21,9 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 
   specify('data', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'data:malicious')
       ])
     ])
@@ -33,9 +33,9 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 
   specify('file', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'file:malicious')
       ])
     ])
@@ -45,9 +45,9 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 
   specify('vbscript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'vbscript:malicious')
       ])
     ])
@@ -60,9 +60,9 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 context('Though by default, links with unsafe schemes produce no HTML, link URLs can contain unsafe schemes:', () => {
   specify('javascript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'https://google.com/?q=javascript:malicious')
       ])
     ])
@@ -72,9 +72,9 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 
   specify('data', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'https://google.com/?q=data:malicious')
       ])
     ])
@@ -84,9 +84,9 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 
   specify('file', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'https://google.com/?q=file:malicious')
       ])
     ])
@@ -96,9 +96,9 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 
   specify('vbscript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'https://google.com/?q=vbscript:malicious')
       ])
     ])
@@ -111,9 +111,9 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'jaVAscrIpT:malicious')
       ])
     ])
@@ -123,9 +123,9 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 
   specify('data', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'dAtA:malicious')
       ])
     ])
@@ -135,9 +135,9 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 
   specify('file', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'FilE:malicious')
       ])
     ])
@@ -147,9 +147,9 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 
   specify('vbscript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'VbScriPt:malicious')
       ])
     ])
@@ -162,10 +162,10 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 describe('By default, a safe link nested inside an unsafe link', () => {
   it('produces an <a> element', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new Link([
+            new PlainText('Click me!')
           ], 'https://google.com')
         ], 'data:malicious')
       ])
@@ -179,9 +179,9 @@ describe('By default, a safe link nested inside an unsafe link', () => {
 context("A link's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'javascript-app:stuff')
       ])
     ])
@@ -192,9 +192,9 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
 
   specify('data', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'data-app:stuff')
       ])
     ])
@@ -205,9 +205,9 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
 
   specify('file', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'file-app:stuff')
       ])
     ])
@@ -218,9 +218,9 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
 
   specify('vbscript', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new PlainText('Click me!')
         ], 'vbscript-app:stuff')
       ])
     ])

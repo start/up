@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
-export class PlainTextNode implements InlineSyntaxNode {
+export class PlainText implements InlineSyntaxNode {
   constructor(public content: string) { }
 
   inlineTextContent(): string {

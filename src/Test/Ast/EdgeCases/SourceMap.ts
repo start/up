@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
+import { Image } from '../../../SyntaxNodes/Image'
+import { Video } from '../../../SyntaxNodes/Video'
+import { Link } from '../../../SyntaxNodes/Link'
 
 
 describe('When a blockquote starts with a blank line', () => {
@@ -19,9 +19,9 @@ describe('When a blockquote starts with a blank line', () => {
 > Well, aside from you.`
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([new PlainTextNode("Who doesn't?")], 3),
-          new ParagraphNode([new PlainTextNode("Well, aside from you.")], 5)
+        new Blockquote([
+          new Paragraph([new PlainText("Who doesn't?")], 3),
+          new Paragraph([new PlainText("Well, aside from you.")], 5)
         ], 2)
       ]))
   })
@@ -35,11 +35,11 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new LinkNode([
-          new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg'),
+        new Link([
+          new Image('haunted house', 'https://example.com/hauntedhouse.svg'),
         ], 'https://example.com/gallery', 1),
         new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
-        new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+        new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
       ]))
   })
 })

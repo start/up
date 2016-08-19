@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { TableNode } from '../../SyntaxNodes/TableNode'
+import { Table } from '../../SyntaxNodes/Table'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
@@ -89,7 +89,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     return false
   }
 
-  let headerCells: TableNode.Header.Cell[]
+  let headerCells: Table.Header.Cell[]
 
   const hasHeader =
     !tryToTerminateTable(markupLineConsumer)
@@ -109,10 +109,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   if (isChart) {
     // Charts have an extra empty cell added to the beginning of their header row due
     // to the header column beneath it
-    headerCells.unshift(new TableNode.Header.Cell([]))
+    headerCells.unshift(new Table.Header.Cell([]))
   }
 
-  const header = new TableNode.Header(headerCells)
+  const header = new Table.Header(headerCells)
 
   // Let's evaluate our caption for inline conventions. We could have done this before we
   // found header, but we'd have to throw away our work if:
@@ -121,10 +121,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   // * The label line (with the caption) was followed by 2 or more blank lines  
   const caption =
     captionMarkup
-      ? new TableNode.Caption(getInlineNodes(captionMarkup, config))
+      ? new Table.Caption(getInlineNodes(captionMarkup, config))
       : undefined
 
-  const rows: TableNode.Row[] = []
+  const rows: Table.Row[] = []
   let countLinesConsumed: number
 
   do {
@@ -141,12 +141,12 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
             ? toHeaderCell(cells.shift())
             : undefined
 
-        rows.push(new TableNode.Row(cells.map(toRowCell), rowHeaderCell))
+        rows.push(new Table.Row(cells.map(toRowCell), rowHeaderCell))
       }
     }))
 
   args.then(
-    [new TableNode(header, rows, caption)],
+    [new Table(header, rows, caption)],
     countLinesConsumed)
 
   return true
@@ -165,8 +165,8 @@ function tryToTerminateTable(markupLineConsumer: LineConsumer): boolean {
 }
 
 
-const toHeaderCell = (cell: TableNode.Cell) =>
-  new TableNode.Header.Cell(cell.children, cell.countColumnsSpanned)
+const toHeaderCell = (cell: Table.Cell) =>
+  new Table.Header.Cell(cell.children, cell.countColumnsSpanned)
 
-const toRowCell = (cell: TableNode.Cell) =>
-  new TableNode.Row.Cell(cell.children, cell.countColumnsSpanned)
+const toRowCell = (cell: Table.Cell) =>
+  new Table.Row.Cell(cell.children, cell.countColumnsSpanned)

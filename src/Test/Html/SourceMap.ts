@@ -1,30 +1,30 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Link } from '../../SyntaxNodes/Link'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { Video } from '../../SyntaxNodes/Video'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { Table } from '../../SyntaxNodes/Table'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
   specify('Paragraphs', () => {
     const document = new UpDocument([
-      new ParagraphNode([new PlainTextNode('Nimble navigator')], 5)
+      new Paragraph([new PlainText('Nimble navigator')], 5)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
@@ -32,15 +32,15 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Unordered list', () => {
     const document = new UpDocument([
-      new UnorderedListNode([
-        new UnorderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new UnorderedList([
+        new UnorderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ], 3)
         ]),
-        new UnorderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new UnorderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ], 4)
         ])
       ], 3)
@@ -55,15 +55,15 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Ordered lists without start ordinals', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ], 1)
         ]),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ], 3)
         ])
       ], 1)
@@ -78,15 +78,15 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Ordered lists with start ordinals', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ], 1)
         ], 3),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ], 3)
         ])
       ], 1)
@@ -101,15 +101,15 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Reversed ordered lists with start ordinals', () => {
     const document = new UpDocument([
-      new OrderedListNode([
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Tropical')
+      new OrderedList([
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Tropical')
           ], 1)
         ], 2),
-        new OrderedListNode.Item([
-          new ParagraphNode([
-            new PlainTextNode('Territories')
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
           ], 2)
         ], 1)
       ], 1)
@@ -124,20 +124,20 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Description lists', () => {
     const document = new UpDocument([
-      new DescriptionListNode([
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([new PlainTextNode('Bulbasaur')])
-        ], new DescriptionListNode.Item.Description([
-          new ParagraphNode([
-            new PlainTextNode('A grass type Pokemon')
+      new DescriptionList([
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+        ], new DescriptionList.Item.Description([
+          new Paragraph([
+            new PlainText('A grass type Pokemon')
           ], 3)
         ])),
-        new DescriptionListNode.Item([
-          new DescriptionListNode.Item.Term([new PlainTextNode('Confuse Ray')]),
-          new DescriptionListNode.Item.Term([new PlainTextNode('Lick')]),
-        ], new DescriptionListNode.Item.Description([
-          new ParagraphNode([
-            new PlainTextNode('Ghost type moves')
+        new DescriptionList.Item([
+          new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Term([new PlainText('Lick')]),
+        ], new DescriptionList.Item.Description([
+          new Paragraph([
+            new PlainText('Ghost type moves')
           ], 6)
         ]))
       ], 2)
@@ -155,22 +155,22 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Tables', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Developer')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new PlainText('Square')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new PlainText('Nintendo')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Influential Games')
+        new Table.Caption([
+          new PlainText('Influential Games')
         ]), 1)
     ])
 
@@ -185,23 +185,23 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Charts', () => {
     const document = new UpDocument([
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('1')]),
+          new Table.Header.Cell([new PlainText('0')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('true')]),
+            new Table.Row.Cell([new PlainText('false')]),
+          ], new Table.Header.Cell([new PlainText('1')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('false')]),
+            new Table.Row.Cell([new PlainText('false')])
+          ], new Table.Header.Cell([new PlainText('0')]))
         ],
-        new TableNode.Caption([
-          new PlainTextNode('AND operator logic')
+        new Table.Caption([
+          new PlainText('AND operator logic')
         ]), 3)
     ])
 
@@ -216,12 +216,12 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Line blocks', () => {
     const document = new UpDocument([
-      new LineBlockNode([
-        new LineBlockNode.Line([
-          new PlainTextNode('Hollow')
+      new LineBlock([
+        new LineBlock.Line([
+          new PlainText('Hollow')
         ]),
-        new LineBlockNode.Line([
-          new PlainTextNode('Fangs')
+        new LineBlock.Line([
+          new PlainText('Fangs')
         ])
       ], 4)
     ])
@@ -236,7 +236,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Code blocks', () => {
     const document = new UpDocument([
-      new CodeBlockNode('color = Color.Green', 3)
+      new CodeBlock('color = Color.Green', 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
@@ -244,9 +244,9 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Blockquotes', () => {
     const document = new UpDocument([
-      new BlockquoteNode([
-        new ParagraphNode([
-          new PlainTextNode('Centipede')
+      new Blockquote([
+        new Paragraph([
+          new PlainText('Centipede')
         ], 1)
       ], 1)
     ])
@@ -260,7 +260,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 1 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 1, 3)
+      new Heading([new PlainText('Bulbasaur')], 1, 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="3">Bulbasaur</h1>')
@@ -268,7 +268,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 2 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 2, 1)
+      new Heading([new PlainText('Bulbasaur')], 2, 1)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h2 data-up-source-line="1">Bulbasaur</h2>')
@@ -276,7 +276,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 3 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 3, 3)
+      new Heading([new PlainText('Bulbasaur')], 3, 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h3>')
@@ -284,14 +284,14 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 4  headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 4, 1)
+      new Heading([new PlainText('Bulbasaur')], 4, 1)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 5, 3)
+      new Heading([new PlainText('Bulbasaur')], 5, 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h5>')
@@ -299,7 +299,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 6 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 6, 1)
+      new Heading([new PlainText('Bulbasaur')], 6, 1)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h6>')
@@ -307,7 +307,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 10 headings', () => {
     const document = new UpDocument([
-      new HeadingNode([new PlainTextNode('Bulbasaur')], 10, 2)
+      new Heading([new PlainText('Bulbasaur')], 10, 2)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h6>')
@@ -315,7 +315,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Section separators', () => {
     const document = new UpDocument([
-      new OutlineSeparatorNode(2)
+      new OutlineSeparator(2)
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<hr data-up-source-line="2">')
@@ -323,9 +323,9 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Spoiler blocks', () => {
     const document = new UpDocument([
-      new SpoilerBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new SpoilerBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ], 3)
       ], 2)
     ])
@@ -344,9 +344,9 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('NSFW blocks', () => {
     const document = new UpDocument([
-      new NsfwBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new NsfwBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ], 2)
       ], 1)
     ])
@@ -365,9 +365,9 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('NSFL blocks', () => {
     const document = new UpDocument([
-      new NsflBlockNode([
-        new ParagraphNode([
-          new PlainTextNode('John Carmack is a decent programmer.')
+      new NsflBlock([
+        new Paragraph([
+          new PlainText('John Carmack is a decent programmer.')
         ], 4)
       ], 2)
     ])
@@ -386,7 +386,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Images', () => {
     const document = new UpDocument([
-      new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg', 2)
+      new Image('haunted house', 'http://example.com/hauntedhouse.svg', 2)
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -407,7 +407,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Videos', () => {
     const document = new UpDocument([
-      new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
+      new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -418,8 +418,8 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Links (containing outlined media conventions)', () => {
     const document = new UpDocument([
-      new LinkNode([
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')
+      new Link([
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg')
       ], 'https://example.com/gallery', 2)
     ])
 

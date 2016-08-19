@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Link } from '../../../SyntaxNodes/Link'
+import { Image } from '../../../SyntaxNodes/Image'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { Video } from '../../../SyntaxNodes/Video'
 
 
 context('When the "writeUnsafeContent" config setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
@@ -17,9 +17,9 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   context('Links produce <a> elements even if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new ParagraphNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+        new Paragraph([
+          new Link([
+            new PlainText('Click me!')
           ], 'javascript:malicious')
         ])
       ])
@@ -30,9 +30,9 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('data', () => {
       const document = new UpDocument([
-        new ParagraphNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+        new Paragraph([
+          new Link([
+            new PlainText('Click me!')
           ], 'data:malicious')
         ])
       ])
@@ -43,9 +43,9 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('file', () => {
       const document = new UpDocument([
-        new ParagraphNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+        new Paragraph([
+          new Link([
+            new PlainText('Click me!')
           ], 'file:malicious')
         ])
       ])
@@ -56,9 +56,9 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new ParagraphNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+        new Paragraph([
+          new Link([
+            new PlainText('Click me!')
           ], 'vbscript:malicious')
         ])
       ])
@@ -71,10 +71,10 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
   specify('Because unsafe links produce <a> elements, any links nested inside unsafe lnks do not produce <a> elements.', () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([
-          new LinkNode([
-            new PlainTextNode('Click me!')
+      new Paragraph([
+        new Link([
+          new Link([
+            new PlainText('Click me!')
           ], 'https://google.com')
         ], 'javascript:malicious')
       ])
@@ -88,7 +88,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'javascript:malicious')
+        new Image('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -97,7 +97,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('data', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'data:malicious')
+        new Image('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -106,7 +106,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('file', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'file:malicious')
+        new Image('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -115,7 +115,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'vbscript:malicious')
+        new Image('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -174,7 +174,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   context('Video conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'javascript:malicious')
+        new Video('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -185,7 +185,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('data', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'data:malicious')
+        new Video('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -196,7 +196,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('file', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'file:malicious')
+        new Video('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -207,7 +207,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'vbscript:malicious')
+        new Video('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(

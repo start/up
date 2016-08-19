@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 
 
 describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {
@@ -16,7 +16,7 @@ const pie = 3.5
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode('const pie = 3.5'),
+        new CodeBlock('const pie = 3.5'),
       ]))
   })
 })
@@ -32,7 +32,7 @@ describe('A code block', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(
+        new CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
       ]))
@@ -46,7 +46,7 @@ const lineBreak = "\\n"
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode('const lineBreak = "\\n"'),
+        new CodeBlock('const lineBreak = "\\n"'),
       ]))
   })
 
@@ -63,10 +63,10 @@ const lineBreak = "\\n"
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new CodeBlockNode(
+        new CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
-        new CodeBlockNode(
+        new CodeBlock(
           `// Escaping backticks in typescript...
 // Wait. Have I already said this?`),
       ]))
@@ -89,7 +89,7 @@ function factorial(n: number): number {
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlockNode(
+          new CodeBlock(
             `\`\`\`
 function factorial(n: number): number {
   return (
@@ -116,7 +116,7 @@ function factorial(n: number): number {
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlockNode(
+          new CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
   return (
@@ -142,7 +142,7 @@ function factorial(n: number): number {
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlockNode(
+          new CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
   return (
@@ -172,7 +172,7 @@ It's easy!
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlockNode(
+          new CodeBlock(
             `Wrap code in streaks of backticks! 
 
 \`\`\`
@@ -208,10 +208,10 @@ document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Check out the code below!')
+        new Paragraph([
+          new PlainText('Check out the code below!')
         ]),
-        new CodeBlockNode(
+        new CodeBlock(
           `function factorial(n: number): number {
   return (
     n <= 1
@@ -239,8 +239,8 @@ I hope you were able to find a solution without cheating.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new SpoilerBlockNode([
-          new CodeBlockNode(
+        new SpoilerBlock([
+          new CodeBlock(
             `function nthFibonacci(n: number): number {
   return (
     n <= 2
@@ -248,8 +248,8 @@ I hope you were able to find a solution without cheating.`
       : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
         ]),
-        new ParagraphNode([
-          new PlainTextNode('I hope you were able to find a solution without cheating.')
+        new Paragraph([
+          new PlainText('I hope you were able to find a solution without cheating.')
         ])
       ]))
   })

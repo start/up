@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { Link } from '../../../SyntaxNodes/Link'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 
 
@@ -86,13 +86,13 @@ Very important
 ==============`,
 
     documentWhenChangeIsApplied: new UpDocument([
-      new HeadingNode([new PlainTextNode('Very important')], 1)
+      new Heading([new PlainText('Very important')], 1)
     ], new UpDocument.TableOfContents([
-      new HeadingNode([new PlainTextNode('Very important')], 1)
+      new Heading([new PlainText('Very important')], 1)
     ])),
 
     documentWhenSettingIsNotChanged: new UpDocument([
-      new HeadingNode([new PlainTextNode('Very important')], 1)
+      new Heading([new PlainText('Very important')], 1)
     ]),
 
     configWithSettingChanged: {
@@ -113,11 +113,11 @@ Very important
 ==============`,
 
     documentWhenChangeIsApplied: new UpDocument([
-      new HeadingNode([new PlainTextNode('Very important')], 1, 2)
+      new Heading([new PlainText('Very important')], 1, 2)
     ]),
 
     documentWhenSettingIsNotChanged: new UpDocument([
-      new HeadingNode([new PlainTextNode('Very important')], 1)
+      new Heading([new PlainText('Very important')], 1)
     ]),
 
     configWithSettingChanged: {
@@ -136,14 +136,14 @@ describe('The "defaultUrlScheme" config term', () => {
     markup: '[See users] (example.com/users)',
 
     documentWhenChangeIsApplied: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/users')
+      new Paragraph([
+        new Link([new PlainText('See users')], 'my-app://example.com/users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], 'https://example.com/users')
+      new Paragraph([
+        new Link([new PlainText('See users')], 'https://example.com/users')
       ])
     ]),
 
@@ -163,14 +163,14 @@ describe('The "baseForUrlsStartingWithSlash" config term', () => {
     markup: '[See users] (/users)',
 
     documentWhenChangeIsApplied: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see/users')
+      new Paragraph([
+        new Link([new PlainText('See users')], 'my-app://example.com/see/users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], '/users')
+      new Paragraph([
+        new Link([new PlainText('See users')], '/users')
       ])
     ]),
 
@@ -190,14 +190,14 @@ describe('The "baseForUrlsStartingWithHashMark" config term', () => {
     markup: '[See users] (#users)',
 
     documentWhenChangeIsApplied: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], 'my-app://example.com/see#users')
+      new Paragraph([
+        new Link([new PlainText('See users')], 'my-app://example.com/see#users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new UpDocument([
-      new ParagraphNode([
-        new LinkNode([new PlainTextNode('See users')], '#users')
+      new Paragraph([
+        new Link([new PlainText('See users')], '#users')
       ])
     ]),
 

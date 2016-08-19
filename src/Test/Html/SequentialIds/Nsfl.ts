@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
@@ -12,25 +12,25 @@ describe("Inline NSFL conventions and NSFL blocks", () => {
   it("have sequential IDs", () => {
     const node =
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('The main character defeats the bad guy.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('The main character defeats the bad guy.')
           ]),
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('The hero was unambiguously '),
-              new InlineNsflNode([
-                new PlainTextNode('good '),
-                new InlineNsflNode([
-                  new PlainTextNode('and righteous.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('The hero was unambiguously '),
+              new InlineNsfl([
+                new PlainText('good '),
+                new InlineNsfl([
+                  new PlainText('and righteous.')
                 ])
               ])
             ])
           ])
         ]),
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Everyone lived happily ever after, except for the bad men.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('Everyone lived happily ever after, except for the bad men.')
           ])
         ])
       ])
@@ -79,25 +79,25 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
 
     const node =
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineNsflNode([
-            new PlainTextNode('Red')
+        new Paragraph([
+          new PlainText('Hello, '),
+          new InlineNsfl([
+            new PlainText('Red')
           ]),
-          new PlainTextNode('. We meet for the '),
-          new InlineNsflNode([
+          new PlainText('. We meet for the '),
+          new InlineNsfl([
             new Emphasis([
-              new PlainTextNode('eighth')
+              new PlainText('eighth')
             ])
           ]),
-          new PlainTextNode(' time.')
+          new PlainText(' time.')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('Hello, '),
-          new InlineNsflNode([
-            new PlainTextNode('Blue')
+        new Paragraph([
+          new PlainText('Hello, '),
+          new InlineNsfl([
+            new PlainText('Blue')
           ]),
-          new PlainTextNode('.'),
+          new PlainText('.'),
         ])
       ])
 
@@ -113,17 +113,17 @@ describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)
 
     const node =
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('After you beat the Elite Four, you have to face your rival.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('After you beat the Elite Four, you have to face your rival.')
           ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode("But the game isn't over yet!")
+        new Paragraph([
+          new PlainText("But the game isn't over yet!")
         ]),
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Once you beat your rival, you can finally enter Cerulean Cave.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])
         ])
       ])

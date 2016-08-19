@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
@@ -20,8 +20,8 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
       ]))
   })
 
@@ -35,8 +35,8 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
       ]))
   })
 
@@ -53,9 +53,9 @@ Goodbye again, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye again, world!')], 2)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 1),
+        new Heading([new PlainText('Goodbye again, world!')], 2)
       ]))
   })
 
@@ -72,9 +72,9 @@ Goodbye again, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye again, world!')], 2)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 1),
+        new Heading([new PlainText('Goodbye again, world!')], 2)
       ]))
   })
 })
@@ -116,13 +116,13 @@ Warlocked
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Interactive Software')], 1),
-        new HeadingNode([new PlainTextNode('Video Games')], 2),
-        new HeadingNode([new PlainTextNode('Handheld Video Games')], 3),
-        new HeadingNode([new PlainTextNode('Game Boy Games')], 4),
-        new HeadingNode([new PlainTextNode('Real-Time Strategy Game Boy Games')], 5),
-        new HeadingNode([new PlainTextNode('Real-Time Strategy Game Boy Games Published By Nintendo')], 6),
-        new HeadingNode([new PlainTextNode('Warlocked')], 7)
+        new Heading([new PlainText('Interactive Software')], 1),
+        new Heading([new PlainText('Video Games')], 2),
+        new Heading([new PlainText('Handheld Video Games')], 3),
+        new Heading([new PlainText('Game Boy Games')], 4),
+        new Heading([new PlainText('Real-Time Strategy Game Boy Games')], 5),
+        new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], 6),
+        new Heading([new PlainText('Warlocked')], 7)
       ]))
   })
 })
@@ -142,11 +142,11 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Heading([new PlainText('Umm, I forgot my keys.')], 2)
           ])
         ])
       ]))
@@ -168,11 +168,11 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
+        new OrderedList([
+          new OrderedList.Item([
+            new Heading([new PlainText('Umm, I forgot my keys.')], 2)
           ])
         ])
       ]))
@@ -195,13 +195,13 @@ Awkward
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-        new DescriptionListNode([
-          new DescriptionListNode.Item(
-            [new DescriptionListNode.Item.Term([new PlainTextNode('Awkward')])],
-            new DescriptionListNode.Item.Description([
-              new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
+        new DescriptionList([
+          new DescriptionList.Item(
+            [new DescriptionList.Item.Term([new PlainText('Awkward')])],
+            new DescriptionList.Item.Description([
+              new Heading([new PlainText('Umm, I forgot my keys.')], 2)
             ]))
         ])
       ]))
@@ -223,10 +223,10 @@ Goodbye, world!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-        new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-        new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+        new Heading([new PlainText('Hello, world!')], 1),
+        new Heading([new PlainText('Goodbye, world!')], 2),
+        new Blockquote([
+          new Heading([new PlainText('Umm, I forgot my keys.')], 1)
         ])
       ]))
   })
@@ -247,12 +247,12 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-          new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
-              new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 2)
+        new Blockquote([
+          new Heading([new PlainText('Hello, world!')], 1),
+          new Heading([new PlainText('Goodbye, world!')], 2),
+          new UnorderedList([
+            new UnorderedList.Item([
+              new Heading([new PlainText('Umm, I forgot my keys.')], 2)
             ])
           ])
         ])
@@ -275,11 +275,11 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-          new HeadingNode([new PlainTextNode('Goodbye, world!')], 2),
-          new BlockquoteNode([
-            new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+        new Blockquote([
+          new Heading([new PlainText('Hello, world!')], 1),
+          new Heading([new PlainText('Goodbye, world!')], 2),
+          new Blockquote([
+            new Heading([new PlainText('Umm, I forgot my keys.')], 1)
           ])
         ])
       ]))
@@ -302,12 +302,12 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Hello, world!')], 1),
-          new HeadingNode([new PlainTextNode('Goodbye, world!')], 2)
+        new Blockquote([
+          new Heading([new PlainText('Hello, world!')], 1),
+          new Heading([new PlainText('Goodbye, world!')], 2)
         ]),
-        new BlockquoteNode([
-          new HeadingNode([new PlainTextNode('Umm, I forgot my keys.')], 1)
+        new Blockquote([
+          new Heading([new PlainText('Umm, I forgot my keys.')], 1)
         ])
       ]))
   })

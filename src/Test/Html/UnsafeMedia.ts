@@ -1,16 +1,16 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
+import { Video } from '../../SyntaxNodes/Video'
 
 
 context('By default, media with unsafe URLs schemes produce no HTML.', () => {
   context('Images produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'javascript:malicious')
+        new Image('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -18,7 +18,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('data', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'data:malicious')
+        new Image('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -26,7 +26,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('file', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'file:malicious')
+        new Image('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -34,7 +34,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'vbscript:malicious')
+        new Image('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -78,7 +78,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
   context('Videos produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'javascript:malicious')
+        new Video('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -86,7 +86,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('data', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'data:malicious')
+        new Video('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -94,7 +94,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('file', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'file:malicious')
+        new Video('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -102,7 +102,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'vbscript:malicious')
+        new Video('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -115,7 +115,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
   context('Images produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'jaVascriPt:malicious')
+        new Image('Uh-oh!', 'jaVascriPt:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -123,7 +123,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('data', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'DatA:malicious')
+        new Image('Uh-oh!', 'DatA:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -131,7 +131,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('file', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'fiLE:malicious')
+        new Image('Uh-oh!', 'fiLE:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -139,7 +139,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new ImageNode('Uh-oh!', 'vBscRipt:malicious')
+        new Image('Uh-oh!', 'vBscRipt:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -183,7 +183,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
   context('Videos produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'jAvAscript:malicious')
+        new Video('Uh-oh!', 'jAvAscript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -191,7 +191,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('data', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'dATa:malicious')
+        new Video('Uh-oh!', 'dATa:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -199,7 +199,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('file', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'FiLe:malicious')
+        new Video('Uh-oh!', 'FiLe:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -207,7 +207,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new VideoNode('Uh-oh!', 'VbscripT:malicious')
+        new Video('Uh-oh!', 'VbscripT:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -219,7 +219,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 context("An image's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
-      new ImageNode('Uh-oh!', 'javascript-app:stuff')
+      new Image('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -228,7 +228,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 
   specify('data-app', () => {
     const document = new UpDocument([
-      new ImageNode('Uh-oh!', 'data-app:stuff')
+      new Image('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -237,7 +237,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 
   specify('file-app', () => {
     const document = new UpDocument([
-      new ImageNode('Uh-oh!', 'file-app:stuff')
+      new Image('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -246,7 +246,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 
   specify('vbscript-app', () => {
     const document = new UpDocument([
-      new ImageNode('Uh-oh!', 'vbscript-app:stuff')
+      new Image('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -305,7 +305,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 context("A video's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
-      new VideoNode('Uh-oh!', 'javascript-app:stuff')
+      new Video('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -316,7 +316,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
 
   specify('data-app', () => {
     const document = new UpDocument([
-      new VideoNode('Uh-oh!', 'data-app:stuff')
+      new Video('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -327,7 +327,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
 
   specify('file-app', () => {
     const document = new UpDocument([
-      new VideoNode('Uh-oh!', 'file-app:stuff')
+      new Video('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -338,7 +338,7 @@ context("A video's URL scheme can start with an unsafe scheme without being cons
 
   specify('vbscript-app', () => {
     const document = new UpDocument([
-      new VideoNode('Uh-oh!', 'vbscript-app:stuff')
+      new Video('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

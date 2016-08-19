@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Table } from '../../SyntaxNodes/Table'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 describe('All table header cells and table row cells', () => {
@@ -20,26 +20,26 @@ Chrono Cross;       1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')], 1),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')], 1)
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')], 1),
+            new Table.Header.Cell([new PlainText('Release Date')], 1)
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')], 1),
-              new TableNode.Row.Cell([new PlainTextNode('1987')], 1)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy')], 1),
+              new Table.Row.Cell([new PlainText('1987')], 1)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Final Fantasy II')], 1),
-              new TableNode.Row.Cell([new PlainTextNode('1988')], 1)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy II')], 1),
+              new Table.Row.Cell([new PlainText('1988')], 1)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')], 1),
-              new TableNode.Row.Cell([new PlainTextNode('1995')], 1)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')], 1),
+              new Table.Row.Cell([new PlainText('1995')], 1)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')], 1),
-              new TableNode.Row.Cell([new PlainTextNode('1999')], 1)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')], 1),
+              new Table.Row.Cell([new PlainText('1999')], 1)
             ]),
           ])
       ]))
@@ -58,17 +58,17 @@ Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Publisher')], 2),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Enix')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Enix')]),
+              new Table.Row.Cell([new PlainText('October 20, 1995')])
             ])
           ])
       ]))
@@ -87,18 +87,18 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Director')], 3),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Director')], 3),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
-              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
-              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Takashi Tokita')]),
+              new Table.Row.Cell([new PlainText('Yoshinori Kitase')]),
+              new Table.Row.Cell([new PlainText('Akihiko Matsui')]),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
             ])
           ])
       ]))
@@ -121,33 +121,33 @@ Starcraft;          Blizzard;;                              March 31, 1998`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 2),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')], 2),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('October 20, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 2),
-              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')], 2),
+              new Table.Row.Cell([new PlainText('August 31, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 2),
-              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')], 2),
+              new Table.Row.Cell([new PlainText('March 31, 1998')])
             ])
           ])
       ]))
@@ -170,35 +170,35 @@ Starcraft;          Blizzard;;;                                             Marc
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
-            new TableNode.Header.Cell([new PlainTextNode('Marketer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')]),
+            new Table.Header.Cell([new PlainText('Marketer')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 3),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')], 3),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('October 20, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 3),
-              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')], 3),
+              new Table.Row.Cell([new PlainText('August 31, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 3),
-              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')], 3),
+              new Table.Row.Cell([new PlainText('March 31, 1998')])
             ])
           ])
       ]))
@@ -217,15 +217,15 @@ Terranigma;         Nintendo;             Enix`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2)
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Publisher')], 2)
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Enix')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Enix')])
             ])
           ])
       ]))
@@ -244,16 +244,16 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Director')], 3)
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Director')], 3)
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
-              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
-              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Takashi Tokita')]),
+              new Table.Row.Cell([new PlainText('Yoshinori Kitase')]),
+              new Table.Row.Cell([new PlainText('Akihiko Matsui')])
             ])
           ])
       ]))
@@ -276,28 +276,28 @@ Starcraft;          Blizzard;;`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')], 2)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')], 2)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')], 2)
             ])
           ])
       ]))
@@ -320,30 +320,30 @@ Starcraft;          Blizzard;;;`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
-            new TableNode.Header.Cell([new PlainTextNode('Marketer')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')]),
+            new Table.Header.Cell([new PlainText('Marketer')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 3)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')], 3)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Quintet')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 3)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')], 3)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 3)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')], 3)
             ])
           ])
       ]))
@@ -362,15 +362,15 @@ Terranigma;         Nintendo;             Enix`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')], 2)
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Publisher')], 2)
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Enix')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Enix')])
             ])
           ])
       ]))
@@ -393,28 +393,28 @@ Starcraft;          Blizzard;; \t \t`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')], 2)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')], 2)
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')], 2)
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')], 2)
             ])
           ])
       ]))
@@ -435,25 +435,25 @@ Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([], 2),
-            new TableNode.Header.Cell([new PlainTextNode('Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([], 2),
+            new Table.Header.Cell([new PlainText('Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('Squats')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on treadmill')]),
+              new Table.Row.Cell([new PlainText('Squats')]),
+              new Table.Row.Cell([new PlainText('March 11, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Deadlifts')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on track')]),
+              new Table.Row.Cell([new PlainText('Deadlifts')]),
+              new Table.Row.Cell([new PlainText('March 12, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Swam laps')]),
-              new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Swam laps')]),
+              new Table.Row.Cell([new PlainText('Sprints on track')]),
+              new Table.Row.Cell([new PlainText('March 14, 2018')])
             ])
           ])
       ]))
@@ -474,28 +474,28 @@ Swam laps;                Sprints on track;   Treaded water;              March 
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([], 3),
-            new TableNode.Header.Cell([new PlainTextNode('Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([], 3),
+            new Table.Header.Cell([new PlainText('Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('Squats')]),
-              new TableNode.Row.Cell([new PlainTextNode('Walked on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on treadmill')]),
+              new Table.Row.Cell([new PlainText('Squats')]),
+              new Table.Row.Cell([new PlainText('Walked on treadmill')]),
+              new Table.Row.Cell([new PlainText('March 11, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Deadlifts')]),
-              new TableNode.Row.Cell([new PlainTextNode('Walked on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on track')]),
+              new Table.Row.Cell([new PlainText('Deadlifts')]),
+              new Table.Row.Cell([new PlainText('Walked on track')]),
+              new Table.Row.Cell([new PlainText('March 12, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Swam laps')]),
-              new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Treaded water')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Swam laps')]),
+              new Table.Row.Cell([new PlainText('Sprints on track')]),
+              new Table.Row.Cell([new PlainText('Treaded water')]),
+              new Table.Row.Cell([new PlainText('March 14, 2018')])
             ])
           ])
       ]))
@@ -517,30 +517,30 @@ Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
-            new TableNode.Header.Cell([new PlainTextNode('Anaerobic Exercise')]),
-            new TableNode.Header.Cell([new PlainTextNode('Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
+            new Table.Header.Cell([new PlainText('Anaerobic Exercise')]),
+            new Table.Header.Cell([new PlainText('Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('Squats')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on treadmill')]),
+              new Table.Row.Cell([new PlainText('Squats')]),
+              new Table.Row.Cell([new PlainText('March 11, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Deadlifts')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on track')]),
+              new Table.Row.Cell([new PlainText('Deadlifts')]),
+              new Table.Row.Cell([new PlainText('March 12, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([], 2),
-              new TableNode.Row.Cell([new PlainTextNode('March 13, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([], 2),
+              new Table.Row.Cell([new PlainText('March 13, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Swam laps')]),
-              new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Swam laps')]),
+              new Table.Row.Cell([new PlainText('Sprints on track')]),
+              new Table.Row.Cell([new PlainText('March 14, 2018')])
             ])
           ])
       ]))
@@ -562,34 +562,34 @@ Swam laps;                Sprints on track;     Treaded water;              Marc
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Aerobic Exercise')]),
-            new TableNode.Header.Cell([new PlainTextNode('Anaerobic Exercise')]),
-            new TableNode.Header.Cell([new PlainTextNode('Cooldown')]),
-            new TableNode.Header.Cell([new PlainTextNode('Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
+            new Table.Header.Cell([new PlainText('Anaerobic Exercise')]),
+            new Table.Header.Cell([new PlainText('Cooldown')]),
+            new Table.Header.Cell([new PlainText('Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('Squats')]),
-              new TableNode.Row.Cell([new PlainTextNode('Walked on treadmill')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on treadmill')]),
+              new Table.Row.Cell([new PlainText('Squats')]),
+              new Table.Row.Cell([new PlainText('Walked on treadmill')]),
+              new Table.Row.Cell([new PlainText('March 11, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Jogged on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Deadlifts')]),
-              new TableNode.Row.Cell([new PlainTextNode('Walked on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 12, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Jogged on track')]),
+              new Table.Row.Cell([new PlainText('Deadlifts')]),
+              new Table.Row.Cell([new PlainText('Walked on track')]),
+              new Table.Row.Cell([new PlainText('March 12, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([], 3),
-              new TableNode.Row.Cell([new PlainTextNode('March 13, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([], 3),
+              new Table.Row.Cell([new PlainText('March 13, 2018')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Swam laps')]),
-              new TableNode.Row.Cell([new PlainTextNode('Sprints on track')]),
-              new TableNode.Row.Cell([new PlainTextNode('Treaded water')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 14, 2018')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Swam laps')]),
+              new Table.Row.Cell([new PlainText('Sprints on track')]),
+              new Table.Row.Cell([new PlainText('Treaded water')]),
+              new Table.Row.Cell([new PlainText('March 14, 2018')])
             ])
           ])
       ]))
@@ -608,19 +608,19 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Director')]),
-            new TableNode.Header.Cell([], 2),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Director')]),
+            new Table.Header.Cell([], 2),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Takashi Tokita')]),
-              new TableNode.Row.Cell([new PlainTextNode('Yoshinori Kitase')]),
-              new TableNode.Row.Cell([new PlainTextNode('Akihiko Matsui')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Takashi Tokita')]),
+              new Table.Row.Cell([new PlainText('Yoshinori Kitase')]),
+              new Table.Row.Cell([new PlainText('Akihiko Matsui')]),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
             ])
           ])
       ]))
@@ -643,38 +643,38 @@ Starcraft;          Blizzard;                               ;;                Ma
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')]),
-            new TableNode.Header.Cell([new PlainTextNode('Marketer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Publisher')]),
+            new Table.Header.Cell([new PlainText('Marketer')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('Square')]),
-              new TableNode.Row.Cell([], 2),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('Square')]),
+              new Table.Row.Cell([], 2),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Terranigma')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Terranigma')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Nintendo')]),
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('October 20, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Command & Conquer')]),
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')]),
-              new TableNode.Row.Cell([], 2),
-              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Command & Conquer')]),
+              new Table.Row.Cell([new PlainText('Westwood Studios')]),
+              new Table.Row.Cell([], 2),
+              new Table.Row.Cell([new PlainText('August 31, 1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Starcraft')]),
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')]),
-              new TableNode.Row.Cell([], 2),
-              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Starcraft')]),
+              new Table.Row.Cell([new PlainText('Blizzard')]),
+              new Table.Row.Cell([], 2),
+              new Table.Row.Cell([new PlainText('March 31, 1998')])
             ])
           ])
       ]))

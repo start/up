@@ -1,17 +1,17 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
 
 
 describe('Consecutive non-blank lines', () => {
@@ -22,12 +22,12 @@ Violets are blue`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -46,21 +46,21 @@ And addresses do, too`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are '),
+          new LineBlock.Line([
+            new PlainText('Violets are '),
             new Stress([
-              new PlainTextNode('blue')
+              new PlainText('blue')
             ])
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Lyrics have lines')
+          new LineBlock.Line([
+            new PlainText('Lyrics have lines')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('And addresses do, too')
+          new LineBlock.Line([
+            new PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -81,26 +81,26 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -119,26 +119,26 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -154,21 +154,21 @@ And addresses do, too`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
-        new OutlineSeparatorNode(),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Lyrics have lines')
+        new OutlineSeparator(),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Lyrics have lines')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('And addresses do, too')
+          new LineBlock.Line([
+            new PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -186,31 +186,31 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('posting your address on the internet in the current year')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('posting your address on the internet in the current year')
           ])
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -228,33 +228,33 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Never post your address unless you subsequently post poetry.')
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText('Never post your address unless you subsequently post poetry.')
             ])
           ], 1)
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -272,33 +272,33 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Never post your address unless you subsequently post poetry.')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Never post your address unless you subsequently post poetry.')
             ])
           ])
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -316,29 +316,29 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -356,29 +356,29 @@ You're in for a fright`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('1234 Spooky Street')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('1234 Spooky Street')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Pepe, PA 17101')
+          new LineBlock.Line([
+            new PlainText('Pepe, PA 17101')
           ])
         ]),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('If you stay here')
+          new LineBlock.Line([
+            new PlainText('If you stay here')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("You're in for a fright")
+          new LineBlock.Line([
+            new PlainText("You're in for a fright")
           ])
         ])
       ]))
@@ -394,12 +394,12 @@ Violets are blue  \t  `
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -412,12 +412,12 @@ Violets are blue\\\t   `
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -430,12 +430,12 @@ Violets are blue\t  \\   \\\t   `
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -448,12 +448,12 @@ Violets are blue\\\\\\\\\\  \\   \\\t   `
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red\\')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red\\')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue\\\\')
+          new LineBlock.Line([
+            new PlainText('Violets are blue\\\\')
           ]),
         ]),
       ]))

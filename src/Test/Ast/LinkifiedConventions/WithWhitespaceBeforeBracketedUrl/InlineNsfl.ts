@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
-import { InlineNsflNode } from '../../../../SyntaxNodes/InlineNsflNode'
+import { Link } from '../../../../SyntaxNodes/Link'
+import { PlainText } from '../../../../SyntaxNodes/PlainText'
+import { NormalParenthetical } from '../../../../SyntaxNodes/NormalParenthetical'
+import { InlineNsfl } from '../../../../SyntaxNodes/InlineNsfl'
 
 
 context('A linkified NSFL convention can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -14,9 +14,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new Link([
+            new PlainText('something terrible')
           ], 'app:wiki/terrible-thing')
         ])
       ])
@@ -31,9 +31,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -43,16 +43,16 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[NSFL: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('something terrible')
+          new InlineNsfl([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('stackoverflow.com')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new PlainTextNode(' is nice)')
+            new PlainText(' is nice)')
           ])
         ]))
     })
@@ -60,12 +60,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('there must be somethng after the scheme', () => {
       expect(Up.toDocument('[NSFL: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('email')
+          new InlineNsfl([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:)')
           ]),
         ]))
     })
@@ -73,12 +73,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toDocument('[NSFL: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('local files')
+          new InlineNsfl([
+            new PlainText('local files')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(file:///)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(file:///)')
           ])
         ]))
     })
@@ -89,9 +89,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('spooky phone call')
+          new InlineNsfl([
+            new Link([
+              new PlainText('spooky phone call')
             ], 'tel:5555555555')
           ])
         ])
@@ -106,9 +106,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new Link([
+            new PlainText('something terrible')
           ], '/wiki/something-terrible')
         ])
       ])
@@ -120,12 +120,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[NSFL: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('something terrible')
+          new InlineNsfl([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/ created it)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/ created it)')
           ])
         ]))
     })
@@ -133,12 +133,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must have something after the slash', () => {
       expect(Up.toDocument('[NSFL: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('slash')
+          new InlineNsfl([
+            new PlainText('slash')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/)')
           ])
         ]))
     })
@@ -149,9 +149,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '/3',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '/3')
           ])
         ])
@@ -161,12 +161,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must not have its slash escaped', () => {
       expect(Up.toDocument('[NSFL: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('yeah')
+          new InlineNsfl([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/)')
           ]),
         ]))
     })
@@ -179,9 +179,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new Link([
+            new PlainText('something terrible')
           ], '#wiki/something-terrible')
         ])
       ])
@@ -196,9 +196,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '#3',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '#3')
           ])
         ])
@@ -208,12 +208,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must have something after the hash mark', () => {
       expect(Up.toDocument('[NSFL: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('hash mark')
+          new InlineNsfl([
+            new PlainText('hash mark')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#)')
           ])
         ]))
     })
@@ -221,12 +221,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[NSFL: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('something terrible')
+          new InlineNsfl([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2 was never trending)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2 was never trending)')
           ])
         ]))
     })
@@ -234,12 +234,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     it('must not have its hashmark escaped', () => {
       expect(Up.toDocument('[NSFL: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('yeah')
+          new InlineNsfl([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2)')
           ])
         ]))
     })
@@ -252,9 +252,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('Chrono Trigger')
+        new InlineNsfl([
+          new Link([
+            new PlainText('Chrono Trigger')
           ], 'https://chrono-trigger.wiki')
         ])
       ])
@@ -269,9 +269,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -284,9 +284,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/')
           ])
         ])
@@ -296,12 +296,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       expect(Up.toDocument('[NSFL: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('that place')
+          new InlineNsfl([
+            new PlainText('that place')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org-terrifying)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org-terrifying)')
           ])
         ]))
     })
@@ -312,9 +312,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('Good luck!')
+          new InlineNsfl([
+            new Link([
+              new PlainText('Good luck!')
             ], 'https://88.8888.cn')
           ])
         ])
@@ -324,12 +324,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the scheme must not be escaped', () => {
       expect(Up.toDocument('[NSFL: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('email')
+          new InlineNsfl([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:daniel@wants.email)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:daniel@wants.email)')
           ])
         ]))
     })
@@ -339,12 +339,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       specify('No numbers', () => {
         expect(Up.toDocument('[NSFL: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineNsflNode([
-              new PlainTextNode('username')
+            new InlineNsfl([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith5)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith5)')
             ]),
           ]))
       })
@@ -352,12 +352,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       specify('No hyphens', () => {
         expect(Up.toDocument('[NSFL: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineNsflNode([
-              new PlainTextNode('username')
+            new InlineNsfl([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith-kline)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith-kline)')
             ])
           ]))
       })
@@ -366,12 +366,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the URL must start with a letter or a number, not a period', () => {
       expect(Up.toDocument('[NSFL: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('top-level domain')
+          new InlineNsfl([
+            new PlainText('top-level domain')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(.co.uk)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(.co.uk)')
           ])
         ]))
     })
@@ -379,12 +379,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       expect(Up.toDocument('[NSFL: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('Ash is not his own father')
+          new InlineNsfl([
+            new PlainText('Ash is not his own father')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(um..uh)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(um..uh)')
           ])
         ]))
     })
@@ -392,12 +392,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       expect(Up.toDocument('[NSFL: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('debilitating sadness')
+          new InlineNsfl([
+            new PlainText('debilitating sadness')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org../r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org../r9k/)')
           ])
         ]))
     })
@@ -408,9 +408,9 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new LinkNode([
-              new PlainTextNode('rocket ship')
+          new InlineNsfl([
+            new Link([
+              new PlainText('rocket ship')
             ], 'https://example.com/321...blastoff/1')
           ])
         ])
@@ -420,12 +420,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[NSFL: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('yeah')
+          new InlineNsfl([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com had some hilarious forums)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com had some hilarious forums)')
           ])
         ]))
     })
@@ -433,12 +433,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     specify('the domain part must not be escaped', () => {
       expect(Up.toDocument('[NSFL: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineNsflNode([
-            new PlainTextNode('yeah')
+          new InlineNsfl([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com)')
           ]),
         ]))
     })
@@ -448,12 +448,12 @@ context('A linkified NSFL convention can have whitespace between itself and its 
   specify('If none of the conditions are satisfied, the NSFL convention is not linkified', () => {
     expect(Up.toDocument('[NSFL: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('(really)')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('(really)')
         ])
       ]))
   })
@@ -464,16 +464,16 @@ describe('If there is nothing but whitspace between an inline NSFL convention an
   it('the NSFL convention is not linkified', () => {
     expect(Up.toDocument('[NSFL: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode('    '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText('    '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -487,9 +487,9 @@ describe("A linkified NSFL convention's URL, when separated from its content by 
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsflNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineNsfl([
+          new Link([
+            new PlainText('something terrible')
           ], 'https://stackoverflow.com/search=something very terrible')
         ])
       ])

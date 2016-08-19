@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Table } from '../../../SyntaxNodes/Table'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The term that represents chart conventions', () => {
@@ -20,17 +20,17 @@ Chrono Cross;     1999`
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -63,17 +63,17 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup, { terms: { chart: ' \t data \t ' } })).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -88,17 +88,17 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup, { terms: { chart: '*data*' } })).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -120,29 +120,29 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup, { terms: { chart: ['data', 'info'] } })).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ]),
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })

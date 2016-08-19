@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 
 
 describe('Consecutive lines starting with "> "', () => {
@@ -19,12 +19,12 @@ describe('Consecutive lines starting with "> "', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+          new Paragraph([
+            new PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -41,12 +41,12 @@ describe("Blockquote delimeters", () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+          new Paragraph([
+            new PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -63,12 +63,12 @@ context("Within a blockquote", () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+          new Paragraph([
+            new PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -82,14 +82,14 @@ context("Within a blockquote", () => {
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new BlockquoteNode([
-            new DescriptionListNode([
-              new DescriptionListNode.Item([
-                new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
+          new Blockquote([
+            new DescriptionList([
+              new DescriptionList.Item([
+                new DescriptionList.Item.Term([new PlainText('Charmander')])
               ],
-                new DescriptionListNode.Item.Description([
-                  new ParagraphNode([
-                    new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                new DescriptionList.Item.Description([
+                  new Paragraph([
+                    new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -107,14 +107,14 @@ context("Within a blockquote", () => {
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new BlockquoteNode([
-            new DescriptionListNode([
-              new DescriptionListNode.Item([
-                new DescriptionListNode.Item.Term([new PlainTextNode('Charmander')])
+          new Blockquote([
+            new DescriptionList([
+              new DescriptionList.Item([
+                new DescriptionList.Item.Term([new PlainText('Charmander')])
               ],
-                new DescriptionListNode.Item.Description([
-                  new ParagraphNode([
-                    new PlainTextNode('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                new DescriptionList.Item.Description([
+                  new Paragraph([
+                    new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -134,16 +134,16 @@ describe('A blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, '),
+          new Paragraph([
+            new PlainText('Goodbye, '),
             new Emphasis([
-              new PlainTextNode('world')
+              new PlainText('world')
             ]),
-            new PlainTextNode('!')
+            new PlainText('!')
           ])
         ])
       ]))
@@ -156,9 +156,9 @@ describe('A blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new HeadingNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Heading([
+            new PlainText('Hello, world!')
           ], 1)
         ])
       ]))
@@ -172,13 +172,13 @@ describe('A blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new BlockquoteNode([
-            new ParagraphNode([
-              new PlainTextNode('Hello, mantle!')
+          new Blockquote([
+            new Paragraph([
+              new PlainText('Hello, mantle!')
             ])
           ])
         ])
@@ -200,21 +200,21 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+          new Paragraph([
+            new PlainText('Goodbye, world!')
           ])
         ]),
 
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Welp, I tried to leave earlier.')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Welp, I tried to leave earlier.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('This is awkward...')
+          new Paragraph([
+            new PlainText('This is awkward...')
           ])
         ])
       ]))
@@ -235,22 +235,22 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new BlockquoteNode([
-            new ParagraphNode([
-              new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Blockquote([
+            new Paragraph([
+              new PlainText('Hello, world!')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('Goodbye, world!')
+            new Paragraph([
+              new PlainText('Goodbye, world!')
             ])
           ]),
 
-          new BlockquoteNode([
-            new ParagraphNode([
-              new PlainTextNode('Welp, I tried to leave earlier.')
+          new Blockquote([
+            new Paragraph([
+              new PlainText('Welp, I tried to leave earlier.')
             ]),
-            new ParagraphNode([
-              new PlainTextNode('This is awkward...')
+            new Paragraph([
+              new PlainText('This is awkward...')
             ])
           ])
         ])
@@ -270,17 +270,17 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new OutlineSeparatorNode(),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, '),
+          new OutlineSeparator(),
+          new Paragraph([
+            new PlainText('Goodbye, '),
             new Emphasis([
-              new PlainTextNode('world')
+              new PlainText('world')
             ]),
-            new PlainTextNode('!')
+            new PlainText('!')
           ])
         ])
       ]))
@@ -292,9 +292,9 @@ describe('A single blockquote delimiter without its trailing space', () => {
   it('produces a blockquote note', () => {
     expect(Up.toDocument('>Hello, taxes!')).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, taxes!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, taxes!')
           ])
         ])
       ]))
@@ -306,15 +306,15 @@ describe('A single line blockquote', () => {
   it('can contain nested blockquotes', () => {
     expect(Up.toDocument('> > > Hello, *world*!!')).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new BlockquoteNode([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode('Hello, '),
+        new Blockquote([
+          new Blockquote([
+            new Blockquote([
+              new Paragraph([
+                new PlainText('Hello, '),
                 new Emphasis([
-                  new PlainTextNode('world')
+                  new PlainText('world')
                 ]),
-                new PlainTextNode('!!')
+                new PlainText('!!')
               ])
             ])
           ])
@@ -328,11 +328,11 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
   it('produce nested blockquote nodes, one for each delimiter', () => {
     expect(Up.toDocument(`>>> Hello, world!`)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new BlockquoteNode([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Blockquote([
+            new Blockquote([
+              new Paragraph([
+                new PlainText('Hello, world!')
               ])
             ])
           ])
@@ -346,11 +346,11 @@ describe('Multiple blockquote delimiters, each with their trailing space, follow
   it('produce nested blockquote nodes, one for each delimiter', () => {
     expect(Up.toDocument(`> > >Hello, world!`)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new BlockquoteNode([
-            new BlockquoteNode([
-              new ParagraphNode([
-                new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Blockquote([
+            new Blockquote([
+              new Paragraph([
+                new PlainText('Hello, world!')
               ])
             ])
           ])
@@ -371,15 +371,15 @@ context('Within a given blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new BlockquoteNode([
-          new ParagraphNode([
-            new PlainTextNode('Hello, world!')
+        new Blockquote([
+          new Paragraph([
+            new PlainText('Hello, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Goodbye, world!')
+          new Paragraph([
+            new PlainText('Goodbye, world!')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Ummm... I said goodbye.')
+          new Paragraph([
+            new PlainText('Ummm... I said goodbye.')
           ])
         ])
       ]))

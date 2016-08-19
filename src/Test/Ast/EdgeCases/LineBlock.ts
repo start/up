@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 
 
 describe('A line starting with an escaped character in a line block', () => {
@@ -12,12 +12,12 @@ describe('A line starting with an escaped character in a line block', () => {
 Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -29,12 +29,12 @@ Roses are red
 \\Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -52,21 +52,21 @@ Lyrics have lines
 And addresses do, too`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('#~#~#~#~#~#~#~#~#')
+          new LineBlock.Line([
+            new PlainText('#~#~#~#~#~#~#~#~#')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Lyrics have lines')
+          new LineBlock.Line([
+            new PlainText('Lyrics have lines')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('And addresses do, too')
+          new LineBlock.Line([
+            new PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -83,18 +83,18 @@ Lyrics have lines
 And addresses do, too`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red'),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red'),
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue'),
+          new LineBlock.Line([
+            new PlainText('Violets are blue'),
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Lyrics have lines')
+          new LineBlock.Line([
+            new PlainText('Lyrics have lines')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('And addresses do, too')
+          new LineBlock.Line([
+            new PlainText('And addresses do, too')
           ]),
         ])
       ]))
@@ -111,12 +111,12 @@ Roses are red
 Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red'),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red'),
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue'),
+          new LineBlock.Line([
+            new PlainText('Violets are blue'),
           ])
         ])
       ]))
@@ -130,12 +130,12 @@ Roses are red
 Violets are blue`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red'),
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red'),
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue'),
+          new LineBlock.Line([
+            new PlainText('Violets are blue'),
           ])
         ])
       ]))
@@ -153,12 +153,12 @@ Skeltals are white`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Skeltals are white')
+          new LineBlock.Line([
+            new PlainText('Skeltals are white')
           ])
         ])
       ]))

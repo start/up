@@ -2,17 +2,17 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
 
 
 context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.toDocument('SPOILER:')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('SPOILER:')
+        new PlainText('SPOILER:')
       ]))
   })
 
@@ -23,10 +23,10 @@ No!
 Roses don't glow!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([new PlainTextNode('Spoiler:')]),
-          new LineBlockNode.Line([new PlainTextNode('No!')]),
-          new LineBlockNode.Line([new PlainTextNode("Roses don't glow!")]),
+        new LineBlock([
+          new LineBlock.Line([new PlainText('Spoiler:')]),
+          new LineBlock.Line([new PlainText('No!')]),
+          new LineBlock.Line([new PlainText("Roses don't glow!")]),
         ])
       ]))
   })
@@ -38,11 +38,11 @@ Spoiler:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+        new Paragraph([
+          new PlainText('Spoiler:')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })
@@ -55,11 +55,11 @@ Spoiler:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+        new Paragraph([
+          new PlainText('Spoiler:')
         ]),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })
@@ -74,12 +74,12 @@ Spoiler:
 No!`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode('Spoiler:')
+        new Paragraph([
+          new PlainText('Spoiler:')
         ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode('No!')
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText('No!')
         ])
       ]))
   })

@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
+import { Heading } from '../../SyntaxNodes/Heading'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
 import { getInlineNodes } from '../Inline/getInlineNodes'
@@ -67,7 +67,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const headingChildren = getInlineNodes(contentMarkup, args.config)
 
   args.then(
-    [new HeadingNode(headingChildren, headingLevel)],
+    [new Heading(headingChildren, headingLevel)],
     markupLineConsumer.countLinesConsumed)
 
   return true

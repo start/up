@@ -1,22 +1,22 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Link } from '../../SyntaxNodes/Link'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 
 describe('Bracketed (square bracketed or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
   it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
     expect(Up.toDocument('I like [this site](https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
+        new PlainText('I like '),
+        new Link([
+          new PlainText('this site')
         ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -28,8 +28,8 @@ describe("The brackets enclosing a link's description and URL", () => {
       content: 'this site',
       url: 'http://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
+        new Link([
+          new PlainText('this site')
         ], 'http://stackoverflow.com')
       ])
     })
@@ -43,8 +43,8 @@ context("If there's no whitespace between a link's bracketed content and its bra
       content: 'this site',
       url: ' \t http://stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
+        new Link([
+          new PlainText('this site')
         ], 'http://stackoverflow.com')
       ])
     })
@@ -55,8 +55,8 @@ context("If there's no whitespace between a link's bracketed content and its bra
       content: 'this site',
       url: 'http://stackoverflow.com \t ',
       toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
+        new Link([
+          new PlainText('this site')
         ], 'http://stackoverflow.com')
       ])
     })
@@ -68,11 +68,11 @@ describe('An otherwise-valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
     expect(Up.toDocument('[call me](\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareParentheticalNode([
-          new PlainTextNode('[call me]')
+        new SquareParenthetical([
+          new PlainText('[call me]')
         ]),
-        new NormalParentheticalNode([
-          new PlainTextNode('(tel:5555555555)')
+        new NormalParenthetical([
+          new PlainText('(tel:5555555555)')
         ]),
       ]))
   })
@@ -83,10 +83,10 @@ context("When an otherwise-valid link's URL starts with whitespace, and the firs
   specify('it does not produce a link node', () => {
     expect(Up.toDocument('[call me]( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new SquareParentheticalNode([
-          new PlainTextNode('[call me]')
+        new SquareParenthetical([
+          new PlainText('[call me]')
         ]),
-        new PlainTextNode('( \t tel:5555555555)')
+        new PlainText('( \t tel:5555555555)')
       ]))
   })
 })
@@ -96,40 +96,40 @@ describe("A link's contents", () => {
   it('is evaluated for other conventions', () => {
     expect(Up.toDocument('I like [*this* site][https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
+        new PlainText('I like '),
+        new Link([
           new Emphasis([
-            new PlainTextNode('this')
+            new PlainText('this')
           ]),
-          new PlainTextNode(' site')
+          new PlainText(' site')
         ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('is evaluated for other links', () => {
     expect(Up.toDocument('[Google is probably not [Bing][https://bing.com]][https://google.com].')).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Google is probably not '),
-          new LinkNode([
-            new PlainTextNode('Bing')
+        new Link([
+          new PlainText('Google is probably not '),
+          new Link([
+            new PlainText('Bing')
           ], 'https://bing.com')
         ], 'https://google.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('is evaluated for naked URLs', () => {
     expect(Up.toDocument('[Google is not at https://bing.com][https://google.com].')).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Google is not at '),
-          new LinkNode([
-            new PlainTextNode('bing.com')
+        new Link([
+          new PlainText('Google is not at '),
+          new Link([
+            new PlainText('bing.com')
           ], 'https://bing.com')
         ], 'https://google.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -139,22 +139,22 @@ describe("A link's URL", () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=*hello*there].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
+        new PlainText('I like '),
+        new Link([
+          new PlainText('this site')
         ], 'https://stackoverflow.com/?search=*hello*there'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('can contain spaces (assuming the bracketed URL directly follows the bracketed content)', () => {
     expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=hello there].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
+        new PlainText('I like '),
+        new Link([
+          new PlainText('this site')
         ], 'https://stackoverflow.com/?search=hello there'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -164,14 +164,14 @@ describe('A link produced by square brackets', () => {
   it('can start with square bracketed text', () => {
     expect(Up.toDocument('I like [[only one] site][https://stackoverflow.com].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new SquareParentheticalNode([
-            new PlainTextNode('[only one]')
+        new PlainText('I like '),
+        new Link([
+          new SquareParenthetical([
+            new PlainText('[only one]')
           ]),
-          new PlainTextNode(' site')
+          new PlainText(' site')
         ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -181,14 +181,14 @@ describe('A link produced by parentheses', () => {
   it('can start with parenthesized text', () => {
     expect(Up.toDocument('I like ((only one) site)(https://stackoverflow.com).')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new NormalParentheticalNode([
-            new PlainTextNode('(only one)')
+        new PlainText('I like '),
+        new Link([
+          new NormalParenthetical([
+            new PlainText('(only one)')
           ]),
-          new PlainTextNode(' site')
+          new PlainText(' site')
         ], 'https://stackoverflow.com'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 })
@@ -198,22 +198,22 @@ describe("The URL of a link produced by square brackets", () => {
   it('can contain matching unescaped brackets', () => {
     expect(Up.toDocument('Here is a [strange URL][https://google.com/search?q=[hi]].')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Here is a '),
-        new LinkNode([
-          new PlainTextNode('strange URL')
+        new PlainText('Here is a '),
+        new Link([
+          new PlainText('strange URL')
         ], 'https://google.com/search?q=[hi]'),
-        new PlainTextNode('.')
+        new PlainText('.')
       ]))
   })
 
   it('can have an escaped, unmatched closing bracket', () => {
     expect(Up.toDocument('I like [this site][https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I like '),
-        new LinkNode([
-          new PlainTextNode('this site')
+        new PlainText('I like '),
+        new Link([
+          new PlainText('this site')
         ], 'https://google.com/?fake=]query'),
-        new PlainTextNode('. I bet you do, too.')
+        new PlainText('. I bet you do, too.')
       ]))
   })
 })

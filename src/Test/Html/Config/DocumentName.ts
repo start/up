@@ -1,23 +1,23 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
+import { Heading } from '../../../SyntaxNodes/Heading'
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -31,8 +31,8 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -46,8 +46,8 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -61,8 +61,8 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -76,12 +76,12 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document =
       new UpDocument([
-        new FootnoteBlockNode([
-          new FootnoteNode([
-            new PlainTextNode("Arwings")
+        new FootnoteBlock([
+          new Footnote([
+            new PlainText("Arwings")
           ], 2),
-          new FootnoteNode([
-            new PlainTextNode("Killer Bees")
+          new Footnote([
+            new PlainText("Killer Bees")
           ], 3)
         ])
       ])
@@ -102,12 +102,12 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
     const document =
       new UpDocument([
-        new FootnoteBlockNode([
-          new FootnoteNode([
-            new PlainTextNode("Arwings")
+        new FootnoteBlock([
+          new Footnote([
+            new PlainText("Arwings")
           ], 2),
-          new FootnoteNode([
-            new PlainTextNode("Killer Bees")
+          new Footnote([
+            new PlainText("Killer Bees")
           ], 3)
         ])
       ])
@@ -128,12 +128,12 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
     const document =
       new UpDocument([
-        new FootnoteBlockNode([
-          new FootnoteNode([
-            new PlainTextNode("Arwings")
+        new FootnoteBlock([
+          new Footnote([
+            new PlainText("Arwings")
           ], 2),
-          new FootnoteNode([
-            new PlainTextNode("Killer Bees")
+          new Footnote([
+            new PlainText("Killer Bees")
           ], 3)
         ])
       ])
@@ -154,12 +154,12 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
     const document =
       new UpDocument([
-        new FootnoteBlockNode([
-          new FootnoteNode([
-            new PlainTextNode("Arwings")
+        new FootnoteBlock([
+          new Footnote([
+            new PlainText("Arwings")
           ], 2),
-          new FootnoteNode([
-            new PlainTextNode("Killer Bees")
+          new Footnote([
+            new PlainText("Killer Bees")
           ], 3)
         ])
       ])
@@ -178,8 +178,8 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
+      new Paragraph([
+        new InlineSpoiler([])
       ])
     ])
 
@@ -202,8 +202,8 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
+      new Paragraph([
+        new InlineSpoiler([])
       ])
     ])
 
@@ -225,8 +225,8 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
+      new Paragraph([
+        new InlineSpoiler([])
       ])
     ])
 
@@ -248,8 +248,8 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineSpoilerNode([])
+      new Paragraph([
+        new InlineSpoiler([])
       ])
     ])
 
@@ -270,8 +270,8 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([])
+      new Paragraph([
+        new InlineNsfw([])
       ])
     ])
 
@@ -294,8 +294,8 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([])
+      new Paragraph([
+        new InlineNsfw([])
       ])
     ])
 
@@ -317,8 +317,8 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([])
+      new Paragraph([
+        new InlineNsfw([])
       ])
     ])
 
@@ -340,8 +340,8 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsfwNode([])
+      new Paragraph([
+        new InlineNsfw([])
       ])
     ])
 
@@ -362,8 +362,8 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([])
+      new Paragraph([
+        new InlineNsfl([])
       ])
     ])
 
@@ -386,8 +386,8 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([])
+      new Paragraph([
+        new InlineNsfl([])
       ])
     ])
 
@@ -409,8 +409,8 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([])
+      new Paragraph([
+        new InlineNsfl([])
       ])
     ])
 
@@ -432,8 +432,8 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new InlineNsflNode([])
+      new Paragraph([
+        new InlineNsfl([])
       ])
     ])
 
@@ -456,7 +456,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new SpoilerBlockNode([])
+      new SpoilerBlock([])
     ])
 
     const html =
@@ -476,7 +476,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new UpDocument([
-      new SpoilerBlockNode([])
+      new SpoilerBlock([])
     ])
 
     const html =
@@ -495,7 +495,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new UpDocument([
-      new SpoilerBlockNode([])
+      new SpoilerBlock([])
     ])
 
     const html =
@@ -514,7 +514,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new UpDocument([
-      new SpoilerBlockNode([])
+      new SpoilerBlock([])
     ])
 
     const html =
@@ -532,7 +532,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 describe("The ID of an NSFW block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new NsfwBlockNode([])
+      new NsfwBlock([])
     ])
 
     const html =
@@ -552,7 +552,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsfwBlockNode([])
+      new NsfwBlock([])
     ])
 
     const html =
@@ -571,7 +571,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsfwBlockNode([])
+      new NsfwBlock([])
     ])
 
     const html =
@@ -590,7 +590,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsfwBlockNode([])
+      new NsfwBlock([])
     ])
 
     const html =
@@ -608,7 +608,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
 describe("The ID of an NSFL block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
-      new NsflBlockNode([])
+      new NsflBlock([])
     ])
 
     const html =
@@ -628,7 +628,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsflBlockNode([])
+      new NsflBlock([])
     ])
 
     const html =
@@ -647,7 +647,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsflBlockNode([])
+      new NsflBlock([])
     ])
 
     const html =
@@ -666,7 +666,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     })
 
     const document = new UpDocument([
-      new NsflBlockNode([])
+      new NsflBlock([])
     ])
 
     const html =
@@ -684,7 +684,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
 
 describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
-    const heading = new HeadingNode([], 1)
+    const heading = new Heading([], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -707,7 +707,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: 'reply-11'
     })
 
-    const heading = new HeadingNode([], 1)
+    const heading = new Heading([], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -729,7 +729,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: ''
     })
 
-    const heading = new HeadingNode([], 1)
+    const heading = new Heading([], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -751,7 +751,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: ' \t'
     })
 
-    const heading = new HeadingNode([], 1)
+    const heading = new Heading([], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

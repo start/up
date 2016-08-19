@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class InternalReferenceNode implements InlineSyntaxNode {
+export class InternalReference implements InlineSyntaxNode {
   constructor(
     public textBelongingToReferencedItem: string,
     public referencedItem: OutlineSyntaxNode) { }

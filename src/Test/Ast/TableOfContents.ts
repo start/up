@@ -1,27 +1,27 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { HeadingNode } from '../../SyntaxNodes/HeadingNode'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
-import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
-import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
-import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { Table } from '../../SyntaxNodes/Table'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { Heading } from '../../SyntaxNodes/Heading'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { Image } from '../../SyntaxNodes/Image'
+import { Video } from '../../SyntaxNodes/Video'
+import { Link } from '../../SyntaxNodes/Link'
 
 const NO_TABLE_OF_CONTENTS: UpDocument.TableOfContents = undefined
 
@@ -34,7 +34,7 @@ I enjoy apples
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1),
+        new Heading([new PlainText('I enjoy apples')], 1),
       ], NO_TABLE_OF_CONTENTS))
   })
 
@@ -57,28 +57,28 @@ SPOILER:
 
     expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode('Can you guess what this chart represents?')]),
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Paragraph([new PlainText('Can you guess what this chart represents?')]),
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ]),
-        new SpoilerBlockNode([
-          new HeadingNode([new PlainTextNode('The answer!')], 1),
-          new ParagraphNode([
-            new PlainTextNode('The chart represents the logic for the '),
+        new SpoilerBlock([
+          new Heading([new PlainText('The answer!')], 1),
+          new Paragraph([
+            new PlainText('The chart represents the logic for the '),
             new InlineCode('AND'),
-            new PlainTextNode(' operator.'),
+            new PlainText(' operator.'),
           ])
         ])
       ], NO_TABLE_OF_CONTENTS))
@@ -97,7 +97,7 @@ I enjoy apples
 ==============`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -116,22 +116,22 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     const table =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Release Date')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-            new TableNode.Row.Cell([new PlainTextNode('1995')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+            new Table.Row.Cell([new PlainText('1995')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-            new TableNode.Row.Cell([new PlainTextNode('1999')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Chrono Cross')]),
+            new Table.Row.Cell([new PlainText('1999')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Games in the Chrono series')
+        new Table.Caption([
+          new PlainText('Games in the Chrono series')
         ]))
 
     const tableOfContents =
@@ -150,24 +150,24 @@ Chart: \`AND\` operator logic
 0;      false;  false`
 
     const chart =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('1')]),
+          new Table.Header.Cell([new PlainText('0')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('true')]),
+            new Table.Row.Cell([new PlainText('false')]),
+          ], new Table.Header.Cell([new PlainText('1')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('false')]),
+            new Table.Row.Cell([new PlainText('false')])
+          ], new Table.Header.Cell([new PlainText('0')]))
         ],
-        new TableNode.Caption([
+        new Table.Caption([
           new InlineCode('AND'),
-          new PlainTextNode(' operator logic')
+          new PlainText(' operator logic')
         ]))
 
     const tableOfContents =
@@ -194,16 +194,16 @@ I enjoy apples
 Who doesn't?`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        new Paragraph([new PlainText("Who doesn't?")])
       ], tableOfContents))
   })
 
@@ -216,7 +216,7 @@ I enjoy apples
 2. They're delicious`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -224,12 +224,12 @@ I enjoy apples
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new OrderedListNode([
-          new OrderedListNode.Item([
-            new ParagraphNode([new PlainTextNode("They're cheap")])
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([new PlainText("They're cheap")])
           ], 1),
-          new OrderedListNode.Item([
-            new ParagraphNode([new PlainTextNode("They're delicious")])
+          new OrderedList.Item([
+            new Paragraph([new PlainText("They're delicious")])
           ], 2)
         ])
       ], tableOfContents))
@@ -244,7 +244,7 @@ I enjoy apples
 * They're delicious`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -252,12 +252,12 @@ I enjoy apples
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([new PlainTextNode("They're cheap")])
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([new PlainText("They're cheap")])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([new PlainTextNode("They're delicious")])
+          new UnorderedList.Item([
+            new Paragraph([new PlainText("They're delicious")])
           ])
         ])
       ], tableOfContents))
@@ -272,7 +272,7 @@ Apples
   They're delicious.`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -280,12 +280,12 @@ Apples
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new DescriptionListNode([
-          new DescriptionListNode.Item([
-            new DescriptionListNode.Item.Term([new PlainTextNode('Apples')])
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Term([new PlainText('Apples')])
           ],
-            new DescriptionListNode.Item.Description([
-              new ParagraphNode([new PlainTextNode("They're delicious.")])
+            new DescriptionList.Item.Description([
+              new Paragraph([new PlainText("They're delicious.")])
             ]))
         ])
       ], tableOfContents))
@@ -300,7 +300,7 @@ Roses are read
 Apples are blue`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -308,12 +308,12 @@ Apples are blue`
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode("Roses are read")
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText("Roses are read")
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode("Apples are blue")
+          new LineBlock.Line([
+            new PlainText("Apples are blue")
           ])
         ])
       ], tableOfContents))
@@ -330,17 +330,17 @@ SPOILER:
   Who doesn't?`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new SpoilerBlockNode([
-          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        new SpoilerBlock([
+          new Paragraph([new PlainText("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -356,17 +356,17 @@ NSFW:
   Who doesn't?`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new NsfwBlockNode([
-          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        new NsfwBlock([
+          new Paragraph([new PlainText("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -382,17 +382,17 @@ NSFL:
   Who doesn't?`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new NsflBlockNode([
-          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        new NsflBlock([
+          new Paragraph([new PlainText("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -407,17 +407,17 @@ I enjoy apples
 > Who doesn't?`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new BlockquoteNode([
-          new ParagraphNode([new PlainTextNode("Who doesn't?")])
+        new Blockquote([
+          new Paragraph([new PlainText("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -436,18 +436,18 @@ Who doesn't?
 No one!`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([new PlainTextNode("Anyway, let's get to the point.")]),
+        new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
-        new ParagraphNode([new PlainTextNode("Who doesn't?")]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([new PlainTextNode("No one!")])
+        new Paragraph([new PlainText("Who doesn't?")]),
+        new OutlineSeparator(),
+        new Paragraph([new PlainText("No one!")])
       ], tableOfContents))
   })
 
@@ -461,7 +461,7 @@ const reason = "They are cheap and delicious."
 \`\`\``
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -469,7 +469,7 @@ const reason = "They are cheap and delicious."
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new CodeBlockNode('const reason = "They are cheap and delicious."'),
+        new CodeBlock('const reason = "They are cheap and delicious."'),
       ], tableOfContents))
   })
 
@@ -481,10 +481,10 @@ I enjoy apples
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
-    const footnote = new FootnoteNode([
-      new PlainTextNode('Well, I do, but I pretend not to.')
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
     const tableOfContents =
@@ -493,12 +493,12 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
         heading,
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have.")
+          new PlainText(" Never have.")
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ], tableOfContents))
   })
 
@@ -513,7 +513,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
     const heading =
-      new HeadingNode([new PlainTextNode('The Chrono series')], 1)
+      new Heading([new PlainText('The Chrono series')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -521,18 +521,18 @@ Chrono Cross;     1999`
     expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         heading,
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([new PlainTextNode('Game')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Trigger')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('1995')])
             ]),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Chrono Cross')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
             ])
           ])
       ], tableOfContents))
@@ -549,7 +549,7 @@ Chart:
 1;      true;   false
 0;      false;  false`
     const heading =
-      new HeadingNode([new PlainTextNode('Boolean logic')], 1)
+      new Heading([new PlainText('Boolean logic')], 1)
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])
@@ -557,20 +557,20 @@ Chart:
     expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
         heading,
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ])
       ], tableOfContents))
   })
@@ -586,7 +586,7 @@ Haunted houses
 [audio: haunted house] (example.com/hauntedhouse.ogg)`
 
       const heading =
-        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+        new Heading([new PlainText('Haunted houses')], 1)
 
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
@@ -606,7 +606,7 @@ Haunted houses
 [image: haunted house] (example.com/hauntedhouse.svg)`
 
       const heading =
-        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+        new Heading([new PlainText('Haunted houses')], 1)
 
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
@@ -614,7 +614,7 @@ Haunted houses
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
-          new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+          new Image('haunted house', 'https://example.com/hauntedhouse.svg')
         ], tableOfContents))
     })
 
@@ -626,7 +626,7 @@ Haunted houses
 [video: haunted house] (example.com/hauntedhouse.webm)`
 
       const heading =
-        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+        new Heading([new PlainText('Haunted houses')], 1)
 
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
@@ -634,7 +634,7 @@ Haunted houses
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
-          new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm')
+          new Video('haunted house', 'https://example.com/hauntedhouse.webm')
         ], tableOfContents))
     })
 
@@ -647,7 +647,7 @@ Haunted houses
 [image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)`
 
       const heading =
-        new HeadingNode([new PlainTextNode('Haunted houses')], 1)
+        new Heading([new PlainText('Haunted houses')], 1)
 
       const tableOfContents =
         new UpDocument.TableOfContents([heading])
@@ -655,8 +655,8 @@ Haunted houses
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
-          new LinkNode([
-            new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg')
+          new Link([
+            new Image('haunted house', 'https://example.com/hauntedhouse.svg')
           ], 'https://example.com/gallery')
         ], tableOfContents))
     })
@@ -683,13 +683,13 @@ I enjoy apples
    Very delicious.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const cheapHeading =
-        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+        new Heading([new PlainText("They're cheap")], 2)
 
       const deliciousHeading =
-        new HeadingNode([new PlainTextNode("They're delicious")], 2)
+        new Heading([new PlainText("They're delicious")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
@@ -697,14 +697,14 @@ I enjoy apples
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new OrderedListNode([
-            new OrderedListNode.Item([
+          new OrderedList([
+            new OrderedList.Item([
               cheapHeading,
-              new ParagraphNode([new PlainTextNode("Very cheap.")])
+              new Paragraph([new PlainText("Very cheap.")])
             ], 1),
-            new OrderedListNode.Item([
+            new OrderedList.Item([
               deliciousHeading,
-              new ParagraphNode([new PlainTextNode("Very delicious.")])
+              new Paragraph([new PlainText("Very delicious.")])
             ], 2)
           ])
         ], tableOfContents))
@@ -726,13 +726,13 @@ I enjoy apples
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const cheapHeading =
-        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+        new Heading([new PlainText("They're cheap")], 2)
 
       const costHeading =
-        new HeadingNode([new PlainTextNode("Cost")], 2)
+        new Heading([new PlainText("Cost")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, costHeading])
@@ -740,14 +740,14 @@ I enjoy apples
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new OrderedListNode([
-            new OrderedListNode.Item([
+          new OrderedList([
+            new OrderedList.Item([
               cheapHeading,
-              new ParagraphNode([new PlainTextNode("Very cheap.")]),
-              new OrderedListNode([
-                new OrderedListNode.Item([
+              new Paragraph([new PlainText("Very cheap.")]),
+              new OrderedList([
+                new OrderedList.Item([
                   costHeading,
-                  new ParagraphNode([new PlainTextNode("Typically, apples cost twenty dolloars per pound.")])
+                  new Paragraph([new PlainText("Typically, apples cost twenty dolloars per pound.")])
                 ])
               ])
             ])
@@ -771,13 +771,13 @@ I enjoy apples
   Very delicious.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const cheapHeading =
-        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+        new Heading([new PlainText("They're cheap")], 2)
 
       const deliciousHeading =
-        new HeadingNode([new PlainTextNode("They're delicious")], 2)
+        new Heading([new PlainText("They're delicious")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
@@ -785,14 +785,14 @@ I enjoy apples
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
+          new UnorderedList([
+            new UnorderedList.Item([
               cheapHeading,
-              new ParagraphNode([new PlainTextNode("Very cheap.")])
+              new Paragraph([new PlainText("Very cheap.")])
             ]),
-            new UnorderedListNode.Item([
+            new UnorderedList.Item([
               deliciousHeading,
-              new ParagraphNode([new PlainTextNode("Very delicious.")])
+              new Paragraph([new PlainText("Very delicious.")])
             ])
           ])
         ], tableOfContents))
@@ -814,13 +814,13 @@ I enjoy apples
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const cheapHeading =
-        new HeadingNode([new PlainTextNode("They're cheap")], 2)
+        new Heading([new PlainText("They're cheap")], 2)
 
       const costHeading =
-        new HeadingNode([new PlainTextNode("Cost")], 2)
+        new Heading([new PlainText("Cost")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, cheapHeading, costHeading])
@@ -828,14 +828,14 @@ I enjoy apples
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new UnorderedListNode([
-            new UnorderedListNode.Item([
+          new UnorderedList([
+            new UnorderedList.Item([
               cheapHeading,
-              new ParagraphNode([new PlainTextNode("Very cheap.")]),
-              new UnorderedListNode([
-                new UnorderedListNode.Item([
+              new Paragraph([new PlainText("Very cheap.")]),
+              new UnorderedList([
+                new UnorderedList.Item([
                   costHeading,
-                  new ParagraphNode([new PlainTextNode("Typically, apples cost twenty dolloars per pound.")])
+                  new Paragraph([new PlainText("Typically, apples cost twenty dolloars per pound.")])
                 ])
               ])
             ])
@@ -861,13 +861,13 @@ Pink lady
   Really.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const bestFruitHeading =
-        new HeadingNode([new PlainTextNode("The best fruit")], 2)
+        new Heading([new PlainText("The best fruit")], 2)
 
       const pinkLadyHeading =
-        new HeadingNode([new PlainTextNode("The best apple")], 2)
+        new Heading([new PlainText("The best apple")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
@@ -875,18 +875,18 @@ Pink lady
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
-            ], new DescriptionListNode.Item.Description([
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([new PlainText('Apple')])
+            ], new DescriptionList.Item.Description([
               bestFruitHeading,
-              new ParagraphNode([new PlainTextNode('Really.')])
+              new Paragraph([new PlainText('Really.')])
             ])),
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
-            ], new DescriptionListNode.Item.Description([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([new PlainText('Pink lady')])
+            ], new DescriptionList.Item.Description([
               pinkLadyHeading,
-              new ParagraphNode([new PlainTextNode('Really.')])
+              new Paragraph([new PlainText('Really.')])
             ]))
           ])
         ], tableOfContents))
@@ -910,13 +910,13 @@ Apple
     Really.`
 
       const applesHeading =
-        new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+        new Heading([new PlainText('I enjoy apples')], 1)
 
       const bestFruitHeading =
-        new HeadingNode([new PlainTextNode("The best fruit")], 2)
+        new Heading([new PlainText("The best fruit")], 2)
 
       const pinkLadyHeading =
-        new HeadingNode([new PlainTextNode("The best apple")], 2)
+        new Heading([new PlainText("The best apple")], 2)
 
       const tableOfContents =
         new UpDocument.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
@@ -924,18 +924,18 @@ Apple
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
           applesHeading,
-          new DescriptionListNode([
-            new DescriptionListNode.Item([
-              new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
-            ], new DescriptionListNode.Item.Description([
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([new PlainText('Apple')])
+            ], new DescriptionList.Item.Description([
               bestFruitHeading,
-              new ParagraphNode([new PlainTextNode('Really.')]),
-              new DescriptionListNode([
-                new DescriptionListNode.Item([
-                  new DescriptionListNode.Item.Term([new PlainTextNode('Pink lady')])
-                ], new DescriptionListNode.Item.Description([
+              new Paragraph([new PlainText('Really.')]),
+              new DescriptionList([
+                new DescriptionList.Item([
+                  new DescriptionList.Item.Term([new PlainText('Pink lady')])
+                ], new DescriptionList.Item.Description([
                   pinkLadyHeading,
-                  new ParagraphNode([new PlainTextNode('Really.')])
+                  new Paragraph([new PlainText('Really.')])
                 ]))
               ])
             ]))
@@ -971,48 +971,48 @@ Apple
       Red Delicious;    No;       No`
 
     const bestFruitHeading =
-      new HeadingNode([new PlainTextNode('The best fruit')], 1)
+      new Heading([new PlainText('The best fruit')], 1)
 
     const table =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Apple')]),
-          new TableNode.Header.Cell([new PlainTextNode('Description')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Apple')]),
+          new Table.Header.Cell([new PlainText('Description')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Pink Lady')]),
-            new TableNode.Row.Cell([new PlainTextNode('Very crisp and sweet')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Pink Lady')]),
+            new Table.Row.Cell([new PlainText('Very crisp and sweet')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Red Delicious')]),
-            new TableNode.Row.Cell([new PlainTextNode('Very mushy and bland')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Red Delicious')]),
+            new Table.Row.Cell([new PlainText('Very mushy and bland')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Apple varieties')
+        new Table.Caption([
+          new PlainText('Apple varieties')
         ]))
 
     const purchasingHeading =
-      new HeadingNode([new PlainTextNode('Purchasing')], 2)
+      new Heading([new PlainText('Purchasing')], 2)
 
     const chart =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('Target')]),
-          new TableNode.Header.Cell([new PlainTextNode('Walmart')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('Target')]),
+          new Table.Header.Cell([new PlainText('Walmart')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('No')]),
-            new TableNode.Row.Cell([new PlainTextNode('Yes')])
-          ], new TableNode.Header.Cell([new PlainTextNode('Pink Lady')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('No')]),
-            new TableNode.Row.Cell([new PlainTextNode('No')])
-          ], new TableNode.Header.Cell([new PlainTextNode('Red Delicious')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('No')]),
+            new Table.Row.Cell([new PlainText('Yes')])
+          ], new Table.Header.Cell([new PlainText('Pink Lady')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('No')]),
+            new Table.Row.Cell([new PlainText('No')])
+          ], new Table.Header.Cell([new PlainText('Red Delicious')]))
         ],
-        new TableNode.Caption([
-          new PlainTextNode('Where to buy apples')
+        new Table.Caption([
+          new PlainText('Where to buy apples')
         ]))
 
     const tableOfContents =
@@ -1020,18 +1020,18 @@ Apple
 
     expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([new PlainTextNode('I like apples.')]),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([new PlainText('I like apples.')]),
 
-            new OrderedListNode([
-              new OrderedListNode.Item([
-                new ParagraphNode([new PlainTextNode('Really.')]),
+            new OrderedList([
+              new OrderedList.Item([
+                new Paragraph([new PlainText('Really.')]),
 
-                new DescriptionListNode([
-                  new DescriptionListNode.Item([
-                    new DescriptionListNode.Item.Term([new PlainTextNode('Apple')])
-                  ], new DescriptionListNode.Item.Description([
+                new DescriptionList([
+                  new DescriptionList.Item([
+                    new DescriptionList.Item.Term([new PlainText('Apple')])
+                  ], new DescriptionList.Item.Description([
                     bestFruitHeading,
                     table,
                     purchasingHeading,
@@ -1054,8 +1054,8 @@ Apple
 
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
-          new BlockquoteNode([
-            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          new Blockquote([
+            new Heading([new PlainText("They're cheap")], 1)
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
@@ -1069,8 +1069,8 @@ SPOILER:
 
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
-          new SpoilerBlockNode([
-            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          new SpoilerBlock([
+            new Heading([new PlainText("They're cheap")], 1)
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
@@ -1084,8 +1084,8 @@ NSFW:
 
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          new NsfwBlock([
+            new Heading([new PlainText("They're cheap")], 1)
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
@@ -1099,8 +1099,8 @@ NSFL:
 
       expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new HeadingNode([new PlainTextNode("They're cheap")], 1)
+          new NsflBlock([
+            new Heading([new PlainText("They're cheap")], 1)
           ])
         ], NO_TABLE_OF_CONTENTS))
     })
@@ -1169,9 +1169,9 @@ Red Delicious;    No;       No`
 
     const document = Up.toDocument(markup, { createTableOfContents: true })
 
-    const unorderedList = document.children[0] as UnorderedListNode
-    const orderedList = unorderedList.items[0].children[1] as OrderedListNode
-    const descriptionList = orderedList.items[0].children[1] as DescriptionListNode
+    const unorderedList = document.children[0] as UnorderedList
+    const orderedList = unorderedList.items[0].children[1] as OrderedList
+    const descriptionList = orderedList.items[0].children[1] as DescriptionList
 
     const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children
     const { entries } = document.tableOfContents

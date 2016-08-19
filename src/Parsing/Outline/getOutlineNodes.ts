@@ -1,9 +1,9 @@
 import { LineConsumer } from './LineConsumer'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
 import { tryToParseOutlineSeparatorStreak } from './tryToParseOutlineSeparatorStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
@@ -41,9 +41,9 @@ export function getOutlineNodes(
     tryToParseCodeBlock,
     tryToParseBlockquote,
     tryToParseTableOrChart,
-    getLabeledBlockParser(terms.spoiler, SpoilerBlockNode),
-    getLabeledBlockParser(terms.nsfw, NsfwBlockNode),
-    getLabeledBlockParser(terms.nsfl, NsflBlockNode),
+    getLabeledBlockParser(terms.spoiler, SpoilerBlock),
+    getLabeledBlockParser(terms.nsfw, NsfwBlock),
+    getLabeledBlockParser(terms.nsfl, NsflBlock),
     tryToParseDescriptionList
   ]
 
@@ -88,7 +88,7 @@ export function getOutlineNodes(
     }
   }
 
-  return condenseConsecutiveOutlineSeparatorNodes(outlineNodes)
+  return condenseConsecutiveOutlineSeparators(outlineNodes)
 }
 
 
@@ -121,15 +121,15 @@ function withoutTrailingBlankLines(lines: string[]): string[] {
 }
 
 // To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
-function condenseConsecutiveOutlineSeparatorNodes(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+function condenseConsecutiveOutlineSeparators(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    const isConsecutiveOutlineSeparatorNode =
-      node instanceof OutlineSeparatorNode
-      && last(resultNodes) instanceof OutlineSeparatorNode
+    const isConsecutiveOutlineSeparator =
+      node instanceof OutlineSeparator
+      && last(resultNodes) instanceof OutlineSeparator
 
-    if (!isConsecutiveOutlineSeparatorNode) {
+    if (!isConsecutiveOutlineSeparator) {
       resultNodes.push(node)
     }
   }

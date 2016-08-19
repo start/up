@@ -1,23 +1,23 @@
 import { concat } from '../CollectionHelpers'
 import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
-import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
+import { Blockquote } from '../SyntaxNodes/Blockquote'
+import { DescriptionList } from '../SyntaxNodes/DescriptionList'
 import { UpDocument } from '../SyntaxNodes/UpDocument'
-import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
-import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
-import { HeadingNode } from '../SyntaxNodes/HeadingNode'
+import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
+import { Footnote } from '../SyntaxNodes/Footnote'
+import { Heading } from '../SyntaxNodes/Heading'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
-import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
+import { LineBlock } from '../SyntaxNodes/LineBlock'
+import { OrderedList } from '../SyntaxNodes/OrderedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
-import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
-import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
-import { TableNode } from '../SyntaxNodes/TableNode'
+import { Paragraph } from '../SyntaxNodes/Paragraph'
+import { UnorderedList } from '../SyntaxNodes/UnorderedList'
+import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../SyntaxNodes/NsflBlock'
+import { Table } from '../SyntaxNodes/Table'
 
 
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
@@ -76,7 +76,7 @@ import { TableNode } from '../SyntaxNodes/TableNode'
 //    comes after the outline convention).
 //
 //
-// Oh, one last thing! We'll use the term "blockless footnote" to describe a FootnoteNode that hasn't yet been
+// Oh, one last thing! We'll use the term "blockless footnote" to describe a Footnote that hasn't yet been
 // placed in a footnote block.
 export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document: UpDocument): void {
   new FootnoteBlockInserter(document)
@@ -108,31 +108,31 @@ class FootnoteBlockInserter {
   }
 
   // TODO: Consider moving this process to the individual outline syntax node classes.
-  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): FootnoteNode[] {
-    if ((node instanceof ParagraphNode) || (node instanceof HeadingNode)) {
+  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): Footnote[] {
+    if ((node instanceof Paragraph) || (node instanceof Heading)) {
       return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
-    if (node instanceof LineBlockNode) {
+    if (node instanceof LineBlock) {
       return this.getBlocklessFootnotesFromInlineContainers(node.lines)
     }
 
-    if ((node instanceof BlockquoteNode) || (node instanceof SpoilerBlockNode) || (node instanceof NsfwBlockNode) || (node instanceof NsflBlockNode)) {
+    if ((node instanceof Blockquote) || (node instanceof SpoilerBlock) || (node instanceof NsfwBlock) || (node instanceof NsflBlock)) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
       // We've just handled all the footnotes within the outline convention. None of them are blockless!
       return []
     }
 
-    if ((node instanceof UnorderedListNode) || (node instanceof OrderedListNode)) {
+    if ((node instanceof UnorderedList) || (node instanceof OrderedList)) {
       return this.getBlocklessFootnotesFromOutlineContainers(node.items)
     }
 
-    if (node instanceof DescriptionListNode) {
+    if (node instanceof DescriptionList) {
       return this.getBlocklessFootnotesFromDescriptionList(node)
     }
 
-    if (node instanceof TableNode) {
+    if (node instanceof Table) {
       return this.getBlocklessFootnotesFromTable(node)
     }
 
@@ -144,11 +144,11 @@ class FootnoteBlockInserter {
   //
   // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
   // produce their containing footnote blocks.
-  getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): FootnoteNode[] {
-    const footnotes: FootnoteNode[] = []
+  getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): Footnote[] {
+    const footnotes: Footnote[] = []
 
     for (const node of nodes) {
-      if (node instanceof FootnoteNode) {
+      if (node instanceof Footnote) {
         node.referenceNumber = this.currentFootnoteReferenceNumber++
         footnotes.push(node)
         continue
@@ -163,22 +163,22 @@ class FootnoteBlockInserter {
     return footnotes
   }
 
-  getBlocklessFootnotesFromInlineContainers(containers: InlineSyntaxNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromInlineContainers(containers: InlineSyntaxNodeContainer[]): Footnote[] {
     return concat(
       containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
   }
 
-  getBlocklessFootnotesFromOutlineContainers(containers: OutlineSyntaxNodeContainer[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineContainers(containers: OutlineSyntaxNodeContainer[]): Footnote[] {
     return concat(
       containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
   }
 
-  getBlocklessFootnotesFromDescriptionList(list: DescriptionListNode): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionList(list: DescriptionList): Footnote[] {
     return concat(
       list.items.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item)))
   }
 
-  getBlocklessFootnotesFromDescriptionListItem(item: DescriptionListNode.Item): FootnoteNode[] {
+  getBlocklessFootnotesFromDescriptionListItem(item: DescriptionList.Item): Footnote[] {
     const footnotesFromTerms =
       this.getBlocklessFootnotesFromInlineContainers(item.terms)
 
@@ -188,7 +188,7 @@ class FootnoteBlockInserter {
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
-  getBlocklessFootnotesFromTable(table: TableNode): FootnoteNode[] {
+  getBlocklessFootnotesFromTable(table: Table): Footnote[] {
     return concat([
       table.caption ? [table.caption] : [],
       table.header.cells,
@@ -196,13 +196,13 @@ class FootnoteBlockInserter {
     ].map(inlineContainer => this.getBlocklessFootnotesFromInlineContainers(inlineContainer)))
   }
 
-  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): FootnoteNode[] {
+  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): Footnote[] {
     return concat(
       nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node)))
   }
 
-  getFootnoteBlock(footnotes: FootnoteNode[]): FootnoteBlockNode {
-    const footnoteBlock = new FootnoteBlockNode(footnotes)
+  getFootnoteBlock(footnotes: Footnote[]): FootnoteBlock {
+    const footnoteBlock = new FootnoteBlock(footnotes)
 
     for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
       const footnote = footnoteBlock.footnotes[i]

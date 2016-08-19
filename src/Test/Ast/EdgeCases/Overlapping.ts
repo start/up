@@ -1,37 +1,37 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Link } from '../../../SyntaxNodes/Link'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
 
 
 describe('A paragraph with 2 separate instances of overlapped conventions', () => {
   it('prorduce the correct nodes for each', () => {
     expect(Up.toDocument('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I '),
+        new PlainText('I '),
         new Emphasis([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
+          new PlainText('love '),
+          new RevisionDeletion([
+            new PlainText('drinking')
           ])
         ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
+        new RevisionDeletion([
+          new PlainText(' whole')
         ]),
-        new PlainTextNode(' milk. I '),
+        new PlainText(' milk. I '),
         new Emphasis([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('drinking')
+          new PlainText('love '),
+          new RevisionDeletion([
+            new PlainText('drinking')
           ])
         ]),
-        new RevisionDeletionNode([
-          new PlainTextNode(' whole')
+        new RevisionDeletion([
+          new PlainText(' whole')
         ]),
-        new PlainTextNode(' milk.')
+        new PlainText(' milk.')
       ]))
   })
 })
@@ -43,27 +43,27 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I do '),
+        new PlainText('I do '),
         new Emphasis([
-          new PlainTextNode('not '),
+          new PlainText('not '),
         ]),
-        new LinkNode([
+        new Link([
           new Emphasis([
-            new PlainTextNode('care'),
+            new PlainText('care'),
           ]),
-          new PlainTextNode(' at'),
+          new PlainText(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new PlainTextNode(' all. I do '),
+        new PlainText(' all. I do '),
         new Emphasis([
-          new PlainTextNode('not '),
+          new PlainText('not '),
         ]),
-        new LinkNode([
+        new Link([
           new Emphasis([
-            new PlainTextNode('care'),
+            new PlainText('care'),
           ]),
-          new PlainTextNode(' at'),
+          new PlainText(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new PlainTextNode(' all.')
+        new PlainText(' all.')
       ]))
   })
 })

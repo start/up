@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { getOutlineNodes } from './getOutlineNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { patternStartingWith, optional } from '../PatternHelpers'
@@ -39,7 +39,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   })
 
   args.then(
-    [new BlockquoteNode(blockquoteChildren)],
+    [new Blockquote(blockquoteChildren)],
     markupLineConsumer.countLinesConsumed)
 
   return true

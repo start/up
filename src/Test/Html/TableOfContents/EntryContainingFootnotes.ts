@@ -1,29 +1,29 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { TableNode } from '../../../SyntaxNodes/TableNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { Table } from '../../../SyntaxNodes/Table'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 context("Within the table of contents itself, footnotes produce no HTML (they're ignored). This applies for footnotes within entries for:", () => {
   specify('Headings', () => {
     const topLevelFootnote =
-      new FootnoteNode([new PlainTextNode('Sometimes')], 1)
+      new Footnote([new PlainText('Sometimes')], 1)
 
     const nestedFootnote =
-      new FootnoteNode([new PlainTextNode('Always')], 2)
+      new Footnote([new PlainText('Always')], 2)
 
     const heading =
-      new HeadingNode([
-        new PlainTextNode('I enjoy apples'),
+      new Heading([
+        new PlainText('I enjoy apples'),
         topLevelFootnote,
-        new PlainTextNode(' '),
+        new PlainText(' '),
         new Emphasis([
-          new PlainTextNode('and you should too'),
+          new PlainText('and you should too'),
           nestedFootnote
         ])
       ], 1)
@@ -31,7 +31,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
     const document =
       new UpDocument([
         heading,
-        new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
+        new FootnoteBlock([topLevelFootnote, nestedFootnote])
       ], new UpDocument.TableOfContents([heading]))
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -61,32 +61,32 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
 
   specify('Tables', () => {
     const topLevelFootnote =
-      new FootnoteNode([new PlainTextNode('Sometimes')], 1)
+      new Footnote([new PlainText('Sometimes')], 1)
 
     const nestedFootnote =
-      new FootnoteNode([new PlainTextNode('Always')], 2)
+      new Footnote([new PlainText('Always')], 2)
 
     const table =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([new PlainTextNode('Game')]),
-          new TableNode.Header.Cell([new PlainTextNode('Developer')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([new PlainText('Game')]),
+          new Table.Header.Cell([new PlainText('Developer')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Final Fantasy')]),
-            new TableNode.Row.Cell([new PlainTextNode('Square')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new PlainText('Square')])
           ]),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('Super Mario Kart')]),
-            new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new PlainText('Nintendo')])
           ])
         ],
-        new TableNode.Caption([
-          new PlainTextNode('I enjoy apples'),
+        new Table.Caption([
+          new PlainText('I enjoy apples'),
           topLevelFootnote,
-          new PlainTextNode(' '),
+          new PlainText(' '),
           new Emphasis([
-            new PlainTextNode('and you should too'),
+            new PlainText('and you should too'),
             nestedFootnote
           ])
         ]))
@@ -94,7 +94,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
     const document =
       new UpDocument([
         table,
-        new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
+        new FootnoteBlock([topLevelFootnote, nestedFootnote])
       ], new UpDocument.TableOfContents([table]))
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -129,33 +129,33 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
 
   specify('Charts', () => {
     const topLevelFootnote =
-      new FootnoteNode([new PlainTextNode('Sometimes')], 1)
+      new Footnote([new PlainText('Sometimes')], 1)
 
     const nestedFootnote =
-      new FootnoteNode([new PlainTextNode('Always')], 2)
+      new Footnote([new PlainText('Always')], 2)
 
     const chart =
-      new TableNode(
-        new TableNode.Header([
-          new TableNode.Header.Cell([]),
-          new TableNode.Header.Cell([new PlainTextNode('1')]),
-          new TableNode.Header.Cell([new PlainTextNode('0')])
+      new Table(
+        new Table.Header([
+          new Table.Header.Cell([]),
+          new Table.Header.Cell([new PlainText('1')]),
+          new Table.Header.Cell([new PlainText('0')])
         ]), [
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('true')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-          ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-          new TableNode.Row([
-            new TableNode.Row.Cell([new PlainTextNode('false')]),
-            new TableNode.Row.Cell([new PlainTextNode('false')])
-          ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('true')]),
+            new Table.Row.Cell([new PlainText('false')]),
+          ], new Table.Header.Cell([new PlainText('1')])),
+          new Table.Row([
+            new Table.Row.Cell([new PlainText('false')]),
+            new Table.Row.Cell([new PlainText('false')])
+          ], new Table.Header.Cell([new PlainText('0')]))
         ],
-        new TableNode.Caption([
-          new PlainTextNode('I enjoy apples'),
+        new Table.Caption([
+          new PlainText('I enjoy apples'),
           topLevelFootnote,
-          new PlainTextNode(' '),
+          new PlainText(' '),
           new Emphasis([
-            new PlainTextNode('and you should too'),
+            new PlainText('and you should too'),
             nestedFootnote
           ])
         ]))
@@ -163,7 +163,7 @@ context("Within the table of contents itself, footnotes produce no HTML (they're
     const document =
       new UpDocument([
         chart,
-        new FootnoteBlockNode([topLevelFootnote, nestedFootnote])
+        new FootnoteBlock([topLevelFootnote, nestedFootnote])
       ], new UpDocument.TableOfContents([chart]))
 
     expect(Up.toHtml(document)).to.be.eql(

@@ -5,11 +5,11 @@ import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../Parsing/PatternPieces'
 import { anyCharMatching } from '../Parsing/PatternHelpers'
 
 
-export class TableNode implements OutlineSyntaxNode {
+export class Table implements OutlineSyntaxNode {
   constructor(
-    public header: TableNode.Header,
-    public rows: TableNode.Row[],
-    public caption?: TableNode.Caption,
+    public header: Table.Header,
+    public rows: Table.Row[],
+    public caption?: Table.Caption,
     public sourceLineNumber: number = undefined) { }
 
   shouldBeIncludedInTableOfContents(): boolean {
@@ -22,7 +22,7 @@ export class TableNode implements OutlineSyntaxNode {
 }
 
 
-export namespace TableNode {
+export namespace Table {
   export class Caption extends InlineSyntaxNodeContainer {
     protected TABLE_CAPTION(): void { }
   }
@@ -43,7 +43,7 @@ export namespace TableNode {
   }
 
   export namespace Header {
-    export class Cell extends TableNode.Cell {
+    export class Cell extends Table.Cell {
       protected TABLE_HEADER_CELL(): void { }
     }
   }
@@ -52,8 +52,8 @@ export namespace TableNode {
   export class Row {
     constructor(public cells: Row.Cell[], public headerCell?: Header.Cell) { }
 
-    get cellsStartingWithRowHeaderCell(): TableNode.Cell[] {
-      const allCells: TableNode.Cell[] = this.cells.slice()
+    get cellsStartingWithRowHeaderCell(): Table.Cell[] {
+      const allCells: Table.Cell[] = this.cells.slice()
 
       if (this.headerCell) {
         allCells.unshift(this.headerCell)
@@ -64,7 +64,7 @@ export namespace TableNode {
   }
 
   export namespace Row {
-    export class Cell extends TableNode.Cell {
+    export class Cell extends Table.Cell {
       isNumeric(): boolean {
         const textContent = this.children
           .map(child => child.inlineTextContent())

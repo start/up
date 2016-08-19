@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { OrderedListNode } from '../../SyntaxNodes/OrderedListNode'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 
 function listStart(textForOrderedList: string): number {
-  const list = Up.toDocument(textForOrderedList).children[0] as OrderedListNode
+  const list = Up.toDocument(textForOrderedList).children[0] as OrderedList
   return list.start()
 }
 

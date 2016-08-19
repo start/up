@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { TableNode } from '../../SyntaxNodes/TableNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Table } from '../../SyntaxNodes/Table'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context('A chart is simply a table with a second, vertical header. Its syntax is almost exactly the same, except it uses the term "chart" instead of "table".', () => {
@@ -19,22 +19,22 @@ Chart: AND operator logic
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ],
-          new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+          new Table.Caption([new PlainText('AND operator logic')]))
       ]))
   })
 })
@@ -51,22 +51,22 @@ Chart:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ])
       ]))
   })
@@ -81,22 +81,22 @@ Chart
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ])
       ]))
   })
@@ -118,23 +118,23 @@ Chrono Cross;     1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -153,23 +153,23 @@ Chart:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -186,22 +186,22 @@ Chart: AND operator logic
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ],
-          new TableNode.Caption([new PlainTextNode('AND operator logic')]))
+          new Table.Caption([new PlainText('AND operator logic')]))
       ]))
   })
 })
@@ -225,26 +225,26 @@ I don't like video games; in fact, I never have.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ]),
-        new ParagraphNode([
-          new PlainTextNode("I don't like video games; in fact, I never have.")
+        new Paragraph([
+          new PlainText("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -267,27 +267,27 @@ I don't like video games; in fact, I never have.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ]),
-        new OutlineSeparatorNode(),
-        new ParagraphNode([
-          new PlainTextNode("I don't like video games; in fact, I never have.")
+        new OutlineSeparator(),
+        new Paragraph([
+          new PlainText("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -309,24 +309,24 @@ Friday`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Magical Happenings')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Magical Happenings')])
           ]), [
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Monday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Tuesday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Wednesday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Thursday')])),
-            new TableNode.Row(
-              [], new TableNode.Header.Cell([new PlainTextNode('Friday')]))
+            new Table.Row(
+              [], new Table.Header.Cell([new PlainText('Monday')])),
+            new Table.Row(
+              [], new Table.Header.Cell([new PlainText('Tuesday')])),
+            new Table.Row(
+              [], new Table.Header.Cell([new PlainText('Wednesday')])),
+            new Table.Row(
+              [], new Table.Header.Cell([new PlainText('Thursday')])),
+            new Table.Row(
+              [], new Table.Header.Cell([new PlainText('Friday')]))
           ],
-          new TableNode.Caption([
-            new PlainTextNode('Magical happenings this past work week')
+          new Table.Caption([
+            new PlainText('Magical happenings this past work week')
           ]))
       ]))
   })
@@ -346,33 +346,33 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Developer')]),
-            new TableNode.Header.Cell([new PlainTextNode('Platform')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Developer')]),
+            new Table.Header.Cell([new PlainText('Platform')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Square')]),
-              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 11, 1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Quintet')]),
-              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('October 20, 1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Terranigma')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Westwood Studios')]),
-              new TableNode.Row.Cell([new PlainTextNode('PC')]),
-              new TableNode.Row.Cell([new PlainTextNode('August 31, 1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Command & Conquer')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Blizzard')]),
-              new TableNode.Row.Cell([new PlainTextNode('PC')]),
-              new TableNode.Row.Cell([new PlainTextNode('March 31, 1998')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Starcraft')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Square')]),
+              new Table.Row.Cell([new PlainText('Super Nintendo')]),
+              new Table.Row.Cell([new PlainText('March 11, 1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Quintet')]),
+              new Table.Row.Cell([new PlainText('Super Nintendo')]),
+              new Table.Row.Cell([new PlainText('October 20, 1995')])
+            ], new Table.Header.Cell([new PlainText('Terranigma')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Westwood Studios')]),
+              new Table.Row.Cell([new PlainText('PC')]),
+              new Table.Row.Cell([new PlainText('August 31, 1995')])
+            ], new Table.Header.Cell([new PlainText('Command & Conquer')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Blizzard')]),
+              new Table.Row.Cell([new PlainText('PC')]),
+              new Table.Row.Cell([new PlainText('March 31, 1998')])
+            ], new Table.Header.Cell([new PlainText('Starcraft')]))
           ])
       ]))
   })
@@ -394,28 +394,28 @@ Chrono Cross;       1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([
-              new PlainTextNode('Release Date '),
-              new NormalParentheticalNode([
-                new PlainTextNode('(year only)')
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([
+              new PlainText('Release Date '),
+              new NormalParenthetical([
+                new PlainText('(year only)')
               ])
             ])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1988')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1988')]),
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -431,17 +431,17 @@ Super Mario Kart;   Nintendo`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher; Developer')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Publisher; Developer')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Square')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Super Mario Kart')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Square')])
+            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Nintendo')])
+            ], new Table.Header.Cell([new PlainText('Super Mario Kart')]))
           ])
       ]))
   })
@@ -463,33 +463,33 @@ Chrono Cross;           1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1987')]),
-            ], new TableNode.Header.Cell([
-              new PlainTextNode('Final Fantasy '),
-              new NormalParentheticalNode([
-                new PlainTextNode('(I)')
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1987')]),
+            ], new Table.Header.Cell([
+              new PlainText('Final Fantasy '),
+              new NormalParenthetical([
+                new PlainText('(I)')
               ])
             ])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([
-                new PlainTextNode('1988 '),
-                new NormalParentheticalNode([
-                  new PlainTextNode('(almost 1989)')
+            new Table.Row([
+              new Table.Row.Cell([
+                new PlainText('1988 '),
+                new NormalParenthetical([
+                  new PlainText('(almost 1989)')
                 ])
               ]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1995')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('1999')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1995')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('1999')]),
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -505,17 +505,17 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Publisher')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Publisher')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Square [; Soft')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Final Fantasy; Final Fantasy II')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Nintendo')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Super Mario Kart; Mario Kart 64')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Square [; Soft')])
+            ], new Table.Header.Cell([new PlainText('Final Fantasy; Final Fantasy II')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Nintendo')])
+            ], new Table.Header.Cell([new PlainText('Super Mario Kart; Mario Kart 64')]))
           ])
       ]))
   })
@@ -533,22 +533,22 @@ Chart:  \t  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ])
       ]))
   })
@@ -563,22 +563,22 @@ Chart:  \t  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('1')]),
-            new TableNode.Header.Cell([new PlainTextNode('0')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('1')]),
+            new Table.Header.Cell([new PlainText('0')])
           ]), [
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('true')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-            ], new TableNode.Header.Cell([new PlainTextNode('1')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('true')]),
+              new Table.Row.Cell([new PlainText('false')]),
+            ], new Table.Header.Cell([new PlainText('1')])),
 
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('false')]),
-              new TableNode.Row.Cell([new PlainTextNode('false')])
-            ], new TableNode.Header.Cell([new PlainTextNode('0')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('false')]),
+              new Table.Row.Cell([new PlainText('false')])
+            ], new Table.Header.Cell([new PlainText('0')]))
           ])
       ]))
   })
@@ -596,20 +596,20 @@ Chrono Cross;     Playstation;          1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('[: Platform')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date :]')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('[: Platform')]),
+            new Table.Header.Cell([new PlainText('Release Date :]')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Super Nintendo')]),
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Playstation')]),
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -624,20 +624,20 @@ Chrono Cross;     [: Playstation;     1999 :]`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Platform')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Platform')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Super Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('[: Playstation')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999 :]')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Super Nintendo')]),
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('[: Playstation')]),
+              new Table.Row.Cell([new PlainText('1999 :]')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -652,20 +652,20 @@ Chrono Cross;         Playstation;         1999`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Platform')]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Platform')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]), [
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Super :] Nintendo')]),
-              new TableNode.Row.Cell([new PlainTextNode('1995')])
-            ], new TableNode.Header.Cell([new PlainTextNode('[: Chrono Trigger')])),
-            new TableNode.Row([
-              new TableNode.Row.Cell([new PlainTextNode('Playstation')]),
-              new TableNode.Row.Cell([new PlainTextNode('1999')])
-            ], new TableNode.Header.Cell([new PlainTextNode('Chrono Cross')]))
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Super :] Nintendo')]),
+              new Table.Row.Cell([new PlainText('1995')])
+            ], new Table.Header.Cell([new PlainText('[: Chrono Trigger')])),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Playstation')]),
+              new Table.Row.Cell([new PlainText('1999')])
+            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -680,10 +680,10 @@ Chart
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new TableNode(
-          new TableNode.Header([
-            new TableNode.Header.Cell([]),
-            new TableNode.Header.Cell([new PlainTextNode('Release Date')])
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
           ]),
           [])
       ]))

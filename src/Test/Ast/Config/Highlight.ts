@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Highlight } from '../../../SyntaxNodes/Highlight'
 
 
 describe('The "highlight" config term', () => {
@@ -13,8 +13,8 @@ describe('The "highlight" config term', () => {
   it('is used to indicate highlighted text', () => {
     expect(up.toDocument('[mark: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('Ash fights Gary')
+        new Highlight([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -31,8 +31,8 @@ describe('The "highlight" config term', () => {
 
     expect(Up.toDocument(markup, { terms: { highlight: ' \t mark \t ' } })).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('Ash fights Gary')
+        new Highlight([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -42,8 +42,8 @@ describe('The "highlight" config term', () => {
 
     expect(Up.toDocument(markup, { terms: { highlight: '*mark*' } })).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('Ash fights Gary')
+        new Highlight([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -53,11 +53,11 @@ describe('The "highlight" config term', () => {
 
     expect(Up.toDocument(markup, { terms: { highlight: ['mark', 'paint'] } })).to.be.eql(
       insideDocumentAndParagraph([
-        new HighlightNode([
-          new PlainTextNode('Ash fights Gary')
+        new Highlight([
+          new PlainText('Ash fights Gary')
         ]),
-        new HighlightNode([
-          new PlainTextNode('Ash fights Gary')
+        new Highlight([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })

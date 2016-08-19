@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 
 
 describe('A line consisting solely of "NSFW:", followed by an indented block of text,', () => {
@@ -19,12 +19,12 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -42,12 +42,12 @@ nSFw:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -63,12 +63,12 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -84,12 +84,12 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -106,12 +106,12 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -130,12 +130,12 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -151,12 +151,12 @@ NSFW:  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -172,12 +172,12 @@ NSFW  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -199,13 +199,13 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsfwBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new NsfwBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])
@@ -224,13 +224,13 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsfwBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new OutlineSeparatorNode(),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new OutlineSeparator(),
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -251,8 +251,8 @@ NSFW:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsfwBlockNode([
-            new CodeBlockNode(
+          new NsfwBlock([
+            new CodeBlock(
               `function nthFibonacci(n: number): number {
   return (
     n <= 2
@@ -272,13 +272,13 @@ That was my favorite episode.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode('That was my favorite episode.')
+        new Paragraph([
+          new PlainText('That was my favorite episode.')
         ])
       ]))
   })
@@ -293,16 +293,16 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a '),
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a '),
             new Emphasis([
-              new PlainTextNode('very')
+              new PlainText('very')
             ]),
-            new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+            new PlainText(' sad song playing in the background, Ash said goodbye to Pikachu.'),
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -318,9 +318,9 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -333,9 +333,9 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -348,9 +348,9 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -368,15 +368,15 @@ NSFW:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsfwBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Well...')
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText('Well...')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))

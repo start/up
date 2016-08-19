@@ -1,17 +1,17 @@
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { HighlightNode } from '../../SyntaxNodes/HighlightNode'
-import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../../SyntaxNodes/InlineNsflNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
-import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
-import { SquareParentheticalNode } from '../../SyntaxNodes/SquareParentheticalNode'
-import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
+import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { Link } from '../../SyntaxNodes/Link'
 import { TokenKind } from './Tokenization/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 import { RevealableConvention } from './RevealableConvention'
@@ -30,49 +30,49 @@ export const STRESS_CONVENTION: RichConventionWithoutExtraFields = {
 }
 
 export const ITALIC_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: ItalicNode,
+  NodeType: Italic,
   startTokenKind: TokenKind.ItalicStart,
   endTokenKind: TokenKind.ItalicEnd
 }
 
 export const BOLD_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: BoldNode,
+  NodeType: Bold,
   startTokenKind: TokenKind.BoldStart,
   endTokenKind: TokenKind.BoldEnd
 }
 
 export const HIGHLIGHT_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: HighlightNode,
+  NodeType: Highlight,
   startTokenKind: TokenKind.HighlightStart,
   endTokenKind: TokenKind.HighlightEnd
 }
 
 export const REVISION_DELETION_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: RevisionDeletionNode,
+  NodeType: RevisionDeletion,
   startTokenKind: TokenKind.RevisionDeletionStart,
   endTokenKind: TokenKind.RevisionDeletionEnd
 }
 
 export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: RevisionInsertionNode,
+  NodeType: RevisionInsertion,
   startTokenKind: TokenKind.RevisionInsertionStart,
   endTokenKind: TokenKind.RevisionInsertionEnd
 }
 
 export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: FootnoteNode,
+  NodeType: Footnote,
   startTokenKind: TokenKind.FootnoteStart,
   endTokenKind: TokenKind.FootnoteEnd
 }
 
 export const PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: NormalParentheticalNode,
+  NodeType: NormalParenthetical,
   startTokenKind: TokenKind.ParentheticalStart,
   endTokenKind: TokenKind.ParentheticalEnd
 }
 
 export const SQUARE_BRACKET_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: SquareParentheticalNode,
+  NodeType: SquareParenthetical,
   startTokenKind: TokenKind.SquareBracketParentheticalStart,
   endTokenKind: TokenKind.SquareBracketParentheticalEnd
 }
@@ -80,25 +80,25 @@ export const SQUARE_BRACKET_PARENTHETICAL_CONVENTION: RichConventionWithoutExtra
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
 // `RichConventionWithoutExtraFields` interface.
 export const LINK_CONVENTION = {
-  NodeType: LinkNode,
+  NodeType: Link,
   startTokenKind: TokenKind.LinkStart,
   endTokenKind: TokenKind.LinkEndAndUrl
 }
 
 export const SPOILER_CONVENTION = new RevealableConvention({
-  NodeType: InlineSpoilerNode,
+  NodeType: InlineSpoiler,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd
 })
 
 export const NSFW_CONVENTION = new RevealableConvention({
-  NodeType: InlineNsfwNode,
+  NodeType: InlineNsfw,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd
 })
 
 export const NSFL_CONVENTION = new RevealableConvention({
-  NodeType: InlineNsflNode,
+  NodeType: InlineNsfl,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd
 })

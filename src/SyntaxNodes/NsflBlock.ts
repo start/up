@@ -1,6 +1,6 @@
 import { RevealableOutlineSyntaxNode } from './RevealableOutlineSyntaxNode'
 
 
-export class NsflBlockNode extends RevealableOutlineSyntaxNode {
+export class NsflBlock extends RevealableOutlineSyntaxNode {
   protected NSFL_BLOCK(): void { }
 }

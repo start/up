@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe("A footnote reference's ID", () => {
@@ -14,8 +14,8 @@ describe("A footnote reference's ID", () => {
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -32,12 +32,12 @@ describe("The ID of the footnote reference referencing the footnote", () => {
     })
 
     const document = new UpDocument([
-      new FootnoteBlockNode([
-        new FootnoteNode([
-          new PlainTextNode("Arwings")
+      new FootnoteBlock([
+        new Footnote([
+          new PlainText("Arwings")
         ], 2),
-        new FootnoteNode([
-          new PlainTextNode("Killer Bees")
+        new Footnote([
+          new PlainText("Killer Bees")
         ], 3)
       ])
     ])

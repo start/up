@@ -1,10 +1,10 @@
 import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
-import { InlineSpoilerNode } from '../../../../SyntaxNodes/InlineSpoilerNode'
+import { Link } from '../../../../SyntaxNodes/Link'
+import { PlainText } from '../../../../SyntaxNodes/PlainText'
+import { NormalParenthetical } from '../../../../SyntaxNodes/NormalParenthetical'
+import { InlineSpoiler } from '../../../../SyntaxNodes/InlineSpoiler'
 
 
 context('A linkified spoiler can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -14,9 +14,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'app:wiki/terrible-thing',
       toProduce: insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new Link([
+            new PlainText('something terrible')
           ], 'app:wiki/terrible-thing')
         ])
       ])
@@ -31,9 +31,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -43,16 +43,16 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[SPOILER: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('something terrible')
+          new InlineSpoiler([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('stackoverflow.com')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new PlainTextNode(' is nice)')
+            new PlainText(' is nice)')
           ]),
         ]))
     })
@@ -60,12 +60,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('there must be somethng after the scheme', () => {
       expect(Up.toDocument('[SPOILER: email] (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('email')
+          new InlineSpoiler([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:)')
           ]),
         ]))
     })
@@ -73,12 +73,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('there must be somethng after the scheme beyond only slashes', () => {
       expect(Up.toDocument('[SPOILER: local files] (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('local files')
+          new InlineSpoiler([
+            new PlainText('local files')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(file:///)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(file:///)')
           ]),
         ]))
     })
@@ -89,9 +89,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'tel:5555555555',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('spooky phone call')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('spooky phone call')
             ], 'tel:5555555555')
           ])
         ])
@@ -101,12 +101,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the scheme must not be escaped', () => {
       expect(Up.toDocument('[SPOILER: email] (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('email')
+          new InlineSpoiler([
+            new PlainText('email')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:daniel@wants.email)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -119,9 +119,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '/wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new Link([
+            new PlainText('something terrible')
           ], '/wiki/something-terrible')
         ])
       ])
@@ -133,12 +133,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[SPOILER: something terrible] (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('something terrible')
+          new InlineSpoiler([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/ created it)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -146,12 +146,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must have something after the slash', () => {
       expect(Up.toDocument('[SPOILER: slash] (/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('slash')
+          new InlineSpoiler([
+            new PlainText('slash')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/)')
           ]),
         ]))
     })
@@ -162,9 +162,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '/3',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '/3')
           ])
         ])
@@ -174,12 +174,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must not have its slash escaped', () => {
       expect(Up.toDocument('[SPOILER: yeah] (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('yeah')
+          new InlineSpoiler([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/)')
           ]),
         ]))
     })
@@ -192,9 +192,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '#wiki/something-terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new Link([
+            new PlainText('something terrible')
           ], '#wiki/something-terrible')
         ])
       ])
@@ -209,9 +209,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '#3',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Model 3 theft')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Model 3 theft')
             ], '#3')
           ])
         ])
@@ -221,12 +221,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must have something after the hash mark', () => {
       expect(Up.toDocument('[SPOILER: hash mark] (#)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('hash mark')
+          new InlineSpoiler([
+            new PlainText('hash mark')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#)')
           ]),
         ]))
     })
@@ -234,12 +234,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must not contain any spaces', () => {
       expect(Up.toDocument('[SPOILER: something terrible] (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('something terrible')
+          new InlineSpoiler([
+            new PlainText('something terrible')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2 was never trending)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -247,12 +247,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     it('must not have its hashmark escaped', () => {
       expect(Up.toDocument('[SPOILER: yeah] (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('yeah')
+          new InlineSpoiler([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2)')
           ]),
         ]))
     })
@@ -265,9 +265,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'chrono-trigger.wiki',
       toProduce: insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('Chrono Trigger')
+        new InlineSpoiler([
+          new Link([
+            new PlainText('Chrono Trigger')
           ], 'https://chrono-trigger.wiki')
         ])
       ])
@@ -282,9 +282,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -297,9 +297,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Advance Wars')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Advance Wars')
             ], 'https://advancewars.wikia.com/')
           ])
         ])
@@ -309,12 +309,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       expect(Up.toDocument('[SPOILER: that place] (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('that place')
+          new InlineSpoiler([
+            new PlainText('that place')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org-terrifying)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -325,9 +325,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('Good luck!')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('Good luck!')
             ], 'https://88.8888.cn')
           ])
         ])
@@ -338,12 +338,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       specify('No numbers', () => {
         expect(Up.toDocument('[SPOILER: username] (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineSpoilerNode([
-              new PlainTextNode('username')
+            new InlineSpoiler([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith5)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith5)')
             ]),
           ]))
       })
@@ -351,12 +351,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       specify('No hyphens', () => {
         expect(Up.toDocument('[SPOILER: username] (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineSpoilerNode([
-              new PlainTextNode('username')
+            new InlineSpoiler([
+              new PlainText('username')
             ]),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith-kline)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -365,12 +365,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the URL must start with a letter or a number, not a period', () => {
       expect(Up.toDocument('[SPOILER: top-level domain] (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('top-level domain')
+          new InlineSpoiler([
+            new PlainText('top-level domain')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(.co.uk)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(.co.uk)')
           ]),
         ]))
     })
@@ -378,12 +378,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       expect(Up.toDocument('[SPOILER: Ash is not his own father] (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('Ash is not his own father')
+          new InlineSpoiler([
+            new PlainText('Ash is not his own father')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(um..uh)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(um..uh)')
           ]),
         ]))
     })
@@ -391,12 +391,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       expect(Up.toDocument('[SPOILER: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('debilitating sadness')
+          new InlineSpoiler([
+            new PlainText('debilitating sadness')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org../r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org../r9k/)')
           ]),
         ]))
     })
@@ -407,9 +407,9 @@ context('A linkified spoiler can have whitespace between itself and its brackete
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'example.com/321...blastoff/1',
         toProduce: insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new LinkNode([
-              new PlainTextNode('rocket ship')
+          new InlineSpoiler([
+            new Link([
+              new PlainText('rocket ship')
             ], 'https://example.com/321...blastoff/1')
           ])
         ])
@@ -419,12 +419,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the URL must not contain any spaces', () => {
       expect(Up.toDocument('[SPOILER: yeah] (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('yeah')
+          new InlineSpoiler([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com had some hilarious forums)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -432,12 +432,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     specify('the domain part must not be escaped', () => {
       expect(Up.toDocument('[SPOILER: yeah] (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineSpoilerNode([
-            new PlainTextNode('yeah')
+          new InlineSpoiler([
+            new PlainText('yeah')
           ]),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com)')
           ]),
         ]))
     })
@@ -447,12 +447,12 @@ context('A linkified spoiler can have whitespace between itself and its brackete
   specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
     expect(Up.toDocument('[SPOILER: something terrible] (really)')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('(really)')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('(really)')
         ]),
       ]))
   })
@@ -463,16 +463,16 @@ describe('If there is nothing but whitspace between an inline spoiler and a brac
   it('the spoiler convention is not linkified', () => {
     expect(Up.toDocument('[SPOILER: something terrible]  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new PlainText('something terrible')
         ]),
-        new PlainTextNode('    '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText('    '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -486,9 +486,9 @@ describe("A linkified spoiler's URL, when separated from its content by whitespa
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'stackoverflow.com/search=something\\ very\\ terrible',
       toProduce: insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('something terrible')
+        new InlineSpoiler([
+          new Link([
+            new PlainText('something terrible')
           ], 'https://stackoverflow.com/search=something very terrible')
         ])
       ])

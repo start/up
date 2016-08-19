@@ -1,6 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-export class HighlightNode extends RichInlineSyntaxNode {
+export class Highlight extends RichInlineSyntaxNode {
   protected HIGHLIGHT(): void { }
 }

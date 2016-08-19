@@ -2,9 +2,9 @@ import { expect } from 'chai'
 import Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../../Helpers'
 import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
-import { LinkNode } from '../../../../SyntaxNodes/LinkNode'
-import { PlainTextNode } from '../../../../SyntaxNodes/PlainTextNode'
-import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParentheticalNode'
+import { Link } from '../../../../SyntaxNodes/Link'
+import { PlainText } from '../../../../SyntaxNodes/PlainText'
+import { NormalParenthetical } from '../../../../SyntaxNodes/NormalParenthetical'
 import { Audio } from '../../../../SyntaxNodes/Audio'
 
 
@@ -27,7 +27,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
           text: 'app:wiki/terrible-thing'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
+        new Link([
           new Audio('something terrible', 'https://example.com/sounds.ogg')
         ], 'app:wiki/terrible-thing')
       ])
@@ -49,7 +49,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('Advance Wars', 'https://example.com/sounds.ogg')
           ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
@@ -60,13 +60,13 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg) (https://stackoverflow.com is nice)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('something terrible', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('('),
-            new LinkNode([
-              new PlainTextNode('stackoverflow.com')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('('),
+            new Link([
+              new PlainText('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new PlainTextNode(' is nice)')
+            new PlainText(' is nice)')
           ]),
         ]))
     })
@@ -75,9 +75,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: email sending] (https://example.com/sounds.ogg) (mailto:)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('email sending', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:)')
           ]),
         ]))
     })
@@ -86,9 +86,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: local files rustling](https://example.com/sounds.ogg) (file:///)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('local files rustling', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(file:///)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(file:///)')
           ]),
         ]))
     })
@@ -106,7 +106,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: 'tel:5555555555'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('spooky phone call', 'https://example.com/sounds.ogg')
           ], 'tel:5555555555')
         ])
@@ -117,9 +117,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: email sending] (https://example.com/sounds.ogg) (\\mailto:daniel@wants.email)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('email sending', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(mailto:daniel@wants.email)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -139,7 +139,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
           text: '/wiki/something-terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
+        new Link([
           new Audio('something terrible', 'https://example.com/sounds.ogg')
         ], '/wiki/something-terrible')
       ])
@@ -152,9 +152,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg) (/r9k/ created it)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('something terrible', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/ created it)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -163,9 +163,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: slash] (https://example.com/sounds.ogg) (/)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('slash', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/)')
           ]),
         ]))
     })
@@ -183,7 +183,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: '/3'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('Model 3 theft', 'https://example.com/sounds.ogg')
           ], '/3')
         ])
@@ -194,9 +194,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: robots](https://example.com/sounds.ogg) (\\/r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('robots', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(/r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(/r9k/)')
           ]),
         ]))
     })
@@ -216,7 +216,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
           text: '#wiki/something-terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
+        new Link([
           new Audio('something terrible', 'https://example.com/sounds.ogg')
         ], '#wiki/something-terrible')
       ])
@@ -238,7 +238,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: '#3'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('Model 3 theft', 'https://example.com/sounds.ogg')
           ], '#3')
         ])
@@ -249,9 +249,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: hash marking](https://example.com/sounds.ogg) (#)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('hash marking', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#)')
           ]),
         ]))
     })
@@ -260,9 +260,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: something terrible] (https://example.com/sounds.ogg) (#starcraft2 was never trending)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('something terrible', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2 was never trending)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -271,9 +271,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: hash marking](https://example.com/sounds.ogg) (\\#starcraft2)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('hash marking', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(#starcraft2)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(#starcraft2)')
           ]),
         ]))
     })
@@ -293,7 +293,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
           text: 'https://chrono-trigger.wiki'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
+        new Link([
           new Audio('Chrono Trigger', 'https://example.com/sounds.ogg')
         ], 'https://chrono-trigger.wiki')
       ])
@@ -315,7 +315,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: 'advancewars.wikia.com/wiki/Advance_Wars_(game)'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('Advance Wars', 'https://example.com/sounds.ogg')
           ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
         ])
@@ -335,7 +335,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: 'advancewars.wikia.com/'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('Advance Wars', 'https://example.com/sounds.ogg')
           ], 'https://advancewars.wikia.com/')
         ])
@@ -346,9 +346,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: 4chan] (https://example.com/sounds.ogg) (4chan.org-terrifying)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('4chan', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org-terrifying)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -366,7 +366,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: '88.8888.cn'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('good luck', 'https://example.com/sounds.ogg')
           ], 'https://88.8888.cn')
         ])
@@ -378,9 +378,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
         expect(Up.toDocument('[audio: usernaming](https://example.com/sounds.ogg) (john.e.smith5)')).to.be.eql(
           insideDocumentAndParagraph([
             new Audio('usernaming', 'https://example.com/sounds.ogg'),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith5)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith5)')
             ]),
           ]))
       })
@@ -389,9 +389,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
         expect(Up.toDocument('[audio: usernaming] (https://example.com/sounds.ogg) (john.e.smith-kline)')).to.be.eql(
           insideDocumentAndParagraph([
             new Audio('usernaming', 'https://example.com/sounds.ogg'),
-            new PlainTextNode(' '),
-            new NormalParentheticalNode([
-              new PlainTextNode('(john.e.smith-kline)')
+            new PlainText(' '),
+            new NormalParenthetical([
+              new PlainText('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -401,9 +401,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: being British](https://example.com/sounds.ogg) (.co.uk)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('being British', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(.co.uk)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(.co.uk)')
           ]),
         ]))
     })
@@ -412,9 +412,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: Ash claiming to be his own father] (https://example.com/sounds.ogg) (um..uh)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('Ash claiming to be his own father', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(um..uh)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(um..uh)')
           ]),
         ]))
     })
@@ -423,9 +423,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: debilitating sadness](https://example.com/sounds.ogg) (4chan.org../r9k/)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('debilitating sadness', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(4chan.org../r9k/)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(4chan.org../r9k/)')
           ]),
         ]))
     })
@@ -443,7 +443,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
             text: 'example.com/321...blastoff/1'
           }],
         toProduce: new UpDocument([
-          new LinkNode([
+          new Link([
             new Audio('rocket ship', 'https://example.com/sounds.ogg')
           ], 'https://example.com/321...blastoff/1')
         ])
@@ -454,9 +454,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: yeah] (https://example.com/sounds.ogg) (ign.com had some hilarious forums)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('yeah', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com had some hilarious forums)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -465,9 +465,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
       expect(Up.toDocument('[audio: yeah](https://example.com/sounds.ogg) (\\ign.com)')).to.be.eql(
         insideDocumentAndParagraph([
           new Audio('yeah', 'https://example.com/sounds.ogg'),
-          new PlainTextNode(' '),
-          new NormalParentheticalNode([
-            new PlainTextNode('(ign.com)')
+          new PlainText(' '),
+          new NormalParenthetical([
+            new PlainText('(ign.com)')
           ]),
         ]))
     })
@@ -478,9 +478,9 @@ context('A linkified audio convention can have whitespace between its audio URL 
     expect(Up.toDocument('[audio: something terrible] (https://example.com/sounds.ogg) (really)')).to.be.eql(
       insideDocumentAndParagraph([
         new Audio('something terrible', 'https://example.com/sounds.ogg'),
-        new PlainTextNode(' '),
-        new NormalParentheticalNode([
-          new PlainTextNode('(really)')
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('(really)')
         ]),
       ]))
   })
@@ -492,13 +492,13 @@ describe("If there is whitespace between an otherwise-valid linkified audio conv
     expect(Up.toDocument('[audio: something terrible](https://example.com/sounds.ogg)  \\  (https://example.com)')).to.be.eql(
       insideDocumentAndParagraph([
         new Audio('something terrible', 'https://example.com/sounds.ogg'),
-        new PlainTextNode('    '),
-        new NormalParentheticalNode([
-          new PlainTextNode('('),
-          new LinkNode([
-            new PlainTextNode('example.com')
+        new PlainText('    '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
           ], 'https://example.com'),
-          new PlainTextNode(')')
+          new PlainText(')')
         ])
       ]))
   })
@@ -519,7 +519,7 @@ describe("An audio convention's linkifying URL, when separated from its audio UR
           text: 'stackoverflow.com/search=something\\ very\\ terrible'
         }],
       toProduce: new UpDocument([
-        new LinkNode([
+        new Link([
           new Audio('something terrible', 'https://example.com/sounds.ogg')
         ], 'https://stackoverflow.com/search=something very terrible')
       ])

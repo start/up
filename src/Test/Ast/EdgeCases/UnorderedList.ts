@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
-import { OutlineSeparatorNode } from '../../../SyntaxNodes/OutlineSeparatorNode'
-import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
-import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
+import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 
 
 describe('An unordered list with a single item', () => {
@@ -18,15 +18,15 @@ describe('An unordered list with a single item', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparatorNode(),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Mittens')
+        new OutlineSeparator(),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Mittens')
             ])
           ])
         ]),
-        new OutlineSeparatorNode()
+        new OutlineSeparator()
       ]))
   })
 })
@@ -44,32 +44,32 @@ And addresses do, too`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Roses are red')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Roses are red')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('Violets are blue')
+          new LineBlock.Line([
+            new PlainText('Violets are blue')
           ])
         ]),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Kansas')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Kansas')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Nebraska')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Nebraska')
             ])
           ])
         ]),
-        new LineBlockNode([
-          new LineBlockNode.Line([
-            new PlainTextNode('Lyrics have lines')
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText('Lyrics have lines')
           ]),
-          new LineBlockNode.Line([
-            new PlainTextNode('And addresses do, too')
+          new LineBlock.Line([
+            new PlainText('And addresses do, too')
           ])
         ])
       ]))
@@ -88,27 +88,27 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Iowa')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Iowa')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('New Hampshire')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('New Hampshire')
             ])
           ])
         ]),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Clinton')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Clinton')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Sanders')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Sanders')
             ])
           ])
         ])
@@ -130,28 +130,28 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Iowa')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Iowa')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('New Hampshire')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('New Hampshire')
             ])
           ])
         ]),
-        new OutlineSeparatorNode(),
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Clinton')
+        new OutlineSeparator(),
+        new UnorderedList([
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Clinton')
             ])
           ]),
-          new UnorderedListNode.Item([
-            new ParagraphNode([
-              new PlainTextNode('Sanders')
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText('Sanders')
             ])
           ])
         ])
@@ -169,9 +169,9 @@ describe('A code block in a list item', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new CodeBlockNode('const x = 0')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new CodeBlock('const x = 0')
           ])
         ])
       ]))
@@ -189,9 +189,9 @@ describe('A code block in a list item', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new UnorderedListNode([
-          new UnorderedListNode.Item([
-            new CodeBlockNode('const x = 0\n\n\n\nconst y = 0')
+        new UnorderedList([
+          new UnorderedList.Item([
+            new CodeBlock('const x = 0\n\n\n\nconst y = 0')
           ])
         ])
       ]))

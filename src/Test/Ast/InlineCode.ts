@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
@@ -19,9 +19,9 @@ describe('Inline code', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.toDocument('Hello, `*Bruno*`!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new InlineCode('*Bruno*'),
-        new PlainTextNode('!')
+        new PlainText('!')
       ]))
   })
 })
@@ -137,14 +137,14 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('There are fewer backticks on the opening side than the closing side', () => {
       expect(Up.toDocument('I enjoy the occasional backtick ` or two ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('I enjoy the occasional backtick ` or two ``')
+          new PlainText('I enjoy the occasional backtick ` or two ``')
         ]))
     })
 
     specify('There are more backticks on the opening side than the closing side', () => {
       expect(Up.toDocument('I enjoy the occasional three backticks ``` or two ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new PlainTextNode('I enjoy the occasional three backticks ``` or two ``')
+          new PlainText('I enjoy the occasional three backticks ``` or two ``')
         ]))
     })
   })
@@ -155,11 +155,11 @@ context('Inline code ends at the first matching delimiter.', () => {
   specify('Therefore, inline code can follow another instance of inline code, even when the first inline code is surrounded by the same number of backticks as the second', () => {
     expect(Up.toDocument('Ideally, your document will consist solely of ``<font>`` and ``<div role="alert">`` elements.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Ideally, your document will consist solely of '),
+        new PlainText('Ideally, your document will consist solely of '),
         new InlineCode('<font>'),
-        new PlainTextNode(' and '),
+        new PlainText(' and '),
         new InlineCode('<div role="alert">'),
-        new PlainTextNode(' elements.')
+        new PlainText(' elements.')
       ]))
   })
 })
@@ -169,7 +169,7 @@ describe('Backslashes inside inline code', () => {
   it('are preserved', () => {
     expect(Up.toDocument('Whiteboard `\\"prop\\"`')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Whiteboard '),
+        new PlainText('Whiteboard '),
         new InlineCode('\\"prop\\"')
       ]))
   })
@@ -177,7 +177,7 @@ describe('Backslashes inside inline code', () => {
   it('do not escape the enclosing backticks', () => {
     expect(Up.toDocument('Funny lines: `/|\\`')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Funny lines: '),
+        new PlainText('Funny lines: '),
         new InlineCode('/|\\')
       ]))
   })

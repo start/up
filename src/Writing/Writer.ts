@@ -1,40 +1,40 @@
 import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
-import { LinkNode } from '../SyntaxNodes/LinkNode'
+import { Link } from '../SyntaxNodes/Link'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
-import { ImageNode } from '../SyntaxNodes/ImageNode'
+import { Image } from '../SyntaxNodes/Image'
 import { Audio } from '../SyntaxNodes/Audio'
-import { VideoNode } from '../SyntaxNodes/VideoNode'
-import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
+import { Video } from '../SyntaxNodes/Video'
+import { PlainText } from '../SyntaxNodes/PlainText'
 import { Emphasis } from '../SyntaxNodes/Emphasis'
-import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
+import { ExampleInput } from '../SyntaxNodes/ExampleInput'
 import { Stress } from '../SyntaxNodes/Stress'
-import { ItalicNode } from '../SyntaxNodes/ItalicNode'
-import { BoldNode } from '../SyntaxNodes/BoldNode'
+import { Italic } from '../SyntaxNodes/Italic'
+import { Bold } from '../SyntaxNodes/Bold'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
-import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
-import { NormalParentheticalNode } from '../SyntaxNodes/NormalParentheticalNode'
-import { SquareParentheticalNode } from '../SyntaxNodes/SquareParentheticalNode'
-import { HighlightNode } from '../SyntaxNodes/HighlightNode'
-import { InlineSpoilerNode } from '../SyntaxNodes/InlineSpoilerNode'
-import { InlineNsfwNode } from '../SyntaxNodes/InlineNsfwNode'
-import { InlineNsflNode } from '../SyntaxNodes/InlineNsflNode'
-import { SpoilerBlockNode } from '../SyntaxNodes/SpoilerBlockNode'
-import { NsfwBlockNode } from '../SyntaxNodes/NsfwBlockNode'
-import { NsflBlockNode } from '../SyntaxNodes/NsflBlockNode'
-import { FootnoteNode } from '../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../SyntaxNodes/FootnoteBlockNode'
-import { TableNode } from '../SyntaxNodes/TableNode'
-import { ParagraphNode } from '../SyntaxNodes/ParagraphNode'
-import { BlockquoteNode } from '../SyntaxNodes/BlockquoteNode'
-import { UnorderedListNode } from '../SyntaxNodes/UnorderedListNode'
-import { OrderedListNode } from '../SyntaxNodes/OrderedListNode'
-import { DescriptionListNode } from '../SyntaxNodes/DescriptionListNode'
-import { LineBlockNode } from '../SyntaxNodes/LineBlockNode'
-import { HeadingNode } from '../SyntaxNodes/HeadingNode'
-import { CodeBlockNode } from '../SyntaxNodes/CodeBlockNode'
-import { OutlineSeparatorNode } from '../SyntaxNodes/OutlineSeparatorNode'
+import { RevisionInsertion } from '../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../SyntaxNodes/RevisionDeletion'
+import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../SyntaxNodes/SquareParenthetical'
+import { Highlight } from '../SyntaxNodes/Highlight'
+import { InlineSpoiler } from '../SyntaxNodes/InlineSpoiler'
+import { InlineNsfw } from '../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../SyntaxNodes/InlineNsfl'
+import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
+import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
+import { NsflBlock } from '../SyntaxNodes/NsflBlock'
+import { Footnote } from '../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
+import { Table } from '../SyntaxNodes/Table'
+import { Paragraph } from '../SyntaxNodes/Paragraph'
+import { Blockquote } from '../SyntaxNodes/Blockquote'
+import { UnorderedList } from '../SyntaxNodes/UnorderedList'
+import { OrderedList } from '../SyntaxNodes/OrderedList'
+import { DescriptionList } from '../SyntaxNodes/DescriptionList'
+import { LineBlock } from '../SyntaxNodes/LineBlock'
+import { Heading } from '../SyntaxNodes/Heading'
+import { CodeBlock } from '../SyntaxNodes/CodeBlock'
+import { OutlineSeparator } from '../SyntaxNodes/OutlineSeparator'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { Config } from '../Config'
@@ -95,39 +95,39 @@ export abstract class Writer {
   protected abstract writeInlineDocument(inlineDocument: InlineUpDocument): string
 
   protected abstract audio(audio: Audio): string
-  protected abstract bold(bold: BoldNode): string
-  protected abstract blockquote(blockquote: BlockquoteNode): string
-  protected abstract codeBlock(codeBlock: CodeBlockNode): string
-  protected abstract descriptionList(list: DescriptionListNode): string
+  protected abstract bold(bold: Bold): string
+  protected abstract blockquote(blockquote: Blockquote): string
+  protected abstract codeBlock(codeBlock: CodeBlock): string
+  protected abstract descriptionList(list: DescriptionList): string
   protected abstract emphasis(emphasis: Emphasis): string
-  protected abstract exampleInput(exampleInput: ExampleInputNode): string
-  protected abstract footnoteBlock(footnoteBlock: FootnoteBlockNode): string
-  protected abstract footnoteReference(footnote: FootnoteNode): string
-  protected abstract heading(heading: HeadingNode, ordinalOfEntryInTableOfContents?: number): string
-  protected abstract highlight(highlight: HighlightNode): string
-  protected abstract image(image: ImageNode): string
+  protected abstract exampleInput(exampleInput: ExampleInput): string
+  protected abstract footnoteBlock(footnoteBlock: FootnoteBlock): string
+  protected abstract footnoteReference(footnote: Footnote): string
+  protected abstract heading(heading: Heading, ordinalOfEntryInTableOfContents?: number): string
+  protected abstract highlight(highlight: Highlight): string
+  protected abstract image(image: Image): string
   protected abstract inlineCode(inlineCode: InlineCode): string
-  protected abstract inlineNsfl(inlineNsfl: InlineNsflNode): string
-  protected abstract inlineNsfw(inlineNsfw: InlineNsfwNode): string
-  protected abstract inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string
-  protected abstract italic(italic: ItalicNode): string
-  protected abstract lineBlock(lineBlock: LineBlockNode): string
-  protected abstract link(link: LinkNode): string
-  protected abstract nsflBlock(nsflBlock: NsflBlockNode): string
-  protected abstract nsfwBlock(nsfwBlock: NsfwBlockNode): string
-  protected abstract orderedList(list: OrderedListNode): string
-  protected abstract outlineSeparator(separator: OutlineSeparatorNode): string
-  protected abstract paragraph(paragraph: ParagraphNode): string
-  protected abstract normalParenthetical(normalParenthetical: NormalParentheticalNode): string
-  protected abstract plainText(plainText: PlainTextNode): string
-  protected abstract revisionDeletion(revisionDeletion: RevisionDeletionNode): string
-  protected abstract revisionInsertion(revisionInsertion: RevisionInsertionNode): string
-  protected abstract spoilerBlock(spoilerBlock: SpoilerBlockNode): string
-  protected abstract squareParenthetical(squareParenthetical: SquareParentheticalNode): string
+  protected abstract inlineNsfl(inlineNsfl: InlineNsfl): string
+  protected abstract inlineNsfw(inlineNsfw: InlineNsfw): string
+  protected abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
+  protected abstract italic(italic: Italic): string
+  protected abstract lineBlock(lineBlock: LineBlock): string
+  protected abstract link(link: Link): string
+  protected abstract nsflBlock(nsflBlock: NsflBlock): string
+  protected abstract nsfwBlock(nsfwBlock: NsfwBlock): string
+  protected abstract orderedList(list: OrderedList): string
+  protected abstract outlineSeparator(separator: OutlineSeparator): string
+  protected abstract paragraph(paragraph: Paragraph): string
+  protected abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
+  protected abstract plainText(plainText: PlainText): string
+  protected abstract revisionDeletion(revisionDeletion: RevisionDeletion): string
+  protected abstract revisionInsertion(revisionInsertion: RevisionInsertion): string
+  protected abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
+  protected abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   protected abstract stress(stress: Stress): string
-  protected abstract table(table: TableNode, ordinalOfEntryInTableOfContents?: number): string
-  protected abstract unorderedList(list: UnorderedListNode): string
-  protected abstract video(video: VideoNode): string
+  protected abstract table(table: Table, ordinalOfEntryInTableOfContents?: number): string
+  protected abstract unorderedList(list: UnorderedList): string
+  protected abstract video(video: Video): string
 
   private writeEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
     return (
@@ -140,54 +140,54 @@ export abstract class Writer {
     // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
     // with the visitor pattern, we perform the dispatch ourselves here.
 
-    if (node instanceof PlainTextNode) {
+    if (node instanceof PlainText) {
       return this.plainText(node)
     }
 
-    if (node instanceof LinkNode) {
+    if (node instanceof Link) {
       return (
         this.isUrlAllowed(node.url)
           ? this.link(node)
           : this.writeAll(node.children))
     }
 
-    if (node instanceof ParagraphNode) {
+    if (node instanceof Paragraph) {
       return this.paragraph(node)
     }
 
-    if (node instanceof HeadingNode) {
+    if (node instanceof Heading) {
       return this.heading(node, this.getOrdinalOfEntryInTableOfContents(node))
     }
 
-    if (node instanceof TableNode) {
+    if (node instanceof Table) {
       return this.table(node, this.getOrdinalOfEntryInTableOfContents(node))
     }
 
-    if (node instanceof BlockquoteNode) {
+    if (node instanceof Blockquote) {
       return this.blockquote(node)
     }
 
-    if (node instanceof UnorderedListNode) {
+    if (node instanceof UnorderedList) {
       return this.unorderedList(node)
     }
 
-    if (node instanceof OrderedListNode) {
+    if (node instanceof OrderedList) {
       return this.orderedList(node)
     }
 
-    if (node instanceof DescriptionListNode) {
+    if (node instanceof DescriptionList) {
       return this.descriptionList(node)
     }
 
-    if (node instanceof LineBlockNode) {
+    if (node instanceof LineBlock) {
       return this.lineBlock(node)
     }
 
-    if (node instanceof CodeBlockNode) {
+    if (node instanceof CodeBlock) {
       return this.codeBlock(node)
     }
 
-    if (node instanceof OutlineSeparatorNode) {
+    if (node instanceof OutlineSeparator) {
       return this.outlineSeparator(node)
     }
 
@@ -199,11 +199,11 @@ export abstract class Writer {
       return this.stress(node)
     }
 
-    if (node instanceof ItalicNode) {
+    if (node instanceof Italic) {
       return this.italic(node)
     }
 
-    if (node instanceof BoldNode) {
+    if (node instanceof Bold) {
       return this.bold(node)
     }
 
@@ -211,15 +211,15 @@ export abstract class Writer {
       return this.inlineCode(node)
     }
 
-    if (node instanceof ExampleInputNode) {
+    if (node instanceof ExampleInput) {
       return this.exampleInput(node)
     }
 
-    if (node instanceof FootnoteNode) {
+    if (node instanceof Footnote) {
       return this.footnoteReference(node)
     }
 
-    if (node instanceof FootnoteBlockNode) {
+    if (node instanceof FootnoteBlock) {
       return this.footnoteBlock(node)
     }
 
@@ -227,47 +227,47 @@ export abstract class Writer {
       return this.writeIfUrlIsAllowed(node)
     }
 
-    if (node instanceof RevisionDeletionNode) {
+    if (node instanceof RevisionDeletion) {
       return this.revisionDeletion(node)
     }
 
-    if (node instanceof RevisionInsertionNode) {
+    if (node instanceof RevisionInsertion) {
       return this.revisionInsertion(node)
     }
 
-    if (node instanceof NormalParentheticalNode) {
+    if (node instanceof NormalParenthetical) {
       return this.normalParenthetical(node)
     }
 
-    if (node instanceof SquareParentheticalNode) {
+    if (node instanceof SquareParenthetical) {
       return this.squareParenthetical(node)
     }
 
-    if (node instanceof HighlightNode) {
+    if (node instanceof Highlight) {
       return this.highlight(node)
     }
 
-    if (node instanceof InlineSpoilerNode) {
+    if (node instanceof InlineSpoiler) {
       return this.inlineSpoiler(node)
     }
 
-    if (node instanceof InlineNsfwNode) {
+    if (node instanceof InlineNsfw) {
       return this.inlineNsfw(node)
     }
 
-    if (node instanceof InlineNsflNode) {
+    if (node instanceof InlineNsfl) {
       return this.inlineNsfl(node)
     }
 
-    if (node instanceof SpoilerBlockNode) {
+    if (node instanceof SpoilerBlock) {
       return this.spoilerBlock(node)
     }
 
-    if (node instanceof NsfwBlockNode) {
+    if (node instanceof NsfwBlock) {
       return this.nsfwBlock(node)
     }
 
-    if (node instanceof NsflBlockNode) {
+    if (node instanceof NsflBlock) {
       return this.nsflBlock(node)
     }
 
@@ -279,7 +279,7 @@ export abstract class Writer {
       return ''
     }
 
-    if (media instanceof ImageNode) {
+    if (media instanceof Image) {
       return this.image(media)
     }
 
@@ -287,7 +287,7 @@ export abstract class Writer {
       return this.audio(media)
     }
 
-    if (media instanceof VideoNode) {
+    if (media instanceof Video) {
       return this.video(media)
     }
 

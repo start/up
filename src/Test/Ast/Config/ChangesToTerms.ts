@@ -2,8 +2,8 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -405,8 +405,8 @@ context('Config settings are totally independent. When one setting is changed, t
 
     expect(up.toDocument('[SPOILER: Ash fights Gary]')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new PlainTextNode('Ash fights Gary')
+        new InlineSpoiler([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -419,8 +419,8 @@ context('Config settings are totally independent. When one setting is changed, t
 
     expect(ast).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineSpoilerNode([
-          new PlainTextNode('Ash fights Gary')
+        new InlineSpoiler([
+          new PlainText('Ash fights Gary')
         ])
       ]))
   })

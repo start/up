@@ -1,22 +1,22 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Stress } from '../../../SyntaxNodes/Stress'
-import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
-import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
+import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
 
 
 describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.toDocument('Hello, *my ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
-          new PlainTextNode('my ((world')
+          new PlainText('my ((world')
         ]),
-        new PlainTextNode('!!')
+        new PlainText('!!')
       ]))
   })
 })
@@ -26,16 +26,16 @@ describe('A convention overlapping emphasis (containing an unmatched openining d
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('++Hello, *my++ ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new PlainTextNode('Hello, '),
+        new RevisionInsertion([
+          new PlainText('Hello, '),
           new Emphasis([
-            new PlainTextNode('my')
+            new PlainText('my')
           ]),
         ]),
         new Emphasis([
-          new PlainTextNode(' ((world')
+          new PlainText(' ((world')
         ]),
-        new PlainTextNode('!!')
+        new PlainText('!!')
       ]))
   })
 })
@@ -45,21 +45,21 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('++Hello, **my++ ((lovely* world*!!')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new PlainTextNode('Hello, '),
+        new RevisionInsertion([
+          new PlainText('Hello, '),
           new Emphasis([
             new Emphasis([
-              new PlainTextNode('my')
+              new PlainText('my')
             ])
           ]),
         ]),
         new Emphasis([
           new Emphasis([
-            new PlainTextNode(' ((lovely')
+            new PlainText(' ((lovely')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!!')
+        new PlainText('!!')
       ]))
   })
 })
@@ -69,21 +69,21 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('++Hello, **my++ lovely* ((world*!!')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new PlainTextNode('Hello, '),
+        new RevisionInsertion([
+          new PlainText('Hello, '),
           new Emphasis([
             new Emphasis([
-              new PlainTextNode('my')
+              new PlainText('my')
             ])
           ]),
         ]),
         new Emphasis([
           new Emphasis([
-            new PlainTextNode(' lovely')
+            new PlainText(' lovely')
           ]),
-          new PlainTextNode(' ((world')
+          new PlainText(' ((world')
         ]),
-        new PlainTextNode('!!')
+        new PlainText('!!')
       ]))
   })
 })
@@ -93,14 +93,14 @@ describe('Double emphasis (with the inner emphasis enclosing an unmatched openin
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('Hello, **my ((lovely* world*!!*')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Hello, '),
+        new PlainText('Hello, '),
         new Emphasis([
           new Emphasis([
-            new PlainTextNode('my ((lovely')
+            new PlainText('my ((lovely')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!!*')
+        new PlainText('!!*')
       ]))
   })
 })
@@ -110,21 +110,21 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('++Hello, **my++ ((lovely* world*!!*')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new PlainTextNode('Hello, '),
+        new RevisionInsertion([
+          new PlainText('Hello, '),
           new Emphasis([
             new Emphasis([
-              new PlainTextNode('my')
+              new PlainText('my')
             ])
           ]),
         ]),
         new Emphasis([
           new Emphasis([
-            new PlainTextNode(' ((lovely')
+            new PlainText(' ((lovely')
           ]),
-          new PlainTextNode(' world')
+          new PlainText(' world')
         ]),
-        new PlainTextNode('!!*')
+        new PlainText('!!*')
       ]))
   })
 })
@@ -134,21 +134,21 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('++Hello, **my++ lovely* ((world*!!*')).to.be.eql(
       insideDocumentAndParagraph([
-        new RevisionInsertionNode([
-          new PlainTextNode('Hello, '),
+        new RevisionInsertion([
+          new PlainText('Hello, '),
           new Emphasis([
             new Emphasis([
-              new PlainTextNode('my')
+              new PlainText('my')
             ])
           ]),
         ]),
         new Emphasis([
           new Emphasis([
-            new PlainTextNode(' lovely')
+            new PlainText(' lovely')
           ]),
-          new PlainTextNode(' ((world')
+          new PlainText(' ((world')
         ]),
-        new PlainTextNode('!!*')
+        new PlainText('!!*')
       ]))
   })
 })
@@ -158,25 +158,25 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.toDocument('I **love ~~covertly {{ ++drinking** whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I '),
+        new PlainText('I '),
         new Stress([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('covertly {{ '),
-            new RevisionInsertionNode([
-              new PlainTextNode('drinking')
+          new PlainText('love '),
+          new RevisionDeletion([
+            new PlainText('covertly {{ '),
+            new RevisionInsertion([
+              new PlainText('drinking')
             ])
           ])
         ]),
-        new RevisionDeletionNode([
-          new RevisionInsertionNode([
-            new PlainTextNode(' whole')
+        new RevisionDeletion([
+          new RevisionInsertion([
+            new PlainText(' whole')
           ])
         ]),
-        new RevisionInsertionNode([
-          new PlainTextNode(' milk')
+        new RevisionInsertion([
+          new PlainText(' milk')
         ]),
-        new PlainTextNode(' all the time.')
+        new PlainText(' all the time.')
       ]))
   })
 })
@@ -186,25 +186,25 @@ describe('Overlapped stressed, deleted, and inserted text, with an unmatched sta
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.toDocument('I **love ~~covertly ++drinking** {{ whole~~ milk++ all the time.')).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('I '),
+        new PlainText('I '),
         new Stress([
-          new PlainTextNode('love '),
-          new RevisionDeletionNode([
-            new PlainTextNode('covertly '),
-            new RevisionInsertionNode([
-              new PlainTextNode('drinking')
+          new PlainText('love '),
+          new RevisionDeletion([
+            new PlainText('covertly '),
+            new RevisionInsertion([
+              new PlainText('drinking')
             ])
           ])
         ]),
-        new RevisionDeletionNode([
-          new RevisionInsertionNode([
-            new PlainTextNode(' {{ whole')
+        new RevisionDeletion([
+          new RevisionInsertion([
+            new PlainText(' {{ whole')
           ])
         ]),
-        new RevisionInsertionNode([
-          new PlainTextNode(' milk')
+        new RevisionInsertion([
+          new PlainText(' milk')
         ]),
-        new PlainTextNode(' all the time.')
+        new PlainText(' all the time.')
       ]))
   })
 })
@@ -214,7 +214,7 @@ describe('Several unmatched footnote start delimiters in the same paragraph, wit
   it('are all preserved as plain text, along with all their leading whitespace', () => {
     expect(Up.toDocument("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
+        new PlainText("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
       ]))
   })
 })

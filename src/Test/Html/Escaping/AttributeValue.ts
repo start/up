@@ -1,22 +1,22 @@
 import { expect } from 'chai'
 import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
-import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
-import { LinkNode } from '../../../SyntaxNodes/LinkNode'
-import { VideoNode } from '../../../SyntaxNodes/VideoNode'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { Heading } from '../../../SyntaxNodes/Heading'
+import { Link } from '../../../SyntaxNodes/Link'
+import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
-import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
+import { Image } from '../../../SyntaxNodes/Image'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
   specify("src attribute of links", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([], 'https://example.com/?x&y&z="hi"')
+      new Paragraph([
+        new Link([], 'https://example.com/?x&y&z="hi"')
       ])
     ])
 
@@ -35,7 +35,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("src attribute of videos (and of their fallback links)", () => {
     const document = new UpDocument([
-      new VideoNode('', 'https://example.com/?x&y&z="hi"')
+      new Video('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -44,7 +44,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("src attribute of images", () => {
     const document = new UpDocument([
-      new ImageNode('', 'https://example.com/?x&y&z="hi"')
+      new Image('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -62,7 +62,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("title attribute of videos", () => {
     const document = new UpDocument([
-      new VideoNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Video('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -71,7 +71,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("alt and title attributes of images", () => {
     const document = new UpDocument([
-      new ImageNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Image('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -84,8 +84,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const document = new UpDocument([
-      new FootnoteBlockNode([
-        new FootnoteNode([], 2)
+      new FootnoteBlock([
+        new Footnote([], 2)
       ])
     ])
 
@@ -105,8 +105,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const document = new UpDocument([
-      new FootnoteBlockNode([
-        new FootnoteNode([], 2)
+      new FootnoteBlock([
+        new Footnote([], 2)
       ])
     ])
 
@@ -126,8 +126,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -147,8 +147,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const document = new UpDocument([
-      new ParagraphNode([
-        new FootnoteNode([], 3)
+      new Paragraph([
+        new Footnote([], 3)
       ])
     ])
 
@@ -168,7 +168,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const heading =
-      new HeadingNode([new PlainTextNode('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], 1)
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -188,8 +188,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 describe("Within a link's href attribute, <, ', and >", () => {
   it("are not escaped", () => {
     const document = new UpDocument([
-      new ParagraphNode([
-        new LinkNode([], "https://example.com/?z='<span>'")
+      new Paragraph([
+        new Link([], "https://example.com/?z='<span>'")
       ])
     ])
 

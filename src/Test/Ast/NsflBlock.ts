@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { NsflBlockNode } from '../../SyntaxNodes/NsflBlockNode'
-import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 
 
 describe('A line consisting solely of "NSFL:", followed by an indented block of text,', () => {
@@ -19,12 +19,12 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -42,12 +42,12 @@ nSfL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -63,12 +63,12 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -84,12 +84,12 @@ NSFL
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -106,12 +106,12 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -130,12 +130,12 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -151,12 +151,12 @@ NSFL:  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -172,12 +172,12 @@ NSFL  \t  \t
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -199,13 +199,13 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsflBlockNode([
-              new ParagraphNode([
-                new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new NsflBlock([
+              new Paragraph([
+                new PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])
@@ -224,13 +224,13 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new ParagraphNode([
-              new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new NsflBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new OutlineSeparatorNode(),
-            new ParagraphNode([
-              new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+            new OutlineSeparator(),
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -251,8 +251,8 @@ NSFL:
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new NsflBlockNode([
-            new CodeBlockNode(
+          new NsflBlock([
+            new CodeBlock(
               `function nthFibonacci(n: number): number {
   return (
     n <= 2
@@ -272,13 +272,13 @@ That was my favorite episode.`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ]),
-        new ParagraphNode([
-          new PlainTextNode('That was my favorite episode.')
+        new Paragraph([
+          new PlainText('That was my favorite episode.')
         ])
       ]))
   })
@@ -293,16 +293,16 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a '),
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a '),
             new Emphasis([
-              new PlainTextNode('very')
+              new PlainText('very')
             ]),
-            new PlainTextNode(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+            new PlainText(' sad song playing in the background, Ash said goodbye to Pikachu.'),
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -318,9 +318,9 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -333,9 +333,9 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -348,9 +348,9 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -368,15 +368,15 @@ NSFL:
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new NsflBlockNode([
-          new ParagraphNode([
-            new PlainTextNode('Well...')
+        new NsflBlock([
+          new Paragraph([
+            new PlainText('Well...')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          new Paragraph([
+            new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
-          new ParagraphNode([
-            new PlainTextNode('Luckily, Pikachu ultimately decided to stay.')
+          new Paragraph([
+            new PlainText('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))

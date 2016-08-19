@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class CodeBlockNode implements OutlineSyntaxNode {
+export class CodeBlock implements OutlineSyntaxNode {
   constructor(
     public code: string,
     public sourceLineNumber: number = undefined) { }

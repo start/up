@@ -1,15 +1,15 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
-import { ImageNode } from '../../SyntaxNodes/ImageNode'
+import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { VideoNode } from '../../SyntaxNodes/VideoNode'
-import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
-import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
-import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
+import { Video } from '../../SyntaxNodes/Video'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
+import { Link } from '../../SyntaxNodes/Link'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../SyntaxNodes/PlainText'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 
 
@@ -20,8 +20,8 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
       content: 'this site',
       url: 'stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('this site')
+        new Link([
+          new PlainText('this site')
         ], 'https://stackoverflow.com')
       ])
     })
@@ -32,7 +32,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ImageNode('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
+        new Image('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
       ]))
   })
 
@@ -50,7 +50,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new VideoNode('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
+        new Video('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
 
@@ -59,10 +59,10 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new PlainTextNode('Walter White produces '),
-        new InlineSpoilerNode([
-          new LinkNode([
-            new PlainTextNode('Blue Sky meth')
+        new PlainText('Walter White produces '),
+        new InlineSpoiler([
+          new Link([
+            new PlainText('Blue Sky meth')
           ], 'https://localhost/wiki/Blue_Sky')
         ])
       ]))
@@ -71,20 +71,20 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
   it("is prefixed to schemeless linkified footnote URLs", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(prod-web-4/cereals/lucky-charms?show=nutrition) Never have."
 
-    const footnote = new FootnoteNode([
-      new LinkNode([
-        new PlainTextNode('Well, I eat one.')
+    const footnote = new Footnote([
+      new Link([
+        new PlainText('Well, I eat one.')
       ], 'https://prod-web-4/cereals/lucky-charms?show=nutrition')
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new ParagraphNode([
-          new PlainTextNode("I don't eat cereal."),
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
           footnote,
-          new PlainTextNode(" Never have."),
+          new PlainText(" Never have."),
         ]),
-        new FootnoteBlockNode([footnote])
+        new FootnoteBlock([footnote])
       ]))
   })
 
@@ -93,8 +93,8 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('say hi')
+        new Link([
+          new PlainText('say hi')
         ], 'mailto:daniel@wants.email')
       ]))
   })
@@ -107,8 +107,8 @@ describe('A link URL with a URL scheme other than "http://" or "https://"', () =
       content: 'email me',
       url: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('email me')
+        new Link([
+          new PlainText('email me')
         ], 'mailto:daniel@wants.email')
       ])
     })
@@ -122,8 +122,8 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'Wiki.9-App+mcgee:wiki/Chrono_Chross')
       ]))
   })
@@ -136,8 +136,8 @@ describe('A URL not starting with a slash, but with a slash before its first col
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'https://wiki/chrono-cross:the-game')
       ]))
   })
@@ -150,8 +150,8 @@ describe('A URL with an underscore before its first colon', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'https://super_admin:123abc@localhost/wiki/chrono-cross:the-game')
       ]))
   })
@@ -164,8 +164,8 @@ describe('A URL starting with a number but otherwise looking like it has a schem
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'https://4wiki:wiki/Chrono_Chross')
       ]))
   })
@@ -178,8 +178,8 @@ describe('A URL with no colon (and not starting with a slash)', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       insideDocumentAndParagraph([
-        new LinkNode([
-          new PlainTextNode('Chrono Cross')
+        new Link([
+          new PlainText('Chrono Cross')
         ], 'https://localhost/wiki/ChronoChross:TheGame')
       ]))
   })

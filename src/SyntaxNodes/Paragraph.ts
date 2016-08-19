@@ -3,20 +3,21 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
-export class HeadingNode extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
+export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   constructor(
     children: InlineSyntaxNode[],
-    public level: number,
     public sourceLineNumber: number = undefined
   ) {
     super(children)
   }
 
   shouldBeIncludedInTableOfContents(): boolean {
-    return true
+    return false
   }
 
   descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
     return []
   }
+
+  protected PARAGRAPH(): void { }
 }

@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
+import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -13,7 +13,7 @@ export function tryToParseOutlineSeparatorStreak(args: OutlineParserArgs): boole
   }
 
   args.then(
-    [new OutlineSeparatorNode()],
+    [new OutlineSeparator()],
     markupLineConsumer.countLinesConsumed)
 
   return true

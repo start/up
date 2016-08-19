@@ -2,7 +2,7 @@ import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
-export class BlockquoteNode extends RichOutlineSyntaxNode {
+export class Blockquote extends RichOutlineSyntaxNode {
   shouldBeIncludedInTableOfContents(): boolean {
     return false
   }
