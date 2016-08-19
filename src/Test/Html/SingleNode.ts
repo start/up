@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
@@ -809,7 +809,7 @@ describe('An image node', () => {
 describe('An audio node', () => {
   it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
     const document = new UpDocument([
-      new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+      new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

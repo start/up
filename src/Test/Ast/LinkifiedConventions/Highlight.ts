@@ -8,7 +8,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -106,7 +106,7 @@ describe('A highlight directly followed by a media convention', () => {
         new HighlightNode([
           new PlainTextNode('you fight Gary')
         ]),
-        new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
+        new Audio('final battle theme', 'https://example.com/songs/123.ogg'),
       ]))
   })
 })

@@ -3,7 +3,7 @@ import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
 import { LinkNode } from '../SyntaxNodes/LinkNode'
 import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { ImageNode } from '../SyntaxNodes/ImageNode'
-import { AudioNode } from '../SyntaxNodes/AudioNode'
+import { Audio } from '../SyntaxNodes/Audio'
 import { VideoNode } from '../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../SyntaxNodes/Emphasis'
@@ -94,7 +94,7 @@ export abstract class Writer {
   protected abstract writeDocument(document: EitherTypeOfUpDocument): string
   protected abstract writeInlineDocument(inlineDocument: InlineUpDocument): string
 
-  protected abstract audio(audio: AudioNode): string
+  protected abstract audio(audio: Audio): string
   protected abstract bold(bold: BoldNode): string
   protected abstract blockquote(blockquote: BlockquoteNode): string
   protected abstract codeBlock(codeBlock: CodeBlockNode): string
@@ -283,7 +283,7 @@ export abstract class Writer {
       return this.image(media)
     }
 
-    if (media instanceof AudioNode) {
+    if (media instanceof Audio) {
       return this.audio(media)
     }
 

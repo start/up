@@ -3,7 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -22,7 +22,7 @@ Do not pour the spiders into your sister's cereal.
         new ParagraphNode([
           new PlainTextNode("Do not pour the spiders into your sister's cereal.")
         ]),
-        new AudioNode('six seconds of screaming', 'http://example.com/screaming.ogg'),
+        new Audio('six seconds of screaming', 'http://example.com/screaming.ogg'),
       ]))
   })
 })
@@ -67,7 +67,7 @@ context('Unmatched opening parentheses in an audio description have no affect on
   specify('parentheses surounding the URL', () => {
     expect(Up.toDocument('[audio: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.be.eql(
       new UpDocument([
-        new AudioNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+        new Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
@@ -77,7 +77,7 @@ context('Unmatched opening parentheses in an audio description have no affect on
         new ParagraphNode([
           new NormalParentheticalNode([
             new PlainTextNode('('),
-            new AudioNode('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
             new PlainTextNode(')'),
           ])
         ])
@@ -91,7 +91,7 @@ describe("Unmatched opening parentheses in an audio URL", () => {
     const markup = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new FootnoteNode([
-      new AudioNode('West Virginia exit polling', 'https://example.com/a(normal(url'),
+      new Audio('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(

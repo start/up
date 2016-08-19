@@ -5,7 +5,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
@@ -145,7 +145,7 @@ You'll never believe this fake evidence!
         new ParagraphNode([
           new PlainTextNode("You'll never believe this fake evidence!")
         ]),
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
@@ -161,7 +161,7 @@ You'll never believe this fake evidence!`
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new ParagraphNode([
@@ -181,13 +181,13 @@ You'll never believe this fake evidence!
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new ParagraphNode([
           new PlainTextNode("You'll never believe this fake evidence!")
         ]),
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))

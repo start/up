@@ -3,7 +3,7 @@ import { Writer } from '.././Writer'
 import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -333,7 +333,7 @@ export class HtmlWriter extends Writer {
     return singleTagHtmlElement('img', attrs)
   }
 
-  protected audio(audio: AudioNode): string {
+  protected audio(audio: Audio): string {
     return this.playableMediaElement(audio, 'audio')
   }
 
@@ -470,7 +470,7 @@ export class HtmlWriter extends Writer {
       internalFragmentUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
-  private playableMediaElement(media: AudioNode | VideoNode, tagName: string): string {
+  private playableMediaElement(media: Audio | VideoNode, tagName: string): string {
     const { url, description } = media
 
     const attrs =

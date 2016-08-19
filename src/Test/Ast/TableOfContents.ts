@@ -18,7 +18,7 @@ import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -594,7 +594,7 @@ Haunted houses
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           heading,
-          new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg')
+          new Audio('haunted house', 'https://example.com/hauntedhouse.ogg')
         ], tableOfContents))
     })
 

@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { HeadingNode } from '../../../SyntaxNodes/HeadingNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -26,7 +26,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("src attribute of audio elements (and of their fallback links)", () => {
     const document = new UpDocument([
-      new AudioNode('', 'https://example.com/?x&y&z="hi"')
+      new Audio('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -53,7 +53,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("title attribute of audio elements", () => {
     const document = new UpDocument([
-      new AudioNode('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Audio('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

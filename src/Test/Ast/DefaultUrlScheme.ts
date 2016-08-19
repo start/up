@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
@@ -41,7 +41,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
+        new Audio('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
 

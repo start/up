@@ -8,7 +8,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -106,7 +106,7 @@ describe('An inline NSFL convention directly followed by a media convention', ()
         new InlineNsflNode([
           new PlainTextNode('you eat rotting Gary')
         ]),
-        new AudioNode('final battle theme', 'https://example.com/songs/123.ogg'),
+        new Audio('final battle theme', 'https://example.com/songs/123.ogg'),
       ]))
   })
 })

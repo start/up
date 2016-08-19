@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { SpoilerBlockNode } from '../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../SyntaxNodes/NsfwBlockNode'
@@ -396,7 +396,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Audio nodes', () => {
     const document = new UpDocument([
-      new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg', 3)
+      new Audio('ghostly howling', 'http://example.com/ghosts.ogg', 3)
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

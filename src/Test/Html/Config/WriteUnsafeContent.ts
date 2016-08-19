@@ -5,7 +5,7 @@ import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 
 
@@ -127,7 +127,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
   context('Audio conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'javascript:malicious')
+        new Audio('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -138,7 +138,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('data', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'data:malicious')
+        new Audio('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -149,7 +149,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('file', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'file:malicious')
+        new Audio('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(
@@ -160,7 +160,7 @@ context('When the "writeUnsafeContent" config setting is set to true, links/medi
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'vbscript:malicious')
+        new Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.toHtml(document)).to.be.eql(

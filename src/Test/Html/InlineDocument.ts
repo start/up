@@ -4,7 +4,7 @@ import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -167,7 +167,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An audio node', () => {
     it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
       const inlineDocument = new InlineUpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql(

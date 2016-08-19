@@ -12,7 +12,7 @@ import { NormalParentheticalNode } from '../../../../SyntaxNodes/NormalParenthet
 import { SquareParentheticalNode } from '../../../../SyntaxNodes/SquareParentheticalNode'
 import { FootnoteNode } from '../../../../SyntaxNodes/FootnoteNode'
 import { ImageNode } from '../../../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../../SyntaxNodes/Audio'
 import { VideoNode } from '../../../../SyntaxNodes/VideoNode'
 import { HighlightNode } from '../../../../SyntaxNodes/HighlightNode'
 import { InlineNsfwNode } from '../../../../SyntaxNodes/InlineNsfwNode'
@@ -516,7 +516,7 @@ context("Media conventions are handled a bit differently, because they also have
     it('has its URL treated as its description', () => {
       expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
         new UpDocument([
-          new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+          new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
     })
   })
@@ -526,7 +526,7 @@ context("Media conventions are handled a bit differently, because they also have
     it('has its URL treated as its description', () => {
       expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
         new UpDocument([
-          new AudioNode('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+          new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
     })
   })
@@ -747,7 +747,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Audio', () => {
       expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
         insideDocumentAndParagraph([
-          new AudioNode('Ash fights Gary', 'https://example.com/audio'),
+          new Audio('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('()')
         ]))
     })
@@ -828,7 +828,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Audio', () => {
       expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.be.eql(
         insideDocumentAndParagraph([
-          new AudioNode('Ash fights Gary', 'https://example.com/audio'),
+          new Audio('Ash fights Gary', 'https://example.com/audio'),
           new PlainTextNode('(\t \t \t)')
         ]))
     })

@@ -8,7 +8,7 @@ import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
@@ -20,7 +20,7 @@ describe('An audio convention (with its URL) followed immediately by a (second) 
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+          new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'http://example.com/finalbattle'),
         new PlainTextNode('.')
       ]))
@@ -38,7 +38,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
       ],
       toProduce: new UpDocument([
         new LinkNode([
-          new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+          new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'http://example.com/finalbattle')
       ])
     })
@@ -54,7 +54,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
         ],
         toProduce: new UpDocument([
           new LinkNode([
-            new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+            new Audio('you fight Gary', 'https://example.com/fight.ogg')
           ], 'http://example.com/final battle')
         ])
       })
@@ -69,7 +69,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
         ],
         toProduce: new UpDocument([
           new LinkNode([
-            new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+            new Audio('you fight Gary', 'https://example.com/fight.ogg')
           ], 'http://example.com/final battle')
         ])
       })
@@ -83,7 +83,7 @@ describe('An audio convention directly followed by an inline spoiler', () => {
     expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new Audio('you fight Gary', 'https://example.com/fight.ogg'),
         new InlineSpoilerNode([
           new PlainTextNode('and win')
         ]),
@@ -98,7 +98,7 @@ describe('An audio convention directly followed by an inline NSFW convention', (
     expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new Audio('you fight Gary', 'https://example.com/fight.ogg'),
         new InlineNsfwNode([
           new PlainTextNode('and win')
         ]),
@@ -113,7 +113,7 @@ describe('An audio convention directly followed by an inline NSFL convention', (
     expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
-        new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
+        new Audio('you fight Gary', 'https://example.com/fight.ogg'),
         new InlineNsflNode([
           new PlainTextNode('and win')
         ]),
@@ -137,7 +137,7 @@ describe('An audio convention directly followed by a footnote', () => {
       new UpDocument([
         new ParagraphNode([
           new PlainTextNode("After you beat the Elite Four, "),
-          new AudioNode('you fight Gary', 'https://example.com/fight.ogg'),
+          new Audio('you fight Gary', 'https://example.com/fight.ogg'),
           footnotes[0],
         ]),
         new FootnoteBlockNode(footnotes)
@@ -150,7 +150,7 @@ describe('An otherwise-valid linkified audio convention with its linkifying URL 
   it('is not linkified', () => {
     expect(Up.toDocument('[audio: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new AudioNode('phone call', 'https://example.com/phonecall.ogg'),
+        new Audio('phone call', 'https://example.com/phonecall.ogg'),
         new NormalParentheticalNode([
           new PlainTextNode('(tel:5555555555)')
         ]),
@@ -163,7 +163,7 @@ context("When an otherwise-valid linkified audio convention's URL starts with wh
   specify('the audio convention is not linkified', () => {
     expect(Up.toDocument('[audio: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.be.eql(
       insideDocumentAndParagraph([
-        new AudioNode('phone call', 'https://example.com/phonecall.ogg'),
+        new Audio('phone call', 'https://example.com/phonecall.ogg'),
         new PlainTextNode('( \t tel:5555555555)')
       ]))
   })

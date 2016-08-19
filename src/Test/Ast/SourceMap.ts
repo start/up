@@ -15,7 +15,7 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
@@ -465,7 +465,7 @@ Chart:
       specify('Audio nodes', () => {
         expect(up.toDocument('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
           new UpDocument([
-            new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1)
+            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1)
           ]))
       })
 
@@ -505,7 +505,7 @@ Chart:
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg', 1),
-            new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
+            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
             new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
           ]))
       })

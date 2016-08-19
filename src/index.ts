@@ -4,7 +4,7 @@ export { UserProvidedSettings } from './UserProvidedSettings'
 export { UpDocument, createUpDocument } from './SyntaxNodes/UpDocument'
 export { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
 
-export { AudioNode } from './SyntaxNodes/AudioNode'
+export { Audio } from './SyntaxNodes/Audio'
 export { BoldNode } from './SyntaxNodes/BoldNode'
 export { BlockquoteNode } from './SyntaxNodes/BlockquoteNode'
 export { CodeBlockNode } from './SyntaxNodes/CodeBlockNode'

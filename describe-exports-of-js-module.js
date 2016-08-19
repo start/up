@@ -31,7 +31,7 @@ context('Both document classes are exported:', () => {
 
 context('Every syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([
-    'AudioNode',
+    'Audio',
     'BoldNode',
     'BlockquoteNode',
     'CodeBlockNode',

@@ -18,7 +18,7 @@ import { SpoilerBlockNode } from '../../../SyntaxNodes/SpoilerBlockNode'
 import { NsfwBlockNode } from '../../../SyntaxNodes/NsfwBlockNode'
 import { NsflBlockNode } from '../../../SyntaxNodes/NsflBlockNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 
 
 describe('Within a plain text node, all instances of < and &', () => {
@@ -318,7 +318,7 @@ describe("Within a video's fallback link content, all instances of < and &", () 
 describe("Within an audio convention's fallback link content, all instances of < and &", () => {
   it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
     const document = new UpDocument([
-      new AudioNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+      new Audio('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

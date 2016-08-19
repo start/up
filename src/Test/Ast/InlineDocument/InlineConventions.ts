@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from'../../../index'
 import { InlineUpDocument } from'../../../SyntaxNodes/InlineUpDocument'
 import { PlainTextNode } from'../../../SyntaxNodes/PlainTextNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { BoldNode } from'../../../SyntaxNodes/BoldNode'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
@@ -28,7 +28,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('Listen to this: [audio: cricket meowing] (example.com/meow.ogg)')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('Listen to this: '),
-          new AudioNode('cricket meowing', 'https://example.com/meow.ogg')
+          new Audio('cricket meowing', 'https://example.com/meow.ogg')
         ]))
     })
 

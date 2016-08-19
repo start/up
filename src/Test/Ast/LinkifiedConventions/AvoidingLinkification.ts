@@ -11,7 +11,7 @@ import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { NormalParentheticalNode } from '../../../SyntaxNodes/NormalParentheticalNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
@@ -117,7 +117,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       insideDocumentAndParagraph([
         new PlainTextNode('After you beat the Elite Four, '),
         new LinkNode([
-          new AudioNode('you fight Gary', 'https://example.com/fight.ogg')
+          new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/finalbattle'),
         new PlainTextNode(' '),
         new NormalParentheticalNode([

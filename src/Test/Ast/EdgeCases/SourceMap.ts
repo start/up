@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
@@ -38,7 +38,7 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
         new LinkNode([
           new ImageNode('haunted house', 'https://example.com/hauntedhouse.svg'),
         ], 'https://example.com/gallery', 1),
-        new AudioNode('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
+        new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
         new VideoNode('haunted house', 'https://example.com/hauntedhouse.webm', 1)
       ]))
   })

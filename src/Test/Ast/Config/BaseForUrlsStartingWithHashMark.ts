@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
@@ -47,7 +47,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
+        new Audio('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
       ]))
   })
 
@@ -129,7 +129,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
-          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -238,7 +238,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
-          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })

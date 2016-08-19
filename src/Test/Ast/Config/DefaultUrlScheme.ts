@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
@@ -46,7 +46,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
+        new Audio('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
       ]))
   })
 
@@ -128,7 +128,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
-          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -237,7 +237,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Walter White produces '),
         new LinkNode([
-          new AudioNode('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })

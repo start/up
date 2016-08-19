@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
@@ -14,7 +14,7 @@ context('If a line consists solely of media conventions, those media conventions
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
@@ -26,7 +26,7 @@ context('If a line consists solely of media conventions, those media conventions
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
@@ -38,7 +38,7 @@ context('If a line consists solely of media conventions, those media conventions
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
@@ -53,7 +53,7 @@ context('If a line consists solely of media conventions, those media conventions
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new LinkNode([
-            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+            new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com')
@@ -66,7 +66,7 @@ context('If a line consists solely of media conventions, those media conventions
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+          new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
             new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm')
@@ -81,7 +81,7 @@ context('If a line consists solely of media conventions, those media conventions
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new LinkNode([
-            new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg')
+            new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
           ], 'https://ghosts.com'),
           new LinkNode([
             new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg')

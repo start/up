@@ -7,7 +7,7 @@ import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../../SyntaxNodes/VideoNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -92,7 +92,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('audio conventions can be produced using the term', () => {
       expect(up.toDocument('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
         new UpDocument([
-          new AudioNode('Ash fights Gary', 'https://example.com/audio.ogg')
+          new Audio('Ash fights Gary', 'https://example.com/audio.ogg')
         ]))
     })
 

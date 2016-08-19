@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
-import { AudioNode } from '../../../SyntaxNodes/AudioNode'
+import { Audio } from '../../../SyntaxNodes/Audio'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
+        new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
 
@@ -30,7 +30,7 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { audio: ' \t listen \t ' } })).to.be.eql(
       new UpDocument([
-        new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
+        new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
 
@@ -39,7 +39,7 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { audio: '*listen*' } })).to.be.eql(
       new UpDocument([
-        new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
+        new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
 
@@ -48,8 +48,8 @@ describe('The term that represents video conventions', () => {
 
     expect(Up.toDocument(markup, { terms: { audio: ['hear', 'listen'] } })).to.be.eql(
       new UpDocument([
-        new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
-        new AudioNode('chanting at Nevada caucus', 'https://example.com/audio.ogg')
+        new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
+        new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
 })

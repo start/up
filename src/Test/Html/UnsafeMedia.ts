@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 
 
@@ -44,7 +44,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
   context('Audio conventions produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'javascript:malicious')
+        new Audio('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -52,7 +52,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('data', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'data:malicious')
+        new Audio('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -60,7 +60,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('file', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'file:malicious')
+        new Audio('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -68,7 +68,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'vbscript:malicious')
+        new Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -149,7 +149,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
   context('Audio conventions produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'JavascriPT:malicious')
+        new Audio('Uh-oh!', 'JavascriPT:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -157,7 +157,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('data', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'DAta:malicious')
+        new Audio('Uh-oh!', 'DAta:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -165,7 +165,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('file', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'fILe:malicious')
+        new Audio('Uh-oh!', 'fILe:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -173,7 +173,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 
     specify('vbscript', () => {
       const document = new UpDocument([
-        new AudioNode('Uh-oh!', 'vbScrIPt:malicious')
+        new Audio('Uh-oh!', 'vbScrIPt:malicious')
       ])
 
       expect(Up.toHtml(document)).to.be.eql('')
@@ -258,7 +258,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 context("An audio convention's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
-      new AudioNode('Uh-oh!', 'javascript-app:stuff')
+      new Audio('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -269,7 +269,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 
   specify('data-app', () => {
     const document = new UpDocument([
-      new AudioNode('Uh-oh!', 'data-app:stuff')
+      new Audio('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -280,7 +280,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 
   specify('file-app', () => {
     const document = new UpDocument([
-      new AudioNode('Uh-oh!', 'file-app:stuff')
+      new Audio('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -291,7 +291,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 
   specify('vbscript-app', () => {
     const document = new UpDocument([
-      new AudioNode('Uh-oh!', 'vbscript-app:stuff')
+      new Audio('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

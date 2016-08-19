@@ -5,7 +5,7 @@ import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { BlockquoteNode } from '../../SyntaxNodes/BlockquoteNode'
-import { AudioNode } from '../../SyntaxNodes/AudioNode'
+import { Audio } from '../../SyntaxNodes/Audio'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { OutlineSeparatorNode } from '../../SyntaxNodes/OutlineSeparatorNode'
@@ -324,7 +324,7 @@ You're in for a fright`
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new LineBlockNode([
@@ -364,7 +364,7 @@ You're in for a fright`
             new PlainTextNode('Pepe, PA 17101')
           ])
         ]),
-        new AudioNode('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new ImageNode('haunted house', 'http://example.com/hauntedhouse.svg'),
         new VideoNode('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new LineBlockNode([
