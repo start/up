@@ -3,7 +3,10 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class Footnote extends RichInlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[], public referenceNumber?: number) {
+  constructor(
+    children: InlineSyntaxNode[],
+    public referenceNumber: number = undefined
+  ) {
     super(children)
   }
 
