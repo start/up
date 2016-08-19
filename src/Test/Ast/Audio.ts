@@ -248,3 +248,27 @@ describe('An audio URL (enclosed in parentheses)', () => {
       ]))
   })
 })
+
+
+  context('Audio descriptions are evaluated for typographical conventions:', () => {
+    specify('En dashes', () => {
+      expect(Up.toDocument('[audio: ghosts--eating luggage] (http://example.com/poltergeists.webm)')).to.be.eql(
+        new UpDocument([
+          new Audio('ghosts–eating luggage', 'http://example.com/poltergeists.webm')
+        ]))
+    })
+
+    specify('Em dashes', () => {
+      expect(Up.toDocument('[audio: ghosts---eating luggage] (http://example.com/poltergeists.webm)')).to.be.eql(
+        new UpDocument([
+          new Audio('ghosts—eating luggage', 'http://example.com/poltergeists.webm')
+        ]))
+    })
+
+    specify('Plus-minus signs', () => {
+      expect(Up.toDocument('[audio: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.webm)')).to.be.eql(
+        new UpDocument([
+          new Audio('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.webm')
+        ]))
+    })
+  })

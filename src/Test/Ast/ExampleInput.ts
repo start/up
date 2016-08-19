@@ -88,8 +88,8 @@ describe('Example input', () => {
   })
 
 
-  context('is evaluated for typographical conventions, including', () => {
-    specify('en dashes', () => {
+  context('is evaluated for typographical conventions:', () => {
+    specify('En dashes', () => {
       expect(Up.toDocument("Select the { Start Game -- Single Player } menu item.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainText('Select the '),
@@ -98,7 +98,7 @@ describe('Example input', () => {
         ]))
     })
 
-    specify('em dashes', () => {
+    specify('Em dashes', () => {
       expect(Up.toDocument("Select the { Start Game --- Single Player } menu item.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainText('Select the '),
@@ -107,7 +107,7 @@ describe('Example input', () => {
         ]))
     })
 
-    specify('plus-minus signs', () => {
+    specify('Plus-minus signs', () => {
       expect(Up.toDocument("Click the {+-5 minutes} button.")).to.be.eql(
         insideDocumentAndParagraph([
           new PlainText('Click the '),
