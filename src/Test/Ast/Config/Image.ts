@@ -53,3 +53,27 @@ describe('The term that represents image conventions', () => {
       ]))
   })
 })
+
+
+context('Image descriptions are evaluated for typographical conventions:', () => {
+  specify('En dashes', () => {
+    expect(Up.toDocument('[image: ghosts--eating luggage] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Image('ghosts–eating luggage', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+
+  specify('Em dashes', () => {
+    expect(Up.toDocument('[image: ghosts---eating luggage] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Image('ghosts—eating luggage', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+
+  specify('Plus-minus signs', () => {
+    expect(Up.toDocument('[image: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Image('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+})

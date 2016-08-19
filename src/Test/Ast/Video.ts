@@ -247,3 +247,27 @@ describe("A video URL (enclosed by parentheses)", () => {
       ]))
   })
 })
+
+
+context('Video descriptions are evaluated for typographical conventions:', () => {
+  specify('En dashes', () => {
+    expect(Up.toDocument('[video: ghosts--eating luggage] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Video('ghosts–eating luggage', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+
+  specify('Em dashes', () => {
+    expect(Up.toDocument('[video: ghosts---eating luggage] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Video('ghosts—eating luggage', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+
+  specify('Plus-minus signs', () => {
+    expect(Up.toDocument('[video: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.svg)')).to.be.eql(
+      new UpDocument([
+        new Video('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.svg')
+      ]))
+  })
+})
