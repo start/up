@@ -12,5 +12,5 @@ export class BlockquoteNode extends RichOutlineSyntaxNode {
     return []
   }
 
-  protected BLOCKQUOTE_NODE(): void { }
+  protected BLOCKQUOTE(): void { }
 }

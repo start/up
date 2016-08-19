@@ -18,5 +18,5 @@ export class FootnoteBlockNode implements OutlineSyntaxNode {
     return []
   }
 
-  protected FOOTNOTE_BLOCK_NODE(): void { }
+  protected FOOTNOTE_BLOCK(): void { }
 }

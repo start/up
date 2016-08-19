@@ -2,5 +2,5 @@ import { RevealableOutlineSyntaxNode } from './RevealableOutlineSyntaxNode'
 
 
 export class SpoilerBlockNode extends RevealableOutlineSyntaxNode {
-  protected SPOILER_BLOCK_NODE(): void { }
+  protected SPOILER_BLOCK(): void { }
 }

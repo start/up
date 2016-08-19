@@ -12,5 +12,5 @@ export class OutlineSeparatorNode implements OutlineSyntaxNode {
     return []
   }
 
-  protected OUTLINE_SEPARATOR_NODE(): void { }
+  protected OUTLINE_SEPARATOR(): void { }
 }

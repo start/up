@@ -8,5 +8,5 @@ export class PlainTextNode implements InlineSyntaxNode {
     return this.content
   }
 
-  protected PLAIN_TEXT_NODE(): void { }
+  protected PLAIN_TEXT(): void { }
 }

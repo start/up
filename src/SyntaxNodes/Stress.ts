@@ -5,5 +5,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 //
 // Not to be confused with `BoldNode`! 
 export class Stress extends RichInlineSyntaxNode {
-  protected STRESS_NODE(): void { }
+  protected STRESS(): void { }
 }

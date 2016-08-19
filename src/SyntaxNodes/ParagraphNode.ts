@@ -19,5 +19,5 @@ export class ParagraphNode extends InlineSyntaxNodeContainer implements OutlineS
     return []
   }
 
-  protected PARAGRAPH_NODE(): void { }
+  protected PARAGRAPH(): void { }
 }

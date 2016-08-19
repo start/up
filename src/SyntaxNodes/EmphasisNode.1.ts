@@ -5,5 +5,5 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 //
 // Not to be confused with `ItalicNode`! 
 export class Emphasis extends RichInlineSyntaxNode {
-  protected EMPHASIS_NODE(): void { }
+  protected EMPHASIS(): void { }
 }

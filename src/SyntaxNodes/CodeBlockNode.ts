@@ -14,5 +14,5 @@ export class CodeBlockNode implements OutlineSyntaxNode {
     return []
   }
 
-  protected CODE_BLOCK_NODE(): void { }
+  protected CODE_BLOCK(): void { }
 }
