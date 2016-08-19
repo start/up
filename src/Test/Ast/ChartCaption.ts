@@ -3,7 +3,7 @@ import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../SyntaxNodes/ParagraphNode'
 import { TableNode } from '../../SyntaxNodes/TableNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 
 
@@ -37,7 +37,7 @@ Chart: \`AND\` operator logic
           ],
 
           new TableNode.Caption([
-            new InlineCodeNode('AND'),
+            new InlineCode('AND'),
             new PlainTextNode(' operator logic')
           ]))
       ]))
@@ -71,7 +71,7 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
             ], new TableNode.Header.Cell([new PlainTextNode('0')])),
           ],
           new TableNode.Caption([
-            new InlineCodeNode('AND'),
+            new InlineCode('AND'),
             new PlainTextNode(' operator logic')
           ]))
       ]))

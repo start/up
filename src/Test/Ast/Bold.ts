@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by 2 underscores', () => {
@@ -27,7 +27,7 @@ describe('Bold text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new BoldNode([
-          new InlineCodeNode('world')
+          new InlineCode('world')
         ]),
         new PlainTextNode('!')
       ]))

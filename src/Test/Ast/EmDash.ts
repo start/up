@@ -8,7 +8,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 context('3 consecutive hyphens normally produce an em dash.', () => {
@@ -83,7 +83,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
     specify('Inline code', () => {
       expect(Up.toDocument("`i---;`")).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('i---;')
+          new InlineCode('i---;')
         ]))
     })
 

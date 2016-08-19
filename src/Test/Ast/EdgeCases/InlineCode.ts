@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
 describe('Inline code', () => {
@@ -10,7 +10,7 @@ describe('Inline code', () => {
     expect(Up.toDocument('Dropship `harass`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Dropship '),
-        new InlineCodeNode('harass')
+        new InlineCode('harass')
       ]))
   })
 })
@@ -42,7 +42,7 @@ context('Unmatched streaks of backticks are preserved as plain text. This applie
     expect(Up.toDocument('I always use `<marquee>` elements, but I don`t ever do this.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I always use '),
-        new InlineCodeNode('<marquee>'),
+        new InlineCode('<marquee>'),
         new PlainTextNode(' elements, but I don`t ever do this.')
       ]))
   })

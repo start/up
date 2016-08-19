@@ -11,7 +11,7 @@ import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -175,7 +175,7 @@ export class HtmlWriter extends Writer {
     return this.element('b', bold.children)
   }
 
-  protected inlineCode(inlineCode: InlineCodeNode): string {
+  protected inlineCode(inlineCode: InlineCode): string {
     return htmlElement('code', inlineCode.code)
   }
 

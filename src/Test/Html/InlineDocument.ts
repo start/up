@@ -12,7 +12,7 @@ import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -78,7 +78,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline code node', () => {
     it('produces a <code> element', () => {
       const inlineDocument = new InlineUpDocument([
-        new InlineCodeNode('then')
+        new InlineCode('then')
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.be.eql('<code>then</code>')

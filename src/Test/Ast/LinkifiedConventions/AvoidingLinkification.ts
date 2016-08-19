@@ -16,7 +16,7 @@ import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../../SyntaxNodes/FootnoteBlockNode'
 import { RevisionInsertionNode } from '../../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../../SyntaxNodes/RevisionDeletionNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
@@ -233,9 +233,9 @@ context('The following conventions cannot be linkified', () => {
     expect(Up.toDocument("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('I look forward to '),
-        new InlineCodeNode('--strictNullChecks'),
+        new InlineCode('--strictNullChecks'),
         new PlainTextNode(' and '),
-        new InlineCodeNode('--noUnusedParameters'),
+        new InlineCode('--noUnusedParameters'),
         new PlainTextNode(' '),
         new NormalParentheticalNode([
           new PlainTextNode('('),

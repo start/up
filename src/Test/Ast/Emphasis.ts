@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
@@ -35,7 +35,7 @@ describe('Emphasized text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new EmphasisNode([
-          new InlineCodeNode('world')
+          new InlineCode('world')
         ]),
         new PlainTextNode('!')
       ]))

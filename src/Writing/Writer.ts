@@ -11,7 +11,7 @@ import { ExampleInputNode } from '../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../SyntaxNodes/StressNode'
 import { ItalicNode } from '../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../SyntaxNodes/InlineCode'
 import { RevisionInsertionNode } from '../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../SyntaxNodes/NormalParentheticalNode'
@@ -106,7 +106,7 @@ export abstract class Writer {
   protected abstract heading(heading: HeadingNode, ordinalOfEntryInTableOfContents?: number): string
   protected abstract highlight(highlight: HighlightNode): string
   protected abstract image(image: ImageNode): string
-  protected abstract inlineCode(inlineCode: InlineCodeNode): string
+  protected abstract inlineCode(inlineCode: InlineCode): string
   protected abstract inlineNsfl(inlineNsfl: InlineNsflNode): string
   protected abstract inlineNsfw(inlineNsfw: InlineNsfwNode): string
   protected abstract inlineSpoiler(inlineSpoiler: InlineSpoilerNode): string
@@ -207,7 +207,7 @@ export abstract class Writer {
       return this.bold(node)
     }
 
-    if (node instanceof InlineCodeNode) {
+    if (node instanceof InlineCode) {
       return this.inlineCode(node)
     }
 

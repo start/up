@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by single underscores', () => {
   it('is put inside an italic node', () => {
@@ -35,7 +35,7 @@ describe('Italicized text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new ItalicNode([
-          new InlineCodeNode('world')
+          new InlineCode('world')
         ]),
         new PlainTextNode('!')
       ]))

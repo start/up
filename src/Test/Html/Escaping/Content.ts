@@ -6,7 +6,7 @@ import { BlockquoteNode } from '../../../SyntaxNodes/BlockquoteNode'
 import { UnorderedListNode } from '../../../SyntaxNodes/UnorderedListNode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { CodeBlockNode } from '../../../SyntaxNodes/CodeBlockNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
@@ -73,7 +73,7 @@ describe('Within an inline code node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new InlineCodeNode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        new InlineCode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -86,7 +86,7 @@ describe('Within an inline code node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new InlineCodeNode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+        new InlineCode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 

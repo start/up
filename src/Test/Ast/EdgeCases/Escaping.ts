@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { LineBlockNode } from '../../../SyntaxNodes/LineBlockNode'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
 describe('A backslash that is the first character in a paragraph', () => {
@@ -65,7 +65,7 @@ describe('An escaped character', () => {
   it('can immediately follow inline code', () => {
     expect(Up.toDocument('`pennsylvania()`\\ avenue')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineCodeNode('pennsylvania()'),
+        new InlineCode('pennsylvania()'),
         new PlainTextNode(' avenue')
       ]))
   })

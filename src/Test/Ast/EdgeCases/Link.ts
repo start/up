@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { LinkNode } from '../../../SyntaxNodes/LinkNode'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { ParagraphNode } from '../../../SyntaxNodes/ParagraphNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainTextNode } from '../../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../../SyntaxNodes/EmphasisNode'
 import { FootnoteNode } from '../../../SyntaxNodes/FootnoteNode'
@@ -96,7 +96,7 @@ describe("A link's contents", () => {
       insideDocumentAndParagraph([
         new PlainTextNode('I like '),
         new LinkNode([
-          new InlineCodeNode('poor_syntax]')
+          new InlineCode('poor_syntax]')
         ], 'https://stackoverflow.com'),
         new PlainTextNode('.')
       ]))

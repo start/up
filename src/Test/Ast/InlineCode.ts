@@ -2,14 +2,14 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by backticks', () => {
   it('is put into an inline code node', () => {
     expect(Up.toDocument('`gabe.attack(james)`')).to.be.eql(
       insideDocumentAndParagraph([
-        new InlineCodeNode('gabe.attack(james)')
+        new InlineCode('gabe.attack(james)')
       ]))
   })
 })
@@ -20,7 +20,7 @@ describe('Inline code', () => {
     expect(Up.toDocument('Hello, `*Bruno*`!')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
-        new InlineCodeNode('*Bruno*'),
+        new InlineCode('*Bruno*'),
         new PlainTextNode('!')
       ]))
   })
@@ -32,21 +32,21 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('Inline code surrounded by 1 backtick on each side can contain streaks of 3 backticks', () => {
       expect(Up.toDocument('`let display = ```score:``` + 5`')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = ```score:``` + 5')
+          new InlineCode('let display = ```score:``` + 5')
         ]))
     })
 
     specify('Inline code surrounded by 2 backticks on each side can contain individual backticks (streaks of 1)', () => {
       expect(Up.toDocument('``let display = `score:` + 5``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = `score:` + 5')
+          new InlineCode('let display = `score:` + 5')
         ]))
     })
 
     specify('Inline code surrounded by 3 backticks on each side can contain streaks of 2 backticks)', () => {
       expect(Up.toDocument('```let display = ``score:`` + 5```')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('let display = ``score:`` + 5')
+          new InlineCode('let display = ``score:`` + 5')
         ]))
     })
   })
@@ -57,21 +57,21 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
       specify('on both sides', () => {
         expect(Up.toDocument('` ``inline_code`` `')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineCodeNode('``inline_code``')
+            new InlineCode('``inline_code``')
           ]))
       })
 
       specify('only on the starting side', () => {
         expect(Up.toDocument('`` `unmatched start``')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineCodeNode('`unmatched start')
+            new InlineCode('`unmatched start')
           ]))
       })
 
       specify('only on the ending side', () => {
         expect(Up.toDocument('``unmatched end` ``')).to.be.eql(
           insideDocumentAndParagraph([
-            new InlineCodeNode('unmatched end`')
+            new InlineCode('unmatched end`')
           ]))
       })
     })
@@ -80,14 +80,14 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('Only a single space gets trimmed. Anything beyond that single space is preserved.', () => {
       expect(Up.toDocument('``  `__private`  ``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode(' `__private` ')
+          new InlineCode(' `__private` ')
         ]))
     })
 
     specify('Tabs are always preserved', () => {
       expect(Up.toDocument('``\t__private\t``')).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('\t__private\t')
+          new InlineCode('\t__private\t')
         ]))
     })
 
@@ -97,35 +97,35 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
         specify("When it is trailing", () => {
           expect(Up.toDocument('`1. `')).to.be.eql(
             insideDocumentAndParagraph([
-              new InlineCodeNode('1. ')
+              new InlineCode('1. ')
             ]))
         })
 
         specify("When it is leading", () => {
           expect(Up.toDocument('` ]`')).to.be.eql(
             insideDocumentAndParagraph([
-              new InlineCodeNode(' ]')
+              new InlineCode(' ]')
             ]))
         })
 
         specify("When the other side has to be trimmed due to a neighboring backtick", () => {
           expect(Up.toDocument('`  ``... `')).to.be.eql(
             insideDocumentAndParagraph([
-              new InlineCodeNode(' ``... ')
+              new InlineCode(' ``... ')
             ]))
         })
 
         specify('When inline code consists of just a single space', () => {
           expect(Up.toDocument('` `')).to.be.eql(
             insideDocumentAndParagraph([
-              new InlineCodeNode(' ')
+              new InlineCode(' ')
             ]))
         })
 
         specify('When inline code consists of multiple spaces', () => {
           expect(Up.toDocument('`   `')).to.be.eql(
             insideDocumentAndParagraph([
-              new InlineCodeNode('   ')
+              new InlineCode('   ')
             ]))
         })
       })
@@ -156,9 +156,9 @@ context('Inline code ends at the first matching delimiter.', () => {
     expect(Up.toDocument('Ideally, your document will consist solely of ``<font>`` and ``<div role="alert">`` elements.')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Ideally, your document will consist solely of '),
-        new InlineCodeNode('<font>'),
+        new InlineCode('<font>'),
         new PlainTextNode(' and '),
-        new InlineCodeNode('<div role="alert">'),
+        new InlineCode('<div role="alert">'),
         new PlainTextNode(' elements.')
       ]))
   })
@@ -170,7 +170,7 @@ describe('Backslashes inside inline code', () => {
     expect(Up.toDocument('Whiteboard `\\"prop\\"`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Whiteboard '),
-        new InlineCodeNode('\\"prop\\"')
+        new InlineCode('\\"prop\\"')
       ]))
   })
 
@@ -178,7 +178,7 @@ describe('Backslashes inside inline code', () => {
     expect(Up.toDocument('Funny lines: `/|\\`')).to.be.eql(
       insideDocumentAndParagraph([
         new PlainTextNode('Funny lines: '),
-        new InlineCodeNode('/|\\')
+        new InlineCode('/|\\')
       ]))
   })
 })

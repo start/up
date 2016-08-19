@@ -19,7 +19,7 @@ import { AudioNode } from '../../SyntaxNodes/AudioNode'
 import { ImageNode } from '../../SyntaxNodes/ImageNode'
 import { VideoNode } from '../../SyntaxNodes/VideoNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 
@@ -172,7 +172,7 @@ Chart: \`AND\` operator logic
               ], new TableNode.Header.Cell([new PlainTextNode('0')]))
             ],
             new TableNode.Caption([
-              new InlineCodeNode('AND'),
+              new InlineCode('AND'),
               new PlainTextNode(' operator logic')
             ]), 2)
         ]))

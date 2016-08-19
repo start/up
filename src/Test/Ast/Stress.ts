@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { EmphasisNode } from '../../SyntaxNodes/EmphasisNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by 2 asterisks', () => {
@@ -27,7 +27,7 @@ describe('Stressed text', () => {
       insideDocumentAndParagraph([
         new PlainTextNode('Hello, '),
         new StressNode([
-          new InlineCodeNode('world')
+          new InlineCode('world')
         ]),
         new PlainTextNode('!')
       ]))

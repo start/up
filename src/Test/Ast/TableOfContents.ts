@@ -15,7 +15,7 @@ import { UnorderedListNode } from '../../SyntaxNodes/UnorderedListNode'
 import { DescriptionListNode } from '../../SyntaxNodes/DescriptionListNode'
 import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { LineBlockNode } from '../../SyntaxNodes/LineBlockNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { FootnoteNode } from '../../SyntaxNodes/FootnoteNode'
 import { FootnoteBlockNode } from '../../SyntaxNodes/FootnoteBlockNode'
 import { AudioNode } from '../../SyntaxNodes/AudioNode'
@@ -77,7 +77,7 @@ SPOILER:
           new HeadingNode([new PlainTextNode('The answer!')], 1),
           new ParagraphNode([
             new PlainTextNode('The chart represents the logic for the '),
-            new InlineCodeNode('AND'),
+            new InlineCode('AND'),
             new PlainTextNode(' operator.'),
           ])
         ])
@@ -166,7 +166,7 @@ Chart: \`AND\` operator logic
           ], new TableNode.Header.Cell([new PlainTextNode('0')]))
         ],
         new TableNode.Caption([
-          new InlineCodeNode('AND'),
+          new InlineCode('AND'),
           new PlainTextNode(' operator logic')
         ]))
 

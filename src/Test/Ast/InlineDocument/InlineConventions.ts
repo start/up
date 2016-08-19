@@ -8,7 +8,7 @@ import { EmphasisNode } from'../../../SyntaxNodes/EmphasisNode'
 import { ExampleInputNode } from '../../../SyntaxNodes/ExampleInputNode'
 import { HighlightNode } from '../../../SyntaxNodes/HighlightNode'
 import { ImageNode } from '../../../SyntaxNodes/ImageNode'
-import { InlineCodeNode } from '../../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { InlineNsflNode } from '../../../SyntaxNodes/InlineNsflNode'
 import { InlineNsfwNode } from '../../../SyntaxNodes/InlineNsfwNode'
 import { InlineSpoilerNode } from '../../../SyntaxNodes/InlineSpoilerNode'
@@ -88,7 +88,7 @@ context('Except for footnots, every inline convention is supported in inline doc
       expect(Up.toInlineDocument('I loved `<dl>` elements, though I never used them.')).to.be.eql(
         new InlineUpDocument([
           new PlainTextNode('I loved '),
-          new InlineCodeNode('<dl>'),
+          new InlineCode('<dl>'),
           new PlainTextNode(' elements, though I never used them.'),
         ]))
     })

@@ -11,7 +11,7 @@ import { ExampleInputNode } from '../../SyntaxNodes/ExampleInputNode'
 import { StressNode } from '../../SyntaxNodes/StressNode'
 import { ItalicNode } from '../../SyntaxNodes/ItalicNode'
 import { BoldNode } from '../../SyntaxNodes/BoldNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { RevisionInsertionNode } from '../../SyntaxNodes/RevisionInsertionNode'
 import { RevisionDeletionNode } from '../../SyntaxNodes/RevisionDeletionNode'
 import { NormalParentheticalNode } from '../../SyntaxNodes/NormalParentheticalNode'
@@ -654,7 +654,7 @@ describe('An inline code node', () => {
   it('produces a <code> element', () => {
     const document = new UpDocument([
       new ParagraphNode([
-        new InlineCodeNode('then')
+        new InlineCode('then')
       ])
     ])
 

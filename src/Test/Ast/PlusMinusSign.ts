@@ -8,7 +8,7 @@ import { CodeBlockNode } from '../../SyntaxNodes/CodeBlockNode'
 import { PlainTextNode } from '../../SyntaxNodes/PlainTextNode'
 import { LinkNode } from '../../SyntaxNodes/LinkNode'
 import { InlineSpoilerNode } from '../../SyntaxNodes/InlineSpoilerNode'
-import { InlineCodeNode } from '../../SyntaxNodes/InlineCodeNode'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 context('A plus sign followed by a hyphen normally produces a plus-minus sign', () => {
@@ -83,7 +83,7 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
     specify('Inline code', () => {
       expect(Up.toDocument("`x+-y`")).to.be.eql(
         insideDocumentAndParagraph([
-          new InlineCodeNode('x+-y')
+          new InlineCode('x+-y')
         ]))
     })
 
