@@ -1,4 +1,4 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -64,7 +64,7 @@ class Tokenizer {
   private conventions: Convention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or other
-  // contexts that ignore normal conventions).
+  // contexts that ignore the typical conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
   // otherwise cut short the URL (or media description, or internal reference, etc.)
@@ -160,7 +160,7 @@ class Tokenizer {
 
       ...[
         {
-          richConvention: PARENTHETICAL_CONVENTION,
+          richConvention: NORMAL_PARENTHETICAL_CONVENTION,
           open: '(',
           close: ')'
         }, {
@@ -206,7 +206,7 @@ class Tokenizer {
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
-        richConvention: PARENTHETICAL_CONVENTION,
+        richConvention: NORMAL_PARENTHETICAL_CONVENTION,
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
         whenOpening: () => {
