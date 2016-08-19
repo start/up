@@ -4,7 +4,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 export class InternalReference implements InlineSyntaxNode {
   constructor(
-    public textBelongingToReferencedItem: string,
+    public textSnippetFromReferencedItem: string,
     public referencedItem: OutlineSyntaxNode) { }
 
   // TODO
