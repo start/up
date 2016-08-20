@@ -43,7 +43,7 @@ import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing
 
 export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
-// This class provides dyanmic dispatch for writing every type of syntax node.
+// This abstract class provides dyanmic dispatch for writing every type of syntax node.
 //
 // Additionally, it provides access to the following goodies throughout the entire writing
 // process:
@@ -293,6 +293,7 @@ export abstract class Writer {
     throw new Error('Unrecognized media syntax node')
   }
 
+  // TODO: Move all this functionality to HtmlWriter
   private isUrlAllowed(url: string): boolean {
     return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
@@ -301,16 +302,11 @@ export abstract class Writer {
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
   private getOrdinalOfEntryInTableOfContents(heading: Heading): number {
-    const { document } = this
+    // This is a hack, but if we have a heading, we know we aren't tasked with writing an InlineUpDocument.
+    const indexOfEntry =
+      (this.document as UpDocument).tableOfContents.entries.indexOf(heading)
 
-    if ((document instanceof UpDocument) && document.tableOfContents) {
-      const indexOfEntry =
-        document.tableOfContents.entries.indexOf(heading)
-
-      return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
-    }
-
-    return null
+    return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
   }
 }
 

@@ -77,7 +77,7 @@ export class HtmlWriter extends Writer {
 
   protected writeDocument(document: UpDocument): string {
     const tableOfContents =
-      document.tableOfContents
+      document.tableOfContents.entries.length
         ? this.tableOfContents(document.tableOfContents)
         : ''
 

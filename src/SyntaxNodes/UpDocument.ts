@@ -5,7 +5,10 @@ import { Heading } from './Heading'
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
-  constructor(children: OutlineSyntaxNode[], public tableOfContents?: UpDocument.TableOfContents) {
+  constructor(
+    children: OutlineSyntaxNode[],
+    public tableOfContents = new UpDocument.TableOfContents([])
+  ) {
     super(children)
   }
 }
