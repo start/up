@@ -576,19 +576,19 @@ Pink lady.`
       new Heading([new PlainText("The best fruit")], 2, 12)
 
     const bestAppleHeading =
-      new Heading([new PlainText("The best fruit")], 2, 12)
+      new Heading([new PlainText("The best apple")], 2, 18)
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('I enjoy apples')], 1, 2),
+        enjoyApplesHeading,
         new Paragraph([new PlainText("Don't you?")], 6),
         new LineBlock([
           new LineBlock.Line([new PlainText('Roses are red')]),
           new LineBlock.Line([new PlainText('Apples are blue')])
         ], 8),
-        new Heading([new PlainText("The best fruit")], 2, 12),
+        bestFruitHeading,
         new Paragraph([new PlainText('Apples.')], 15),
-        new Heading([new PlainText("The best apple")], 2, 18),
+        bestAppleHeading,
         new Paragraph([new PlainText('Pink lady.')], 21)
       ], new UpDocument.TableOfContents([
         enjoyApplesHeading,
@@ -617,15 +617,25 @@ Pink lady
   
   > Really.`
 
+
+    const enjoyApplesHeading =
+      new Heading([new PlainText('I enjoy apples')], 1, 2)
+
+    const bestFruitHeading =
+      new Heading([new PlainText("The best fruit")], 2, 9)
+
+    const bestAppleHeading =
+      new Heading([new PlainText("The best apple")], 2, 16)
+
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('I enjoy apples')], 1, 2),
+        enjoyApplesHeading,
         new Paragraph([new PlainText("Don't you?")], 6),
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Term([new PlainText('Apple')])
           ], new DescriptionList.Item.Description([
-            new Heading([new PlainText("The best fruit")], 2, 9),
+            bestFruitHeading,
             new SpoilerBlock([
               new Paragraph([new PlainText('Really.')], 13)
             ], 12)
@@ -633,12 +643,16 @@ Pink lady
           new DescriptionList.Item([
             new DescriptionList.Item.Term([new PlainText('Pink lady')])
           ], new DescriptionList.Item.Description([
-            new Heading([new PlainText("The best apple")], 2, 16),
+            bestAppleHeading,
             new Blockquote([
               new Paragraph([new PlainText('Really.')], 19)
             ], 19)
           ]))
         ], 8)
-      ]))
+      ], new UpDocument.TableOfContents([
+        enjoyApplesHeading,
+        bestFruitHeading,
+        bestAppleHeading
+      ])))
   })
 })

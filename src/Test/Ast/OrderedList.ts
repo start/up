@@ -320,13 +320,14 @@ describe('An indented line immediately following an ordered list item line', () 
 # Roses are red
   Violets are blue`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], 1)
+            heading
           ]),
           new OrderedList.Item([
             new LineBlock([
@@ -339,7 +340,7 @@ describe('An indented line immediately following an ordered list item line', () 
             ])
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([heading])))
   })
 })
 
@@ -357,13 +358,17 @@ describe('Multiple indented or blank lines immediately following an ordered list
 # Goodbye, world!
   ===============`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], 1),
+            helloHeading,
             new Paragraph([
               new PlainText('It is really late, and I am really tired.')
             ]),
@@ -372,12 +377,10 @@ describe('Multiple indented or blank lines immediately following an ordered list
             ])
           ]),
           new OrderedList.Item([
-            new Heading([
-              new PlainText('Goodbye, world!')
-            ], 1)
+            goodbyeHeading
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
@@ -416,13 +419,17 @@ describe('An ordered list item containing multiple indented lines', () => {
 # Goodbye, world!
   ===============`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], 1),
+            helloHeading,
             new Paragraph([
               new PlainText('Upcoming features:')
             ]),
@@ -440,12 +447,10 @@ describe('An ordered list item containing multiple indented lines', () => {
             ])
           ]),
           new OrderedList.Item([
-            new Heading([
-              new PlainText('Goodbye, world!')
-            ], 1)
+            goodbyeHeading
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
