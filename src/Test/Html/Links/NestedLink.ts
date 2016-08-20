@@ -118,7 +118,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1"><em><a href="https://apple.com">I enjoy apples</a></em></h1>')
+      + '<h1 id="up-item-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })
 })
 
