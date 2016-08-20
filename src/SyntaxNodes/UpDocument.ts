@@ -15,10 +15,10 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
 
 
 export namespace UpDocument {
-  // This function returns a document object with:
+  // Returns a document object with:
   //
   // 1. Footnotes extracted into footnote blocks
-  // 2. A table of contents (if it's asked to create one)
+  // 2. A table of contents produced from `children`
   export function create(children: OutlineSyntaxNode[]): UpDocument {
     const document = new UpDocument(children)
     insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
@@ -31,6 +31,7 @@ export namespace UpDocument {
 
     return document
   }
+
 
   export class TableOfContents {
     constructor(public entries: Heading[]) { }
