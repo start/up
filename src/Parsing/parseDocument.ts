@@ -1,4 +1,4 @@
-import { UpDocument, createUpDocument } from '../SyntaxNodes/UpDocument'
+import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineNodes } from './Outline/getOutlineNodes'
 import { INPUT_LINE_BREAK } from './Strings'
@@ -13,8 +13,5 @@ export function parseDocument(markup: string, config: Config): UpDocument {
     config
   })
 
-  return createUpDocument({
-    children,
-    createTableOfContents: config.createTableOfContents
-  })
+  return UpDocument.create(children)
 }

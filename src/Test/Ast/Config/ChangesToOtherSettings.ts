@@ -8,13 +8,10 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 
 
-// Elsewhere, we test:
+// Elsewhere, we test how these settings work.
 //
-// 1. The creation of tables of contents
-// 2. The creation of source maps
-// 3. The creation of links based on our various base URL settings
-//
-// Here, we simply make sure the associated config settings are applied as advertised. 
+// Here, we simply make sure the associated config settings are applied as advertised
+// no matter how they are supplied. 
 
 function itWorksAsAdvertised(
   args: {
@@ -79,34 +76,7 @@ function itWorksAsAdvertised(
 }
 
 
-describe('The "createTableOfContents" config term', () => {
-  itWorksAsAdvertised({
-    markup: `
-Very important
-==============`,
-
-    documentWhenChangeIsApplied: new UpDocument([
-      new Heading([new PlainText('Very important')], 1)
-    ], new UpDocument.TableOfContents([
-      new Heading([new PlainText('Very important')], 1)
-    ])),
-
-    documentWhenSettingIsNotChanged: new UpDocument([
-      new Heading([new PlainText('Very important')], 1)
-    ]),
-
-    configWithSettingChanged: {
-      createTableOfContents: true
-    },
-
-    configWithSettingSetToDefault: {
-      createTableOfContents: false
-    }
-  })
-})
-
-
-describe('The "createSourceMap" config term', () => {
+describe('The "createSourceMap" config setting', () => {
   itWorksAsAdvertised({
     markup: `
 Very important
@@ -131,7 +101,7 @@ Very important
 })
 
 
-describe('The "defaultUrlScheme" config term', () => {
+describe('The "defaultUrlScheme" config setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
@@ -158,7 +128,7 @@ describe('The "defaultUrlScheme" config term', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithSlash" config term', () => {
+describe('The "baseForUrlsStartingWithSlash" config setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
@@ -185,7 +155,7 @@ describe('The "baseForUrlsStartingWithSlash" config term', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithHashMark" config term', () => {
+describe('The "baseForUrlsStartingWithHashMark" config setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 

@@ -1,7 +1,7 @@
 export { Up as default, Up } from './Up'
 export { UserProvidedSettings } from './UserProvidedSettings'
 
-export { UpDocument, createUpDocument } from './SyntaxNodes/UpDocument'
+export { UpDocument } from './SyntaxNodes/UpDocument'
 export { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
 
 export { Audio } from './SyntaxNodes/Audio'
