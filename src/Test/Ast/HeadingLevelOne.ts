@@ -63,10 +63,14 @@ describe("A heading", () => {
 Hello, world!
 #=-+~*^@:_`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])
+      ))
   })
 
   it('does not need to be the first convention in the document', () => {
@@ -132,8 +136,10 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], 1)
 
     expect(Up.toDocument(markup)).to.eql(
-      new UpDocument(
-        [heading],
+      new UpDocument([
+        new OutlineSeparator(),
+        heading
+      ],
         new UpDocument.TableOfContents([heading])))
   })
 

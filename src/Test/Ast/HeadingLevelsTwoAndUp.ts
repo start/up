@@ -64,31 +64,7 @@ Goodbye again, world!
 
     const headings = [
       new Heading([new PlainText('Hello, world!')], 1),
-      new Heading([new PlainText('Goodbye, world!')], 2),
-      new Heading([new PlainText('Goodbye again, world!')], 2)
-    ]
-
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument(
-        headings,
-        new UpDocument.TableOfContents(headings)
-      ))
-  })
-
-  it('produces a level-2 heading node even when it is not the second heading in a document', () => {
-    const markup = `
-Hello, world!
-=============
-
-Goodbye, world!
-=============
-
-Goodbye again, world!
-=-=-=-=-=-=-=-=`
-
-    const headings = [
-      new Heading([new PlainText('Hello, world!')], 1),
-      new Heading([new PlainText('Goodbye, world!')], 2),
+      new Heading([new PlainText('Goodbye, world!')], 1),
       new Heading([new PlainText('Goodbye again, world!')], 2)
     ]
 

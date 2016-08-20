@@ -77,17 +77,20 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
       new PlainText('Well, I do, but I pretend not to.')
     ], 1)
 
+    const heading =
+      new Heading([
+        new PlainText("I don't eat cereal."),
+        footnote,
+        new PlainText(" Never have.")
+      ], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([
-          new PlainText("I don't eat cereal."),
-          footnote,
-          new PlainText(" Never have.")
-        ], 1),
+        heading,
         new FootnoteBlock([
           footnote
         ])
-      ]))
+      ], new UpDocument.TableOfContents([heading])))
   })
 })
 
