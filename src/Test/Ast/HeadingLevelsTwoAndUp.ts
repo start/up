@@ -18,16 +18,15 @@ Hello, world!
 Goodbye, world!
 =-=-=-=-=-=-=-=`
 
-    const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
-
-    const goodbyeHeading =
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], 1),
       new Heading([new PlainText('Goodbye, world!')], 2)
+    ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument(
-        [helloHeading, goodbyeHeading],
-        new UpDocument.TableOfContents([helloHeading, goodbyeHeading])
+        headings,
+        new UpDocument.TableOfContents(headings)
       ))
   })
 
@@ -39,18 +38,18 @@ Hello, world!
 Goodbye, world!
 = = = = = = = =`
 
-    const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
-
-    const goodbyeHeading =
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], 1),
       new Heading([new PlainText('Goodbye, world!')], 2)
+    ]
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument(
-        [helloHeading, goodbyeHeading],
-        new UpDocument.TableOfContents([helloHeading, goodbyeHeading])
+        headings,
+        new UpDocument.TableOfContents(headings)
       ))
   })
+
 
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
     const markup = `
@@ -63,23 +62,16 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
-    const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
-
-    const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], 2)
-
-    const goodbyeAgainHeading =
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], 1),
+      new Heading([new PlainText('Goodbye, world!')], 2),
       new Heading([new PlainText('Goodbye again, world!')], 2)
+    ]
 
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        helloHeading,
-        goodbyeHeading],
-        new UpDocument.TableOfContents([
-          helloHeading,
-          goodbyeHeading,
-          goodbyeAgainHeading])
+      new UpDocument(
+        headings,
+        new UpDocument.TableOfContents(headings)
       ))
   })
 
@@ -94,12 +86,17 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], 1),
+      new Heading([new PlainText('Goodbye, world!')], 2),
+      new Heading([new PlainText('Goodbye again, world!')], 2)
+    ]
+
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 1),
-        new Heading([new PlainText('Goodbye again, world!')], 2)
-      ]))
+      new UpDocument(
+        headings,
+        new UpDocument.TableOfContents(headings)
+      ))
   })
 })
 
@@ -138,16 +135,20 @@ Real-Time Strategy Game Boy Games Published By Nintendo
 Warlocked
 - - - - -`
 
+    const headings = [
+      new Heading([new PlainText('Interactive Software')], 1),
+      new Heading([new PlainText('Video Games')], 2),
+      new Heading([new PlainText('Handheld Video Games')], 3),
+      new Heading([new PlainText('Game Boy Games')], 4),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], 5),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], 6),
+      new Heading([new PlainText('Warlocked')], 7)
+    ]
+
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Interactive Software')], 1),
-        new Heading([new PlainText('Video Games')], 2),
-        new Heading([new PlainText('Handheld Video Games')], 3),
-        new Heading([new PlainText('Game Boy Games')], 4),
-        new Heading([new PlainText('Real-Time Strategy Game Boy Games')], 5),
-        new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], 6),
-        new Heading([new PlainText('Warlocked')], 7)
-      ]))
+      new UpDocument(
+        headings,
+        new UpDocument.TableOfContents(headings)))
   })
 })
 
@@ -164,16 +165,29 @@ Goodbye, world!
 * Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
+        helloHeading,
+        goodbyeHeading,
         new UnorderedList([
           new UnorderedList.Item([
-            new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+            keysHeading
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
 
@@ -190,16 +204,29 @@ Goodbye, world!
 #) Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
+        helloHeading,
+        goodbyeHeading,
         new OrderedList([
           new OrderedList.Item([
-            new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+            keysHeading
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
 
@@ -217,18 +244,31 @@ Awkward
   Umm, I forgot my keys.
   =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
+        helloHeading,
+        goodbyeHeading,
         new DescriptionList([
           new DescriptionList.Item(
             [new DescriptionList.Item.Term([new PlainText('Awkward')])],
             new DescriptionList.Item.Description([
-              new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+              keysHeading
             ]))
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
 
@@ -245,14 +285,23 @@ Goodbye, world!
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
+        helloHeading,
+        goodbyeHeading,
         new Blockquote([
           new Heading([new PlainText('Umm, I forgot my keys.')], 1)
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading
+      ])))
   })
 })
 
