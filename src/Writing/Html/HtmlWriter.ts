@@ -149,10 +149,16 @@ export class HtmlWriter extends Writer {
   }
 
   protected heading(heading: Heading, ordinalOfEntryInTableOfContents?: number): string {
+    const attrs: { id?: string } = {}
+
+    if (ordinalOfEntryInTableOfContents) {
+      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
+    }
+
     return this.element(
       'h' + Math.min(6, heading.level),
       heading.children,
-      this.getAttrsForHeadingPossiblyReferencedByTableOfContents(heading, ordinalOfEntryInTableOfContents))
+      attrsFor(heading, attrs))
   }
 
   protected outlineSeparator(separator: OutlineSeparator): string {
@@ -300,7 +306,8 @@ export class HtmlWriter extends Writer {
         this.tableCaption(table.caption),
         this.tableHeader(table.header),
         table.rows.map(row => this.tableRow(row)).join('')
-      ])
+      ],
+      attrsFor(table))
   }
 
   protected link(link: Link): string {
@@ -581,16 +588,6 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
-  private getAttrsForHeadingPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode, ordinalOfEntryInTableOfContents: number): AttrsWithPossibleId {
-    const attrs: AttrsWithPossibleId = {}
-
-    if (ordinalOfEntryInTableOfContents) {
-      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
-    }
-
-    return attrsFor(node, attrs)
-  }
-
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
     return this.getId(this.config.terms.itemReferencedByTableOfContents, ordinal)
   }
@@ -611,9 +608,4 @@ function attrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
   }
 
   return attrs
-}
-
-
-interface AttrsWithPossibleId {
-  id?: string
 }
