@@ -15,7 +15,7 @@ context("When an item referenced by the table of contents has a source line numb
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document, { writeTableOfContents: true })).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -48,7 +48,7 @@ context("When an item referenced by the table of contents has a source line numb
     const document =
       new UpDocument([table], new UpDocument.TableOfContents([table]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document, { writeTableOfContents: true })).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -87,7 +87,7 @@ context("When an item referenced by the table of contents has a source line numb
     const document =
       new UpDocument([chart], new UpDocument.TableOfContents([chart]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document, { writeTableOfContents: true })).to.be.eql(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
