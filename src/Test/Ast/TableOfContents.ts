@@ -88,11 +88,11 @@ SPOILER:
 
 
 context('A document is given a table of contents if the "createTableOfContents" config setting is set to true and the document contains', () => {
-  const up = new Up({
-    createTableOfContents: true
-  })
-
   specify('a heading', () => {
+    const up = new Up({
+      createTableOfContents: true
+    })
+
     const markup = `
 I enjoy apples
 ==============`
@@ -105,77 +105,6 @@ I enjoy apples
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([heading], tableOfContents))
-  })
-
-  specify('a table with a caption', () => {
-    const markup = `
-Table: Games in the Chrono series
-
-Game;             Release Date
-
-Chrono Trigger;   1995
-Chrono Cross;     1999`
-
-    const table =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Release Date')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-            new Table.Row.Cell([new PlainText('1995')])
-          ]),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Chrono Cross')]),
-            new Table.Row.Cell([new PlainText('1999')])
-          ])
-        ],
-        new Table.Caption([
-          new PlainText('Games in the Chrono series')
-        ]))
-
-    const tableOfContents =
-      new UpDocument.TableOfContents([table])
-
-    expect(up.toDocument(markup)).to.be.eql(
-      new UpDocument([table], tableOfContents))
-  })
-
-  specify('a chart with a caption', () => {
-    const markup = `
-Chart: \`AND\` operator logic
-
-        1;      0
-1;      true;   false
-0;      false;  false`
-
-    const chart =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('1')]),
-          new Table.Header.Cell([new PlainText('0')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('true')]),
-            new Table.Row.Cell([new PlainText('false')]),
-          ], new Table.Header.Cell([new PlainText('1')])),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('false')]),
-            new Table.Row.Cell([new PlainText('false')])
-          ], new Table.Header.Cell([new PlainText('0')]))
-        ],
-        new Table.Caption([
-          new InlineCode('AND'),
-          new PlainText(' operator logic')
-        ]))
-
-    const tableOfContents =
-      new UpDocument.TableOfContents([chart])
-
-    expect(up.toDocument(markup)).to.be.eql(
-      new UpDocument([chart], tableOfContents))
   })
 })
 
@@ -503,12 +432,12 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
       ], tableOfContents))
   })
 
-  specify("Tables without captions", () => {
+  specify("Tables", () => {
     const markup = `
 The Chrono series
 =================
 
-Table:
+Table: Games in the Chrono series
 
 Game;             Release Date
 Chrono Trigger;   1995
@@ -535,16 +464,19 @@ Chrono Cross;     1999`
               new Table.Row.Cell([new PlainText('Chrono Cross')]),
               new Table.Row.Cell([new PlainText('1999')])
             ])
-          ])
+          ],
+          new Table.Caption([
+            new PlainText('Games in the Chrono series')
+          ]))
       ], tableOfContents))
   })
 
-  specify("Charts without captions", () => {
+  specify("Charts", () => {
     const markup = `
 Boolean logic
 =============
 
-Chart:
+Chart: \`AND\` operator logic
 
         1;      0
 1;      true;   false
@@ -572,12 +504,15 @@ Chart:
               new Table.Row.Cell([new PlainText('false')]),
               new Table.Row.Cell([new PlainText('false')])
             ], new Table.Header.Cell([new PlainText('0')]))
-          ])
+          ],
+          new Table.Caption([
+            new InlineCode('AND'),
+            new PlainText(' operator logic')
+          ]))
       ], tableOfContents))
   })
 
 
-  // TODO: Consider including outlined media conventions in the table of contents
   context("Outlined media:", () => {
     specify('Audio', () => {
       const markup = `
@@ -666,7 +601,7 @@ Haunted houses
 
 
 
-context("Headings, tables with captions, and charts with captions don't have to be at the top level of the document to be included in the table of contents.", () => {
+context("Headings don't have to be at the top level of the document to be included in the table of contents.", () => {
   context('Instead, they can be inside:', () => {
     specify('Ordered lists', () => {
       const markup = `
@@ -955,69 +890,17 @@ Apple
       The best fruit
       ==============
       
-      Table: Apple varieties
-      
-      Apple;            Description
-      Pink Lady;        Very crisp and sweet
-      Red Delicious;    Very mushy and bland
-      
-
       Purchasing
-      ----------
-      
-      Chart: Where to buy apples
-
-                        Target;   Walmart
-      Pink Lady;        No;       Yes
-      Red Delicious;    No;       No`
+      ----------`
 
     const bestFruitHeading =
       new Heading([new PlainText('The best fruit')], 1)
 
-    const table =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([new PlainText('Apple')]),
-          new Table.Header.Cell([new PlainText('Description')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Pink Lady')]),
-            new Table.Row.Cell([new PlainText('Very crisp and sweet')])
-          ]),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Red Delicious')]),
-            new Table.Row.Cell([new PlainText('Very mushy and bland')])
-          ])
-        ],
-        new Table.Caption([
-          new PlainText('Apple varieties')
-        ]))
-
     const purchasingHeading =
       new Heading([new PlainText('Purchasing')], 2)
 
-    const chart =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('Target')]),
-          new Table.Header.Cell([new PlainText('Walmart')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('No')]),
-            new Table.Row.Cell([new PlainText('Yes')])
-          ], new Table.Header.Cell([new PlainText('Pink Lady')])),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('No')]),
-            new Table.Row.Cell([new PlainText('No')])
-          ], new Table.Header.Cell([new PlainText('Red Delicious')]))
-        ],
-        new Table.Caption([
-          new PlainText('Where to buy apples')
-        ]))
-
     const tableOfContents =
-      new UpDocument.TableOfContents([bestFruitHeading, table, purchasingHeading, chart])
+      new UpDocument.TableOfContents([bestFruitHeading, purchasingHeading])
 
     expect(Up.toDocument(markup, { createTableOfContents: true })).to.be.eql(
       new UpDocument([
@@ -1034,9 +917,7 @@ Apple
                     new DescriptionList.Item.Term([new PlainText('Apple')])
                   ], new DescriptionList.Item.Description([
                     bestFruitHeading,
-                    table,
                     purchasingHeading,
-                    chart
                   ]))
                 ])
               ])
@@ -1115,31 +996,16 @@ describe("The entries in a table of contents reference the same syntax node obje
 The best fruit
 ==============
 
-Table: Apple varieties
-
-Apple;            Description
-Pink Lady;        Very crisp and sweet
-Red Delicious;    Very mushy and bland
-
-
 Purchasing
-----------
-
-Chart: Where to buy apples
-
-                  Target;   Walmart
-Pink Lady;        No;       Yes
-Red Delicious;    No;       No`
+----------`
 
     const document = Up.toDocument(markup, { createTableOfContents: true })
 
-    const [bestFruitHeading, table, purchasingHeading, chart] = document.children
+    const [bestFruitHeading, purchasingHeading] = document.children
     const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
-    expect(entries[1] === table).to.be.true
     expect(entries[2] === purchasingHeading).to.be.true
-    expect(entries[3] === chart).to.be.true
   })
 
   specify("nested deep within other conventions", () => {
@@ -1151,22 +1017,9 @@ Red Delicious;    No;       No`
     Apple
       The best fruit
       ==============
-      
-      Table: Apple varieties
-      
-      Apple;            Description
-      Pink Lady;        Very crisp and sweet
-      Red Delicious;    Very mushy and bland
-      
 
       Purchasing
-      ----------
-      
-      Chart: Where to buy apples
-
-                        Target;   Walmart
-      Pink Lady;        No;       Yes
-      Red Delicious;    No;       No`
+      ----------`
 
     const document = Up.toDocument(markup, { createTableOfContents: true })
 
@@ -1174,12 +1027,10 @@ Red Delicious;    No;       No`
     const orderedList = unorderedList.items[0].children[1] as OrderedList
     const descriptionList = orderedList.items[0].children[1] as DescriptionList
 
-    const [bestFruitHeading, table, purchasingHeading, chart] = descriptionList.items[0].description.children
+    const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children
     const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
-    expect(entries[1] === table).to.be.true
     expect(entries[2] === purchasingHeading).to.be.true
-    expect(entries[3] === chart).to.be.true
   })
 })
