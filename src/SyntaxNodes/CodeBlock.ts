@@ -1,4 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
@@ -10,7 +11,7 @@ export class CodeBlock implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

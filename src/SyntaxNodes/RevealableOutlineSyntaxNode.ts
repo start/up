@@ -1,5 +1,5 @@
 import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 // A "revealable" convention is one that requires deliberate action from the reader to reveal.
@@ -9,7 +9,7 @@ export abstract class RevealableOutlineSyntaxNode extends RichOutlineSyntaxNode 
   }
 
   // As a rule, we don't want to include any revealable content in the table of contents.
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

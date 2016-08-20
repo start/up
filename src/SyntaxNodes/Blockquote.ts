@@ -1,5 +1,5 @@
 import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 export class Blockquote extends RichOutlineSyntaxNode {
@@ -8,7 +8,7 @@ export class Blockquote extends RichOutlineSyntaxNode {
   }
 
   // As a rule, we don't want to include any blockquoted content in the table of contents.
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

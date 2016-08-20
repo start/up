@@ -1,5 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { Heading } from './Heading'
 
 
 export class LineBlock implements OutlineSyntaxNode {
@@ -9,7 +10,7 @@ export class LineBlock implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 }

@@ -1,5 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 // If a line consists solely of media conventions, those media conventions are placed directly
@@ -18,7 +19,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

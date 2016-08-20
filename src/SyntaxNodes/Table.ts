@@ -1,6 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { Heading } from './Heading'
 import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../Parsing/PatternPieces'
 import { anyCharMatching } from '../Parsing/PatternHelpers'
 
@@ -16,7 +17,7 @@ export class Table implements OutlineSyntaxNode {
     return this.caption != null
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 }

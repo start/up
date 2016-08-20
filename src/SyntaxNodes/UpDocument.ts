@@ -1,6 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
+import { Heading } from './Heading'
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
@@ -12,7 +13,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
 
 export namespace UpDocument {
   export class TableOfContents {
-    constructor(public entries: OutlineSyntaxNode[]) { }
+    constructor(public entries: Heading[]) { }
   }
 }
 

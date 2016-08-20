@@ -1,5 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
+import { Heading } from './Heading'
 import { concat } from '../CollectionHelpers'
 
 
@@ -30,7 +31,7 @@ export class OrderedList implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
       this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }

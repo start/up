@@ -1,6 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { Heading } from './Heading'
 
 
 export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
@@ -15,7 +16,7 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

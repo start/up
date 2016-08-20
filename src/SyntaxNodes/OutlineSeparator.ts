@@ -1,4 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 export class OutlineSeparator implements OutlineSyntaxNode {
@@ -8,7 +9,7 @@ export class OutlineSeparator implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

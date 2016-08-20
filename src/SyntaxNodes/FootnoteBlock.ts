@@ -1,5 +1,6 @@
 import { Footnote } from './Footnote'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { Heading } from './Heading'
 
 
 export class FootnoteBlock implements OutlineSyntaxNode {
@@ -14,7 +15,7 @@ export class FootnoteBlock implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): OutlineSyntaxNode[] {
+  descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 
