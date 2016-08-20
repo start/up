@@ -152,7 +152,7 @@ export class HtmlWriter extends Writer {
     return this.element(
       'h' + Math.min(6, heading.level),
       heading.children,
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(heading, ordinalOfEntryInTableOfContents))
+      this.getAttrsForHeadingPossiblyReferencedByTableOfContents(heading, ordinalOfEntryInTableOfContents))
   }
 
   protected outlineSeparator(separator: OutlineSeparator): string {
@@ -294,14 +294,13 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected table(table: Table, ordinalOfEntryInTableOfContents?: number): string {
+  protected table(table: Table): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),
         this.tableHeader(table.header),
         table.rows.map(row => this.tableRow(row)).join('')
-      ],
-      this.getAttrsForElementPossiblyReferencedByTableOfContents(table, ordinalOfEntryInTableOfContents))
+      ])
   }
 
   protected link(link: Link): string {
@@ -380,7 +379,7 @@ export class HtmlWriter extends Writer {
         new PlainText(this.config.terms.tableOfContents)], 1))
   }
 
-  private tableOfContentsEntries(entries: OutlineSyntaxNode[]): string {
+  private tableOfContentsEntries(entries: Heading[]): string {
     const listItems =
       entries.map((entry, index) =>
         new UnorderedList.Item([
@@ -390,20 +389,12 @@ export class HtmlWriter extends Writer {
     return this.write(new UnorderedList(listItems))
   }
 
-  private nodeRepresentingTableOfContentsEntry(entry: OutlineSyntaxNode, indexOfEntry: number): OutlineSyntaxNode {
+  private nodeRepresentingTableOfContentsEntry(entry: Heading, indexOfEntry: number): OutlineSyntaxNode {
     const ordinal = indexOfEntry + 1
 
-    if (entry instanceof Heading) {
-      return new Heading(
-        [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
-        entry.level + 1)
-    }
-
-    if (entry instanceof Table) {
-      return this.linkToElementReferencedByTableOfContents(entry.caption.children, ordinal)
-    }
-
-    throw new Error('Unrecognized tables of contents entry')
+    return new Heading(
+      [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
+      entry.level + 1)
   }
 
   private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): Link {
@@ -590,7 +581,7 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
-  private getAttrsForElementPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode, ordinalOfEntryInTableOfContents: number): AttrsWithPossibleId {
+  private getAttrsForHeadingPossiblyReferencedByTableOfContents(node: OutlineSyntaxNode, ordinalOfEntryInTableOfContents: number): AttrsWithPossibleId {
     const attrs: AttrsWithPossibleId = {}
 
     if (ordinalOfEntryInTableOfContents) {

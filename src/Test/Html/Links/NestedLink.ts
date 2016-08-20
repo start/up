@@ -7,7 +7,6 @@ import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
-import { Table } from '../../../SyntaxNodes/Table'
 
 
 context('Inside a link', () => {
@@ -40,8 +39,8 @@ context('Inside a link', () => {
 })
 
 
-context('Links nested within table of contents entries do not produce <a> elements. This applies to links within:', () => {
-  specify('Headings', () => {
+describe('A link nested within a table of contents entries ', () => {
+  it('does not produce an <a> element', () => {
     const heading =
       new Heading([
         new Link([new PlainText('I enjoy apples')], 'https://google.com')
@@ -58,83 +57,6 @@ context('Links nested within table of contents entries do not produce <a> elemen
       + '</ul>'
       + '</nav>'
       + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
-  })
-
-  specify('Tables', () => {
-    const table =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Developer')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Final Fantasy')]),
-            new Table.Row.Cell([new PlainText('Square')])
-          ]),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-            new Table.Row.Cell([new PlainText('Nintendo')])
-          ])
-        ],
-        new Table.Caption([
-          new Link([new PlainText('Influential games')], 'https://google.com')
-        ]))
-
-    const document =
-      new UpDocument([table], new UpDocument.TableOfContents([table]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1">Influential games</a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption><a href="https://google.com">Influential games</a></caption>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
-      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
-      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
-      + '</table>')
-  })
-
-  specify('Charts', () => {
-    const chart =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('1')]),
-          new Table.Header.Cell([new PlainText('0')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('true')]),
-            new Table.Row.Cell([new PlainText('false')]),
-          ], new Table.Header.Cell([new PlainText('1')])),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('false')]),
-            new Table.Row.Cell([new PlainText('false')])
-          ], new Table.Header.Cell([new PlainText('0')]))
-        ],
-        new Table.Caption([
-          new Link([new PlainText('AND operator logic')], 'https://google.com')
-        ]))
-
-    const document =
-      new UpDocument([chart], new UpDocument.TableOfContents([chart]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1">AND operator logic</a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption><a href="https://google.com">AND operator logic</a></caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
-      + '</table>')
   })
 })
 
@@ -176,12 +98,14 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '</p>')
   })
 
-  specify('the table of contents entry for a heading', () => {
+  specify('a link within a table of contents entry', () => {
     const heading =
       new Heading([
-        new Emphasis([
-          new Link([new PlainText('I enjoy apples')], 'https://google.com')
-        ])
+        new Link([
+          new Emphasis([
+            new Link([new PlainText('I enjoy apples')], 'https://bing.com')
+          ])
+        ], 'https://apple.com')
       ], 1)
 
     const document =
@@ -194,88 +118,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1"><em><a href="https://google.com">I enjoy apples</a></em></h1>')
-  })
-
-  specify('the table of contents entry for a table', () => {
-    const table =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Developer')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Final Fantasy')]),
-            new Table.Row.Cell([new PlainText('Square')])
-          ]),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-            new Table.Row.Cell([new PlainText('Nintendo')])
-          ])
-        ],
-        new Table.Caption([
-          new Emphasis([
-            new Link([new PlainText('Influential games')], 'https://google.com')
-          ])
-        ]))
-
-    const document =
-      new UpDocument([table], new UpDocument.TableOfContents([table]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1"><em>Influential games</em></a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption><em><a href="https://google.com">Influential games</a></em></caption>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
-      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
-      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
-      + '</table>')
-  })
-
-  specify('the table of contents entry for a chart', () => {
-    const chart =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('1')]),
-          new Table.Header.Cell([new PlainText('0')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('true')]),
-            new Table.Row.Cell([new PlainText('false')]),
-          ], new Table.Header.Cell([new PlainText('1')])),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('false')]),
-            new Table.Row.Cell([new PlainText('false')])
-          ], new Table.Header.Cell([new PlainText('0')]))
-        ],
-        new Table.Caption([
-          new Emphasis([
-            new Link([new PlainText('AND operator logic')], 'https://google.com')
-          ])
-        ]))
-
-    const document =
-      new UpDocument([chart], new UpDocument.TableOfContents([chart]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1"><em>AND operator logic</em></a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption><em><a href="https://google.com">AND operator logic</a></em></caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
-      + '</table>')
+      + '<h1 id="up-item-1"><em><a href="https://apple.com">I enjoy apples</a></em></h1>')
   })
 })
 

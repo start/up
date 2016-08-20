@@ -36,7 +36,6 @@ import { Heading } from '../SyntaxNodes/Heading'
 import { CodeBlock } from '../SyntaxNodes/CodeBlock'
 import { OutlineSeparator } from '../SyntaxNodes/OutlineSeparator'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
@@ -125,7 +124,7 @@ export abstract class Writer {
   protected abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   protected abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   protected abstract stress(stress: Stress): string
-  protected abstract table(table: Table, ordinalOfEntryInTableOfContents?: number): string
+  protected abstract table(table: Table): string
   protected abstract unorderedList(list: UnorderedList): string
   protected abstract video(video: Video): string
 
@@ -160,7 +159,7 @@ export abstract class Writer {
     }
 
     if (node instanceof Table) {
-      return this.table(node, this.getOrdinalOfEntryInTableOfContents(node))
+      return this.table(node)
     }
 
     if (node instanceof Blockquote) {
@@ -301,12 +300,12 @@ export abstract class Writer {
   // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
-  private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
+  private getOrdinalOfEntryInTableOfContents(heading: Heading): number {
     const { document } = this
 
     if ((document instanceof UpDocument) && document.tableOfContents) {
       const indexOfEntry =
-        document.tableOfContents.entries.indexOf(node)
+        document.tableOfContents.entries.indexOf(heading)
 
       return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
     }

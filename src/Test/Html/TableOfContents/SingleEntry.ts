@@ -3,10 +3,10 @@ import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Table } from '../../../SyntaxNodes/Table'
 import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 
 
+// TODO: Flatten contexts 
 context('When a document has a table of contents, its first HTML element is <nav class="up-table-of-contents">. The <nav> starts with an <h1> containing the term for "Table of Contents".', () => {
   context("Following the <h1> is an <ul> containing a <li> for each entry in the table of contents. Each <li> contains a link to the appropriate element in the document.", () => {
     context("For heading entries, the link's content is the heading's content, and the link is placed inside a new heading element 1 level higher than the original heading.", () => {
@@ -131,85 +131,10 @@ context('When a document has a table of contents, its first HTML element is <nav
         })
       })
     })
-
-    context("For charts and table entries (both of which must have a caption to be included in the table of contents), the link's content is the caption's content.", () => {
-      specify('A table entry contains only a link reflecting its caption', () => {
-        const table =
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Developer')])
-            ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Final Fantasy')]),
-                new Table.Row.Cell([new PlainText('Square')])
-              ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-                new Table.Row.Cell([new PlainText('Nintendo')])
-              ])
-            ],
-            new Table.Caption([new PlainText('Influential games')]))
-
-        const document =
-          new UpDocument([table], new UpDocument.TableOfContents([table]))
-
-        expect(Up.toHtml(document)).to.be.eql(
-          '<nav class="up-table-of-contents">'
-          + '<h1>Table of Contents</h1>'
-          + '<ul>'
-          + '<li><a href="#up-item-1">Influential games</a></li>'
-          + '</ul>'
-          + '</nav>'
-          + '<table id="up-item-1">'
-          + '<caption>Influential games</caption>'
-          + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
-          + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
-          + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
-          + '</table>')
-      })
-
-      specify('A chart entry contains only a link reflecting its caption', () => {
-        const chart =
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([]),
-              new Table.Header.Cell([new PlainText('1')]),
-              new Table.Header.Cell([new PlainText('0')])
-            ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('true')]),
-                new Table.Row.Cell([new PlainText('false')]),
-              ], new Table.Header.Cell([new PlainText('1')])),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('false')]),
-                new Table.Row.Cell([new PlainText('false')])
-              ], new Table.Header.Cell([new PlainText('0')]))
-            ],
-            new Table.Caption([new PlainText('AND operator logic')]))
-
-        const document =
-          new UpDocument([chart], new UpDocument.TableOfContents([chart]))
-
-        expect(Up.toHtml(document)).to.be.eql(
-          '<nav class="up-table-of-contents">'
-          + '<h1>Table of Contents</h1>'
-          + '<ul>'
-          + '<li><a href="#up-item-1">AND operator logic</a></li>'
-          + '</ul>'
-          + '</nav>'
-          + '<table id="up-item-1">'
-          + '<caption>AND operator logic</caption>'
-          + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-          + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-          + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
-          + '</table>')
-      })
-    })
   })
 
-  context("The table of contents has no effect on elements that aren't referenced by it, even when syntax nodes represented by those elements are otherwise identical.", () => {
-    specify("Other headings are not affected", () => {
+  context("The table of contents has no effect on elements that aren't referenced by it", () => {
+    specify("even when syntax nodes represented by those elements are otherwise identical", () => {
       const headingInTableOfContents =
         new Heading([new PlainText('I enjoy apples')], 1)
 
@@ -233,136 +158,5 @@ context('When a document has a table of contents, its first HTML element is <nav
         + '<h1>I enjoy apples</h1>'
         + '</blockquote>')
     })
-  })
-
-  specify("Other tables are not affected", () => {
-    const tableInTableOfContents =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Developer')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Final Fantasy')]),
-            new Table.Row.Cell([new PlainText('Square')])
-          ]),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-            new Table.Row.Cell([new PlainText('Nintendo')])
-          ])
-        ],
-        new Table.Caption([new PlainText('Influential games')]))
-
-    const document =
-      new UpDocument([
-        tableInTableOfContents,
-        new Blockquote([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Developer')])
-            ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Final Fantasy')]),
-                new Table.Row.Cell([new PlainText('Square')])
-              ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-                new Table.Row.Cell([new PlainText('Nintendo')])
-              ])
-            ],
-            new Table.Caption([new PlainText('Influential games')]))
-
-        ])
-      ],
-        new UpDocument.TableOfContents([tableInTableOfContents]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1">Influential games</a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption>Influential games</caption>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
-      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
-      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
-      + '</table>'
-      + '<blockquote>'
-      + '<table>'
-      + '<caption>Influential games</caption>'
-      + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
-      + '<tr><td>Final Fantasy</td><td>Square</td></tr>'
-      + '<tr><td>Super Mario Kart</td><td>Nintendo</td></tr>'
-      + '</table>'
-      + '</blockquote>')
-  })
-
-  specify("Other charts are not affected", () => {
-    const chartInTableOfContents =
-      new Table(
-        new Table.Header([
-          new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('1')]),
-          new Table.Header.Cell([new PlainText('0')])
-        ]), [
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('true')]),
-            new Table.Row.Cell([new PlainText('false')]),
-          ], new Table.Header.Cell([new PlainText('1')])),
-          new Table.Row([
-            new Table.Row.Cell([new PlainText('false')]),
-            new Table.Row.Cell([new PlainText('false')])
-          ], new Table.Header.Cell([new PlainText('0')]))
-        ],
-        new Table.Caption([new PlainText('AND operator logic')]))
-
-    const document =
-      new UpDocument([
-        chartInTableOfContents,
-        new Blockquote([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([]),
-              new Table.Header.Cell([new PlainText('1')]),
-              new Table.Header.Cell([new PlainText('0')])
-            ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('true')]),
-                new Table.Row.Cell([new PlainText('false')]),
-              ], new Table.Header.Cell([new PlainText('1')])),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('false')]),
-                new Table.Row.Cell([new PlainText('false')])
-              ], new Table.Header.Cell([new PlainText('0')]))
-            ],
-            new Table.Caption([new PlainText('AND operator logic')]))
-        ])
-      ],
-        new UpDocument.TableOfContents([chartInTableOfContents]))
-
-    expect(Up.toHtml(document)).to.be.eql(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><a href="#up-item-1">AND operator logic</a></li>'
-      + '</ul>'
-      + '</nav>'
-      + '<table id="up-item-1">'
-      + '<caption>AND operator logic</caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
-      + '</table>'
-      + '<blockquote>'
-      + '<table>'
-      + '<caption>AND operator logic</caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
-      + '</table>'
-      + '</blockquote>')
   })
 })
