@@ -18,11 +18,17 @@ Hello, world!
 Goodbye, world!
 =-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
-      ]))
+      new UpDocument(
+        [helloHeading, goodbyeHeading],
+        new UpDocument.TableOfContents([helloHeading, goodbyeHeading])
+      ))
   })
 
   it('produces a level-2 heading node when the underline characters only differ by spaces', () => {
@@ -33,11 +39,17 @@ Hello, world!
 Goodbye, world!
 = = = = = = = =`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 2),
-      ]))
+      new UpDocument(
+        [helloHeading, goodbyeHeading],
+        new UpDocument.TableOfContents([helloHeading, goodbyeHeading])
+      ))
   })
 
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {
@@ -51,12 +63,24 @@ Goodbye, world!
 Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 2)
+
+    const goodbyeAgainHeading =
+      new Heading([new PlainText('Goodbye again, world!')], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Goodbye, world!')], 1),
-        new Heading([new PlainText('Goodbye again, world!')], 2)
-      ]))
+        helloHeading,
+        goodbyeHeading],
+        new UpDocument.TableOfContents([
+          helloHeading,
+          goodbyeHeading,
+          goodbyeAgainHeading])
+      ))
   })
 
   it('produces a level-2 heading node even when it is not the second heading in a document', () => {

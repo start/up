@@ -43,9 +43,10 @@ I never lie
 Not quite true. For example, see [reference: soda].`
 
     const sodaHeading =
-      new Heading([
-        new PlainText('I drink soda')
-      ], 1)
+      new Heading([new PlainText('I drink soda')], 1)
+
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -53,15 +54,13 @@ Not quite true. For example, see [reference: soda].`
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
         ]),
-        new Heading([
-          new PlainText('I never lie')
-        ], 1),
+        neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
           new InternalReference('soda', sodaHeading),
           new PlainText('.')
         ])
-      ]))
+      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })
 
@@ -81,9 +80,10 @@ I never lie
 Not quite true. For example, see [reference: I drink soda--exclusively].`
 
       const sodaHeading =
-        new Heading([
-          new PlainText('I drink soda–exclusively')
-        ], 1)
+        new Heading([new PlainText('I drink soda–exclusively')], 1)
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], 1)
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -91,15 +91,13 @@ Not quite true. For example, see [reference: I drink soda--exclusively].`
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
           ]),
-          new Heading([
-            new PlainText('I never lie')
-          ], 1),
+          neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
             new InternalReference('I drink soda–exclusively', sodaHeading),
             new PlainText('.')
           ])
-        ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Em dashes', () => {
@@ -115,9 +113,10 @@ I never lie
 Not quite true. For example, see [reference: I drink soda---exclusively].`
 
       const sodaHeading =
-        new Heading([
-          new PlainText('I drink soda—exclusively')
-        ], 1)
+        new Heading([new PlainText('I drink soda—exclusively')], 1)
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], 1)
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -125,15 +124,13 @@ Not quite true. For example, see [reference: I drink soda---exclusively].`
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
           ]),
-          new Heading([
-            new PlainText('I never lie')
-          ], 1),
+          neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
             new InternalReference('I drink soda—exclusively', sodaHeading),
             new PlainText('.')
           ])
-        ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Plus-minus signs', () => {
@@ -149,9 +146,10 @@ I never lie
 Not quite true. For example, see [reference: I drink 9 cans of soda +-2].`
 
       const sodaHeading =
-        new Heading([
-          new PlainText('Daily, I drink 9 cans of soda ±2')
-        ], 1)
+        new Heading([new PlainText('Daily, I drink 9 cans of soda ±2')], 1)
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], 1)
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -159,15 +157,13 @@ Not quite true. For example, see [reference: I drink 9 cans of soda +-2].`
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
           ]),
-          new Heading([
-            new PlainText('I never lie')
-          ], 1),
+          neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
             new InternalReference('I drink 9 cans of soda ±2', sodaHeading),
             new PlainText('.')
           ])
-        ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 })
