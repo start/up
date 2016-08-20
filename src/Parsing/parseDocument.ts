@@ -13,8 +13,5 @@ export function parseDocument(markup: string, config: Config): UpDocument {
     config
   })
 
-  return createUpDocument({
-    children,
-    createTableOfContents: config.createTableOfContents
-  })
+  return createUpDocument(children)
 }

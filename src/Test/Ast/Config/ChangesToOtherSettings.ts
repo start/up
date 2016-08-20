@@ -79,33 +79,6 @@ function itWorksAsAdvertised(
 }
 
 
-describe('The "createTableOfContents" config term', () => {
-  itWorksAsAdvertised({
-    markup: `
-Very important
-==============`,
-
-    documentWhenChangeIsApplied: new UpDocument([
-      new Heading([new PlainText('Very important')], 1)
-    ], new UpDocument.TableOfContents([
-      new Heading([new PlainText('Very important')], 1)
-    ])),
-
-    documentWhenSettingIsNotChanged: new UpDocument([
-      new Heading([new PlainText('Very important')], 1)
-    ]),
-
-    configWithSettingChanged: {
-      createTableOfContents: true
-    },
-
-    configWithSettingSetToDefault: {
-      createTableOfContents: false
-    }
-  })
-})
-
-
 describe('The "createSourceMap" config term', () => {
   itWorksAsAdvertised({
     markup: `

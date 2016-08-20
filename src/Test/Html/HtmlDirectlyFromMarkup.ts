@@ -14,8 +14,8 @@ LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
     const html = Up.toHtml(markup, {
-      createTableOfContents: true,
       createSourceMap: true,
+      writeTableOfContents: true,
       terms: {
         spoiler: 'LOOK AWAY',
         tableOfContents: 'In This Article'

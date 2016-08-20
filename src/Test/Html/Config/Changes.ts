@@ -9,6 +9,7 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { Link } from '../../../SyntaxNodes/Link'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -200,7 +201,7 @@ describe('The "toggleNsfl" config term', () => {
 })
 
 
-describe('The "tableOfContents" config setting', () => {
+describe('The "tableOfContents" config term', () => {
   const heading = new Heading([], 1)
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
@@ -216,6 +217,23 @@ describe('The "tableOfContents" config setting', () => {
       terms: {
         tableOfContents: 'Skip To...'
       }
+    }
+  })
+})
+
+
+describe('The "createTableOfContents" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    document: new UpDocument([
+      new Heading([new PlainText('Very important')], 1)
+    ], new UpDocument.TableOfContents([
+      new Heading([new PlainText('Very important')], 1)
+    ])),
+    configChanges: {
+      writeTableOfContents: true
+    },
+    conflictingConfigChanges: {
+      writeTableOfContents: false
     }
   })
 })

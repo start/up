@@ -12,8 +12,7 @@ import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 context("The createUpDocument function is exported for users who want help manually fiddling with the abstract syntax tree. (It's automatically used during the normal parsing process.)", () => {
   specify("It assigns footnotes their reference numbers (mutating them) and places them in footnote blocks (mutating any outline nodes they're placed inside)", () => {
-    const document = createUpDocument({
-      children: [
+    const document = createUpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           new Footnote([new PlainText('Well, I do, but I pretend not to.')]),
@@ -25,9 +24,8 @@ context("The createUpDocument function is exported for users who want help manua
             new Footnote([new PlainText("And this is a fun fact.")])
           ])
         ])
-      ],
-      createTableOfContents: false
-    })
+      ]
+    )
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -51,9 +49,9 @@ context("The createUpDocument function is exported for users who want help manua
       ]))
   })
 
+  // TODO: Rewrite
   specify("It produces a table of contents if the 'createTableOfContents' argument is set to true.", () => {
-    const document = createUpDocument({
-      children: [
+    const document = createUpDocument([
         new Heading([new PlainText('I enjoy apples')], 1),
         new OrderedList([
           new OrderedList.Item([
@@ -65,9 +63,7 @@ context("The createUpDocument function is exported for users who want help manua
             new Paragraph([new PlainText("Very delicious.")])
           ])
         ])
-      ],
-      createTableOfContents: true
-    })
+      ])
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -90,9 +86,9 @@ context("The createUpDocument function is exported for users who want help manua
         ])))
   })
 
+  // TODO: Rewrite
   specify("It does not produce a table of contents if the 'createTableOfContents' argument is set to false.", () => {
-    const document = createUpDocument({
-      children: [
+    const document = createUpDocument([
         new Heading([new PlainText('I enjoy apples')], 1),
         new OrderedList([
           new OrderedList.Item([
@@ -104,9 +100,7 @@ context("The createUpDocument function is exported for users who want help manua
             new Paragraph([new PlainText("Very delicious.")])
           ])
         ])
-      ],
-      createTableOfContents: false
-    })
+      ])
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -125,23 +119,21 @@ context("The createUpDocument function is exported for users who want help manua
   })
 
   specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
-    const document = createUpDocument({
-      children: [
-        new Heading([new PlainText('I enjoy apples')], 1),
+    const document = createUpDocument([
+      new Heading([new PlainText('I enjoy apples')], 1),
+      new Paragraph([
+        new PlainText("I don't eat cereal."),
+        new Footnote([new PlainText('Well, I do, but I pretend not to.')]),
+        new PlainText(" Never have.")
+      ]),
+      new SpoilerBlock([
         new Paragraph([
-          new PlainText("I don't eat cereal."),
-          new Footnote([new PlainText('Well, I do, but I pretend not to.')]),
-          new PlainText(" Never have.")
-        ]),
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            new Footnote([new PlainText("And this is a fun fact.")])
-          ])
+          new PlainText("This ruins the movie."),
+          new Footnote([new PlainText("And this is a fun fact.")])
         ])
-      ],
-      createTableOfContents: true
-    })
+      ])
+    ]
+    )
 
     expect(document).to.be.eql(
       new UpDocument([

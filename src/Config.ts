@@ -23,8 +23,8 @@ export class Config {
   withChanges(changes: UserProvidedSettings): Config {
     const clone = new Config()
 
-    clone.createTableOfContents = this.createTableOfContents
     clone.createSourceMap = this.createSourceMap
+    clone.writeTableOfContents = this.writeTableOfContents
     clone.writeUnsafeContent = this.writeUnsafeContent
     clone.documentName = this.documentName
     clone.defaultUrlScheme = this.defaultUrlScheme
@@ -41,8 +41,8 @@ export class Config {
   }
 
   private applyChangedUserSettings(settings: UserProvidedSettings): void {
-    this.createTableOfContents =
-      coalesce(settings.createTableOfContents, this.createTableOfContents)
+    this.writeTableOfContents =
+      coalesce(settings.writeTableOfContents, this.writeTableOfContents)
 
     this.createSourceMap =
       coalesce(settings.createSourceMap, this.createSourceMap)
