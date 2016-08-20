@@ -25,7 +25,7 @@ context("When an item referenced by the table of contents has a source line numb
       + '<h1 data-up-source-line="2" id="up-item-1">I enjoy apples</h1>')
   })
 
-  specify('A table entry contains only a link reflecting its caption', () => {
+  specify('Tables', () => {
     const table =
       new Table(
         new Table.Header([
@@ -63,7 +63,7 @@ context("When an item referenced by the table of contents has a source line numb
       + '</table>')
   })
 
-  specify('A chart entry contains only a link reflecting its caption', () => {
+  specify('Charts', () => {
     const chart =
       new Table(
         new Table.Header([

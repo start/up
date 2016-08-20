@@ -304,7 +304,7 @@ export abstract class Writer {
   private getOrdinalOfEntryInTableOfContents(node: OutlineSyntaxNode): number {
     const { document } = this
 
-    if ((document instanceof UpDocument) && document.tableOfContents) {
+    if ((document instanceof UpDocument) && this.config.writeTableOfContents) {
       const indexOfEntry =
         document.tableOfContents.entries.indexOf(node)
 

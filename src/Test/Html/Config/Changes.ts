@@ -222,7 +222,7 @@ describe('The "tableOfContents" config term', () => {
 })
 
 
-describe('The "createTableOfContents" config term', () => {
+describe('The "writeTableOfContents" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Heading([new PlainText('Very important')], 1)
