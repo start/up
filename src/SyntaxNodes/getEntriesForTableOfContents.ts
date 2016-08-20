@@ -5,6 +5,7 @@ import { concat } from '../CollectionHelpers'
 
 
 export function getEntriesForTableOfContents(nodes: OutlineSyntaxNode[]): UpDocument.TableOfContents.Entry[] {
+  // Right now, only headings can be table of contents entries.
   return concat(
     nodes.map(node =>
       node instanceof Heading

@@ -18,38 +18,20 @@ import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../SyntaxNodes/NsflBlock'
 import { Table } from '../SyntaxNodes/Table'
-//import { ReferenceToTableOfContentsEntry } from '../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { ReferenceToTableOfContentsEntry } from '../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 
 // This function is responsible for:
 //
 // * Assigning footnote reference numbers
 // * Producing footnote blocks
-// * Matching references to table of contents entries... with table of contents entries 
+// * Matching table of contents entries with their references 
+//
+// The rules for matching table of contents entries with their references are explained in
+// `ReferenceToTableOfContentsEntry.ts`.
 //
 //
-// Rules for references to table of contents entries
-// =================================================
-//
-// Each reference has a `entryTextSnippet` field. A given reference is matched with the first entry whose
-// whose text equals `entryTextSnippet`. If there are no exact matches, the reference will be associated
-// with the first entry whose text *contains* `entryTextSnippet`.
-//
-// The "text" of an entry refers to the actual text content of the entry. For example, if an entry was
-// originally produced by the following markup:
-//
-//    Why you should *never* use the `<font>` element
-//    -----------------------------------------------
-//
-// ... Then its text would be:
-//
-//    Why you should never use the <font> element
-//
-//
-// Rules for footnotes
-// ===================
-//
-// The rules for footnotes are more complicated.
+// The rules for footnotes are explained below.
 //
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
 // defeat the purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
@@ -109,71 +91,86 @@ import { Table } from '../SyntaxNodes/Table'
 // Oh, one last thing! We'll use the term "blockless footnote" to describe a Footnote that hasn't yet been
 // placed in a footnote block.
 export function finalizeDocument(document: UpDocument): void {
-  new FootnoteBlockInserter(document)
+  new DocumentFinalizer(document)
 }
 
 
-class FootnoteBlockInserter {
+class DocumentFinalizer {
   private currentFootnoteReferenceNumber = 1
 
-  constructor(document: UpDocument) {
-    this.finalizeDocument(document)
+  constructor(private document: UpDocument) {
+    this.finalizeAndInsertFootnoteBlocks(document)
   }
 
-  finalizeDocument(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
-    const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
+  finalizeAndInsertFootnoteBlocks(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
+    const outlineNodesWithNewFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of outlineNodeContainer.children) {
-      outlineNodesWithFootnoteBlocks.push(outlineNode)
+      outlineNodesWithNewFootnoteBlocks.push(outlineNode)
 
       const footnotesForNextFootnoteBlock =
-        this.handleOutlineNodeAndGetBlocklessFootnotes(outlineNode)
+        this.finalizeOutlineNodeAndGetBlocklessFootnotes(outlineNode)
 
       if (footnotesForNextFootnoteBlock.length) {
-        outlineNodesWithFootnoteBlocks.push(this.getFootnoteBlock(footnotesForNextFootnoteBlock))
+        outlineNodesWithNewFootnoteBlocks.push(
+          this.createFootnoteBlock(footnotesForNextFootnoteBlock))
       }
     }
 
-    outlineNodeContainer.children = outlineNodesWithFootnoteBlocks
+    outlineNodeContainer.children = outlineNodesWithNewFootnoteBlocks
   }
 
   // TODO: Consider moving this process to the individual outline syntax node classes.
-  handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): Footnote[] {
+  finalizeOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): Footnote[] {
     if ((node instanceof Paragraph) || (node instanceof Heading)) {
       return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
     if (node instanceof LineBlock) {
-      return this.getBlocklessFootnotesFromInlineContainers(node.lines)
+      return this.finalizeInlineContainersAndGetBlocklessFootnotes(node.lines)
     }
 
     if ((node instanceof Blockquote) || (node instanceof SpoilerBlock) || (node instanceof NsfwBlock) || (node instanceof NsflBlock)) {
-      this.finalizeDocument(node)
+      // Because of rule 2 (desribed above), we consider these conventions to be mini-documents.
+      this.finalizeAndInsertFootnoteBlocks(node)
 
-      // We've just handled all the footnotes within the outline convention. None of them are blockless!
+      // We've already inserted any inner footnotes into blocks, so none of them are blockless.
       return []
     }
 
     if ((node instanceof UnorderedList) || (node instanceof OrderedList)) {
-      return this.getBlocklessFootnotesFromOutlineContainers(node.items)
+      return this.finalizeOutlineContainersAndGetBlocklessFootnotes(node.items)
     }
 
     if (node instanceof DescriptionList) {
-      return this.getBlocklessFootnotesFromDescriptionList(node)
+      return this.finalizeDescriptionListAndGetBlocklessFootnotes(node)
     }
 
     if (node instanceof Table) {
-      return this.getBlocklessFootnotesFromTable(node)
+      return this.finalizeTableAndGetBlocklessFootnotes(node)
     }
 
     return []
   }
 
+  matchTableOfContentsEntriesWithReferences(nodes: InlineSyntaxNode[]): void {
+    for (const node of nodes) {
+      if (node instanceof ReferenceToTableOfContentsEntry) {
+        node.referenceMostAppropriateTableOfContentsEntry(this.document.tableOfContents.entries)
+        continue
+      }
+
+      if (node instanceof RichInlineSyntaxNode) {
+        this.matchTableOfContentsEntriesWithReferences(node.children)
+      }
+    }
+  }
+
   // Here, "outermost footnote" refers to any footnote that isn't nested within another footnote. It does not
   // exclude footntoes nested within other inline conventions (e.g. emphasis or stress).
   //
-  // Because of rule 4 (described above), the reference numbers of nested footnotes aren't assigned until we
-  // produce their containing footnote blocks.
+  // Because of rule 4 (described above), the reference numbers of footnotes nested inside other footnotes
+  // aren't assigned until we produce their containing footnote blocks.
   getOutermostFootnotesAndAssignTheirReferenceNumbers(nodes: InlineSyntaxNode[]): Footnote[] {
     const footnotes: Footnote[] = []
 
@@ -193,45 +190,52 @@ class FootnoteBlockInserter {
     return footnotes
   }
 
-  getBlocklessFootnotesFromInlineContainers(containers: InlineSyntaxNodeContainer[]): Footnote[] {
+  finalizeInlineContainersAndGetBlocklessFootnotes(containers: InlineSyntaxNodeContainer[]): Footnote[] {
     return concat(
-      containers.map(container => this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)))
+      containers.map(container => {
+        this.matchTableOfContentsEntriesWithReferences(container.children)
+
+        const outermostFootnotes =
+          this.getOutermostFootnotesAndAssignTheirReferenceNumbers(container.children)
+
+        return outermostFootnotes
+      }))
   }
 
-  getBlocklessFootnotesFromOutlineContainers(containers: OutlineSyntaxNodeContainer[]): Footnote[] {
+  finalizeOutlineContainersAndGetBlocklessFootnotes(containers: OutlineSyntaxNodeContainer[]): Footnote[] {
     return concat(
-      containers.map(container => this.getBlocklessFootnotesFromOutlineNodes(container.children)))
+      containers.map(container => this.finalizeOutlineNodesAndGetBlocklessFootnotes(container.children)))
   }
 
-  getBlocklessFootnotesFromDescriptionList(list: DescriptionList): Footnote[] {
+  finalizeDescriptionListAndGetBlocklessFootnotes(list: DescriptionList): Footnote[] {
     return concat(
-      list.items.map(item => this.getBlocklessFootnotesFromDescriptionListItem(item)))
+      list.items.map(item => this.finalizeDescriptionListItemAndGetBlocklessFootnotes(item)))
   }
 
-  getBlocklessFootnotesFromDescriptionListItem(item: DescriptionList.Item): Footnote[] {
+  finalizeDescriptionListItemAndGetBlocklessFootnotes(item: DescriptionList.Item): Footnote[] {
     const footnotesFromTerms =
-      this.getBlocklessFootnotesFromInlineContainers(item.terms)
+      this.finalizeInlineContainersAndGetBlocklessFootnotes(item.terms)
 
     const footnotesFromDescription =
-      this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
+      this.finalizeOutlineNodesAndGetBlocklessFootnotes(item.description.children)
 
     return footnotesFromTerms.concat(footnotesFromDescription)
   }
 
-  getBlocklessFootnotesFromTable(table: Table): Footnote[] {
+  finalizeTableAndGetBlocklessFootnotes(table: Table): Footnote[] {
     return concat([
       table.caption ? [table.caption] : [],
       table.header.cells,
       ...table.rows.map(row => row.cellsStartingWithRowHeaderCell)
-    ].map(inlineContainer => this.getBlocklessFootnotesFromInlineContainers(inlineContainer)))
+    ].map(inlineContainer => this.finalizeInlineContainersAndGetBlocklessFootnotes(inlineContainer)))
   }
 
-  getBlocklessFootnotesFromOutlineNodes(nodes: OutlineSyntaxNode[]): Footnote[] {
+  finalizeOutlineNodesAndGetBlocklessFootnotes(nodes: OutlineSyntaxNode[]): Footnote[] {
     return concat(
-      nodes.map(node => this.handleOutlineNodeAndGetBlocklessFootnotes(node)))
+      nodes.map(node => this.finalizeOutlineNodeAndGetBlocklessFootnotes(node)))
   }
 
-  getFootnoteBlock(footnotes: Footnote[]): FootnoteBlock {
+  createFootnoteBlock(footnotes: Footnote[]): FootnoteBlock {
     const footnoteBlock = new FootnoteBlock(footnotes)
 
     for (let i = 0; i < footnoteBlock.footnotes.length; i++) {
