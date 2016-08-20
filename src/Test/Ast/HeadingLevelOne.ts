@@ -14,10 +14,13 @@ describe("The first line in a document underlined by any combination or arrangem
 Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    expect(Up.toDocument(markup)).to.eql(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 })
 
@@ -28,10 +31,13 @@ describe("An underline", () => {
 Hello, world!
 +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    expect(Up.toDocument(markup)).to.eql(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 
   it('can use as few as 1 one of those characters in its underline', () => {
@@ -39,10 +45,13 @@ Hello, world!
 Hello, world!
 ~~~~~~~~~~~~`
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    expect(Up.toDocument(markup)).to.eql(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 })
 
@@ -67,11 +76,14 @@ Hello, world!
 Goodbye, world!
 ~~~~~~~~~~~~`
 
+    const heading =
+      new Heading([new PlainText('Goodbye, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Paragraph([new PlainText('Hello, world!')]),
-        new Heading([new PlainText('Goodbye, world!')], 1),
-      ]))
+        heading,
+      ], new UpDocument.TableOfContents([heading])))
   })
 
   it('can contain inline conventions', () => {
@@ -79,13 +91,16 @@ Goodbye, world!
 **Hello**, world!
 ~~~~~~~~~~~~`
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([
-          new Stress([new PlainText('Hello')]),
-          new PlainText(', world!'),
-        ], 1)
-      ]))
+    const heading =
+      new Heading([
+        new Stress([new PlainText('Hello')]),
+        new PlainText(', world!'),
+      ], 1)
+
+    expect(Up.toDocument(markup)).to.eql(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 })
 
@@ -97,11 +112,14 @@ describe("A heading's optional overline", () => {
 Hello, world!
 -------------`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
         new OutlineSeparator(),
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+        heading
+      ], new UpDocument.TableOfContents([heading])))
   })
 
   it('must contain spaces if the underline contains spaces', () => {
@@ -110,11 +128,13 @@ Hello, world!
 Hello, world!
 - - - - - - -`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.eql(
-      new UpDocument([
-        new OutlineSeparator(),
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 
   it('does not need to be the same length as the underline', () => {
@@ -123,10 +143,13 @@ Hello, world!
 Hello, world!
 ----------`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 
   it('can have its characters arranged differently than in the underline', () => {
@@ -135,9 +158,12 @@ Hello, world!
 Hello, world!
 ==  --  ==  --  ==  --  ==`
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-      ]))
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    expect(Up.toDocument(markup)).to.eql(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])))
   })
 })
