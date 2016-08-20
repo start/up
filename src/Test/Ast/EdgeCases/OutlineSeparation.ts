@@ -15,13 +15,15 @@ describe('An outline separator streak', () => {
 - - - - - - - - - - - 
 Not me. Us!
 @---------@`
+
+    const heading =
+      new Heading([new PlainText('Not me. Us!')], 1)
+
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
         new OutlineSeparator(),
-        new Heading([
-          new PlainText('Not me. Us!')
-        ], 1)
-      ]))
+        heading
+      ], new UpDocument.TableOfContents([heading])))
   })
 
   it('can directly precede a heading with the same characters in its underline, as long as that heading has an overline', () => {
@@ -30,21 +32,22 @@ Not me. Us!
 -----------
 Not me. Us!
 -----------`
+
+    const heading =
+      new Heading([new PlainText('Not me. Us!')], 1)
+
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
         new OutlineSeparator(),
-        new Heading([
-          new PlainText('Not me. Us!')
-        ], 1)
-      ]))
+        heading
+      ], new UpDocument.TableOfContents([heading])))
   })
 })
 
 
 describe('A streak of asterisks with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
-    const markup = '* * * * * *'
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument('* * * * * *')).to.be.eql(
       new UpDocument([
         new OutlineSeparator()
       ]))
@@ -54,8 +57,7 @@ describe('A streak of asterisks with spaces between', () => {
 
 describe('A streak of number signs with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
-    const markup = '# # # # # #'
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument('# # # # # #')).to.be.eql(
       new UpDocument([
         new OutlineSeparator()
       ]))
@@ -69,6 +71,7 @@ describe('A streak of asterisks with spaces between', () => {
 * Mittens
 * Gloves
 * * * * * *`
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedList([
@@ -95,6 +98,7 @@ describe('A streak of number signs with spaces between', () => {
 # Mittens
 # Gloves
 # # # # # #`
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new OrderedList([

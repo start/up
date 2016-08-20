@@ -59,12 +59,14 @@ describe('An ordered list with a single item can be sandwched by identical outli
 1783. Not a good year for Great Britain.
 ----------------------------------------`
 
+      const heading =
+        new Heading([new PlainText('1783. Not a good year for Great Britain.')], 1)
+
       expect(Up.toDocument(markup)).to.be.eql(
-        new UpDocument([
-          new Heading([
-            new PlainText('1783. Not a good year for Great Britain.')
-          ], 1)
-        ]))
+        new UpDocument(
+          [heading],
+          new UpDocument.TableOfContents([heading])
+        ))
     })
   })
 })
@@ -294,19 +296,28 @@ I enjoy apples
    
    Very delicious.`
 
+    const enjoyHeading =
+      new Heading([new PlainText('I enjoy apples')], 1)
+
+    const cheapHeading =
+      new Heading([new PlainText("They're cheap")], 2)
+
+    const deliciousHeading =
+      new Heading([new PlainText("They're delicious")], 2)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('I enjoy apples')], 1),
+        enjoyHeading,
         new OrderedList([
           new OrderedList.Item([
-            new Heading([new PlainText("They're cheap")], 2),
+            cheapHeading,
             new Paragraph([new PlainText("Very cheap.")])
           ], 1),
           new OrderedList.Item([
-            new Heading([new PlainText("They're delicious")], 2),
+            deliciousHeading,
             new Paragraph([new PlainText("Very delicious.")])
           ], 2)
         ])
-      ]))
+      ], new UpDocument.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
 })
