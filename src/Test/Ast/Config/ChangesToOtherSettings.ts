@@ -77,18 +77,24 @@ function itWorksAsAdvertised(
 
 
 describe('The "createSourceMap" config setting', () => {
+  const headingWithSourceMap =
+    new Heading([new PlainText('Very important')], 1, 2)
+
+  const headingWithoutSourceMap =
+    new Heading([new PlainText('Very important')], 1)
+
   itWorksAsAdvertised({
     markup: `
 Very important
 ==============`,
 
-    documentWhenChangeIsApplied: new UpDocument([
-      new Heading([new PlainText('Very important')], 1, 2)
-    ]),
+    documentWhenChangeIsApplied: new UpDocument(
+      [headingWithSourceMap],
+      new UpDocument.TableOfContents([headingWithSourceMap])),
 
-    documentWhenSettingIsNotChanged: new UpDocument([
-      new Heading([new PlainText('Very important')], 1)
-    ]),
+    documentWhenSettingIsNotChanged: new UpDocument(
+      [headingWithoutSourceMap],
+      new UpDocument.TableOfContents([headingWithoutSourceMap])),
 
     configWithSettingChanged: {
       createSourceMap: true
