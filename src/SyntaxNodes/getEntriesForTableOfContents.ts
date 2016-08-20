@@ -9,6 +9,5 @@ export function getEntriesForTableOfContents(nodes: OutlineSyntaxNode[]): UpDocu
     nodes.map(node =>
       node instanceof Heading
         ? [node]
-        : node.descendantsToIncludeInTableOfContents()
-    ))
+        : node.descendantsToIncludeInTableOfContents()))
 }
