@@ -96,10 +96,13 @@ I actually start on the seventh line.`
 I enjoy apples
 ==============`
 
+        const heading =
+          new Heading([new PlainText('I enjoy apples')], 1, 2)
+
         expect(up.toDocument(markup)).to.be.eql(
-          new UpDocument([
-            new Heading([new PlainText('I enjoy apples')], 1, 2)
-          ]))
+          new UpDocument(
+            [heading],
+            new UpDocument.TableOfContents([heading])))
       })
 
       specify('With an overline', () => {
@@ -108,10 +111,13 @@ I enjoy apples
 I enjoy apples
 ==============`
 
+        const heading =
+          new Heading([new PlainText('I enjoy apples')], 1, 2)
+
         expect(up.toDocument(markup)).to.be.eql(
-          new UpDocument([
-            new Heading([new PlainText('I enjoy apples')], 1, 2)
-          ]))
+          new UpDocument(
+            [heading],
+            new UpDocument.TableOfContents([heading])))
       })
     })
 
@@ -563,6 +569,15 @@ The best apple
   
 Pink lady.`
 
+    const enjoyApplesHeading =
+      new Heading([new PlainText('I enjoy apples')], 1, 2)
+
+    const bestFruitHeading =
+      new Heading([new PlainText("The best fruit")], 2, 12)
+
+    const bestAppleHeading =
+      new Heading([new PlainText("The best fruit")], 2, 12)
+
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         new Heading([new PlainText('I enjoy apples')], 1, 2),
@@ -575,7 +590,10 @@ Pink lady.`
         new Paragraph([new PlainText('Apples.')], 15),
         new Heading([new PlainText("The best apple")], 2, 18),
         new Paragraph([new PlainText('Pink lady.')], 21)
-      ]))
+      ], new UpDocument.TableOfContents([
+        enjoyApplesHeading,
+        bestFruitHeading,
+        bestAppleHeading])))
   })
 
   specify('Some are deeply nested.', () => {
