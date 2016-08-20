@@ -65,7 +65,7 @@ Not quite true. For example, see [reference: soda].`
 })
 
 
-describe('The text snippet referenced by an internal reference', () => {
+describe('The snippet from a reference to a table of contents entry', () => {
   context('is evaluated for typographical conventions:', () => {
     specify('En dashes', () => {
       const markup = `

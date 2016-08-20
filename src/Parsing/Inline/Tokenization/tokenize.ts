@@ -67,7 +67,7 @@ class Tokenizer {
   // contexts that ignore the typical conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
-  // otherwise cut short the URL (or media description, or internal reference, etc.)
+  // otherwise cut short the URL (or media description, or references to table of contents entries, etc.)
   private rawBracketConventions = this.getRawBracketConventions()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
@@ -405,11 +405,10 @@ class Tokenizer {
   //
   // Usage: For more information, see [reference: shading]
   //
-  // When written to an output format (e.g. HTML), it should serve as a link to that item.
+  // When written to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       new Convention({
-        // Internal references cannot be totally blank.
         startsWith: this.getLabeledBracketStartPattern(this.config.terms.reference, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
@@ -419,8 +418,8 @@ class Tokenizer {
         insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawBrackets(),
 
         whenClosing: () => {
-          const textSnippetFromTableOfContentsEntry = this.flushBuffer().trim()
-          this.appendNewToken(TokenKind.ReferenceToTableOfContentsEntry, textSnippetFromTableOfContentsEntry)
+          const snippetFromEntry = this.flushBuffer().trim()
+          this.appendNewToken(TokenKind.ReferenceToTableOfContentsEntry, snippetFromEntry)
         }
       }))
   }

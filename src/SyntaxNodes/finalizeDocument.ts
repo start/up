@@ -18,18 +18,38 @@ import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../SyntaxNodes/NsflBlock'
 import { Table } from '../SyntaxNodes/Table'
+//import { ReferenceToTableOfContentsEntry } from '../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 
 // This function is responsible for:
 //
-// 1. Assigning footnote reference numbers
-// 2. Producing footnote blocks
-// 3. Associating internal references with the appropriate table of contents entry
+// * Assigning footnote reference numbers
+// * Producing footnote blocks
+// * Matching references to table of contents entries... with table of contents entries 
 //
-// The rules for internal references aren't too complicated. Each internal reference has  
 //
-// 1. The first table of contents entry with an exact   
+// Rules for references to table of contents entries
+// =================================================
 //
+// Each reference has a `entryTextSnippet` field. A given reference is matched with the first entry whose
+// whose text equals `entryTextSnippet`. If there are no exact matches, the reference will be associated
+// with the first entry whose text *contains* `entryTextSnippet`.
+//
+// The "text" of an entry refers to the actual text content of the entry. For example, if an entry was
+// originally produced by the following markup:
+//
+//    Why you should *never* use the `<font>` element
+//    -----------------------------------------------
+//
+// ... Then its text would be:
+//
+//    Why you should never use the <font> element
+//
+//
+// Rules for footnotes
+// ===================
+//
+// The rules for footnotes are more complicated.
 //
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
 // defeat the purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
@@ -72,8 +92,9 @@ import { Table } from '../SyntaxNodes/Table'
 //    The nesting can be arbitrarily deep.
 //
 //    Any nested footnotes are added to end of the footnote block containing the outer footnote, after any
-//    other non-nested footnotes. Then, any (doubly) nested footnotes inside the nested footnotes are added to
-//    the end of that same footnote block, and the process repeats until no more nested footnotes are found.
+//    other non-nested footnotes. Then, any (doubly) nested footnotes inside the nested footnotes are added
+//    to the end of that same footnote block, and the process repeats until no more nested footnotes are
+//    found.
 //
 // 4. Footnotes are assigned reference numbers based on the order those footnotes are referenced in the final
 //    document.

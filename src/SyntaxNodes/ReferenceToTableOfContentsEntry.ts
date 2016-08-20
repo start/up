@@ -4,7 +4,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
   constructor(
-    public textSnippetFromEntry: string,
+    public snippetFromEntry: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
   // TODO
