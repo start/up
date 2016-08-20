@@ -7,10 +7,6 @@ export class CodeBlock implements OutlineSyntaxNode {
     public code: string,
     public sourceLineNumber: number = undefined) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

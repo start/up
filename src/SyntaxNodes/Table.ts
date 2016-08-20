@@ -13,10 +13,6 @@ export class Table implements OutlineSyntaxNode {
     public caption?: Table.Caption,
     public sourceLineNumber: number = undefined) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return this.caption != null
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

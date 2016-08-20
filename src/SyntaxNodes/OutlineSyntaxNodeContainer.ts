@@ -8,6 +8,10 @@ export abstract class OutlineSyntaxNodeContainer {
 
   descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
-      this.children.map(child => child.descendantsToIncludeInTableOfContents()))
+      this.children.map(child =>
+        child instanceof Heading
+          ? [child]
+          : child.descendantsToIncludeInTableOfContents()
+      ))
   }
 }

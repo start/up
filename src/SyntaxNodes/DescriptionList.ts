@@ -10,10 +10,6 @@ export class DescriptionList implements OutlineSyntaxNode {
     public items: DescriptionList.Item[],
     public sourceLineNumber: number = undefined) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
       this.items.map(item => item.descendantsToIncludeInTableOfContents()))

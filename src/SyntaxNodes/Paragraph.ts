@@ -12,10 +12,6 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     super(children)
   }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

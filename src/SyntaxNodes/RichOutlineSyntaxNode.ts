@@ -6,6 +6,4 @@ export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer i
   constructor(children: OutlineSyntaxNode[], public sourceLineNumber: number = undefined) {
     super(children)
   }
-
-  abstract shouldBeIncludedInTableOfContents(): boolean
 }

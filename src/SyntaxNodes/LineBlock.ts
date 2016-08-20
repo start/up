@@ -6,10 +6,6 @@ import { Heading } from './Heading'
 export class LineBlock implements OutlineSyntaxNode {
   constructor(public lines: LineBlock.Line[], public sourceLineNumber: number = undefined) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

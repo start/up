@@ -12,10 +12,6 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     super(children)
   }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return true
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

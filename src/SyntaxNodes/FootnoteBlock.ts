@@ -11,10 +11,6 @@ export class FootnoteBlock implements OutlineSyntaxNode {
 
   constructor(public footnotes: Footnote[]) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return []
   }

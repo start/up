@@ -27,10 +27,6 @@ export class OrderedList implements OutlineSyntaxNode {
         : OrderedList.Order.Ascending)
   }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
       this.items.map(item => item.descendantsToIncludeInTableOfContents()))

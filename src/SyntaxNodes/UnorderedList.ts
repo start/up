@@ -9,10 +9,6 @@ export class UnorderedList implements OutlineSyntaxNode {
     public items: UnorderedList.Item[],
     public sourceLineNumber: number = undefined) { }
 
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
-  }
-
   descendantsToIncludeInTableOfContents(): Heading[] {
     return concat(
       this.items.map(item => item.descendantsToIncludeInTableOfContents()))
