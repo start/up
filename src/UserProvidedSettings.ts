@@ -1,5 +1,4 @@
 export interface UserProvidedSettings {
-  createTableOfContents?: boolean
   createSourceMap?: boolean
   writeUnsafeContent?: boolean
   documentName?: string

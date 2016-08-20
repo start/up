@@ -3,7 +3,6 @@ import { coalesce } from './CollectionHelpers'
 
 
 export class Config {
-  createTableOfContents = false
   createSourceMap = false
   writeUnsafeContent = false
   documentName = 'up'
@@ -23,7 +22,6 @@ export class Config {
   withChanges(changes: UserProvidedSettings): Config {
     const clone = new Config()
 
-    clone.createTableOfContents = this.createTableOfContents
     clone.createSourceMap = this.createSourceMap
     clone.writeUnsafeContent = this.writeUnsafeContent
     clone.documentName = this.documentName
@@ -41,9 +39,6 @@ export class Config {
   }
 
   private applyChangedUserSettings(settings: UserProvidedSettings): void {
-    this.createTableOfContents =
-      coalesce(settings.createTableOfContents, this.createTableOfContents)
-
     this.createSourceMap =
       coalesce(settings.createSourceMap, this.createSourceMap)
 
