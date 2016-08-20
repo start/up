@@ -1005,7 +1005,7 @@ Purchasing
     const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
-    expect(entries[2] === purchasingHeading).to.be.true
+    expect(entries[1] === purchasingHeading).to.be.true
   })
 
   specify("nested deep within other conventions", () => {
@@ -1031,6 +1031,6 @@ Purchasing
     const { entries } = document.tableOfContents
 
     expect(entries[0] === bestFruitHeading).to.be.true
-    expect(entries[2] === purchasingHeading).to.be.true
+    expect(entries[1] === purchasingHeading).to.be.true
   })
 })
