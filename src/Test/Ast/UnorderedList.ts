@@ -178,13 +178,14 @@ describe('An indented line immediately following an ordered list item line', () 
 * Roses are red
   Violets are blue`
 
+    const heading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], 1)
+            heading
           ]),
           new UnorderedList.Item([
             new LineBlock([
@@ -197,7 +198,7 @@ describe('An indented line immediately following an ordered list item line', () 
             ])
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([heading])))
   })
 })
 
@@ -214,6 +215,12 @@ describe('Multiple indented or blank lines immediately following an unordered li
 
 * Goodbye, world!
   ===============`
+
+    const hellodHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 1)
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -235,7 +242,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
             ], 1)
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([hellodHeading, goodbyeHeading])))
   })
 })
 
@@ -274,6 +281,12 @@ describe('An unordered list item containing multiple indented lines', () => {
 * Goodbye, world!
   ===============`
 
+    const hellodHeading =
+      new Heading([new PlainText('Hello, world!')], 1)
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], 1)
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedList([
@@ -303,7 +316,7 @@ describe('An unordered list item containing multiple indented lines', () => {
             ], 1)
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([hellodHeading, goodbyeHeading])))
   })
 })
 
