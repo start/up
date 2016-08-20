@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
@@ -12,7 +12,7 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     super(children)
   }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 

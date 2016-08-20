@@ -10,7 +10,7 @@ export enum TokenKind {
   FootnoteStart,
   HighlightEnd,
   HighlightStart,
-  InternalReference,
+  ReferenceToTableOfContentsEntry,
   ImageStartAndDescription,
   ItalicEnd,
   ItalicStart,

@@ -298,15 +298,20 @@ export abstract class Writer {
     return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 
-  // Returns the ordinal (1-based!) of an outline syntax node's entry in the table of contents.
+  // Returns the ordinal (1-based!) of a node's entry in the table of contents.
   //
   // Returns null if there isn't an entry in the table of contents for the node.  
-  private getOrdinalOfEntryInTableOfContents(heading: Heading): number {
-    // This is a hack, but if we have a heading, we know we aren't tasked with writing an InlineUpDocument.
-    const indexOfEntry =
-      (this.document as UpDocument).tableOfContents.entries.indexOf(heading)
+  private getOrdinalOfEntryInTableOfContents(entry: UpDocument.TableOfContents.Entry): number {
+    const { document } = this
 
-    return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
+    if (document instanceof UpDocument) {
+      const indexOfEntry =
+        document.tableOfContents.entries.indexOf(entry)
+
+      return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
+    }
+
+    return null
   }
 }
 

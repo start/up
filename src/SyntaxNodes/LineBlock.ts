@@ -1,12 +1,12 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export class LineBlock implements OutlineSyntaxNode {
   constructor(public lines: LineBlock.Line[], public sourceLineNumber: number = undefined) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 }

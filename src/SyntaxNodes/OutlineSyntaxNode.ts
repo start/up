@@ -1,7 +1,7 @@
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export interface OutlineSyntaxNode {
   sourceLineNumber: number
-  descendantHeadingsToIncludeInTableOfContents(): Heading[]
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[]
 }

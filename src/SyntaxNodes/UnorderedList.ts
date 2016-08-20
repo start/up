@@ -1,6 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 import { concat } from '../CollectionHelpers'
 
 
@@ -9,9 +9,9 @@ export class UnorderedList implements OutlineSyntaxNode {
     public items: UnorderedList.Item[],
     public sourceLineNumber: number = undefined) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return concat(
-      this.items.map(item => item.descendantHeadingsToIncludeInTableOfContents()))
+      this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }
 }
 

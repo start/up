@@ -145,7 +145,7 @@ class Tokenizer {
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
-      ...this.getInternalReferenceConventions(),
+      ...this.getReferenceToTableOfContentsEntryConventions(),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -401,12 +401,12 @@ class Tokenizer {
     })
   }
 
-  // This convention represents a reference to an item worthy of inclusion in the table of contents.
+  // This convention represents a reference to a table of contents entry.
   //
   // Usage: For more information, see [reference: shading]
   //
   // When written to an output format (e.g. HTML), it should serve as a link to that item.
-  private getInternalReferenceConventions(): Convention[] {
+  private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       new Convention({
         // Internal references cannot be totally blank.
@@ -419,8 +419,8 @@ class Tokenizer {
         insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawBrackets(),
 
         whenClosing: () => {
-          const textSnippetFromReferencedItem = this.flushBuffer().trim()
-          this.appendNewToken(TokenKind.InternalReference, textSnippetFromReferencedItem)
+          const textSnippetFromTableOfContentsEntry = this.flushBuffer().trim()
+          this.appendNewToken(TokenKind.ReferenceToTableOfContentsEntry, textSnippetFromTableOfContentsEntry)
         }
       }))
   }

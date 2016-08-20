@@ -8,7 +8,7 @@ import { Token } from './Tokenization/Token'
 import { TokenKind } from './Tokenization/TokenKind'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
-import { InternalReference } from '../../SyntaxNodes/InternalReference'
+import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { Link } from '../../SyntaxNodes/Link'
 import { RevealableConvention } from './RevealableConvention'
 
@@ -94,8 +94,8 @@ class Parser {
           continue
         }
 
-        case TokenKind.InternalReference: {
-          this.nodes.push(new InternalReference(token.value))
+        case TokenKind.ReferenceToTableOfContentsEntry: {
+          this.nodes.push(new ReferenceToTableOfContentsEntry(token.value))
           continue
         }
 

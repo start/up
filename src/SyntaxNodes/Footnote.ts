@@ -11,7 +11,7 @@ export class Footnote extends RichInlineSyntaxNode {
   // That would defeat the purpose of footnotes! Instead, footnotes are extracted and placed in
   // footnote blocks.
   //
-  // This process is fully explained in `insertFootnoteBlocksAndAssignFootnoteReferenceNumbers.ts`.
+  // This process is fully explained in `finalizeDocument.ts`.
   //
   // Long story short: footnotes don't represent inline content, so this method just returns an
   // empty string.

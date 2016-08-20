@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { InternalReference } from '../../SyntaxNodes/InternalReference'
+import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 /*
 import { Table } from '../../SyntaxNodes/Table'
@@ -30,7 +30,7 @@ import { Link } from '../../SyntaxNodes/Link'
 
 
 describe('Bracketed text starting with "reference:".', () => {
-  specify('produces an internal reference node', () => {
+  specify('produces a reference to a table of contents entry', () => {
     const markup = `
 I drink soda
 ============
@@ -57,7 +57,7 @@ Not quite true. For example, see [reference: soda].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalReference('soda', sodaHeading),
+          new ReferenceToTableOfContentsEntry('soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -94,7 +94,7 @@ Not quite true. For example, see [reference: I drink soda--exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalReference('I drink soda–exclusively', sodaHeading),
+            new ReferenceToTableOfContentsEntry('I drink soda–exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -127,7 +127,7 @@ Not quite true. For example, see [reference: I drink soda---exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalReference('I drink soda—exclusively', sodaHeading),
+            new ReferenceToTableOfContentsEntry('I drink soda—exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -160,7 +160,7 @@ Not quite true. For example, see [reference: I drink 9 cans of soda +-2].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalReference('I drink 9 cans of soda ±2', sodaHeading),
+            new ReferenceToTableOfContentsEntry('I drink 9 cans of soda ±2', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))

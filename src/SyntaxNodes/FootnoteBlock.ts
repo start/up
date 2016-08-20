@@ -1,6 +1,6 @@
 import { Footnote } from './Footnote'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export class FootnoteBlock implements OutlineSyntaxNode {
@@ -11,7 +11,7 @@ export class FootnoteBlock implements OutlineSyntaxNode {
 
   constructor(public footnotes: Footnote[]) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 

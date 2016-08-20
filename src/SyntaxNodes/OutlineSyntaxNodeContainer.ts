@@ -1,12 +1,12 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Heading } from './Heading'
-import { allHeadingsToIncludeInTableOfContents } from './allHeadingsToIncludeInTableOfContents'
+import { UpDocument } from './UpDocument'
+import { getEntriesForTableOfContents } from './getEntriesForTableOfContents'
 
 
 export abstract class OutlineSyntaxNodeContainer {
   constructor(public children: OutlineSyntaxNode[]) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
-    return allHeadingsToIncludeInTableOfContents(this.children)
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+    return getEntriesForTableOfContents(this.children)
   }
 }

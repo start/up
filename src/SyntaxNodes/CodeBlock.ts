@@ -1,5 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
@@ -7,7 +7,7 @@ export class CodeBlock implements OutlineSyntaxNode {
     public code: string,
     public sourceLineNumber: number = undefined) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 

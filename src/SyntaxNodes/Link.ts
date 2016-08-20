@@ -1,7 +1,7 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
@@ -19,7 +19,7 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
     return false
   }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 }

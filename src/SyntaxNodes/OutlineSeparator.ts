@@ -1,11 +1,11 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 export class OutlineSeparator implements OutlineSyntaxNode {
   constructor(public sourceLineNumber: number = undefined) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 

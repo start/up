@@ -1,12 +1,12 @@
 import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 
 
 // A "revealable" convention is one that requires deliberate action from the reader to reveal.
 export abstract class RevealableOutlineSyntaxNode extends RichOutlineSyntaxNode {
   // As a rule, we don't want to include any revealable (i.e. initially hidden) headings in the
   // table of contents.
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 

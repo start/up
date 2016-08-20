@@ -20,6 +20,17 @@ import { NsflBlock } from '../SyntaxNodes/NsflBlock'
 import { Table } from '../SyntaxNodes/Table'
 
 
+// This function is responsible for:
+//
+// 1. Assigning footnote reference numbers
+// 2. Producing footnote blocks
+// 3. Associating internal references with the appropriate table of contents entry
+//
+// The rules for internal references aren't too complicated. Each internal reference has  
+//
+// 1. The first table of contents entry with an exact   
+//
+//
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
 // defeat the purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
 // 
@@ -29,9 +40,7 @@ import { Table } from '../SyntaxNodes/Table'
 // Future output formats might handle footnotes slightly differently, but they should all use a similar
 // strategy.
 //
-// This function is responsible for assigning footnote reference numbers and producing footnote blocks.
-//
-// The specific rules are below:
+// The specific footnote rules are below:
 //
 //
 // 1. Any footnotes within a top-level outline convention are placed into a footnote block directly following
@@ -78,7 +87,7 @@ import { Table } from '../SyntaxNodes/Table'
 //
 // Oh, one last thing! We'll use the term "blockless footnote" to describe a Footnote that hasn't yet been
 // placed in a footnote block.
-export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document: UpDocument): void {
+export function finalizeDocument(document: UpDocument): void {
   new FootnoteBlockInserter(document)
 }
 
@@ -87,10 +96,10 @@ class FootnoteBlockInserter {
   private currentFootnoteReferenceNumber = 1
 
   constructor(document: UpDocument) {
-    this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
+    this.finalizeDocument(document)
   }
 
-  insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
+  finalizeDocument(outlineNodeContainer: OutlineSyntaxNodeContainer): void {
     const outlineNodesWithFootnoteBlocks: OutlineSyntaxNode[] = []
 
     for (const outlineNode of outlineNodeContainer.children) {
@@ -118,7 +127,7 @@ class FootnoteBlockInserter {
     }
 
     if ((node instanceof Blockquote) || (node instanceof SpoilerBlock) || (node instanceof NsfwBlock) || (node instanceof NsflBlock)) {
-      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
+      this.finalizeDocument(node)
 
       // We've just handled all the footnotes within the outline convention. None of them are blockless!
       return []

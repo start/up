@@ -1,7 +1,7 @@
+import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-
 
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
   constructor(
@@ -12,7 +12,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     super(children)
   }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
 }

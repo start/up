@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Heading } from './Heading'
+import { UpDocument } from './UpDocument'
 import { concat } from '../CollectionHelpers'
 
 
@@ -10,9 +10,9 @@ export class DescriptionList implements OutlineSyntaxNode {
     public items: DescriptionList.Item[],
     public sourceLineNumber: number = undefined) { }
 
-  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return concat(
-      this.items.map(item => item.descendantHeadingsToIncludeInTableOfContents()))
+      this.items.map(item => item.descendantsToIncludeInTableOfContents()))
   }
 }
 
@@ -23,8 +23,8 @@ export namespace DescriptionList {
       public terms: DescriptionList.Item.Term[],
       public description: DescriptionList.Item.Description) { }
 
-    descendantHeadingsToIncludeInTableOfContents(): Heading[] {
-      return this.description.descendantHeadingsToIncludeInTableOfContents()
+    descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+      return this.description.descendantsToIncludeInTableOfContents()
     }
   }
 
