@@ -19,11 +19,12 @@ export namespace UpDocument {
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
+  // 3. Internal references associated with the apprioriate table of contents entry 
   export function create(children: OutlineSyntaxNode[]): UpDocument {
     const document = new UpDocument(children)
     insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
 
-    const tableOfContentsEntries = document.descendantsToIncludeInTableOfContents()
+    const tableOfContentsEntries = document.descendantHeadingsToIncludeInTableOfContents()
 
     if (tableOfContentsEntries.length) {
       document.tableOfContents = new UpDocument.TableOfContents(tableOfContentsEntries)

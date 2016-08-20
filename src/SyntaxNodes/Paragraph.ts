@@ -12,7 +12,7 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     super(children)
   }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

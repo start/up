@@ -12,7 +12,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     super(children)
   }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 }

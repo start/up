@@ -5,7 +5,7 @@ import { Heading } from './Heading'
 export class OutlineSeparator implements OutlineSyntaxNode {
   constructor(public sourceLineNumber: number = undefined) { }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 

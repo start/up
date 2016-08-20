@@ -19,7 +19,7 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
     return false
   }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 }

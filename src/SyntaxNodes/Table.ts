@@ -13,7 +13,7 @@ export class Table implements OutlineSyntaxNode {
     public caption?: Table.Caption,
     public sourceLineNumber: number = undefined) { }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 }

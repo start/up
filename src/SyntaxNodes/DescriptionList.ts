@@ -10,9 +10,9 @@ export class DescriptionList implements OutlineSyntaxNode {
     public items: DescriptionList.Item[],
     public sourceLineNumber: number = undefined) { }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return concat(
-      this.items.map(item => item.descendantsToIncludeInTableOfContents()))
+      this.items.map(item => item.descendantHeadingsToIncludeInTableOfContents()))
   }
 }
 
@@ -23,8 +23,8 @@ export namespace DescriptionList {
       public terms: DescriptionList.Item.Term[],
       public description: DescriptionList.Item.Description) { }
 
-    descendantsToIncludeInTableOfContents(): Heading[] {
-      return this.description.descendantsToIncludeInTableOfContents()
+    descendantHeadingsToIncludeInTableOfContents(): Heading[] {
+      return this.description.descendantHeadingsToIncludeInTableOfContents()
     }
   }
 

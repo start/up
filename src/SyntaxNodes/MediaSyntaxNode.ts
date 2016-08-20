@@ -15,7 +15,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return ''
   }
 
-  descendantsToIncludeInTableOfContents(): Heading[] {
+  descendantHeadingsToIncludeInTableOfContents(): Heading[] {
     return []
   }
 
