@@ -9,8 +9,8 @@ import { Heading } from '../../SyntaxNodes/Heading'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 
-context("The UpDocument.create function is for users who want help manually fiddling with the abstract syntax tree. (It's automatically used during the normal parsing process.)", () => {
-  specify("It assigns footnotes their reference numbers (mutating them) and places them in footnote blocks (mutating any outline nodes they're placed inside)", () => {
+context("The `UpDocument.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
+  specify("Footnotes assigned their reference numbers (mutating them) and placed in footnote blocks (mutating any outline nodes the blocks are placed inside)", () => {
     const document = UpDocument.create([
       new Paragraph([
         new PlainText("I don't eat cereal."),
@@ -47,7 +47,7 @@ context("The UpDocument.create function is for users who want help manually fidd
       ]))
   })
 
-  specify("It produces a table of contents", () => {
+  specify("A table of contents", () => {
     const document = UpDocument.create([
       new Heading([new PlainText('I enjoy apples')], 1),
       new OrderedList([
@@ -80,48 +80,6 @@ context("The UpDocument.create function is for users who want help manually fidd
           new Heading([new PlainText('I enjoy apples')], 1),
           new Heading([new PlainText("They're cheap")], 2),
           new Heading([new PlainText("They're delicious")], 2)
-        ])))
-  })
-
-  specify("To be clear, it can both produce footnote blocks and create a table of contents at the same time.", () => {
-    const document = UpDocument.create([
-      new Heading([new PlainText('I enjoy apples')], 1),
-      new Paragraph([
-        new PlainText("I don't eat cereal."),
-        new Footnote([new PlainText('Well, I do, but I pretend not to.')]),
-        new PlainText(" Never have.")
-      ]),
-      new SpoilerBlock([
-        new Paragraph([
-          new PlainText("This ruins the movie."),
-          new Footnote([new PlainText("And this is a fun fact.")])
-        ])
-      ])
-    ])
-
-    expect(document).to.be.eql(
-      new UpDocument([
-        new Heading([new PlainText('I enjoy apples')], 1),
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
-          new Footnote([new PlainText('Well, I do, but I pretend not to.')], 1),
-          new PlainText(" Never have.")
-        ]),
-        new FootnoteBlock([
-          new Footnote([new PlainText('Well, I do, but I pretend not to.')], 1),
-        ]),
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            new Footnote([new PlainText("And this is a fun fact.")], 2)
-          ]),
-          new FootnoteBlock([
-            new Footnote([new PlainText('And this is a fun fact.')], 2),
-          ])
-        ])
-      ],
-        new UpDocument.TableOfContents([
-          new Heading([new PlainText('I enjoy apples')], 1)
         ])))
   })
 })
