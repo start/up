@@ -44,7 +44,7 @@ describe('A link nested within a table of contents entries ', () => {
     const heading =
       new Heading([
         new Link([new PlainText('I enjoy apples')], 'https://google.com')
-      ], 1)
+      ], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -106,7 +106,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
             new Link([new PlainText('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
-      ], 1)
+      ], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

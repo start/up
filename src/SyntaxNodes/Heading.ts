@@ -11,9 +11,9 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
   constructor(
     children: InlineSyntaxNode[],
     options: {
-      level?: number,
+      level: number,
       sourceLineNumber?: number
-    } = {}
+    }
   ) {
     super(children)
 

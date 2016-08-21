@@ -152,7 +152,7 @@ export class HtmlWriter extends Writer {
     const attrs: { id?: string } = {}
 
     if (ordinalOfEntryInTableOfContents) {
-      attrs.id = this.idOfElementReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
+      attrs.id = this.idOfItemReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
     }
 
     return this.element(
@@ -383,32 +383,33 @@ export class HtmlWriter extends Writer {
   private tableOfContentsTitle(): string {
     return this.write(
       new Heading([
-        new PlainText(this.config.terms.output.tableOfContents)], 1))
+        new PlainText(this.config.terms.output.tableOfContents)], { level: 1 }))
   }
 
-  private tableOfContentsEntries(entries: Heading[]): string {
+  private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
     const listItems =
       entries.map((entry, index) =>
         new UnorderedList.Item([
-          this.nodeRepresentingTableOfContentsEntry(entry, index)
+          this.tableOfContentsEntry(entry, index)
         ]))
 
     return this.write(new UnorderedList(listItems))
   }
 
-  private nodeRepresentingTableOfContentsEntry(entry: Heading, indexOfEntry: number): OutlineSyntaxNode {
+  private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry, indexOfEntry: number): OutlineSyntaxNode {
     const ordinal = indexOfEntry + 1
 
+    // Right now, only headings can be table of contents entries, which simplifies this method.
     return new Heading(
-      [this.linkToElementReferencedByTableOfContents(entry.children, ordinal)],
-      entry.level + 1)
+      [this.linkToItemReferencedByTableOfContents(entry.children, ordinal)],
+      { level: entry.level + 1 })
   }
 
-  private linkToElementReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): Link {
-    const idOfElement =
-      this.idOfElementReferencedByTableOfContents(ordinalTableOfContentsEntry)
+  private linkToItemReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): Link {
+    const idOfItem =
+      this.idOfItemReferencedByTableOfContents(ordinalTableOfContentsEntry)
 
-    return new Link(children, internalFragmentUrl(idOfElement))
+    return new Link(children, internalFragmentUrl(idOfItem))
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {
@@ -588,7 +589,7 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
-  private idOfElementReferencedByTableOfContents(ordinal: number): string {
+  private idOfItemReferencedByTableOfContents(ordinal: number): string {
     return this.getId(this.config.terms.output.itemReferencedByTableOfContents, ordinal)
   }
 

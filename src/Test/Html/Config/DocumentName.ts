@@ -684,7 +684,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
 
 describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
-    const heading = new Heading([], 1)
+    const heading = new Heading([], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -707,7 +707,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: 'reply-11'
     })
 
-    const heading = new Heading([], 1)
+    const heading = new Heading([], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -729,7 +729,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: ''
     })
 
-    const heading = new Heading([], 1)
+    const heading = new Heading([], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -751,7 +751,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       documentName: ' \t'
     })
 
-    const heading = new Heading([], 1)
+    const heading = new Heading([], { level: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

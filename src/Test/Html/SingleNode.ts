@@ -491,7 +491,7 @@ describe('A blockquote node', () => {
 describe('A level 1 heading node', () => {
   it('produces an <h1> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 1)
+      new Heading([new PlainText('Bulbasaur')], { level: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h1>Bulbasaur</h1>')
@@ -502,7 +502,7 @@ describe('A level 1 heading node', () => {
 describe('A level 2 heading node', () => {
   it('produces an <h2> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Ivysaur')], 2)
+      new Heading([new PlainText('Ivysaur')], { level: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h2>Ivysaur</h2>')
@@ -513,7 +513,7 @@ describe('A level 2 heading node', () => {
 describe('A level 3 heading node', () => {
   it('produces an <h3> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Venusaur')], 3)
+      new Heading([new PlainText('Venusaur')], { level: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h3>Venusaur</h3>')
@@ -524,7 +524,7 @@ describe('A level 3 heading node', () => {
 describe('A level 4 heading node', () => {
   it('produces an <h4>', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Charmander')], 4)
+      new Heading([new PlainText('Charmander')], { level: 4 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h4>Charmander</h4>')
@@ -535,7 +535,7 @@ describe('A level 4 heading node', () => {
 describe('A level 5 heading node', () => {
   it('produces an <h5> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Charmeleon')], 5)
+      new Heading([new PlainText('Charmeleon')], { level: 5 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h5>Charmeleon</h5>')
@@ -546,7 +546,7 @@ describe('A level 5 heading node', () => {
 describe('A level 6 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Charizard')], 6)
+      new Heading([new PlainText('Charizard')], { level: 6 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Charizard</h6>')
@@ -557,7 +557,7 @@ describe('A level 6 heading node', () => {
 describe('A level 7 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Squirtle')], 7)
+      new Heading([new PlainText('Squirtle')], { level: 7 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Squirtle</h6>')
@@ -568,7 +568,7 @@ describe('A level 7 heading node', () => {
 describe('A level 8 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Wartortle')], 8)
+      new Heading([new PlainText('Wartortle')], { level: 8 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Wartortle</h6>')
@@ -579,7 +579,7 @@ describe('A level 8 heading node', () => {
 describe('A level 9 heading node', () => {
   it('produces an <h6> element', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Blastoise')], 9)
+      new Heading([new PlainText('Blastoise')], { level: 9 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6>Blastoise</h6>')

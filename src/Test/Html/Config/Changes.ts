@@ -221,7 +221,7 @@ describe('The "toggleNsfl" config term', () => {
 
 
 describe('The "tableOfContents" config setting', () => {
-  const heading = new Heading([], 1)
+  const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument(
