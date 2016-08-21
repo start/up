@@ -61,7 +61,7 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { chart: ' \t data \t ' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { chart: ' \t data \t ' } } })).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -86,7 +86,7 @@ Chrono Cross;     1999`
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { chart: '*data*' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { chart: '*data*' } } })).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -118,7 +118,7 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { chart: ['data', 'info'] } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { chart: ['data', 'info'] } } })).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([

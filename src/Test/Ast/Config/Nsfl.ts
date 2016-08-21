@@ -10,12 +10,14 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
   const up = new Up({
-    terms: { nsfl: 'ruins ending' }
+    terms: {
+      markup: { nsfl: 'ruins ending' }
+    }
   })
 
   context('For inline NSFL conventions, the term', () => {
     it('is used', () => {
-      expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { nsfl: 'ruins ending' } })).to.be.eql(
+      expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -23,15 +25,24 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
         ]))
     })
 
-    it('is case-insensitive, even when custom', () => {
+    it('is case-insensitive', () => {
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
       expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
     })
 
-    it('ignores inline conventions and regular expression rules', () => {
-      expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { nsfl: ' \t ruins ending \t ' } })).to.be.eql(
+    it('is trimmed', () => {
+      const markup = '[RUINS ending: Ash fights Gary]'
+
+      const document = Up.toDocument(
+        '[RUINS ending: Ash fights Gary]', {
+          terms: {
+            markup: { nsfl: ' \t ruins ending \t ' }
+          }
+        })
+
+      expect(Up.toDocument(markup)).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -40,7 +51,14 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     })
 
     it('ignores inline conventions and regular expression rules', () => {
-      expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { nsfl: '*ruins* ending' } })).to.be.eql(
+      const document = Up.toDocument(
+        '[*RUINS* ending: Ash fights Gary]', {
+          terms: {
+            markup: { nsfl: '*ruins* ending' }
+          }
+        })
+
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -49,7 +67,14 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     })
 
     it('can have multiple variations', () => {
-      expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { nsfl: ['look away', 'ruins ending'] } })).to.be.eql(
+      const document = Up.toDocument(
+        '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
+          terms: {
+            markup: { nsfl: ['look away', 'ruins ending'] }
+          }
+        })
+
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -110,7 +135,13 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup, { terms: { nsfl: ' \t ruins ending \t ' } })).to.be.eql(
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { nsfl: ' \t ruins ending \t ' }
+        }
+      })
+
+      expect(document).to.be.eql(
         new UpDocument([
           new NsflBlock([
             new Paragraph([
@@ -131,7 +162,13 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup, { terms: { nsfl: '*ruins* ending' } })).to.be.eql(
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { nsfl: '*ruins* ending' }
+        }
+      })
+
+      expect(document).to.be.eql(
         new UpDocument([
           new NsflBlock([
             new Paragraph([
@@ -154,7 +191,13 @@ LOOK AWAY:
     
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup, { terms: { nsfl: ['look away', 'ruins ending'] } })).to.be.eql(
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { nsfl: ['look away', 'ruins ending'] }
+        }
+      })
+
+      expect(document).to.be.eql(
         new UpDocument([
           new NsflBlock([
             new Paragraph([

@@ -28,7 +28,7 @@ describe('The term that represents video conventions', () => {
   it('is trimmed', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(Up.toDocument(markup, { terms: { audio: ' \t listen \t ' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { audio: ' \t listen \t ' } } })).to.be.eql(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -37,7 +37,7 @@ describe('The term that represents video conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*listen*: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(Up.toDocument(markup, { terms: { audio: '*listen*' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { audio: '*listen*' } } })).to.be.eql(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -46,7 +46,7 @@ describe('The term that represents video conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[hear: chanting at Nevada caucus](https://example.com/audio.ogg) [listen: chanting at Nevada caucus](https://example.com/audio.ogg)'
 
-    expect(Up.toDocument(markup, { terms: { audio: ['hear', 'listen'] } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { audio: ['hear', 'listen'] } } })).to.be.eql(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')

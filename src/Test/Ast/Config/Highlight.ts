@@ -7,7 +7,9 @@ import { Highlight } from '../../../SyntaxNodes/Highlight'
 
 describe('The "highlight" config term', () => {
   const up = new Up({
-    terms: { highlight: 'mark' }
+    terms: {
+      markup: { highlight: 'mark' }
+    }
   })
 
   it('is used to indicate highlighted text', () => {
@@ -29,7 +31,7 @@ describe('The "highlight" config term', () => {
   it('is trimmed', () => {
     const markup = '[mark: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { highlight: ' \t mark \t ' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { highlight: ' \t mark \t ' } } })).to.be.eql(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
@@ -40,7 +42,7 @@ describe('The "highlight" config term', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*mark*: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { highlight: '*mark*' } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { highlight: '*mark*' } } })).to.be.eql(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
@@ -51,7 +53,7 @@ describe('The "highlight" config term', () => {
   it('can have multiple variations', () => {
     const markup = '[paint: Ash fights Gary][mark: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { highlight: ['mark', 'paint'] } })).to.be.eql(
+    expect(Up.toDocument(markup, { terms: { markup: { highlight: ['mark', 'paint'] } } })).to.be.eql(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
