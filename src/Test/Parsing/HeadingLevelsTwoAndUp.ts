@@ -19,8 +19,8 @@ Goodbye, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], 1),
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Hello, world!')], { level: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -39,8 +39,8 @@ Goodbye, world!
 = = = = = = = =`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], 1),
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Hello, world!')], { level: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -63,9 +63,9 @@ Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], 1),
-      new Heading([new PlainText('Goodbye, world!')], 1),
-      new Heading([new PlainText('Goodbye again, world!')], 2)
+      new Heading([new PlainText('Hello, world!')], { level: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 1 }),
+      new Heading([new PlainText('Goodbye again, world!')], { level: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -112,13 +112,13 @@ Warlocked
 - - - - -`
 
     const headings = [
-      new Heading([new PlainText('Interactive Software')], 1),
-      new Heading([new PlainText('Video Games')], 2),
-      new Heading([new PlainText('Handheld Video Games')], 3),
-      new Heading([new PlainText('Game Boy Games')], 4),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], 5),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], 6),
-      new Heading([new PlainText('Warlocked')], 7)
+      new Heading([new PlainText('Interactive Software')], { level: 1 }),
+      new Heading([new PlainText('Video Games')], { level: 2 }),
+      new Heading([new PlainText('Handheld Video Games')], { level: 3 }),
+      new Heading([new PlainText('Game Boy Games')], { level: 4 }),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], { level: 5 }),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6 }),
+      new Heading([new PlainText('Warlocked')], { level: 7 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -142,13 +142,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
+      new Heading([new PlainText('Hello, world!')], { level: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -181,13 +181,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
+      new Heading([new PlainText('Hello, world!')], { level: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -221,13 +221,13 @@ Awkward
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
+      new Heading([new PlainText('Hello, world!')], { level: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -262,17 +262,17 @@ Goodbye, world!
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
+      new Heading([new PlainText('Hello, world!')], { level: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], 2)
+      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], 1)
+          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
         ])
       ], new UpDocument.TableOfContents([
         helloHeading,
@@ -297,11 +297,11 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], 1),
-          new Heading([new PlainText('Goodbye, world!')], 2),
+          new Heading([new PlainText('Hello, world!')], { level: 1 }),
+          new Heading([new PlainText('Goodbye, world!')], { level: 2 }),
           new UnorderedList([
             new UnorderedList.Item([
-              new Heading([new PlainText('Umm, I forgot my keys.')], 2)
+              new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
             ])
           ])
         ])
@@ -325,10 +325,10 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], 1),
-          new Heading([new PlainText('Goodbye, world!')], 2),
+          new Heading([new PlainText('Hello, world!')], { level: 1 }),
+          new Heading([new PlainText('Goodbye, world!')], { level: 2 }),
           new Blockquote([
-            new Heading([new PlainText('Umm, I forgot my keys.')], 1)
+            new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
           ])
         ])
       ]))
@@ -352,11 +352,11 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], 1),
-          new Heading([new PlainText('Goodbye, world!')], 2)
+          new Heading([new PlainText('Hello, world!')], { level: 1 }),
+          new Heading([new PlainText('Goodbye, world!')], { level: 2 })
         ]),
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], 1)
+          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
         ])
       ]))
   })

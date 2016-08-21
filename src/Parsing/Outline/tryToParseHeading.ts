@@ -63,11 +63,11 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const headingLevel = args.headingLeveler.registerUnderlineAndGetLevel(underline)
-  const headingChildren = getInlineSyntaxNodes(contentMarkup, args.config)
+  const children = getInlineSyntaxNodes(contentMarkup, args.config)
+  const level = args.headingLeveler.registerUnderlineAndGetLevel(underline)
 
   args.then(
-    [new Heading(headingChildren, headingLevel)],
+    [new Heading(children, { level })],
     markupLineConsumer.countLinesConsumed)
 
   return true
