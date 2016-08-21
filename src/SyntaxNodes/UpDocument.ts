@@ -4,6 +4,8 @@ import { Heading } from './Heading'
 import { ReferenceToTableOfContentsEntry } from './ReferenceToTableOfContentsEntry'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { concat } from '../CollectionHelpers'
+import { getText } from './getText'
+
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
   // Returns a document object with:
@@ -53,9 +55,9 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
 export namespace UpDocument {
   export class TableOfContents {
     static getEntries(nodes: OutlineSyntaxNode[]): UpDocument.TableOfContents.Entry[] {
-      // Right now, only headings can be table of contents entries.
       return concat(
         nodes.map(node =>
+          // Right now, only headings can be table of contents entries.
           node instanceof Heading
             ? [node]
             : node.descendantsToIncludeInTableOfContents()))
@@ -66,5 +68,9 @@ export namespace UpDocument {
 
   export namespace TableOfContents {
     export type Entry = Heading
+
+    export function getEntryText(entry: Entry): string {
+      return getText(entry.children)
+    }
   }
 }

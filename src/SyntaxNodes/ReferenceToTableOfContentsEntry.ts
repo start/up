@@ -1,6 +1,5 @@
 import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { getText } from './getText'
 import { patternIgnoringCapitalizationAndContaining, escapeForRegex } from '../Parsing/PatternHelpers'
 
 
@@ -9,12 +8,13 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     public entryTextSnippet: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
-  // TODO
   text(): string {
-    return ''
+    return (
+      this.entry
+        ? UpDocument.TableOfContents.getEntryText(this.entry)
+        : this.entryTextSnippet)
   }
 
-  // If a reference has no matching entry, then this entry 
   hasNoMatchingEntry(): boolean {
     return this.entry == null
   }
@@ -35,15 +35,15 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     // We'll match with the first entry whose text exactly equals `entryTextSnippet`. We don't care about
     // capitalization, but the text otherwise has to be an exact match. 
     //
-    // If there are no exact matches,
-    // then we'll match the first entry whose text *contains* `entryTextSnippet`.
+    // If there are no exact matches,  then we'll match the first entry whose text *contains*
+    // `entryTextSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck.
     //
     // TODO: Consider measuring string distance. 
 
     for (const entry of entries) {
-      const textOfEntry = getText(entry.children)
+      const textOfEntry = UpDocument.TableOfContents.getEntryText(entry)
 
       if (textOfEntry === this.entryTextSnippet) {
         // We found a perfect match! We're done.
