@@ -16,7 +16,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new Link([
         new PlainText('the phone was dead')
       ], 'tel:555-555-5555')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^the phone was dead',
@@ -36,7 +36,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('Advance Wars')
         ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^Advance Wars',
@@ -52,7 +52,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL must not contain any spaces', () => {
       const footnote = new Footnote([
         new PlainText('the phone was dead')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.be.eql(
         new UpDocument([
@@ -74,7 +74,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('there must be somethng after the scheme', () => {
       const footnote = new Footnote([
         new PlainText('email')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^email) (mailto:)')).to.be.eql(
         new UpDocument([
@@ -92,7 +92,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('there must be somethng after the scheme beyond only slashes', () => {
       const footnote = new Footnote([
         new PlainText('local files')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^local files) (file:///)')).to.be.eql(
         new UpDocument([
@@ -112,7 +112,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('the phone was dead')
         ], 'tel:5555555555')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^the phone was dead',
@@ -128,7 +128,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the scheme must not be escaped', () => {
       const footnote = new Footnote([
         new PlainText('email')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^email) (\\mailto:daniel@wants.email)')).to.be.eql(
         new UpDocument([
@@ -150,7 +150,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new Link([
         new PlainText('the phone was dead')
       ], '/wiki/dead-phone')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^the phone was dead',
@@ -168,7 +168,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must not contain any spaces', () => {
       const footnote = new Footnote([
         new PlainText('the phone was dead')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^the phone was dead) (/r9k/ was talking about it)')).to.be.eql(
         new UpDocument([
@@ -186,7 +186,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must have something after the slash', () => {
       const footnote = new Footnote([
         new PlainText('slash')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^slash) (/)')).to.be.eql(
         new UpDocument([
@@ -206,7 +206,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('the phone was dead')
         ], '/5555555555')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^the phone was dead',
@@ -222,7 +222,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must not have its slash escaped', () => {
       const footnote = new Footnote([
         new PlainText('slash')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^slash) (\\/r9k/)')).to.be.eql(
         new UpDocument([
@@ -244,7 +244,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new Link([
         new PlainText('the phone was dead')
       ], '#wiki/dead-phone')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^the phone was dead',
@@ -264,7 +264,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('the phone was dead')
         ], '#15')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^the phone was dead',
@@ -280,7 +280,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must not contain any spaces', () => {
       const footnote = new Footnote([
         new PlainText('the game was dead')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^the game was dead) (#starcraft2 was never trending)')).to.be.eql(
         new UpDocument([
@@ -298,7 +298,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must have something after the hash mark', () => {
       const footnote = new Footnote([
         new PlainText('hash mark')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^hash mark) (#)')).to.be.eql(
         new UpDocument([
@@ -316,7 +316,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('must not have its hashmark escaped', () => {
       const footnote = new Footnote([
         new PlainText('hash mark')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('(^hash mark) (\\#starcraft2)')).to.be.eql(
         new UpDocument([
@@ -338,7 +338,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new Link([
         new PlainText('Chrono Trigger')
       ], 'https://chrono-trigger.wiki')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Chrono Trigger',
@@ -358,7 +358,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('Advance Wars')
         ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^Advance Wars',
@@ -376,7 +376,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('Advance Wars!')
         ], 'https://advancewars.wikia.com/')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^Advance Wars!',
@@ -392,7 +392,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       const footnote = new Footnote([
         new PlainText('that place')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^that place] (4chan.org-terrifying)')).to.be.eql(
         new UpDocument([
@@ -412,7 +412,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('Good luck!')
         ], 'https://88.8888.cn')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^Good luck!',
@@ -429,7 +429,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       specify('No numbers', () => {
         const footnote = new Footnote([
           new PlainText('username')
-        ], 1)
+        ], { referenceNumber: 1 })
 
         expect(Up.toDocument('[^username] (john.e.smith5)')).to.be.eql(
           new UpDocument([
@@ -447,7 +447,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       specify('No hyphens', () => {
         const footnote = new Footnote([
           new PlainText('username')
-        ], 1)
+        ], { referenceNumber: 1 })
 
         expect(Up.toDocument('[^username] (john.e.smith-kline)')).to.be.eql(
           new UpDocument([
@@ -466,7 +466,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL must start with a letter or a number, not a period', () => {
       const footnote = new Footnote([
         new PlainText('top-level domain')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^top-level domain] (.co.uk)')).to.be.eql(
         new UpDocument([
@@ -484,7 +484,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       const footnote = new Footnote([
         new PlainText('Ash is not his own father')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^Ash is not his own father] (um..uh)')).to.be.eql(
         new UpDocument([
@@ -502,7 +502,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       const footnote = new Footnote([
         new PlainText('debilitating sadness')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
         new UpDocument([
@@ -522,7 +522,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new Link([
           new PlainText('Good luck!')
         ], 'https://88.8888.cn')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: '^Good luck!',
@@ -538,7 +538,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL must not contain any spaces', () => {
       const footnote = new Footnote([
         new PlainText('yeah')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^yeah] (ign.com had some hilarious forums)')).to.be.eql(
         new UpDocument([
@@ -556,7 +556,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the domain part must not be escaped', () => {
       const footnote = new Footnote([
         new PlainText('yeah')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^yeah] (\\ign.com)')).to.be.eql(
         new UpDocument([
@@ -576,7 +576,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   specify('If none of the conditions are satisfied, the footnote is not linkified', () => {
     const footnote = new Footnote([
       new PlainText('the phone was dead')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument('(^the phone was dead) (really)')).to.be.eql(
       new UpDocument([
@@ -597,7 +597,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
   it('the footnote convention is not linkified', () => {
     const footnote = new Footnote([
       new PlainText('something terrible')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument('[^something terrible]  \\  (https://example.com)')).to.be.eql(
       new UpDocument([
@@ -624,7 +624,7 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
       new Link([
         new PlainText('the phone was dead')
       ], 'https://example.com/search=phone was dead')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^the phone was dead',

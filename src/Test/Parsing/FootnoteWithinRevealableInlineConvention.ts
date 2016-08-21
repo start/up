@@ -15,13 +15,13 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     specify("Spoilers", () => {
       const footnoteOutsideHiddenConvention = new Footnote([
         new PlainText('Really.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const footnoteInsideHiddenConvention = new Footnote([
         new InlineSpoiler([
           new PlainText('Well, I do, but I pretend not to.')
         ])
-      ], 2)
+      ], { referenceNumber: 2 })
 
       expect(Up.toDocument("I'm normal. (^Really.) [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
         new UpDocument([
@@ -45,13 +45,13 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     specify("NSFW conventions", () => {
       const footnoteOutsideHiddenConvention = new Footnote([
         new PlainText('Really.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const footnoteInsideHiddenConvention = new Footnote([
         new InlineNsfw([
           new PlainText('Well, I do, but I pretend not to.')
         ])
-      ], 2)
+      ], { referenceNumber: 2 })
 
       expect(Up.toDocument("I'm normal. (^Really.) [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
         new UpDocument([
@@ -75,13 +75,13 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     specify("NSFL conventions", () => {
       const footnoteOutsideHiddenConvention = new Footnote([
         new PlainText('Really.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const footnoteInsideHiddenConvention = new Footnote([
         new InlineNsfl([
           new PlainText('Well, I do, but I pretend not to.')
         ])
-      ], 2)
+      ], { referenceNumber: 2 })
 
       expect(Up.toDocument("I'm normal. (^Really.) [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
         new UpDocument([
@@ -110,7 +110,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       new InlineSpoiler([
         new PlainText('You have to beat your rival.')
       ])
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.be.eql(
       new UpDocument([
@@ -131,7 +131,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       new InlineNsfw([
         new PlainText('Well, I do, but I pretend not to.')
       ])
-    ], 2)
+    ], { referenceNumber: 2 })
 
     const outerFootnote = new Footnote([
       new InlineNsfw([
@@ -139,7 +139,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         innerFootnote,
         new PlainText(" Never have."),
       ])
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new UpDocument([
@@ -163,7 +163,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         new InlineSpoiler([
           new PlainText('Well, I do, but I pretend not to.')
         ])
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
         new UpDocument([
@@ -188,7 +188,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       new InlineNsfw([
         new PlainText('Well, I do, but I pretend not to.')
       ])
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new UpDocument([
@@ -212,7 +212,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       new InlineNsfl([
         new PlainText('Well, I do, but I pretend not to.')
       ])
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
       new UpDocument([

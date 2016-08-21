@@ -17,7 +17,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
   it("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(footnoteProducedByParentheses)).to.be.eql(
       new UpDocument([
@@ -49,7 +49,7 @@ describe('A word followed by several spaces followed by a footnote', () => {
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -71,7 +71,7 @@ describe('A footnote', () => {
         new PlainText('do')
       ]),
       new PlainText(', but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
       new UpDocument([
@@ -91,7 +91,7 @@ describe('A footnote', () => {
         new PlainText('do')
       ]),
       new PlainText(', but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
       new UpDocument([
@@ -113,7 +113,7 @@ describe('A footnote', () => {
         new PlainText('do')
       ]),
       new PlainText(', but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
       new UpDocument([
@@ -139,13 +139,13 @@ describe('A footnote', () => {
         new PlainText('do')
       ]),
       new PlainText(', but I pretend not to.'),
-    ], 2)
+    ], { referenceNumber: 2 })
 
     const outerFootnote = new Footnote([
       new PlainText("That said, I don't eat cereal."),
       innerFootnote,
       new PlainText(" Never have."),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -167,7 +167,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
   it("is ignored", () => {
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
       new UpDocument([

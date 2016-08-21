@@ -18,7 +18,7 @@ describe('A footnote reference at the end of a paragraph', () => {
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -46,7 +46,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
         new PlainText(')')
       ]),
       new PlainText(' See?')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -73,7 +73,7 @@ describe('A footnote produced by square brackets that contains nested square bra
         new PlainText(']')
       ]),
       new PlainText(' See?')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -93,7 +93,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
 
     const footnote = new Footnote([
       new PlainText("Well, I do, but I pretend not to."),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -125,22 +125,22 @@ describe('A footnote with inner footnotes followed by another footnote with inne
         new PlainText('do')
       ]),
       new PlainText(', but I pretend not to.'),
-    ], 3)
+    ], { referenceNumber: 3 })
 
     const firstFootnote = new Footnote([
       new PlainText("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
       new PlainText(" Never have."),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     const footnoteInsideSecondFootnote = new Footnote([
       new PlainText("No."),
-    ], 4)
+    ], { referenceNumber: 4 })
 
     const secondFootnote = new Footnote([
       new PlainText("Probably."),
       footnoteInsideSecondFootnote
-    ], 2)
+    ], { referenceNumber: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -167,7 +167,7 @@ describe('A footnote reference at the beginning of a paragraph', () => {
 
     const footnote = new Footnote([
       new PlainText('I would never eat cereal.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

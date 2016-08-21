@@ -450,7 +450,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
           new PlainText('Ketchum')
         ]),
         new PlainText(' is his last name')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -476,7 +476,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
         new InlineSpoiler([
           new PlainText('and realistic')
         ]),
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -546,7 +546,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
           new PlainText('Ketchum')
         ]),
         new PlainText(' is his last name')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -572,7 +572,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
         new InlineNsfw([
           new PlainText('and realistic')
         ]),
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -641,7 +641,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
           new PlainText('Ketchum')
         ]),
         new PlainText(' is his last name')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -667,7 +667,7 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
         new InlineNsfl([
           new PlainText('and realistic')
         ])
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

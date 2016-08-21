@@ -23,7 +23,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         new Link([
           new PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -45,7 +45,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
         new Link([
           new PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Well, I do, but I pretend not to.',
@@ -66,10 +66,10 @@ describe('A footnote directly followed by another footnote (with no spaces in be
     const footnotes = [
       new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1),
+      ], { referenceNumber: 1 }),
       new Footnote([
         new PlainText("Everyone does. It isn't a big deal.")
-      ], 2)
+      ], { referenceNumber: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -92,7 +92,7 @@ describe('A footnote directly followed by a media convention', () => {
     const footnote =
       new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -114,7 +114,7 @@ describe('A footnote directly followed by an inline spoiler', () => {
     const footnote =
       new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -138,7 +138,7 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
     const footnote =
       new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -162,7 +162,7 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
     const footnote =
       new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -186,7 +186,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
     const footnote =
       new Footnote([
         new PlainText('He called her.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -209,7 +209,7 @@ describe("When an otherwise-valid linkified spoiler's URL starts with whitespace
     const footnote =
       new Footnote([
         new PlainText('He called her.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -230,7 +230,7 @@ context("If there's no whitespace between a footnote and its bracketed URL", () 
         new Link([
           new PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: '^Well, I do, but I pretend not to.',
