@@ -412,7 +412,11 @@ Chrono Cross;     1999`,
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
-      footnote: 'reference'
+      terms: {
+        markup: {
+          nsfw: 'ruins ending'
+        }
+      }
     })
 
     expect(up.toDocument('[SPOILER: Ash fights Gary]')).to.be.eql(
@@ -424,12 +428,16 @@ context('Config settings are totally independent. When one setting is changed, t
   })
 
   specify('the default Up object', () => {
-    const ast =
+    const document =
       Up.toDocument('[SPOILER: Ash fights Gary]', {
-        footnote: 'reference'
+        terms: {
+          markup: {
+            nsfw: 'ruins ending'
+          }
+        }
       })
 
-    expect(ast).to.be.eql(
+    expect(document).to.be.eql(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('Ash fights Gary')

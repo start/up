@@ -61,7 +61,6 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { config } = args
-  const { terms } = config
 
   const getLabelPattern = (labels: string[]) =>
     solelyAndIgnoringCapitalization(
@@ -75,13 +74,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
   const isTable =
     markupLineConsumer.consume({
-      linePattern: getLabelPattern(terms.table),
+      linePattern: getLabelPattern(config.terms.markup.table),
       thenBeforeConsumingLine: setRawCaptionContent
     })
 
   const isChart =
     !isTable && markupLineConsumer.consume({
-      linePattern: getLabelPattern(terms.chart),
+      linePattern: getLabelPattern(config.terms.markup.chart),
       thenBeforeConsumingLine: setRawCaptionContent
     })
 

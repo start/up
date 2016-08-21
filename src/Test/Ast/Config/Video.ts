@@ -6,7 +6,9 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 describe('The term that represents video conventions', () => {
   const up = new Up({
-    terms: { video: 'watch' }
+    terms: {
+      markup: { audio: 'watch' }
+    }
   })
 
   it('comes from the "video" config term', () => {
@@ -18,7 +20,7 @@ describe('The term that represents video conventions', () => {
       ]))
   })
 
-  it('is case-insensitive even when custom', () => {
+  it('is case-insensitive', () => {
     const lowercase = '[watch: Nevada caucus footage][https://example.com/video.webm]'
     const mixedCase = '[WaTCH: Nevada caucus footage][https://example.com/video.webm]'
 

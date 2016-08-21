@@ -7,7 +7,9 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 describe('The term that represents chart conventions', () => {
   const up = new Up({
-    terms: { chart: 'data' }
+    terms: {
+      markup: { chart: 'data' }
+    }
   })
 
   it('comes from the "chart" config term', () => {
@@ -35,7 +37,7 @@ Chrono Cross;     1999`
       ]))
   })
 
-  it('is case-insensitive even when custom', () => {
+  it('is case-insensitive', () => {
     const uppercase = `
 Data:
 
@@ -61,7 +63,15 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { markup: { chart: ' \t data \t ' } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: ' \t data \t '
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -86,7 +96,15 @@ Chrono Cross;     1999`
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { markup: { chart: '*data*' } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: '*data*'
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -118,7 +136,15 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { markup: { chart: ['data', 'info'] } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: ['data', 'info']
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([

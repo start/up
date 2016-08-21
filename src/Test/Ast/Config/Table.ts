@@ -7,7 +7,9 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 describe('The term that represents table conventions', () => {
   const up = new Up({
-    terms: { table: 'data' }
+    terms: {
+      markup: { table: 'data' }
+    }
   })
 
   it('comes from the "table" config term', () => {
@@ -37,7 +39,7 @@ Chrono Cross;     1999`
       ]))
   })
 
-  it('is case-insensitive even when custom', () => {
+  it('is case-insensitive', () => {
     const uppercase = `
 Data:
 
@@ -63,7 +65,15 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { table: ' \t data \t '}})).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: ' \t data \t '
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -90,7 +100,15 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { table: '*data*'}})).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: '*data*'
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -124,7 +142,15 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup, { terms: { table: ['data', 'info'] } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: {
+          table: ['data', 'info']
+        }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Table(
           new Table.Header([

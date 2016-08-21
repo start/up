@@ -6,7 +6,9 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 describe('The term that represents image conventions', () => {
   const up = new Up({
-    terms: { image: 'see' }
+    terms: {
+      markup: { image: 'see' }
+    }
   })
 
   it('comes from the "image" config term', () => {
@@ -18,7 +20,7 @@ describe('The term that represents image conventions', () => {
       ]))
   })
 
-  it('is case-insensitive even when custom', () => {
+  it('is case-insensitive', () => {
     const lowercase = '[see: Chrono Cross logo][https://example.com/cc.png]'
     const mixedCase = '[SeE: Chrono Cross logo][https://example.com/cc.png]'
 

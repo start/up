@@ -6,7 +6,9 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 describe('The term that represents video conventions', () => {
   const up = new Up({
-    terms: { audio: 'listen' }
+    terms: {
+      markup: { audio: 'listen' }
+    }
   })
 
   it('comes from the "audio" config term', () => {
@@ -18,7 +20,7 @@ describe('The term that represents video conventions', () => {
       ]))
   })
 
-  it('is case-insensitive even when custom', () => {
+  it('is case-insensitive', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
     const mixedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
 

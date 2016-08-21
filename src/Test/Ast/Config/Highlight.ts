@@ -21,7 +21,7 @@ describe('The "highlight" config term', () => {
       ]))
   })
 
-  it('is case-insensitive, even when custom', () => {
+  it('is case-insensitive', () => {
     const lowercase = '[mark: Ash fights Gary]'
     const mixedCase = '[mArK: Ash fights Gary]'
 
