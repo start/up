@@ -21,6 +21,7 @@ import { HeadingLeveler } from './HeadingLeveler'
 import { Config } from '../../Config'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
+
 export function getOutlineSyntaxNodes(
   args: {
     markupLines: string[],
