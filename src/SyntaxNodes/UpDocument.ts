@@ -1,9 +1,8 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { Heading } from './Heading'
-import { getEntriesForTableOfContents } from './getEntriesForTableOfContents'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
-
+import { concat } from '../CollectionHelpers'
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
   constructor(
@@ -23,7 +22,7 @@ export namespace UpDocument {
   // 3. Internal references associated with the apprioriate table of contents entries
   export function create(children: OutlineSyntaxNode[]): UpDocument {
     const tableOfContentsEntries =
-      getEntriesForTableOfContents(children)
+      TableOfContents.getEntries(children)
 
     const document =
       new UpDocument(
@@ -39,8 +38,16 @@ export namespace UpDocument {
     constructor(public entries: TableOfContents.Entry[] = []) { }
   }
 
-
   export namespace TableOfContents {
     export type Entry = Heading
+
+    export function getEntries(nodes: OutlineSyntaxNode[]): UpDocument.TableOfContents.Entry[] {
+      // Right now, only headings can be table of contents entries.
+      return concat(
+        nodes.map(node =>
+          node instanceof Heading
+            ? [node]
+            : node.descendantsToIncludeInTableOfContents()))
+    }
   }
 }
