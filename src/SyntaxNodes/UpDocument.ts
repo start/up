@@ -2,7 +2,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { Heading } from './Heading'
 import { getEntriesForTableOfContents } from './getEntriesForTableOfContents'
-import { finalizeDocument } from './finalizeDocument'
+import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
@@ -20,7 +20,7 @@ export namespace UpDocument {
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
-  // 3. Internal references associated with the apprioriate table of contents entry 
+  // 3. Internal references associated with the apprioriate table of contents entries
   export function create(children: OutlineSyntaxNode[]): UpDocument {
     const tableOfContentsEntries =
       getEntriesForTableOfContents(children)
@@ -29,7 +29,7 @@ export namespace UpDocument {
       new UpDocument(
         children, new UpDocument.TableOfContents(tableOfContentsEntries))
 
-    finalizeDocument(document)
+    insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
 
     return document
   }
