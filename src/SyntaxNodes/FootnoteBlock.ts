@@ -6,12 +6,12 @@ import { getInlineDescendants } from './getInlineDescendants'
 
 
 export class FootnoteBlock implements OutlineSyntaxNode {
+  constructor(public footnotes: Footnote[]) { }
+
   get sourceLineNumber(): number {
     // The source line number of a footnote block wouldn't be particulalry meaninful.
     return undefined
   }
-
-  constructor(public footnotes: Footnote[]) { }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []

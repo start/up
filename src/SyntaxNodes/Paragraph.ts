@@ -5,10 +5,7 @@ import { UpDocument } from './UpDocument'
 
 
 export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  constructor(
-    children: InlineSyntaxNode[],
-    public sourceLineNumber: number = undefined
-  ) {
+  constructor(children: InlineSyntaxNode[], public sourceLineNumber: number = undefined) {
     super(children)
   }
 

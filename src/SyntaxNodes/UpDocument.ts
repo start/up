@@ -16,11 +16,14 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
   //
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
   static create(children: OutlineSyntaxNode[]): UpDocument {
-    // For the sake of our unit tests, we want to avoid any processing in UpDocument's constructor.
-    // However, this process is a tad scattered and Rube-Goldberg-ish. It needs to be revisited.
+    // For the sake of writing simpler unit tests, we want to avoid any processing in UpDocument's
+    // constructor. Unfortunately, the process of 
     //
-    // First, let's get all the entries for the table of contents. It's up to each outline syntax node
-    // whether to include its own descendants in the table of contents. Some don't (e.g. blockquotes).
+    // Unfortunately, the process of producing a ready-to-use UpDocument has become a tad scattered and
+    // Rube-Goldberg-esque. It needs to be revisited.
+
+    // First, let's collect all the entries for the table of contents. It's up to each outline syntax
+    // node whether to include its descendants in the table of contents. Some don't (e.g. blockquotes).
     const tableOfContentsEntries =
       UpDocument.TableOfContents.getEntries(children)
 
@@ -28,25 +31,25 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
     const document = new UpDocument(
       children, new UpDocument.TableOfContents(tableOfContentsEntries))
 
+    // But... our document is still not quite ready yet.
+    //
     // If there are any references to table of contents entries, they still need to be matched with the
-    // appropriate entries (that isn't done during the parsing process). Let's take care of that now.
+    // appropriate entries. Let's take care of that now.
     for (const inlineSyntaxNode of document.inlineDescendants()) {
       if (inlineSyntaxNode instanceof ReferenceToTableOfContentsEntry) {
-        inlineSyntaxNode.referenceMostAppropriateTableOfContentsEntry(document.tableOfContents.entries)
+        inlineSyntaxNode.referenceMostSimilarTableOfContentsEntry(document.tableOfContents)
       }
     }
 
-    // Also, our footnote still don't have their reference numbers, and they still haven't been
-    // extracted into blocks. Let's take care of that.
+    // Finally, if there are any footnotes, they still need their reference numbers, and they still
+    // need to be extracted into blocks. Let's do it.
     insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
 
+    // Whew. We're done!
     return document
   }
 
-  constructor(
-    children: OutlineSyntaxNode[],
-    public tableOfContents = new UpDocument.TableOfContents()
-  ) {
+  constructor(children: OutlineSyntaxNode[], public tableOfContents = new UpDocument.TableOfContents()) {
     super(children)
   }
 }

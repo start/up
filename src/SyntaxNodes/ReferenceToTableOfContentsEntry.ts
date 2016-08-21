@@ -19,7 +19,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     return this.entry == null
   }
 
-  referenceMostAppropriateTableOfContentsEntry(entries: UpDocument.TableOfContents.Entry[]): void {
+  referenceMostSimilarTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
     // We'll try to match our `entryTextSnippet` with the text of an entry. To be clear, the "text" of an
     // entry refers to the actual text content of the entry. For example, if an entry was originally
     // produced by the following markup:
@@ -42,7 +42,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     //
     // TODO: Consider measuring string distance. 
 
-    for (const entry of entries) {
+    for (const entry of tableOfContents.entries) {
       const textOfEntry = UpDocument.TableOfContents.getEntryText(entry)
 
       if (textOfEntry === this.entryTextSnippet) {
