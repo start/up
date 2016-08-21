@@ -328,7 +328,7 @@ NSFL:
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new OutlineSeparator(1),
+            new OutlineSeparator({ sourceLineNumber: 1 }),
           ]))
       })
 
@@ -343,7 +343,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], 2),
-            new OutlineSeparator(3),
+            new OutlineSeparator({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], 6)
           ]))
       })
@@ -364,7 +364,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], 2),
-            new OutlineSeparator(3),
+            new OutlineSeparator({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], 11)
           ]))
       })
@@ -389,7 +389,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], 2),
-            new OutlineSeparator(3),
+            new OutlineSeparator({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], 15)
           ]))
       })

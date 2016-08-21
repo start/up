@@ -4,7 +4,11 @@ import { UpDocument } from './UpDocument'
 
 
 export class OutlineSeparator implements OutlineSyntaxNode {
-  constructor(public sourceLineNumber: number = undefined) { }
+  public sourceLineNumber: number = undefined
+
+  constructor(options: { sourceLineNumber?: number } = {}) {
+    this.sourceLineNumber = options.sourceLineNumber
+  }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []

@@ -315,7 +315,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Section separators', () => {
     const document = new UpDocument([
-      new OutlineSeparator(2)
+      new OutlineSeparator({ sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<hr data-up-source-line="2">')
