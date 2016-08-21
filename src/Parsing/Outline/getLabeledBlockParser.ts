@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { getOutlineNodes } from './getOutlineNodes'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
 import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } from '../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -39,7 +39,7 @@ export function getLabeledBlockParser(
       return false
     }
 
-    const children = getOutlineNodes({
+    const children = getOutlineSyntaxNodes({
       markupLines: contentLines,
       // We add 1 because of the label line.
       sourceLineNumber: args.sourceLineNumber + 1,

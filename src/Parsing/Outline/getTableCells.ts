@@ -1,6 +1,6 @@
 import { Table } from '../../SyntaxNodes/Table'
 import { patternStartingWith, atLeastOne } from '../PatternHelpers'
-import { getInlineNodes } from '../Inline/getInlineNodes'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { Config } from '../../Config'
 import { last } from '../../CollectionHelpers'
 import { ESCAPER_CHAR } from '../Strings'
@@ -34,7 +34,7 @@ export function getTableCells(row: string, config: Config): Table.Cell[] {
 
   function collectCell(args: { countColumnsSpanned: number }): void {
     const cellMarkup = row.slice(charIndexOfStartOfNextCell, charIndex)
-    const cellChildren = getInlineNodes(cellMarkup.trim(), config)
+    const cellChildren = getInlineSyntaxNodes(cellMarkup.trim(), config)
 
     cells.push(new TableCell(cellChildren, args.countColumnsSpanned))
   }

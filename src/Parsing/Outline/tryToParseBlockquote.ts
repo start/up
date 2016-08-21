@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { getOutlineNodes } from './getOutlineNodes'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { HeadingLeveler } from './HeadingLeveler'
 import { patternStartingWith, optional } from '../PatternHelpers'
 import { ANY_WHITESPACE } from '../PatternPieces'
@@ -31,7 +31,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   // Within blockquotes, heading levels are reset
   const headingLeveler = new HeadingLeveler()
 
-  const blockquoteChildren = getOutlineNodes({
+  const blockquoteChildren = getOutlineSyntaxNodes({
     markupLines: blockquotedLines,
     sourceLineNumber: args.sourceLineNumber,
     headingLeveler,

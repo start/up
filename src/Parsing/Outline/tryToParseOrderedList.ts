@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { getOutlineNodes } from './getOutlineNodes'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { optional, patternStartingWith, escapeForRegex, atLeastOne, either, anyCharFrom, capture } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../Patterns'
@@ -63,7 +63,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
   }
 
   let listItems = unparsedListItems.map(unparsedListItem => {
-    const itemChildren = getOutlineNodes({
+    const itemChildren = getOutlineSyntaxNodes({
       markupLines: unparsedListItem.markupLines,
       sourceLineNumber: unparsedListItem.sourceLineNumber,
       headingLeveler: args.headingLeveler,

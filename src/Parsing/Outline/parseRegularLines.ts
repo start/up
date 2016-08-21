@@ -3,7 +3,7 @@ import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { getInlineNodes } from '../Inline/getInlineNodes'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { tryToPromoteToOutline } from './tryToPromoteToOutline'
@@ -57,7 +57,7 @@ export function parseRegularLines(args: OutlineParserArgs): void {
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
       thenBeforeConsumingLine: line => {
-        inlineNodes = getInlineNodes(line, args.config)
+        inlineNodes = getInlineSyntaxNodes(line, args.config)
       }
     })
 

@@ -4,7 +4,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
 import { BLANK_PATTERN } from '../Patterns'
 import { REST_OF_TEXT } from '../PatternPieces'
-import { getInlineNodes } from '../Inline/getInlineNodes'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
 
 
@@ -121,7 +121,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   // * The label line (with the caption) was followed by 2 or more blank lines  
   const caption =
     captionMarkup
-      ? new Table.Caption(getInlineNodes(captionMarkup, config))
+      ? new Table.Caption(getInlineSyntaxNodes(captionMarkup, config))
       : undefined
 
   const rows: Table.Row[] = []

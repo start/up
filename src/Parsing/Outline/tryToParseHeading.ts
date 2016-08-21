@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
-import { getInlineNodes } from '../Inline/getInlineNodes'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { getSortedUnderlineChars } from './getSortedUnderlineChars'
 
@@ -64,7 +64,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   }
 
   const headingLevel = args.headingLeveler.registerUnderlineAndGetLevel(underline)
-  const headingChildren = getInlineNodes(contentMarkup, args.config)
+  const headingChildren = getInlineSyntaxNodes(contentMarkup, args.config)
 
   args.then(
     [new Heading(headingChildren, headingLevel)],

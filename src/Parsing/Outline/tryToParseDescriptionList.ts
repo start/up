@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { getInlineNodes } from '../Inline/getInlineNodes'
-import { getOutlineNodes } from './getOutlineNodes'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { INDENTED_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -83,11 +83,11 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const terms =
-      markupPerTerm.map(term => new DescriptionList.Item.Term(getInlineNodes(term, args.config)))
+      markupPerTerm.map(term => new DescriptionList.Item.Term(getInlineSyntaxNodes(term, args.config)))
 
     const description =
       new DescriptionList.Item.Description(
-        getOutlineNodes({
+        getOutlineSyntaxNodes({
           markupLines: descriptionLines,
           sourceLineNumber: sourceLineNumberForDescription,
           headingLeveler: args.headingLeveler,
