@@ -69,7 +69,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
             new PlainText('and realistic')
           ], 'https://example.com')
         ])
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -101,7 +101,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
           ], 'https://example.com')
         ]),
         new PlainText(' is his last name')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

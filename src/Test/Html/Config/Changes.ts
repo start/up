@@ -82,7 +82,7 @@ describe('The "documentName" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ]),
     configChanges: {
@@ -99,7 +99,7 @@ describe('The "footnote reference" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ]),
     configChanges: {
@@ -124,7 +124,7 @@ describe('The "footnote" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ]),
     configChanges: {

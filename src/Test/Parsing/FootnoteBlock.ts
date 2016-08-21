@@ -745,14 +745,14 @@ describe('Footnotes in ordered list items', () => {
             new Paragraph([
               new PlainText("It's too expensive.")
             ])
-          ], { referenceNumber: 1 }),
+          ], 1),
           new OrderedList.Item([
             new Paragraph([
               new PlainText("I don't eat"),
               footnotes[1],
               new PlainText(" pumpkins.")
             ])
-          ], { referenceNumber: 2 })
+          ], 2)
         ]),
         new FootnoteBlock(footnotes)
       ]))

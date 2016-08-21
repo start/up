@@ -108,7 +108,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       new Link([
         new PlainText('Well, I eat one.')
       ], 'my-app:cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -217,7 +217,7 @@ describe('The "defaultUrlScheme" config setting', () => {
       new Link([
         new PlainText('Well, I eat one.')
       ], 'my-app:cereals.com/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([

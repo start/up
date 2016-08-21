@@ -17,7 +17,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
   it("is prefixed with the default document name 'up' if one wasn't provided", () => {
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -32,7 +32,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -47,7 +47,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -62,7 +62,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -79,10 +79,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
         new FootnoteBlock([
           new Footnote([
             new PlainText("Arwings")
-          ], 2),
+          ], { referenceNumber: 2 }),
           new Footnote([
             new PlainText("Killer Bees")
-          ], 3)
+          ], { referenceNumber: 3 })
         ])
       ])
 
@@ -105,10 +105,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
         new FootnoteBlock([
           new Footnote([
             new PlainText("Arwings")
-          ], 2),
+          ], { referenceNumber: 2 }),
           new Footnote([
             new PlainText("Killer Bees")
-          ], 3)
+          ], { referenceNumber: 3 })
         ])
       ])
 
@@ -131,10 +131,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
         new FootnoteBlock([
           new Footnote([
             new PlainText("Arwings")
-          ], 2),
+          ], { referenceNumber: 2 }),
           new Footnote([
             new PlainText("Killer Bees")
-          ], 3)
+          ], { referenceNumber: 3 })
         ])
       ])
 
@@ -157,10 +157,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
         new FootnoteBlock([
           new Footnote([
             new PlainText("Arwings")
-          ], 2),
+          ], { referenceNumber: 2 }),
           new Footnote([
             new PlainText("Killer Bees")
-          ], 3)
+          ], { referenceNumber: 3 })
         ])
       ])
 

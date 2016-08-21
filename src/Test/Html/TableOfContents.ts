@@ -254,10 +254,10 @@ context('When a table of contents has multiple entries', () => {
 context("Within the table of contents itself", () => {
   specify('footnotes produce no HTML (they are totally ignored).', () => {
     const topLevelFootnote =
-      new Footnote([new PlainText('Sometimes')], 1)
+      new Footnote([new PlainText('Sometimes')], { referenceNumber: 1 })
 
     const nestedFootnote =
-      new Footnote([new PlainText('Always')], 2)
+      new Footnote([new PlainText('Always')], { referenceNumber: 2 })
 
     const heading =
       new Heading([

@@ -19,7 +19,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     specify('The "footnote" term', () => {
       const footnote = new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const document = new UpDocument([
         new Paragraph([footnote]),
@@ -48,7 +48,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     specify('The "footnoteReference" term', () => {
       const footnote = new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const document = new UpDocument([
         new Paragraph([footnote]),
@@ -209,7 +209,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     specify('Footnotes and footnote references', () => {
       const footnote = new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       const document = new UpDocument([
         new Paragraph([footnote]),

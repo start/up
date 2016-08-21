@@ -73,7 +73,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
         new PlainText('www.example.com/a(normal(url')
       ], 'https://www.example.com/a(normal(url'),
       new PlainText(' is my favorite site')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -101,7 +101,7 @@ describe("Unmatched opening parentheses in a naked URL", () => {
       new Link([
         new PlainText('w3.org')
       ], 'https://w3.org'),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -131,7 +131,7 @@ describe("Unmatched opening parentheses in a naked URL closed by another convent
       new Link([
         new PlainText('w3.org')
       ], 'https://w3.org'),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -184,7 +184,7 @@ describe('A naked URL followed by a space then a footnote', () => {
 
     const footnote = new Footnote([
       new PlainText('An old search engine.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

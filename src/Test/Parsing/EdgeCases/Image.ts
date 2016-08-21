@@ -92,7 +92,7 @@ describe("Unmatched opening parentheses in an image URL", () => {
 
     const footnote = new Footnote([
       new Image('West Virginia exit polling', 'https://example.com/a(normal(url'),
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

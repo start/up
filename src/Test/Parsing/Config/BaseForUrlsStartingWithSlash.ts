@@ -120,7 +120,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       new Link([
         new PlainText('Well, I eat one.')
       ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -218,7 +218,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       new Link([
         new PlainText('Well, I eat one.')
       ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([

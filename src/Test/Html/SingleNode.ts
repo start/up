@@ -745,7 +745,7 @@ describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -776,10 +776,10 @@ describe("Each footnote in a footnote block", () => {
       new FootnoteBlock([
         new Footnote([
           new PlainText("Arwings"),
-        ], 2),
+        ], { referenceNumber: 2 }),
         new Footnote([
           new PlainText("Killer Bees"),
-        ], 3),
+        ], { referenceNumber: 3 }),
       ])
     ])
 

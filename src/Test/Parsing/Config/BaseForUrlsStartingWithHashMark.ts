@@ -109,7 +109,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       new Link([
         new PlainText('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -218,7 +218,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" config setting', () =>
       new Link([
         new PlainText('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(up.toDocument(markup)).to.be.eql(
       new UpDocument([

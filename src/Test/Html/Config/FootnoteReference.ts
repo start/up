@@ -19,7 +19,7 @@ describe("A footnote reference's ID", () => {
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -43,10 +43,10 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       new FootnoteBlock([
         new Footnote([
           new PlainText("Arwings")
-        ], 2),
+        ], { referenceNumber: 2 }),
         new Footnote([
           new PlainText("Killer Bees")
-        ], 3)
+        ], { referenceNumber: 3 })
       ])
     ])
 

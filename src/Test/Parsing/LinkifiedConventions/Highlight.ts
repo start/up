@@ -119,7 +119,7 @@ describe('A highlight directly followed by a footnote', () => {
     const footnotes = [
       new Footnote([
         new PlainText('Or whatever you name him.')
-      ], 1)
+      ], { referenceNumber: 1 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(

@@ -352,7 +352,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading])

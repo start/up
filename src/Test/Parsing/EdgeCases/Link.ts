@@ -125,7 +125,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
         new PlainText('West Virginia')
       ], 'https://example.com/a(normal(url'),
       new PlainText(' easily.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

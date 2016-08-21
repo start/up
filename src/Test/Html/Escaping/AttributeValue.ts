@@ -89,7 +89,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const document = new UpDocument([
       new FootnoteBlock([
-        new Footnote([], 2)
+        new Footnote([], { referenceNumber: 2 })
       ])
     ])
 
@@ -114,7 +114,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const document = new UpDocument([
       new FootnoteBlock([
-        new Footnote([], 2)
+        new Footnote([], { referenceNumber: 2 })
       ])
     ])
 
@@ -139,7 +139,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -164,7 +164,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     const document = new UpDocument([
       new Paragraph([
-        new Footnote([], 3)
+        new Footnote([], { referenceNumber: 3 })
       ])
     ])
 

@@ -732,7 +732,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Footnotes', () => {
       const footnote = new Footnote([
         new PlainText('Ash fights Gary')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^ Ash fights Gary]()')).to.be.eql(
         new UpDocument([
@@ -813,7 +813,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Footnotes', () => {
       const footnote = new Footnote([
         new PlainText('Ash fights Gary')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
         new UpDocument([

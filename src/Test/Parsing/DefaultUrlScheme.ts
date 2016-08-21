@@ -75,7 +75,7 @@ describe('The default URL scheme ("https://" unless changed via config setting)'
       new Link([
         new PlainText('Well, I eat one.')
       ], 'https://prod-web-4/cereals/lucky-charms?show=nutrition')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

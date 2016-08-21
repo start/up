@@ -50,7 +50,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
 
       const footnote = new Footnote([
         new PlainText('Lying.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -71,7 +71,7 @@ context('Square bracketed text can be directly followed by whitespace followed b
 
       const footnote = new Footnote([
         new PlainText('Definitely lying.')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([

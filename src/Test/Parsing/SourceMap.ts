@@ -529,7 +529,7 @@ I do eat apples, though.`
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
-    ], 1)
+    ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([

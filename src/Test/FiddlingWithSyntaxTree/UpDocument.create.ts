@@ -29,10 +29,10 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const document = UpDocument.create(documentChildren)
 
     const cerealFootnote =
-      new Footnote([new PlainText('Well, I do, but I pretend not to.')], 1)
+      new Footnote([new PlainText('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
 
     const movieFootnote =
-      new Footnote([new PlainText("And this is a fun fact.")], 2)
+      new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -47,7 +47,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
         new SpoilerBlock([
           new Paragraph([
             new PlainText("This ruins the movie."),
-            new Footnote([new PlainText("And this is a fun fact.")], 2)
+            new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
           ]),
           new FootnoteBlock([
             movieFootnote,

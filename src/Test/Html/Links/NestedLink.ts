@@ -15,7 +15,7 @@ context('Inside a link', () => {
       new Paragraph([
         new Link([
           new PlainText('Google'),
-          new Footnote([new PlainText('A really old search engine.')], 2)
+          new Footnote([new PlainText('A really old search engine.')], { referenceNumber: 2 })
         ], 'https://google.com')
       ])
     ])
@@ -68,7 +68,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
         new Link([
           new Emphasis([
             new PlainText('Google'),
-            new Footnote([new PlainText('A really old search engine.')], 2)
+            new Footnote([new PlainText('A really old search engine.')], { referenceNumber: 2 })
           ])
         ], 'https://google.com')
       ])

@@ -122,7 +122,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('a would-be audio convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
         new PlainText('listen^: I guess this means "listen up"?')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^listen^: I guess this means "listen up"?]')).to.be.eql(
         new UpDocument([
@@ -159,7 +159,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
         new PlainText('look^: I guess this means "look up"?')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^look^: I guess this means "look up"?]')).to.be.eql(
         new UpDocument([
@@ -196,7 +196,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
         new PlainText('watch^: I guess this means "watch up"?')
-      ], 1)
+      ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^watch^: I guess this means "watch up"?]')).to.be.eql(
         new UpDocument([

@@ -91,7 +91,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
         new Link([
           new PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
-      ], 1)
+      ], { referenceNumber: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
