@@ -278,7 +278,7 @@ SPOILER:
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([new PlainText("Who doesn't?")], 3)
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -292,7 +292,7 @@ NSFW:
         new UpDocument([
           new NsfwBlock([
             new Paragraph([new PlainText("Who doesn't?")], 4)
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -307,7 +307,7 @@ NSFL:
         new UpDocument([
           new NsflBlock([
             new Paragraph([new PlainText("Who doesn't?")], 5)
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -638,7 +638,7 @@ Pink lady
             bestFruitHeading,
             new SpoilerBlock([
               new Paragraph([new PlainText('Really.')], 13)
-            ], 12)
+            ], { sourceLineNumber: 12 })
           ])),
           new DescriptionList.Item([
             new DescriptionList.Item.Term([new PlainText('Pink lady')])

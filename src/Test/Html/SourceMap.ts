@@ -327,7 +327,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
         ], 3)
-      ], 2)
+      ], { sourceLineNumber: 2 })
     ])
 
     const html =
@@ -348,7 +348,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
         ], 2)
-      ], 1)
+      ], { sourceLineNumber: 1 })
     ])
 
     const html =
@@ -369,7 +369,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
         ], 4)
-      ], 2)
+      ], { sourceLineNumber: 2 })
     ])
 
     const html =
