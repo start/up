@@ -60,4 +60,8 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
       }
     }
   }
+
+  inlineDescendants(): InlineSyntaxNode[] {
+    return []
+  }
 }

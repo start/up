@@ -4,6 +4,8 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../Parsing/PatternPieces'
 import { anyCharMatching } from '../Parsing/PatternHelpers'
+import { concat } from '../CollectionHelpers'
+import { getInlineDescendants } from './getInlineDescendants'
 
 
 export class Table implements OutlineSyntaxNode {
@@ -15,6 +17,17 @@ export class Table implements OutlineSyntaxNode {
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
+  }
+
+  inlineDescendants(): InlineSyntaxNode[] {
+    const inlineContainers = concat<InlineSyntaxNodeContainer>([
+      this.caption ? [this.caption] : [],
+      this.header.cells,
+      ...this.rows.map(row => row.allCellsStartingWithRowHeaderCell)
+    ])
+
+    return concat(
+      inlineContainers.map(container => getInlineDescendants(container.children)))
   }
 }
 
@@ -49,7 +62,7 @@ export namespace Table {
   export class Row {
     constructor(public cells: Row.Cell[], public headerCell?: Header.Cell) { }
 
-    get cellsStartingWithRowHeaderCell(): Table.Cell[] {
+    get allCellsStartingWithRowHeaderCell(): Table.Cell[] {
       const allCells: Table.Cell[] = this.cells.slice()
 
       if (this.headerCell) {

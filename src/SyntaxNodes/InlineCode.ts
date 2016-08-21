@@ -7,4 +7,8 @@ export class InlineCode implements InlineSyntaxNode {
   text(): string {
     return this.code
   }
+
+  inlineDescendants(): InlineSyntaxNode[] {
+    return []
+  }
 }

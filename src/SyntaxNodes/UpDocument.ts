@@ -13,7 +13,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
   static create(children: OutlineSyntaxNode[]): UpDocument {
     // For the sake of our unit tests, we want to avoid any processing in UpDocument's constructor.
     // However, this process is a tad Rube-Goldberg-ish. It needs to be revisited.
-    
+
     // First, let's get all the entries for the table of contents. It's up to each outline syntax node
     // whether to to include any descendants in the table of contents. Some don't (e.g. blockquotes).
     const tableOfContentsEntries =
@@ -34,7 +34,10 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
     return document
   }
 
-  constructor(children: OutlineSyntaxNode[], public tableOfContents = new UpDocument.TableOfContents()) {
+  constructor(
+    children: OutlineSyntaxNode[],
+    public tableOfContents = new UpDocument.TableOfContents()
+  ) {
     super(children)
   }
 }

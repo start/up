@@ -8,4 +8,8 @@ export class ExampleInput implements InlineSyntaxNode {
   text(): string {
     return this.input
   }
+
+  inlineDescendants(): InlineSyntaxNode[] {
+    return []
+  }
 }

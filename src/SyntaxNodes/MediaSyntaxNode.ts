@@ -19,6 +19,10 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return []
   }
 
+  inlineDescendants(): InlineSyntaxNode[] {
+    return []
+  }
+
   protected MEDIA_SYNTAX_NODE(): void { }
 }
 

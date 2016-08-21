@@ -1,10 +1,11 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { getInlineDescendants } from './getInlineDescendants'
 
 
 export abstract class InlineSyntaxNodeContainer {
   constructor(public children: InlineSyntaxNode[]) { }
 
   inlineDescendants(): InlineSyntaxNode[] {
-    return this.children
+    return getInlineDescendants(this.children)
   }
 }
