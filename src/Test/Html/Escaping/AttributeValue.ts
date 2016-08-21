@@ -80,7 +80,11 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('href attribute of backlinks in footnote blocks', () => {
     const up = new Up({
-      terms: { footnoteReference: 'look "up" & read & remember' }
+      terms: {
+        output: {
+          footnoteReference: 'look "up" & read & remember'
+        }
+      }
     })
 
     const document = new UpDocument([
@@ -101,7 +105,11 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('id attribute of footntoes in a footnote block', () => {
     const up = new Up({
-      terms: { footnote: 'look "down" & read & learn' }
+      terms: {
+        output: {
+          footnote: 'look "down" & read & learn'
+        }
+      }
     })
 
     const document = new UpDocument([
@@ -122,7 +130,11 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("href attribute of a footnote reference's link", () => {
     const up = new Up({
-      terms: { footnote: 'look "down" & read & learn' }
+      terms: {
+        output: {
+          footnote: 'look "down" & read & learn'
+        }
+      }
     })
 
     const document = new UpDocument([
@@ -143,7 +155,11 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('id attribute of footnote references', () => {
     const up = new Up({
-      terms: { footnoteReference: 'look "up" & read & remember' }
+      terms: {
+        output: {
+          footnoteReference: 'look "up" & read & remember'
+        }
+      }
     })
 
     const document = new UpDocument([
@@ -164,7 +180,11 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify('the id attribute of elements referenced by the table of contents', () => {
     const up = new Up({
-      terms: { itemReferencedByTableOfContents: 'look "away" & smile & forget' }
+      terms: {
+        output: {
+          itemReferencedByTableOfContents: 'look "away" & smile & forget'
+        }
+      }
     })
 
     const heading =

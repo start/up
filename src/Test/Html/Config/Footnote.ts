@@ -10,7 +10,11 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 describe("A footnote's ID", () => {
   it('uses the provided term for "footnote"', () => {
     const up = new Up({
-      terms: { footnote: 'fn' }
+      terms: {
+        output: {
+          footnote: 'fn'
+        }
+      }
     })
 
     const node = new UpDocument([
@@ -38,7 +42,11 @@ describe("A footnote's ID", () => {
 describe("The ID of the footnote referenced by a footnote reference", () => {
   it('uses the provided term for "footnote"', () => {
     const up = new Up({
-      terms: { footnote: 'fn' }
+      terms: {
+        output: {
+          footnote: 'fn'
+        }
+      }
     })
 
     const document = new UpDocument([

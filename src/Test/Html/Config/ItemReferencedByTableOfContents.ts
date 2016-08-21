@@ -8,7 +8,11 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 describe('The ID of an element referenced by the table of contents', () => {
   it('uses the config term for "itemReferencedByTableOfContents"', () => {
     const up = new Up({
-      terms: { itemReferencedByTableOfContents: 'table of contents entry' }
+      terms: {
+        output: {
+          itemReferencedByTableOfContents: 'table of contents entry'
+        }
+      }
     })
 
     const heading =

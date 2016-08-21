@@ -9,7 +9,11 @@ import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 describe("The text in an inline NSFW convention's label", () => {
   it("uses the provided term for 'toggleNsfw'", () => {
     const up = new Up({
-      terms: { toggleNsfw: 'show/hide' }
+      terms: {
+        output: {
+          toggleNsfw: 'show/hide'
+        }
+      }
     })
 
     const document = new UpDocument([
@@ -35,7 +39,11 @@ describe("The text in an inline NSFW convention's label", () => {
 describe("The text in a NSFW block's label", () => {
   it("uses the provided term for 'toggleNsfw'", () => {
     const up = new Up({
-      terms: { toggleNsfw: 'show/hide' }
+      terms: {
+        output: {
+          toggleNsfw: 'show/hide'
+        }
+      }
     })
 
     const document = new UpDocument([
