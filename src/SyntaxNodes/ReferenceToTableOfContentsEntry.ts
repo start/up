@@ -1,5 +1,6 @@
 import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { getText } from './getText'
 import { patternIgnoringCapitalizationAndContaining, escapeForRegex } from '../Parsing/PatternHelpers'
 
 
@@ -42,7 +43,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     // TODO: Consider measuring string distance. 
 
     for (const entry of entries) {
-      const textOfEntry = entry.text()
+      const textOfEntry = getText(entry.children)
 
       if (textOfEntry === this.entryTextSnippet) {
         // We found a perfect match! We're done.
