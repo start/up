@@ -12,28 +12,34 @@ export interface UserProvidedSettings {
 
 export namespace UserProvidedSettings {
   export interface Terms {
-    audio?: Terms.FoundInMarkup
-    chart?: Terms.FoundInMarkup
-    highlight?: Terms.FoundInMarkup
-    image?: Terms.FoundInMarkup
-    nsfl?: Terms.FoundInMarkup
-    nsfw?: Terms.FoundInMarkup
-    referenceSection?: Terms.FoundInMarkup
-    spoiler?: Terms.FoundInMarkup
-    table?: Terms.FoundInMarkup
-    video?: Terms.FoundInMarkup
-
-    footnote?: Terms.FoundInOutput
-    footnoteReference?: Terms.FoundInOutput
-    itemReferencedByTableOfContents?: Terms.FoundInOutput
-    tableOfContents?: Terms.FoundInOutput
-    toggleNsfl?: Terms.FoundInOutput
-    toggleNsfw?: Terms.FoundInOutput
-    toggleSpoiler?: Terms.FoundInOutput
+    markup: Terms.Markup
+    output: Terms.Output
   }
 
-
   export namespace Terms {
+    export interface Markup {
+      audio?: Terms.FoundInMarkup
+      chart?: Terms.FoundInMarkup
+      highlight?: Terms.FoundInMarkup
+      image?: Terms.FoundInMarkup
+      nsfl?: Terms.FoundInMarkup
+      nsfw?: Terms.FoundInMarkup
+      referenceSection?: Terms.FoundInMarkup
+      spoiler?: Terms.FoundInMarkup
+      table?: Terms.FoundInMarkup
+      video?: Terms.FoundInMarkup
+    }
+
+    export interface Output {
+      footnote?: Terms.FoundInOutput
+      footnoteReference?: Terms.FoundInOutput
+      itemReferencedByTableOfContents?: Terms.FoundInOutput
+      tableOfContents?: Terms.FoundInOutput
+      toggleNsfl?: Terms.FoundInOutput
+      toggleNsfw?: Terms.FoundInOutput
+      toggleSpoiler?: Terms.FoundInOutput
+    }
+
     export type FoundInMarkup = string[] | string
     export type FoundInOutput = string
   }

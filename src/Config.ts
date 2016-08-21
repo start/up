@@ -113,6 +113,15 @@ export namespace Config {
         return
       }
 
+      this.applyChangedUserSettingsToMarkupTerms(terms.markup)
+      this.applyChangedUserSettingsToOutputTerms(terms.output)
+    }
+
+    applyChangedUserSettingsToMarkupTerms(terms: UserProvidedSettings.Terms.Markup): void {
+      if (!terms) {
+        return
+      }
+
       this.audio =
         changeTermFoundInMarkup(terms.audio, this.audio)
 
@@ -142,6 +151,12 @@ export namespace Config {
 
       this.video =
         changeTermFoundInMarkup(terms.video, this.video)
+    }
+
+    applyChangedUserSettingsToOutputTerms(terms: UserProvidedSettings.Terms.Output): void {
+      if (!terms) {
+        return
+      }
 
       this.footnote =
         coalesce(terms.footnote, this.footnote)
