@@ -84,7 +84,6 @@ context('Every base syntax node class is exported:', () => {
 function specifyEveryClassShouldBeExported(classNames) {
   for (const className of classNames) {
     specify(className, () => {
-      expectAClassOrFunction(EXPORTS[className])
       expect(typeof EXPORTS[className]).to.be.eql('function')
     })
   }
