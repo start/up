@@ -24,7 +24,7 @@ export namespace UserProvidedSettings {
       image?: Terms.FoundInMarkup
       nsfl?: Terms.FoundInMarkup
       nsfw?: Terms.FoundInMarkup
-      referenceSection?: Terms.FoundInMarkup
+      referencedSection?: Terms.FoundInMarkup
       spoiler?: Terms.FoundInMarkup
       table?: Terms.FoundInMarkup
       video?: Terms.FoundInMarkup

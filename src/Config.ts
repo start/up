@@ -64,46 +64,14 @@ export class Config {
 
 export namespace Config {
   export class Terms {
-    audio: Terms.FoundInMarkup = ['audio']
-    chart: Terms.FoundInMarkup = ['chart']
-    highlight: Terms.FoundInMarkup = ['highlight', 'mark']
-    image: Terms.FoundInMarkup = ['image', 'img']
-    nsfl: Terms.FoundInMarkup = ['nsfl']
-    nsfw: Terms.FoundInMarkup = ['nsfw']
-    referencedSection: Terms.FoundInMarkup = ['section', 'heading']
-    spoiler: Terms.FoundInMarkup = ['spoiler']
-    table: Terms.FoundInMarkup = ['table']
-    video: Terms.FoundInMarkup = ['video', 'vid']
-
-    footnote: Terms.FoundInOutput = 'footnote'
-    footnoteReference: Terms.FoundInOutput = 'footnote reference'
-    itemReferencedByTableOfContents: Terms.FoundInOutput = 'item'
-    tableOfContents: Terms.FoundInOutput = 'Table of Contents'
-    toggleNsfl: Terms.FoundInOutput = 'toggle NSFL'
-    toggleNsfw: Terms.FoundInOutput = 'toggle NSFW'
-    toggleSpoiler: Terms.FoundInOutput = 'toggle spoiler'
+    markup = new Terms.Markup()
+    output = new Terms.Output()
 
     clone(): Terms {
       const clone = new Terms()
 
-      clone.audio = this.audio
-      clone.chart = this.chart
-      clone.highlight = this.highlight
-      clone.image = this.image
-      clone.nsfl = this.nsfl
-      clone.referencedSection = this.referencedSection
-      clone.nsfw = this.nsfw
-      clone.spoiler = this.spoiler
-      clone.table = this.table
-      clone.video = this.video
-
-      clone.footnote = this.footnote
-      clone.footnoteReference = this.footnoteReference
-      clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
-      clone.tableOfContents = this.tableOfContents
-      clone.toggleNsfl = this.toggleNsfl
-      clone.toggleNsfw = this.toggleNsfw
-      clone.toggleSpoiler = this.toggleSpoiler
+      clone.markup = this.markup.clone()
+      clone.output = this.output.clone()
 
       return clone
     }
@@ -113,75 +81,133 @@ export namespace Config {
         return
       }
 
-      this.applyChangedUserSettingsToMarkupTerms(terms.markup)
-      this.applyChangedUserSettingsToOutputTerms(terms.output)
-    }
-
-    applyChangedUserSettingsToMarkupTerms(terms: UserProvidedSettings.Terms.Markup): void {
-      if (!terms) {
-        return
-      }
-
-      this.audio =
-        changeTermFoundInMarkup(terms.audio, this.audio)
-
-      this.chart =
-        changeTermFoundInMarkup(terms.chart, this.chart)
-
-      this.highlight =
-        changeTermFoundInMarkup(terms.highlight, this.highlight)
-
-      this.image =
-        changeTermFoundInMarkup(terms.image, this.image)
-
-      this.nsfl =
-        changeTermFoundInMarkup(terms.nsfl, this.nsfl)
-
-      this.nsfw =
-        changeTermFoundInMarkup(terms.nsfw, this.nsfw)
-
-      this.referencedSection =
-        changeTermFoundInMarkup(terms.referenceSection, this.referencedSection)
-
-      this.spoiler =
-        changeTermFoundInMarkup(terms.spoiler, this.spoiler)
-
-      this.table =
-        changeTermFoundInMarkup(terms.table, this.table)
-
-      this.video =
-        changeTermFoundInMarkup(terms.video, this.video)
-    }
-
-    applyChangedUserSettingsToOutputTerms(terms: UserProvidedSettings.Terms.Output): void {
-      if (!terms) {
-        return
-      }
-
-      this.footnote =
-        coalesce(terms.footnote, this.footnote)
-
-      this.footnoteReference =
-        coalesce(terms.footnoteReference, this.footnoteReference)
-
-      this.itemReferencedByTableOfContents =
-        coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
-
-      this.tableOfContents =
-        coalesce(terms.tableOfContents, this.tableOfContents)
-
-      this.toggleNsfl =
-        coalesce(terms.toggleNsfl, this.toggleNsfl)
-
-      this.toggleNsfw =
-        coalesce(terms.toggleNsfw, this.toggleNsfw)
-
-      this.toggleSpoiler =
-        coalesce(terms.toggleSpoiler, this.toggleSpoiler)
+      this.markup.applyChangedUserSettings(terms.markup)
+      this.output.applyChangedUserSettings(terms.output)
     }
   }
 
+  // Config.Terms.Markup
   export namespace Terms {
+    export class Markup {
+      audio: Terms.FoundInMarkup = ['audio']
+      chart: Terms.FoundInMarkup = ['chart']
+      highlight: Terms.FoundInMarkup = ['highlight', 'mark']
+      image: Terms.FoundInMarkup = ['image', 'img']
+      nsfl: Terms.FoundInMarkup = ['nsfl']
+      nsfw: Terms.FoundInMarkup = ['nsfw']
+      referencedSection: Terms.FoundInMarkup = ['section', 'heading']
+      spoiler: Terms.FoundInMarkup = ['spoiler']
+      table: Terms.FoundInMarkup = ['table']
+      video: Terms.FoundInMarkup = ['video', 'vid']
+
+      clone(): Markup {
+
+        const clone = new Markup()
+
+        clone.audio = this.audio
+        clone.chart = this.chart
+        clone.highlight = this.highlight
+        clone.image = this.image
+        clone.nsfl = this.nsfl
+        clone.referencedSection = this.referencedSection
+        clone.nsfw = this.nsfw
+        clone.spoiler = this.spoiler
+        clone.table = this.table
+        clone.video = this.video
+
+        return clone
+      }
+
+      applyChangedUserSettings(terms: UserProvidedSettings.Terms.Markup): void {
+        if (!terms) {
+          return
+        }
+
+        this.audio =
+          changeTermFoundInMarkup(terms.audio, this.audio)
+
+        this.chart =
+          changeTermFoundInMarkup(terms.chart, this.chart)
+
+        this.highlight =
+          changeTermFoundInMarkup(terms.highlight, this.highlight)
+
+        this.image =
+          changeTermFoundInMarkup(terms.image, this.image)
+
+        this.nsfl =
+          changeTermFoundInMarkup(terms.nsfl, this.nsfl)
+
+        this.nsfw =
+          changeTermFoundInMarkup(terms.nsfw, this.nsfw)
+
+        this.referencedSection =
+          changeTermFoundInMarkup(terms.referencedSection, this.referencedSection)
+
+        this.spoiler =
+          changeTermFoundInMarkup(terms.spoiler, this.spoiler)
+
+        this.table =
+          changeTermFoundInMarkup(terms.table, this.table)
+
+        this.video =
+          changeTermFoundInMarkup(terms.video, this.video)
+      }
+    }
+
+
+    // Config.Terms.Output
+    export class Output {
+      footnote: Terms.FoundInOutput = 'footnote'
+      footnoteReference: Terms.FoundInOutput = 'footnote reference'
+      itemReferencedByTableOfContents: Terms.FoundInOutput = 'item'
+      tableOfContents: Terms.FoundInOutput = 'Table of Contents'
+      toggleNsfl: Terms.FoundInOutput = 'toggle NSFL'
+      toggleNsfw: Terms.FoundInOutput = 'toggle NSFW'
+      toggleSpoiler: Terms.FoundInOutput = 'toggle spoiler'
+
+      clone(): Output {
+        const clone = new Output()
+
+        clone.footnote = this.footnote
+        clone.footnoteReference = this.footnoteReference
+        clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
+        clone.tableOfContents = this.tableOfContents
+        clone.toggleNsfl = this.toggleNsfl
+        clone.toggleNsfw = this.toggleNsfw
+        clone.toggleSpoiler = this.toggleSpoiler
+
+        return clone
+      }
+
+      applyChangedUserSettings(terms: UserProvidedSettings.Terms.Output): void {
+        if (!terms) {
+          return
+        }
+
+        this.footnote =
+          coalesce(terms.footnote, this.footnote)
+
+        this.footnoteReference =
+          coalesce(terms.footnoteReference, this.footnoteReference)
+
+        this.itemReferencedByTableOfContents =
+          coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
+
+        this.tableOfContents =
+          coalesce(terms.tableOfContents, this.tableOfContents)
+
+        this.toggleNsfl =
+          coalesce(terms.toggleNsfl, this.toggleNsfl)
+
+        this.toggleNsfw =
+          coalesce(terms.toggleNsfw, this.toggleNsfw)
+
+        this.toggleSpoiler =
+          coalesce(terms.toggleSpoiler, this.toggleSpoiler)
+      }
+    }
+
     export type FoundInMarkup = string[]
     export type FoundInOutput = string
   }
