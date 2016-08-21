@@ -7,7 +7,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 describe('The term that represents video conventions', () => {
   const up = new Up({
     terms: {
-      markup: { audio: 'watch' }
+      markup: { video: 'watch' }
     }
   })
 

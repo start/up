@@ -66,7 +66,7 @@ Chrono Cross;     1999`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          table: ' \t data \t '
+          chart: ' \t data \t '
         }
       }
     })
@@ -99,7 +99,7 @@ Chrono Cross;     1999`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          table: '*data*'
+          chart: '*data*'
         }
       }
     })
@@ -139,7 +139,7 @@ Chrono Cross;     1999`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          table: ['data', 'info']
+          chart: ['data', 'info']
         }
       }
     })
