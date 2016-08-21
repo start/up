@@ -30,7 +30,13 @@ describe('The term that represents video conventions', () => {
   it('is trimmed', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(Up.toDocument(markup, { terms: { video: ' \t watch \t ' } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { video: ' \t watch \t ' }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -39,7 +45,13 @@ describe('The term that represents video conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*watch*: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(Up.toDocument(markup, { terms: { video: '*watch*' } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { video: '*watch*' }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -48,7 +60,13 @@ describe('The term that represents video conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[watch: Nevada caucus footage](https://example.com/video.webm) [view: Nevada caucus footage](https://example.com/video.webm)'
 
-    expect(Up.toDocument(markup, { terms: { video: ['view', 'watch'] } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { video: ['view', 'watch'] }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm'),
         new Video('Nevada caucus footage', 'https://example.com/video.webm')

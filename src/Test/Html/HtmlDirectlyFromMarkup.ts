@@ -16,8 +16,8 @@ LOOK AWAY
     const html = Up.toHtml(markup, {
       createSourceMap: true,
       terms: {
-        spoiler: 'LOOK AWAY',
-        tableOfContents: 'In This Article'
+        markup: { spoiler: 'LOOK AWAY' },
+        output: { tableOfContents: 'In This Article' }
       }
     })
 
@@ -45,7 +45,7 @@ LOOK AWAY
     const html = Up.toInlineHtml(markup, {
       documentName: 'reply 104',
       terms: {
-        spoiler: 'LOOK AWAY',
+        markup: { spoiler: 'LOOK AWAY' }
       }
     })
 

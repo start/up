@@ -30,7 +30,13 @@ describe('The term that represents image conventions', () => {
   it('is trimmed', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(Up.toDocument(markup, { terms: { markup: { image: ' \t see \t' } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { image: ' \t see \t' }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -39,7 +45,13 @@ describe('The term that represents image conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*see*: Chrono Cross logo][https://example.com/cc.png]'
 
-    expect(Up.toDocument(markup, { terms: { markup: { image: '*see*' } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { image: '*see*' }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -48,7 +60,13 @@ describe('The term that represents image conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
 
-    expect(Up.toDocument(markup, { terms: { markup: { image: ['view', 'look'] } } })).to.be.eql(
+    const document = Up.toDocument(markup, {
+      terms: {
+        markup: { image: ['view', 'look'] }
+      }
+    })
+
+    expect(document).to.be.eql(
       new UpDocument([
         new Image('Chrono Cross logo', 'https://example.com/cc.png'),
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
