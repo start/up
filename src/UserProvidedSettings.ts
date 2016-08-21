@@ -12,8 +12,8 @@ export interface UserProvidedSettings {
 
 export namespace UserProvidedSettings {
   export interface Terms {
-    markup: Terms.Markup
-    output: Terms.Output
+    markup?: Terms.Markup
+    output?: Terms.Output
   }
 
   export namespace Terms {
@@ -30,6 +30,9 @@ export namespace UserProvidedSettings {
       video?: Terms.FoundInMarkup
     }
 
+    export type FoundInMarkup = string[] | string
+
+
     export interface Output {
       footnote?: Terms.FoundInOutput
       footnoteReference?: Terms.FoundInOutput
@@ -40,7 +43,6 @@ export namespace UserProvidedSettings {
       toggleSpoiler?: Terms.FoundInOutput
     }
 
-    export type FoundInMarkup = string[] | string
     export type FoundInOutput = string
   }
 }

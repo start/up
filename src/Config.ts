@@ -86,8 +86,11 @@ export namespace Config {
     }
   }
 
-  // Config.Terms.Markup
   export namespace Terms {
+    // Config.Terms.FoundInMarkup
+    export type FoundInMarkup = string[]
+
+    // Config.Terms.Markup
     export class Markup {
       audio: Terms.FoundInMarkup = ['audio']
       chart: Terms.FoundInMarkup = ['chart']
@@ -101,7 +104,6 @@ export namespace Config {
       video: Terms.FoundInMarkup = ['video', 'vid']
 
       clone(): Markup {
-
         const clone = new Markup()
 
         clone.audio = this.audio
@@ -155,6 +157,9 @@ export namespace Config {
       }
     }
 
+    // Terms.FoundInOutput
+    export type FoundInOutput = string
+
 
     // Config.Terms.Output
     export class Output {
@@ -207,9 +212,6 @@ export namespace Config {
           coalesce(terms.toggleSpoiler, this.toggleSpoiler)
       }
     }
-
-    export type FoundInMarkup = string[]
-    export type FoundInOutput = string
   }
 }
 

@@ -132,16 +132,16 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
-          labels: this.config.terms.highlight
+          labels: this.config.terms.markup.highlight
         }, {
           richConvention: SPOILER_CONVENTION,
-          labels: this.config.terms.spoiler
+          labels: this.config.terms.markup.spoiler
         }, {
           richConvention: NSFW_CONVENTION,
-          labels: this.config.terms.nsfw
+          labels: this.config.terms.markup.nsfw
         }, {
           richConvention: NSFL_CONVENTION,
-          labels: this.config.terms.nsfl
+          labels: this.config.terms.markup.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -409,7 +409,7 @@ class Tokenizer {
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       new Convention({
-        startsWith: this.getLabeledBracketStartPattern(this.config.terms.referencedSection, bracket),
+        startsWith: this.getLabeledBracketStartPattern(this.config.terms.markup.referencedSection, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 

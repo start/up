@@ -10,24 +10,36 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     markupForDefaultSettings: string
     markupForConfigChanges: string
-    configChanges: UserProvidedSettings
+    termChanges: UserProvidedSettings.Terms.Markup
     invalidMarkupForEmptyTerm: string
     invalidMarkupForBlankTerm: string
-    equivalentConfigChangesWithEmptyAndBlankVariations: UserProvidedSettings
-    configChangesWithOnlyEmptyAndBlankVariations: UserProvidedSettings
-    configChangesWithNoVariations: UserProvidedSettings
-    conflictingConfigChanges: UserProvidedSettings
+    equivalentTermChangesWithEmptyAndBlankVariations: UserProvidedSettings.Terms.Markup
+    termChangesWithOnlyEmptyAndBlankVariations: UserProvidedSettings.Terms.Markup
+    termChangesWithNoVariations: UserProvidedSettings.Terms.Markup
+    conflictingTermChanges: UserProvidedSettings.Terms.Markup
   }
 ): void {
-  const {
-    markupForDefaultSettings,
-    markupForConfigChanges,
-    configChanges,
-    invalidMarkupForEmptyTerm,
-    equivalentConfigChangesWithEmptyAndBlankVariations,
-    configChangesWithOnlyEmptyAndBlankVariations,
-    configChangesWithNoVariations,
-    conflictingConfigChanges } = args
+  const { markupForDefaultSettings, markupForConfigChanges, invalidMarkupForEmptyTerm } = args
+
+
+  const configChangesFor = (changes: UserProvidedSettings.Terms.Markup) => ({
+    terms: { markup: changes }
+  })
+
+  const configChanges =
+    configChangesFor(args.termChanges)
+
+  const equivalentConfigChangesWithEmptyAndBlankVariations =
+    configChangesFor(args.equivalentTermChangesWithEmptyAndBlankVariations)
+
+  const configChangesWithOnlyEmptyAndBlankVariations =
+    configChangesFor(args.termChangesWithOnlyEmptyAndBlankVariations)
+
+  const configChangesWithNoVariations =
+    configChangesFor(args.termChangesWithNoVariations)
+
+  const conflictingConfigChanges =
+    configChangesFor(args.conflictingTermChanges)
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -136,22 +148,22 @@ describe('The "audio" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     markupForConfigChanges: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
-    configChanges: {
-      terms: { audio: 'listen' }
+    termChanges: {
+      audio: 'listen'
     },
     invalidMarkupForEmptyTerm: '[: chanting at Nevada caucus][https://example.com/audio.ogg]',
     invalidMarkupForBlankTerm: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { audio: [null, 'listen', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      audio: [null, 'listen', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { audio: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      audio: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { audio: [] }
+    termChangesWithNoVariations: {
+      audio: []
     },
-    conflictingConfigChanges: {
-      terms: { audio: 'sound' }
+    conflictingTermChanges: {
+      audio: 'sound'
     }
   })
 })
@@ -161,22 +173,22 @@ describe('The "image" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[see: Chrono Cross logo][https://example.com/cc.png]',
     markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
-    configChanges: {
-      terms: { image: 'see' }
+    termChanges: {
+      image: 'see'
     },
     invalidMarkupForEmptyTerm: '[: Chrono Cross logo][https://example.com/cc.png]',
     invalidMarkupForBlankTerm: '[ \t \t : Chrono Cross logo][https://example.com/cc.png]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { image: [null, 'see', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      image: [null, 'see', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { image: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      image: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { image: [] }
+    termChangesWithNoVariations: {
+      image: []
     },
-    conflictingConfigChanges: {
-      terms: { image: 'picture' }
+    conflictingTermChanges: {
+      image: 'picture'
     }
   })
 })
@@ -186,22 +198,22 @@ describe('The "video" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
-    configChanges: {
-      terms: { video: 'watch' }
+    termChanges: {
+      video: 'watch'
     },
     invalidMarkupForEmptyTerm: '[: Nevada caucus footage][https://example.com/video.webm]',
     invalidMarkupForBlankTerm: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { video: [null, 'watch', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      video: [null, 'watch', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { video: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      video: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { video: [] }
+    termChangesWithNoVariations: {
+      video: []
     },
-    conflictingConfigChanges: {
-      terms: { video: 'observe' }
+    conflictingTermChanges: {
+      video: 'observe'
     }
   })
 })
@@ -211,22 +223,22 @@ describe('The "highlight" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[mark: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
-    configChanges: {
-      terms: { highlight: 'mark' }
+    termChanges: {
+      highlight: 'mark'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { highlight: [null, 'mark', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      highlight: [null, 'mark', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { highlight: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      highlight: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { highlight: [] }
+    termChangesWithNoVariations: {
+      highlight: []
     },
-    conflictingConfigChanges: {
-      terms: { highlight: 'paint' }
+    conflictingTermChanges: {
+      highlight: 'paint'
     }
   })
 })
@@ -236,22 +248,22 @@ describe('The "spoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
-    configChanges: {
-      terms: { spoiler: 'ruins ending' }
+    termChanges: {
+      spoiler: 'ruins ending'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { spoiler: [null, 'ruins ending', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      spoiler: [null, 'ruins ending', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { spoiler: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      spoiler: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { spoiler: [] }
+    termChangesWithNoVariations: {
+      spoiler: []
     },
-    conflictingConfigChanges: {
-      terms: { spoiler: 'look away' }
+    conflictingTermChanges: {
+      spoiler: 'look away'
     }
   })
 })
@@ -261,22 +273,22 @@ describe('The "nsfw" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[GETS YOU FIRED: Ash fights Gary]',
     markupForDefaultSettings: '[NSFW: Ash fights Gary]',
-    configChanges: {
-      terms: { nsfw: 'GETS YOU FIRED' }
+    termChanges: {
+      nsfw: 'GETS YOU FIRED'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { nsfw: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      nsfw: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { nsfw: [] }
+    termChangesWithNoVariations: {
+      nsfw: []
     },
-    conflictingConfigChanges: {
-      terms: { nsfw: 'look away' }
+    conflictingTermChanges: {
+      nsfw: 'look away'
     }
   })
 })
@@ -286,22 +298,22 @@ describe('The "nsfl" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForConfigChanges: '[RUINS LIFE: Ash fights Gary]',
     markupForDefaultSettings: '[NSFL: Ash fights Gary]',
-    configChanges: {
-      terms: { nsfl: 'RUINS LIFE' }
+    termChanges: {
+      nsfl: 'RUINS LIFE'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { nsfl: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      nsfl: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { nsfl: [] }
+    termChangesWithNoVariations: {
+      nsfl: []
     },
-    conflictingConfigChanges: {
-      terms: { nsfl: 'look away' }
+    conflictingTermChanges: {
+      nsfl: 'look away'
     }
   })
 })
@@ -321,8 +333,8 @@ Table:
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    configChanges: {
-      terms: { table: 'data' }
+    termChanges: {
+      table: 'data'
     },
     invalidMarkupForEmptyTerm: `
 :
@@ -336,17 +348,17 @@ Chrono Cross;     1999`,
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { table: [null, 'data', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      table: [null, 'data', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { table: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      table: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { table: [] }
+    termChangesWithNoVariations: {
+      table: []
     },
-    conflictingConfigChanges: {
-      terms: { table: 'info' }
+    conflictingTermChanges: {
+      table: 'info'
     }
   })
 })
@@ -366,8 +378,8 @@ Chart:
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    configChanges: {
-      terms: { chart: 'data' }
+    termChanges: {
+      chart: 'data'
     },
     invalidMarkupForEmptyTerm: `
 :
@@ -381,17 +393,17 @@ Chrono Cross;     1999`,
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
-    equivalentConfigChangesWithEmptyAndBlankVariations: {
-      terms: { chart: [null, 'data', '', ' \t \t ', undefined] }
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      chart: [null, 'data', '', ' \t \t ', undefined]
     },
-    configChangesWithOnlyEmptyAndBlankVariations: {
-      terms: { chart: [null, '', ' \t \t ', undefined] }
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      chart: [null, '', ' \t \t ', undefined]
     },
-    configChangesWithNoVariations: {
-      terms: { chart: [] }
+    termChangesWithNoVariations: {
+      chart: []
     },
-    conflictingConfigChanges: {
-      terms: { chart: 'info' }
+    conflictingTermChanges: {
+      chart: 'info'
     }
   })
 })
@@ -400,7 +412,7 @@ Chrono Cross;     1999`,
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
-      terms: { footnote: 'reference' }
+      footnote: 'reference'
     })
 
     expect(up.toDocument('[SPOILER: Ash fights Gary]')).to.be.eql(
@@ -414,7 +426,7 @@ context('Config settings are totally independent. When one setting is changed, t
   specify('the default Up object', () => {
     const ast =
       Up.toDocument('[SPOILER: Ash fights Gary]', {
-        terms: { footnote: 'reference' }
+        footnote: 'reference'
       })
 
     expect(ast).to.be.eql(

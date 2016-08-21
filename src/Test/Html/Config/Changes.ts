@@ -104,12 +104,16 @@ describe('The "footnote reference" config term', () => {
     ]),
     configChanges: {
       terms: {
-        footnoteReference: 'ref'
+        output: {
+          footnoteReference: 'ref'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        footnoteReference: 'fn ref'
+        output: {
+          footnoteReference: 'fn ref'
+        }
       }
     }
   })
@@ -125,12 +129,16 @@ describe('The "footnote" config term', () => {
     ]),
     configChanges: {
       terms: {
-        footnote: 'fn'
+        output: {
+          footnote: 'fn'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        footnote: 'note'
+        output: {
+          footnote: 'note'
+        }
       }
     }
   })
@@ -146,12 +154,16 @@ describe('The "toggleSpoiler" config term', () => {
     ]),
     configChanges: {
       terms: {
-        toggleSpoiler: 'show/hide'
+        output: {
+          toggleSpoiler: 'show/hide'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        toggleSpoiler: 'see spoiler?'
+        output: {
+          toggleSpoiler: 'see spoiler?'
+        }
       }
     }
   })
@@ -167,12 +179,16 @@ describe('The "toggleNsfw" config term', () => {
     ]),
     configChanges: {
       terms: {
-        toggleNsfw: 'see/hide'
+        output: {
+          toggleNsfw: 'see/hide'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        toggleNsfw: 'show nsfw?'
+        output: {
+          toggleNsfw: 'show nsfw?'
+        }
       }
     }
   })
@@ -188,12 +204,16 @@ describe('The "toggleNsfl" config term', () => {
     ]),
     configChanges: {
       terms: {
-        toggleNsfl: 'see/hide'
+        output: {
+          toggleNsfl: 'see/hide'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        toggleNsfl: 'show nsfl?'
+        output: {
+          toggleNsfl: 'show nsfl?'
+        }
       }
     }
   })
@@ -209,12 +229,16 @@ describe('The "tableOfContents" config setting', () => {
       new UpDocument.TableOfContents([heading])),
     configChanges: {
       terms: {
-        tableOfContents: 'In This Article'
+        output: {
+          tableOfContents: 'In This Article'
+        }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        tableOfContents: 'Skip To...'
+        output: {
+          tableOfContents: 'Skip To...'
+        }
       }
     }
   })
