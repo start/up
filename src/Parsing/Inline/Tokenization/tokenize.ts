@@ -428,7 +428,7 @@ class Tokenizer {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
         BRACKETS.map(bracket => new Convention({
-          startsWith: this.getLabeledBracketStartPattern(media.labels(this.config.terms), bracket),
+          startsWith: this.getLabeledBracketStartPattern(media.labels(this.config.terms.markup), bracket),
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 

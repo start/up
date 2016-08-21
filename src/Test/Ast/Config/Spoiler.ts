@@ -10,12 +10,14 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
   const up = new Up({
-    terms: { spoiler: 'ruins ending' }
+    terms: {
+      markup: { spoiler: 'ruins ending' }
+    }
   })
 
-  context('For inline spoilers, the term', () => {
+  context('For inline spoilers, the config term', () => {
     it('is used', () => {
-      expect(up.toDocument('[ruins ending: Ash fights Gary]', { terms: { spoiler: 'ruins ending' } })).to.be.eql(
+      expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -23,7 +25,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
         ]))
     })
 
-    it('is case-insensitive, even when custom', () => {
+    it('is case-insensitive', () => {
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
@@ -31,7 +33,14 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     })
 
     it('is trimmed', () => {
-      expect(up.toDocument('[RUINS ending: Ash fights Gary]', { terms: { spoiler: ' \t ruins ending \t ' } })).to.be.eql(
+      const document = Up.toDocument(
+        '[RUINS ending: Ash fights Gary]', {
+          terms: {
+            markup: { spoiler: ' \t ruins ending \t ' }
+          }
+        })
+
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -40,7 +49,14 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     })
 
     it('ignores inline conventions and regular expression rules', () => {
-      expect(up.toDocument('[*RUINS* ending: Ash fights Gary]', { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
+      const document = Up.toDocument(
+        '[*RUINS* ending: Ash fights Gary]', {
+          terms: {
+            markup: { spoiler: '*ruins* ending' }
+          }
+        })
+
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -49,7 +65,14 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     })
 
     it('can have multiple variations', () => {
-      expect(up.toDocument('[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
+      const document = Up.toDocument(
+        '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
+          terms: {
+            markup: { spoiler: ['look away', 'ruins ending'] }
+          }
+        })
+
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -62,7 +85,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
   })
 
 
-  context('For spoiler blocks, the term', () => {
+  context('For spoiler blocks, the config term', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:
@@ -84,7 +107,7 @@ ruins ending:
         ]))
     })
 
-    it('is case-insensitive, even when custom', () => {
+    it('is case-insensitive', () => {
       const lowercase = `
 ruins ending:
 
@@ -102,6 +125,33 @@ ruINs eNDiNg:
       expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
     })
 
+    it('is trimmed', () => {
+      const markup = `
+RUINS ending:
+
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { spoiler: ' \t ruins ending \t ' }
+        }
+      })
+
+      expect(document).to.be.eql(
+        new UpDocument([
+          new SpoilerBlock([
+            new Paragraph([
+              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            ]),
+            new Paragraph([
+              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            ])
+          ])
+        ]))
+    })
+
     it('ignores inline conventions and regular expression rules', () => {
       const markup = `
 *RUINS* ending:
@@ -110,7 +160,13 @@ ruINs eNDiNg:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup, { terms: { spoiler: '*ruins* ending' } })).to.be.eql(
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { spoiler: '*ruins* ending' }
+        }
+      })
+
+      expect(document).to.be.eql(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([
@@ -133,7 +189,13 @@ LOOK AWAY:
     
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup, { terms: { spoiler: ['look away', 'ruins ending'] } })).to.be.eql(
+      const document = Up.toDocument(markup, {
+        terms: {
+          markup: { spoiler: ['look away', 'ruins ending'] }
+        }
+      })
+
+      expect(document).to.be.eql(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([

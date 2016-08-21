@@ -42,9 +42,9 @@ export function getOutlineSyntaxNodes(
     tryToParseCodeBlock,
     tryToParseBlockquote,
     tryToParseTableOrChart,
-    getLabeledBlockParser(terms.spoiler, SpoilerBlock),
-    getLabeledBlockParser(terms.nsfw, NsfwBlock),
-    getLabeledBlockParser(terms.nsfl, NsflBlock),
+    getLabeledBlockParser(terms.markup.spoiler, SpoilerBlock),
+    getLabeledBlockParser(terms.markup.nsfw, NsfwBlock),
+    getLabeledBlockParser(terms.markup.nsfl, NsflBlock),
     tryToParseDescriptionList
   ]
 

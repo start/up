@@ -15,7 +15,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     }
   })
 
-  context('For inline NSFL conventions, the term', () => {
+  context('For inline NSFL conventions, the config term', () => {
     it('is used', () => {
       expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.be.eql(
         insideDocumentAndParagraph([
@@ -33,8 +33,6 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
     })
 
     it('is trimmed', () => {
-      const markup = '[RUINS ending: Ash fights Gary]'
-
       const document = Up.toDocument(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
@@ -42,7 +40,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
           }
         })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(document).to.be.eql(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -87,7 +85,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
   })
 
 
-  context('For NSFL blocks, the term', () => {
+  context('For NSFL blocks, the config term', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:
@@ -109,7 +107,7 @@ ruins ending:
         ]))
     })
 
-    it('is case-insensitive, even when custom', () => {
+    it('is case-insensitive', () => {
       const lowercase = `
 ruins ending:
 

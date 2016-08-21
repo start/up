@@ -212,7 +212,7 @@ export class HtmlWriter extends Writer {
   protected inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
     return this.revealable({
       conventionName: 'spoiler',
-      termForTogglingVisibility: this.config.terms.toggleSpoiler,
+      termForTogglingVisibility: this.config.terms.output.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealable: inlineSpoiler,
       tagNameForGenericContainers: 'span'
@@ -222,7 +222,7 @@ export class HtmlWriter extends Writer {
   protected inlineNsfw(inlineNsfw: InlineNsfw): string {
     return this.revealable({
       conventionName: 'nsfw',
-      termForTogglingVisibility: this.config.terms.toggleNsfw,
+      termForTogglingVisibility: this.config.terms.output.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealable: inlineNsfw,
       tagNameForGenericContainers: 'span'
@@ -232,7 +232,7 @@ export class HtmlWriter extends Writer {
   protected inlineNsfl(inlineNsfl: InlineNsfl): string {
     return this.revealable({
       conventionName: 'nsfl',
-      termForTogglingVisibility: this.config.terms.toggleNsfl,
+      termForTogglingVisibility: this.config.terms.output.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealable: inlineNsfl,
       tagNameForGenericContainers: 'span'
@@ -242,7 +242,7 @@ export class HtmlWriter extends Writer {
   protected spoilerBlock(spoilerBlock: SpoilerBlock): string {
     return this.revealable({
       conventionName: 'spoiler',
-      termForTogglingVisibility: this.config.terms.toggleSpoiler,
+      termForTogglingVisibility: this.config.terms.output.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealable: spoilerBlock,
       tagNameForGenericContainers: 'div',
@@ -253,7 +253,7 @@ export class HtmlWriter extends Writer {
   protected nsfwBlock(nsfwBlock: NsfwBlock): string {
     return this.revealable({
       conventionName: 'nsfw',
-      termForTogglingVisibility: this.config.terms.toggleNsfw,
+      termForTogglingVisibility: this.config.terms.output.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealable: nsfwBlock,
       tagNameForGenericContainers: 'div',
@@ -264,7 +264,7 @@ export class HtmlWriter extends Writer {
   protected nsflBlock(nsflBlock: NsflBlock): string {
     return this.revealable({
       conventionName: 'nsfl',
-      termForTogglingVisibility: this.config.terms.toggleNsfl,
+      termForTogglingVisibility: this.config.terms.output.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealable: nsflBlock,
       tagNameForGenericContainers: 'div',
@@ -383,7 +383,7 @@ export class HtmlWriter extends Writer {
   private tableOfContentsTitle(): string {
     return this.write(
       new Heading([
-        new PlainText(this.config.terms.tableOfContents)], 1))
+        new PlainText(this.config.terms.output.tableOfContents)], 1))
   }
 
   private tableOfContentsEntries(entries: Heading[]): string {
@@ -589,15 +589,15 @@ export class HtmlWriter extends Writer {
   }
 
   private idOfElementReferencedByTableOfContents(ordinal: number): string {
-    return this.getId(this.config.terms.itemReferencedByTableOfContents, ordinal)
+    return this.getId(this.config.terms.output.itemReferencedByTableOfContents, ordinal)
   }
 
   private footnoteId(referenceNumber: number): string {
-    return this.getId(this.config.terms.footnote, referenceNumber)
+    return this.getId(this.config.terms.output.footnote, referenceNumber)
   }
 
   private footnoteReferenceId(referenceNumber: number): string {
-    return this.getId(this.config.terms.footnoteReference, referenceNumber)
+    return this.getId(this.config.terms.output.footnoteReference, referenceNumber)
   }
 }
 
