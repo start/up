@@ -17,7 +17,7 @@ Not me. Us!
 @---------@`
 
     const heading =
-      new Heading([new PlainText('Not me. Us!')], 1)
+      new Heading([new PlainText('Not me. Us!')], { level: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
@@ -34,7 +34,7 @@ Not me. Us!
 -----------`
 
     const heading =
-      new Heading([new PlainText('Not me. Us!')], 1)
+      new Heading([new PlainText('Not me. Us!')], { level: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([

@@ -60,7 +60,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 ----------------------------------------`
 
       const heading =
-        new Heading([new PlainText('1783. Not a good year for Great Britain.')], 1)
+        new Heading([new PlainText('1783. Not a good year for Great Britain.')], { level: 1 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument(
@@ -297,13 +297,13 @@ I enjoy apples
    Very delicious.`
 
     const enjoyHeading =
-      new Heading([new PlainText('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], { level: 1 })
 
     const cheapHeading =
-      new Heading([new PlainText("They're cheap")], 2)
+      new Heading([new PlainText("They're cheap")], { level: 2 })
 
     const deliciousHeading =
-      new Heading([new PlainText("They're delicious")], 2)
+      new Heading([new PlainText("They're delicious")], { level: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

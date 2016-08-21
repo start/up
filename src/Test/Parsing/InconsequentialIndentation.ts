@@ -401,15 +401,15 @@ Hello, world!
  \t ~~~~~~~~~~~~~~~`
 
     const worldHeading =
-      new Heading([new PlainText('Hello, world!')], 1)
+      new Heading([new PlainText('Hello, world!')], { level: 1 })
 
     const coreHeading =
-      new Heading([new PlainText('Hello, core!')], 1)
+      new Heading([new PlainText('Hello, core!')], { level: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new Heading([new PlainText('Hello, world!')], 1),
-        new Heading([new PlainText('Hello, core!')], 1),
+        new Heading([new PlainText('Hello, world!')], { level: 1 }),
+        new Heading([new PlainText('Hello, core!')], { level: 1 }),
       ], new UpDocument.TableOfContents([worldHeading, coreHeading])))
   })
 

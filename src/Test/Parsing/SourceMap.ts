@@ -112,7 +112,7 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 1 })
+          new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument(

@@ -159,7 +159,7 @@ describe('A blockquote', () => {
         new Blockquote([
           new Heading([
             new PlainText('Hello, world!')
-          ], 1)
+          ], { level: 1 })
         ])
       ]))
   })

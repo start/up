@@ -71,7 +71,7 @@ describe('Footnotes in a heading', () => {
   it('produce a footnote block after the heading', () => {
     const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
-------`
+--------------------------------------------------------------------`
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
@@ -82,7 +82,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         new PlainText("I don't eat cereal."),
         footnote,
         new PlainText(" Never have.")
-      ], 1)
+      ], { level: 1})
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

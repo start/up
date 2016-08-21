@@ -58,14 +58,14 @@ context("The `UpDocument.create` is automatically used during the normal parsing
 
   specify("A table of contents", () => {
     const documentChildren = [
-      new Heading([new PlainText('I enjoy apples')], 1),
+      new Heading([new PlainText('I enjoy apples')], { level: 1 }),
       new OrderedList([
         new OrderedList.Item([
-          new Heading([new PlainText("They're cheap")], 2),
+          new Heading([new PlainText("They're cheap")], { level: 2 }),
           new Paragraph([new PlainText("Very cheap.")])
         ]),
         new OrderedList.Item([
-          new Heading([new PlainText("They're delicious")], 2),
+          new Heading([new PlainText("They're delicious")], { level: 2 }),
           new Paragraph([new PlainText("Very delicious.")])
         ])
       ])
@@ -74,13 +74,13 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const document = UpDocument.create(documentChildren)
 
     const enjoyHeading =
-      new Heading([new PlainText('I enjoy apples')], 1)
+      new Heading([new PlainText('I enjoy apples')], { level: 1 })
 
     const cheapHeading =
-      new Heading([new PlainText("They're cheap")], 2)
+      new Heading([new PlainText("They're cheap")], { level: 2 })
 
     const deliciousHeading =
-      new Heading([new PlainText("They're delicious")], 2)
+      new Heading([new PlainText("They're delicious")], { level: 2 })
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -100,11 +100,11 @@ context("The `UpDocument.create` is automatically used during the normal parsing
 
   specify("Referemces to table of contents entries associated with the appropriate entries", () => {
     const documentChildren = [
-      new Heading([new PlainText('I drink soda')], 1),
+      new Heading([new PlainText('I drink soda')], { level: 1 }),
       new Paragraph([
         new PlainText('Actually, I only drink milk.')
       ]),
-      new Heading([new PlainText('I never lie')], 1),
+      new Heading([new PlainText('I never lie')], { level: 1 }),
       new Paragraph([
         new PlainText('Not quite true. For example, see '),
         new ReferenceToTableOfContentsEntry('soda'),
@@ -115,10 +115,10 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const document = UpDocument.create(documentChildren)
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda')], 1)
+      new Heading([new PlainText('I drink soda')], { level: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], 1)
+      new Heading([new PlainText('I never lie')], { level: 1 })
 
     expect(document).to.be.eql(
       new UpDocument([
