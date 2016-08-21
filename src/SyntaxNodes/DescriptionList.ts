@@ -34,10 +34,10 @@ export namespace DescriptionList {
     }
 
     inlineDescendants(): InlineSyntaxNode[] {
-      const inlineDescendantsWithinTerms = concat(
-        this.terms.map(item => item.inlineDescendants()))
-
-      return inlineDescendantsWithinTerms.concat(this.description.inlineDescendants())
+      return concat([
+        ...this.terms,
+        this.description
+      ].map(termOrDescription => termOrDescription.inlineDescendants()))
     }
   }
 
