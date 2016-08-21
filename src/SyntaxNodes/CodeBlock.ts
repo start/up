@@ -1,4 +1,5 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 
 
@@ -8,6 +9,10 @@ export class CodeBlock implements OutlineSyntaxNode {
     public sourceLineNumber: number = undefined) { }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+    return []
+  }
+
+  inlineDescendants(): InlineSyntaxNode[] {
     return []
   }
 
