@@ -78,10 +78,10 @@ function itWorksAsAdvertised(
 
 describe('The "createSourceMap" config setting', () => {
   const headingWithSourceMap =
-    new Heading([new PlainText('Very important')], 1, 2)
+    new Heading([new PlainText('Very important')], { level: 1, sourceLineNumber: 2 })
 
   const headingWithoutSourceMap =
-    new Heading([new PlainText('Very important')], 1)
+    new Heading([new PlainText('Very important')], { level: 1 })
 
   itWorksAsAdvertised({
     markup: `

@@ -260,7 +260,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 1 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 1, 3)
+      new Heading([new PlainText('Bulbasaur')], { level: 1, sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="3">Bulbasaur</h1>')
@@ -268,7 +268,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 2 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 2, 1)
+      new Heading([new PlainText('Bulbasaur')], { level: 2, sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h2 data-up-source-line="1">Bulbasaur</h2>')
@@ -276,7 +276,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 3 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 3, 3)
+      new Heading([new PlainText('Bulbasaur')], { level: 3, sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h3>')
@@ -284,14 +284,14 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 4  headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 4, 1)
+      new Heading([new PlainText('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 5, 3)
+      new Heading([new PlainText('Bulbasaur')], { level: 5, sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h5>')
@@ -299,7 +299,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 6 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 6, 1)
+      new Heading([new PlainText('Bulbasaur')], { level: 6, sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h6>')
@@ -307,7 +307,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 10 headings', () => {
     const document = new UpDocument([
-      new Heading([new PlainText('Bulbasaur')], 10, 2)
+      new Heading([new PlainText('Bulbasaur')], { level: 10, sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h6>')

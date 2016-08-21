@@ -5,12 +5,20 @@ import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 
 
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
+  public level: number
+  public sourceLineNumber: number
+
   constructor(
     children: InlineSyntaxNode[],
-    public level: number,
-    public sourceLineNumber: number = undefined
+    options: {
+      level?: number,
+      sourceLineNumber?: number
+    } = {}
   ) {
     super(children)
+
+    this.level = options.level
+    this.sourceLineNumber = options.sourceLineNumber
   }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {

@@ -447,7 +447,7 @@ context("Within the table of contents, the IDs of revealable content elements do
 context("When an item referenced by the table of contents has a source line number", () => {
   specify("its entry within the table of content's <nav> element isn't given a 'data-up-source-line' attribute", () => {
     const heading =
-      new Heading([new PlainText('I enjoy apples')], 1, 2)
+      new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

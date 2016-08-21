@@ -97,7 +97,7 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Heading([new PlainText('I enjoy apples')], 1, 2)
+          new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument(
@@ -112,7 +112,7 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Heading([new PlainText('I enjoy apples')], 1, 2)
+          new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 1 })
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument(
@@ -570,13 +570,13 @@ The best apple
 Pink lady.`
 
     const enjoyApplesHeading =
-      new Heading([new PlainText('I enjoy apples')], 1, 2)
+      new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
 
     const bestFruitHeading =
-      new Heading([new PlainText("The best fruit")], 2, 12)
+      new Heading([new PlainText("The best fruit")], { level: 2, sourceLineNumber: 12 })
 
     const bestAppleHeading =
-      new Heading([new PlainText("The best apple")], 2, 18)
+      new Heading([new PlainText("The best apple")], { level: 2, sourceLineNumber: 18 })
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
@@ -619,13 +619,13 @@ Pink lady
 
 
     const enjoyApplesHeading =
-      new Heading([new PlainText('I enjoy apples')], 1, 2)
+      new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
 
     const bestFruitHeading =
-      new Heading([new PlainText("The best fruit")], 2, 9)
+      new Heading([new PlainText("The best fruit")], { level: 2, sourceLineNumber: 9 })
 
     const bestAppleHeading =
-      new Heading([new PlainText("The best apple")], 2, 16)
+      new Heading([new PlainText("The best apple")], { level: 2, sourceLineNumber: 16 })
 
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
