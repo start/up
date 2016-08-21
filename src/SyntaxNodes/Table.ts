@@ -20,14 +20,14 @@ export class Table implements OutlineSyntaxNode {
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
-    const inlineContainers = concat<InlineSyntaxNodeContainer>([
+    const captionAndCells = concat<InlineSyntaxNodeContainer>([
       this.caption ? [this.caption] : [],
       this.header.cells,
       ...this.rows.map(row => row.allCellsStartingWithRowHeaderCell)
     ])
 
     return concat(
-      inlineContainers.map(container => getInlineDescendants(container.children)))
+      captionAndCells.map(captionOrCell => getInlineDescendants(captionOrCell.children)))
   }
 }
 
