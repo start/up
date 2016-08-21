@@ -29,7 +29,7 @@ import { Link } from '../../SyntaxNodes/Link'
 */
 
 
-describe('Bracketed text starting with "reference:".', () => {
+describe('Bracketed text starting with "section:".', () => {
   specify('produces a reference to a table of contents entry', () => {
     const markup = `
 I drink soda
@@ -40,7 +40,7 @@ Actually, I only drink milk.
 I never lie
 ===========
 
-Not quite true. For example, see [reference: soda].`
+Not quite true. For example, see [section: soda].`
 
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], 1)
@@ -77,7 +77,7 @@ Actually, I only drink milk.
 I never lie
 ===========
 
-Not quite true. For example, see [reference: I drink soda--exclusively].`
+Not quite true. For example, see [section: I drink soda--exclusively].`
 
       const sodaHeading =
         new Heading([new PlainText('I drink soda–exclusively')], 1)
@@ -110,7 +110,7 @@ Actually, I only drink milk.
 I never lie
 ===========
 
-Not quite true. For example, see [reference: I drink soda---exclusively].`
+Not quite true. For example, see [section: I drink soda---exclusively].`
 
       const sodaHeading =
         new Heading([new PlainText('I drink soda—exclusively')], 1)
@@ -143,7 +143,7 @@ Actually, I only drink milk.
 I never lie
 ===========
 
-Not quite true. For example, see [reference: I drink 9 cans of soda +-2].`
+Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
 
       const sodaHeading =
         new Heading([new PlainText('Daily, I drink 9 cans of soda ±2')], 1)

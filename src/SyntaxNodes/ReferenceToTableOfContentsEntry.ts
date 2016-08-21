@@ -19,10 +19,11 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     return this.entry == null
   }
 
-  referenceMostSimilarTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll try to match our `entryTextSnippet` with the text of an entry. To be clear, the "text" of an
-    // entry refers to the actual text content of the entry. For example, if an entry was originally
-    // produced by the following markup:
+  referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
+    // We'll do our best to match our `entryTextSnippet` with the text an appropriate entry.
+    //
+    // To be clear, the "text" of an entry refers to its actual text content *after* any conventions
+    // are applied. For example, if an entry was originally produced by the following markup:
     // 
     //    Why documents should consist *solely* of `<font>` elements
     //    ----------------------------------------------------------
@@ -31,11 +32,10 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     //
     //    Why documents should consist solely of <font> elements
     //
-    //
     // We'll match with the first entry whose text exactly equals `entryTextSnippet`. We don't care about
     // capitalization, but the text otherwise has to be an exact match. 
     //
-    // If there are no exact matches,  then we'll match the first entry whose text *contains*
+    // If there are no exact matches, then we'll match the first entry whose text *contains*
     // `entryTextSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck.

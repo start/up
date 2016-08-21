@@ -37,7 +37,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
     // appropriate entries. Let's take care of that now.
     for (const inlineSyntaxNode of document.inlineDescendants()) {
       if (inlineSyntaxNode instanceof ReferenceToTableOfContentsEntry) {
-        inlineSyntaxNode.referenceMostSimilarTableOfContentsEntry(document.tableOfContents)
+        inlineSyntaxNode.referenceMostAppropriateTableOfContentsEntry(document.tableOfContents)
       }
     }
 

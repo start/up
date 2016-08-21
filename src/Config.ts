@@ -70,7 +70,7 @@ export namespace Config {
     image: Terms.FoundInMarkup = ['image', 'img']
     nsfl: Terms.FoundInMarkup = ['nsfl']
     nsfw: Terms.FoundInMarkup = ['nsfw']
-    reference: Terms.FoundInMarkup = ['reference', 'ref']
+    referencedSection: Terms.FoundInMarkup = ['section', 'heading']
     spoiler: Terms.FoundInMarkup = ['spoiler']
     table: Terms.FoundInMarkup = ['table']
     video: Terms.FoundInMarkup = ['video', 'vid']
@@ -91,6 +91,7 @@ export namespace Config {
       clone.highlight = this.highlight
       clone.image = this.image
       clone.nsfl = this.nsfl
+      clone.referencedSection = this.referencedSection
       clone.nsfw = this.nsfw
       clone.spoiler = this.spoiler
       clone.table = this.table
@@ -129,6 +130,9 @@ export namespace Config {
 
       this.nsfw =
         changeTermFoundInMarkup(terms.nsfw, this.nsfw)
+
+      this.referencedSection =
+        changeTermFoundInMarkup(terms.referenceSection, this.referencedSection)
 
       this.spoiler =
         changeTermFoundInMarkup(terms.spoiler, this.spoiler)
