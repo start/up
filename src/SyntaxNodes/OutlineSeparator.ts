@@ -6,8 +6,10 @@ import { UpDocument } from './UpDocument'
 export class OutlineSeparator implements OutlineSyntaxNode {
   public sourceLineNumber: number = undefined
 
-  constructor(options: { sourceLineNumber?: number } = {}) {
-    this.sourceLineNumber = options.sourceLineNumber
+  constructor(options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
   }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {

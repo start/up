@@ -3,8 +3,17 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class Footnote extends RichInlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[], public referenceNumber?: number) {
+  public referenceNumber: number
+
+  constructor(
+    children: InlineSyntaxNode[],
+    options?: { referenceNumber: number }
+  ) {
     super(children)
+
+    if (options) {
+      this.referenceNumber = options.referenceNumber
+    }
   }
 
   // Footnotes are written inline, but they aren't meant to appear inline in the final document.

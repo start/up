@@ -9,11 +9,13 @@ export abstract class RevealableOutlineSyntaxNode extends RichOutlineSyntaxNode 
 
   constructor(
     children: OutlineSyntaxNode[],
-    options: { sourceLineNumber?: number } = {}
+    options?: { sourceLineNumber: number }
   ) {
     super(children)
 
-    this.sourceLineNumber = options.sourceLineNumber
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
   }
   // As a rule, we don't want to include any revealable (i.e. initially hidden) headings in the
   // table of contents.
