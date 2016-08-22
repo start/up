@@ -154,14 +154,17 @@ describe('A blockquote', () => {
 > Hello, world!
 > ===========`
 
+    const heading =
+      new Heading([
+        new PlainText('Hello, world!')
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([
-            new PlainText('Hello, world!')
-          ], { level: 1 })
+          heading
         ])
-      ]))
+      ], new UpDocument.TableOfContents([heading])))
   })
 
   it('can contain nested blockquotes', () => {
