@@ -21,17 +21,17 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
   }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll use `entryTextSnippet` to associate this object with the most appropriate table of contents
-    // entry.
+    // We'll use `entryTextSnippet` to associate this reference object with the most appropriate table
+    // of contents entry.
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this object with the first entry whose text *exactly* equals
+    // First, we'll try to associate this reference with the first entry whose text exactly equals
     // `entryTextSnippet`. We don't care about capitalization, but the text otherwise has to be an exact
     // match. 
     //
-    // If there are no exact matches, then we'll associate this object with the first entry whose text
-    // *contains* entryTextSnippet`.
+    // If there are no exact matches, then we'll try to associate this reference with the first entry
+    // whose text *contains* entryTextSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck.
     //
@@ -55,6 +55,8 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
           patternIgnoringCapitalizationAndContaining(escapeForRegex(this.entryTextSnippet))
 
         if (CONTAINS_SNIPPET_PATTERN.test(textOfEntry)) {
+          // We've found non-perfect match. We'll keep searching in case there's a perfect match
+          // further in the table of contents.
           this.entry = entry
         }
       }
