@@ -887,18 +887,18 @@ Apple
     })
   })
 
-  specify('They can be nested arbitrarily deep within ordered lists, unordered lists, and description lists', () => {
+  specify('They can be nested arbitrarily deep within ordered lists, unordered lists, description lists, and blockquotes', () => {
     const markup = `
 * I like apples.
 
-  # Really.
+  #) Really.
   
     Apple
       The best fruit
       ==============
       
-      Purchasing
-      ----------`
+      > Purchasing
+      > ----------`
 
     const bestFruitHeading =
       new Heading([new PlainText('The best fruit')], { level: 1, ordinalInTableOfContents: 1 })
@@ -924,7 +924,9 @@ Apple
                     new DescriptionList.Item.Term([new PlainText('Apple')])
                   ], new DescriptionList.Item.Description([
                     bestFruitHeading,
-                    purchasingHeading,
+                    new Blockquote([
+                      purchasingHeading
+                    ])
                   ]))
                 ])
               ])
