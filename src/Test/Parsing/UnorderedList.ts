@@ -179,7 +179,7 @@ describe('An indented line immediately following an ordered list item line', () 
   Violets are blue`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -217,18 +217,16 @@ describe('Multiple indented or blank lines immediately following an unordered li
   ===============`
 
     const hellodHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 1 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], { level: 1 }),
+            hellodHeading,
             new Paragraph([
               new PlainText('It is really late, and I am really tired.')
             ]),
@@ -237,9 +235,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
             ])
           ]),
           new UnorderedList.Item([
-            new Heading([
-              new PlainText('Goodbye, world!')
-            ], { level: 1 })
+            goodbyeHeading
           ])
         ])
       ], new UpDocument.TableOfContents([hellodHeading, goodbyeHeading])))
@@ -282,18 +278,16 @@ describe('An unordered list item containing multiple indented lines', () => {
   ===============`
 
     const hellodHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 1 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
-            new Heading([
-              new PlainText('Hello, world!')
-            ], { level: 1 }),
+            hellodHeading,
             new Paragraph([
               new PlainText('Upcoming features:')
             ]),
@@ -311,9 +305,7 @@ describe('An unordered list item containing multiple indented lines', () => {
             ])
           ]),
           new UnorderedList.Item([
-            new Heading([
-              new PlainText('Goodbye, world!')
-            ], { level: 1 })
+            goodbyeHeading
           ])
         ])
       ], new UpDocument.TableOfContents([hellodHeading, goodbyeHeading])))

@@ -297,13 +297,13 @@ I enjoy apples
    Very delicious.`
 
     const enjoyHeading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1 })
+      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const cheapHeading =
-      new Heading([new PlainText("They're cheap")], { level: 2 })
+      new Heading([new PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
     const deliciousHeading =
-      new Heading([new PlainText("They're delicious")], { level: 2 })
+      new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
