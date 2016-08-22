@@ -743,7 +743,47 @@ I enjoy apples
             new Paragraph([new PlainText("Very cheap.")])
           ])
         ], tableOfContents))
+    })
 
+    specify('Nested blockquotes', () => {
+      const markup = `
+I enjoy apples
+==============
+
+> They're cheap
+> -------------
+>
+> Very cheap.
+>
+> > Cost
+> > ----
+> >
+> > Typically, apples cost twenty dolloars per pound.`
+
+      const applesHeading =
+        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const cheapHeading =
+        new Heading([new PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+
+      const costHeading =
+        new Heading([new PlainText("Cost")], { level: 2, ordinalInTableOfContents: 3 })
+
+      const tableOfContents =
+        new UpDocument.TableOfContents([applesHeading, cheapHeading, costHeading])
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          applesHeading,
+          new Blockquote([
+            cheapHeading,
+            new Paragraph([new PlainText("Very cheap.")]),
+            new Blockquote([
+              costHeading,
+              new Paragraph([new PlainText("Typically, apples cost twenty dolloars per pound.")])
+            ])
+          ])
+        ], tableOfContents))
     })
 
     specify('Description lists', () => {
