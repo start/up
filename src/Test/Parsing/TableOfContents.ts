@@ -716,6 +716,36 @@ I enjoy apples
         ], tableOfContents))
     })
 
+    specify('Blockquotes', () => {
+      const markup = `
+I enjoy apples
+==============
+
+> They're cheap
+> -------------
+>
+> Very cheap.`
+
+      const applesHeading =
+        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const cheapHeading =
+        new Heading([new PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+
+      const tableOfContents =
+        new UpDocument.TableOfContents([applesHeading, cheapHeading])
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          applesHeading,
+          new Blockquote([
+            cheapHeading,
+            new Paragraph([new PlainText("Very cheap.")])
+          ])
+        ], tableOfContents))
+
+    })
+
     specify('Description lists', () => {
       const markup = `
 I enjoy apples
@@ -865,20 +895,7 @@ Apple
   })
 
 
-  context('However they cannot be inside:', () => {
-    specify('Blockquotes', () => {
-      const markup = `
-> They're cheap
-> -------------`
-
-      expect(Up.toDocument(markup)).to.be.eql(
-        new UpDocument([
-          new Blockquote([
-            new Heading([new PlainText("They're cheap")], { level: 1 })
-          ])
-        ], new UpDocument.TableOfContents([])))
-    })
-
+  context('However they cannot be inside revealable blocks:', () => {
     specify('Spoiler blocks', () => {
       const markup = `
 SPOILER:
