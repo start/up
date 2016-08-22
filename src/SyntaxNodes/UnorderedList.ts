@@ -3,6 +3,7 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 import { concat } from '../CollectionHelpers'
+import { Writer } from '../Writing/Writer'
 
 
 export class UnorderedList implements OutlineSyntaxNode {
@@ -23,6 +24,10 @@ export class UnorderedList implements OutlineSyntaxNode {
   inlineDescendants(): InlineSyntaxNode[] {
     return concat(
       this.items.map(item => item.inlineDescendants()))
+  }
+
+  write(writer: Writer): string {
+    return writer.unorderedList(this)
   }
 }
 

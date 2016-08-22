@@ -1,6 +1,7 @@
 import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { patternIgnoringCapitalizationAndContaining, escapeForRegex } from '../Parsing/PatternHelpers'
+import { Writer } from '../Writing/Writer'
 
 
 export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
@@ -64,5 +65,9 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
 
   inlineDescendants(): InlineSyntaxNode[] {
     return []
+  }
+
+  write(writer: Writer): string {
+    return writer.referenceToTableOfContentsEntry(this)
   }
 }

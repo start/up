@@ -1,6 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
+import { Writer } from '../Writing/Writer'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
@@ -18,6 +19,10 @@ export class CodeBlock implements OutlineSyntaxNode {
 
   inlineDescendants(): InlineSyntaxNode[] {
     return []
+  }
+
+  write(writer: Writer): string {
+    return writer.codeBlock(this)
   }
 
   protected CODE_BLOCK(): void { }

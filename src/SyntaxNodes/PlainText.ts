@@ -1,4 +1,5 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { Writer } from '../Writing/Writer'
 
 
 export class PlainText implements InlineSyntaxNode {
@@ -10,6 +11,10 @@ export class PlainText implements InlineSyntaxNode {
 
   inlineDescendants(): InlineSyntaxNode[] {
     return []
+  }
+
+  write(writer: Writer): string {
+    return writer.plainText(this)
   }
 
   protected PLAIN_TEXT(): void { }

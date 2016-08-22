@@ -12,6 +12,7 @@ import { Stress } from '../SyntaxNodes/Stress'
 import { Italic } from '../SyntaxNodes/Italic'
 import { Bold } from '../SyntaxNodes/Bold'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
+import { ReferenceToTableOfContentsEntry } from '../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { RevisionInsertion } from '../SyntaxNodes/RevisionInsertion'
 import { RevisionDeletion } from '../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
@@ -69,6 +70,42 @@ export abstract class Writer {
     return this._result
   }
 
+  abstract audio(audio: Audio): string
+  abstract bold(bold: Bold): string
+  abstract blockquote(blockquote: Blockquote): string
+  abstract codeBlock(codeBlock: CodeBlock): string
+  abstract descriptionList(list: DescriptionList): string
+  abstract emphasis(emphasis: Emphasis): string
+  abstract exampleInput(exampleInput: ExampleInput): string
+  abstract footnoteBlock(footnoteBlock: FootnoteBlock): string
+  abstract referenceToFootnote(footnote: Footnote): string
+  abstract heading(heading: Heading): string
+  abstract highlight(highlight: Highlight): string
+  abstract image(image: Image): string
+  abstract inlineCode(inlineCode: InlineCode): string
+  abstract inlineNsfl(inlineNsfl: InlineNsfl): string
+  abstract inlineNsfw(inlineNsfw: InlineNsfw): string
+  abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
+  abstract italic(italic: Italic): string
+  abstract lineBlock(lineBlock: LineBlock): string
+  abstract link(link: Link): string
+  abstract nsflBlock(nsflBlock: NsflBlock): string
+  abstract nsfwBlock(nsfwBlock: NsfwBlock): string
+  abstract orderedList(list: OrderedList): string
+  abstract outlineSeparator(separator: OutlineSeparator): string
+  abstract paragraph(paragraph: Paragraph): string
+  abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
+  abstract plainText(plainText: PlainText): string
+  abstract referenceToTableOfContentsEntry(referenceToTableOfContentsEntry: ReferenceToTableOfContentsEntry): string
+  abstract revisionDeletion(revisionDeletion: RevisionDeletion): string
+  abstract revisionInsertion(revisionInsertion: RevisionInsertion): string
+  abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
+  abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
+  abstract stress(stress: Stress): string
+  abstract table(table: Table): string
+  abstract unorderedList(list: UnorderedList): string
+  abstract video(video: Video): string
+
   protected write(node: SyntaxNode): string {
     return this.dispatchWrite(node)
   }
@@ -92,41 +129,6 @@ export abstract class Writer {
 
   protected abstract writeDocument(document: EitherTypeOfUpDocument): string
   protected abstract writeInlineDocument(inlineDocument: InlineUpDocument): string
-
-  protected abstract audio(audio: Audio): string
-  protected abstract bold(bold: Bold): string
-  protected abstract blockquote(blockquote: Blockquote): string
-  protected abstract codeBlock(codeBlock: CodeBlock): string
-  protected abstract descriptionList(list: DescriptionList): string
-  protected abstract emphasis(emphasis: Emphasis): string
-  protected abstract exampleInput(exampleInput: ExampleInput): string
-  protected abstract footnoteBlock(footnoteBlock: FootnoteBlock): string
-  protected abstract footnoteReference(footnote: Footnote): string
-  protected abstract heading(heading: Heading): string
-  protected abstract highlight(highlight: Highlight): string
-  protected abstract image(image: Image): string
-  protected abstract inlineCode(inlineCode: InlineCode): string
-  protected abstract inlineNsfl(inlineNsfl: InlineNsfl): string
-  protected abstract inlineNsfw(inlineNsfw: InlineNsfw): string
-  protected abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
-  protected abstract italic(italic: Italic): string
-  protected abstract lineBlock(lineBlock: LineBlock): string
-  protected abstract link(link: Link): string
-  protected abstract nsflBlock(nsflBlock: NsflBlock): string
-  protected abstract nsfwBlock(nsfwBlock: NsfwBlock): string
-  protected abstract orderedList(list: OrderedList): string
-  protected abstract outlineSeparator(separator: OutlineSeparator): string
-  protected abstract paragraph(paragraph: Paragraph): string
-  protected abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
-  protected abstract plainText(plainText: PlainText): string
-  protected abstract revisionDeletion(revisionDeletion: RevisionDeletion): string
-  protected abstract revisionInsertion(revisionInsertion: RevisionInsertion): string
-  protected abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
-  protected abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
-  protected abstract stress(stress: Stress): string
-  protected abstract table(table: Table): string
-  protected abstract unorderedList(list: UnorderedList): string
-  protected abstract video(video: Video): string
 
   private writeEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
     return (
@@ -215,7 +217,7 @@ export abstract class Writer {
     }
 
     if (node instanceof Footnote) {
-      return this.footnoteReference(node)
+      return this.referenceToFootnote(node)
     }
 
     if (node instanceof FootnoteBlock) {

@@ -12,6 +12,7 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
+import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
 import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
@@ -74,7 +75,7 @@ export class HtmlWriter extends Writer {
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
 
-  protected writeDocument(document: UpDocument): string {
+  writeDocument(document: UpDocument): string {
     const tableOfContents =
       document.tableOfContents.entries.length
         ? this.tableOfContents(document.tableOfContents)
@@ -83,22 +84,22 @@ export class HtmlWriter extends Writer {
     return tableOfContents + this.writeAll(document.children)
   }
 
-  protected writeInlineDocument(inlineDocument: InlineUpDocument): string {
+  writeInlineDocument(inlineDocument: InlineUpDocument): string {
     return this.writeAll(inlineDocument.children)
   }
 
-  protected blockquote(blockquote: Blockquote): string {
+  blockquote(blockquote: Blockquote): string {
     return this.element('blockquote', blockquote.children, attrsFor(blockquote))
   }
 
-  protected unorderedList(list: UnorderedList): string {
+  unorderedList(list: UnorderedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
       list.items.map(listItem => this.unorderedListItem(listItem)),
       attrsFor(list))
   }
 
-  protected orderedList(list: OrderedList): string {
+  orderedList(list: OrderedList): string {
     const attrs: { start?: number, reversed?: any } = {}
 
     const start = list.start()
@@ -117,14 +118,14 @@ export class HtmlWriter extends Writer {
       attrsFor(list, attrs))
   }
 
-  protected descriptionList(list: DescriptionList): string {
+  descriptionList(list: DescriptionList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       list.items.map(item => this.descriptionListItem(item)),
       attrsFor(list))
   }
 
-  protected lineBlock(lineBlock: LineBlock): string {
+  lineBlock(lineBlock: LineBlock): string {
     const attrs =
       attrsFor(
         lineBlock,
@@ -136,18 +137,18 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected codeBlock(codeBlock: CodeBlock): string {
+  codeBlock(codeBlock: CodeBlock): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
       [htmlElement('code', codeBlock.code)],
       attrsFor(codeBlock))
   }
 
-  protected paragraph(paragraph: Paragraph): string {
+  paragraph(paragraph: Paragraph): string {
     return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
-  protected heading(heading: Heading): string {
+  heading(heading: Heading): string {
     const attrs: { id?: string } = {}
 
     if (heading.ordinalInTableOfContents) {
@@ -160,55 +161,59 @@ export class HtmlWriter extends Writer {
       attrsFor(heading, attrs))
   }
 
-  protected outlineSeparator(separator: OutlineSeparator): string {
+  outlineSeparator(separator: OutlineSeparator): string {
     return singleTagHtmlElement('hr', attrsFor(separator))
   }
 
-  protected emphasis(emphasis: Emphasis): string {
+  emphasis(emphasis: Emphasis): string {
     return this.element('em', emphasis.children)
   }
 
-  protected stress(stress: Stress): string {
+  stress(stress: Stress): string {
     return this.element('strong', stress.children)
   }
 
-  protected italic(italic: Italic): string {
+  italic(italic: Italic): string {
     return this.element('i', italic.children)
   }
 
-  protected bold(bold: Bold): string {
+  bold(bold: Bold): string {
     return this.element('b', bold.children)
   }
 
-  protected inlineCode(inlineCode: InlineCode): string {
+  inlineCode(inlineCode: InlineCode): string {
     return htmlElement('code', inlineCode.code)
   }
 
-  protected exampleInput(exampleInput: ExampleInput): string {
+  exampleInput(exampleInput: ExampleInput): string {
     return htmlElement('kbd', exampleInput.input)
   }
+  
+  referenceToTableOfContentsEntry(_referenceToTableOfContentsEntry: ReferenceToTableOfContentsEntry): string {
+    throw new Error('Not implemented')
+  }
 
-  protected revisionInsertion(revisionInsertion: RevisionInsertion): string {
+  revisionInsertion(revisionInsertion: RevisionInsertion): string {
     return this.element('ins', revisionInsertion.children)
   }
 
-  protected revisionDeletion(revisionDeletion: RevisionDeletion): string {
+  revisionDeletion(revisionDeletion: RevisionDeletion): string {
     return this.element('del', revisionDeletion.children)
   }
 
-  protected normalParenthetical(normalParenthetical: NormalParenthetical): string {
+  normalParenthetical(normalParenthetical: NormalParenthetical): string {
     return this.parenthetical(normalParenthetical)
   }
 
-  protected squareParenthetical(squareParenthetical: SquareParenthetical): string {
+  squareParenthetical(squareParenthetical: SquareParenthetical): string {
     return this.parenthetical(squareParenthetical, 'square-brackets')
   }
 
-  protected highlight(highlight: Highlight): string {
+  highlight(highlight: Highlight): string {
     return this.element('mark', highlight.children)
   }
 
-  protected inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
+  inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
     return this.revealable({
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.output.toggleSpoiler,
@@ -218,7 +223,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected inlineNsfw(inlineNsfw: InlineNsfw): string {
+  inlineNsfw(inlineNsfw: InlineNsfw): string {
     return this.revealable({
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.output.toggleNsfw,
@@ -228,7 +233,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected inlineNsfl(inlineNsfl: InlineNsfl): string {
+  inlineNsfl(inlineNsfl: InlineNsfl): string {
     return this.revealable({
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.output.toggleNsfl,
@@ -238,7 +243,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected spoilerBlock(spoilerBlock: SpoilerBlock): string {
+  spoilerBlock(spoilerBlock: SpoilerBlock): string {
     return this.revealable({
       conventionName: 'spoiler',
       termForTogglingVisibility: this.config.terms.output.toggleSpoiler,
@@ -249,7 +254,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsfwBlock(nsfwBlock: NsfwBlock): string {
+  nsfwBlock(nsfwBlock: NsfwBlock): string {
     return this.revealable({
       conventionName: 'nsfw',
       termForTogglingVisibility: this.config.terms.output.toggleNsfw,
@@ -260,7 +265,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected nsflBlock(nsflBlock: NsflBlock): string {
+  nsflBlock(nsflBlock: NsflBlock): string {
     return this.revealable({
       conventionName: 'nsfl',
       termForTogglingVisibility: this.config.terms.output.toggleNsfl,
@@ -271,7 +276,7 @@ export class HtmlWriter extends Writer {
     })
   }
 
-  protected footnoteReference(footnote: Footnote): string {
+  referenceToFootnote(footnote: Footnote): string {
     if (this.isInsideTableOfContents) {
       // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
       return ''
@@ -287,7 +292,7 @@ export class HtmlWriter extends Writer {
       })
   }
 
-  protected footnoteBlock(footnoteBlock: FootnoteBlock): string {
+  footnoteBlock(footnoteBlock: FootnoteBlock): string {
     const attrs =
       attrsFor(
         footnoteBlock,
@@ -299,7 +304,7 @@ export class HtmlWriter extends Writer {
       attrs)
   }
 
-  protected table(table: Table): string {
+  table(table: Table): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),
@@ -309,7 +314,7 @@ export class HtmlWriter extends Writer {
       attrsFor(table))
   }
 
-  protected link(link: Link): string {
+  link(link: Link): string {
     if (this.isInsideLink) {
       return this.writeAll(link.children)
     }
@@ -326,7 +331,7 @@ export class HtmlWriter extends Writer {
     return html
   }
 
-  protected image(image: Image): string {
+  image(image: Image): string {
     const attrs =
       attrsFor(
         image, {
@@ -338,15 +343,15 @@ export class HtmlWriter extends Writer {
     return singleTagHtmlElement('img', attrs)
   }
 
-  protected audio(audio: Audio): string {
+  audio(audio: Audio): string {
     return this.playableMediaElement(audio, 'audio')
   }
 
-  protected video(video: Video): string {
+  video(video: Video): string {
     return this.playableMediaElement(video, 'video')
   }
 
-  protected plainText(plainText: PlainText): string {
+  plainText(plainText: PlainText): string {
     return escapeHtmlContent(plainText.content)
   }
 

@@ -1,6 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
+import { Writer } from '../Writing/Writer'
 
 
 export class OutlineSeparator implements OutlineSyntaxNode {
@@ -18,6 +19,10 @@ export class OutlineSeparator implements OutlineSyntaxNode {
 
   inlineDescendants(): InlineSyntaxNode[] {
     return []
+  }
+
+  write(writer: Writer): string {
+    return writer.outlineSeparator(this)
   }
 
   protected OUTLINE_SEPARATOR(): void { }

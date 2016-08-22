@@ -2,6 +2,7 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { UpDocument } from './UpDocument'
+import { Writer } from '../Writing/Writer'
 
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
@@ -32,5 +33,9 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
+  }
+
+  write(writer: Writer): string {
+    return writer.link(this)
   }
 }
