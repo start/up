@@ -22,14 +22,13 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
     // Unfortunately, the process of producing a ready-to-use UpDocument has become a tad scattered and
     // Rube-Goldberg-esque. It needs to be revisited.
 
-    // First, let's collect all the entries for the table of contents. It's up to each outline syntax
-    // node whether to include its descendants in the table of contents. Some don't (e.g. blockquotes).
-    const tableOfContentsEntries =
-      UpDocument.TableOfContents.getEntries(children)
+    // First, let's create our table of contents. It's up to each outline syntax node whether to allow
+    // its descendants to be referenced by the table of contents. Some don't (e.g. blockquotes).
+    const tableOfContents =
+      UpDocument.TableOfContents.create(children)
 
-    // We now have everything we need to produce our document!
-    const document = new UpDocument(
-      children, new UpDocument.TableOfContents(tableOfContentsEntries))
+    // Alright! We now have everything we need to produce our document!
+    const document = new UpDocument(children, tableOfContents)
 
     // But... our document is still not quite ready yet.
     //
@@ -57,13 +56,24 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
 
 export namespace UpDocument {
   export class TableOfContents {
-    static getEntries(nodes: OutlineSyntaxNode[]): UpDocument.TableOfContents.Entry[] {
+    // This mutates tbale`nodes`, assigning their `ordinalInTableOfContents`.
+    static create(documentChildren: OutlineSyntaxNode[]): TableOfContents {
+
+      const entries = TableOfContents.getEntries(documentChildren)
+
+      for (let i = 0; i < entries.length; i++) {
+        entries[i].ordinalInTableOfContents = i + 1
+      }
+
+      return new TableOfContents(entries)
+    }
+
+    static getEntries(nodes: OutlineSyntaxNode[]): TableOfContents.Entry[] {
+      // Right now, only headings can be table of contents entries.
+      // TODO: Revisit
       return concat(
         nodes.map(node =>
-          // Right now, only headings can be table of contents entries.
-          node instanceof Heading
-            ? [node]
-            : node.descendantsToIncludeInTableOfContents()))
+          node instanceof Heading ? [node] : node.descendantsToIncludeInTableOfContents()))
     }
 
     constructor(public entries: TableOfContents.Entry[] = []) { }
@@ -71,6 +81,7 @@ export namespace UpDocument {
 
 
   export namespace TableOfContents {
+    // UpDocument.TableOfContents.Entry
     export interface Entry {
       ordinalInTableOfContents: number
       text(): string
