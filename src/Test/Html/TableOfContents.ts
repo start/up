@@ -20,7 +20,7 @@ context('When a document has a table of contents, its first HTML element is a <n
   context("Following is an <ul> containing a <li> for each entry. In each <li> is a heading that's one level higher than the heading the entry references", () => {
     specify('A level 1 heading entry is placed in an <h2>', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 1 })
+        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -37,7 +37,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 
     specify('A level 2 heading entry is placed in an <h3>', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 2 })
+        new Heading([new PlainText('I enjoy apples')], { level: 2, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -54,7 +54,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 
     specify('A level 3 heading entry is placed in an <h4>', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 3 })
+        new Heading([new PlainText('I enjoy apples')], { level: 3, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -71,7 +71,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 
     specify('A level 4 heading entry entry contains an <h5>', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 4 })
+        new Heading([new PlainText('I enjoy apples')], { level: 4, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -88,7 +88,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 
     specify('A level 5 heading entry is placed in an <h6>', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 5 })
+        new Heading([new PlainText('I enjoy apples')], { level: 5, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -106,7 +106,7 @@ context('When a document has a table of contents, its first HTML element is a <n
     context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
       specify('A level 6 heading entry is placed in an <h6>', () => {
         const heading =
-          new Heading([new PlainText('I enjoy apples')], { level: 6 })
+          new Heading([new PlainText('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -123,7 +123,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 
       specify('A level 10 heading entry is placed in an <h6>', () => {
         const heading =
-          new Heading([new PlainText('I enjoy apples')], { level: 6 })
+          new Heading([new PlainText('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
 
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -145,7 +145,7 @@ context('When a document has a table of contents, its first HTML element is a <n
 context("The table of contents has no effect on elements that aren't referenced by it", () => {
   specify("even when syntax nodes represented by those elements are otherwise identical", () => {
     const headingInTableOfContents =
-      new Heading([new PlainText('I enjoy apples')], { level: 1 })
+      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([
@@ -173,22 +173,22 @@ context("The table of contents has no effect on elements that aren't referenced 
 context('When a table of contents has multiple entries', () => {
   specify('the ID of each element referenced by the table of contents ends with a number corresponding to its ordinal (1-based) in the table of contents', () => {
     const heading1 =
-      new Heading([new PlainText('Vegetables')], { level: 1 })
+      new Heading([new PlainText('Vegetables')], { level: 1, ordinalInTableOfContents: 1 })
 
     const heading2 =
-      new Heading([new PlainText('Fruit')], { level: 1 })
+      new Heading([new PlainText('Fruit')], { level: 1, ordinalInTableOfContents: 2 })
 
     const heading3 =
-      new Heading([new PlainText('Apples')], { level: 2 })
+      new Heading([new PlainText('Apples')], { level: 2, ordinalInTableOfContents: 3 })
 
     const heading4 =
-      new Heading([new PlainText('Green apples')], { level: 3 })
+      new Heading([new PlainText('Green apples')], { level: 3, ordinalInTableOfContents: 4 })
 
     const heading5 =
-      new Heading([new PlainText('Grains')], { level: 1 })
+      new Heading([new PlainText('Grains')], { level: 1, ordinalInTableOfContents: 5 })
 
     const heading6 =
-      new Heading([new PlainText('Rice')], { level: 2 })
+      new Heading([new PlainText('Rice')], { level: 2, ordinalInTableOfContents: 6 })
 
     const tableOfContents =
       new UpDocument.TableOfContents([heading1, heading2, heading3, heading4, heading5, heading6])
@@ -268,7 +268,7 @@ context("Within the table of contents itself", () => {
           new PlainText('and you should too'),
           nestedFootnote
         ])
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([
@@ -309,7 +309,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineSpoiler([new PlainText('sometimes')])
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([
@@ -355,7 +355,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineNsfw([new PlainText('sometimes')])
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([
@@ -401,7 +401,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineNsfl([new PlainText('sometimes')])
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([
@@ -447,7 +447,7 @@ context("Within the table of contents, the IDs of revealable content elements do
 context("When an item referenced by the table of contents has a source line number", () => {
   specify("its entry within the table of content's <nav> element isn't given a 'data-up-source-line' attribute", () => {
     const heading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, sourceLineNumber: 2 })
+      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))

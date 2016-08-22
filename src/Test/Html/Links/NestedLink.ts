@@ -39,12 +39,12 @@ context('Inside a link', () => {
 })
 
 
-describe('A link nested within a table of contents entries ', () => {
+describe('A link nested within a table of contents entries', () => {
   it('does not produce an <a> element', () => {
     const heading =
       new Heading([
         new Link([new PlainText('I enjoy apples')], 'https://google.com')
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -62,7 +62,7 @@ describe('A link nested within a table of contents entries ', () => {
 
 
 context("Even when a link is nested deep within another link, it doesn't produce an <a> element. This is true for", () => {
-  specify("regular links inside another link", () => {
+  specify("a link inside another link", () => {
     const document = new UpDocument([
       new Paragraph([
         new Link([
@@ -80,7 +80,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '</p>')
   })
 
-  specify("footnotes inside a link", () => {
+  specify("a footnote inside a link", () => {
     const document = new UpDocument([
       new Paragraph([
         new Link([
@@ -98,7 +98,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '</p>')
   })
 
-  specify('a link within a table of contents entry', () => {
+  specify('a link nested within another link within a table of contents entry', () => {
     const heading =
       new Heading([
         new Link([
@@ -106,7 +106,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
             new Link([new PlainText('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -129,11 +129,13 @@ context('When severeal links are nested within each other', () => {
       new Paragraph([
         new Link([
           new Link([
+          new Link([
             new Link([
               new PlainText('Google is probably not '),
               new Link([new PlainText('Bing')], 'https://bing.com')
             ], 'https://ddg.gg')
           ], 'https://google.co.uk')
+        ], 'https://altavista.com')
         ], 'https://google.com')
       ])
     ])

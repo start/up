@@ -75,7 +75,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The "itemReferencedByTableOfContents" term', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 1 })
+        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
@@ -230,7 +230,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The ID of elements referenced by the table of contents', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 1 })
+        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
