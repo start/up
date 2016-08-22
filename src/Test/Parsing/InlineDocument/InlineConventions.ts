@@ -289,7 +289,7 @@ context('Except for footnots, every inline convention is supported in inline doc
   })
 
 
-  context('The convention for referencing table of contents entries is totally ignored. The text is instead treated as a parenthetical of the appropriate bracket type.', () => {
+  context('The convention for referencing table of contents entries is totally ignored. The markup is instead treated as a parenthetical of the appropriate bracket type.', () => {
     specify('An otherwise-valid reference indicated by square brackets produces a square parenthetical node', () => {
       expect(Up.toInlineDocument('My favorite section of the textbook [Section: Why Math Is Great] was damaged by water.')).to.be.eql(
         new InlineUpDocument([

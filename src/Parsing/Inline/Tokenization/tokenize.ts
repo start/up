@@ -31,8 +31,11 @@ export function tokenize(markup: string, config: Config): Token[] {
   return new Tokenizer(markup, config).tokens
 }
 
-// This function is identical to the `tokenize` function, except footnotes are treated as normal
-// parentheticals.
+// This function is identical to the `tokenize` function, except:
+//
+// 1. Footnotes are treated as normal parentheticals
+// 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
+//    as a parenthetical of the appropriate bracket type.
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
   return new Tokenizer(markup, config, true).tokens
 }
@@ -145,14 +148,21 @@ class Tokenizer {
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
-      ...this.getReferenceToTableOfContentsEntryConventions(),
 
       ...this.getMediaDescriptionConventions(),
 
       ...(
+        // If we're tokenizing an inline document...
         isTokenizingInlineDocument
+          // We'll treat footnotes differently, because they don't really make sense in an inline document
           ? this.getFootnoteConventionsForInlineDocuments()
-          : this.getFootnoteConventions()),
+          // Otherwise, if we're tokenizing a regular document...
+          : [
+            // We'll support regular footnotes
+            ...this.getFootnoteConventions(),
+            // And we'll support references to table of contents entries!
+            ...this.getReferenceToTableOfContentsEntryConventions()
+          ]),
 
       ...this.getLinkifyingUrlConventions(),
 
