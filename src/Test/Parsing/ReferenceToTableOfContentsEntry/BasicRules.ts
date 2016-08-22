@@ -531,8 +531,8 @@ There are plenty of important facts about me. For my favorite, skip to [section:
 })
 
 
-context("If there are no matching table of contents entries for a given reference, the reference simply won't be associated with an entry.", () => {
-  specify("This happens when no entry contains the reference's snippet", () => {
+context("If there are no matching table of contents entries for a given reference", () => {
+  specify("the reference simply won't be associated with an entry", () => {
     const markup = `
 I'm a great guy. For more information, skip to [section: I became a world leader]. 
 
