@@ -82,7 +82,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         new PlainText("I don't eat cereal."),
         footnote,
         new PlainText(" Never have.")
-      ], { level: 1})
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

@@ -53,14 +53,14 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
 
   context("If an ordered list has just one item, that item's bullet can't be a numeral followed by a period.", () => {
-    specify('Therefore, such a line produces a heading when sandwiched by identical streaks.', () => {
+    specify('Therefore, such a line produces a heading when sandwiched by identical streaks', () => {
       const markup = `
 ----------------------------------------
 1783. Not a good year for Great Britain.
 ----------------------------------------`
 
       const heading =
-        new Heading([new PlainText('1783. Not a good year for Great Britain.')], { level: 1 })
+        new Heading([new PlainText('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument(
