@@ -19,8 +19,8 @@ Goodbye, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -39,8 +39,8 @@ Goodbye, world!
 = = = = = = = =`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -63,9 +63,9 @@ Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 1 }),
-      new Heading([new PlainText('Goodbye again, world!')], { level: 2 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 }),
+      new Heading([new PlainText('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -112,13 +112,13 @@ Warlocked
 - - - - -`
 
     const headings = [
-      new Heading([new PlainText('Interactive Software')], { level: 1 }),
-      new Heading([new PlainText('Video Games')], { level: 2 }),
-      new Heading([new PlainText('Handheld Video Games')], { level: 3 }),
-      new Heading([new PlainText('Game Boy Games')], { level: 4 }),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], { level: 5 }),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6 }),
-      new Heading([new PlainText('Warlocked')], { level: 7 })
+      new Heading([new PlainText('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Video Games')], { level: 2, ordinalInTableOfContents: 2 }),
+      new Heading([new PlainText('Handheld Video Games')], { level: 3, ordinalInTableOfContents: 3 }),
+      new Heading([new PlainText('Game Boy Games')], { level: 4, ordinalInTableOfContents: 4 }),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], { level: 5, ordinalInTableOfContents: 5 }),
+      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6, ordinalInTableOfContents: 6 }),
+      new Heading([new PlainText('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
     ]
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -142,13 +142,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -181,13 +181,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -221,13 +221,13 @@ Awkward
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -262,10 +262,10 @@ Goodbye, world!
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([

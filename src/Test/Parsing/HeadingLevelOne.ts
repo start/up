@@ -15,7 +15,7 @@ Hello, world!
 #=-+~*^@:_+**###=~=~=~--~~~~`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
@@ -32,7 +32,7 @@ Hello, world!
 +**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
@@ -46,7 +46,7 @@ Hello, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
@@ -64,7 +64,7 @@ Hello, world!
 #=-+~*^@:_`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument(
@@ -81,7 +81,7 @@ Goodbye, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 1 })
+      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -117,7 +117,7 @@ Hello, world!
 -------------`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
@@ -133,7 +133,7 @@ Hello, world!
 - - - - - - -`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
@@ -150,7 +150,7 @@ Hello, world!
 ----------`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
@@ -165,7 +165,7 @@ Hello, world!
 ==  --  ==  --  ==  --  ==`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
