@@ -359,3 +359,78 @@ I love all sorts of fancy stuff.`
     })
   })
 })
+
+
+context("The entries' outline levels dont matter at all", () => {
+  specify('A reference will match the first applicable entry based on its text content alone', () => {
+    const markup = `
+If I ever say I drink soda, I'm lying
+=====================================
+
+I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [section: I drink soda].
+
+Anyway...
+
+I drink soda
+------------
+
+That's what I tell 'em.
+
+In fact, sometimes, things bear repeating.
+
+I drink soda
+============
+
+And you'll believe it.`
+
+    const firstSodaHeading =
+      new Heading([new PlainText("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    const secondSodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 2, ordinalInTableOfContents: 3 })
+
+    const thirdSodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 4 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        firstSodaHeading,
+        new Paragraph([
+          new PlainText('I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Paragraph([
+          new PlainText('Not quite true. For example, see '),
+          new ReferenceToTableOfContentsEntry('I drink soda', secondSodaHeading),
+          new PlainText('.')
+        ]),
+        new Paragraph([
+          new PlainText('Anyway...')
+        ]),
+        secondSodaHeading,
+        new Paragraph([
+          new PlainText("That's what I tell 'em.")
+        ]),
+        new Paragraph([
+          new PlainText('In fact, sometimes, things bear repeating.')
+        ]),
+        thirdSodaHeading,
+        new Paragraph([
+          new PlainText("And you'll believe it.")
+        ])
+      ], new UpDocument.TableOfContents([
+        firstSodaHeading,
+        neverLieHeading,
+        secondSodaHeading,
+        thirdSodaHeading
+      ])))
+  })
+})
