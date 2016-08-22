@@ -94,10 +94,10 @@ I enjoy apples
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([new PlainText("They're cheap")])
-          ], 1),
+          ], { ordinal: 1 }),
           new OrderedList.Item([
             new Paragraph([new PlainText("They're delicious")])
-          ], 2)
+          ], { ordinal: 2 })
         ])
       ], tableOfContents))
   })
@@ -574,11 +574,11 @@ I enjoy apples
             new OrderedList.Item([
               cheapHeading,
               new Paragraph([new PlainText("Very cheap.")])
-            ], 1),
+            ], { ordinal: 1 }),
             new OrderedList.Item([
               deliciousHeading,
               new Paragraph([new PlainText("Very delicious.")])
-            ], 2)
+            ], { ordinal: 2 })
           ])
         ], tableOfContents))
     })

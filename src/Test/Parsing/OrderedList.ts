@@ -97,12 +97,12 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
             new Paragraph([
               new PlainText('Hello, Celadon City!')
             ])
-          ], 1),
+          ], { ordinal: 1 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Goodbye, Celadon City!')
             ])
-          ], 2)
+          ], { ordinal: 2 })
         ])
       ]))
   })
@@ -122,12 +122,12 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
             new Paragraph([
               new PlainText('Hello, Celadon City!')
             ])
-          ], 1),
+          ], { ordinal: 1 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Goodbye, Celadon City!')
             ])
-          ], 2)
+          ], { ordinal: 2 })
         ])
       ]))
   })
@@ -203,7 +203,7 @@ describe('A single line bulleted by an integer followed by a closing parenthesis
             new Paragraph([
               new PlainText('Hello, Celadon City!')
             ])
-          ], 1)
+          ], { ordinal: 1 })
         ])
       ]))
   })
@@ -226,12 +226,12 @@ describe('The 5 different bullet types', () => {
             new Paragraph([
               new PlainText('Hello, Celadon City!')
             ])
-          ], 1),
+          ], { ordinal: 1 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Hello, Couriway Town!')
             ])
-          ], 2),
+          ], { ordinal: 2 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Hello, Cinnabar Island!')

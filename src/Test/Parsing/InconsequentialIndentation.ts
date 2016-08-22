@@ -643,7 +643,7 @@ context("Within list items, extra indentation for outline conventions is ignored
             new Paragraph([
               new PlainText('How are we today?')
             ])
-          ], 1)
+          ], { ordinal: 1 })
         ])
       ]))
   })

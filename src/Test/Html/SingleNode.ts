@@ -120,7 +120,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
           new Paragraph([
             new PlainText('Territories')
           ])
-        ], 5)
+        ], { ordinal: 5 })
       ])
     ])
 
@@ -141,20 +141,20 @@ context('When an ordered list node has an explicit starting ordinal', () => {
           new Paragraph([
             new PlainText('Tropical')
           ])
-        ], 3),
-        new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
-          ])
-        ])
+        ], { ordinal: 3}),
+    new OrderedList.Item([
+      new Paragraph([
+        new PlainText('Territories')
+      ])
+    ])
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
-      '<ol start="3">'
-      + '<li value="3"><p>Tropical</p></li>'
-      + '<li><p>Territories</p></li>'
-      + '</ol>')
+expect(Up.toHtml(document)).to.be.eql(
+  '<ol start="3">'
+  + '<li value="3"><p>Tropical</p></li>'
+  + '<li><p>Territories</p></li>'
+  + '</ol>')
   })
 })
 
@@ -167,12 +167,12 @@ describe('When an ordered list node is in descending order', () => {
           new Paragraph([
             new PlainText('Tropical')
           ])
-        ], 0),
+        ], { ordinal: 0 }),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
           ])
-        ], -1)
+        ], { ordinal: -1 })
       ])
     ])
 

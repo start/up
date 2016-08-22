@@ -1,5 +1,5 @@
 Pointless empty methods
------------------------
+=======================
 
 We want our syntax node classes to be considered distinct by TypeScript's type system.
 
@@ -9,36 +9,46 @@ To work around this, syntax node classes that would otherwise be considered equi
 
 These methods are:
 
-1. Named in screaming case after their class (e.g. `EMPHASIS`)
+1. Named in screaming case after their class (e.g. `EMPHASIS`) and their parent classes if there are any (e.g. `ORDERED_LIST ITEM`)
 2. Totally empty
 3. Protected, because unused private methods are disallowed by the `noUnusedLocals` compiler option
 
 
-Inexplicably defaulting fields to `undefined` in constructor signatures
------------------------------------------------------------------------
+Bizarrely defaulting optional class fields to `undefined`
+=========================================================
 
-Up supports optional source mapping.
+In short, we do this to ensure those fields always exist on their respective objects.
 
-To support source mapping, we require every outline syntax node class to offer a `sourceLineNumber`. This is acheived simply by having the `OutlineSyntaxNode` interface require the field.
+This mimics the default TypeScript behavior, which in turn makes a few unit tests simpler to write.
 
-However, even though `sourceLineNumber` is required, it should be optional in each constructor!
 
-We indicate this by doing:
+The details
+----------- 
 
-`````
-constructor(
-  [...]
-  public sourceLineNumber: number = undefined
-)
-`````
+Our syntax node constructors hide their optional fields in an `options` argument. If this argument is provided, we assign the optional fields.
 
-... Because if we did the natural thing instead:
+Here's an example of one of those optional fields (`ordinal`):
 
-`````
-constructor(
-  [...]
-  public sourceLineNumber?: number
-)
-`````
+``````
+public ordinal: number = undefined
 
-... TypeScript would complain that the field is optional, which is incompatible with `OutlineSyntaxNode`.
+constructor(public children: OutlineSyntaxNode[], options?: { ordinal: number }) {
+  super(children)
+
+  if (options) {
+    this.ordinal = options.ordinal
+  }
+}
+``````
+
+If we don't default `ordinal` to `undefined`, then *the `ordinal` field would only exist on the object if `options` were provided.*
+
+This is in contrast to the typical TypeScript behavior. If we had declared `ordinal` directly in the constructor signature and made it optional, it's always assigned.
+
+``````
+constructor(public children: OutlineSyntaxNode[], public ordinal?: number) {
+  super(children)
+}
+``````
+
+In the above example, TypeScript emits JavaScript to *always* set `this.ordinal` to the `ordinal` argument, even when the argument not provided.

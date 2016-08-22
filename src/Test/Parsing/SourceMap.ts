@@ -195,10 +195,10 @@ Chart: \`AND\` operator logic
           new OrderedList([
             new OrderedList.Item([
               new Paragraph([new PlainText("They're cheap")], 2)
-            ], 1),
+            ], { ordinal: 1 }),
             new OrderedList.Item([
               new Paragraph([new PlainText("They're delicious")], 4)
-            ], 2)
+            ], { ordinal: 2 })
           ], 2)
         ]))
     })

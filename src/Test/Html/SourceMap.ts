@@ -83,7 +83,7 @@ context('When an outline syntax node has a source line number, its outermost ele
           new Paragraph([
             new PlainText('Tropical')
           ], 1)
-        ], 3),
+        ], { ordinal: 3 }),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
@@ -106,12 +106,12 @@ context('When an outline syntax node has a source line number, its outermost ele
           new Paragraph([
             new PlainText('Tropical')
           ], 1)
-        ], 2),
+        ], { ordinal: 2 }),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
           ], 2)
-        ], 1)
+        ], { ordinal: 1 })
       ], 1)
     ])
 

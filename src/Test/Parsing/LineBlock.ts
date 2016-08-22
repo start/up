@@ -241,7 +241,7 @@ You're in for a fright`
             new Paragraph([
               new PlainText('Never post your address unless you subsequently post poetry.')
             ])
-          ], 1)
+          ], { ordinal: 1 })
         ]),
         new LineBlock([
           new LineBlock.Line([

@@ -70,7 +70,9 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       config: args.config
     })
 
-    return new OrderedList.Item(itemChildren, getExplicitOrdinal(unparsedListItem))
+    const ordinal = getExplicitOrdinal(unparsedListItem)
+
+    return new OrderedList.Item(itemChildren, { ordinal })
   })
 
   args.then(

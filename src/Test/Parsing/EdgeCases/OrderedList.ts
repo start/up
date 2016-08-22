@@ -44,7 +44,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
               new Paragraph([
                 new PlainText('Mittens')
               ])
-            ], 1)
+            ], { ordinal: 1 })
           ]),
           new OutlineSeparator()
         ]))
@@ -169,7 +169,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
             new Paragraph([
               new PlainText('Hello, world!')
             ])
-          ], 10),
+          ], { ordinal: 10 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Goodbye, world!')
@@ -191,7 +191,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
             new Paragraph([
               new PlainText('Hello, world!')
             ])
-          ], -20),
+          ], { ordinal: -20 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Goodbye, world!')
@@ -213,7 +213,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
             new Paragraph([
               new PlainText('Hello, world!')
             ])
-          ], 0),
+          ], { ordinal: 0 }),
           new OrderedList.Item([
             new Paragraph([
               new PlainText('Goodbye, world!')
@@ -234,7 +234,7 @@ context("When an ordered list has just one item, that item can start with an int
             new Paragraph([
               new PlainText('1783. Not a good year for Great Britain.')
             ])
-          ], 1)
+          ], { ordinal: 1 })
         ])
       ]))
   })
@@ -312,11 +312,11 @@ I enjoy apples
           new OrderedList.Item([
             cheapHeading,
             new Paragraph([new PlainText("Very cheap.")])
-          ], 1),
+          ], { ordinal: 1 }),
           new OrderedList.Item([
             deliciousHeading,
             new Paragraph([new PlainText("Very delicious.")])
-          ], 2)
+          ], { ordinal: 2 })
         ])
       ], new UpDocument.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
