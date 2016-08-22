@@ -102,7 +102,7 @@ export abstract class Writer {
   protected abstract exampleInput(exampleInput: ExampleInput): string
   protected abstract footnoteBlock(footnoteBlock: FootnoteBlock): string
   protected abstract footnoteReference(footnote: Footnote): string
-  protected abstract heading(heading: Heading, ordinalOfEntryInTableOfContents?: number): string
+  protected abstract heading(heading: Heading): string
   protected abstract highlight(highlight: Highlight): string
   protected abstract image(image: Image): string
   protected abstract inlineCode(inlineCode: InlineCode): string
@@ -155,7 +155,7 @@ export abstract class Writer {
     }
 
     if (node instanceof Heading) {
-      return this.heading(node, this.getOrdinalOfEntryInTableOfContents(node))
+      return this.heading(node)
     }
 
     if (node instanceof Table) {
@@ -296,22 +296,6 @@ export abstract class Writer {
   // TODO: Move all this functionality to HtmlWriter
   private isUrlAllowed(url: string): boolean {
     return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
-  }
-
-  // Returns the ordinal (1-based!) of a node's entry in the table of contents.
-  //
-  // Returns null if there isn't an entry in the table of contents for the node.  
-  private getOrdinalOfEntryInTableOfContents(entry: UpDocument.TableOfContents.Entry): number {
-    const { document } = this
-
-    if (document instanceof UpDocument) {
-      const indexOfEntry =
-        document.tableOfContents.entries.indexOf(entry)
-
-      return (indexOfEntry >= 0) ? (indexOfEntry + 1) : null
-    }
-
-    return null
   }
 }
 
