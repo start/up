@@ -11,7 +11,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
   text(): string {
     return (
       this.entry
-        ? UpDocument.TableOfContents.getEntryText(this.entry)
+        ? this.entry.text()
         : this.entryTextSnippet)
   }
 
@@ -43,7 +43,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     // TODO: Consider measuring string distance. 
 
     for (const entry of tableOfContents.entries) {
-      const textOfEntry = UpDocument.TableOfContents.getEntryText(entry)
+      const textOfEntry = entry.text()
 
       if (textOfEntry === this.entryTextSnippet) {
         // We found a perfect match! We're done.

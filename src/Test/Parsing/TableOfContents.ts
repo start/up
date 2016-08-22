@@ -938,8 +938,8 @@ Purchasing
 
     const document = Up.toDocument(markup)
 
-    const [bestFruitHeading, purchasingHeading] = document.children
-    const { entries } = document.tableOfContents
+    const [bestFruitHeading, purchasingHeading] = document.children as any[]
+    const entries = document.tableOfContents.entries as any[]
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === purchasingHeading).to.be.true
@@ -964,8 +964,8 @@ Purchasing
     const orderedList = unorderedList.items[0].children[1] as OrderedList
     const descriptionList = orderedList.items[0].children[1] as DescriptionList
 
-    const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children
-    const { entries } = document.tableOfContents
+    const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children as any[]
+    const entries = document.tableOfContents.entries as any[]
 
     expect(entries[0] === bestFruitHeading).to.be.true
     expect(entries[1] === purchasingHeading).to.be.true

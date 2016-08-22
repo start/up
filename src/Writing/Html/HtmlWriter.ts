@@ -37,7 +37,6 @@ import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
 import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
@@ -388,28 +387,26 @@ export class HtmlWriter extends Writer {
 
   private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
     const listItems =
-      entries.map((entry, index) =>
+      entries.map(entry =>
         new UnorderedList.Item([
-          this.tableOfContentsEntry(entry, index)
+          this.tableOfContentsEntry(entry)
         ]))
 
     return this.write(new UnorderedList(listItems))
   }
 
-  private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry, indexOfEntry: number): OutlineSyntaxNode {
-    const ordinal = indexOfEntry + 1
-
+  private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry): OutlineSyntaxNode {
     // Right now, only headings can be table of contents entries, which simplifies this method.
     return new Heading(
-      [this.linkToItemReferencedByTableOfContents(entry.children, ordinal)],
+      [this.linkToItemReferencedByTableOfContents(entry)],
       { level: entry.level + 1 })
   }
 
-  private linkToItemReferencedByTableOfContents(children: InlineSyntaxNode[], ordinalTableOfContentsEntry: number): Link {
+  private linkToItemReferencedByTableOfContents(entry: UpDocument.TableOfContents.Entry): Link {
     const idOfItem =
-      this.idOfItemReferencedByTableOfContents(ordinalTableOfContentsEntry)
+      this.idOfItemReferencedByTableOfContents(entry.ordinalInTableOfContents)
 
-    return new Link(children, internalFragmentUrl(idOfItem))
+    return new Link(entry.tableOfContentsRepresentation(), internalFragmentUrl(idOfItem))
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {

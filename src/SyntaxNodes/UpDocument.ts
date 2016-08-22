@@ -1,10 +1,10 @@
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { Heading } from './Heading'
 import { ReferenceToTableOfContentsEntry } from './ReferenceToTableOfContentsEntry'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { concat } from '../CollectionHelpers'
-import { getText } from './getText'
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
@@ -69,11 +69,13 @@ export namespace UpDocument {
     constructor(public entries: TableOfContents.Entry[] = []) { }
   }
 
-  export namespace TableOfContents {
-    export type Entry = Heading
 
-    export function getEntryText(entry: Entry): string {
-      return getText(entry.children)
+  export namespace TableOfContents {
+    export interface Entry {
+      ordinalInTableOfContents: number
+      text(): string
+      level: number
+      tableOfContentsRepresentation(): InlineSyntaxNode[]
     }
   }
 }
