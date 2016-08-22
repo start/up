@@ -35,11 +35,11 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     //
     // If we still don't have a match after that, then we're out of luck.
     //
-    // TODO: Continue searching using another algorithm
+    // TODO: Continue searching using another algorithm (e.g. string distance).
     //
     // TODO: When searching, also include text of "outer" entries to help resolve ambiguities. "Outer"
     // entries are those that conceptually enclose a given an entry. For example, a level-3 heading is
-    // enclosed by a level-2 and a level-1 1 heading.
+    // enclosed by a level-2 and a level-1 heading.
 
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.text()
