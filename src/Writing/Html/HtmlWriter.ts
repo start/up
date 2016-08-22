@@ -147,11 +147,11 @@ export class HtmlWriter extends Writer {
     return this.element('p', paragraph.children, attrsFor(paragraph))
   }
 
-  protected heading(heading: Heading, ordinalOfEntryInTableOfContents?: number): string {
+  protected heading(heading: Heading): string {
     const attrs: { id?: string } = {}
 
-    if (ordinalOfEntryInTableOfContents) {
-      attrs.id = this.idOfItemReferencedByTableOfContents(ordinalOfEntryInTableOfContents)
+    if (heading.ordinalInTableOfContents) {
+      attrs.id = this.idOfActualEntryInDocument(heading)
     }
 
     return this.element(
@@ -397,16 +397,13 @@ export class HtmlWriter extends Writer {
 
   private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry): OutlineSyntaxNode {
     // Right now, only headings can be table of contents entries, which simplifies this method.
-    return new Heading(
-      [this.linkToItemReferencedByTableOfContents(entry)],
-      { level: entry.level + 1 })
+    return new Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level + 1 })
   }
 
-  private linkToItemReferencedByTableOfContents(entry: UpDocument.TableOfContents.Entry): Link {
-    const idOfItem =
-      this.idOfItemReferencedByTableOfContents(entry.ordinalInTableOfContents)
-
-    return new Link(entry.tableOfContentsRepresentation(), internalFragmentUrl(idOfItem))
+  private linkToActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): Link {
+    return new Link(
+      entry.tableOfContentsRepresentation(),
+      internalFragmentUrl(this.idOfActualEntryInDocument(entry)))
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {
@@ -586,8 +583,10 @@ export class HtmlWriter extends Writer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
   }
 
-  private idOfItemReferencedByTableOfContents(ordinal: number): string {
-    return this.getId(this.config.terms.output.itemReferencedByTableOfContents, ordinal)
+  private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {
+    return this.getId(
+      this.config.terms.output.itemReferencedByTableOfContents,
+      entry.ordinalInTableOfContents)
   }
 
   private footnoteId(referenceNumber: number): string {
