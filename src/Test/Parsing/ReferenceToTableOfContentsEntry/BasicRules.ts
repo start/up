@@ -484,4 +484,48 @@ Not quite true.
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
+
+  specify('A reference can match an entry at an inner nesting level', () => {
+    const markup = `
+There are plenty of important facts about me. For my favorite, skip to [section: honest].
+
+1. I drink soda
+   ============
+
+   Actually, I only drink milk.
+
+2. I am honest
+   ===========
+
+   Not quite true.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const honestHeading =
+      new Heading([new PlainText('I am honest')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText('There are plenty of important facts about me. For my favorite, skip to '),
+          new ReferenceToTableOfContentsEntry('honest', honestHeading),
+          new PlainText('.')
+        ]),
+        new OrderedList([
+          new OrderedList.Item([
+            sodaHeading,
+            new Paragraph([
+              new PlainText('Actually, I only drink milk.')
+            ])
+          ], { ordinal: 1 }),
+          new OrderedList.Item([
+            honestHeading,
+            new Paragraph([
+              new PlainText('Not quite true.')
+            ])
+          ], { ordinal: 2 })
+        ]),
+      ], new UpDocument.TableOfContents([sodaHeading, honestHeading])))
+  })
 })
