@@ -56,6 +56,7 @@ context('Every syntax node class is exported:', () => {
     'Paragraph',
     'NormalParenthetical',
     'PlainText',
+    'ReferenceToTableOfContentsEntry',
     'RevisionDeletion',
     'RevisionInsertion',
     'OutlineSeparator',
@@ -67,6 +68,7 @@ context('Every syntax node class is exported:', () => {
     'Video'
   ])
 })
+
 
 context('Every base syntax node class is exported:', () => {
   specifyEveryClassShouldBeExported([
