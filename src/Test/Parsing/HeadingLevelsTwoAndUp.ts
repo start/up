@@ -267,16 +267,20 @@ Goodbye, world!
     const goodbyeHeading =
       new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+          keysHeading
         ])
       ], new UpDocument.TableOfContents([
         helloHeading,
-        goodbyeHeading
+        goodbyeHeading,
+        keysHeading
       ])))
   })
 })
@@ -294,18 +298,31 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 > * Umm, I forgot my keys.
 >   =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], { level: 1 }),
-          new Heading([new PlainText('Goodbye, world!')], { level: 2 }),
+          helloHeading,
+          goodbyeHeading,
           new UnorderedList([
             new UnorderedList.Item([
-              new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+              keysHeading
             ])
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
 
@@ -322,16 +339,29 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > > Umm, I forgot my keys.
 > > =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], { level: 1 }),
-          new Heading([new PlainText('Goodbye, world!')], { level: 2 }),
+          helloHeading,
+          goodbyeHeading,
           new Blockquote([
-            new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+            keysHeading
           ])
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
 
@@ -349,15 +379,28 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > Umm, I forgot my keys.
 > =-=-=-=-=-=-=-=-=-=-=`
 
+    const helloHeading =
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const goodbyeHeading =
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+
+    const keysHeading =
+      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Heading([new PlainText('Hello, world!')], { level: 1 }),
-          new Heading([new PlainText('Goodbye, world!')], { level: 2 })
+          helloHeading,
+          goodbyeHeading,
         ]),
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
+          keysHeading
         ])
-      ]))
+      ], new UpDocument.TableOfContents([
+        helloHeading,
+        goodbyeHeading,
+        keysHeading
+      ])))
   })
 })
