@@ -130,7 +130,7 @@ Warlocked
 
 
 describe("A level-2 heading underline defined outside of an unordered list", () => {
-  it('produces a level-2 heading node inside the unordered list, too', () => {
+  it('produces a level-2 heading node inside the unordered list', () => {
     const markup = `
 Hello, world!
 =============
@@ -169,7 +169,7 @@ Goodbye, world!
 
 
 describe("A level-2 heading underline defined outside of an ordered list", () => {
-  it('produces a level-2 heading node inside the ordered list, too', () => {
+  it('produces a level-2 heading node inside the ordered list', () => {
     const markup = `
 Hello, world!
 =============
@@ -208,7 +208,7 @@ Goodbye, world!
 
 
 describe("A level-2 heading underline defined outside of a description list", () => {
-  it('produces a level-2 heading node inside the description list, too', () => {
+  it('produces a level-2 heading node inside the description list', () => {
     const markup = `
 Hello, world!
 =============
@@ -250,7 +250,7 @@ Awkward
 
 
 describe("A level-2 heading underline defined outside of a blockquote", () => {
-  it('is not recognized inside a blockquote, producing a level-1 heading node by default', () => {
+  it('produces a level-2 heading node inside the blockquote', () => {
     const markup = `
 Hello, world!
 =============
@@ -272,7 +272,7 @@ Goodbye, world!
         helloHeading,
         goodbyeHeading,
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
+          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
         ])
       ], new UpDocument.TableOfContents([
         helloHeading,
@@ -283,7 +283,7 @@ Goodbye, world!
 
 
 describe("A level-2 heading underline defined inside a blockquote but outside an unordered list in the same blockquote", () => {
-  it('produces a level-2 heading node inside the ordered list, too', () => {
+  it('produces a level-2 heading node inside the ordered list', () => {
     const markup = `
 > Hello, world!
 > =============
@@ -311,7 +311,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 
 
 describe("A level-2 heading underline defined inside a blockquote", () => {
-  it('is not recognized inside a further nested blockquote, producing a level-1 heading node by default', () => {
+  it('produces a level-2 heading node inside nested blockquote', () => {
     const markup = `
 > Hello, world!
 > =============
@@ -328,7 +328,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
           new Heading([new PlainText('Hello, world!')], { level: 1 }),
           new Heading([new PlainText('Goodbye, world!')], { level: 2 }),
           new Blockquote([
-            new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
+            new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
           ])
         ])
       ]))
@@ -337,7 +337,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 
 
 describe("A level-2 heading underline defined inside a blockquote", () => {
-  it('is not recognized inside a different blockquote, producing a level-1 heading node by default', () => {
+  it('produces a level-2 heading node inside a different blockquote', () => {
     const markup = `
 > Hello, world!
 > =============
@@ -356,7 +356,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
           new Heading([new PlainText('Goodbye, world!')], { level: 2 })
         ]),
         new Blockquote([
-          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 1 })
+          new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2 })
         ])
       ]))
   })
