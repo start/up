@@ -529,3 +529,44 @@ There are plenty of important facts about me. For my favorite, skip to [section:
       ], new UpDocument.TableOfContents([sodaHeading, honestHeading])))
   })
 })
+
+
+context("If there are no matching table of contents entries for a given reference, the reference simply won't be associated with an entry.", () => {
+  specify("This happens when no entry contains the reference's snippet", () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: I became a world leader]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('I became a world leader'),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Paragraph([
+          new PlainText('Not quite true.')
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+})
