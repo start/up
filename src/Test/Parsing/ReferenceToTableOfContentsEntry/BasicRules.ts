@@ -5,6 +5,7 @@ import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
 
 context('Bracketed text starting with "section:" produces a reference to a table of contents entry. Either type of brackets can be used:', () => {
@@ -361,8 +362,8 @@ I love all sorts of fancy stuff.`
 })
 
 
-context("The entries' outline levels dont matter at all", () => {
-  specify('A reference will match the first applicable entry based on its text content alone', () => {
+context("A reference will match the first applicable entry based on its text content alone.", () => {
+  specify("The entries' outline levels do not matter", () => {
     const markup = `
 If I ever say I drink soda, I'm lying
 =====================================
@@ -432,5 +433,55 @@ And you'll believe it.`
         secondSodaHeading,
         thirdSodaHeading
       ])))
+  })
+
+  context("The entries' nesting levels do not matter.", () => {
+    specify("A reference can match an entry at an outer nesting level", () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.
+
+1. First, see [section: soda].
+2. Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new OrderedList([
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText('First, see '),
+                new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                new PlainText('.')
+              ])
+            ], { ordinal: 1 }),
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
+              ])
+            ], { ordinal: 2 })
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 })
