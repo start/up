@@ -135,7 +135,7 @@ Not quite true.`
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('Before another exact match', () => {
+    specify('Before another exactly matching entry', () => {
       const markup = `
 I drink soda
 ============
@@ -162,6 +162,56 @@ That's what I tell 'em.`
 
       const secondSodaHeading =
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          firstSodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('I drink soda', firstSodaHeading),
+            new PlainText('.')
+          ]),
+          new Paragraph([
+            new PlainText('Anyway...')
+          ]),
+          secondSodaHeading,
+          new Paragraph([
+            new PlainText("That's what I tell 'em.")
+          ])
+        ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
+    })
+
+    specify('Before an entry that merely contains the snippet', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [section: I drink soda].
+
+Anyway...
+
+I lied when I said I drink soda
+============
+
+That's what I tell 'em.`
+
+      const firstSodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      const secondSodaHeading =
+        new Heading([new PlainText('I lied when I said I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
