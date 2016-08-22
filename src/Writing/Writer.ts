@@ -50,8 +50,7 @@ export abstract class Writer {
 
   constructor(
     private document: EitherTypeOfUpDocument,
-    protected config: Config
-  ) { }
+    protected config: Config) { }
 
   get result(): string {
     this._result =
@@ -126,4 +125,3 @@ export abstract class Writer {
 
 
 const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
-
