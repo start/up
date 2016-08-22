@@ -413,7 +413,7 @@ export class HtmlWriter extends Writer {
 
   private linkToActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): Link {
     return new Link(
-      entry.tableOfContentsRepresentation(),
+      entry.representationOfContentWithinTableOfContents(),
       internalFragmentUrl(this.idOfActualEntryInDocument(entry)))
   }
 

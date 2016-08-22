@@ -34,7 +34,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     return getText(this.children)
   }
 
-  tableOfContentsRepresentation(): InlineSyntaxNode[] {
+  representationOfContentWithinTableOfContents(): InlineSyntaxNode[] {
     return this.children
   }
 
