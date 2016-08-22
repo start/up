@@ -14,7 +14,7 @@ export class Config {
 
   constructor(settings?: UserProvidedSettings) {
     if (settings) {
-      this.applyChangedUserSettings(settings)
+      this.applyUserProvidedSettings(settings)
     }
   }
 
@@ -32,13 +32,13 @@ export class Config {
     clone.terms = this.terms.clone()
 
     if (changes) {
-      clone.applyChangedUserSettings(changes)
+      clone.applyUserProvidedSettings(changes)
     }
 
     return clone
   }
 
-  private applyChangedUserSettings(settings: UserProvidedSettings): void {
+  private applyUserProvidedSettings(settings: UserProvidedSettings): void {
     this.createSourceMap =
       coalesce(settings.createSourceMap, this.createSourceMap)
 
@@ -57,7 +57,7 @@ export class Config {
     this.baseForUrlsStartingWithHashMark =
       coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
 
-    this.terms.applyChangedUserSettings(settings.terms)
+    this.terms.applyUserProvidedSettings(settings.terms)
   }
 }
 
@@ -76,13 +76,13 @@ export namespace Config {
       return clone
     }
 
-    applyChangedUserSettings(terms: UserProvidedSettings.Terms): void {
+    applyUserProvidedSettings(terms: UserProvidedSettings.Terms): void {
       if (!terms) {
         return
       }
 
-      this.markup.applyChangedUserSettings(terms.markup)
-      this.output.applyChangedUserSettings(terms.output)
+      this.markup.applyUserProvidedSettings(terms.markup)
+      this.output.applyUserProvidedSettings(terms.output)
     }
   }
 
@@ -120,7 +120,7 @@ export namespace Config {
         return clone
       }
 
-      applyChangedUserSettings(terms: UserProvidedSettings.Terms.Markup): void {
+      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Markup): void {
         if (!terms) {
           return
         }
@@ -185,7 +185,7 @@ export namespace Config {
         return clone
       }
 
-      applyChangedUserSettings(terms: UserProvidedSettings.Terms.Output): void {
+      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Output): void {
         if (!terms) {
           return
         }
