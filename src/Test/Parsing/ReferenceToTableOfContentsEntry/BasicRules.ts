@@ -8,8 +8,7 @@ import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceT
 
 
 context('Bracketed text starting with "section:" produces a reference to a table of contents entry. Either type of brackets can be used:', () => {
-  specify('Square brackets', () => {
-    const markup = `
+  const markupUsingSquareBracketsAndSectionTerm = `
 I drink soda
 ============
 
@@ -20,13 +19,18 @@ I never lie
 
 Not quite true. For example, see [section: soda].`
 
+  const documentUsingSquareBracketsAndSectionTerm =
+    Up.toDocument(markupUsingSquareBracketsAndSectionTerm)
+
+
+  specify('Square brackets', () => {
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(documentUsingSquareBracketsAndSectionTerm).to.be.eql(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -53,24 +57,6 @@ I never lie
 
 Not quite true. For example, see (section: soda).`
 
-    const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('soda', sodaHeading),
-          new PlainText('.')
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    expect(Up.toDocument(markup)).to.be.eql(documentUsingSquareBracketsAndSectionTerm)
   })
 })
