@@ -8,7 +8,7 @@ import { concat } from '../CollectionHelpers'
 
 
 export class UpDocument extends OutlineSyntaxNodeContainer {
-  // Returns an UpDocument object with:
+  // Returns an `UpDocument` object with:
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
@@ -43,7 +43,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
 
 export namespace UpDocument {
   export class TableOfContents {
-    // Returns a TableOfContents object with entries from `documentChildren`.
+    // Returns a `TableOfContents` object with entries from `documentChildren`.
     //
     // If there are references to table of contents entries within `documentChildren`, they are
     // associated with the appropriate entries (mutating the references).
