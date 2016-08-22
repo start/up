@@ -99,7 +99,7 @@ Goodbye, world!
       new Heading([
         new Stress([new PlainText('Hello')]),
         new PlainText(', world!'),
-      ], { level: 1 })
+      ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(

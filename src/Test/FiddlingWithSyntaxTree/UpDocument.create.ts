@@ -74,13 +74,13 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const document = UpDocument.create(documentChildren)
 
     const enjoyHeading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1 })
+      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const cheapHeading =
-      new Heading([new PlainText("They're cheap")], { level: 2 })
+      new Heading([new PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
     const deliciousHeading =
-      new Heading([new PlainText("They're delicious")], { level: 2 })
+      new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(document).to.be.eql(
       new UpDocument([
@@ -115,10 +115,10 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const document = UpDocument.create(documentChildren)
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1 })
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1 })
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.be.eql(
       new UpDocument([

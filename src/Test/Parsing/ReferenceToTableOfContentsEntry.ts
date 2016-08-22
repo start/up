@@ -43,10 +43,10 @@ I never lie
 Not quite true. For example, see [section: soda].`
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1 })
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1 })
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -80,10 +80,10 @@ I never lie
 Not quite true. For example, see [section: I drink soda--exclusively].`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda–exclusively')], { level: 1 })
+        new Heading([new PlainText('I drink soda–exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1 })
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -113,10 +113,10 @@ I never lie
 Not quite true. For example, see [section: I drink soda---exclusively].`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda—exclusively')], { level: 1 })
+        new Heading([new PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1 })
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
@@ -146,10 +146,10 @@ I never lie
 Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
 
       const sodaHeading =
-        new Heading([new PlainText('Daily, I drink 9 cans of soda ±2')], { level: 1 })
+        new Heading([new PlainText('Daily, I drink 9 cans of soda ±2')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1 })
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2  })
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
