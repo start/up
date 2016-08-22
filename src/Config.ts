@@ -5,7 +5,7 @@ import { coalesce } from './CollectionHelpers'
 export class Config {
   createSourceMap = false
   writeUnsafeContent = false
-  documentName = 'up'
+  idPrefix = 'up'
   defaultUrlScheme = 'https://'
   baseForUrlsStartingWithSlash = ''
   baseForUrlsStartingWithHashMark = ''
@@ -24,7 +24,7 @@ export class Config {
 
     clone.createSourceMap = this.createSourceMap
     clone.writeUnsafeContent = this.writeUnsafeContent
-    clone.documentName = this.documentName
+    clone.idPrefix = this.idPrefix
     clone.defaultUrlScheme = this.defaultUrlScheme
     clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
     clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
@@ -45,8 +45,8 @@ export class Config {
     this.writeUnsafeContent =
       coalesce(settings.writeUnsafeContent, this.writeUnsafeContent)
 
-    this.documentName =
-      coalesce(settings.documentName, this.documentName)
+    this.idPrefix =
+      coalesce(settings.idPrefix, this.idPrefix)
 
     this.defaultUrlScheme =
       coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)

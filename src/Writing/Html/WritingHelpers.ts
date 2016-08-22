@@ -20,7 +20,7 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
 }
 
 export function classAttrValue(...names: string[]): string {
-  // We always prefix our class names with 'up-' regardless of the provided document name.
+  // We always prefix our class names with 'up-' regardless of the provided ID prefix.
   return names
     .map(name => 'up-' + name)
     .join(' ')

@@ -78,7 +78,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "documentName" config setting', () => {
+describe('The "idPrefix" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -86,10 +86,10 @@ describe('The "documentName" config setting', () => {
       ])
     ]),
     configChanges: {
-      documentName: 'reply 11'
+      idPrefix: 'reply 11'
     },
     conflictingConfigChanges: {
-      documentName: 'op'
+      idPrefix: 'op'
     }
   })
 })

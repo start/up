@@ -98,7 +98,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
   })
 
 
-  context('This applies to the "documentName" configuration setting, which is prefixed to every ID:', () => {
+  context('This applies to the "idPrefix" configuration setting, which is prefixed to every ID:', () => {
     specify('The ID of the checkboxes for inline spoilers', () => {
       const document = new UpDocument([
         new Paragraph([
@@ -115,7 +115,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for inline NSFW conventions', () => {
@@ -134,7 +134,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for inline NSFL conventions', () => {
@@ -153,7 +153,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for spoiler blocks', () => {
@@ -170,7 +170,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for NSFW blocks', () => {
@@ -187,7 +187,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
 
     specify('The ID of the checkboxes for NSFL blocks', () => {
@@ -204,7 +204,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(html)
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(html)
     })
     specify('Footnotes and footnote references', () => {
       const footnote = new Footnote([
@@ -216,7 +216,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new FootnoteBlock([footnote])
       ])
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(
         '<p>'
         + '<sup class="up-footnote-reference" id="thread-11-reply-65-footnote-reference-1">'
         + '<a href="#thread-11-reply-65-footnote-1">1</a>'
@@ -235,7 +235,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document, { documentName: 'thread 11 reply 65' })).to.be.eql(
+      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.be.eql(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'

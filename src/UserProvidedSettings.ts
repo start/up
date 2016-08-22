@@ -1,7 +1,7 @@
 export interface UserProvidedSettings {
   createSourceMap?: boolean
   writeUnsafeContent?: boolean
-  documentName?: string
+  idPrefix?: string
   defaultUrlScheme?: string
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string

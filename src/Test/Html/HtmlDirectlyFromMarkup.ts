@@ -43,7 +43,7 @@ LOOK AWAY
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
     const html = Up.toInlineHtml(markup, {
-      documentName: 'reply 104',
+      idPrefix: 'reply 104',
       terms: {
         markup: { spoiler: 'LOOK AWAY' }
       }

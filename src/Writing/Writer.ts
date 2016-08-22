@@ -105,7 +105,7 @@ export abstract class Writer {
 
   protected getId(...parts: any[]): string {
     const rawIdWithAllParts =
-      [this.config.documentName, ...parts].join(' ')
+      [this.config.idPrefix, ...parts].join(' ')
 
     return rawIdWithAllParts
       .trim()
