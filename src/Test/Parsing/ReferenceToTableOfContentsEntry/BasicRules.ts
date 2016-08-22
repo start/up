@@ -285,4 +285,77 @@ That's what I tell 'em.`
         ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
   })
+
+
+  context('If there are no perfectly matching entries, the reference will match with the first entry to contain its snippet. That entry can come:', () => {
+    specify('Before the reference', () => {
+      const markup = `
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff. For example, see [section: exotic].`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const interestingHeading =
+        new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          interestingHeading,
+          new Paragraph([
+            new PlainText('I love all sorts of fancy stuff. For example, see '),
+            new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+            new PlainText('.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+    })
+    specify('After the reference', () => {
+      const markup = `
+I have plenty of good traits. See [section: interesting].
+
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff.`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const interestingHeading =
+        new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new PlainText('I have plenty of good traits. See '),
+            new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
+            new PlainText('.')
+          ]),
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          interestingHeading,
+          new Paragraph([
+            new PlainText('I love all sorts of fancy stuff.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+    })
+  })
 })
