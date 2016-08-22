@@ -1,7 +1,6 @@
 import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
 import { Link } from '../SyntaxNodes/Link'
-import { MediaSyntaxNode } from '../SyntaxNodes/MediaSyntaxNode'
 import { Image } from '../SyntaxNodes/Image'
 import { Audio } from '../SyntaxNodes/Audio'
 import { Video } from '../SyntaxNodes/Video'
@@ -39,19 +38,10 @@ import { OutlineSeparator } from '../SyntaxNodes/OutlineSeparator'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
-import { patternIgnoringCapitalizationAndStartingWith, either } from '../Parsing/PatternHelpers'
 
 
 export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
-// This abstract class provides dyanmic dispatch for writing every type of syntax node.
-//
-// Additionally, it provides access to the following goodies throughout the entire writing
-// process:
-//
-// 1. The provided configuration settings
-// 2. An easy way to generate unique IDs using the provided configuration settings
-//
 // Writers are designed to be single-use, so a new instance must be created every time a new
 // document is written. This makes it a bit simpler to write concrete writer classes, because
 // they don't have to worry about resetting any counters.
@@ -106,12 +96,8 @@ export abstract class Writer {
   abstract unorderedList(list: UnorderedList): string
   abstract video(video: Video): string
 
-  protected write(node: SyntaxNode): string {
-    return this.dispatchWrite(node)
-  }
-
   protected writeEach(nodes: SyntaxNode[]): string[] {
-    return nodes.map(node => this.write(node))
+    return nodes.map(node => node.write(this))
   }
 
   protected writeAll(nodes: SyntaxNode[]): string {
@@ -136,179 +122,8 @@ export abstract class Writer {
         ? this.writeDocument(document)
         : this.writeInlineDocument(document))
   }
-
-  private dispatchWrite(node: SyntaxNode): string {
-    // TypeScript lacks multiple dispatch. Rather than polluting every single syntax node class
-    // with the visitor pattern, we perform the dispatch ourselves here.
-
-    if (node instanceof PlainText) {
-      return this.plainText(node)
-    }
-
-    if (node instanceof Link) {
-      return (
-        this.isUrlAllowed(node.url)
-          ? this.link(node)
-          : this.writeAll(node.children))
-    }
-
-    if (node instanceof Paragraph) {
-      return this.paragraph(node)
-    }
-
-    if (node instanceof Heading) {
-      return this.heading(node)
-    }
-
-    if (node instanceof Table) {
-      return this.table(node)
-    }
-
-    if (node instanceof Blockquote) {
-      return this.blockquote(node)
-    }
-
-    if (node instanceof UnorderedList) {
-      return this.unorderedList(node)
-    }
-
-    if (node instanceof OrderedList) {
-      return this.orderedList(node)
-    }
-
-    if (node instanceof DescriptionList) {
-      return this.descriptionList(node)
-    }
-
-    if (node instanceof LineBlock) {
-      return this.lineBlock(node)
-    }
-
-    if (node instanceof CodeBlock) {
-      return this.codeBlock(node)
-    }
-
-    if (node instanceof OutlineSeparator) {
-      return this.outlineSeparator(node)
-    }
-
-    if (node instanceof Emphasis) {
-      return this.emphasis(node)
-    }
-
-    if (node instanceof Stress) {
-      return this.stress(node)
-    }
-
-    if (node instanceof Italic) {
-      return this.italic(node)
-    }
-
-    if (node instanceof Bold) {
-      return this.bold(node)
-    }
-
-    if (node instanceof InlineCode) {
-      return this.inlineCode(node)
-    }
-
-    if (node instanceof ExampleInput) {
-      return this.exampleInput(node)
-    }
-
-    if (node instanceof Footnote) {
-      return this.referenceToFootnote(node)
-    }
-
-    if (node instanceof FootnoteBlock) {
-      return this.footnoteBlock(node)
-    }
-
-    if (node instanceof MediaSyntaxNode) {
-      return this.writeIfUrlIsAllowed(node)
-    }
-
-    if (node instanceof RevisionDeletion) {
-      return this.revisionDeletion(node)
-    }
-
-    if (node instanceof RevisionInsertion) {
-      return this.revisionInsertion(node)
-    }
-
-    if (node instanceof NormalParenthetical) {
-      return this.normalParenthetical(node)
-    }
-
-    if (node instanceof SquareParenthetical) {
-      return this.squareParenthetical(node)
-    }
-
-    if (node instanceof Highlight) {
-      return this.highlight(node)
-    }
-
-    if (node instanceof InlineSpoiler) {
-      return this.inlineSpoiler(node)
-    }
-
-    if (node instanceof InlineNsfw) {
-      return this.inlineNsfw(node)
-    }
-
-    if (node instanceof InlineNsfl) {
-      return this.inlineNsfl(node)
-    }
-
-    if (node instanceof SpoilerBlock) {
-      return this.spoilerBlock(node)
-    }
-
-    if (node instanceof NsfwBlock) {
-      return this.nsfwBlock(node)
-    }
-
-    if (node instanceof NsflBlock) {
-      return this.nsflBlock(node)
-    }
-
-    throw new Error('Unrecognized syntax node')
-  }
-
-  private writeIfUrlIsAllowed(media: MediaSyntaxNode): string {
-    if (!this.isUrlAllowed(media.url)) {
-      return ''
-    }
-
-    if (media instanceof Image) {
-      return this.image(media)
-    }
-
-    if (media instanceof Audio) {
-      return this.audio(media)
-    }
-
-    if (media instanceof Video) {
-      return this.video(media)
-    }
-
-    throw new Error('Unrecognized media syntax node')
-  }
-
-  // TODO: Move all this functionality to HtmlWriter
-  private isUrlAllowed(url: string): boolean {
-    return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
-  }
 }
 
 
 const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
 
-const UNSAFE_URL_SCHEME =
-  patternIgnoringCapitalizationAndStartingWith(
-    either(
-      'javascript',
-      'data',
-      'file',
-      'vbscript'
-    ) + ':')

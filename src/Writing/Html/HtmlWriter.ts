@@ -43,6 +43,7 @@ import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutline
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
+import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Parsing/PatternHelpers'
 
 
 export class HtmlWriter extends Writer {
@@ -188,7 +189,7 @@ export class HtmlWriter extends Writer {
   exampleInput(exampleInput: ExampleInput): string {
     return htmlElement('kbd', exampleInput.input)
   }
-  
+
   referenceToTableOfContentsEntry(_referenceToTableOfContentsEntry: ReferenceToTableOfContentsEntry): string {
     throw new Error('Not implemented')
   }
@@ -315,7 +316,7 @@ export class HtmlWriter extends Writer {
   }
 
   link(link: Link): string {
-    if (this.isInsideLink) {
+    if (this.isInsideLink || !this.isUrlAllowed(link.url)) {
       return this.writeAll(link.children)
     }
 
@@ -332,6 +333,10 @@ export class HtmlWriter extends Writer {
   }
 
   image(image: Image): string {
+    if (!this.isUrlAllowed(image.url)) {
+      return ''
+    }
+
     const attrs =
       attrsFor(
         image, {
@@ -385,9 +390,10 @@ export class HtmlWriter extends Writer {
   }
 
   private tableOfContentsTitle(): string {
-    return this.write(
-      new Heading([
-        new PlainText(this.config.terms.output.tableOfContents)], { level: 1 }))
+    const title = new Heading([
+      new PlainText(this.config.terms.output.tableOfContents)], { level: 1 })
+
+    return title.write(this)
   }
 
   private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
@@ -397,7 +403,7 @@ export class HtmlWriter extends Writer {
           this.tableOfContentsEntry(entry)
         ]))
 
-    return this.write(new UnorderedList(listItems))
+    return new UnorderedList(listItems).write(this)
   }
 
   private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry): OutlineSyntaxNode {
@@ -470,6 +476,10 @@ export class HtmlWriter extends Writer {
 
   private playableMediaElement(media: Audio | Video, tagName: string): string {
     const { url, description } = media
+
+    if (!this.isUrlAllowed(url)) {
+      return ''
+    }
 
     const attrs =
       attrsFor(
@@ -601,6 +611,11 @@ export class HtmlWriter extends Writer {
   private footnoteReferenceId(referenceNumber: number): string {
     return this.getId(this.config.terms.output.footnoteReference, referenceNumber)
   }
+
+  // TODO: Move all this functionality to HtmlWriter
+  private isUrlAllowed(url: string): boolean {
+    return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+  }
 }
 
 
@@ -611,3 +626,12 @@ function attrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
 
   return attrs
 }
+
+const UNSAFE_URL_SCHEME =
+  patternIgnoringCapitalizationAndStartingWith(
+    either(
+      'javascript',
+      'data',
+      'file',
+      'vbscript'
+    ) + ':')
