@@ -300,5 +300,16 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainText(' was damaged by water.')
         ]))
     })
+
+    specify('An otherwise-valid reference indicated by parentheses produces a normal parenthetical node', () => {
+      expect(Up.toInlineDocument('My favorite section of the textbook (Section: Why Math Is Great) was damaged by water.')).to.be.eql(
+        new InlineUpDocument([
+          new PlainText('My favorite section of the textbook '),
+          new NormalParenthetical([
+            new PlainText('(Section: Why Math Is Great)'),
+          ]),
+          new PlainText(' was damaged by water.')
+        ]))
+    })
   })
 })
