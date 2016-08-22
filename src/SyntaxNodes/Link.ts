@@ -11,8 +11,19 @@ import { UpDocument } from './UpDocument'
 // whitespace), the link counts as media. In that situation, the link itself is placed directly into
 // the outline.
 export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
-  constructor(children: InlineSyntaxNode[], public url: string, public sourceLineNumber: number = undefined) {
+  public sourceLineNumber: number = undefined
+
+  constructor(
+    children: InlineSyntaxNode[],
+    public url: string,
+    options?: {
+      sourceLineNumber: number
+    }) {
     super(children)
+
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
   }
 
   shouldBeIncludedInTableOfContents(): boolean {

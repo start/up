@@ -6,9 +6,14 @@ import { concat } from '../CollectionHelpers'
 
 
 export class UnorderedList implements OutlineSyntaxNode {
+  public sourceLineNumber: number = undefined
+
   constructor(
-    public items: UnorderedList.Item[],
-    public sourceLineNumber: number = undefined) { }
+    public items: UnorderedList.Item[], options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+  }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return concat(

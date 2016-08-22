@@ -25,7 +25,7 @@ This mimics the default TypeScript behavior, which in turn makes a few unit test
 The details
 ----------- 
 
-Our syntax node constructors hide their optional fields in an `options` argument. If this argument is provided, we assign the optional fields.
+Our syntax node constructors hide most of their optional fields in an `options` argument. If this argument is provided, we assign the optional fields.
 
 Here's an example of one of those optional fields (`ordinal`):
 

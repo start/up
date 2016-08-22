@@ -6,9 +6,13 @@ import { concat } from '../CollectionHelpers'
 
 
 export class OrderedList implements OutlineSyntaxNode {
-  constructor(
-    public items: OrderedList.Item[],
-    public sourceLineNumber: number = undefined) { }
+  public sourceLineNumber: number = undefined
+
+  constructor(public items: OrderedList.Item[], options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+  }
 
   start(): number {
     return this.items[0].ordinal

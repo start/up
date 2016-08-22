@@ -7,9 +7,13 @@ import { concat } from '../CollectionHelpers'
 
 
 export class DescriptionList implements OutlineSyntaxNode {
-  constructor(
-    public items: DescriptionList.Item[],
-    public sourceLineNumber: number = undefined) { }
+    public sourceLineNumber: number = undefined
+
+  constructor(public items: DescriptionList.Item[], options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+   }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return concat(

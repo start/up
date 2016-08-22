@@ -6,7 +6,13 @@ import { concat } from '../CollectionHelpers'
 
 
 export class LineBlock implements OutlineSyntaxNode {
-  constructor(public lines: LineBlock.Line[], public sourceLineNumber: number = undefined) { }
+  public sourceLineNumber: number = undefined
+
+  constructor(public lines: LineBlock.Line[], options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+  }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []

@@ -9,11 +9,22 @@ import { getInlineDescendants } from './getInlineDescendants'
 
 
 export class Table implements OutlineSyntaxNode {
+  public caption: Table.Caption = undefined
+  public sourceLineNumber: number = undefined
+
   constructor(
     public header: Table.Header,
     public rows: Table.Row[],
-    public caption?: Table.Caption,
-    public sourceLineNumber: number = undefined) { }
+    options?: {
+      caption?: Table.Caption
+      sourceLineNumber: number
+    }
+  ) {
+    if (options) {
+      this.caption = options.caption
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+  }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []

@@ -4,9 +4,13 @@ import { UpDocument } from './UpDocument'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
-  constructor(
-    public code: string,
-    public sourceLineNumber: number = undefined) { }
+  public sourceLineNumber: number = undefined
+
+  constructor(public code: string, options?: { sourceLineNumber: number }) {
+    if (options) {
+      this.sourceLineNumber = options.sourceLineNumber
+    }
+  }
 
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
