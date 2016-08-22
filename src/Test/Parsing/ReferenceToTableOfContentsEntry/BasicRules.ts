@@ -200,9 +200,9 @@ Not quite true. For example, see [section: I drink soda].
 Anyway...
 
 I lied when I said I drink soda
-============
+================================
 
-That's what I tell 'em.`
+Oops.`
 
       const firstSodaHeading =
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
@@ -223,6 +223,56 @@ That's what I tell 'em.`
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
             new ReferenceToTableOfContentsEntry('I drink soda', firstSodaHeading),
+            new PlainText('.')
+          ]),
+          new Paragraph([
+            new PlainText('Anyway...')
+          ]),
+          secondSodaHeading,
+          new Paragraph([
+            new PlainText("Oops.")
+          ])
+        ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
+    })
+
+    specify('After an entry that merely contains the snippet', () => {
+      const markup = `
+If I ever say I drink soda, I'm lying
+=====================================
+
+I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [section: I drink soda].
+
+Anyway...
+
+I drink soda
+============
+
+That's what I tell 'em.`
+
+      const firstSodaHeading =
+        new Heading([new PlainText("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      const secondSodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          firstSodaHeading,
+          new Paragraph([
+            new PlainText('I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('I drink soda', secondSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
