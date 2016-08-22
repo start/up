@@ -1,5 +1,4 @@
 import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 
 

@@ -9,19 +9,15 @@ import { getInlineDescendants } from './getInlineDescendants'
 
 
 export class Table implements OutlineSyntaxNode {
-  public caption: Table.Caption = undefined
   public sourceLineNumber: number = undefined
 
   constructor(
     public header: Table.Header,
     public rows: Table.Row[],
-    options?: {
-      caption?: Table.Caption
-      sourceLineNumber: number
-    }
+    public caption?: Table.Caption,
+    options?: { sourceLineNumber: number }
   ) {
     if (options) {
-      this.caption = options.caption
       this.sourceLineNumber = options.sourceLineNumber
     }
   }

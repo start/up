@@ -24,7 +24,7 @@ import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
   specify('Paragraphs', () => {
     const document = new UpDocument([
-      new Paragraph([new PlainText('Nimble navigator')], 5)
+      new Paragraph([new PlainText('Nimble navigator')], { sourceLineNumber: 5 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
@@ -36,14 +36,14 @@ context('When an outline syntax node has a source line number, its outermost ele
         new UnorderedList.Item([
           new Paragraph([
             new PlainText('Tropical')
-          ], 3)
+          ], { sourceLineNumber: 3 })
         ]),
         new UnorderedList.Item([
           new Paragraph([
             new PlainText('Territories')
-          ], 4)
+          ], { sourceLineNumber: 4 })
         ])
-      ], 3)
+      ], { sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -59,14 +59,14 @@ context('When an outline syntax node has a source line number, its outermost ele
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Tropical')
-          ], 1)
+          ], { sourceLineNumber: 1 })
         ]),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
-          ], 3)
+          ], { sourceLineNumber: 3 })
         ])
-      ], 1)
+      ], { sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -82,14 +82,14 @@ context('When an outline syntax node has a source line number, its outermost ele
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Tropical')
-          ], 1)
+          ], { sourceLineNumber: 1 })
         ], { ordinal: 3 }),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
-          ], 3)
+          ], { sourceLineNumber: 3 })
         ])
-      ], 1)
+      ], { sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -105,14 +105,14 @@ context('When an outline syntax node has a source line number, its outermost ele
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Tropical')
-          ], 1)
+          ], { sourceLineNumber: 1 })
         ], { ordinal: 2 }),
         new OrderedList.Item([
           new Paragraph([
             new PlainText('Territories')
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ], { ordinal: 1 })
-      ], 1)
+      ], { sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -130,7 +130,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('A grass type Pokemon')
-          ], 3)
+          ], { sourceLineNumber: 3 })
         ])),
         new DescriptionList.Item([
           new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
@@ -138,9 +138,9 @@ context('When an outline syntax node has a source line number, its outermost ele
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('Ghost type moves')
-          ], 6)
+          ], { sourceLineNumber: 6 })
         ]))
-      ], 2)
+      ], { sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -171,7 +171,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ],
         new Table.Caption([
           new PlainText('Influential Games')
-        ]), 1)
+        ]), { sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -202,7 +202,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ],
         new Table.Caption([
           new PlainText('AND operator logic')
-        ]), 3)
+        ]), { sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -223,7 +223,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         new LineBlock.Line([
           new PlainText('Fangs')
         ])
-      ], 4)
+      ], { sourceLineNumber: 4 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -236,7 +236,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Code blocks', () => {
     const document = new UpDocument([
-      new CodeBlock('color = Color.Green', 3)
+      new CodeBlock('color = Color.Green', { sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
@@ -247,8 +247,8 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Blockquote([
         new Paragraph([
           new PlainText('Centipede')
-        ], 1)
-      ], 1)
+        ], { sourceLineNumber: 1 })
+      ], { sourceLineNumber: 1 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -326,7 +326,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new SpoilerBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
-        ], 3)
+        ], { sourceLineNumber: 3 })
       ], { sourceLineNumber: 2 })
     ])
 
@@ -347,7 +347,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new NsfwBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
-        ], 2)
+        ], { sourceLineNumber: 2 })
       ], { sourceLineNumber: 1 })
     ])
 
@@ -368,7 +368,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new NsflBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
-        ], 4)
+        ], { sourceLineNumber: 4 })
       ], { sourceLineNumber: 2 })
     ])
 
@@ -386,7 +386,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Images', () => {
     const document = new UpDocument([
-      new Image('haunted house', 'http://example.com/hauntedhouse.svg', 2)
+      new Image('haunted house', 'http://example.com/hauntedhouse.svg', { sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -396,7 +396,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Audio nodes', () => {
     const document = new UpDocument([
-      new Audio('ghostly howling', 'http://example.com/ghosts.ogg', 3)
+      new Audio('ghostly howling', 'http://example.com/ghosts.ogg', { sourceLineNumber: 3 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -407,7 +407,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Videos', () => {
     const document = new UpDocument([
-      new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm', 5)
+      new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm', { sourceLineNumber: 5 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(
@@ -420,7 +420,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new UpDocument([
       new Link([
         new Image('haunted house', 'http://example.com/hauntedhouse.svg')
-      ], 'https://example.com/gallery', 2)
+      ], 'https://example.com/gallery', { sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql(

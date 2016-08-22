@@ -20,9 +20,9 @@ describe('When a blockquote starts with a blank line', () => {
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         new Blockquote([
-          new Paragraph([new PlainText("Who doesn't?")], 3),
-          new Paragraph([new PlainText("Well, aside from you.")], 5)
-        ], 2)
+          new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 3 }),
+          new Paragraph([new PlainText("Well, aside from you.")], { sourceLineNumber: 5 })
+        ], { sourceLineNumber: 2 })
       ]))
   })
 })
@@ -37,9 +37,9 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
       new UpDocument([
         new Link([
           new Image('haunted house', 'https://example.com/hauntedhouse.svg'),
-        ], 'https://example.com/gallery', 1),
-        new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
-        new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+        ], 'https://example.com/gallery', { sourceLineNumber: 1 }),
+        new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
+        new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
       ]))
   })
 })

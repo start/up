@@ -24,14 +24,11 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
-const NO_SPECIFIED_SOURCE_LINE_NUMBER: number = undefined
-
-
 context('When the "createSourceMap" config setting is not set to true', () => {
   specify('no source maps are produced', () => {
     expect(Up.toDocument("I enjoy apples.")).to.be.eql(
       new UpDocument([
-        new Paragraph([new PlainText('I enjoy apples.')], NO_SPECIFIED_SOURCE_LINE_NUMBER),
+        new Paragraph([new PlainText('I enjoy apples.')], { sourceLineNumber: undefined }),
       ]))
   })
 })
@@ -45,7 +42,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
   specify("The source line numbers start at 1.", () => {
     expect(up.toDocument('Hi!')).to.be.eql(
       new UpDocument([
-        new Paragraph([new PlainText("Hi!")], 1)
+        new Paragraph([new PlainText("Hi!")], { sourceLineNumber: 1 })
       ]))
   })
 
@@ -57,7 +54,7 @@ I actually start on the second line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new Paragraph([new PlainText("I actually start on the second line.")], 2)
+          new Paragraph([new PlainText("I actually start on the second line.")], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -68,7 +65,7 @@ I actually start on the third line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new Paragraph([new PlainText("I actually start on the third line.")], 3)
+          new Paragraph([new PlainText("I actually start on the third line.")], { sourceLineNumber: 3 })
         ]))
     })
 
@@ -83,7 +80,7 @@ I actually start on the seventh line.`
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new Paragraph([new PlainText("I actually start on the seventh line.")], 7)
+          new Paragraph([new PlainText("I actually start on the seventh line.")], { sourceLineNumber: 7 })
         ]))
     })
   })
@@ -148,7 +145,7 @@ Chrono Cross;     1999`
             ],
             new Table.Caption([
               new PlainText('Games in the Chrono series')
-            ]), 2)
+            ]), { sourceLineNumber: 2 })
         ]))
     })
 
@@ -180,7 +177,7 @@ Chart: \`AND\` operator logic
             new Table.Caption([
               new InlineCode('AND'),
               new PlainText(' operator logic')
-            ]), 2)
+            ]), { sourceLineNumber: 2 })
         ]))
     })
 
@@ -194,12 +191,12 @@ Chart: \`AND\` operator logic
         new UpDocument([
           new OrderedList([
             new OrderedList.Item([
-              new Paragraph([new PlainText("They're cheap")], 2)
+              new Paragraph([new PlainText("They're cheap")], { sourceLineNumber: 2 })
             ], { ordinal: 1 }),
             new OrderedList.Item([
-              new Paragraph([new PlainText("They're delicious")], 4)
+              new Paragraph([new PlainText("They're delicious")], { sourceLineNumber: 4 })
             ], { ordinal: 2 })
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -213,12 +210,12 @@ Chart: \`AND\` operator logic
         new UpDocument([
           new UnorderedList([
             new UnorderedList.Item([
-              new Paragraph([new PlainText("They're cheap")], 2)
+              new Paragraph([new PlainText("They're cheap")], { sourceLineNumber: 2 })
             ]),
             new UnorderedList.Item([
-              new Paragraph([new PlainText("They're delicious")], 4)
+              new Paragraph([new PlainText("They're delicious")], { sourceLineNumber: 4 })
             ])
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -238,16 +235,16 @@ Peaches
               new DescriptionList.Item.Term([new PlainText('Apples')])
             ],
               new DescriptionList.Item.Description([
-                new Paragraph([new PlainText("They're delicious.")], 3)
+                new Paragraph([new PlainText("They're delicious.")], { sourceLineNumber: 3 })
               ])),
             new DescriptionList.Item([
               new DescriptionList.Item.Term([new PlainText('Bananas')]),
               new DescriptionList.Item.Term([new PlainText('Peaches')])
             ],
               new DescriptionList.Item.Description([
-                new Paragraph([new PlainText("They're also delicious.")], 7)
+                new Paragraph([new PlainText("They're also delicious.")], { sourceLineNumber: 7 })
               ]))
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -265,7 +262,7 @@ Apples are blue`
             new LineBlock.Line([
               new PlainText("Apples are blue")
             ])
-          ], 2)
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -277,7 +274,7 @@ SPOILER:
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new SpoilerBlock([
-            new Paragraph([new PlainText("Who doesn't?")], 3)
+            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 3 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -291,7 +288,7 @@ NSFW:
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsfwBlock([
-            new Paragraph([new PlainText("Who doesn't?")], 4)
+            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 4 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -306,7 +303,7 @@ NSFL:
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new NsflBlock([
-            new Paragraph([new PlainText("Who doesn't?")], 5)
+            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 5 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -317,8 +314,8 @@ NSFL:
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
           new Blockquote([
-            new Paragraph([new PlainText("Who doesn't?")], 2)
-          ], 2)
+            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 2 })
+          ], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -342,9 +339,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new Paragraph([new PlainText("The end.")], 2),
+            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new OutlineSeparator({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], 6)
+            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 6 })
           ]))
       })
 
@@ -363,9 +360,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new Paragraph([new PlainText("The end.")], 2),
+            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new OutlineSeparator({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], 11)
+            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 11 })
           ]))
       })
 
@@ -388,9 +385,9 @@ No, really. That was it.`
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new Paragraph([new PlainText("The end.")], 2),
+            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new OutlineSeparator({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], 15)
+            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 15 })
           ]))
       })
     })
@@ -403,7 +400,7 @@ const reason = "They are cheap and delicious."
 
       expect(up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new CodeBlock('const reason = "They are cheap and delicious."', 2),
+          new CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 }),
         ]))
     })
 
@@ -432,7 +429,7 @@ Chrono Cross;     1999`
                 new Table.Row.Cell([new PlainText('Chrono Cross')]),
                 new Table.Row.Cell([new PlainText('1999')])
               ])
-            ], NO_CAPTION, 2)
+            ], NO_CAPTION, { sourceLineNumber: 2 })
         ]))
     })
 
@@ -462,7 +459,7 @@ Chart:
                 new Table.Row.Cell([new PlainText('false')]),
                 new Table.Row.Cell([new PlainText('false')])
               ], new Table.Header.Cell([new PlainText('0')]))
-            ], NO_CAPTION, 2)
+            ], NO_CAPTION, { sourceLineNumber: 2 })
         ]))
     })
 
@@ -471,21 +468,21 @@ Chart:
       specify('Audio nodes', () => {
         expect(up.toDocument('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
           new UpDocument([
-            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1)
+            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Images', () => {
         expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
           new UpDocument([
-            new Image('haunted house', 'https://example.com/hauntedhouse.svg', 1)
+            new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Videos', () => {
         expect(up.toDocument('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
           new UpDocument([
-            new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+            new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
           ]))
       })
     })
@@ -497,7 +494,7 @@ Chart:
           new UpDocument([
             new Link([
               new Image('haunted house', 'https://example.com/hauntedhouse.svg')
-            ], 'https://example.com/gallery', 1)
+            ], 'https://example.com/gallery', { sourceLineNumber: 1 })
           ]))
       })
     })
@@ -510,9 +507,9 @@ Chart:
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new Image('haunted house', 'https://example.com/hauntedhouse.svg', 1),
-            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', 1),
-            new Video('haunted house', 'https://example.com/hauntedhouse.webm', 1)
+            new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 }),
+            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
+            new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
           ]))
       })
     })
@@ -537,9 +534,9 @@ I do eat apples, though.`
           new PlainText("I don't eat cereal."),
           footnote,
           new PlainText(" Never have."),
-        ], 2),
+        ], { sourceLineNumber: 2 }),
         new FootnoteBlock([footnote]),
-        new Paragraph([new PlainText('I do eat apples, though.')], 4)
+        new Paragraph([new PlainText('I do eat apples, though.')], { sourceLineNumber: 4 })
       ]))
   })
 })
@@ -581,15 +578,15 @@ Pink lady.`
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         enjoyApplesHeading,
-        new Paragraph([new PlainText("Don't you?")], 6),
+        new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
         new LineBlock([
           new LineBlock.Line([new PlainText('Roses are red')]),
           new LineBlock.Line([new PlainText('Apples are blue')])
-        ], 8),
+        ], { sourceLineNumber: 8 }),
         bestFruitHeading,
-        new Paragraph([new PlainText('Apples.')], 15),
+        new Paragraph([new PlainText('Apples.')], { sourceLineNumber: 15 }),
         bestAppleHeading,
-        new Paragraph([new PlainText('Pink lady.')], 21)
+        new Paragraph([new PlainText('Pink lady.')], { sourceLineNumber: 21 })
       ], new UpDocument.TableOfContents([
         enjoyApplesHeading,
         bestFruitHeading,
@@ -630,14 +627,14 @@ Pink lady
     expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
       new UpDocument([
         enjoyApplesHeading,
-        new Paragraph([new PlainText("Don't you?")], 6),
+        new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Term([new PlainText('Apple')])
           ], new DescriptionList.Item.Description([
             bestFruitHeading,
             new SpoilerBlock([
-              new Paragraph([new PlainText('Really.')], 13)
+              new Paragraph([new PlainText('Really.')], { sourceLineNumber: 13 })
             ], { sourceLineNumber: 12 })
           ])),
           new DescriptionList.Item([
@@ -645,10 +642,10 @@ Pink lady
           ], new DescriptionList.Item.Description([
             bestAppleHeading,
             new Blockquote([
-              new Paragraph([new PlainText('Really.')], 19)
-            ], 19)
+              new Paragraph([new PlainText('Really.')], { sourceLineNumber: 19 })
+            ], { sourceLineNumber: 19 })
           ]))
-        ], 8)
+        ], { sourceLineNumber: 8 })
       ], new UpDocument.TableOfContents([
         enjoyApplesHeading,
         bestFruitHeading,
