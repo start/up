@@ -942,6 +942,28 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1"></a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1"></h1>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
 })
 
 
@@ -1051,6 +1073,35 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       + '</nav>'
       + '<p><a href="#item-1">Howdy there</a></p>'
       + '<h1 id="item-1">Howdy there</h1>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</a></p>'
+      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
