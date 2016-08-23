@@ -534,6 +534,63 @@ I get hungry;                     Very valid`
             ]))
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
+
+    specify('Row cells', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.
+
+Table: Reasons I lie
+
+Reason;                                 Validity
+I get hungry (see [section: soda]);     Very valid`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([
+                new PlainText('Reason')
+              ]),
+              new Table.Header.Cell([new PlainText('Validity')])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([
+                  new PlainText('I get hungry '),
+                  new NormalParenthetical([
+                    new PlainText('(see '),
+                    new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                    new PlainText(')')
+                  ])
+                ]),
+                new Table.Row.Cell([new PlainText('Very valid')])
+              ])
+            ], new Table.Caption([
+              new PlainText('Reasons I lie')
+            ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 
 
