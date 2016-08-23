@@ -312,7 +312,7 @@ export class HtmlWriter extends Writer {
 
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
-      footnoteBlock.footnotes.map(footnote => this.footnote(footnote)),
+      footnoteBlock.footnotes.map(footnote => this.footnoteInFootnoteBlock(footnote)),
       attrs)
   }
 
@@ -440,12 +440,12 @@ export class HtmlWriter extends Writer {
 
   private descriptionListItem(listItem: DescriptionList.Item): string {
     return (
-      listItem.terms.map(term => this.descriptionTerm(term)).join('')
+      listItem.subjects.map(subject => this.descriptionSubject(subject)).join('')
       + this.description(listItem.description))
   }
 
-  private descriptionTerm(term: DescriptionList.Item.Subject): string {
-    return this.element('dt', term.children)
+  private descriptionSubject(subject: DescriptionList.Item.Subject): string {
+    return this.element('dt', subject.children)
   }
 
   private description(description: DescriptionList.Item.Description): string {
@@ -464,17 +464,17 @@ export class HtmlWriter extends Writer {
       internalUrl(this.footnoteId(referenceNumber)))
   }
 
-  private footnote(footnote: Footnote): string {
-    const termHtml =
+  private footnoteInFootnoteBlock(footnote: Footnote): string {
+    const linkBackToReferenceContainer =
       this.element(
         'dt',
         [this.footnoteLinkBackToReference(footnote)],
         { id: this.footnoteId(footnote.referenceNumber) })
 
-    const descriptionHtml =
+    const bodyContainer =
       this.element('dd', footnote.children)
 
-    return termHtml + descriptionHtml
+    return linkBackToReferenceContainer + bodyContainer
   }
 
   private footnoteLinkBackToReference(footnote: Footnote): Link {

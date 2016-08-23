@@ -187,7 +187,7 @@ describe('When an ordered list node is in descending order', () => {
 
 
 describe('A description list', () => {
-  it('produces a <dl> element containing a <dt> element for each term, and a <dd> element for each description', () => {
+  it('produces a <dl> element containing a <dt> element for each subject, and a <dd> element for each description', () => {
     const document = new UpDocument([
       new DescriptionList([
         new DescriptionList.Item([

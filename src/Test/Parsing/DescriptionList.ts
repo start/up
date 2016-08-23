@@ -10,7 +10,7 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 
 describe('A non-indented line followed by an indented line', () => {
-  it('produce a description list node containing a single term and its description', () => {
+  it('produce a description list node containing a single subject and its description', () => {
     const markup = `
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
@@ -33,7 +33,7 @@ Charmander
 
 
 describe('Multiple non-indented lines followed by one indented line', () => {
-  it('produce a description list node containing multiple terms and their single description', () => {
+  it('produce a description list node containing multiple subjects and their single description', () => {
     const markup = `
 Charmander
 Cyndaquil
@@ -59,7 +59,7 @@ Torchic
 })
 
 
-describe("A term in a description list", () => {
+describe("A subject in a description list", () => {
   it('can contain inline conventions', () => {
     const markup = `
 Ash *"Little Marco"* Ketchum
@@ -113,7 +113,7 @@ Ash Ketchum
 })
 
 
-describe('Consecutive terms and descriptions', () => {
+describe('Consecutive subjects and descriptions', () => {
   it('produce a single description list node', () => {
     const markup = `
 Bulbasaur

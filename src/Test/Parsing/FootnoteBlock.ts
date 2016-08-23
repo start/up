@@ -760,7 +760,7 @@ describe('Footnotes in ordered list items', () => {
 })
 
 
-describe('Footnotes in description list terms and definitions', () => {
+describe('Footnotes in description list subjects and definitions', () => {
   it('produce a footnote block that appears after the entire description list', () => {
     const markup = `
 Bulbasaur

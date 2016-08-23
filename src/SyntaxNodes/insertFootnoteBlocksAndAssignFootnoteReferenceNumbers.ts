@@ -179,13 +179,13 @@ class FootnoteBlockInserter {
   }
 
   getBlocklessFootnotesFromDescriptionListItem(item: DescriptionList.Item): Footnote[] {
-    const footnotesFromTerms =
-      this.getBlocklessFootnotesFromInlineContainers(item.terms)
+    const footnotesFromSubjects =
+      this.getBlocklessFootnotesFromInlineContainers(item.subjects)
 
     const footnotesFromDescription =
       this.getBlocklessFootnotesFromOutlineNodes(item.description.children)
 
-    return footnotesFromTerms.concat(footnotesFromDescription)
+    return footnotesFromSubjects.concat(footnotesFromDescription)
   }
 
   getBlocklessFootnotesFromTable(table: Table): Footnote[] {
