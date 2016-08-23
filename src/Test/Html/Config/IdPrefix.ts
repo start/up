@@ -645,6 +645,25 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document = new UpDocument([
+      new SpoilerBlock([])
+    ])
+
+    const html =
+      '<div class="up-spoiler up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1">toggle spoiler</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1" role="button" type="checkbox">'
+      + '<div role="alert"></div>'
+      + '</div>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
 })
 
 
