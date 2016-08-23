@@ -88,7 +88,7 @@ function toInlineDocument(markup: string, config: Config): InlineUpDocument {
 }
 
 function toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, config: Config): string {
-    const inlineDocument =
+  const inlineDocument =
     typeof markupOrInlineDocument === 'string'
       ? toInlineDocument(markupOrInlineDocument, config)
       : markupOrInlineDocument
