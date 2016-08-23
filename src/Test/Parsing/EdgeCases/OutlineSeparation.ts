@@ -9,7 +9,7 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { Heading } from '../../../SyntaxNodes/Heading'
 
 
-describe('An outline separator streak', () => {
+describe('A thematic break streak', () => {
   it('can directly precede a heading with different characters in its underline', () => {
     const markup = `
 - - - - - - - - - - - 
@@ -46,7 +46,7 @@ Not me. Us!
 
 
 describe('A streak of asterisks with spaces between', () => {
-  it('produces a single outline separator node rather than a heavily nested list', () => {
+  it('produces a single thematic break node rather than a heavily nested list', () => {
     expect(Up.toDocument('* * * * * *')).to.be.eql(
       new UpDocument([
         new ThematicBreak()
@@ -56,7 +56,7 @@ describe('A streak of asterisks with spaces between', () => {
 
 
 describe('A streak of number signs with spaces between', () => {
-  it('produces a single outline separator node rather than a heavily nested list', () => {
+  it('produces a single thematic break node rather than a heavily nested list', () => {
     expect(Up.toDocument('# # # # # #')).to.be.eql(
       new UpDocument([
         new ThematicBreak()

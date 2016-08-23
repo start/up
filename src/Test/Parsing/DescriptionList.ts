@@ -406,7 +406,7 @@ Lee Chang-ho
 
 
 describe('A description list followed by 3 blank lines followed by another description list', () => {
-  it('produce a description list, an outline separator, and another description list', () => {
+  it('produce a description list, a thematic break, and another description list', () => {
     const markup = `
 League of Legends
   A multiplayer online battle arena game

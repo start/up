@@ -10,7 +10,7 @@ import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 
 
 describe('An unordered list with a single item', () => {
-  it('can be sandwched by identical outline separator streaks without producing a heading', () => {
+  it('can be sandwched by identical thematic break streaks without producing a heading', () => {
     const markup = `
 -----------
 * Mittens
@@ -118,7 +118,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
 
 describe('An unordered list followed by 3 blank lines followed by another unordered list', () => {
-  it('produce an unordered list, an outline separator, and another unordered list', () => {
+  it('produce an unordered list, a thematic break, and another unordered list', () => {
     const markup = `
 - Iowa
 - New Hampshire

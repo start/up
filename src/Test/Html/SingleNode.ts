@@ -588,7 +588,7 @@ describe('A level 9 heading node', () => {
 })
 
 
-describe('An outline separator node', () => {
+describe('A thematic break node', () => {
   it('produces an <hr> element', () => {
     const document = new UpDocument([
       new ThematicBreak()

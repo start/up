@@ -162,8 +162,8 @@ export class HtmlWriter extends Writer {
       attrsFor(heading, attrs))
   }
 
-  outlineSeparator(separator: ThematicBreak): string {
-    return singleTagHtmlElement('hr', attrsFor(separator))
+  thematicBreak(thematicBreak: ThematicBreak): string {
+    return singleTagHtmlElement('hr', attrsFor(thematicBreak))
   }
 
   emphasis(emphasis: Emphasis): string {

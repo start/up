@@ -139,7 +139,7 @@ I almost didn't include them; however, I realized tables are too useful to leave
 
 
 describe('A table with one column', () => {
-  it('can contain cells that would otherwise be interpreted as outline separator streaks, assuming the streaks have no special inline meaning (e.g. multiple dashes)', () => {
+  it('can contain cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline meaning (e.g. multiple dashes)', () => {
     const markup = `
 Table: Most common underlines for top-level headings (from most to least common)
 

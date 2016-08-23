@@ -144,7 +144,7 @@ You're in for a fright`
       ]))
   })
 
-  specify('an outline separator streak', () => {
+  specify('a thematic break streak', () => {
     const markup = `
 Roses are red
 Violets are blue

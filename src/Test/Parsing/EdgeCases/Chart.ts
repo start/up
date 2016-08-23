@@ -130,7 +130,7 @@ I almost didn't include them; however, I realized charts are too useful to leave
 
 
 describe('A chart with one column', () => {
-  it('can contain row header cells that would otherwise be interpreted as outline separator streaks, assuming the streaks have no special inline meaning (e.g. multiple dashes)', () => {
+  it('can contain row header cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline meaning (e.g. multiple dashes)', () => {
     const markup = `
 Chart: Most common underlines for top-level headings (from most to least common)
 

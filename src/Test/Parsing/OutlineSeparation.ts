@@ -7,7 +7,7 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 
 context('Between paragraphs', () => {
-  specify('3 or more empty or blank lines produces an outline separator node', () => {
+  specify('3 or more empty or blank lines produces a thematic break node', () => {
     const markup = `
 Hello, world!
   \t \t
@@ -27,7 +27,7 @@ Goodbye, world!`
       ]))
   })
 
-  specify('6 or more empty or blank lines produces only a single outline separator node', () => {
+  specify('6 or more empty or blank lines produces only a single thematic break node', () => {
     const markup = `
 Hello, world!
 
@@ -54,7 +54,7 @@ Goodbye, world!`
 
 
 describe('A document that starts with 3 or more empty or blank lines', () => {
-  it('does not produce a leading outline separator node', () => {
+  it('does not produce a leading thematic break node', () => {
     const markup = `
 
 
@@ -75,7 +75,7 @@ Hello, world!`
 
 
 describe('A document that ends with 3 or more empty or blank lines', () => {
-  it('does not produce a trailing outline separator node', () => {
+  it('does not produce a trailing thematic break node', () => {
     const markup = `
 Hello, world!
 
@@ -96,7 +96,7 @@ Hello, world!
 
 
 describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', () => {
-  it('produces an outline separator node', () => {
+  it('produces a thematic break node', () => {
     const markup = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -107,7 +107,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
 })
 
 
-describe('An outline separator streak', () => {
+describe('A thematic break streak', () => {
   it('can be directly followed by a paragraph', () => {
     const markup = `
 ~-~-~-~-~
@@ -166,7 +166,7 @@ Goodbye.`
 
 
 describe('Consecutive separator streaks', () => {
-  it('produce a single outline separator node', () => {
+  it('produce a single thematic break node', () => {
     const markup = `
 =============================================
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
@@ -247,7 +247,7 @@ And that's my story.`
 })
 
 
-context('When outline separator streaks are separated from each other by only blank or empty lines, they produce only a single outline separator node. This applies when they are separated by:', () => {
+context('When thematic break streaks are separated from each other by only blank or empty lines, they produce only a single thematic break node. This applies when they are separated by:', () => {
   specify('1 or 2 blank or empty lines', () => {
     const markup = `
 --------

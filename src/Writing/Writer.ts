@@ -81,7 +81,7 @@ export abstract class Writer {
   abstract nsflBlock(nsflBlock: NsflBlock): string
   abstract nsfwBlock(nsfwBlock: NsfwBlock): string
   abstract orderedList(list: OrderedList): string
-  abstract outlineSeparator(separator: ThematicBreak): string
+  abstract thematicBreak(thematicBreak: ThematicBreak): string
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string

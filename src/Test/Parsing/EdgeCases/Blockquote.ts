@@ -32,7 +32,7 @@ describe('A single blank blockquoted line', () => {
 
 
 describe('A single line blockquote', () => {
-  it('can be sandwched by identical outline separator streaks without producing a heading', () => {
+  it('can be sandwched by identical thematic break streaks without producing a heading', () => {
     const markup = `
 ---------------
 > I choose you!

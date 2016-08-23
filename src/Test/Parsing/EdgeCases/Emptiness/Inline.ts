@@ -90,7 +90,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Revision insertion', () => {
-      // If the revision insertion delimiters were alone on a line, they would be interpreted as an outline separator streak. 
+      // If the revision insertion delimiters were alone on a line, they would be interpreted as a thematic break streak. 
       expect(Up.toDocument('Spiders.++++')).to.eql(
         insideDocumentAndParagraph([
           new PlainText('Spiders.++++')
@@ -98,7 +98,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     })
 
     specify('Revision insertion', () => {
-      // If the revision deletion delimiters were alone on a line, they would be interpreted as an outline separator streak.
+      // If the revision deletion delimiters were alone on a line, they would be interpreted as a thematic break streak.
       expect(Up.toDocument('Spiders.~~~~')).to.eql(
         insideDocumentAndParagraph([
           new PlainText('Spiders.~~~~')
@@ -214,7 +214,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
         specify('Stress', () => {
           expect(Up.toDocument('Stars! **\t  \t**')).to.eql(
-            // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
+            // If the inflection delimiters were alone on a line, they would be interpreted as a thematic break streak.
             insideDocumentAndParagraph([
               new PlainText('Stars! **\t  \t**')
             ]))
@@ -246,7 +246,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 
         specify('Bold', () => {
           expect(Up.toDocument('Stars! __\t  \t__')).to.eql(
-            // If the inflection delimiters were alone on a line, they would be interpreted as an outline separator streak.
+            // If the inflection delimiters were alone on a line, they would be interpreted as a thematic break streak.
             insideDocumentAndParagraph([
               new PlainText('Stars! __\t  \t__')
             ]))

@@ -22,7 +22,7 @@ export class ThematicBreak implements OutlineSyntaxNode {
   }
 
   write(writer: Writer): string {
-    return writer.outlineSeparator(this)
+    return writer.thematicBreak(this)
   }
 
   protected OUTLINE_SEPARATOR(): void { }

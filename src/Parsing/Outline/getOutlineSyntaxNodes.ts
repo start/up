@@ -121,7 +121,7 @@ function withoutTrailingBlankLines(lines: string[]): string[] {
   return lines.slice(0, lastIndexOfNonBlankLine + 1)
 }
 
-// To produce a cleaner AST, we condense multiple consecutive outline separator nodes into one.
+// To produce a cleaner AST, we condense multiple consecutive thematic break nodes into one.
 function condenseConsecutiveOutlineSeparators(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
