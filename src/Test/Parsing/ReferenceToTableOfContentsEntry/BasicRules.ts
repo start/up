@@ -571,3 +571,39 @@ Not quite true.`
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })
+
+
+context('When creating a reference to a table of contents entry', () => {
+      specify('the term ("section" by default) is case-insensitive', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [sEcTIoN: I drink soda].`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('I drink soda', sodaHeading),
+            new PlainText('.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+})
