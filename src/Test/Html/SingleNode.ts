@@ -1,40 +1,41 @@
 import { expect } from 'chai'
 import Up from '../../index'
-import { Link } from '../../SyntaxNodes/Link'
-import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
-import { Video } from '../../SyntaxNodes/Video'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { Bold } from '../../SyntaxNodes/Bold'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { Italic } from '../../SyntaxNodes/Italic'
-import { Bold } from '../../SyntaxNodes/Bold'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { Highlight } from '../../SyntaxNodes/Highlight'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { Table } from '../../SyntaxNodes/Table'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { Heading } from '../../SyntaxNodes/Heading'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { Image } from '../../SyntaxNodes/Image'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { Link } from '../../SyntaxNodes/Link'
+import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
+import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { PlainText } from '../../SyntaxNodes/PlainText'
+import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
+import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
+import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
+import { Stress } from '../../SyntaxNodes/Stress'
+import { Table } from '../../SyntaxNodes/Table'
+import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Video } from '../../SyntaxNodes/Video'
 
 
 describe('An empty document', () => {
@@ -141,20 +142,20 @@ context('When an ordered list node has an explicit starting ordinal', () => {
           new Paragraph([
             new PlainText('Tropical')
           ])
-        ], { ordinal: 3}),
-    new OrderedList.Item([
-      new Paragraph([
-        new PlainText('Territories')
-      ])
-    ])
+        ], { ordinal: 3 }),
+        new OrderedList.Item([
+          new Paragraph([
+            new PlainText('Territories')
+          ])
+        ])
       ])
     ])
 
-expect(Up.toHtml(document)).to.be.eql(
-  '<ol start="3">'
-  + '<li value="3"><p>Tropical</p></li>'
-  + '<li><p>Territories</p></li>'
-  + '</ol>')
+    expect(Up.toHtml(document)).to.be.eql(
+      '<ol start="3">'
+      + '<li value="3"><p>Tropical</p></li>'
+      + '<li><p>Territories</p></li>'
+      + '</ol>')
   })
 })
 
@@ -986,5 +987,51 @@ describe('A NSFL block node', () => {
       + '</div>'
 
     expect(Up.toHtml(document)).to.be.eql(html)
+  })
+})
+
+
+context('A table of contents entry reference node is not always associated with an entry.', () => {
+  specify("When it is, it produces a link to the actual entry in the document. The contents of the link are the same as the contents of the entry within the table of contents.", () => {
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('I never lie', neverLieHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Paragraph([
+          new PlainText('Not quite true.')
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">I drink soda</a></h2></li>'
+      + '<li><h3><a href="#up-item-2">I never lie</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p>'
+      + "I'm a great guy. For more information, skip to "
+      + '<a href="#up-item-2>I never lie</a>'
+      + '.'
+      + '</p>'
+      + '<h1 id="up-item-1">I drink soda</h1>'
+      + '<p>Actually, I only drink milk.</p>'
+      + '<h2 id="up-item-2">I never lie</h1>'
+      + '<p>Not quite true.</p>')
   })
 })
