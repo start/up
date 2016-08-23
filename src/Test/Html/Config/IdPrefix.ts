@@ -740,6 +740,25 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document = new UpDocument([
+      new NsfwBlock([])
+    ])
+
+    const html =
+      '<div class="up-nsfw up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfw-1">toggle NSFW</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert"></div>'
+      + '</div>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
 })
 
 
@@ -811,6 +830,25 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       '<div class="up-nsfl up-revealable">'
       + '<label for="nsfl-1">toggle NSFL</label>'
       + '<input id="nsfl-1" role="button" type="checkbox">'
+      + '<div role="alert"></div>'
+      + '</div>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document = new UpDocument([
+      new NsflBlock([])
+    ])
+
+    const html =
+      '<div class="up-nsfl up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfl-1">toggle NSFL</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfl-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
