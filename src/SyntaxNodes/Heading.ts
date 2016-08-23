@@ -2,7 +2,7 @@ import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { getText } from './getText'
+import { getInlineText } from './getInlineText'
 import { Writer } from '../Writing/Writer'
 
 
@@ -31,7 +31,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
   }
 
   searchableText(): string {
-    return getText(this.children)
+    return getInlineText(this.children)
   }
 
   representationOfContentWithinTableOfContents(): InlineSyntaxNode[] {

@@ -6,7 +6,7 @@ import { Writer } from '../Writing/Writer'
 export class ExampleInput implements InlineSyntaxNode {
   constructor(public input: string) { }
 
-  text(): string {
+  inlineText(): string {
     return this.input
   }
 

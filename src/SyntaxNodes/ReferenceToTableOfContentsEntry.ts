@@ -9,7 +9,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     public snippetFromEntry: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
-  text(): string {
+  inlineText(): string {
     return (
       this.entry
         ? this.entry.searchableText()

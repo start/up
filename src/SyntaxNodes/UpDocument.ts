@@ -53,7 +53,7 @@ export namespace UpDocument {
     static createAndAssociateEntriesWithTheirReferences(documentChildren: OutlineSyntaxNode[]): TableOfContents {
       const entries = TableOfContents.getEntries(documentChildren)
 
-      //
+      // Let's let each entry know its (1-based!) ordinal within the table of contents 
       for (let i = 0; i < entries.length; i++) {
         entries[i].ordinalInTableOfContents = i + 1
       }

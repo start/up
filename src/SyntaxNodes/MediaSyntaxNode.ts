@@ -19,7 +19,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     }
   }
 
-  text(): string {
+  inlineText(): string {
     return ''
   }
 
