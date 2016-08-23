@@ -427,6 +427,30 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
+
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document = new UpDocument([
+      new Paragraph([
+        new InlineNsfw([])
+      ])
+    ])
+
+    const html =
+      '<p>'
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfw-1">toggle NSFW</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfw-1" role="button" type="checkbox">'
+      + '<span role="alert"></span>'
+      + '</span>'
+      + '</p>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
 })
 
 
@@ -513,6 +537,30 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '<span class="up-nsfl up-revealable">'
       + '<label for="nsfl-1">toggle NSFL</label>'
       + '<input id="nsfl-1" role="button" type="checkbox">'
+      + '<span role="alert"></span>'
+      + '</span>'
+      + '</p>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document = new UpDocument([
+      new Paragraph([
+        new InlineNsfl([])
+      ])
+    ])
+
+    const html =
+      '<p>'
+      + '<span class="up-nsfl up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfl-1">toggle NSFL</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-nsfl-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
