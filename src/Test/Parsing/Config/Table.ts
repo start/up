@@ -5,14 +5,14 @@ import { Table } from '../../../SyntaxNodes/Table'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-describe('The term that represents table conventions', () => {
+describe('The "table" config term', () => {
   const up = new Up({
     terms: {
       markup: { table: 'data' }
     }
   })
 
-  it('comes from the "table" config term', () => {
+  it('is used to produce tables', () => {
     const markup = `
 Data:
 

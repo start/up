@@ -5,14 +5,14 @@ import { Table } from '../../../SyntaxNodes/Table'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-describe('The term that represents chart conventions', () => {
+describe('The "chart" config term', () => {
   const up = new Up({
     terms: {
       markup: { chart: 'data' }
     }
   })
 
-  it('comes from the "chart" config term', () => {
+  it('is used to produce charts', () => {
     const markup = `
 Data:
 
