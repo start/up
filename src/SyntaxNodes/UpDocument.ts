@@ -93,8 +93,8 @@ export namespace UpDocument {
       // Semantically equivalent to a heading level. A level of 1 is most significant
       level: number
 
-      // The "text" of an entry refers to its actual text content *after* any conventions are applied.
-      // For example, if an entry was originally produced by the following markup:
+      // The searchable text of an entry refers to its actual text content *after* any conventions are
+      // applied. For example, if an entry was originally produced by the following markup:
       // 
       //    Why documents should consist *solely* of `<font>` elements
       //    ----------------------------------------------------------
@@ -105,7 +105,8 @@ export namespace UpDocument {
       //
       // References to table of contents entries try to match their `snippetFromEntry` with this
       // value.
-      text(): string
+      searchableText(): string
+
       // How the content of the entry should be represented inside the table of contents. This is
       // in contrast to the representation of the entry's content in the document itself.
       representationOfContentWithinTableOfContents(): InlineSyntaxNode[]

@@ -12,7 +12,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
   text(): string {
     return (
       this.entry
-        ? this.entry.text()
+        ? this.entry.searchableText()
         : this.snippetFromEntry)
   }
 
@@ -38,7 +38,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     // enclosed by a level-2 and a level-1 heading.
 
     for (const entry of tableOfContents.entries) {
-      const textOfEntry = entry.text()
+      const textOfEntry = entry.searchableText()
       const { snippetFromEntry } = this
 
       if (isEqualIgnoringCapitalization(textOfEntry, snippetFromEntry)) {

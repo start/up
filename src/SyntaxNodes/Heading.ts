@@ -30,7 +30,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     return []
   }
 
-  text(): string {
+  searchableText(): string {
     return getText(this.children)
   }
 
