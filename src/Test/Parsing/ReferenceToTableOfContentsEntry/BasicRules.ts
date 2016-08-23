@@ -4,6 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
@@ -695,8 +696,8 @@ Please prepare
 
 The zombies could arrive at any moment.
 
-Those who prep are dramaticallly more likely to survive
-=======================================================
+Those who prep are superdramaticallly more likely to survive
+============================================================
 
 That's what the internet told me.`
 
@@ -704,7 +705,7 @@ That's what the internet told me.`
       new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
 
     const surviveHeading =
-      new Heading([new PlainText('Those who prep are dramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
+      new Heading([new PlainText('Those who prep are superdramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
@@ -723,6 +724,59 @@ That's what the internet told me.`
         ])
       ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
   })
+})
+
+
+context("A a table of contents entry reference's snippet ignores inline conventions. It only cares about matching actual text.", () => {
+  specify("Inline conventions are not evaluated within the snippet.", () => {
+      const markup = `
+Emphasis is commonly used in writing
+====================================
+
+Luckily for us, Up supports that!
+
+
+\`*Emphasis*\` in Up explained
+------------------------------
+
+I love apples.
+
+
+I always stay on topic
+======================
+
+Not quite true. For example, see [section: *emphasis*].`
+
+      const mainEmphasisHeading =
+        new Heading([new PlainText('Emphasis is commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const emphasisSubHeading =
+        new Heading([
+          new InlineCode('*Emphasis*'),
+          new PlainText(' in Up explained')
+          ], { level: 2, ordinalInTableOfContents: 2 })
+
+      const stayOnTopicHeading =
+        new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          mainEmphasisHeading,
+          new Paragraph([
+            new PlainText('Luckily for us, Up supports that!')
+          ]),
+          emphasisSubHeading,
+          new Paragraph([
+            new PlainText('I love apples.')
+          ]),
+          stayOnTopicHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('*emphasis*', emphasisSubHeading),
+            new PlainText('.')
+          ])
+        ], new UpDocument.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+    })
 })
 
 
