@@ -14,6 +14,7 @@ import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { Heading } from '../../SyntaxNodes/Heading'
+import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 
 context('When a document has a table of contents, its first HTML element is a <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
@@ -460,5 +461,51 @@ context("When an item referenced by the table of contents has a source line numb
       + '</ul>'
       + '</nav>'
       + '<h1 data-up-source-line="2" id="up-item-1">I enjoy apples</h1>')
+  })
+})
+
+
+context('A table of contents entry reference node is associated with an entry', () => {
+  specify("it produces a link to the actual entry in the document. The contents of the link are the same as the contents of the entry within the table of content's <nav> element", () => {
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('never', neverLieHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Paragraph([
+          new PlainText('Not quite true.')
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">I drink soda</a></h2></li>'
+      + '<li><h3><a href="#up-item-2">I never lie</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p>'
+      + "I'm a great guy. For more information, skip to "
+      + '<a href="#up-item-2>I never lie</a>'
+      + '.'
+      + '</p>'
+      + '<h1 id="up-item-1">I drink soda</h1>'
+      + '<p>Actually, I only drink milk.</p>'
+      + '<h2 id="up-item-2">I never lie</h1>'
+      + '<p>Not quite true.</p>')
   })
 })
