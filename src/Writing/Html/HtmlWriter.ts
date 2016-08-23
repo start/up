@@ -200,7 +200,7 @@ export class HtmlWriter extends Writer {
         ? new Link(entry.representationOfContentWithinTableOfContents(), internalUrl(this.idOfActualEntryInDocument(entry)))
         // Otherwise, we'll distinguish the reference's snippet text from the surrounding
         // text by italicizing it.
-        : new Italic([new PlainText(reference.entryTextSnippet)])
+        : new Italic([new PlainText(reference.snippetFromEntry)])
 
     return representation.write(this)
   }

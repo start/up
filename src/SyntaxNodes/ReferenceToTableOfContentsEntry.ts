@@ -1,33 +1,33 @@
 import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { patternIgnoringCapitalizationAndContaining, escapeForRegex } from '../Parsing/PatternHelpers'
 import { Writer } from '../Writing/Writer'
+import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 
 
 export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
   constructor(
-    public entryTextSnippet: string,
+    public snippetFromEntry: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
   text(): string {
     return (
       this.entry
         ? this.entry.text()
-        : this.entryTextSnippet)
+        : this.snippetFromEntry)
   }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll use `entryTextSnippet` to associate this reference object with the most appropriate table
+    // We'll use `snippetFromEntry` to associate this reference object with the most appropriate table
     // of contents entry.
     //
     // Here's our strategy:
     //
     // First, we'll try to associate this reference with the first entry whose text exactly equals
-    // `entryTextSnippet`. We don't care about capitalization, but the text otherwise has to be an exact
+    // `snippetFromEntry`. We don't care about capitalization, but the text otherwise has to be an exact
     // match. 
     //
     // If there are no exact matches, then we'll try to associate this reference with the first entry
-    // whose text *contains* entryTextSnippet`.
+    // whose text *contains* snippetFromEntry`.
     //
     // If we still don't have a match after that, then we're out of luck.
     //
@@ -39,18 +39,16 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
 
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.text()
+      const { snippetFromEntry } = this
 
-      if (textOfEntry === this.entryTextSnippet) {
+      if (isEqualIgnoringCapitalization(textOfEntry, snippetFromEntry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
       }
 
       if (!this.entry) {
-        const CONTAINS_SNIPPET_PATTERN =
-          patternIgnoringCapitalizationAndContaining(escapeForRegex(this.entryTextSnippet))
-
-        if (CONTAINS_SNIPPET_PATTERN.test(textOfEntry)) {
+        if (containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: snippetFromEntry })) {
           // We've found non-perfect match. We'll keep searching in case there's a perfect match
           // further in the table of contents.
           this.entry = entry

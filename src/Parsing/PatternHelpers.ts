@@ -86,10 +86,6 @@ export function patternEndingWith(pattern: string): RegExp {
   return new RegExp(pattern + '$')
 }
 
-export function patternIgnoringCapitalizationAndContaining(pattern: string): RegExp {
-  return new RegExp(pattern, 'i')
-}
-
 
 import { ANY_WHITESPACE } from './PatternPieces'
 

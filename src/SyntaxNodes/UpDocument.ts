@@ -103,7 +103,7 @@ export namespace UpDocument {
       //
       //    Why documents should consist solely of <font> elements
       //
-      // References to table of contents entries try to match their `entryTextSnippet` with this
+      // References to table of contents entries try to match their `snippetFromEntry` with this
       // value.
       text(): string
       // How the content of the entry should be represented inside the table of contents. This is
