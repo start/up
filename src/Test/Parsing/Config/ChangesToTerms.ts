@@ -327,27 +327,32 @@ Data:
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     markupForDefaultSettings: `
 Table:
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     termChanges: {
       table: 'data'
     },
+
     invalidMarkupForEmptyTerm: `
 :
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     invalidMarkupForBlankTerm: `
  \t \t :
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     equivalentTermChangesWithEmptyAndBlankVariations: {
       table: [null, 'data', '', ' \t \t ', undefined]
     },
@@ -372,27 +377,32 @@ Data:
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     markupForDefaultSettings: `
 Chart:
 
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     termChanges: {
       chart: 'data'
     },
+
     invalidMarkupForEmptyTerm: `
 :
 
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     invalidMarkupForBlankTerm: `
  \t \t :
 
                   Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
+
     equivalentTermChangesWithEmptyAndBlankVariations: {
       chart: [null, 'data', '', ' \t \t ', undefined]
     },
@@ -404,6 +414,72 @@ Chrono Cross;     1999`,
     },
     conflictingTermChanges: {
       chart: 'info'
+    }
+  })
+})
+
+
+describe('The "referencedSection" config term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    markupForConfigChanges: `
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff. For example, see [heading: exotic].`,
+
+    markupForDefaultSettings: `
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff. For example, see [section: exotic].`,
+
+    termChanges: {
+      referencedSection: 'heading'
+    },
+
+    invalidMarkupForEmptyTerm: `
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff. For example, see [: exotic].`,
+
+    invalidMarkupForBlankTerm: `
+I drink exotic soda
+=====================
+
+Actually, I only drink milk.
+
+I am interesting
+================
+
+I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
+
+    equivalentTermChangesWithEmptyAndBlankVariations: {
+      referencedSection: [null, 'heading', '', ' \t \t ', undefined]
+    },
+    termChangesWithOnlyEmptyAndBlankVariations: {
+      referencedSection: [null, '', ' \t \t ', undefined]
+    },
+    termChangesWithNoVariations: {
+      referencedSection: []
+    },
+    conflictingTermChanges: {
+      referencedSection: 'heading'
     }
   })
 })
