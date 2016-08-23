@@ -364,7 +364,7 @@ I love all sorts of fancy stuff.`
 
 
 context("A reference will match the first applicable entry based on its text content alone.", () => {
-  specify("The entries' outline levels do not matter", () => {
+  specify("The entries' outline (heading) levels do not matter", () => {
     const markup = `
 If I ever say I drink soda, I'm lying
 =====================================
@@ -573,8 +573,8 @@ Not quite true.`
 })
 
 
-context('When creating a reference to a table of contents entry', () => {
-  specify('the term ("section" by default) is case-insensitive', () => {
+describe('The term used to create a reference to a table of contents entry ("section" by default)', () => {
+  it('is case-insensitive', () => {
     const markup = `
 I drink soda
 ============
