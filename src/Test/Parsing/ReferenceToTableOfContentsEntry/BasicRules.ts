@@ -321,6 +321,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
           ])
         ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
     })
+
     specify('After the reference', () => {
       const markup = `
 I have plenty of good traits. See [section: interesting].
