@@ -25,5 +25,5 @@ export class ThematicBreak implements OutlineSyntaxNode {
     return writer.thematicBreak(this)
   }
 
-  protected OUTLINE_SEPARATOR(): void { }
+  protected THEMATIC_BREAK(): void { }
 }
