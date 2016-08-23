@@ -727,6 +727,45 @@ That's what the internet told me.`
 
 
 context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the reference itself.', () => {
+  context('When the reference is enclosed by square brackets:', () => {
+    specify('The snippet can contain matching square brackets', () => {
+      expect(Up.toDocument('[section: I [really] love apples]')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I [really] love apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain matching nested square brackets', () => {
+      expect(Up.toDocument('[section: I [really [truly [honestly]]] love apples]')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I [really [truly [honestly]]] love apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain an escaped unmatched closing square bracket', () => {
+      expect(Up.toDocument('[section: I love :\\] apples]')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I love :] apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain an escaped unmatched opening square bracket', () => {
+      expect(Up.toDocument('[section: I miss :\\[ apples]')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I miss :[ apples')
+          ])
+        ]))
+    })
+  })
+
+
   context('When the reference is enclosed by parentheses:', () => {
     specify('The snippet can contain matching parentheses', () => {
       expect(Up.toDocument('(section: I (really) love apples)')).to.be.eql(
