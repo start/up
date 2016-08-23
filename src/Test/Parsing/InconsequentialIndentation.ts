@@ -222,7 +222,7 @@ context('Ordered list item bullets can have a single leading space. This include
 })
 
 
-context('Description list terms can have a single leading space. This includes:', () => {
+context('Description list subjects can have a single leading space. This includes:', () => {
   specify('The first term for a description', () => {
     const markup = `
  Charmander

@@ -65,7 +65,7 @@ Not quite true.
 
 
   context('Description lists. Specifically, their:', () => {
-    specify('Terms', () => {
+    specify('Subjects', () => {
       const markup = `
 I drink soda
 ============

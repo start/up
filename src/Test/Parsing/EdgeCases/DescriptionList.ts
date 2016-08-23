@@ -7,8 +7,8 @@ import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 
 
-context('A block of would-be terms in a description list terminates the list if:', () => {
-  specify("A blank line separates any of the would-be terms", () => {
+context('A block of would-be subjects in a description list terminates the list if:', () => {
+  specify("A blank line separates any of the would-be subjects", () => {
     const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
@@ -58,7 +58,7 @@ Night Shade
   })
 
 
-  specify("A blank line separates the would-be terms from the would-be description", () => {
+  specify("A blank line separates the would-be subjects from the would-be description", () => {
     const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
