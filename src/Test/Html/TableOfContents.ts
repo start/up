@@ -206,7 +206,7 @@ context('When a table of contents has multiple entries', () => {
 
               new DescriptionList([
                 new DescriptionList.Item([
-                  new DescriptionList.Item.Term([new PlainText('Apple')])
+                  new DescriptionList.Item.Subject([new PlainText('Apple')])
                 ], new DescriptionList.Item.Description([
                   heading3, heading4, heading5, heading6
                 ]))

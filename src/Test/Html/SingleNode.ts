@@ -191,15 +191,15 @@ describe('A description list', () => {
     const document = new UpDocument([
       new DescriptionList([
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('A grass type Pokemon')
           ])
         ])),
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-          new DescriptionList.Item.Term([new PlainText('Lick')]),
+          new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Subject([new PlainText('Lick')]),
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('Ghost type moves')

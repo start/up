@@ -233,8 +233,8 @@ Charmeleon
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')]),
-            new DescriptionList.Item.Term([new PlainText('Charmeleon')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new PlainText('Charmeleon')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
@@ -254,8 +254,8 @@ Charmander
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')]),
-            new DescriptionList.Item.Term([new PlainText('Charmeleon')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new PlainText('Charmeleon')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
@@ -276,9 +276,9 @@ Charizard
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')]),
-            new DescriptionList.Item.Term([new PlainText('Charmeleon')]),
-            new DescriptionList.Item.Term([new PlainText('Charizard')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new PlainText('Charmeleon')]),
+            new DescriptionList.Item.Subject([new PlainText('Charizard')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
@@ -680,7 +680,7 @@ Charmander
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')

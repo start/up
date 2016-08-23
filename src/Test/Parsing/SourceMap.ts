@@ -232,14 +232,14 @@ Peaches
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([new PlainText('Apples')])
+              new DescriptionList.Item.Subject([new PlainText('Apples')])
             ],
               new DescriptionList.Item.Description([
                 new Paragraph([new PlainText("They're delicious.")], { sourceLineNumber: 3 })
               ])),
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([new PlainText('Bananas')]),
-              new DescriptionList.Item.Term([new PlainText('Peaches')])
+              new DescriptionList.Item.Subject([new PlainText('Bananas')]),
+              new DescriptionList.Item.Subject([new PlainText('Peaches')])
             ],
               new DescriptionList.Item.Description([
                 new Paragraph([new PlainText("They're also delicious.")], { sourceLineNumber: 7 })
@@ -630,7 +630,7 @@ Pink lady
         new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Apple')])
+            new DescriptionList.Item.Subject([new PlainText('Apple')])
           ], new DescriptionList.Item.Description([
             bestFruitHeading,
             new SpoilerBlock([
@@ -638,7 +638,7 @@ Pink lady
             ], { sourceLineNumber: 12 })
           ])),
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Pink lady')])
+            new DescriptionList.Item.Subject([new PlainText('Pink lady')])
           ], new DescriptionList.Item.Description([
             bestAppleHeading,
             new Blockquote([

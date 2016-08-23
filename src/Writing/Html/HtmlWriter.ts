@@ -444,7 +444,7 @@ export class HtmlWriter extends Writer {
       + this.description(listItem.description))
   }
 
-  private descriptionTerm(term: DescriptionList.Item.Term): string {
+  private descriptionTerm(term: DescriptionList.Item.Subject): string {
     return this.element('dt', term.children)
   }
 

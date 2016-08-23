@@ -35,7 +35,7 @@ export class DescriptionList implements OutlineSyntaxNode {
 export namespace DescriptionList {
   export class Item {
     constructor(
-      public terms: DescriptionList.Item.Term[],
+      public terms: DescriptionList.Item.Subject[],
       public description: DescriptionList.Item.Description) { }
 
     descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
@@ -51,8 +51,8 @@ export namespace DescriptionList {
   }
 
   export namespace Item {
-    export class Term extends InlineSyntaxNodeContainer {
-      protected DESCRIPTION_LIST_ITEM_TERM(): void { }
+    export class Subject extends InlineSyntaxNodeContainer {
+      protected DESCRIPTION_LIST_ITEM_SUBJECT(): void { }
     }
 
     export class Description extends OutlineSyntaxNodeContainer {

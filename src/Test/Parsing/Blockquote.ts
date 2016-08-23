@@ -85,7 +85,7 @@ context("Within a blockquote", () => {
           new Blockquote([
             new DescriptionList([
               new DescriptionList.Item([
-                new DescriptionList.Item.Term([new PlainText('Charmander')])
+                new DescriptionList.Item.Subject([new PlainText('Charmander')])
               ],
                 new DescriptionList.Item.Description([
                   new Paragraph([
@@ -110,7 +110,7 @@ context("Within a blockquote", () => {
           new Blockquote([
             new DescriptionList([
               new DescriptionList.Item([
-                new DescriptionList.Item.Term([new PlainText('Charmander')])
+                new DescriptionList.Item.Subject([new PlainText('Charmander')])
               ],
                 new DescriptionList.Item.Description([
                   new Paragraph([

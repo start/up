@@ -83,7 +83,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const terms =
-      markupPerTerm.map(term => new DescriptionList.Item.Term(getInlineSyntaxNodes(term, args.config)))
+      markupPerTerm.map(term => new DescriptionList.Item.Subject(getInlineSyntaxNodes(term, args.config)))
 
     const description =
       new DescriptionList.Item.Description(

@@ -25,7 +25,7 @@ Night Shade
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
@@ -44,9 +44,9 @@ Night Shade
 
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Term([new PlainText('Lick')]),
-            new DescriptionList.Item.Term([new PlainText('Night Shade')])
+            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new PlainText('Lick')]),
+            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([
@@ -77,7 +77,7 @@ Night Shade
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
@@ -100,9 +100,9 @@ Night Shade
 
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Term([new PlainText('Lick')]),
-            new DescriptionList.Item.Term([new PlainText('Night Shade')])
+            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new PlainText('Lick')]),
+            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([

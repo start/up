@@ -366,7 +366,7 @@ Lesson 1
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Lesson 1')
               ])
             ],
@@ -393,7 +393,7 @@ Lesson 1
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Lesson 1')
               ])
             ],
@@ -420,7 +420,7 @@ Lesson 1
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Lesson 1')
               ])
             ],

@@ -101,7 +101,7 @@ Minor reason
           ]),
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Main reason '),
                 new NormalParenthetical([
                   new PlainText('(see '),
@@ -115,7 +115,7 @@ Minor reason
               ])
             ])),
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Minor reason')
               ])
             ], new DescriptionList.Item.Description([
@@ -163,7 +163,7 @@ Minor reason
           ]),
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Main reason')
               ])
             ], new DescriptionList.Item.Description([
@@ -174,7 +174,7 @@ Minor reason
               ])
             ])),
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Minor reason')
               ])
             ], new DescriptionList.Item.Description([

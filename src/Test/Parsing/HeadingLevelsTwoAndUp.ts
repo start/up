@@ -235,7 +235,7 @@ Awkward
         goodbyeHeading,
         new DescriptionList([
           new DescriptionList.Item(
-            [new DescriptionList.Item.Term([new PlainText('Awkward')])],
+            [new DescriptionList.Item.Subject([new PlainText('Awkward')])],
             new DescriptionList.Item.Description([
               keysHeading
             ]))

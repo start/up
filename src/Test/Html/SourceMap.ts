@@ -126,15 +126,15 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new UpDocument([
       new DescriptionList([
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+          new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('A grass type Pokemon')
           ], { sourceLineNumber: 3 })
         ])),
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-          new DescriptionList.Item.Term([new PlainText('Lick')]),
+          new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Subject([new PlainText('Lick')]),
         ], new DescriptionList.Item.Description([
           new Paragraph([
             new PlainText('Ghost type moves')

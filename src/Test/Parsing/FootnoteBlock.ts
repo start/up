@@ -790,7 +790,7 @@ Gary
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('A strange seed was planted on its back at birth.'),
@@ -800,9 +800,9 @@ Gary
           ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Term([new PlainText('Lick')]),
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new PlainText('Lick')]),
+            new DescriptionList.Item.Subject([
               new PlainText('Night Shade'),
               footnotes[1]
             ])
@@ -813,7 +813,7 @@ Gary
           ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Gary')])
+            new DescriptionList.Item.Subject([new PlainText('Gary')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('A young man with a great sense of smell.'),

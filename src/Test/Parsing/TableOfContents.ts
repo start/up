@@ -149,7 +149,7 @@ Apples
         heading,
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Apples')])
+            new DescriptionList.Item.Subject([new PlainText('Apples')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([new PlainText("They're delicious.")])
@@ -820,13 +820,13 @@ Pink lady
           applesHeading,
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([new PlainText('Apple')])
+              new DescriptionList.Item.Subject([new PlainText('Apple')])
             ], new DescriptionList.Item.Description([
               bestFruitHeading,
               new Paragraph([new PlainText('Really.')])
             ])),
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([new PlainText('Pink lady')])
+              new DescriptionList.Item.Subject([new PlainText('Pink lady')])
             ], new DescriptionList.Item.Description([
               pinkLadyHeading,
               new Paragraph([new PlainText('Really.')])
@@ -869,13 +869,13 @@ Apple
           applesHeading,
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([new PlainText('Apple')])
+              new DescriptionList.Item.Subject([new PlainText('Apple')])
             ], new DescriptionList.Item.Description([
               bestFruitHeading,
               new Paragraph([new PlainText('Really.')]),
               new DescriptionList([
                 new DescriptionList.Item([
-                  new DescriptionList.Item.Term([new PlainText('Pink lady')])
+                  new DescriptionList.Item.Subject([new PlainText('Pink lady')])
                 ], new DescriptionList.Item.Description([
                   pinkLadyHeading,
                   new Paragraph([new PlainText('Really.')])
@@ -921,7 +921,7 @@ Apple
 
                 new DescriptionList([
                   new DescriptionList.Item([
-                    new DescriptionList.Item.Term([new PlainText('Apple')])
+                    new DescriptionList.Item.Subject([new PlainText('Apple')])
                   ], new DescriptionList.Item.Description([
                     bestFruitHeading,
                     new Blockquote([

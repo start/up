@@ -19,7 +19,7 @@ Charmander
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([
@@ -44,9 +44,9 @@ Torchic
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Charmander')]),
-            new DescriptionList.Item.Term([new PlainText('Cyndaquil')]),
-            new DescriptionList.Item.Term([new PlainText('Torchic')])
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new PlainText('Cyndaquil')]),
+            new DescriptionList.Item.Subject([new PlainText('Torchic')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([
@@ -69,7 +69,7 @@ Ash *"Little Marco"* Ketchum
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Ash '),
               new Emphasis([new PlainText('"Little Marco"')]),
               new PlainText(' Ketchum')
@@ -96,7 +96,7 @@ Ash Ketchum
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Ash Ketchum')
             ])
           ],
@@ -132,7 +132,7 @@ Gary
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Bulbasaur')])
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
@@ -140,9 +140,9 @@ Gary
           ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Term([new PlainText('Lick')]),
-            new DescriptionList.Item.Term([new PlainText('Night Shade')])
+            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new PlainText('Lick')]),
+            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([
@@ -151,7 +151,7 @@ Gary
             ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([new PlainText('Gary')])
+            new DescriptionList.Item.Subject([new PlainText('Gary')])
           ],
             new DescriptionList.Item.Description([
               new Paragraph([
@@ -174,7 +174,7 @@ The secret to eternal youth is to join a cartoon.`
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Ash Ketchum')
             ])
           ],
@@ -205,7 +205,7 @@ Poem
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Poem')
               ])
             ],
@@ -233,7 +233,7 @@ Poem
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Poem')
               ])
             ],
@@ -261,7 +261,7 @@ Poem
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
-              new DescriptionList.Item.Term([
+              new DescriptionList.Item.Subject([
                 new PlainText('Poem')
               ])
             ],
@@ -301,7 +301,7 @@ Address
     new UpDocument([
       new DescriptionList([
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([
+          new DescriptionList.Item.Subject([
             new PlainText('Poem')
           ])
         ],
@@ -322,7 +322,7 @@ Address
             ])
           ])),
         new DescriptionList.Item([
-          new DescriptionList.Item.Term([
+          new DescriptionList.Item.Subject([
             new PlainText('Address')
           ])
         ],
@@ -362,7 +362,7 @@ Lee Chang-ho
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('League of Legends')
             ])
           ], new DescriptionList.Item.Description([
@@ -371,7 +371,7 @@ Lee Chang-ho
             ])
           ])),
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('StarCraft 2')
             ])
           ], new DescriptionList.Item.Description([
@@ -382,7 +382,7 @@ Lee Chang-ho
         ]),
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Magnus Carlsen')
             ])
           ], new DescriptionList.Item.Description([
@@ -391,7 +391,7 @@ Lee Chang-ho
             ])
           ])),
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Lee Chang-ho')
             ])
           ], new DescriptionList.Item.Description([
@@ -424,7 +424,7 @@ Lee Chang-ho
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('League of Legends')
             ])
           ], new DescriptionList.Item.Description([
@@ -433,7 +433,7 @@ Lee Chang-ho
             ])
           ])),
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('StarCraft 2')
             ])
           ], new DescriptionList.Item.Description([
@@ -445,7 +445,7 @@ Lee Chang-ho
         new ThematicBreak(),
         new DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Magnus Carlsen')
             ])
           ], new DescriptionList.Item.Description([
@@ -454,7 +454,7 @@ Lee Chang-ho
             ])
           ])),
           new DescriptionList.Item([
-            new DescriptionList.Item.Term([
+            new DescriptionList.Item.Subject([
               new PlainText('Lee Chang-ho')
             ])
           ], new DescriptionList.Item.Description([
