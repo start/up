@@ -108,7 +108,7 @@ export namespace UpDocument {
       level: number
 
       // How the content of the entry should be represented inside the table of contents. This is
-      // in contrast to the entry's content's representation in the document itself.
+      // in contrast to the representation of the entry's content in the document itself.
       representationOfContentWithinTableOfContents(): InlineSyntaxNode[]
     }
   }

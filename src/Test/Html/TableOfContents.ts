@@ -495,17 +495,17 @@ context('When a table of contents entry reference node is associated with an ent
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-item-1">I drink soda</a></h2></li>'
-      + '<li><h3><a href="#up-item-2">I never lie</a></h2></li>'
+      + '<li><h2><a href="#up-item-2">I never lie</a></h2></li>'
       + '</ul>'
       + '</nav>'
       + '<p>'
       + "I'm a great guy. For more information, skip to "
-      + '<a href="#up-item-2>I never lie</a>'
+      + '<a href="#up-item-2">I never lie</a>'
       + '.'
       + '</p>'
       + '<h1 id="up-item-1">I drink soda</h1>'
       + '<p>Actually, I only drink milk.</p>'
-      + '<h2 id="up-item-2">I never lie</h1>'
+      + '<h1 id="up-item-2">I never lie</h1>'
       + '<p>Not quite true.</p>')
   })
 })

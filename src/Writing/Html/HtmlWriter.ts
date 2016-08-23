@@ -41,7 +41,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
 import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalFragmentUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Parsing/PatternHelpers'
 
@@ -190,8 +190,19 @@ export class HtmlWriter extends Writer {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  referenceToTableOfContentsEntry(_referenceToTableOfContentsEntry: ReferenceToTableOfContentsEntry): string {
-    throw new Error('Not implemented')
+  referenceToTableOfContentsEntry(reference: ReferenceToTableOfContentsEntry): string {
+    const { entry } = reference
+
+    const representation =
+      entry
+        // If this reference is associated with a table of contents entry, let's link to
+        // actual entry in the document.
+        ? new Link(entry.representationOfContentWithinTableOfContents(), internalUrl(this.idOfActualEntryInDocument(entry)))
+        // Otherwise, we'll distinguish the reference's snippet text from the surrounding
+        // text by italicizing it.
+        : new Italic([new PlainText(reference.entryTextSnippet)])
+
+    return representation.write(this)
   }
 
   revisionInsertion(revisionInsertion: RevisionInsertion): string {
@@ -414,7 +425,7 @@ export class HtmlWriter extends Writer {
   private linkToActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): Link {
     return new Link(
       entry.representationOfContentWithinTableOfContents(),
-      internalFragmentUrl(this.idOfActualEntryInDocument(entry)))
+      internalUrl(this.idOfActualEntryInDocument(entry)))
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {
@@ -450,7 +461,7 @@ export class HtmlWriter extends Writer {
 
     return new Link(
       [new PlainText(referenceNumber.toString())],
-      internalFragmentUrl(this.footnoteId(referenceNumber)))
+      internalUrl(this.footnoteId(referenceNumber)))
   }
 
   private footnote(footnote: Footnote): string {
@@ -471,7 +482,7 @@ export class HtmlWriter extends Writer {
 
     return new Link(
       [new PlainText(referenceNumber.toString())],
-      internalFragmentUrl(this.footnoteReferenceId(referenceNumber)))
+      internalUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
   private playableMediaElement(media: Audio | Video, tagName: string): string {

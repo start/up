@@ -16,10 +16,6 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
         : this.entryTextSnippet)
   }
 
-  hasNoMatchingEntry(): boolean {
-    return this.entry == null
-  }
-
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
     // We'll use `entryTextSnippet` to associate this reference object with the most appropriate table
     // of contents entry.

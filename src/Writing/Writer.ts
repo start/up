@@ -85,7 +85,7 @@ export abstract class Writer {
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string
-  abstract referenceToTableOfContentsEntry(referenceToTableOfContentsEntry: ReferenceToTableOfContentsEntry): string
+  abstract referenceToTableOfContentsEntry(reference: ReferenceToTableOfContentsEntry): string
   abstract revisionDeletion(revisionDeletion: RevisionDeletion): string
   abstract revisionInsertion(revisionInsertion: RevisionInsertion): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string

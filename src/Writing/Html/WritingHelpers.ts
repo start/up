@@ -26,7 +26,7 @@ export function classAttrValue(...names: string[]): string {
     .join(' ')
 }
 
-export function internalFragmentUrl(id: string): string {
+export function internalUrl(id: string): string {
   return '#' + id
 }
 
