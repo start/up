@@ -5,6 +5,7 @@ import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
@@ -61,8 +62,72 @@ Not quite true.
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify('Description lists', () => {
-    const markup = `
+
+  context('Description list:', () => {
+    specify('Terms', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.
+
+Main reason (see [section: soda])
+  People sometimes misinterpret my truth as a lie.
+
+Minor reason
+  I've been alive for hundreds of years. I'm bound to have lied at some point.`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Main reason '),
+                new NormalParenthetical([
+                  new PlainText('(see '),
+                  new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                  new PlainText(')')
+                ])
+              ])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('People sometimes misinterpret my truth as a lie.'),
+              ])
+            ])),
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Minor reason')
+              ])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText("I've been alive for hundreds of years. I'm bound to have lied at some point.")
+              ])
+            ]))
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+
+    specify('Descriptions', () => {
+      const markup = `
 I drink soda
 ============
 
@@ -79,45 +144,46 @@ Main reason
 Minor reason
   I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
-    const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
-    const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
-      new UpDocument([
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true.')
-        ]),
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Term([
-              new PlainText('Main reason')
-            ])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('See '),
-              new ReferenceToTableOfContentsEntry('soda', sodaHeading),
-              new PlainText('.')
-            ])
-          ])),
-          new DescriptionList.Item([
-            new DescriptionList.Item.Term([
-              new PlainText('Minor reason')
-            ])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText("I've been alive for hundreds of years. I'm bound to have lied at some point.")
-            ])
-          ]))
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Main reason')
+              ])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('See '),
+                new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                new PlainText('.')
+              ])
+            ])),
+            new DescriptionList.Item([
+              new DescriptionList.Item.Term([
+                new PlainText('Minor reason')
+              ])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText("I've been alive for hundreds of years. I'm bound to have lied at some point.")
+              ])
+            ]))
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 
   specify('Line blocks', () => {
