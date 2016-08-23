@@ -591,6 +591,70 @@ I get hungry (see [section: soda]);     Very valid`
             ]))
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
+
+    specify('Row header cells', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.
+
+Chart: Reasons I lie
+
+                                          Validity
+
+I don't want to get in trouble;           Moderately valid
+I get hungry (see [section: soda]);       Very valid`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('Validity')])
+            ]), [
+
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Moderately valid')])
+              ], new Table.Header.Cell([
+                new PlainText("I don't want to get in trouble"),
+              ])),
+
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Very valid')])
+              ], new Table.Header.Cell([
+                new PlainText("I get hungry "),
+                new NormalParenthetical([
+                  new PlainText('(see '),
+                  new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                  new PlainText(')')
+                ])
+              ]))
+
+            ], new Table.Caption([
+              new PlainText('Reasons I lie')
+            ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 
 
