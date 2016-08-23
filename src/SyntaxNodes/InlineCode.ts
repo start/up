@@ -9,6 +9,10 @@ export class InlineCode implements InlineSyntaxNode {
     return this.code
   }
 
+  searchableText(): string {
+    return this.code
+  }
+
   inlineDescendants(): InlineSyntaxNode[] {
     return []
   }

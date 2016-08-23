@@ -9,16 +9,9 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     public snippetFromEntry: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
-  inlineText(): string {
-    return (
-      this.entry
-        ? this.entry.searchableText()
-        : this.snippetFromEntry)
-  }
-
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll use `snippetFromEntry` to associate this reference object with the most appropriate table
-    // of contents entry.
+    // We'll use `snippetFromEntry` to match this reference object with the most appropriate table of
+    // contents entry.
     //
     // Here's our strategy:
     //
@@ -55,6 +48,34 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
         }
       }
     }
+  }
+
+  inlineText(): string {
+    return (
+      this.entry
+        ? this.entry.searchableText()
+        : this.snippetFromEntry)
+  }
+
+  // Our snippet is the only searchable text we expose.
+  //
+  // Right now, searchable text is only used for one thing: to determine whether a table of contents
+  // entry matches the snippet of a reference.
+  //
+  // This is a confusing edge case, but:
+  //
+  // 1. If a table of contents entry (i.e. a heading) inexplicably contains a reference to another
+  //    entry...
+  //
+  // 2. And if that reference's snippet contains only a word or two from the second entry...
+  //
+  // ... Then as far as searching is concerned, it could potentially be confusing if *all* of the text
+  // from the second entry were considered part of the first entry. Searching for any partial text
+  // within the second entry would always match the first entry instead. 
+  //
+  // I'm not sure what the best behavior is, and luckily, it'll probably never matter.   
+  searchableText(): string {
+    return this.snippetFromEntry
   }
 
   inlineDescendants(): InlineSyntaxNode[] {

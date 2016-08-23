@@ -9,6 +9,10 @@ export class PlainText implements InlineSyntaxNode {
     return this.content
   }
 
+  searchableText(): string {
+    return this.content
+  }
+
   inlineDescendants(): InlineSyntaxNode[] {
     return []
   }

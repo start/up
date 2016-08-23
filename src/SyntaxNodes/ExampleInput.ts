@@ -10,6 +10,10 @@ export class ExampleInput implements InlineSyntaxNode {
     return this.input
   }
 
+  searchableText(): string {
+    return this.input
+  }
+
   inlineDescendants(): InlineSyntaxNode[] {
     return []
   }

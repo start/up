@@ -23,6 +23,10 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return ''
   }
 
+  searchableText(): string {
+    return this.description
+  }
+
   descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
     return []
   }
