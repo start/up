@@ -755,7 +755,6 @@ describe('A table of contents entry reference node that is not associated with a
 })
 
 
-
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const document = new UpDocument([
