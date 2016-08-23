@@ -193,6 +193,32 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
+
+  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+    const up = new Up({
+      idPrefix: '"reply" && "response"'
+    })
+
+    const document =
+      new UpDocument([
+        new FootnoteBlock([
+          new Footnote([
+            new PlainText("Arwings")
+          ], { referenceNumber: 2 }),
+          new Footnote([
+            new PlainText("Killer Bees")
+          ], { referenceNumber: 3 })
+        ])
+      ])
+
+    const html =
+      '<dl class="up-footnotes">'
+      + '<dt id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-2"><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-reference-2">2</a></dt><dd>Arwings</dd>'
+      + '<dt id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-3"><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
+      + '</dl>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
 })
 
 
