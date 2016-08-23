@@ -12,6 +12,8 @@ import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 import { Heading } from '../../../SyntaxNodes/Heading'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
@@ -40,7 +42,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="reply-11-footnote-reference-3"><a href="#reply-11-footnote-3">3</a></sup></p>')
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -55,7 +57,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -121,7 +123,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -147,7 +149,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -219,7 +221,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -242,7 +244,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -311,7 +313,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -334,7 +336,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -403,7 +405,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -426,7 +428,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -489,7 +491,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -508,7 +510,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -565,7 +567,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -584,7 +586,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -641,7 +643,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -660,7 +662,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -679,7 +681,6 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
     expect(up.toHtml(document)).to.be.eql(html)
   })
 })
-
 
 
 describe("The ID of an element referenced by the table of contents", () => {
@@ -724,7 +725,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty name was provided", () => {
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up({
       idPrefix: ''
     })
@@ -746,7 +747,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     expect(up.toHtml(document)).to.be.eql(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank name was provided", () => {
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up({
       idPrefix: ' \t'
     })
@@ -764,6 +765,118 @@ describe("The ID of an element referenced by the table of contents", () => {
       + '</ul>'
       + '</nav>'
       + '<h1 id="item-1"></h1>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+})
+
+
+describe("The URL of a reference to a table of contents entry (which is the ID of the actual entry in the document)", () => {
+  it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">Howdy there</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#up-item-1">Howdy there</a></p>'
+      + '<h1 id="up-item-1">Howdy there</h1>'
+
+    expect(Up.toHtml(document)).to.be.eql(html)
+  })
+
+
+  it("is prefixed with the ID prefix, if one was provided", () => {
+    const up = new Up({
+      idPrefix: 'reply-11'
+    })
+
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#reply-11-item-1">Howdy there</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#reply-11-item-1">Howdy there</a></p>'
+      + '<h1 id="reply-11-item-1">Howdy there</h1>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+
+  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+    const up = new Up({
+      idPrefix: ''
+    })
+
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#item-1">Howdy there</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#item-1">Howdy there</a></p>'
+      + '<h1 id="item-1">Howdy there</h1>'
+
+    expect(up.toHtml(document)).to.be.eql(html)
+  })
+
+  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+    const up = new Up({
+      idPrefix: ' \t'
+    })
+
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    const html =
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#item-1">Howdy there</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#item-1">Howdy there</a></p>'
+      + '<h1 id="item-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.be.eql(html)
   })
