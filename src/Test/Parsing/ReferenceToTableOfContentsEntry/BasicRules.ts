@@ -696,7 +696,7 @@ Please prepare
 The zombies could arrive at any moment.
 
 Those who prep are dramaticallly more likely to survive
-=========================================
+=======================================================
 
 That's what the internet told me.`
 
@@ -722,5 +722,46 @@ That's what the internet told me.`
           new PlainText("That's what the internet told me.")
         ])
       ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
+  })
+})
+
+
+context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the reference itself.', () => {
+  context('When the reference is enclosed by parentheses:', () => {
+    specify('The snippet can contain matching parentheses', () => {
+      expect(Up.toDocument('(section: I (really) love apples)')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I (really) love apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain matching nested parentheses', () => {
+      expect(Up.toDocument('(section: I (really (truly (honestly))) love apples)')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I (really (truly (honestly))) love apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain an escaped unmatched closing parenthesis', () => {
+      expect(Up.toDocument('(section: I love :\\) apples)')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I love :) apples')
+          ])
+        ]))
+    })
+
+    specify('The snippet can contain an escaped unmatched opening parenthesis', () => {
+      expect(Up.toDocument('(section: I miss :\\( apples)')).to.be.eql(
+        new UpDocument([
+          new Paragraph([
+            new ReferenceToTableOfContentsEntry('I miss :( apples')
+          ])
+        ]))
+    })
   })
 })
