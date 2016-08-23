@@ -13,6 +13,7 @@ import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
+import { Table } from '../../../SyntaxNodes/Table'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 
 
@@ -63,7 +64,7 @@ Not quite true.
   })
 
 
-  context('Description list:', () => {
+  context('Description lists. Specifically, their:', () => {
     specify('Terms', () => {
       const markup = `
 I drink soda
@@ -185,6 +186,7 @@ Minor reason
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
+
 
   specify('Line blocks', () => {
     const markup = `
@@ -423,6 +425,61 @@ SPOILER:
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
+
+  context('Table/charts. Specifically, their:', () => {
+    specify('Captions', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true.
+
+Table: Reasons I lie (see [section: soda])
+
+Reason;           Validity
+I get hungry;     Very valid`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.be.eql(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Reason')]),
+              new Table.Header.Cell([new PlainText('Validity')])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('I get hungry')]),
+                new Table.Row.Cell([new PlainText('Very valid')])
+              ])
+            ], new Table.Caption([
+              new PlainText('Reasons I lie '),
+              new NormalParenthetical([
+                new PlainText('(see '),
+                new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                new PlainText(')')
+              ])
+            ]))
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+  })
 
   specify("Unordered lists", () => {
     const markup = `
