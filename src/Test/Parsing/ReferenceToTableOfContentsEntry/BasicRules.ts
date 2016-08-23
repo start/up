@@ -685,4 +685,42 @@ That's what the internet told me.`
         ])
       ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
   })
+
+  specify('However, any outer whitespace around the snippet is trimmed away and ignored.', () => {
+    const markup = `
+I'm a helpful guy. For more information, skip to [section: \t \t drama \t \t ]. 
+
+Please prepare
+==============
+
+The zombies could arrive at any moment.
+
+Those who prep are dramaticallly more likely to survive
+=========================================
+
+That's what the internet told me.`
+
+    const prepareHeading =
+      new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const surviveHeading =
+      new Heading([new PlainText('Those who prep are dramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a helpful guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('drama', surviveHeading),
+          new PlainText('.')
+        ]),
+        prepareHeading,
+        new Paragraph([
+          new PlainText('The zombies could arrive at any moment.')
+        ]),
+        surviveHeading,
+        new Paragraph([
+          new PlainText("That's what the internet told me.")
+        ])
+      ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
+  })
 })
