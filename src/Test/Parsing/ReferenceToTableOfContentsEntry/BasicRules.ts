@@ -574,8 +574,8 @@ Not quite true.`
 
 
 context('When creating a reference to a table of contents entry', () => {
-      specify('the term ("section" by default) is case-insensitive', () => {
-      const markup = `
+  specify('the term ("section" by default) is case-insensitive', () => {
+    const markup = `
 I drink soda
 ============
 
@@ -586,24 +586,103 @@ I never lie
 
 Not quite true. For example, see [sEcTIoN: I drink soda].`
 
-      const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
-      const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+    const neverLieHeading =
+      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
-        new UpDocument([
-          sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
-          ]),
-          neverLieHeading,
-          new Paragraph([
-            new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda', sodaHeading),
-            new PlainText('.')
-          ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
-    })
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Paragraph([
+          new PlainText('Not quite true. For example, see '),
+          new ReferenceToTableOfContentsEntry('I drink soda', sodaHeading),
+          new PlainText('.')
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+})
+
+
+context('Whitespace within the snippet of a reference to a table of contents entry is significant.', () => {
+  specify('If there is a space between words in the entry, there must be a space between those words in the snippet', () => {
+    const markup = `
+I'm a concerned kind of guy. For more information, skip to [section: prepare]. 
+
+Those who prep are more likely to survive
+=========================================
+
+That's what the internet told me.
+
+Please prepare
+==============
+
+The zombies could arrive at any moment.`
+
+    const surviveHeading =
+      new Heading([new PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const prepareHeading =
+      new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a concerned kind of guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('prepare', prepareHeading),
+          new PlainText('.')
+        ]),
+        surviveHeading,
+        new Paragraph([
+          new PlainText("That's what the internet told me.")
+        ]),
+        prepareHeading,
+        new Paragraph([
+          new PlainText('The zombies could arrive at any moment.')
+        ])
+      ], new UpDocument.TableOfContents([surviveHeading, prepareHeading])))
+  })
+
+  specify('If there is a space between words in a snippet, there must be a space between those words in the entry itself', () => {
+    const markup = `
+I'm a helpful guy. For more information, skip to [section: prep are]. 
+
+Please prepare
+==============
+
+The zombies could arrive at any moment.
+
+Those who prep are more likely to survive
+=========================================
+
+That's what the internet told me.`
+
+    const prepareHeading =
+      new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const surviveHeading =
+      new Heading([new PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a helpful guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('prep are', surviveHeading),
+          new PlainText('.')
+        ]),
+        prepareHeading,
+        new Paragraph([
+          new PlainText('The zombies could arrive at any moment.')
+        ]),
+        surviveHeading,
+        new Paragraph([
+          new PlainText("That's what the internet told me.")
+        ])
+      ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
+  })
 })
