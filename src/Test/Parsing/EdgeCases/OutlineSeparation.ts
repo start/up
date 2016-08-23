@@ -5,7 +5,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
-import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { Heading } from '../../../SyntaxNodes/Heading'
 
 
@@ -21,7 +21,7 @@ Not me. Us!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         heading
       ], new UpDocument.TableOfContents([heading])))
   })
@@ -38,7 +38,7 @@ Not me. Us!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         heading
       ], new UpDocument.TableOfContents([heading])))
   })
@@ -49,7 +49,7 @@ describe('A streak of asterisks with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
     expect(Up.toDocument('* * * * * *')).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -59,7 +59,7 @@ describe('A streak of number signs with spaces between', () => {
   it('produces a single outline separator node rather than a heavily nested list', () => {
     expect(Up.toDocument('# # # # # #')).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -86,7 +86,7 @@ describe('A streak of asterisks with spaces between', () => {
             ])
           ])
         ]),
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -113,7 +113,7 @@ describe('A streak of number signs with spaces between', () => {
             ])
           ])
         ]),
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })

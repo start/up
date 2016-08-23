@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
@@ -228,7 +228,7 @@ SPOILER:
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new OutlineSeparator(),
+            new ThematicBreak(),
             new Paragraph([
               new PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])

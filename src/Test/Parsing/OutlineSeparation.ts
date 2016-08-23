@@ -3,7 +3,7 @@ import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 
 context('Between paragraphs', () => {
@@ -20,7 +20,7 @@ Goodbye, world!`
         new Paragraph([
           new PlainText('Hello, world!')
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('Goodbye, world!')
         ]),
@@ -44,7 +44,7 @@ Goodbye, world!`
         new Paragraph([
           new PlainText('Hello, world!')
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('Goodbye, world!')
         ])
@@ -101,7 +101,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -115,7 +115,7 @@ describe('An outline separator streak', () => {
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('60.4%')
         ])
@@ -127,14 +127,14 @@ describe('An outline separator streak', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 
   it('can contain as few as 3 non-whitespace characters', () => {
     expect(Up.toDocument('= - ~')).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 
@@ -156,7 +156,7 @@ Goodbye.`
         new Paragraph([
           new PlainText('Hello.')
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('Goodbye.')
         ]),
@@ -173,7 +173,7 @@ describe('Consecutive separator streaks', () => {
 =============================================`
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -189,7 +189,7 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
           ])
@@ -204,7 +204,7 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
           ])
@@ -222,7 +222,7 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
           ])
@@ -237,7 +237,7 @@ And that's my story.`
 
       expect(Up.toDocument(markup)).to.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
           ])
@@ -259,7 +259,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 
@@ -279,7 +279,7 @@ context('When outline separator streaks are separated from each other by only bl
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })

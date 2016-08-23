@@ -34,7 +34,7 @@ import { DescriptionList } from '../SyntaxNodes/DescriptionList'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
 import { Heading } from '../SyntaxNodes/Heading'
 import { CodeBlock } from '../SyntaxNodes/CodeBlock'
-import { OutlineSeparator } from '../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
@@ -81,7 +81,7 @@ export abstract class Writer {
   abstract nsflBlock(nsflBlock: NsflBlock): string
   abstract nsfwBlock(nsfwBlock: NsfwBlock): string
   abstract orderedList(list: OrderedList): string
-  abstract outlineSeparator(separator: OutlineSeparator): string
+  abstract outlineSeparator(separator: ThematicBreak): string
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string

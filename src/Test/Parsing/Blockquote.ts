@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Heading } from '../../SyntaxNodes/Heading'
@@ -277,7 +277,7 @@ describe('Within a blockquote, 3 or more blank lines', () => {
           new Paragraph([
             new PlainText('Hello, world!')
           ]),
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new Paragraph([
             new PlainText('Goodbye, '),
             new Emphasis([

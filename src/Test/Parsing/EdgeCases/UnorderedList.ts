@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
-import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 
@@ -18,7 +18,7 @@ describe('An unordered list with a single item', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([
@@ -26,7 +26,7 @@ describe('An unordered list with a single item', () => {
             ])
           ])
         ]),
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })
@@ -142,7 +142,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
             ])
           ])
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([

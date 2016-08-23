@@ -4,7 +4,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Heading } from '../../SyntaxNodes/Heading'
 
 
@@ -121,7 +121,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         heading
       ], new UpDocument.TableOfContents([heading])))
   })
@@ -137,7 +137,7 @@ Hello, world!
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         heading
       ],
         new UpDocument.TableOfContents([heading])))

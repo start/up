@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 describe('A single blank blockquoted line', () => {
@@ -40,13 +40,13 @@ describe('A single line blockquote', () => {
 
     expect(Up.toDocument(markup)).to.be.eql(
       new UpDocument([
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Blockquote([
           new Paragraph([
             new PlainText('I choose you!')
           ])
         ]),
-        new OutlineSeparator()
+        new ThematicBreak()
       ]))
   })
 })

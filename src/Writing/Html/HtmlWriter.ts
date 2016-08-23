@@ -35,7 +35,7 @@ import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
@@ -162,7 +162,7 @@ export class HtmlWriter extends Writer {
       attrsFor(heading, attrs))
   }
 
-  outlineSeparator(separator: OutlineSeparator): string {
+  outlineSeparator(separator: ThematicBreak): string {
     return singleTagHtmlElement('hr', attrsFor(separator))
   }
 

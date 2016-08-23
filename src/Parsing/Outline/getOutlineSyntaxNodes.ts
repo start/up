@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
@@ -127,8 +127,8 @@ function condenseConsecutiveOutlineSeparators(nodes: OutlineSyntaxNode[]): Outli
 
   for (let node of nodes) {
     const isConsecutiveOutlineSeparator =
-      node instanceof OutlineSeparator
-      && last(resultNodes) instanceof OutlineSeparator
+      node instanceof ThematicBreak
+      && last(resultNodes) instanceof ThematicBreak
 
     if (!isConsecutiveOutlineSeparator) {
       resultNodes.push(node)

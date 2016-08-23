@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Table } from '../../SyntaxNodes/Table'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from '../../SyntaxNodes/PlainText'
@@ -285,7 +285,7 @@ I don't like video games; in fact, I never have.`
               new Table.Row.Cell([new PlainText('1999')]),
             ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
           ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText("I don't like video games; in fact, I never have.")
         ])

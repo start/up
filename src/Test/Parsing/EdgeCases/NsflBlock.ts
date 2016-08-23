@@ -5,7 +5,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 context("A NSFL block's label line does not produce a NSFL block node if it is", () => {
@@ -77,7 +77,7 @@ No!`
         new Paragraph([
           new PlainText('NSFL:')
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('No!')
         ])

@@ -8,7 +8,7 @@ import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
@@ -162,7 +162,7 @@ And addresses do, too`
             new PlainText('Violets are blue')
           ]),
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Lyrics have lines')

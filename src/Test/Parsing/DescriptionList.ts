@@ -6,7 +6,7 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 
 describe('A non-indented line followed by an indented line', () => {
@@ -442,7 +442,7 @@ Lee Chang-ho
             ])
           ]))
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Term([

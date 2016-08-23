@@ -18,7 +18,7 @@ import { Table } from '../../SyntaxNodes/Table'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
@@ -315,7 +315,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Section separators', () => {
     const document = new UpDocument([
-      new OutlineSeparator({ sourceLineNumber: 2 })
+      new ThematicBreak({ sourceLineNumber: 2 })
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<hr data-up-source-line="2">')

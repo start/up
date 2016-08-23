@@ -7,7 +7,7 @@ import { Table } from '../../SyntaxNodes/Table'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
@@ -313,7 +313,7 @@ No one!`
         new Paragraph([new PlainText("Anyway, let's get to the point.")]),
         heading,
         new Paragraph([new PlainText("Who doesn't?")]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([new PlainText("No one!")])
       ], tableOfContents))
   })

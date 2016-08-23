@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { BLANK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
@@ -8,7 +8,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // blank lines. The blank lines themselves don't produce any syntax nodes.
 //
 // However, 3 or more consecutive blank lines indicates extra, meaningful separation between
-// outline conventions. We represent that separation with a OutlineSeparator.
+// outline conventions. We represent that separation with a ThematicBreak.
 export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   let countBlankLines = 0
@@ -26,7 +26,7 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
 
   args.then(
     countBlankLines >= MIN_COUNT_BLANK_LINES_IN_OUTLINE_SEPARATOR
-      ? [new OutlineSeparator()]
+      ? [new ThematicBreak()]
       : [],
     markupLineConsumer.countLinesConsumed)
 

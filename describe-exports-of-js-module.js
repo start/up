@@ -59,11 +59,11 @@ context('Every syntax node class is exported:', () => {
     'ReferenceToTableOfContentsEntry',
     'RevisionDeletion',
     'RevisionInsertion',
-    'OutlineSeparator',
     'SpoilerBlock',
     'SquareParenthetical',
     'Stress',
     'Table',
+    'ThematicBreak',
     'UnorderedList',
     'Video'
   ])

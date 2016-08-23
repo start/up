@@ -4,7 +4,7 @@ import { UpDocument } from './UpDocument'
 import { Writer } from '../Writing/Writer'
 
 
-export class OutlineSeparator implements OutlineSyntaxNode {
+export class ThematicBreak implements OutlineSyntaxNode {
   public sourceLineNumber: number = undefined
 
   constructor(options?: { sourceLineNumber: number }) {

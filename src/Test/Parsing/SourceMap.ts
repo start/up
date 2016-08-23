@@ -8,7 +8,7 @@ import { Table } from '../../SyntaxNodes/Table'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
@@ -325,7 +325,7 @@ NSFL:
 
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
-            new OutlineSeparator({ sourceLineNumber: 1 }),
+            new ThematicBreak({ sourceLineNumber: 1 }),
           ]))
       })
 
@@ -340,7 +340,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new OutlineSeparator({ sourceLineNumber: 3 }),
+            new ThematicBreak({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 6 })
           ]))
       })
@@ -361,7 +361,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new OutlineSeparator({ sourceLineNumber: 3 }),
+            new ThematicBreak({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 11 })
           ]))
       })
@@ -386,7 +386,7 @@ No, really. That was it.`
         expect(up.toDocument(markup)).to.be.eql(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new OutlineSeparator({ sourceLineNumber: 3 }),
+            new ThematicBreak({ sourceLineNumber: 3 }),
             new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 15 })
           ]))
       })

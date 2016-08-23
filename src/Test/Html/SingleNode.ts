@@ -23,7 +23,7 @@ import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
@@ -591,7 +591,7 @@ describe('A level 9 heading node', () => {
 describe('An outline separator node', () => {
   it('produces an <hr> element', () => {
     const document = new UpDocument([
-      new OutlineSeparator()
+      new ThematicBreak()
     ])
 
     expect(Up.toHtml(document)).to.be.eql('<hr>')

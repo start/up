@@ -5,7 +5,7 @@ import { Heading } from '../../../SyntaxNodes/Heading'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
-import { OutlineSeparator } from '../../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 describe('An ordered list with a single item can be sandwched by identical outline separator streaks without producing a heading.', () => {
@@ -18,7 +18,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new OrderedList([
             new OrderedList.Item([
               new Paragraph([
@@ -26,7 +26,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
               ])
             ])
           ]),
-          new OutlineSeparator()
+          new ThematicBreak()
         ]))
     })
 
@@ -38,7 +38,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
 
       expect(Up.toDocument(markup)).to.be.eql(
         new UpDocument([
-          new OutlineSeparator(),
+          new ThematicBreak(),
           new OrderedList([
             new OrderedList.Item([
               new Paragraph([
@@ -46,7 +46,7 @@ describe('An ordered list with a single item can be sandwched by identical outli
               ])
             ], { ordinal: 1 })
           ]),
-          new OutlineSeparator()
+          new ThematicBreak()
         ]))
     })
   })
@@ -138,7 +138,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
             ])
           ])
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([

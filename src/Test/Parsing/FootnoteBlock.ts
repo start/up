@@ -10,7 +10,7 @@ import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { OutlineSeparator } from '../../SyntaxNodes/OutlineSeparator'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
@@ -877,7 +877,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           ])
         ]),
         new FootnoteBlock(footnotesInUnorderedList),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText("I wear glasses"),
           footnoteInParagraph,
@@ -939,7 +939,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           ])
         ]),
         new FootnoteBlock([footnoteInUnorderedList]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText("I wear glasses"),
           footnoteInParagraph,
@@ -1018,7 +1018,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           footnoteInUnorderedList,
           nestedFootnoteInUnorderedList
         ]),
-        new OutlineSeparator(),
+        new ThematicBreak(),
         new Paragraph([
           new PlainText("I wear glasses"),
           footnoteInParagraph,
