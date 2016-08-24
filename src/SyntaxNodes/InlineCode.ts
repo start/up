@@ -5,7 +5,7 @@ import { Writer } from '../Writing/Writer'
 export class InlineCode implements InlineSyntaxNode {
   constructor(public code: string) { }
 
-  inlineText(): string {
+  textAppearingInline(): string {
     return this.code
   }
 

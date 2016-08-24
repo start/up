@@ -1,13 +1,13 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { getInlineText } from './getInlineText'
+import { getTextAppearingInline } from './getTextAppearingInline'
 import { getSearchableText } from './getSearchableText'
 import { Writer } from '../Writing/Writer'
 
 
 export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer implements InlineSyntaxNode {
-  inlineText(): string {
-    return getInlineText(this.children)
+  textAppearingInline(): string {
+    return getTextAppearingInline(this.children)
   }
 
   searchableText(): string {

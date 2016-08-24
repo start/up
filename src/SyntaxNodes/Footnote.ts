@@ -25,7 +25,7 @@ export class Footnote extends RichInlineSyntaxNode {
   //
   // Long story short: footnotes don't represent inline content, so this method just returns an
   // empty string.
-  inlineText(): string {
+  textAppearingInline(): string {
     return ''
   }
 

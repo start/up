@@ -50,7 +50,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     }
   }
 
-  inlineText(): string {
+  textAppearingInline(): string {
     return (
       this.entry
         ? this.entry.searchableText()
