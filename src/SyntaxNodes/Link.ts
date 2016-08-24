@@ -2,7 +2,7 @@ import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { UpDocument } from './UpDocument'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are
@@ -35,7 +35,7 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
     return []
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.link(this)
   }
 }

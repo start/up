@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class ThematicBreak implements OutlineSyntaxNode {
@@ -21,7 +21,7 @@ export class ThematicBreak implements OutlineSyntaxNode {
     return []
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.thematicBreak(this)
   }
 

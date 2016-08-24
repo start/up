@@ -3,7 +3,7 @@ import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 import { concat } from '../CollectionHelpers'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class OrderedList implements OutlineSyntaxNode {
@@ -43,7 +43,7 @@ export class OrderedList implements OutlineSyntaxNode {
       this.items.map(item => item.inlineDescendants()))
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.orderedList(this)
   }
 }

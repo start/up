@@ -1,5 +1,5 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 // Its HTML equivalent is the `<kbd>` element.
@@ -18,7 +18,7 @@ export class ExampleInput implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.exampleInput(this)
   }
 }

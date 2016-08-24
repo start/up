@@ -1,6 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer implements OutlineSyntaxNode {
@@ -14,5 +14,5 @@ export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer i
     }
   }
 
-  abstract write(writer: Writer): string
+  abstract write(writer: Renderer): string
 }

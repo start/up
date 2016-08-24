@@ -1,9 +1,9 @@
 import { RevealableInlineSyntaxNode } from './RevealableInlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class InlineNsfw extends RevealableInlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.inlineNsfw(this)
   }
   

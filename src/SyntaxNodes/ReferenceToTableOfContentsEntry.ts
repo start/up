@@ -1,6 +1,6 @@
 import { UpDocument } from './UpDocument'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 
 
@@ -82,7 +82,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.referenceToTableOfContentsEntry(this)
   }
 }

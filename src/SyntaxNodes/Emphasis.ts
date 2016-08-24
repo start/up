@@ -1,12 +1,12 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 // Equivalent to the `<em>` HTML element.
 //
 // Not to be confused with `Italic`! 
 export class Emphasis extends RichInlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.emphasis(this)
   }
 

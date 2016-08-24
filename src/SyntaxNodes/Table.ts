@@ -6,7 +6,7 @@ import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../Parsing/PatternPieces'
 import { anyCharMatching } from '../Parsing/PatternHelpers'
 import { concat } from '../CollectionHelpers'
 import { getInlineDescendants } from './getInlineDescendants'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class Table implements OutlineSyntaxNode {
@@ -38,7 +38,7 @@ export class Table implements OutlineSyntaxNode {
       captionAndCells.map(captionOrCell => getInlineDescendants(captionOrCell.children)))
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.table(this)
   }
 }

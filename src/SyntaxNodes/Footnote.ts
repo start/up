@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class Footnote extends RichInlineSyntaxNode {
@@ -29,7 +29,7 @@ export class Footnote extends RichInlineSyntaxNode {
     return ''
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.referenceToFootnote(this)
   }
 }

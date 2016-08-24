@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { getTextAppearingInline } from './getTextAppearingInline'
 import { getSearchableText } from './getSearchableText'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer implements InlineSyntaxNode {
@@ -14,5 +14,5 @@ export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer imp
     return getSearchableText(this.children)
   }
 
-  abstract write(writer: Writer): string
+  abstract write(writer: Renderer): string
 }

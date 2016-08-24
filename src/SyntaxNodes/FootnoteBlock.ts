@@ -3,7 +3,7 @@ import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { UpDocument } from './UpDocument'
 import { getInlineDescendants } from './getInlineDescendants'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class FootnoteBlock implements OutlineSyntaxNode {
@@ -22,7 +22,7 @@ export class FootnoteBlock implements OutlineSyntaxNode {
     return getInlineDescendants(this.footnotes)
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.footnoteBlock(this)
   }
   

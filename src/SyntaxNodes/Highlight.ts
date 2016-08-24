@@ -1,9 +1,9 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class Highlight extends RichInlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.highlight(this)
   }
 

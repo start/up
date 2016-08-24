@@ -3,7 +3,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { getSearchableText } from './getSearchableText'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, UpDocument.TableOfContents.Entry {
@@ -38,7 +38,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     return this.children
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.heading(this)
   }
 }

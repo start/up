@@ -1,9 +1,9 @@
 import { ParentheticalSyntaxNode } from './ParentheticalSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class SquareParenthetical extends ParentheticalSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.squareParenthetical(this)
   }
 

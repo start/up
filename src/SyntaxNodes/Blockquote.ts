@@ -1,9 +1,9 @@
 import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class Blockquote extends RichOutlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.blockquote(this)
   }
 

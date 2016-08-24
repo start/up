@@ -1,5 +1,5 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class PlainText implements InlineSyntaxNode {
@@ -17,7 +17,7 @@ export class PlainText implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.plainText(this)
   }
 

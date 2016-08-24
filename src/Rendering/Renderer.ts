@@ -45,7 +45,7 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 // Writers are designed to be single-use, so a new instance must be created every time a new
 // document is written. This makes it a bit simpler to write concrete writer classes, because
 // they don't have to worry about resetting any counters.
-export abstract class Writer {
+export abstract class Renderer {
   private _result: string
 
   constructor(

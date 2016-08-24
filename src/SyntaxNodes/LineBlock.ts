@@ -3,7 +3,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { UpDocument } from './UpDocument'
 import { concat } from '../CollectionHelpers'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class LineBlock implements OutlineSyntaxNode {
@@ -24,7 +24,7 @@ export class LineBlock implements OutlineSyntaxNode {
       this.lines.map(line => line.inlineDescendants()))
   }
 
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.lineBlock(this)
   }
 }

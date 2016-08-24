@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { UpDocument } from './UpDocument'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 // If a line consists solely of media conventions, those media conventions are placed directly
@@ -35,7 +35,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return []
   }
 
-  abstract write(writer: Writer): string
+  abstract write(writer: Renderer): string
 
   protected MEDIA_SYNTAX_NODE(): void { }
 }

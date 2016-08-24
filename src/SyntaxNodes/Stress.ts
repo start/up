@@ -1,12 +1,12 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 // Equivalent to the `<strong>` HTML element.
 //
 // Not to be confused with `Bold`! 
 export class Stress extends RichInlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.stress(this)
   }
 

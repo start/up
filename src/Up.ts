@@ -4,7 +4,7 @@ import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
 import { parseInlineDocument } from './Parsing/parseInlineDocument'
-import { getHtml, getInlineHtml } from './Writing//Html/getHtml'
+import { getHtml, getInlineHtml } from './Rendering//Html/getHtml'
 
 
 export type MarkupOrDocument = string | UpDocument

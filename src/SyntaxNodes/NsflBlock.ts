@@ -1,9 +1,9 @@
 import { RevealableOutlineSyntaxNode } from './RevealableOutlineSyntaxNode'
-import { Writer } from '../Writing/Writer'
+import { Renderer } from '../Rendering/Renderer'
 
 
 export class NsflBlock extends RevealableOutlineSyntaxNode {
-  write(writer: Writer): string {
+  write(writer: Renderer): string {
     return writer.nsflBlock(this)
   }
 

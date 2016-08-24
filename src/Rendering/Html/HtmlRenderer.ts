@@ -1,5 +1,5 @@
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { Writer } from '.././Writer'
+import { Renderer } from '.././Renderer'
 import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
@@ -41,12 +41,12 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
 import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './WritingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './ElementHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Parsing/PatternHelpers'
 
 
-export class HtmlWriter extends Writer {
+export class HtmlRenderer extends Renderer {
   // Our HTML for revealable content (spoilers, NSFW, and NSFL) doesn't require JavaScript (just CSS), and it
   // works perfectly well for screen-readers.
   //
@@ -61,7 +61,7 @@ export class HtmlWriter extends Writer {
   // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its
   // checkbox.
   //
-  // Because each Writer class instance is only used once per document, we can simply increment a counter each
+  // Because each Renderer class instance is only used once per document, we can simply increment a counter each
   // time we write a spoiler (inline or block), appending the counter's value to the checkbox's ID.
   //
   // We'll do the same for NSFW and NSFL conventions.
@@ -623,7 +623,7 @@ export class HtmlWriter extends Writer {
     return this.getId(this.config.terms.output.footnoteReference, referenceNumber)
   }
 
-  // TODO: Move all this functionality to HtmlWriter
+  // TODO: Move all this functionality to HtmlRenderer
   private isUrlAllowed(url: string): boolean {
     return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
