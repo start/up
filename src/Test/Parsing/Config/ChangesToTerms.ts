@@ -23,11 +23,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const { markupForDefaultSettings, markupForTermVariations, invalidMarkupForEmptyTerm, invalidMarkupForBlankTerm } = args
 
   // A quick sanity check! Let's make sure the caller didn't accidentlly provide duplicate markup arguments. 
-  const distinctMarkupArguments = distinct([
+  const distinctMarkupArguments = distinct(
     markupForTermVariations,
     markupForDefaultSettings,
     invalidMarkupForBlankTerm
-  ])
+  )
 
   expect(distinctMarkupArguments).to.have.lengthOf(3)
 

@@ -4,6 +4,7 @@ export function last<T>(collection: T[]): T {
 }
 
 // Returns a single flattened array containing every item from every array in `collections`.
+//
 // The items' order is preserved.
 export function concat<T>(collections: T[][]): T[] {
   return [].concat(...collections)
@@ -24,12 +25,14 @@ export function remove<T>(collection: T[], itemToRemove: T): void {
   }
 }
 
-// Returns the distinct items from `items`. The items' order is preserved. 
-export function distinct<T>(collection: T[]): T[] {
-  return collection.reduce((distinctItems, item) =>
-    (distinctItems.indexOf(item) !== -1)
-      ? distinctItems
-      : distinctItems.concat([item])
+// Returns an array containing the distinct values in `values` using strict equality.
+//
+// The values' order is preserved.
+export function distinct<T>(...values: T[]): T[] {
+  return values.reduce((distinctValues, value) =>
+    (distinctValues.indexOf(value) !== -1)
+      ? distinctValues
+      : distinctValues.concat([value])
     , [])
 }
 

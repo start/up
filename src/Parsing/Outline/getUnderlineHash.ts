@@ -9,5 +9,5 @@ export function getUnderlineHash(underline: string): string {
   const underlineChars =
     underline.trim().split('')
 
-  return distinct(underlineChars).sort().join('')
+  return distinct(...underlineChars).sort().join('')
 }

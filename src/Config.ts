@@ -113,43 +113,43 @@ export namespace Config {
       private _video: Terms.FoundInMarkup = []
 
       get audio(): Terms.FoundInMarkup {
-        return distinct(['audio', ...this._audio])
+        return distinct('audio', ...this._audio)
       }
 
       get chart(): Terms.FoundInMarkup {
-        return distinct(['chart', ...this._chart])
+        return distinct('chart', ...this._chart)
       }
 
       get highlight(): Terms.FoundInMarkup {
-        return distinct(['highlight', 'mark', ...this._highlight])
+        return distinct('highlight', 'mark', ...this._highlight)
       }
 
       get image(): Terms.FoundInMarkup {
-        return distinct(['image', 'img', ...this._image])
+        return distinct('image', 'img', ...this._image)
       }
 
       get nsfl(): Terms.FoundInMarkup {
-        return distinct(['nsfl', ...this._nsfl])
+        return distinct('nsfl', ...this._nsfl)
       }
 
       get nsfw(): Terms.FoundInMarkup {
-        return distinct(['nsfw', ...this._nsfw])
+        return distinct('nsfw', ...this._nsfw)
       }
 
       get referencedSection(): Terms.FoundInMarkup {
-        return distinct(['section', ...this._referencedSection])
+        return distinct('section', ...this._referencedSection)
       }
 
       get spoiler(): Terms.FoundInMarkup {
-        return distinct(['spoiler', ...this._spoiler])
+        return distinct('spoiler', ...this._spoiler)
       }
 
       get table(): Terms.FoundInMarkup {
-        return distinct(['table', ...this._table])
+        return distinct('table', ...this._table)
       }
 
       get video(): Terms.FoundInMarkup {
-        return distinct(['video', 'vid', ...this._video])
+        return distinct('video', 'vid', ...this._video)
       }
 
       clone(): Markup {
@@ -295,5 +295,5 @@ function sanitizeVariations(variations: UserProvidedSettings.Terms.FoundInMarkup
       // ... and then ignore any term variations that were just whitespace!
       .filter(variation => !!variation)
 
-  return distinct(normalizedVariations)
+  return distinct(...normalizedVariations)
 }
