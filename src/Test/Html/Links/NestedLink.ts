@@ -39,7 +39,7 @@ context('Inside a link', () => {
 })
 
 
-describe('A link nested within a table of contents entries', () => {
+describe('A link nested within a table of contents entry', () => {
   it('does not produce an <a> element', () => {
     const heading =
       new Heading([
@@ -61,8 +61,8 @@ describe('A link nested within a table of contents entries', () => {
 })
 
 
-context("Even when a link is nested deep within another link, it doesn't produce an <a> element. This is true for", () => {
-  specify("a link inside another link", () => {
+context("When a link is nested deeply within another link, it doesn't produce an <a> element. This is true for:", () => {
+  specify("A footnote nested deeply within a link", () => {
     const document = new UpDocument([
       new Paragraph([
         new Link([
@@ -80,7 +80,7 @@ context("Even when a link is nested deep within another link, it doesn't produce
       + '</p>')
   })
 
-  specify("a footnote inside a link", () => {
+  specify("A link nested deeply within another a link", () => {
     const document = new UpDocument([
       new Paragraph([
         new Link([
