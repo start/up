@@ -33,6 +33,9 @@ export function getOutlineSyntaxNodes(
   const { markupLines, headingLeveler, config } = args
   const { terms } = config
 
+  // This includes every outline convention except paragraphs and line blocks.
+  //
+  // Paragraphs and line blocks serve as a last resort if none of these conventions apply.
   const outlineConventions = [
     tryToParseBlankLineSeparation,
     tryToParseUnorderedList,

@@ -18,36 +18,55 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // Violets are blue
 // Lyrics have lines
 // And addresses do, too
-
 export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
-  // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.
+  // We're going to keep gobbling lines until we encounter a terminating line (listed below).
+  // Naturally, a terminating line ends the line block (and/or prevents a paragraph from
+  // growing into a line block).
   //
-  // For example:
+  // The terminating line itself is **not** included in the line block.
   //
-  // Roses are red
-  // Violets are blue
-  // =*=*=*=*=*=*=*=*=*=*=*=
-  // Anyway, poetry is pretty fun.
+  // Here are the types of terminating lines:
   //
-  // Only the first two lines are included in the line block, because the third line is parsed as
-  // a thematic break streak.
+  // 1. A blank line. We leave blank lines behind to be examined by another parser, like
+  // `tryToParseBlankLineSeparation`.
   //
-  // However, line blocks are *not* interrupted  by a line if it is merely the beginning of another
-  // outline convention. This distinction is actually demonstrated in the example above!
+  // 2. A line that would otherwise be interpreted as another outline convention.
   //
-  // "Violets are blue" would be interpreted  as a heading due to the following line. But because
-  // line blocks only examine each line individually, the line is accepted.
+  //    For example:
+  //
+  //    Roses are red
+  //    Violets are blue
+  //    =*=*=*=*=*=*=*=*=*=*=*=
+  //    Anyway, poetry is pretty fun.
+  //
+  //    Only the first two lines are included in the line block, because the third line is parsed
+  //    as a thematic break.
+  //
+  //    We leave these terminating lines behind to be examined by another parser.
+  //
+  // 3. A line consisting solely of media conventions:
+  //
+  //    [image: cautious cat](example.com/cat.jpg) [video: puppies playing](example.com/dog.jpg)
+  //
+  //    Or a line consisting solely of media conventions that serve as links:
+  //
+  //    [image: a cat](example.com/cat.jpg) (example.com/cat-gallery)
+  //
+  //    These lines are a bit special. Not only do they terminate the preceding line block, but
+  //    we "promte" their media conventions to the outline.
 
-  const inlineNodesPerRegularLine: InlineSyntaxNode[][] = []
+  const inlineNodesPerLine: InlineSyntaxNode[][] = []
+  let nodesPromotedToOutline: OutlineSyntaxNode[] = []
 
-  // If a line consists solely of media conventions, those media conventions are promoted to the
-  // outline. Any such line will terminate the parsing of regular lines.
-  let inlineNodesPromotedToOutline: OutlineSyntaxNode[] = []
-
-  // We don't need to ensure that the first line would be parsed as a regular paragraph. We already
-  // it know would be (that's why this function was called!).
+  // Normally, we need to determine whether each line should be be interpreted as another
+  // outline convention instead of a paragraph or line block (see list item 2 above).
+  //
+  // This is a bit expenseive.
+  //
+  // Luckily, we can avoid doing this for the first line. If the first line satisfied another
+  // outline convention, another parser would have already consumed it!
   let isOnFirstLine = true
 
   while (true) {
@@ -61,6 +80,8 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
       }
     })
 
+    isOnFirstLine = false
+
     // The line was blank. Let's bail!
     if (!wasLineConsumed) {
       break
@@ -72,39 +93,37 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
       continue
     }
 
-    isOnFirstLine = false
-
-    const nodesFromThisShouldBePlacedDirectlyIntoOutline =
+    const nodesFromThisLineShouldBePlacedDirectlyIntoOutline =
       tryToPromoteToOutline({
         inlineNodes,
         then: outlineNodes => {
-          inlineNodesPromotedToOutline = outlineNodes
+          nodesPromotedToOutline = outlineNodes
         }
       })
 
-    if (nodesFromThisShouldBePlacedDirectlyIntoOutline) {
+    if (nodesFromThisLineShouldBePlacedDirectlyIntoOutline) {
       break
     }
 
-    inlineNodesPerRegularLine.push(inlineNodes)
+    inlineNodesPerLine.push(inlineNodes)
   }
 
   const lengthConsumed = markupLineConsumer.countLinesConsumed
 
   let resultOfAnyRegularLines: Paragraph | LineBlock
 
-  switch (inlineNodesPerRegularLine.length) {
+  switch (inlineNodesPerLine.length) {
     case 0:
       // If we didn't consume any regular lines, we can't produce a paragraph or a line block.
-      args.then(inlineNodesPromotedToOutline, lengthConsumed)
+      args.then(nodesPromotedToOutline, lengthConsumed)
       return
 
     case 1:
-      resultOfAnyRegularLines = new Paragraph(inlineNodesPerRegularLine[0])
+      resultOfAnyRegularLines = new Paragraph(inlineNodesPerLine[0])
       break
 
     default: {
-      const lineBlockLines = inlineNodesPerRegularLine
+      const lineBlockLines = inlineNodesPerLine
         .map(inlineNodes => new LineBlock.Line(inlineNodes))
 
       resultOfAnyRegularLines = new LineBlock(lineBlockLines)
@@ -112,5 +131,5 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
     }
   }
 
-  args.then([resultOfAnyRegularLines, ...inlineNodesPromotedToOutline], lengthConsumed)
+  args.then([resultOfAnyRegularLines, ...nodesPromotedToOutline], lengthConsumed)
 }
