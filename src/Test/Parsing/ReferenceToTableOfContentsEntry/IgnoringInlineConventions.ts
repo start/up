@@ -10,6 +10,7 @@ import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
 import { Image } from '../../../SyntaxNodes/Image'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
+import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
@@ -118,15 +119,15 @@ Not quite true. For example, see [section: *emphasis*].`
   context('The snippet can match text within an entry that spans the "boundary" of an inline convention:', () => {
     specify('Audio', () => {
       const markup = `
-I'm a great guy. For more information, skip to [section: this full transcript]. 
+I'm a great guy. For more information, skip to [section: the full transcript]. 
 
 I drink soda
 ============
 
 Actually, I only drink milk.
 
-I am great. Listen to this [audio: full transcript of my greatness] (example.com/transcript)
-============================================================================================
+I am great. Listen to the [audio: full transcript of my greatness] (example.com/transcript)
+===========================================================================================
 
 Well, maybe I'm not so great.`
 
@@ -135,7 +136,7 @@ Well, maybe I'm not so great.`
 
       const greatnessHeading =
         new Heading([
-          new PlainText("I am great. Listen to this "),
+          new PlainText("I am great. Listen to the "),
           new Audio('full transcript of my greatness', 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
@@ -143,7 +144,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+            new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -160,14 +161,14 @@ Well, maybe I'm not so great.`
 
   specify('Bold', () => {
     const markup = `
-I'm a great guy. For more information, skip to [section: this full transcript]. 
+I'm a great guy. For more information, skip to [section: the full transcript]. 
 
 I drink soda
 ============
 
 Actually, I only drink milk.
 
-I am great. Read this __full transcript of my greatness__
+I am great. Read the __full transcript of my greatness__
 =========================================================
 
 Well, maybe I'm not so great.`
@@ -177,7 +178,7 @@ Well, maybe I'm not so great.`
 
     const greatnessHeading =
       new Heading([
-        new PlainText("I am great. Read this "),
+        new PlainText("I am great. Read the "),
         new Bold([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
@@ -185,7 +186,7 @@ Well, maybe I'm not so great.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+          new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
           new PlainText('.')
         ]),
         sodaHeading,
@@ -243,14 +244,14 @@ Well, maybe I'm not so helpful.`
 
   specify('Highlight', () => {
     const markup = `
-I'm a great guy. For more information, skip to [section: this full transcript]. 
+I'm a great guy. For more information, skip to [section: the full transcript]. 
 
 I drink soda
 ============
 
 Actually, I only drink milk.
 
-I am great. Read this [highlight: full transcript of my greatness]
+I am great. Read the [highlight: full transcript of my greatness]
 ==================================================================
 
 Well, maybe I'm not so great.`
@@ -260,7 +261,7 @@ Well, maybe I'm not so great.`
 
     const greatnessHeading =
       new Heading([
-        new PlainText("I am great. Read this "),
+        new PlainText("I am great. Read the "),
         new Highlight([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
@@ -268,7 +269,7 @@ Well, maybe I'm not so great.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+          new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
           new PlainText('.')
         ]),
         sodaHeading,
@@ -361,6 +362,47 @@ Well, maybe I'm not so helpful.`
         greatnessHeading,
         new Paragraph([
           new PlainText("Well, maybe I'm not so helpful.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
+
+  specify('Inline NSFL conventions', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: the full transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read the [NSFL: full transcript of my greatness]
+============================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. Read the "),
+        new InlineNsfl([new PlainText("full transcript of my greatness")])
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
         ])
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
