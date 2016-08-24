@@ -4,6 +4,7 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
@@ -39,8 +40,8 @@ context('Inside a link', () => {
 })
 
 
-describe('A link nested within a table of contents entry', () => {
-  it('does not produce an <a> element', () => {
+context('A link within a table of contents entry does not produce an <a> element:', () => {
+  specify('in the table of contents itself', () => {
     const heading =
       new Heading([
         new Link([new PlainText('I enjoy apples')], 'https://google.com')
@@ -56,6 +57,29 @@ describe('A link nested within a table of contents entry', () => {
       + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
+      + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
+  })
+
+  specify('in a reference to that table of contents entry', () => {
+    const heading =
+      new Heading([
+        new Link([new PlainText('I enjoy apples')], 'https://google.com')
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('apples', heading)]),
+        heading
+      ], new UpDocument.TableOfContents([heading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#up-item-1">I enjoy apples</a></p>'
       + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
 })
@@ -129,13 +153,13 @@ context('When severeal links are nested within each other', () => {
       new Paragraph([
         new Link([
           new Link([
-          new Link([
             new Link([
-              new PlainText('Google is probably not '),
-              new Link([new PlainText('Bing')], 'https://bing.com')
-            ], 'https://ddg.gg')
-          ], 'https://google.co.uk')
-        ], 'https://altavista.com')
+              new Link([
+                new PlainText('Google is probably not '),
+                new Link([new PlainText('Bing')], 'https://bing.com')
+              ], 'https://ddg.gg')
+            ], 'https://google.co.uk')
+          ], 'https://altavista.com')
         ], 'https://google.com')
       ])
     ])
