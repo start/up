@@ -4,6 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
+import { Heading } from '../../../SyntaxNodes/Heading'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
@@ -17,6 +18,7 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
 
@@ -347,5 +349,52 @@ describe("Within an audio convention's fallback link content, all instances of <
 
     expect(Up.toHtml(document)).to.be.eql(
       '<audio controls loop src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?"><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
+  })
+})
+
+
+context('A link within a table of contents entry does not produce an <a> element:', () => {
+  specify('in the table of contents itself', () => {
+    const heading =
+      new Heading([
+        new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<h1 id="up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
+  })
+
+  specify('in a reference to that table of contents entry', () => {
+    const heading =
+      new Heading([
+        new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([
+          new ReferenceToTableOfContentsEntry('coincidence', heading)
+        ]),
+        heading
+      ], new UpDocument.TableOfContents([heading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></p>'
+      + '<h1 id="up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })
 })
