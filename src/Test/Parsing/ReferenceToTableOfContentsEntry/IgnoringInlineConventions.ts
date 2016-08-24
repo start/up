@@ -8,6 +8,7 @@ import { Bold } from'../../../SyntaxNodes/Bold'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
+import { Image } from '../../../SyntaxNodes/Image'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
@@ -268,6 +269,47 @@ Well, maybe I'm not so great.`
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
           new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
+
+  specify('Images', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: the full transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. See the [image: full transcript of my greatness] (example.com/transcript)
+=====================================================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. See the "),
+        new Image('full transcript of my greatness', 'https://example.com/transcript')
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
           new PlainText('.')
         ]),
         sodaHeading,
