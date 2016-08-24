@@ -12,14 +12,14 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 // A single non-blank line is treated as a paragraph.
 //
-// A block of 2 or more non-blank lines are treated as... a block of lines. Not as paragraphs!
+// A block of consecutive non-blank lines are treated as... a block of lines!
 //
-// For example:
+// Here's an example:
 //
-// Roses are red
-// Violets are blue
-// Lyrics have lines
-// And addresses do, too
+//   Roses are red
+//   Violets are blue
+//   Lyrics have lines
+//   And addresses do, too
 export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
@@ -38,10 +38,10 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   //
   //    For example:
   //
-  //    Roses are red
-  //    Violets are blue
-  //    =*=*=*=*=*=*=*=*=*=*=*=
-  //    Anyway, poetry is pretty fun.
+  //      Roses are red
+  //      Violets are blue
+  //      =*=*=*=*=*=*=*=*=*=*=*=
+  //      Anyway, poetry is pretty fun.
   //
   //    Only the first two lines are included in the line block, because the third line is parsed
   //    as a thematic break.
@@ -50,11 +50,11 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   //
   // 3. A line consisting solely of media conventions:
   //
-  //    [image: cautious cat](example.com/cat.jpg) [video: puppies playing](example.com/dog.jpg)
+  //      [image: cautious cat](example.com/cat.jpg) [video: puppies playing](example.com/dog.jpg)
   //
   //    Or a line consisting solely of media conventions that serve as links:
   //
-  //    [image: a cat](example.com/cat.jpg) (example.com/cat-gallery)
+  //      [image: a cat](example.com/cat.jpg) (example.com/cat-gallery)
   //
   //    These lines are a bit special. Not only do they terminate the preceding line block, but
   //    we "promote" their media conventions to the outline.
