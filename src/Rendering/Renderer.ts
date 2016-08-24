@@ -103,11 +103,11 @@ export abstract class Renderer {
     return this.renderEach(nodes).join('')
   }
 
-  protected getId(...parts: any[]): string {
-    const rawIdWithAllParts =
+  protected idFor(...parts: any[]): string {
+    const rawId =
       [this.config.idPrefix, ...parts].join(' ')
 
-    return rawIdWithAllParts
+    return rawId
       .trim()
       .replace(WHITESPACE_PATTERN, '-')
   }

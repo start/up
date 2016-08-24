@@ -518,7 +518,7 @@ export class HtmlRenderer extends Renderer {
       attrsForOuterContainer?: any
     }
   ): string {
-    const checkboxId = this.getId(args.conventionName, args.conventionCount)
+    const checkboxId = this.idFor(args.conventionName, args.conventionCount)
 
     const label =
       htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
@@ -610,17 +610,17 @@ export class HtmlRenderer extends Renderer {
   }
 
   private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {
-    return this.getId(
+    return this.idFor(
       this.config.terms.rendered.itemReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
   }
 
   private footnoteId(referenceNumber: number): string {
-    return this.getId(this.config.terms.rendered.footnote, referenceNumber)
+    return this.idFor(this.config.terms.rendered.footnote, referenceNumber)
   }
 
   private footnoteReferenceId(referenceNumber: number): string {
-    return this.getId(this.config.terms.rendered.footnoteReference, referenceNumber)
+    return this.idFor(this.config.terms.rendered.footnoteReference, referenceNumber)
   }
 
   // TODO: Move all this functionality to HtmlRenderer
