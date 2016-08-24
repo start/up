@@ -7,6 +7,7 @@ import { Audio } from '../../../SyntaxNodes/Audio'
 import { Bold } from'../../../SyntaxNodes/Bold'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
+import { Highlight } from '../../../SyntaxNodes/Highlight'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
@@ -197,7 +198,7 @@ Well, maybe I'm not so great.`
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
 
-  specify('Bold', () => {
+  specify('Example input', () => {
     const markup = `
 I'm a helpful guy. For more information, see [section: mac menu]. 
 
@@ -206,8 +207,8 @@ I drink soda
 
 Actually, I only drink milk.
 
-Why you must explore the { About This Mac } menu item.
-===================================
+Why you must explore the { About This Mac } menu item
+=====================================================
 
 Well, maybe I'm not so helpful.`
 
@@ -218,7 +219,7 @@ Well, maybe I'm not so helpful.`
       new Heading([
         new PlainText('Why you must explore the '),
         new ExampleInput('About This Mac'),
-        new PlainText(' menu item.')
+        new PlainText(' menu item')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.be.eql(
@@ -235,6 +236,47 @@ Well, maybe I'm not so helpful.`
         greatnessHeading,
         new Paragraph([
           new PlainText("Well, maybe I'm not so helpful.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
+
+  specify('Highlight', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: this full transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read this [highlight: full transcript of my greatness]
+==================================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. Read this "),
+        new Highlight([new PlainText("full transcript of my greatness")])
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
         ])
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
