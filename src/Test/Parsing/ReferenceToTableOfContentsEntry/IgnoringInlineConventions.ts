@@ -3,27 +3,13 @@ import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { Audio } from '../../../SyntaxNodes/Audio'
+import { Bold } from'../../../SyntaxNodes/Bold'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
+import { PlainText } from'../../../SyntaxNodes/PlainText'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
-/*import { Bold } from'../../../SyntaxNodes/Bold'
-import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
-import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { Image } from '../../../SyntaxNodes/Image'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { Italic } from '../../../SyntaxNodes/Italic'
-import { Link } from '../../../SyntaxNodes/Link'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
-import { Stress } from'../../../SyntaxNodes/Stress'
-import { Video } from'../../../SyntaxNodes/Video'*/
 
 context("A a table of contents entry reference's snippet ignores inline conventions. It only cares about matching literal text.", () => {
   specify("The snippet ignores inline conventions within the entry", () => {
@@ -126,7 +112,7 @@ Not quite true. For example, see [section: *emphasis*].`
   })
 
 
-  context('The snippet can match text within an entry that crosses the "boundary" of an inline convention', () => {
+  context('The snippet can match text within an entry that crosses the "boundary" of an inline convention:', () => {
     specify('Audio', () => {
       const markup = `
 I'm a great guy. For more information, skip to [section: this full transcript]. 
@@ -167,5 +153,46 @@ Well, maybe I'm not so great.`
           ])
         ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
     })
+  })
+
+  specify('Bold', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: this full transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read this __full transcript of my greatness__
+=========================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. Read this "),
+        new Bold([new PlainText("full transcript of my greatness")]),
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('this full transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
 })
