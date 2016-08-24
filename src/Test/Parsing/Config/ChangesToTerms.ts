@@ -53,8 +53,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(Up.toDocument(markupForConfigChanges, configChanges)).to.be.eql(Up.toDocument(markupForDefaultSettings))
     })
 
-    it("replaces the original setting", () => {
-      expect(Up.toDocument(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+    it("does not replace the default variations", () => {
+      expect(Up.toDocument(markupForDefaultSettings, configChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has any empty or blank variations ignored", () => {
@@ -80,8 +80,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(up.toDocument(markupForConfigChanges, configChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
-    it("replaces the original setting", () => {
-      expect(up.toDocument(markupForDefaultSettings, configChanges)).to.not.be.eql(whenEverythingIsDefault)
+    it("does not replace the default variations", () => {
+      expect(up.toDocument(markupForDefaultSettings, configChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
@@ -118,8 +118,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingChangesAtCreation).to.be.eql(new Up(conflictingConfigChanges).toDocument(markupForConfigChanges, configChanges))
     })
 
-    it("replaces the original setting", () => {
-      expect(up.toDocument(markupForDefaultSettings)).to.not.be.eql(whenEverythingIsDefault)
+    it("does not replace the default variations", () => {
+      expect(up.toDocument(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
