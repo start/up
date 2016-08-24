@@ -353,8 +353,8 @@ describe("Within an audio convention's fallback link content, all instances of <
 })
 
 
-context('A link within a table of contents entry does not produce an <a> element:', () => {
-  specify('in the table of contents itself', () => {
+context('Within a table of contents entry, all instances of < and & are escaped:', () => {
+  specify('In the table of contents itself', () => {
     const heading =
       new Heading([
         new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
@@ -373,7 +373,7 @@ context('A link within a table of contents entry does not produce an <a> element
       + '<h1 id="up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })
 
-  specify('in a reference to that table of contents entry', () => {
+  specify('In a reference to that table of contents entry', () => {
     const heading =
       new Heading([
         new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
@@ -396,5 +396,22 @@ context('A link within a table of contents entry does not produce an <a> element
       + '</nav>'
       + '<p><a href="#up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></p>'
       + '<h1 id="up-item-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
+  })
+})
+
+
+context('Within a table of contents entry reference that was never actually associated with an entry', () => {
+  specify('all instances of all instances of < and & are escaped', () => {
+    const document =
+      new UpDocument([
+        new Paragraph([
+          new ReferenceToTableOfContentsEntry('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        ])
+      ])
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<p>'
+      + '<i>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</i>'
+      + '</p>')
   })
 })
