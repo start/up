@@ -42,8 +42,8 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 
 export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
-// Writers are designed to be single-use, so a new instance must be created every time a new
-// document is written. This makes it a bit simpler to write concrete renderer classes, because
+// Renderers are designed to be single-use, so a new instance must be created every time a new
+// document is rendered. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
   private _result: string
@@ -54,7 +54,7 @@ export abstract class Renderer {
 
   get result(): string {
     this._result =
-      this._result || this.writeEitherTypeOfDocument(this.document)
+      this._result || this.renderEitherTypeOfDocument(this.document)
 
     return this._result
   }
@@ -115,7 +115,7 @@ export abstract class Renderer {
   protected abstract renderDocument(document: EitherTypeOfUpDocument): string
   protected abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
 
-  private writeEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
+  private renderEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
     return (
       document instanceof UpDocument
         ? this.renderDocument(document)
