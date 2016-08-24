@@ -14,7 +14,7 @@ export type InlineSyntaxNodePromotableToOutline =
   MediaSyntaxNode | Link
 
 
-export function tryToPromoteToOutline(
+export function tryToPromoteMediaToOutline(
   args: {
     inlineNodes: InlineSyntaxNode[]
     then: (promotedNodes: InlineSyntaxNodePromotableToOutline[]) => void
@@ -30,7 +30,7 @@ export function tryToPromoteToOutline(
     }
 
     if (inlineNode instanceof Link) {
-      const wasAbleToPromoteChildrenToOutline = tryToPromoteToOutline({
+      const wasAbleToPromoteChildrenToOutline = tryToPromoteMediaToOutline({
         inlineNodes: inlineNode.children,
         then: promotableChildren => {
           promotedNodes.push(new Link(promotableChildren, inlineNode.url))

@@ -6,7 +6,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { tryToPromoteToOutline } from './tryToPromoteToOutline'
+import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -82,26 +82,29 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
 
     isOnFirstLine = false
 
-    // The line was blank. Let's bail!
     if (!wasLineConsumed) {
+      // The line was blank, or it should be interpreted as another outline convention.
+      //
+      // Let's bail!
       break
     }
 
     // If a line consists solely of escaped whitespace, it doesn't generate any syntax nodes. We
-    // ignore these lines, but they don't terminate line blocks.
+    // ignore these lines, but they don't terminate anything.
     if (!inlineNodes.length) {
       continue
     }
 
-    const nodesFromThisLineShouldBePlacedDirectlyIntoOutline =
-      tryToPromoteToOutline({
-        inlineNodes,
-        then: outlineNodes => {
-          nodesPromotedToOutline = outlineNodes
-        }
-      })
+    // Before we include the current line in our paragraph or line block, let's make sure the line
+    // didn't conssist solely of media conventions (see list item 3 above).
+    tryToPromoteMediaToOutline({
+      inlineNodes,
+      then: outlineNodes => {
+        nodesPromotedToOutline = outlineNodes
+      }
+    })
 
-    if (nodesFromThisLineShouldBePlacedDirectlyIntoOutline) {
+    if (nodesPromotedToOutline.length) {
       break
     }
 
@@ -114,7 +117,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
 
   switch (inlineNodesPerLine.length) {
     case 0:
-      // If we didn't consume any regular lines, we can't produce a paragraph or a line block.
+      // We can't produce a paragraph or line block from zero lines. We're done!
       args.then(nodesPromotedToOutline, lengthConsumed)
       return
 
