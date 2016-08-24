@@ -1,6 +1,6 @@
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
-import { tryToParseOutlineSeparatorStreak } from './tryToParseOutlineSeparatorStreak'
+import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { HeadingLeveler } from './HeadingLeveler'
@@ -10,7 +10,7 @@ import { Config } from '../../Config'
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
   tryToParseUnorderedList,
   trytoParseOrderedList,
-  tryToParseOutlineSeparatorStreak,
+  tryToParseThematicBreakStreak,
   tryToParseBlockquote,
   tryToParseCodeBlock
 ]

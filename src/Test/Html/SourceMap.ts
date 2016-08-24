@@ -313,7 +313,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h6>')
   })
 
-  specify('Section separators', () => {
+  specify('Thematic breaks', () => {
     const document = new UpDocument([
       new ThematicBreak({ sourceLineNumber: 2 })
     ])

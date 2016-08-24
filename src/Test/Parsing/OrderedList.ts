@@ -387,7 +387,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
 
 describe('An ordered list item containing multiple indented lines', () => {
   it('does not need a blank line to separate it from the following list item', () => {
-    const itemsWithSeparator = `
+    const withoutSeparation = `
 # Hello, world!
   =============
 
@@ -395,7 +395,7 @@ describe('An ordered list item containing multiple indented lines', () => {
 # Goodbye, world!
   ===============`
 
-    const itemsWithoutSeparator = `
+    const withSeparation = `
 # Hello, world!
   =============
 
@@ -403,7 +403,7 @@ describe('An ordered list item containing multiple indented lines', () => {
 
 # Goodbye, world!
   ===============`
-    expect(Up.toDocument(itemsWithoutSeparator)).to.be.eql(Up.toDocument(itemsWithSeparator))
+    expect(Up.toDocument(withSeparation)).to.be.eql(Up.toDocument(withoutSeparation))
   })
 
   it('can contain a nested ordered list that uses the same type of bullet used by its containing list item', () => {

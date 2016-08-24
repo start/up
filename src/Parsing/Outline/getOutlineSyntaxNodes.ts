@@ -4,7 +4,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { tryToParseOutlineSeparatorStreak } from './tryToParseOutlineSeparatorStreak'
+import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
@@ -38,7 +38,7 @@ export function getOutlineSyntaxNodes(
     tryToParseUnorderedList,
     trytoParseOrderedList,
     tryToParseHeading,
-    tryToParseOutlineSeparatorStreak,
+    tryToParseThematicBreakStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,
     tryToParseTableOrChart,
@@ -89,7 +89,7 @@ export function getOutlineSyntaxNodes(
     }
   }
 
-  return condenseConsecutiveOutlineSeparators(outlineNodes)
+  return condenseConsecutiveThematicBreaks(outlineNodes)
 }
 
 
@@ -121,16 +121,16 @@ function withoutTrailingBlankLines(lines: string[]): string[] {
   return lines.slice(0, lastIndexOfNonBlankLine + 1)
 }
 
-// To produce a cleaner AST, we condense multiple consecutive thematic break nodes into one.
-function condenseConsecutiveOutlineSeparators(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
+// To produce a cleaner document, we condense multiple consecutive thematic breaks into one.
+function condenseConsecutiveThematicBreaks(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
   for (let node of nodes) {
-    const isConsecutiveOutlineSeparator =
+    const isConsecutiveThematicBreak =
       node instanceof ThematicBreak
       && last(resultNodes) instanceof ThematicBreak
 
-    if (!isConsecutiveOutlineSeparator) {
+    if (!isConsecutiveThematicBreak) {
       resultNodes.push(node)
     }
   }

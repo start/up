@@ -212,7 +212,7 @@ NSFL:
         ]))
     })
 
-    specify('Outline separators indicated by 3 or more blank lines', () => {
+    specify('Thematic breaks indicated by 3 or more blank lines', () => {
       const markup = `
 NSFL:
 

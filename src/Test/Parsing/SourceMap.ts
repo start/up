@@ -319,7 +319,7 @@ NSFL:
         ]))
     })
 
-    context('Outline separators indicated by:', () => {
+    context('Thematic breaks indicated by:', () => {
       specify('A streak', () => {
         const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
 
@@ -366,7 +366,7 @@ No, really. That was it.`
           ]))
       })
 
-      specify("Multiple streaks and instances of 3+ blank lines (all of which are condensed into one separator node)", () => {
+      specify("Multiple streaks and instances of 3+ blank lines (all of which are condensed into one thematic break node)", () => {
         const markup = `
 The end.
 

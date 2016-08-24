@@ -140,16 +140,16 @@ context('Unordered list bullets can be:', () => {
 
 describe('List items in an unordered list', () => {
   it('can be separated by 1 blank line', () => {
-    const textWithSeparator = `
+    const withSeparation = `
 * Hello, world!
 
 * Goodbye, world!`
 
-    const textWithoutSeparator = `
+    const withoutSeparation = `
 * Hello, world!
 * Goodbye, world!`
 
-    expect(Up.toDocument(textWithSeparator)).to.be.eql(Up.toDocument(textWithoutSeparator))
+    expect(Up.toDocument(withSeparation)).to.be.eql(Up.toDocument(withoutSeparation))
   })
 })
 
@@ -245,7 +245,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
 
 describe('An unordered list item containing multiple indented lines', () => {
   it('does not need a blank line to separate it from the following list item', () => {
-    const itemsWithSeparator = `
+    const withoutSeparation = `
 * Hello, world!
   =============
 
@@ -253,7 +253,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 * Goodbye, world!
   ===============`
 
-    const itemsWithoutSeparator = `
+    const withSeparation = `
 * Hello, world!
   =============
 
@@ -261,7 +261,7 @@ describe('An unordered list item containing multiple indented lines', () => {
 
 * Goodbye, world!
   ===============`
-    expect(Up.toDocument(itemsWithoutSeparator)).to.be.eql(Up.toDocument(itemsWithSeparator))
+    expect(Up.toDocument(withSeparation)).to.be.eql(Up.toDocument(withoutSeparation))
   })
 
   it('can contain a nested unordered list that uses the same type of bullet used by its containing list item', () => {

@@ -5,7 +5,7 @@ import { PlainText } from'../../../SyntaxNodes/PlainText'
 
 
 context('Inline documents completely ignore outline conventions. This includes:', () => {
-  specify('Outline separation streaks', () => {
+  specify('Thematic break streaks', () => {
     expect(Up.toInlineDocument('#~#~#~#~#')).to.be.eql(
       new InlineUpDocument([
         new PlainText('#~#~#~#~#')

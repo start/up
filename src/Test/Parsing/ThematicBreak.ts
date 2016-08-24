@@ -138,7 +138,7 @@ describe('A thematic break streak', () => {
       ]))
   })
 
-  it('can be surrounded by any number of empty or blank lines and still produce a single separator node', () => {
+  it('can be surrounded by any number of empty or blank lines and still produce a single thematic break node', () => {
     const markup = `
 Hello.
  \t \t
@@ -165,7 +165,7 @@ Goodbye.`
 })
 
 
-describe('Consecutive separator streaks', () => {
+describe('Consecutive thematic break streaks', () => {
   it('produce a single thematic break node', () => {
     const markup = `
 =============================================
@@ -179,8 +179,8 @@ describe('Consecutive separator streaks', () => {
 })
 
 
-context('Outline conventions are evaluated before inline conventions. Therefore, separator streaks can be comprised of characters that have special meaning inline. This includes:', () => {
-  context("3 hyphens (em dash). Just like any other separator streak, '---' can be:", () => {
+context('Outline conventions are evaluated before inline conventions. Therefore, thematic break streaks can be comprised of characters that have special meaning inline. This includes:', () => {
+  context("3 hyphens (em dash). Just like any other thematic break streak, '---' can be:", () => {
     specify("Alone on a line", () => {
       const markup = `
 ---
@@ -213,7 +213,7 @@ And that's my story.`
   })
 
 
-  context("A plus sign followed by a hyphen (plus-minus sign). Like any other separator streak, a streak containing '+-' can be:", () => {
+  context("A plus sign followed by a hyphen (plus-minus sign). Like any other thematic break streak, a streak containing '+-' can be:", () => {
     specify("Alone on a line", () => {
       const markup = `
 +-+-+-+-

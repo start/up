@@ -289,7 +289,7 @@ I enjoy apples
       ], tableOfContents))
   })
 
-  specify('Outline separators', () => {
+  specify('Thematic breaks', () => {
     const markup = `
 Anyway, let's get to the point.
 
