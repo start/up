@@ -20,7 +20,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ])
     ])
 
-    expect(up.toHtml(document)).to.be.eql(
+    expect(up.toHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="up-footnote-reference-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
@@ -42,6 +42,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })

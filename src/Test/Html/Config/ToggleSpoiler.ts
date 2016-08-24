@@ -31,7 +31,7 @@ describe("The text in an inline spoiler's label", () => {
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(node)).to.equal(html)
   })
 })
 
@@ -57,7 +57,7 @@ describe("The text in a spoiler block's label", () => {
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(node)).to.be.eql(html)
+    expect(up.toHtml(node)).to.equal(html)
   })
 })
 

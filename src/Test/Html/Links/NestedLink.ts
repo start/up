@@ -21,7 +21,7 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p><a href="https://google.com">Google<sup class="up-footnote-reference" id="up-footnote-reference-2">2</sup></a></p>')
   })
 
@@ -35,7 +35,7 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
 
@@ -50,7 +50,7 @@ context('A link within a table of contents entry does not produce an <a> element
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -72,7 +72,7 @@ context('A link within a table of contents entry does not produce an <a> element
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -98,7 +98,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p>'
       + '<a href="https://google.com"><em>Google<sup class="up-footnote-reference" id="up-footnote-reference-2">2</sup></em></a>'
       + '</p>')
@@ -116,7 +116,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p>'
       + '<a href="https://google.com"><em>Google is probably not Bing</em></a>'
       + '</p>')
@@ -135,7 +135,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -161,7 +161,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -191,7 +191,7 @@ context('When severeal links are nested within each other', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
 
@@ -207,6 +207,6 @@ context('When a link contains 2 or more inner links', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })

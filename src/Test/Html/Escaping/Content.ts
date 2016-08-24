@@ -31,7 +31,7 @@ describe('Within a plain text node, all instances of < and &', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p>')
+    expect(Up.toHtml(document)).to.equal('<p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p>')
   })
 })
 
@@ -44,7 +44,7 @@ describe('Within a plain text node, >, \', and "', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</p>')
+    expect(Up.toHtml(document)).to.equal('<p>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</p>')
   })
 })
 
@@ -55,7 +55,7 @@ describe('Within a code block node, all instances of < and &', () => {
       new CodeBlock('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<pre><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></pre>')
+    expect(Up.toHtml(document)).to.equal('<pre><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></pre>')
   })
 })
 
@@ -66,7 +66,7 @@ describe('Within a code block node, >, \', and "', () => {
       new CodeBlock('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<pre><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></pre>')
+    expect(Up.toHtml(document)).to.equal('<pre><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></pre>')
   })
 })
 
@@ -79,7 +79,7 @@ describe('Within an inline code node, all instances of < and &', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></p>')
+    expect(Up.toHtml(document)).to.equal('<p><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></p>')
   })
 })
 
@@ -92,7 +92,7 @@ describe('Within an inline code node, >, \', and "', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
+    expect(Up.toHtml(document)).to.equal('<p><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
   })
 })
 
@@ -105,7 +105,7 @@ describe('Within an example input node, all instances of < and &', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><kbd>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</kbd></p>')
+    expect(Up.toHtml(document)).to.equal('<p><kbd>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</kbd></p>')
   })
 })
 
@@ -118,7 +118,7 @@ describe('Within an example input node, >, \', and "', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><kbd>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</kbd></p>')
+    expect(Up.toHtml(document)).to.equal('<p><kbd>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</kbd></p>')
   })
 })
 
@@ -148,7 +148,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -178,7 +178,7 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -208,7 +208,7 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -234,7 +234,7 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -260,7 +260,7 @@ describe("Within a NSFW block's label, all instances of < and &", () => {
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -286,7 +286,7 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -305,7 +305,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
+    expect(Up.toHtml(document)).to.equal('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
   })
 })
 
@@ -324,7 +324,7 @@ describe('Inside a plain text node itself nested within several outline nodes, a
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
+    expect(Up.toHtml(document)).to.equal('<blockquote><ul><li><p>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</p></li></ul></blockquote>')
   })
 })
 
@@ -335,7 +335,7 @@ describe("Within a video's fallback link content, all instances of < and &", () 
       new Video('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<video controls loop src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?"><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></video>')
   })
 })
@@ -347,7 +347,7 @@ describe("Within an audio convention's fallback link content, all instances of <
       new Audio('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<audio controls loop src="" title="4 &amp; 5 < 10, and 6 &amp; 7 < 10. Coincidence?"><a href="">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></audio>')
   })
 })
@@ -363,7 +363,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -387,7 +387,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -409,7 +409,7 @@ context('Within a table of contents entry reference that was never actually asso
         ])
       ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p>'
       + '<i>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</i>'
       + '</p>')

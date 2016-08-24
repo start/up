@@ -27,7 +27,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Paragraph([new PlainText('Nimble navigator')], { sourceLineNumber: 5 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p data-up-source-line="5">Nimble navigator</p>')
+    expect(Up.toHtml(document)).to.equal('<p data-up-source-line="5">Nimble navigator</p>')
   })
 
   specify('Unordered list', () => {
@@ -46,7 +46,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ul data-up-source-line="3">'
       + '<li><p data-up-source-line="3">Tropical</p></li>'
       + '<li><p data-up-source-line="4">Territories</p></li>'
@@ -69,7 +69,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol data-up-source-line="1">'
       + '<li><p data-up-source-line="1">Tropical</p></li>'
       + '<li><p data-up-source-line="3">Territories</p></li>'
@@ -92,7 +92,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol data-up-source-line="1" start="3">'
       + '<li value="3"><p data-up-source-line="1">Tropical</p></li>'
       + '<li><p data-up-source-line="3">Territories</p></li>'
@@ -115,7 +115,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol data-up-source-line="1" reversed start="2">'
       + '<li value="2"><p data-up-source-line="1">Tropical</p></li>'
       + '<li value="1"><p data-up-source-line="2">Territories</p></li>'
@@ -143,7 +143,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<dl data-up-source-line="2">'
       + '<dt>Bulbasaur</dt>'
       + '<dd><p data-up-source-line="3">A grass type Pokemon</p></dd>'
@@ -174,7 +174,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ]), { sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table data-up-source-line="1">'
       + '<caption>Influential Games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
@@ -205,7 +205,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ]), { sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table data-up-source-line="3">'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
@@ -226,7 +226,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 4 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<div class="up-lines" data-up-source-line="4">'
       + '<div>Hollow</div>'
       + '<div>Fangs</div>'
@@ -239,7 +239,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new CodeBlock('color = Color.Green', { sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
+    expect(Up.toHtml(document)).to.equal('<pre data-up-source-line="3"><code>color = Color.Green</code></pre>')
   })
 
   specify('Blockquotes', () => {
@@ -251,7 +251,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], { sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<blockquote data-up-source-line="1">'
       + '<p data-up-source-line="1">Centipede</p>'
       + '</blockquote>')
@@ -263,7 +263,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 1, sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h1 data-up-source-line="3">Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.equal('<h1 data-up-source-line="3">Bulbasaur</h1>')
   })
 
   specify('Level 2 headings', () => {
@@ -271,7 +271,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 2, sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h2 data-up-source-line="1">Bulbasaur</h2>')
+    expect(Up.toHtml(document)).to.equal('<h2 data-up-source-line="1">Bulbasaur</h2>')
   })
 
   specify('Level 3 headings', () => {
@@ -279,7 +279,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 3, sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h3 data-up-source-line="3">Bulbasaur</h3>')
+    expect(Up.toHtml(document)).to.equal('<h3 data-up-source-line="3">Bulbasaur</h3>')
   })
 
   specify('Level 4  headings', () => {
@@ -287,14 +287,14 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h4 data-up-source-line="1">Bulbasaur</h4>')
+    expect(Up.toHtml(document)).to.equal('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings', () => {
     const document = new UpDocument([
       new Heading([new PlainText('Bulbasaur')], { level: 5, sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h5 data-up-source-line="3">Bulbasaur</h5>')
+    expect(Up.toHtml(document)).to.equal('<h5 data-up-source-line="3">Bulbasaur</h5>')
   })
 
   specify('Level 6 headings', () => {
@@ -302,7 +302,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 6, sourceLineNumber: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="1">Bulbasaur</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6 data-up-source-line="1">Bulbasaur</h6>')
   })
 
   specify('Level 10 headings', () => {
@@ -310,7 +310,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Heading([new PlainText('Bulbasaur')], { level: 10, sourceLineNumber: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6 data-up-source-line="2">Bulbasaur</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6 data-up-source-line="2">Bulbasaur</h6>')
   })
 
   specify('Thematic breaks', () => {
@@ -318,7 +318,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new ThematicBreak({ sourceLineNumber: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<hr data-up-source-line="2">')
+    expect(Up.toHtml(document)).to.equal('<hr data-up-source-line="2">')
   })
 
   specify('Spoiler blocks', () => {
@@ -339,7 +339,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 
   specify('NSFW blocks', () => {
@@ -360,7 +360,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 
   specify('NSFL blocks', () => {
@@ -381,7 +381,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 
   specify('Images', () => {
@@ -389,7 +389,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Image('haunted house', 'http://example.com/hauntedhouse.svg', { sourceLineNumber: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<img alt="haunted house" data-up-source-line="2" src="http://example.com/hauntedhouse.svg" title="haunted house">')
   })
 
@@ -399,7 +399,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Audio('ghostly howling', 'http://example.com/ghosts.ogg', { sourceLineNumber: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<audio controls data-up-source-line="3" loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
@@ -410,7 +410,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm', { sourceLineNumber: 5 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<video controls data-up-source-line="5" loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
@@ -423,7 +423,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       ], 'https://example.com/gallery', { sourceLineNumber: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<a data-up-source-line="2" href="https://example.com/gallery">'
       + '<img alt="haunted house" src="http://example.com/hauntedhouse.svg" title="haunted house">'
       + '</a>')

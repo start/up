@@ -16,7 +16,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('data', () => {
@@ -28,7 +28,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('file', () => {
@@ -40,7 +40,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('vbscript', () => {
@@ -52,7 +52,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 })
 
@@ -67,7 +67,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=javascript:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com/?q=javascript:malicious">Click me!</a></p>')
   })
 
   specify('data', () => {
@@ -79,7 +79,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=data:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com/?q=data:malicious">Click me!</a></p>')
   })
 
   specify('file', () => {
@@ -91,7 +91,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=file:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com/?q=file:malicious">Click me!</a></p>')
   })
 
   specify('vbscript', () => {
@@ -103,7 +103,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com/?q=vbscript:malicious">Click me!</a></p>')
   })
 })
 
@@ -118,7 +118,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('data', () => {
@@ -130,7 +130,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('file', () => {
@@ -142,7 +142,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 
   specify('vbscript', () => {
@@ -154,7 +154,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Click me!</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Click me!</p>')
   })
 })
 
@@ -171,7 +171,7 @@ describe('By default, a safe link nested inside an unsafe link', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Click me!</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com">Click me!</a></p>')
   })
 })
 
@@ -186,7 +186,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p><a href="javascript-app:stuff">Click me!</a></p>')
   })
 
@@ -199,7 +199,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p><a href="data-app:stuff">Click me!</a></p>')
   })
 
@@ -212,7 +212,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p><a href="file-app:stuff">Click me!</a></p>')
   })
 
@@ -225,7 +225,7 @@ context("A link's URL scheme can start with an unsafe scheme without being consi
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p><a href="vbscript-app:stuff">Click me!</a></p>')
   })
 })

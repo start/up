@@ -21,7 +21,7 @@ LOOK AWAY
       }
     })
 
-    expect(html).to.be.eql(
+    expect(html).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'
@@ -49,7 +49,7 @@ LOOK AWAY
       }
     })
 
-    expect(html).to.be.eql(
+    expect(html).to.equal(
       'After beating the Elite Four, '
       + '<span class="up-spoiler up-revealable">'
       + '<label for="reply-104-spoiler-1">toggle spoiler</label>'

@@ -40,7 +40,7 @@ import { Video } from '../../SyntaxNodes/Video'
 
 describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.toHtml(new UpDocument([]))).to.be.eql('')
+    expect(Up.toHtml(new UpDocument([]))).to.equal('')
   })
 })
 
@@ -51,7 +51,7 @@ describe('A paragraph node', () => {
       new Paragraph([new PlainText('Nimble navigator')])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p>Nimble navigator</p>')
+    expect(Up.toHtml(document)).to.equal('<p>Nimble navigator</p>')
   })
 })
 
@@ -73,7 +73,7 @@ describe('An unordered list node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ul>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -99,7 +99,7 @@ describe('An ordered list node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -125,7 +125,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol>'
       + '<li><p>Tropical</p></li>'
       + '<li value="5"><p>Territories</p></li>'
@@ -151,7 +151,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol start="3">'
       + '<li value="3"><p>Tropical</p></li>'
       + '<li><p>Territories</p></li>'
@@ -177,7 +177,7 @@ describe('When an ordered list node is in descending order', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<ol reversed start="0">'
       + '<li value="0"><p>Tropical</p></li>'
       + '<li value="-1"><p>Territories</p></li>'
@@ -208,7 +208,7 @@ describe('A description list', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<dl>'
       + '<dt>Bulbasaur</dt>'
       + '<dd><p>A grass type Pokemon</p></dd>'
@@ -240,7 +240,7 @@ describe('A table', () => {
         new Table.Caption([new PlainText('Influential Games')]))
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<caption>Influential Games</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Developer</th></tr></thead>'
@@ -271,7 +271,7 @@ context('When a table has rows with cells with numeric values', () => {
         new Table.Caption([new PlainText('Games in the Chrono series')]))
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<caption>Games in the Chrono series</caption>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
@@ -292,7 +292,7 @@ describe('A table without a caption or any rows', () => {
         ]), [])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Release Date</th></tr></thead>'
       + '</table>')
@@ -310,7 +310,7 @@ context('When a table header has cells spanning multiple columns', () => {
         ]), [])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<thead><tr><th colspan="5" scope="col">Game</th><th colspan="3" scope="col">Developer</th></tr></thead>'
       + '</table>')
@@ -340,7 +340,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
         ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<thead><tr><th scope="col">Aerobic Exercise</th><th scope="col">Anaerobic Exercise</th><th scope="col">Cooldown</th><th scope="col">Date</th></tr></thead>'
       + '<tr><td>Jogged on track</td><td colspan="2">Swam laps</td><td>March 11, 2018</td></tr>'
@@ -371,7 +371,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
         ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<thead><tr><th scope="col">Game</th><th scope="col">Year Development Started</th><th scope="col">Year Released</th></tr></thead>'
       + '<tr><td>Final Fantasy II</td><td class="up-numeric" colspan="2">1989</td></tr>'
@@ -402,7 +402,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
         new Table.Caption([new PlainText('AND operator logic')]))
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<caption>AND operator logic</caption>'
       + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
@@ -428,7 +428,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
         ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<table>'
       + '<thead><tr><th scope="col"></th><th scope="col">Most Common Word</th></tr></thead>'
       + '<tr><th colspan="2" scope="row">Monday</th></tr>'
@@ -454,7 +454,7 @@ describe('A line block node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<div class="up-lines">'
       + '<div>Hollow</div>'
       + '<div>Fangs</div>'
@@ -469,7 +469,7 @@ describe('A code block node', () => {
       new CodeBlock('color = Color.Green')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<pre><code>color = Color.Green</code></pre>')
+    expect(Up.toHtml(document)).to.equal('<pre><code>color = Color.Green</code></pre>')
   })
 })
 
@@ -484,7 +484,7 @@ describe('A blockquote node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<blockquote><p>Centipede</p></blockquote>')
+    expect(Up.toHtml(document)).to.equal('<blockquote><p>Centipede</p></blockquote>')
   })
 })
 
@@ -495,7 +495,7 @@ describe('A level 1 heading node', () => {
       new Heading([new PlainText('Bulbasaur')], { level: 1 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h1>Bulbasaur</h1>')
+    expect(Up.toHtml(document)).to.equal('<h1>Bulbasaur</h1>')
   })
 })
 
@@ -506,7 +506,7 @@ describe('A level 2 heading node', () => {
       new Heading([new PlainText('Ivysaur')], { level: 2 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h2>Ivysaur</h2>')
+    expect(Up.toHtml(document)).to.equal('<h2>Ivysaur</h2>')
   })
 })
 
@@ -517,7 +517,7 @@ describe('A level 3 heading node', () => {
       new Heading([new PlainText('Venusaur')], { level: 3 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h3>Venusaur</h3>')
+    expect(Up.toHtml(document)).to.equal('<h3>Venusaur</h3>')
   })
 })
 
@@ -528,7 +528,7 @@ describe('A level 4 heading node', () => {
       new Heading([new PlainText('Charmander')], { level: 4 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h4>Charmander</h4>')
+    expect(Up.toHtml(document)).to.equal('<h4>Charmander</h4>')
   })
 })
 
@@ -539,7 +539,7 @@ describe('A level 5 heading node', () => {
       new Heading([new PlainText('Charmeleon')], { level: 5 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h5>Charmeleon</h5>')
+    expect(Up.toHtml(document)).to.equal('<h5>Charmeleon</h5>')
   })
 })
 
@@ -550,7 +550,7 @@ describe('A level 6 heading node', () => {
       new Heading([new PlainText('Charizard')], { level: 6 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6>Charizard</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6>Charizard</h6>')
   })
 })
 
@@ -561,7 +561,7 @@ describe('A level 7 heading node', () => {
       new Heading([new PlainText('Squirtle')], { level: 7 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6>Squirtle</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6>Squirtle</h6>')
   })
 })
 
@@ -572,7 +572,7 @@ describe('A level 8 heading node', () => {
       new Heading([new PlainText('Wartortle')], { level: 8 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6>Wartortle</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6>Wartortle</h6>')
   })
 })
 
@@ -583,7 +583,7 @@ describe('A level 9 heading node', () => {
       new Heading([new PlainText('Blastoise')], { level: 9 })
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<h6>Blastoise</h6>')
+    expect(Up.toHtml(document)).to.equal('<h6>Blastoise</h6>')
   })
 })
 
@@ -594,7 +594,7 @@ describe('A thematic break node', () => {
       new ThematicBreak()
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<hr>')
+    expect(Up.toHtml(document)).to.equal('<hr>')
   })
 })
 
@@ -607,7 +607,7 @@ describe('An emphasis node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><em>Always</em></p>')
+    expect(Up.toHtml(document)).to.equal('<p><em>Always</em></p>')
   })
 })
 
@@ -620,7 +620,7 @@ describe('A stress node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><strong>Ness</strong></p>')
+    expect(Up.toHtml(document)).to.equal('<p><strong>Ness</strong></p>')
   })
 })
 
@@ -633,7 +633,7 @@ describe('An italic node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><i>Ness</i></p>')
+    expect(Up.toHtml(document)).to.equal('<p><i>Ness</i></p>')
   })
 })
 
@@ -646,7 +646,7 @@ describe('A bold node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><b>Ness</b></p>')
+    expect(Up.toHtml(document)).to.equal('<p><b>Ness</b></p>')
   })
 })
 
@@ -659,7 +659,7 @@ describe('An inline code node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><code>then</code></p>')
+    expect(Up.toHtml(document)).to.equal('<p><code>then</code></p>')
   })
 })
 
@@ -672,7 +672,7 @@ describe('An example input node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><kbd>esc</kbd></p>')
+    expect(Up.toHtml(document)).to.equal('<p><kbd>esc</kbd></p>')
   })
 })
 
@@ -685,7 +685,7 @@ describe('A revision insertion node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><ins>Wario</ins></p>')
+    expect(Up.toHtml(document)).to.equal('<p><ins>Wario</ins></p>')
   })
 })
 
@@ -698,7 +698,7 @@ describe('A revision deletion node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><del>Koopa Troopa</del></p>')
+    expect(Up.toHtml(document)).to.equal('<p><del>Koopa Troopa</del></p>')
   })
 })
 
@@ -711,7 +711,7 @@ describe('A normal parenthetical node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><small>(Koopa Troopa)</small></p>')
+    expect(Up.toHtml(document)).to.equal('<p><small>(Koopa Troopa)</small></p>')
   })
 })
 
@@ -724,7 +724,7 @@ describe('A square parenthetical node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><small class="up-square-brackets">[Koopa Troopa]</small></p>')
+    expect(Up.toHtml(document)).to.equal('<p><small class="up-square-brackets">[Koopa Troopa]</small></p>')
   })
 })
 
@@ -737,7 +737,7 @@ describe('A link node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><a href="https://google.com">Google</a></p>')
+    expect(Up.toHtml(document)).to.equal('<p><a href="https://google.com">Google</a></p>')
   })
 })
 
@@ -750,7 +750,7 @@ describe('A table of contents entry reference node that is not associated with a
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<p><i>When I became ruler of the world</i></p>')
+    expect(Up.toHtml(document)).to.equal('<p><i>When I became ruler of the world</i></p>')
   })
 })
 
@@ -763,7 +763,7 @@ describe('A footnote node', () => {
       ])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<p>'
       + '<sup class="up-footnote-reference" id="up-footnote-reference-3">'
       + '<a href="#up-footnote-3">3</a>'
@@ -779,7 +779,7 @@ describe('A footnote block node', () => {
       new FootnoteBlock([])
     ])
 
-    expect(Up.toHtml(document)).to.be.eql('<dl class="up-footnotes"></dl>')
+    expect(Up.toHtml(document)).to.equal('<dl class="up-footnotes"></dl>')
   })
 })
 
@@ -803,7 +803,7 @@ describe("Each footnote in a footnote block", () => {
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -814,7 +814,7 @@ describe('An image node', () => {
       new Image('haunted house', 'http://example.com/hauntedhouse.svg')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<img alt="haunted house" src="http://example.com/hauntedhouse.svg" title="haunted house">')
   })
 })
@@ -826,7 +826,7 @@ describe('An audio node', () => {
       new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<audio controls loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
@@ -840,7 +840,7 @@ describe('A video node', () => {
       new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     ])
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<video controls loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
@@ -861,7 +861,7 @@ describe('A highlight node', () => {
       + '<mark>45.9%</mark>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -883,7 +883,7 @@ describe('An inline spoiler node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -905,7 +905,7 @@ describe('An inline NSFW node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -927,7 +927,7 @@ describe('An inline NSFL node', () => {
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -951,7 +951,7 @@ describe('A spoiler block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -975,7 +975,7 @@ describe('A NSFW block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -999,6 +999,6 @@ describe('A NSFL block node', () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.be.eql(html)
+    expect(Up.toHtml(document)).to.equal(html)
   })
 })

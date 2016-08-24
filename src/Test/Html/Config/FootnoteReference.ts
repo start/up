@@ -23,7 +23,7 @@ describe("A footnote reference's ID", () => {
       ])
     ])
 
-    expect(up.toHtml(document)).to.be.eql(
+    expect(up.toHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="up-ref-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 })
@@ -56,6 +56,6 @@ describe("The ID of the footnote reference referencing the footnote", () => {
       + '<dt id="up-footnote-3"><a href="#up-ref-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })

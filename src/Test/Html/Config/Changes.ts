@@ -27,10 +27,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   describe("when provided to the default toHtml method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the provided config changes would actually change the HTML
-      expect(Up.toHtml(document, configChanges)).to.not.be.eql(htmlFromDefaultSettings)
+      expect(Up.toHtml(document, configChanges)).to.not.equal(htmlFromDefaultSettings)
 
       // Now, let's make sure the config changes don't alter subsequent calls
-      expect(Up.toHtml(document)).to.be.eql(htmlFromDefaultSettings)
+      expect(Up.toHtml(document)).to.equal(htmlFromDefaultSettings)
     })
   })
 
@@ -44,10 +44,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       const up = new Up(configChanges)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.toHtml(document, conflictingConfigChanges)).to.not.be.eql(whenProvidingConfigAtCreation)
+      expect(up.toHtml(document, conflictingConfigChanges)).to.not.equal(whenProvidingConfigAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.toHtml(document, configChanges)).to.be.eql(whenProvidingConfigAtCreation)
+      expect(up.toHtml(document, configChanges)).to.equal(whenProvidingConfigAtCreation)
     })
   })
 
@@ -64,15 +64,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the setting when calling the default toHtml method', () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingDefaultMethod)
+      expect(whenProvidingConfigAtCreation).to.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
     it("has the same result as providing the setting when calling the Up object's toHtml method", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenProvidingChangesWhenCallingtMethodOnObject)
+      expect(whenProvidingConfigAtCreation).to.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
     it("has the same result as providing the setting when calling the Up object's toHtml method, overwriting the setting provided at creation", () => {
-      expect(whenProvidingConfigAtCreation).to.be.eql(whenOverwritingChangesProvidedAtCreation)
+      expect(whenProvidingConfigAtCreation).to.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })
 }

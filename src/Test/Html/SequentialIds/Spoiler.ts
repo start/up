@@ -68,7 +68,7 @@ describe("Inline spoilers and spoiler blocks", () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(node)).to.be.eql(html)
+    expect(Up.toHtml(node)).to.equal(html)
   })
 })
 
@@ -101,7 +101,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
         ])
       ])
 
-    expect(up.toHtml(node)).to.be.eql(up.toHtml(node))
+    expect(up.toHtml(node)).to.equal(up.toHtml(node))
   })
 })
 
@@ -128,6 +128,6 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
         ])
       ])
 
-    expect(up.toHtml(node)).to.be.eql(up.toHtml(node))
+    expect(up.toHtml(node)).to.equal(up.toHtml(node))
   })
 })

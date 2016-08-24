@@ -21,7 +21,7 @@ describe('The main heading within the table of contents', () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(up.toHtml(document)).to.be.eql(
+    expect(up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'

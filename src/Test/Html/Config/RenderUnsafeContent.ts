@@ -25,7 +25,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         ])
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<p><a href="javascript:malicious">Click me!</a></p>')
     })
 
@@ -38,7 +38,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         ])
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<p><a href="data:malicious">Click me!</a></p>')
     })
 
@@ -51,7 +51,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         ])
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<p><a href="file:malicious">Click me!</a></p>')
     })
 
@@ -64,7 +64,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         ])
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<p><a href="vbscript:malicious">Click me!</a></p>')
     })
   })
@@ -81,7 +81,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
       ])
     ])
 
-    expect(up.toHtml(document)).to.be.eql(
+    expect(up.toHtml(document)).to.equal(
       '<p><a href="javascript:malicious">Click me!</a></p>')
   })
 
@@ -92,7 +92,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Image('Uh-oh!', 'javascript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<img alt="Uh-oh!" src="javascript:malicious" title="Uh-oh!">')
     })
 
@@ -101,7 +101,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Image('Uh-oh!', 'data:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<img alt="Uh-oh!" src="data:malicious" title="Uh-oh!">')
     })
 
@@ -110,7 +110,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Image('Uh-oh!', 'file:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<img alt="Uh-oh!" src="file:malicious" title="Uh-oh!">')
     })
 
@@ -119,7 +119,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Image('Uh-oh!', 'vbscript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<img alt="Uh-oh!" src="vbscript:malicious" title="Uh-oh!">')
     })
   })
@@ -131,7 +131,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Audio('Uh-oh!', 'javascript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<audio controls loop src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</audio>')
@@ -142,7 +142,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Audio('Uh-oh!', 'data:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<audio controls loop src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</audio>')
@@ -153,7 +153,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Audio('Uh-oh!', 'file:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<audio controls loop src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</audio>')
@@ -164,7 +164,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<audio controls loop src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</audio>')
@@ -178,7 +178,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Video('Uh-oh!', 'javascript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<video controls loop src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</video>')
@@ -189,7 +189,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Video('Uh-oh!', 'data:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<video controls loop src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</video>')
@@ -200,7 +200,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Video('Uh-oh!', 'file:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<video controls loop src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</video>')
@@ -211,7 +211,7 @@ context('When the "renderUnsafeContent" config setting is set to true, links/med
         new Video('Uh-oh!', 'vbscript:malicious')
       ])
 
-      expect(up.toHtml(document)).to.be.eql(
+      expect(up.toHtml(document)).to.equal(
         '<video controls loop src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</video>')

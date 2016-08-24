@@ -31,7 +31,7 @@ describe("The text in an inline NSFL convention's label", () => {
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })
 
@@ -57,6 +57,6 @@ describe("The text in a NSFL block's label", () => {
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.be.eql(html)
+    expect(up.toHtml(document)).to.equal(html)
   })
 })

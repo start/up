@@ -26,7 +26,7 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.be.eql(
+      expect(Up.toHtml(document)).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
@@ -43,7 +43,7 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.be.eql(
+      expect(Up.toHtml(document)).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
@@ -60,7 +60,7 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.be.eql(
+      expect(Up.toHtml(document)).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
@@ -77,7 +77,7 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.be.eql(
+      expect(Up.toHtml(document)).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
@@ -94,7 +94,7 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.be.eql(
+      expect(Up.toHtml(document)).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
@@ -112,7 +112,7 @@ context('When a document has a table of contents, its first HTML element is a <n
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-        expect(Up.toHtml(document)).to.be.eql(
+        expect(Up.toHtml(document)).to.equal(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
@@ -129,7 +129,7 @@ context('When a document has a table of contents, its first HTML element is a <n
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-        expect(Up.toHtml(document)).to.be.eql(
+        expect(Up.toHtml(document)).to.equal(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
@@ -156,7 +156,7 @@ context("The table of contents has no effect on elements that aren't referenced 
         ])
       ], new UpDocument.TableOfContents([headingInTableOfContents]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -217,7 +217,7 @@ context('When a table of contents has multiple entries', () => {
       ])
     ], tableOfContents)
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -277,7 +277,7 @@ context("Within the table of contents itself", () => {
         new FootnoteBlock([topLevelFootnote, nestedFootnote])
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -321,7 +321,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-item-1">'
@@ -367,7 +367,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-item-1">'
@@ -413,7 +413,7 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-item-1">'
@@ -453,7 +453,7 @@ context("When an item referenced by the table of contents has a source line numb
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -490,7 +490,7 @@ context('When a table of contents entry reference node is associated with an ent
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading]))
 
-    expect(Up.toHtml(document)).to.be.eql(
+    expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
