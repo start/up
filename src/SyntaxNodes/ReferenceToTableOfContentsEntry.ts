@@ -20,7 +20,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     // match. 
     //
     // If there are no exact matches, then we'll try to associate this reference with the first entry
-    // whose text *contains* snippetFromEntry`.
+    // whose text contains `snippetFromEntry`.
     //
     // If we still don't have a match after that, then we're out of luck.
     //
