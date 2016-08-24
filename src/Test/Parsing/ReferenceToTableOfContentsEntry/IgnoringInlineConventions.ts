@@ -3,10 +3,12 @@ import Up from '../../../index'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { Audio } from '../../../SyntaxNodes/Audio'
 import { Bold } from'../../../SyntaxNodes/Bold'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
 import { Image } from '../../../SyntaxNodes/Image'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
@@ -372,6 +374,54 @@ Well, maybe I'm not so helpful.`
         greatnessHeading,
         new Paragraph([
           new PlainText("Well, maybe I'm not so helpful.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
+
+  specify('Footnotes', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: fantastic transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read the full [^ exciting and amazing and wonderful and fantastic] transcript of my greatness
+===========================================================================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const footnote =
+      new Footnote([
+        new PlainText('exciting and amazing and wonderful and fantastic')
+      ], { referenceNumber: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. Read the full"),
+        footnote,
+        new PlainText(" transcript of my greatness")
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('fantastic transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new FootnoteBlock([footnote]),
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
         ])
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
