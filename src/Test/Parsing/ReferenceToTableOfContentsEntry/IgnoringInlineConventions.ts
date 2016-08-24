@@ -322,4 +322,46 @@ Well, maybe I'm not so great.`
         ])
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
+
+  specify('Example input', () => {
+    const markup = `
+I'm a helpful guy. For more information, see [section: SQL's delete]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+Why you should love SQL's \`DELETE FROM\` statement
+===================================================
+
+Well, maybe I'm not so helpful.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("Why you should love SQL's "),
+        new InlineCode("DELETE FROM"),
+        new PlainText(' statement')
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a helpful guy. For more information, see "),
+          new ReferenceToTableOfContentsEntry("SQL's delete", greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so helpful.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
 })
