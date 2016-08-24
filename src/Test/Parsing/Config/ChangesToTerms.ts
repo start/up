@@ -21,6 +21,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { markupForDefaultSettings, markupForConfigChanges, invalidMarkupForEmptyTerm } = args
 
+  // First, let's make sure the caller is expecting their config changes to make a difference...
+  expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
 
   const configChangesFor = (changes: UserProvidedSettings.Terms.Markup) => ({
     terms: { markup: changes }
@@ -40,9 +42,6 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   const conflictingConfigChanges =
     configChangesFor(args.conflictingTermChanges)
-
-  // First, let's make sure the caller is expecting their config changes to make a difference
-  expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
 
   const whenEverythingIsDefault =
     Up.toDocument(markupForDefaultSettings)
@@ -94,7 +93,6 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has any blank variations ignored", () => {
       expect(up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
-
       expect(up.toDocument(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
@@ -133,6 +131,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
       expect(new Up(configChangesWithNoVariations).toDocument(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
       expect(new Up(conflictingConfigChanges).toDocument(markupForDefaultSettings)).to.be.eql(whenEverythingIsDefault)
+    })
+
+    it("can be overwritten by providing different custom terms to the toDocument method", () => {
+      expect(up.toDocument(markupForConfigChanges, configChangesWithOnlyEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForConfigChanges, configChangesWithNoVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(markupForConfigChanges, conflictingConfigChanges)).to.not.be.eql(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
@@ -234,15 +238,15 @@ describe('The "video" config term', () => {
 
 describe('The "highlight" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForConfigChanges: '[mark: Ash fights Gary]',
+    markupForConfigChanges: '[paint: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
     termChanges: {
-      highlight: 'mark'
+      highlight: 'paint'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
     equivalentTermChangesWithEmptyAndBlankVariations: {
-      highlight: [null, 'mark', '', ' \t \t ', undefined]
+      highlight: [null, 'paint', '', ' \t \t ', undefined]
     },
     termChangesWithOnlyEmptyAndBlankVariations: {
       highlight: [null, '', ' \t \t ', undefined]
@@ -251,7 +255,7 @@ describe('The "highlight" config term', () => {
       highlight: []
     },
     conflictingTermChanges: {
-      highlight: 'paint'
+      highlight: 'note'
     }
   })
 })
@@ -492,7 +496,7 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
       referencedSection: []
     },
     conflictingTermChanges: {
-      referencedSection: 'heading'
+      referencedSection: 'reference'
     }
   })
 })
