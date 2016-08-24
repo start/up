@@ -16,7 +16,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 # Mittens
 -----------`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new ThematicBreak(),
           new OrderedList([
@@ -36,7 +36,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 1) Mittens
 -----------`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new ThematicBreak(),
           new OrderedList([
@@ -62,7 +62,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
       const heading =
         new Heading([new PlainText('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument(
           [heading],
           new UpDocument.TableOfContents([heading])
@@ -82,7 +82,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 # Clinton
 # Sanders`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -124,7 +124,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 # Clinton
 # Sanders`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -162,7 +162,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 0010) Hello, world!
 #. Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -184,7 +184,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 -0020) Hello, world!
 #) Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -206,7 +206,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 000) Hello, world!
 #) Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -227,7 +227,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 
 context("When an ordered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
   specify('An integer followed by a closing parenthesis', () => {
-    expect(Up.toDocument('1) 1783. Not a good year for Great Britain.')).to.be.eql(
+    expect(Up.toDocument('1) 1783. Not a good year for Great Britain.')).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -240,7 +240,7 @@ context("When an ordered list has just one item, that item can start with an int
   })
 
   specify('A number sign', () => {
-    expect(Up.toDocument('# 1783. Not a good year for Great Britain.')).to.be.eql(
+    expect(Up.toDocument('# 1783. Not a good year for Great Britain.')).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -253,7 +253,7 @@ context("When an ordered list has just one item, that item can start with an int
   })
 
   specify('A number sign followed by a period', () => {
-    expect(Up.toDocument('#. 1783. Not a good year for Great Britain.')).to.be.eql(
+    expect(Up.toDocument('#. 1783. Not a good year for Great Britain.')).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -266,7 +266,7 @@ context("When an ordered list has just one item, that item can start with an int
   })
 
   specify('A number sign followed by a closing parenthesis', () => {
-    expect(Up.toDocument('#) 1783. Not a good year for Great Britain.')).to.be.eql(
+    expect(Up.toDocument('#) 1783. Not a good year for Great Britain.')).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -305,7 +305,7 @@ I enjoy apples
     const deliciousHeading =
       new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         enjoyHeading,
         new OrderedList([

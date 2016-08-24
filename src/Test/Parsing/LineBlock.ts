@@ -20,7 +20,7 @@ describe('Consecutive non-blank lines', () => {
 Roses are red
 Violets are blue`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -44,7 +44,7 @@ Violets are **blue**
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -79,7 +79,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -117,7 +117,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -152,7 +152,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -184,7 +184,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -226,7 +226,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -270,7 +270,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -314,7 +314,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -354,7 +354,7 @@ Skeltals are white
 If you stay here
 You're in for a fright`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -392,7 +392,7 @@ context('Trailing whitespace in a line block is completely inconsequential. This
 Roses are red  \t  \t 
 Violets are blue  \t  `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -410,7 +410,7 @@ Violets are blue  \t  `
 Roses are red\\ \t   
 Violets are blue\\\t   `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -428,7 +428,7 @@ Violets are blue\\\t   `
 Roses are red   \\ \t  \\  
 Violets are blue\t  \\   \\\t   `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -446,7 +446,7 @@ Violets are blue\t  \\   \\\t   `
 Roses are red\\\\\\\t    \\  \\ \t  \\  
 Violets are blue\\\\\\\\\\  \\   \\\t   `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([

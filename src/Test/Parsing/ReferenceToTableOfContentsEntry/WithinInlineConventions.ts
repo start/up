@@ -43,7 +43,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -84,7 +84,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -131,7 +131,7 @@ I love all sorts of fancy stuff.`
       new PlainText('.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits.'),
@@ -169,7 +169,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -210,7 +210,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -251,7 +251,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -292,7 +292,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -333,7 +333,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -374,7 +374,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -415,7 +415,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -456,7 +456,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -497,7 +497,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -538,7 +538,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
@@ -579,7 +579,7 @@ I love all sorts of fancy stuff.`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),

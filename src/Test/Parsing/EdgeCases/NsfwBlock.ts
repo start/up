@@ -10,7 +10,7 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 context("A NSFW block's label line does not produce a NSFW block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toDocument('NSFW:')).to.be.eql(
+    expect(Up.toDocument('NSFW:')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('NSFW:')
       ]))
@@ -21,7 +21,7 @@ context("A NSFW block's label line does not produce a NSFW block node if it is",
 NSFW:
 No!
 Avoid that initialism!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([new PlainText('NSFW:')]),
@@ -36,7 +36,7 @@ Avoid that initialism!`
 NSFW:
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFW:')
@@ -53,7 +53,7 @@ NSFW:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFW:')
@@ -72,7 +72,7 @@ NSFW:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFW:')

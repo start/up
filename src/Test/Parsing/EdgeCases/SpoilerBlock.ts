@@ -10,7 +10,7 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toDocument('SPOILER:')).to.be.eql(
+    expect(Up.toDocument('SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('SPOILER:')
       ]))
@@ -21,7 +21,7 @@ context("A spoiler block's label line does not produce a spoiler block node if i
 Spoiler:
 No!
 Roses don't glow!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([new PlainText('Spoiler:')]),
@@ -36,7 +36,7 @@ Roses don't glow!`
 Spoiler:
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Spoiler:')
@@ -53,7 +53,7 @@ Spoiler:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Spoiler:')
@@ -72,7 +72,7 @@ Spoiler:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Spoiler:')

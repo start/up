@@ -9,7 +9,7 @@ import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by 2 asterisks', () => {
   it('is put inside a stress node', () => {
-    expect(Up.toDocument('Hello, **world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **world**!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Stress([
@@ -23,7 +23,7 @@ describe('Text surrounded by 2 asterisks', () => {
 
 describe('Stressed text', () => {
   it('is evaluated for inline conventions', () => {
-    expect(Up.toDocument('Hello, **`world`**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **`world`**!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Stress([
@@ -34,7 +34,7 @@ describe('Stressed text', () => {
   })
 
   it('can contain further stressed text', () => {
-    expect(Up.toDocument('Hello, **my **little** world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **my **little** world**!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Stress([
@@ -49,7 +49,7 @@ describe('Stressed text', () => {
   })
 
   it('can contain emphasized text', () => {
-    expect(Up.toDocument('Hello, **my *little* world**!')).to.be.eql(
+    expect(Up.toDocument('Hello, **my *little* world**!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Stress([

@@ -17,7 +17,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
 
   context('For inline NSFL conventions, the config term', () => {
     it('is used', () => {
-      expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.be.eql(
+      expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -29,7 +29,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
-      expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
+      expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
     })
 
     it('is trimmed', () => {
@@ -40,7 +40,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
           }
         })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -56,7 +56,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
           }
         })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -72,7 +72,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
           }
         })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -94,7 +94,7 @@ ruins ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new Paragraph([
@@ -122,7 +122,7 @@ ruINs eNDiNg:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
+      expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
     })
 
     it('is trimmed', () => {
@@ -139,7 +139,7 @@ RUINS ending:
         }
       })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new Paragraph([
@@ -166,7 +166,7 @@ RUINS ending:
         }
       })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new Paragraph([
@@ -195,7 +195,7 @@ LOOK AWAY:
         }
       })
 
-      expect(document).to.be.eql(
+      expect(document).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new Paragraph([

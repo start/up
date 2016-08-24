@@ -10,7 +10,7 @@ import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 describe('Bracketed (square bracketed or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
   it("produces a link node. The first bracketed text is treated as the link's contents, and the second is treated as the link's URL", () => {
-    expect(Up.toDocument('I like [this site](https://stackoverflow.com).')).to.be.eql(
+    expect(Up.toDocument('I like [this site](https://stackoverflow.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -66,7 +66,7 @@ context("If there's no whitespace between a link's bracketed content and its bra
 
 describe('An otherwise-valid link with its URL escaped', () => {
   it('does not produce a link node', () => {
-    expect(Up.toDocument('[call me](\\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[call me](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[call me]')
@@ -81,7 +81,7 @@ describe('An otherwise-valid link with its URL escaped', () => {
 
 context("When an otherwise-valid link's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('it does not produce a link node', () => {
-    expect(Up.toDocument('[call me]( \t \\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[call me]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[call me]')
@@ -94,7 +94,7 @@ context("When an otherwise-valid link's URL starts with whitespace, and the firs
 
 describe("A link's contents", () => {
   it('is evaluated for other conventions', () => {
-    expect(Up.toDocument('I like [*this* site][https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toDocument('I like [*this* site][https://stackoverflow.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -108,7 +108,7 @@ describe("A link's contents", () => {
   })
 
   it('is evaluated for other links', () => {
-    expect(Up.toDocument('[Google is probably not [Bing][https://bing.com]][https://google.com].')).to.be.eql(
+    expect(Up.toDocument('[Google is probably not [Bing][https://bing.com]][https://google.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Google is probably not '),
@@ -121,7 +121,7 @@ describe("A link's contents", () => {
   })
 
   it('is evaluated for naked URLs', () => {
-    expect(Up.toDocument('[Google is not at https://bing.com][https://google.com].')).to.be.eql(
+    expect(Up.toDocument('[Google is not at https://bing.com][https://google.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Google is not at '),
@@ -137,7 +137,7 @@ describe("A link's contents", () => {
 
 describe("A link's URL", () => {
   it('is not evaluated for other conventions', () => {
-    expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=*hello*there].')).to.be.eql(
+    expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=*hello*there].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -148,7 +148,7 @@ describe("A link's URL", () => {
   })
 
   it('can contain spaces (assuming the bracketed URL directly follows the bracketed content)', () => {
-    expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=hello there].')).to.be.eql(
+    expect(Up.toDocument('I like [this site][https://stackoverflow.com/?search=hello there].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -162,7 +162,7 @@ describe("A link's URL", () => {
 
 describe('A link produced by square brackets', () => {
   it('can start with square bracketed text', () => {
-    expect(Up.toDocument('I like [[only one] site][https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toDocument('I like [[only one] site][https://stackoverflow.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -179,7 +179,7 @@ describe('A link produced by square brackets', () => {
 
 describe('A link produced by parentheses', () => {
   it('can start with parenthesized text', () => {
-    expect(Up.toDocument('I like ((only one) site)(https://stackoverflow.com).')).to.be.eql(
+    expect(Up.toDocument('I like ((only one) site)(https://stackoverflow.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -196,7 +196,7 @@ describe('A link produced by parentheses', () => {
 
 describe("The URL of a link produced by square brackets", () => {
   it('can contain matching unescaped brackets', () => {
-    expect(Up.toDocument('Here is a [strange URL][https://google.com/search?q=[hi]].')).to.be.eql(
+    expect(Up.toDocument('Here is a [strange URL][https://google.com/search?q=[hi]].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Here is a '),
         new Link([
@@ -207,7 +207,7 @@ describe("The URL of a link produced by square brackets", () => {
   })
 
   it('can have an escaped, unmatched closing bracket', () => {
-    expect(Up.toDocument('I like [this site][https://google.com/?fake=\\]query]. I bet you do, too.')).to.be.eql(
+    expect(Up.toDocument('I like [this site][https://google.com/?fake=\\]query]. I bet you do, too.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([

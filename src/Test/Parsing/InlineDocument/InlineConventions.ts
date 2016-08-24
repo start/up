@@ -25,7 +25,7 @@ import { Video } from'../../../SyntaxNodes/Video'
 context('Except for footnots, every inline convention is supported in inline documents.', () => {
   context('Supported conventions:', () => {
     specify('Audio', () => {
-      expect(Up.toInlineDocument('Listen to this: [audio: cricket meowing] (example.com/meow.ogg)')).to.be.eql(
+      expect(Up.toInlineDocument('Listen to this: [audio: cricket meowing] (example.com/meow.ogg)')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('Listen to this: '),
           new Audio('cricket meowing', 'https://example.com/meow.ogg')
@@ -33,7 +33,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Bold', () => {
-      expect(Up.toInlineDocument('I loved my __Game Boy__, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my __Game Boy__, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Bold([
@@ -44,7 +44,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Emphasis', () => {
-      expect(Up.toInlineDocument('I loved my *Game Boy*, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my *Game Boy*, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Emphasis([
@@ -55,7 +55,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Example input', () => {
-      expect(Up.toInlineDocument('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved pressing '),
           new ExampleInput('A'),
@@ -66,7 +66,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Highlight', () => {
-      expect(Up.toInlineDocument('I loved my [highlight: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [highlight: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Highlight([
@@ -77,7 +77,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Images', () => {
-      expect(Up.toInlineDocument('Look at this: [image: cricket sewing] (example.com/sew.ogg)')).to.be.eql(
+      expect(Up.toInlineDocument('Look at this: [image: cricket sewing] (example.com/sew.ogg)')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('Look at this: '),
           new Image('cricket sewing', 'https://example.com/sew.ogg')
@@ -85,7 +85,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Inline code', () => {
-      expect(Up.toInlineDocument('I loved `<dl>` elements, though I never used them.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved `<dl>` elements, though I never used them.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved '),
           new InlineCode('<dl>'),
@@ -94,7 +94,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Inline NSFL', () => {
-      expect(Up.toInlineDocument('I loved my [NSFL: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [NSFL: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new InlineNsfl([
@@ -105,7 +105,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Inline NSFW', () => {
-      expect(Up.toInlineDocument('I loved my [NSFW: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [NSFW: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new InlineNsfw([
@@ -116,7 +116,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Inline spoilers', () => {
-      expect(Up.toInlineDocument('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new InlineSpoiler([
@@ -127,7 +127,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Italic', () => {
-      expect(Up.toInlineDocument('I loved my _Game Boy_, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my _Game Boy_, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Italic([
@@ -138,7 +138,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Links', () => {
-      expect(Up.toInlineDocument('I loved my [Game Boy] (example.com/gb), though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [Game Boy] (example.com/gb), though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Link([
@@ -149,7 +149,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Parnetheses', () => {
-      expect(Up.toInlineDocument('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new NormalParenthetical([
@@ -160,7 +160,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Square brackets', () => {
-      expect(Up.toInlineDocument('I loved my [Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my [Nintendo] Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new SquareParenthetical([
@@ -171,7 +171,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Revision deletion', () => {
-      expect(Up.toInlineDocument('I loved my ~~Nintendo~~ Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my ~~Nintendo~~ Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new RevisionDeletion([
@@ -182,7 +182,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Revision insertion', () => {
-      expect(Up.toInlineDocument('I loved my ++Nintendo++ Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my ++Nintendo++ Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new RevisionInsertion([
@@ -193,7 +193,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Stress', () => {
-      expect(Up.toInlineDocument('I loved my **Game Boy**, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my **Game Boy**, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
           new Stress([
@@ -204,7 +204,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Video', () => {
-      expect(Up.toInlineDocument('Watch this: [video: cricket meowing] (example.com/meow.webm)')).to.be.eql(
+      expect(Up.toInlineDocument('Watch this: [video: cricket meowing] (example.com/meow.webm)')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('Watch this: '),
           new Video('cricket meowing', 'https://example.com/meow.webm')
@@ -215,7 +215,7 @@ context('Except for footnots, every inline convention is supported in inline doc
 
   context('Footnotes in inline documents are treated as normal parentheticals. This includes when:', () => {
     specify('A footnote produced by square brackets is at the top level of the document', () => {
-      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my Game Boy '),
           new NormalParenthetical([
@@ -226,7 +226,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('A footnote produced by parentheses is at the top level of the document', () => {
-      expect(Up.toInlineDocument('I loved my Game Boy (^ from Nintendo), though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my Game Boy (^ from Nintendo), though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my Game Boy '),
           new NormalParenthetical([
@@ -237,7 +237,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Both kinds of footnotes are at the top level of the document', () => {
-      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my Game Boy '),
           new NormalParenthetical([
@@ -252,7 +252,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('Both kinds of footnotes are nested within other inline conventions', () => {
-      expect(Up.toInlineDocument('[SPOILER: *I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.*]')).to.be.eql(
+      expect(Up.toInlineDocument('[SPOILER: *I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.*]')).to.deep.equal(
         new InlineUpDocument([
           new InlineSpoiler([
             new Emphasis([
@@ -271,7 +271,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('A footnote is overlapped by another convention with continuity priority equal to that of parenthetical conventions (and naturally less than that of footnotes)', () => {
-      expect(Up.toInlineDocument('I loved **my very own [^ beloved** Nintendo] Game Boy, though I never took it with me when I left home.')).to.be.eql(
+      expect(Up.toInlineDocument('I loved **my very own [^ beloved** Nintendo] Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved '),
           new Stress([
@@ -291,7 +291,7 @@ context('Except for footnots, every inline convention is supported in inline doc
 
   context('The convention for referencing table of contents entries is totally ignored. The markup is instead treated as a parenthetical of the appropriate bracket type.', () => {
     specify('An otherwise-valid reference indicated by square brackets produces a square parenthetical node', () => {
-      expect(Up.toInlineDocument('My favorite section of the textbook [Section: Why Math Is Great] was damaged by water.')).to.be.eql(
+      expect(Up.toInlineDocument('My favorite section of the textbook [Section: Why Math Is Great] was damaged by water.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('My favorite section of the textbook '),
           new SquareParenthetical([
@@ -302,7 +302,7 @@ context('Except for footnots, every inline convention is supported in inline doc
     })
 
     specify('An otherwise-valid reference indicated by parentheses produces a normal parenthetical node', () => {
-      expect(Up.toInlineDocument('My favorite section of the textbook (Section: Why Math Is Great) was damaged by water.')).to.be.eql(
+      expect(Up.toInlineDocument('My favorite section of the textbook (Section: Why Math Is Great) was damaged by water.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('My favorite section of the textbook '),
           new NormalParenthetical([

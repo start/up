@@ -19,7 +19,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(footnoteProducedByParentheses)).to.be.eql(
+    expect(Up.toDocument(footnoteProducedByParentheses)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -37,7 +37,7 @@ describe('Square bracketed text starting with a caret', () => {
     const footnoteProducedBySquareBrackets =
       "I don't eat cereal. [^Well, I do, but I pretend not to.] Never have."
 
-    expect(Up.toDocument(footnoteProducedByParentheses)).to.be.eql(
+    expect(Up.toDocument(footnoteProducedByParentheses)).to.deep.equal(
       Up.toDocument(footnoteProducedBySquareBrackets))
   })
 })
@@ -51,7 +51,7 @@ describe('A word followed by several spaces followed by a footnote', () => {
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -73,7 +73,7 @@ describe('A footnote', () => {
       new PlainText(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.be.eql(
+    expect(Up.toDocument("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -93,7 +93,7 @@ describe('A footnote', () => {
       new PlainText(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.be.eql(
+    expect(Up.toDocument("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new Stress([
@@ -115,7 +115,7 @@ describe('A footnote', () => {
       new PlainText(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.be.eql(
+    expect(Up.toDocument("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new Stress([
@@ -147,7 +147,7 @@ describe('A footnote', () => {
       new PlainText(" Never have."),
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
@@ -169,7 +169,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.be.eql(
+    expect(Up.toDocument("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),

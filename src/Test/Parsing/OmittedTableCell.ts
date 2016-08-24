@@ -18,7 +18,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -62,7 +62,7 @@ Game;               Release Date
 Final Fantasy;      1987;               This game has some interesting bugs.
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

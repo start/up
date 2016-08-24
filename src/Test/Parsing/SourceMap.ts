@@ -26,7 +26,7 @@ import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 context('When the "createSourceMap" config setting is not set to true', () => {
   specify('no source maps are produced', () => {
-    expect(Up.toDocument("I enjoy apples.")).to.be.eql(
+    expect(Up.toDocument("I enjoy apples.")).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText('I enjoy apples.')], { sourceLineNumber: undefined }),
       ]))
@@ -40,7 +40,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
   })
 
   specify("The source line numbers start at 1.", () => {
-    expect(up.toDocument('Hi!')).to.be.eql(
+    expect(up.toDocument('Hi!')).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText("Hi!")], { sourceLineNumber: 1 })
       ]))
@@ -52,7 +52,7 @@ context('When the "createSourceMap" config setting is set to true, outline nodes
       const markup = `
 I actually start on the second line.`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([new PlainText("I actually start on the second line.")], { sourceLineNumber: 2 })
         ]))
@@ -63,7 +63,7 @@ I actually start on the second line.`
 
 I actually start on the third line.`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([new PlainText("I actually start on the third line.")], { sourceLineNumber: 3 })
         ]))
@@ -78,7 +78,7 @@ I actually start on the third line.`
 
 I actually start on the seventh line.`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([new PlainText("I actually start on the seventh line.")], { sourceLineNumber: 7 })
         ]))
@@ -96,7 +96,7 @@ I enjoy apples
         const heading =
           new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument(
             [heading],
             new UpDocument.TableOfContents([heading])))
@@ -111,7 +111,7 @@ I enjoy apples
         const heading =
           new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument(
             [heading],
             new UpDocument.TableOfContents([heading])))
@@ -127,7 +127,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -157,7 +157,7 @@ Chart: \`AND\` operator logic
 1;      true;   false
 0;      false;  false`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -187,7 +187,7 @@ Chart: \`AND\` operator logic
 
 2. They're delicious`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new OrderedList([
             new OrderedList.Item([
@@ -206,7 +206,7 @@ Chart: \`AND\` operator logic
 
 * They're delicious`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new UnorderedList([
             new UnorderedList.Item([
@@ -228,7 +228,7 @@ Bananas
 Peaches
   They're also delicious.`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -253,7 +253,7 @@ Peaches
 Roses are read
 Apples are blue`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new LineBlock([
             new LineBlock.Line([
@@ -271,7 +271,7 @@ Apples are blue`
 SPOILER:
   Who doesn't?`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 3 })
@@ -285,7 +285,7 @@ NSFW:
 
   Who doesn't?`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsfwBlock([
             new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 4 })
@@ -300,7 +300,7 @@ NSFL:
 
   Who doesn't?`
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 5 })
@@ -311,7 +311,7 @@ NSFL:
     specify('Blockquotes (and the outline nodes they contain)', () => {
       const markup = `
 > Who doesn't?`
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Blockquote([
             new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 2 })
@@ -323,7 +323,7 @@ NSFL:
       specify('A streak', () => {
         const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument([
             new ThematicBreak({ sourceLineNumber: 1 }),
           ]))
@@ -337,7 +337,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new ThematicBreak({ sourceLineNumber: 3 }),
@@ -358,7 +358,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new ThematicBreak({ sourceLineNumber: 3 }),
@@ -383,7 +383,7 @@ The end.
 
 No, really. That was it.`
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument([
             new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
             new ThematicBreak({ sourceLineNumber: 3 }),
@@ -398,7 +398,7 @@ No, really. That was it.`
 const reason = "They are cheap and delicious."
 \`\`\``
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 }),
         ]))
@@ -414,7 +414,7 @@ Chrono Cross;     1999`
 
       const NO_CAPTION: Table.Caption = undefined
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -443,7 +443,7 @@ Chart:
 
       const NO_CAPTION: Table.Caption = undefined
 
-      expect(up.toDocument(markup)).to.be.eql(
+      expect(up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -466,21 +466,21 @@ Chart:
 
     context('Media nodes are given a source line number if they were "outlined":', () => {
       specify('Audio nodes', () => {
-        expect(up.toDocument('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.be.eql(
+        expect(up.toDocument('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.deep.equal(
           new UpDocument([
             new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Images', () => {
-        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg)')).to.be.eql(
+        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg)')).to.deep.equal(
           new UpDocument([
             new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Videos', () => {
-        expect(up.toDocument('[video: haunted house] (example.com/hauntedhouse.webm)')).to.be.eql(
+        expect(up.toDocument('[video: haunted house] (example.com/hauntedhouse.webm)')).to.deep.equal(
           new UpDocument([
             new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
           ]))
@@ -490,7 +490,7 @@ Chart:
 
     describe('A link containing an "outlined" media node', () => {
       it('is given a source line number (but the media node it contains is not)', () => {
-        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.be.eql(
+        expect(up.toDocument('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.deep.equal(
           new UpDocument([
             new Link([
               new Image('haunted house', 'https://example.com/hauntedhouse.svg')
@@ -505,7 +505,7 @@ Chart:
         const markup =
           '[image: haunted house](example.com/hauntedhouse.svg) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house] (example.com/hauntedhouse.webm)'
 
-        expect(up.toDocument(markup)).to.be.eql(
+        expect(up.toDocument(markup)).to.deep.equal(
           new UpDocument([
             new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 }),
             new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
@@ -528,7 +528,7 @@ I do eat apples, though.`
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -575,7 +575,7 @@ Pink lady.`
     const bestAppleHeading =
       new Heading([new PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 18 })
 
-    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.deep.equal(
       new UpDocument([
         enjoyApplesHeading,
         new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
@@ -624,7 +624,7 @@ Pink lady
     const bestAppleHeading =
       new Heading([new PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 16 })
 
-    expect(Up.toDocument(markup, { createSourceMap: true })).to.be.eql(
+    expect(Up.toDocument(markup, { createSourceMap: true })).to.deep.equal(
       new UpDocument([
         enjoyApplesHeading,
         new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),

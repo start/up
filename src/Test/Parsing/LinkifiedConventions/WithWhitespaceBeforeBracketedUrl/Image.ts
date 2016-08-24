@@ -57,7 +57,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('something terrible', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -72,7 +72,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('email sending', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -83,7 +83,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toDocument('[image: local files rustling](https://example.com/image.png) (file:///)')).to.be.eql(
+      expect(Up.toDocument('[image: local files rustling](https://example.com/image.png) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('local files rustling', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -114,7 +114,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[image: email sending] (https://example.com/image.png) (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('email sending', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -149,7 +149,7 @@ context('A linkified image convention can have whitespace between its image URL 
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[image: something terrible](https://example.com/image.png) (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('something terrible', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -160,7 +160,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toDocument('[image: slash] (https://example.com/image.png) (/)')).to.be.eql(
+      expect(Up.toDocument('[image: slash] (https://example.com/image.png) (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('slash', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -191,7 +191,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toDocument('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('robots', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -246,7 +246,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (#)')).to.be.eql(
+      expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('hash marking', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -257,7 +257,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('something terrible', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -268,7 +268,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('hash marking', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -343,7 +343,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toDocument('[image: 4chan] (https://example.com/image.png) (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[image: 4chan] (https://example.com/image.png) (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('4chan', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -375,7 +375,7 @@ context('A linkified image convention can have whitespace between its image URL 
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toDocument('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Image('usernaming', 'https://example.com/image.png'),
             new PlainText(' '),
@@ -386,7 +386,7 @@ context('A linkified image convention can have whitespace between its image URL 
       })
 
       specify('No hyphens', () => {
-        expect(Up.toDocument('[image: usernaming] (https://example.com/image.png) (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[image: usernaming] (https://example.com/image.png) (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Image('usernaming', 'https://example.com/image.png'),
             new PlainText(' '),
@@ -398,7 +398,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toDocument('[image: being British](https://example.com/image.png) (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[image: being British](https://example.com/image.png) (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('being British', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -409,7 +409,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toDocument('[image: Ash claiming to be his own father] (https://example.com/image.png) (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[image: Ash claiming to be his own father] (https://example.com/image.png) (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('Ash claiming to be his own father', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -420,7 +420,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toDocument('[image: debilitating sadness](https://example.com/image.png) (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[image: debilitating sadness](https://example.com/image.png) (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('debilitating sadness', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -451,7 +451,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toDocument('[image: yeah] (https://example.com/image.png) (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[image: yeah] (https://example.com/image.png) (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('yeah', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -462,7 +462,7 @@ context('A linkified image convention can have whitespace between its image URL 
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toDocument('[image: yeah](https://example.com/image.png) (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[image: yeah](https://example.com/image.png) (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('yeah', 'https://example.com/image.png'),
           new PlainText(' '),
@@ -475,7 +475,7 @@ context('A linkified image convention can have whitespace between its image URL 
 
 
   specify('If none of the conditions are satisfied, the image is not linkified', () => {
-    expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (really)')).to.be.eql(
+    expect(Up.toDocument('[image: something terrible] (https://example.com/image.png) (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Image('something terrible', 'https://example.com/image.png'),
         new PlainText(' '),
@@ -489,7 +489,7 @@ context('A linkified image convention can have whitespace between its image URL 
 
 describe("If there is whitespace between an otherwise-valid linkified image convention's image URL and its linkifying URL", () => {
   it('the image convention is not linkified', () => {
-    expect(Up.toDocument('[image: something terrible](https://example.com/image.png)  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[image: something terrible](https://example.com/image.png)  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Image('something terrible', 'https://example.com/image.png'),
         new PlainText('    '),

@@ -8,7 +8,7 @@ import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
-    expect(Up.toDocument('Hello, *world*!!')).to.be.eql(
+    expect(Up.toDocument('Hello, *world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -21,7 +21,7 @@ describe('Text surrounded by single asterisks', () => {
 
 describe('Text separated from surrounding asterisks by whitespace', () => {
   it('is not put inside an emphasis node', () => {
-    expect(Up.toDocument('Birdie Sanders * won * Wisconsin')).to.be.eql(
+    expect(Up.toDocument('Birdie Sanders * won * Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Birdie Sanders * won * Wisconsin'),
       ]))
@@ -31,7 +31,7 @@ describe('Text separated from surrounding asterisks by whitespace', () => {
 
 describe('Emphasized text', () => {
   it('is evaluated for inline conventions', () => {
-    expect(Up.toDocument('Hello, *`world`*!')).to.be.eql(
+    expect(Up.toDocument('Hello, *`world`*!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -42,7 +42,7 @@ describe('Emphasized text', () => {
   })
 
   it('can contain further emphasized text', () => {
-    expect(Up.toDocument('Hello, *my *little* world*!')).to.be.eql(
+    expect(Up.toDocument('Hello, *my *little* world*!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -57,7 +57,7 @@ describe('Emphasized text', () => {
   })
 
   it('can contain stressed text', () => {
-    expect(Up.toDocument('Hello, *my **little** world*!')).to.be.eql(
+    expect(Up.toDocument('Hello, *my **little** world*!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -74,7 +74,7 @@ describe('Emphasized text', () => {
 
 describe('Double asterisks followed by two separate single closing asterisks', () => {
   it('produces 2 nested emphasis nodes', () => {
-    expect(Up.toDocument('**Warning:* never feed this tarantula*')).to.be.eql(
+    expect(Up.toDocument('**Warning:* never feed this tarantula*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new Emphasis([

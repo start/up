@@ -9,21 +9,21 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 describe('A single blank blockquoted line', () => {
   it('does not require any trailing whitespace after the blockquote delimiter', () => {
-    expect(Up.toDocument('>')).to.be.eql(
+    expect(Up.toDocument('>')).to.deep.equal(
       new UpDocument([
         new Blockquote([])
       ]))
   })
 
   it('may have a trailing space after the blockquote delimiter', () => {
-    expect(Up.toDocument('> ')).to.be.eql(
+    expect(Up.toDocument('> ')).to.deep.equal(
       new UpDocument([
         new Blockquote([])
       ]))
   })
 
   it('may have a trailing tab after the blockquote delimiter', () => {
-    expect(Up.toDocument('>\t')).to.be.eql(
+    expect(Up.toDocument('>\t')).to.deep.equal(
       new UpDocument([
         new Blockquote([])
       ]))
@@ -38,7 +38,7 @@ describe('A single line blockquote', () => {
 > I choose you!
 ---------------`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak(),
         new Blockquote([

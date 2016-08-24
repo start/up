@@ -17,7 +17,7 @@ import { Highlight } from'../../../SyntaxNodes/Highlight'
 
 describe('Overlapped stressed and deleted text', () => {
   it('splits the revision delietion node because it opened second', () => {
-    expect(Up.toDocument('I **love ~~drinking** whole~~ milk.')).to.be.eql(
+    expect(Up.toDocument('I **love ~~drinking** whole~~ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -37,7 +37,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 describe('Overlapped deleted and stressed text', () => {
   it('split the stress node because it opened second', () => {
-    expect(Up.toDocument('I ~~love **drinking~~ whole** milk.')).to.be.eql(
+    expect(Up.toDocument('I ~~love **drinking~~ whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new RevisionDeletion([
@@ -57,7 +57,7 @@ describe('Overlapped deleted and stressed text', () => {
 
 describe('Overlapped emphasized and stressed text', () => {
   it('split the stress node because it opened second', () => {
-    expect(Up.toDocument('I *love **drinking* whole** milk.')).to.be.eql(
+    expect(Up.toDocument('I *love **drinking* whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -77,7 +77,7 @@ describe('Overlapped emphasized and stressed text', () => {
 
 describe('Overlapped stressed and emphasized text', () => {
   it('split the emphasis node because it opened second', () => {
-    expect(Up.toDocument('I **love *drinking** whole* milk.')).to.be.eql(
+    expect(Up.toDocument('I **love *drinking** whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -97,7 +97,7 @@ describe('Overlapped stressed and emphasized text', () => {
 
 describe('Overlapped italicized and emphasized text', () => {
   it('split the emphasis node because it opened second', () => {
-    expect(Up.toDocument('I _love *drinking_ whole* milk.')).to.be.eql(
+    expect(Up.toDocument('I _love *drinking_ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Italic([
@@ -117,7 +117,7 @@ describe('Overlapped italicized and emphasized text', () => {
 
 describe('Overlapped emphasized and italicized text', () => {
   it('split the italic node because it opened second', () => {
-    expect(Up.toDocument('I *love _drinking* whole_ milk.')).to.be.eql(
+    expect(Up.toDocument('I *love _drinking* whole_ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -137,7 +137,7 @@ describe('Overlapped emphasized and italicized text', () => {
 
 describe('Overlapped bold and stressed text', () => {
   it('split the stress node because it opened second', () => {
-    expect(Up.toDocument('I __love **drinking__ whole** milk.')).to.be.eql(
+    expect(Up.toDocument('I __love **drinking__ whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Bold([
@@ -157,7 +157,7 @@ describe('Overlapped bold and stressed text', () => {
 
 describe('Overlapped stressed and bold text', () => {
   it('split the bold node because it opened second', () => {
-    expect(Up.toDocument('I **love __drinking** whole__ milk.')).to.be.eql(
+    expect(Up.toDocument('I **love __drinking** whole__ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -177,7 +177,7 @@ describe('Overlapped stressed and bold text', () => {
 
 describe('Overlapped emphasized and inserted text', () => {
   it('split the revision insertion node because it opened second', () => {
-    expect(Up.toDocument('I *love ++drinking* whole++ milk.')).to.be.eql(
+    expect(Up.toDocument('I *love ++drinking* whole++ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -197,7 +197,7 @@ describe('Overlapped emphasized and inserted text', () => {
 
 describe('Overlapped inserted and emphasized text', () => {
   it('split the emphasis node because it opened second', () => {
-    expect(Up.toDocument('I ++love *drinking++ whole* milk.')).to.be.eql(
+    expect(Up.toDocument('I ++love *drinking++ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new RevisionInsertion([
@@ -217,7 +217,7 @@ describe('Overlapped inserted and emphasized text', () => {
 
 describe('Overlapped highlighted and stressed text', () => {
   it('split the stress node because it opened second', () => {
-    expect(Up.toDocument('I [highlight: love **drinking] whole** milk.')).to.be.eql(
+    expect(Up.toDocument('I [highlight: love **drinking] whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Highlight([
@@ -237,7 +237,7 @@ describe('Overlapped highlighted and stressed text', () => {
 
 describe('Overlapped stressed and highlighted text', () => {
   it('split the highlight node because it opened second', () => {
-    expect(Up.toDocument('I **love [highlight: drinking** whole] milk.')).to.be.eql(
+    expect(Up.toDocument('I **love [highlight: drinking** whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -257,7 +257,7 @@ describe('Overlapped stressed and highlighted text', () => {
 
 describe('Overlapped stressed and parenthesized text', () => {
   it('splits the normal parenthetical node because it opened second', () => {
-    expect(Up.toDocument('I **love (drinking** whole) milk.')).to.be.eql(
+    expect(Up.toDocument('I **love (drinking** whole) milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -277,7 +277,7 @@ describe('Overlapped stressed and parenthesized text', () => {
 
 describe('Overlapped stressed and square bracketed text', () => {
   it('splits the square parenthetical node because it opened second', () => {
-    expect(Up.toDocument('I **love [drinking** whole] milk.')).to.be.eql(
+    expect(Up.toDocument('I **love [drinking** whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([

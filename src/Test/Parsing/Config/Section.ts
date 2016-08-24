@@ -32,7 +32,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(up.toDocument(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -70,7 +70,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [HeAdInG: exotic].`
 
-    expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
+    expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -99,7 +99,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -140,7 +140,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -181,7 +181,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([

@@ -17,7 +17,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -51,7 +51,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -86,7 +86,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -123,7 +123,7 @@ Game;           Release Date
 Chrono Trigger; 1995
 Chrono Cross;   1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -151,7 +151,7 @@ Table: Games in the Chrono series
 
 Game;           Release Date`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -173,7 +173,7 @@ context("When there isn't a colon after the term for 'table' in a table's label 
 Table the proposal.
 
 Do it now; I'm tired of waiting.`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText('Table the proposal.')]),
         new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),

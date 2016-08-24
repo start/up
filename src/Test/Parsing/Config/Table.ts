@@ -20,7 +20,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toDocument(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -54,7 +54,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toDocument(uppercase)).to.be.eql(up.toDocument(mixedCase))
+    expect(up.toDocument(uppercase)).to.deep.equal(up.toDocument(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -73,7 +73,7 @@ Chrono Cross;     1999`
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -108,7 +108,7 @@ Chrono Cross;     1999`
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -150,7 +150,7 @@ Chrono Cross;     1999`
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

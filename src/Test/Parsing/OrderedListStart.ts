@@ -37,7 +37,7 @@ describe('An ordered list that starts with a numeral bullet', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.be.eql(10)
+    expect(listStart(markup)).to.deep.equal(10)
   })
 })
 
@@ -49,7 +49,7 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.be.eql(9999)
+    expect(listStart(markup)).to.deep.equal(9999)
   })
 
   it('can be zero', () => {
@@ -58,7 +58,7 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.be.eql(0)
+    expect(listStart(markup)).to.deep.equal(0)
   })
 
   it('can be negative', () => {
@@ -67,6 +67,6 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.be.eql(-5)
+    expect(listStart(markup)).to.deep.equal(-5)
   })
 })

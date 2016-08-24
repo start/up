@@ -47,7 +47,7 @@ Not me. Us!
 
 describe('A streak of asterisks with spaces between', () => {
   it('produces a single thematic break node rather than a heavily nested list', () => {
-    expect(Up.toDocument('* * * * * *')).to.be.eql(
+    expect(Up.toDocument('* * * * * *')).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -57,7 +57,7 @@ describe('A streak of asterisks with spaces between', () => {
 
 describe('A streak of number signs with spaces between', () => {
   it('produces a single thematic break node rather than a heavily nested list', () => {
-    expect(Up.toDocument('# # # # # #')).to.be.eql(
+    expect(Up.toDocument('# # # # # #')).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -72,7 +72,7 @@ describe('A streak of asterisks with spaces between', () => {
 * Gloves
 * * * * * *`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
@@ -99,7 +99,7 @@ describe('A streak of number signs with spaces between', () => {
 # Gloves
 # # # # # #`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([

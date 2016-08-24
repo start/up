@@ -25,7 +25,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -72,7 +72,7 @@ describe('A footnote directly followed by another footnote (with no spaces in be
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -94,7 +94,7 @@ describe('A footnote directly followed by a media convention', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -116,7 +116,7 @@ describe('A footnote directly followed by an inline spoiler', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -140,7 +140,7 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -164,7 +164,7 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -188,7 +188,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
         new PlainText('He called her.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote,
@@ -211,7 +211,7 @@ describe("When an otherwise-valid linkified spoiler's URL starts with whitespace
         new PlainText('He called her.')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote,

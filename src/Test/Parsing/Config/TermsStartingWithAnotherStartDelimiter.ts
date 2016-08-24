@@ -25,7 +25,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('inline spoilers can be produced using the term', () => {
-      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -34,7 +34,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('an unmatched inline spoiler start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^lookaway^: Not finished typi')
         ]))
@@ -52,7 +52,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('inline NSFW conventions can be produced using the term', () => {
-      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfw([
             new PlainText('Ash fights Gary')
@@ -61,7 +61,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('an unmatched inline NSFW start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^lookaway^: Not finished typi')
         ]))
@@ -79,7 +79,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('inline NSFL conventions can be produced using the term', () => {
-      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -88,7 +88,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('an unmatched inline NSFL start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^lookaway^: Not finished typi')).to.be.eql(
+      expect(up.toDocument('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^lookaway^: Not finished typi')
         ]))
@@ -106,14 +106,14 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('audio conventions can be produced using the term', () => {
-      expect(up.toDocument('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.be.eql(
+      expect(up.toDocument('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.deep.equal(
         new UpDocument([
           new Audio('Ash fights Gary', 'https://example.com/audio.ogg')
         ]))
     })
 
     specify('an unmatched audio start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^listen^: Ash fights Ga')).to.be.eql(
+      expect(up.toDocument('[^listen^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^listen^: Ash fights Ga')
         ]))
@@ -124,7 +124,7 @@ context("When the custom term for an inline convention starts with a caret, the 
         new PlainText('listen^: I guess this means "listen up"?')
       ], { referenceNumber: 1 })
 
-      expect(up.toDocument('[^listen^: I guess this means "listen up"?]')).to.be.eql(
+      expect(up.toDocument('[^listen^: I guess this means "listen up"?]')).to.deep.equal(
         new UpDocument([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
@@ -143,14 +143,14 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('audio conventions can be produced using the term', () => {
-      expect(up.toDocument('[^look^: Ash fights Gary](example.com/image.svg)')).to.be.eql(
+      expect(up.toDocument('[^look^: Ash fights Gary](example.com/image.svg)')).to.deep.equal(
         new UpDocument([
           new Image('Ash fights Gary', 'https://example.com/image.svg')
         ]))
     })
 
     specify('an unmatched image start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^look^: Ash fights Ga')).to.be.eql(
+      expect(up.toDocument('[^look^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^look^: Ash fights Ga')
         ]))
@@ -161,7 +161,7 @@ context("When the custom term for an inline convention starts with a caret, the 
         new PlainText('look^: I guess this means "look up"?')
       ], { referenceNumber: 1 })
 
-      expect(up.toDocument('[^look^: I guess this means "look up"?]')).to.be.eql(
+      expect(up.toDocument('[^look^: I guess this means "look up"?]')).to.deep.equal(
         new UpDocument([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
@@ -180,14 +180,14 @@ context("When the custom term for an inline convention starts with a caret, the 
     })
 
     specify('audio conventions can be produced using the term', () => {
-      expect(up.toDocument('[^watch^: Ash fights Gary](example.com/video.webm)')).to.be.eql(
+      expect(up.toDocument('[^watch^: Ash fights Gary](example.com/video.webm)')).to.deep.equal(
         new UpDocument([
           new Video('Ash fights Gary', 'https://example.com/video.webm')
         ]))
     })
 
     specify('an unmatched image start delimiter is treated as plain text', () => {
-      expect(up.toDocument('[^watch^: Ash fights Ga')).to.be.eql(
+      expect(up.toDocument('[^watch^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[^watch^: Ash fights Ga')
         ]))
@@ -198,7 +198,7 @@ context("When the custom term for an inline convention starts with a caret, the 
         new PlainText('watch^: I guess this means "watch up"?')
       ], { referenceNumber: 1 })
 
-      expect(up.toDocument('[^watch^: I guess this means "watch up"?]')).to.be.eql(
+      expect(up.toDocument('[^watch^: I guess this means "watch up"?]')).to.deep.equal(
         new UpDocument([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])

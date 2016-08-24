@@ -25,41 +25,41 @@ function itWorksAsAdvertised(
   const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, configWithSettingChanged, configWithSettingSetToDefault } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
-  expect(documentWhenChangeIsApplied).to.not.be.eql(documentWhenSettingIsNotChanged)
+  expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
 
 
   context('is disabled by default', () => {
     specify('when the default toDocument method is called', () => {
-      expect(Up.toDocument(markup)).to.be.eql(documentWhenSettingIsNotChanged)
+      expect(Up.toDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
 
     specify('when the toDocument method is called on an Up object', () => {
-      expect(new Up().toDocument(markup)).to.be.eql(documentWhenSettingIsNotChanged)
+      expect(new Up().toDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
   })
 
 
   context('works when enabled', () => {
     specify('when calling the default toDocument method', () => {
-      expect(Up.toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+      expect(Up.toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
-      expect(new Up(configWithSettingChanged).toDocument(markup)).to.be.eql(documentWhenChangeIsApplied)
+      expect(new Up(configWithSettingChanged).toDocument(markup)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when calling the toDocument method on an Up object', () => {
-      expect(new Up().toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+      expect(new Up().toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when calling the toDocument method on an Up object that had the setting explictly set to default when the object was created', () => {
-      expect(new Up(configWithSettingSetToDefault).toDocument(markup, configWithSettingChanged)).to.be.eql(documentWhenChangeIsApplied)
+      expect(new Up(configWithSettingSetToDefault).toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
   })
 
 
   specify('can be set back to default when calling the toDocument method on an Up object that had the setting changed when the object was created', () => {
-    expect(new Up(configWithSettingChanged).toDocument(markup, configWithSettingSetToDefault)).to.be.eql(documentWhenSettingIsNotChanged)
+    expect(new Up(configWithSettingChanged).toDocument(markup, configWithSettingSetToDefault)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 

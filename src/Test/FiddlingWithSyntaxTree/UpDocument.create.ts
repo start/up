@@ -34,7 +34,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const movieFootnote =
       new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -82,7 +82,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const deliciousHeading =
       new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         enjoyHeading,
         new OrderedList([
@@ -120,7 +120,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([

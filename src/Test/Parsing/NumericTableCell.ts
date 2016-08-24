@@ -32,7 +32,7 @@ function expectTableCellNotToBeNumeric(cellMarkup: string): void {
 function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean }): void {
   const { withRawValue, toBeNumeric } = args
 
-  expect(isCellNumeric(withRawValue)).to.be.eql(toBeNumeric)
+  expect(isCellNumeric(withRawValue)).to.deep.equal(toBeNumeric)
 }
 
 function isCellNumeric(cellMarkup: string): boolean {

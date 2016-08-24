@@ -15,7 +15,7 @@ describe('A non-indented line followed by an indented line', () => {
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -40,7 +40,7 @@ Cyndaquil
 Torchic
   The first three starter Fire Pokemon`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -65,7 +65,7 @@ describe("A subject in a description list", () => {
 Ash *"Little Marco"* Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -92,7 +92,7 @@ describe("A description in a description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -128,7 +128,7 @@ Gary
   A young man with a great sense of smell.
 `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -170,7 +170,7 @@ describe("A description list", () => {
 Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -201,7 +201,7 @@ Poem
   Roses are red
   Violets are blue`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -229,7 +229,7 @@ Poem
 \tRoses are red
 \tViolets are blue`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -257,7 +257,7 @@ Poem
  \tRoses are red
  \tViolets are blue`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -297,7 +297,7 @@ Address
  
  \tI used to live there.`
 
-  expect(Up.toDocument(markup)).to.be.eql(
+  expect(Up.toDocument(markup)).to.deep.equal(
     new UpDocument([
       new DescriptionList([
         new DescriptionList.Item([
@@ -358,7 +358,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -420,7 +420,7 @@ Magnus Carlsen
 Lee Chang-ho
   An above average go player
 `
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([

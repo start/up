@@ -13,7 +13,7 @@ You'll never believe this fake evidence!
  \\   \\  \t \\\t 
 \\   \t\\   \\  \t \\\t `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("You'll never believe this fake evidence!")
@@ -28,7 +28,7 @@ You'll never believe this fake evidence!
  \\   \\  \t \\\t 
 You'll never believe this fake evidence!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("You'll never believe this fake evidence!")
@@ -46,7 +46,7 @@ You'll never believe this fake evidence!
 \\   \\  \t \\\t 
  \\   \\  \t \\\t `
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("You'll never believe this fake evidence!")

@@ -8,7 +8,7 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 describe('Text surrounded by curly brackets', () => {
   it('is put into an input instruciton node', () => {
-    expect(Up.toDocument('Press {esc} to quit.')).to.be.eql(
+    expect(Up.toDocument('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Press '),
         new ExampleInput('esc'),
@@ -20,7 +20,7 @@ describe('Text surrounded by curly brackets', () => {
 
 describe('Example input', () => {
   it('is not evaluated for other (non-typographical) conventions', () => {
-    expect(Up.toDocument("Select the {Start Game(s)} menu item.")).to.be.eql(
+    expect(Up.toDocument("Select the {Start Game(s)} menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Select the '),
         new ExampleInput('Start Game(s)'),
@@ -29,7 +29,7 @@ describe('Example input', () => {
   })
 
   it('has any outer whitespace trimmed away', () => {
-    expect(Up.toDocument("Select the {  \t Start Game(s) \t  } menu item.")).to.be.eql(
+    expect(Up.toDocument("Select the {  \t Start Game(s) \t  } menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Select the '),
         new ExampleInput('Start Game(s)'),
@@ -39,7 +39,7 @@ describe('Example input', () => {
 
   context('can contain escaped closing curly brackets', () => {
     it('touching the delimiters', () => {
-      expect(Up.toDocument("Press {\\}} to view paths.")).to.be.eql(
+      expect(Up.toDocument("Press {\\}} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('}'),
@@ -48,7 +48,7 @@ describe('Example input', () => {
     })
 
     it('not touching the delimiters', () => {
-      expect(Up.toDocument("Press { \\} } to view paths.")).to.be.eql(
+      expect(Up.toDocument("Press { \\} } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('}'),
@@ -59,7 +59,7 @@ describe('Example input', () => {
 
   context('can contain unescaped opening curly brackets', () => {
     it('touching the delimiters', () => {
-      expect(Up.toDocument("Press {{} to view paths.")).to.be.eql(
+      expect(Up.toDocument("Press {{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('{'),
@@ -68,7 +68,7 @@ describe('Example input', () => {
     })
 
     it('not touching the delimiters', () => {
-      expect(Up.toDocument("Press { { } to view paths.")).to.be.eql(
+      expect(Up.toDocument("Press { { } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('{'),
@@ -78,7 +78,7 @@ describe('Example input', () => {
   })
 
   it('can be directly followed by another input instruction', () => {
-    expect(Up.toDocument("Press {ctrl}{q} to quit.")).to.be.eql(
+    expect(Up.toDocument("Press {ctrl}{q} to quit.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Press '),
         new ExampleInput('ctrl'),
@@ -90,7 +90,7 @@ describe('Example input', () => {
 
   context('is evaluated for typographical conventions:', () => {
     specify('En dashes', () => {
-      expect(Up.toDocument("Select the { Start Game -- Single Player } menu item.")).to.be.eql(
+      expect(Up.toDocument("Select the { Start Game -- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Select the '),
           new ExampleInput('Start Game – Single Player'),
@@ -99,7 +99,7 @@ describe('Example input', () => {
     })
 
     specify('Em dashes', () => {
-      expect(Up.toDocument("Select the { Start Game --- Single Player } menu item.")).to.be.eql(
+      expect(Up.toDocument("Select the { Start Game --- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Select the '),
           new ExampleInput('Start Game — Single Player'),
@@ -108,7 +108,7 @@ describe('Example input', () => {
     })
 
     specify('Plus-minus signs', () => {
-      expect(Up.toDocument("Click the {+-5 minutes} button.")).to.be.eql(
+      expect(Up.toDocument("Click the {+-5 minutes} button.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Click the '),
           new ExampleInput('±5 minutes'),
@@ -121,14 +121,14 @@ describe('Example input', () => {
 
 describe('An unmatched curly bracket', () => {
   it('is preserved as plain text', () => {
-    expect(Up.toDocument('Yeah... :{ I hate pizza.')).to.be.eql(
+    expect(Up.toDocument('Yeah... :{ I hate pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Yeah... :{ I hate pizza.')
       ]))
   })
 
   it('does not interfere with subsequent inline conventions', () => {
-    expect(Up.toDocument('Yeah... :{ I *hate* pizza.')).to.be.eql(
+    expect(Up.toDocument('Yeah... :{ I *hate* pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Yeah... :{ I '),
         new Emphasis([

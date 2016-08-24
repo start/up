@@ -10,7 +10,7 @@ import { Bold } from '../../../SyntaxNodes/Bold'
 
 describe('Emphasis', () => {
   it('cannot be closed by an underscore', () => {
-    expect(Up.toDocument('Xamarin is now *free_!')).to.be.eql(
+    expect(Up.toDocument('Xamarin is now *free_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Xamarin is now *free_!'),
       ]))
@@ -20,7 +20,7 @@ describe('Emphasis', () => {
 
 describe('Italics', () => {
   it('cannot be closed by an asterisk', () => {
-    expect(Up.toDocument('Xamarin is now _free*!')).to.be.eql(
+    expect(Up.toDocument('Xamarin is now _free*!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Xamarin is now _free*!'),
       ]))
@@ -30,7 +30,7 @@ describe('Italics', () => {
 
 describe('Text surrounded by an underscore and an asterisk on each side', () => {
   it('is italicized and emphasized', () => {
-    expect(Up.toDocument('Koopas! _*Mario is on his way!*_ Grab your shells!')).to.be.eql(
+    expect(Up.toDocument('Koopas! _*Mario is on his way!*_ Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Koopas! '),
         new Italic([
@@ -46,7 +46,7 @@ describe('Text surrounded by an underscore and an asterisk on each side', () => 
 
 describe('Text surrounded by double asterisk and double underscores on each side', () => {
   it('is stressed and bold', () => {
-    expect(Up.toDocument('Koopas! **__Mario is on his way!__** Grab your shells!')).to.be.eql(
+    expect(Up.toDocument('Koopas! **__Mario is on his way!__** Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Koopas! '),
         new Stress([

@@ -14,7 +14,7 @@ import { Image } from '../../../SyntaxNodes/Image'
 context('parenthesized text can be directly followed by whitespace followed by', () => {
   context('an inline spoiler', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER: Gary].')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('After you beat the Elite Four, you have to face '),
           new NormalParenthetical([
@@ -29,7 +29,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER:Gary Oak].')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face (the one and only) [SPOILER:Gary Oak].')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('After you beat the Elite Four, you have to face '),
           new NormalParenthetical([
@@ -52,7 +52,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
         new PlainText('Lying.')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I don't eat cereal "),
@@ -73,7 +73,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
         new PlainText('Definitely lying.')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I don't eat cereal "),
@@ -91,7 +91,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
 
   context('an image', () => {
     specify('that only contains whitespace directly after the colon', () => {
-      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image: Gary] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image: Gary] (example.com/gary.png).')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('After you beat the Elite Four, you have to face Gary '),
           new NormalParenthetical([
@@ -104,7 +104,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
-      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image:Gary Oak] (example.com/gary.png).')).to.be.eql(
+      expect(Up.toDocument('After you beat the Elite Four, you have to face Gary (in Pokémon Red/Blue/Yellow) [image:Gary Oak] (example.com/gary.png).')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('After you beat the Elite Four, you have to face Gary '),
           new NormalParenthetical([

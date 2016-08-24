@@ -41,7 +41,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toDocument('[SPOILER: something terrible] (https://stackoverflow.com is nice)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: something terrible] (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('something terrible')
@@ -58,7 +58,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.toDocument('[SPOILER: email] (mailto:)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: email] (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('email')
@@ -71,7 +71,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.toDocument('[SPOILER: local files] (file:///)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: local files] (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('local files')
@@ -99,7 +99,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.toDocument('[SPOILER: email] (\\mailto:daniel@wants.email)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: email] (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('email')
@@ -131,7 +131,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.toDocument('[SPOILER: something terrible] (/r9k/ created it)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: something terrible] (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('something terrible')
@@ -144,7 +144,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('must have something after the slash', () => {
-      expect(Up.toDocument('[SPOILER: slash] (/)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: slash] (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('slash')
@@ -172,7 +172,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.toDocument('[SPOILER: yeah] (\\/r9k/)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: yeah] (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('yeah')
@@ -219,7 +219,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.toDocument('[SPOILER: hash mark] (#)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: hash mark] (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('hash mark')
@@ -232,7 +232,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.toDocument('[SPOILER: something terrible] (#starcraft2 was never trending)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: something terrible] (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('something terrible')
@@ -245,7 +245,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.toDocument('[SPOILER: yeah] (\\#starcraft2)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: yeah] (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('yeah')
@@ -307,7 +307,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.toDocument('[SPOILER: that place] (4chan.org-terrifying)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: that place] (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('that place')
@@ -336,7 +336,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.toDocument('[SPOILER: username] (john.e.smith5)')).to.be.eql(
+        expect(Up.toDocument('[SPOILER: username] (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new InlineSpoiler([
               new PlainText('username')
@@ -349,7 +349,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
       })
 
       specify('No hyphens', () => {
-        expect(Up.toDocument('[SPOILER: username] (john.e.smith-kline)')).to.be.eql(
+        expect(Up.toDocument('[SPOILER: username] (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new InlineSpoiler([
               new PlainText('username')
@@ -363,7 +363,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.toDocument('[SPOILER: top-level domain] (.co.uk)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: top-level domain] (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('top-level domain')
@@ -376,7 +376,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.toDocument('[SPOILER: Ash is not his own father] (um..uh)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Ash is not his own father] (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash is not his own father')
@@ -389,7 +389,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.toDocument('[SPOILER: debilitating sadness] (4chan.org../r9k/)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('debilitating sadness')
@@ -417,7 +417,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.toDocument('[SPOILER: yeah] (ign.com had some hilarious forums)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: yeah] (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('yeah')
@@ -430,7 +430,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.toDocument('[SPOILER: yeah] (\\ign.com)')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: yeah] (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('yeah')
@@ -445,7 +445,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 
   specify('If none of the conditions are satisfied, the spoiler is not linkified', () => {
-    expect(Up.toDocument('[SPOILER: something terrible] (really)')).to.be.eql(
+    expect(Up.toDocument('[SPOILER: something terrible] (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('something terrible')
@@ -461,7 +461,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 
 describe('If there is nothing but whitspace between an inline spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the spoiler convention is not linkified', () => {
-    expect(Up.toDocument('[SPOILER: something terrible]  \\  (https://example.com)')).to.be.eql(
+    expect(Up.toDocument('[SPOILER: something terrible]  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('something terrible')

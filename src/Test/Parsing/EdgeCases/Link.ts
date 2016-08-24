@@ -15,7 +15,7 @@ import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 
 describe('An otherwise-valid link with mismatched brackets surrounding its description', () => {
   it('does not produce a link node', () => {
-    expect(Up.toDocument('I like [this site}(https://stackoverflow.com).')).to.be.eql(
+    expect(Up.toDocument('I like [this site}(https://stackoverflow.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like [this site}'),
         new NormalParenthetical([
@@ -33,7 +33,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its descr
 
 describe('An otherwise-valid link with mismatched brackets surrounding its URL', () => {
   it('does not produce a link node', () => {
-    expect(Up.toDocument('I like [this site][https://stackoverflow.com).')).to.be.eql(
+    expect(Up.toDocument('I like [this site][https://stackoverflow.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new SquareParenthetical([
@@ -92,7 +92,7 @@ describe('A link produced by square brackets', () => {
 
 describe("A link's contents", () => {
   it('can contain inline code containing an unmatched closing bracket', () => {
-    expect(Up.toDocument('I like [`poor_syntax]`][https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toDocument('I like [`poor_syntax]`][https://stackoverflow.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -103,7 +103,7 @@ describe("A link's contents", () => {
   })
 
   it('can contain an escaped unmatched closing bracket', () => {
-    expect(Up.toDocument('I like [weird brackets\\]][https://stackoverflow.com].')).to.be.eql(
+    expect(Up.toDocument('I like [weird brackets\\]][https://stackoverflow.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like '),
         new Link([
@@ -127,7 +127,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
       new PlainText(' easily.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -142,7 +142,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
 
 describe('A link missing its final closing bracket', () => {
   it('does not produce a link node and does not prevent conventions from being evaluated afterward', () => {
-    expect(Up.toDocument('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.be.eql(
+    expect(Up.toDocument('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[: Do this :]'),
@@ -159,7 +159,7 @@ describe('A link missing its final closing bracket', () => {
 
 describe("bracketed text followed by a parenthesized URL starting with an open parenthesis (that gets matched at some point before the URL ends)", () => {
   it('produce a link node (whose URL is prefixed by the default scheme)', () => {
-    expect(Up.toDocument('See the [documentation]((parenthetical)operators).')).to.be.eql(
+    expect(Up.toDocument('See the [documentation]((parenthetical)operators).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('See the '),
         new Link([
@@ -236,7 +236,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
 
 describe("An almost-link (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
   it('can contain an unclosed square bracket without affecting a link with a square bracketed URL that follows it', () => {
-    expect(Up.toDocument('[sigh] (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.be.eql(
+    expect(Up.toDocument('[sigh] (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[sigh]')

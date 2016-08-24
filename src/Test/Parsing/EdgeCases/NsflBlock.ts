@@ -10,7 +10,7 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 context("A NSFL block's label line does not produce a NSFL block node if it is", () => {
   specify('the last line of the document', () => {
-    expect(Up.toDocument('NSFL:')).to.be.eql(
+    expect(Up.toDocument('NSFL:')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('NSFL:')
       ]))
@@ -21,7 +21,7 @@ context("A NSFL block's label line does not produce a NSFL block node if it is",
 NSFL:
 No!
 Avoid that initialism!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([new PlainText('NSFL:')]),
@@ -36,7 +36,7 @@ Avoid that initialism!`
 NSFL:
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFL:')
@@ -53,7 +53,7 @@ NSFL:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFL:')
@@ -72,7 +72,7 @@ NSFL:
 
 
 No!`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('NSFL:')

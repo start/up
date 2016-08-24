@@ -21,7 +21,7 @@ context('A code block preserves all indentation when it is', () => {
   }
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(
           `  if (x < 0) {
@@ -41,7 +41,7 @@ SPOILER:
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new CodeBlock(
@@ -61,7 +61,7 @@ SPOILER:
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new CodeBlock(
@@ -81,7 +81,7 @@ SPOILER:
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new CodeBlock(
@@ -104,7 +104,7 @@ NSFW:
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsfwBlock([
             new CodeBlock(
@@ -124,7 +124,7 @@ NSFW:
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsfwBlock([
             new CodeBlock(
@@ -144,7 +144,7 @@ NSFW:
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsfwBlock([
             new CodeBlock(
@@ -167,7 +167,7 @@ NSFL:
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new CodeBlock(
@@ -187,7 +187,7 @@ NSFL:
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new CodeBlock(
@@ -207,7 +207,7 @@ NSFL:
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsflBlock([
             new CodeBlock(
@@ -229,7 +229,7 @@ NSFL:
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new OrderedList([
             new OrderedList.Item([
@@ -250,7 +250,7 @@ NSFL:
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new OrderedList([
             new OrderedList.Item([
@@ -271,7 +271,7 @@ NSFL:
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new OrderedList([
             new OrderedList.Item([
@@ -295,7 +295,7 @@ NSFL:
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new UnorderedList([
             new UnorderedList.Item([
@@ -316,7 +316,7 @@ NSFL:
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new UnorderedList([
             new UnorderedList.Item([
@@ -337,7 +337,7 @@ NSFL:
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new UnorderedList([
             new UnorderedList.Item([
@@ -362,7 +362,7 @@ Lesson 1
     }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -389,7 +389,7 @@ Lesson 1
 \t  }
 \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -416,7 +416,7 @@ Lesson 1
  \t  }
  \t\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new DescriptionList([
             new DescriptionList.Item([
@@ -445,7 +445,7 @@ Lesson 1
 >   }
 > \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Blockquote([
             new CodeBlock(
@@ -468,7 +468,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >\t}
 >\`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new CodeBlock(
@@ -487,7 +487,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >}
 >\`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new CodeBlock(

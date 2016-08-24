@@ -17,7 +17,7 @@ describe('Consecutive lines starting with "> "', () => {
 >
 > Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -39,7 +39,7 @@ describe("Blockquote delimeters", () => {
 >
 >Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -61,7 +61,7 @@ context("Within a blockquote", () => {
 >
 > Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -80,7 +80,7 @@ context("Within a blockquote", () => {
 > Charmander
 >   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Blockquote([
             new DescriptionList([
@@ -105,7 +105,7 @@ context("Within a blockquote", () => {
 > Charmander
 >\tObviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Blockquote([
             new DescriptionList([
@@ -132,7 +132,7 @@ describe('A blockquote', () => {
 >
 > Goodbye, *world*!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -159,7 +159,7 @@ describe('A blockquote', () => {
         new PlainText('Hello, world!')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           heading
@@ -173,7 +173,7 @@ describe('A blockquote', () => {
 >
 > > Hello, mantle!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -201,7 +201,7 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 >
 > This is awkward...`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -236,7 +236,7 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 > >
 > > This is awkward...`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Blockquote([
@@ -271,7 +271,7 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 >
 > Goodbye, *world*!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -293,7 +293,7 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 
 describe('A single blockquote delimiter without its trailing space', () => {
   it('produces a blockquote note', () => {
-    expect(Up.toDocument('>Hello, taxes!')).to.be.eql(
+    expect(Up.toDocument('>Hello, taxes!')).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -307,7 +307,7 @@ describe('A single blockquote delimiter without its trailing space', () => {
 
 describe('A single line blockquote', () => {
   it('can contain nested blockquotes', () => {
-    expect(Up.toDocument('> > > Hello, *world*!!')).to.be.eql(
+    expect(Up.toDocument('> > > Hello, *world*!!')).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Blockquote([
@@ -329,7 +329,7 @@ describe('A single line blockquote', () => {
 
 describe('Multiple blockquote delimiters, each without their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.toDocument(`>>> Hello, world!`)).to.be.eql(
+    expect(Up.toDocument(`>>> Hello, world!`)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Blockquote([
@@ -347,7 +347,7 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
 
 describe('Multiple blockquote delimiters, each with their trailing space, followed by a final blockquote delimiter without its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
-    expect(Up.toDocument(`> > >Hello, world!`)).to.be.eql(
+    expect(Up.toDocument(`> > >Hello, world!`)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Blockquote([
@@ -372,7 +372,7 @@ context('Within a given blockquote', () => {
 >
 >\tUmmm... I said goodbye.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([

@@ -66,7 +66,7 @@ Hello, world!
     const heading =
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument(
         [heading],
         new UpDocument.TableOfContents([heading])
@@ -83,7 +83,7 @@ Goodbye, world!
     const heading =
       new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText('Hello, world!')]),
         heading,

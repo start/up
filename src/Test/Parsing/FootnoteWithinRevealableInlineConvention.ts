@@ -23,7 +23,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ], { referenceNumber: 2 })
 
-      expect(Up.toDocument("I'm normal. (^Really.) [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
+      expect(Up.toDocument("I'm normal. (^Really.) [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm normal."),
@@ -53,7 +53,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ], { referenceNumber: 2 })
 
-      expect(Up.toDocument("I'm normal. (^Really.) [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
+      expect(Up.toDocument("I'm normal. (^Really.) [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm normal."),
@@ -83,7 +83,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ], { referenceNumber: 2 })
 
-      expect(Up.toDocument("I'm normal. (^Really.) [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.be.eql(
+      expect(Up.toDocument("I'm normal. (^Really.) [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm normal."),
@@ -112,7 +112,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.be.eql(
+    expect(Up.toDocument("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Beating the game isn't a quick process."),
@@ -141,7 +141,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
+    expect(Up.toDocument("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new InlineNsfw([
@@ -165,7 +165,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         ])
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
+      expect(Up.toDocument("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new InlineNsfw([
@@ -190,7 +190,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
+    expect(Up.toDocument("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new InlineNsfl([
@@ -214,7 +214,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ])
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.be.eql(
+    expect(Up.toDocument("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new InlineSpoiler([

@@ -17,7 +17,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -40,7 +40,7 @@ sPoiLeR:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -61,7 +61,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -82,7 +82,7 @@ SPOILER
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -104,7 +104,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -128,7 +128,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -149,7 +149,7 @@ SPOILER:  \t  \t
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -170,7 +170,7 @@ SPOILER  \t  \t
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -197,7 +197,7 @@ SPOILER:
 
     Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([
@@ -222,7 +222,7 @@ SPOILER:
 
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([
@@ -249,7 +249,7 @@ SPOILER:
   }
   \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new CodeBlock(
@@ -270,7 +270,7 @@ SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
 That was my favorite episode.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -291,7 +291,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -316,7 +316,7 @@ context('The indentation of a spoiler block can be provided by', () => {
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -331,7 +331,7 @@ SPOILER:
 SPOILER:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -346,7 +346,7 @@ SPOILER:
 SPOILER:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -366,7 +366,7 @@ SPOILER:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([

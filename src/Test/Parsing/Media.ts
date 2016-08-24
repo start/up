@@ -12,7 +12,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -24,7 +24,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -36,7 +36,7 @@ context('If a line consists solely of media conventions, those media conventions
     const markup =
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -50,7 +50,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)] (hauntedhouse.com)  \t '
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -64,7 +64,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [audio: ghostly howling] [http://example.com/ghosts.ogg] \t ([image: haunted house] [http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com)  \t '
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
           new Link([
@@ -78,7 +78,7 @@ context('If a line consists solely of media conventions, those media conventions
       const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg')

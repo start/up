@@ -16,7 +16,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('An inline spoiler followed immediately by a parenthesized/bracketd URL', () => {
   it('produces an inline spoiler node whose contents are put inside a link pointing to that URL', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -49,7 +49,7 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
 
 describe('An inline spoiler directly followed by another spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -66,7 +66,7 @@ describe('An inline spoiler directly followed by another spoiler', () => {
 
 describe('An inline spoiler directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -83,7 +83,7 @@ describe('An inline spoiler directly followed by an inline NSFW convention', () 
 
 describe('An inline spoiler directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][NSFL: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -100,7 +100,7 @@ describe('An inline spoiler directly followed by an inline NSFL convention', () 
 
 describe('An inline spoiler directly followed by a media convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -122,7 +122,7 @@ describe('An inline spoiler directly followed by a footnote', () => {
       ], { referenceNumber: 1 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
@@ -139,7 +139,7 @@ describe('An inline spoiler directly followed by a footnote', () => {
 
 describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('[SPOILER: he called her](\\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[SPOILER: he called her](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('he called her')
@@ -154,7 +154,7 @@ describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
 
 context("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the spoiler convention is not linkified', () => {
-    expect(Up.toDocument('[SPOILER: he called her]( \t \\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[SPOILER: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('he called her')

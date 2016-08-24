@@ -40,7 +40,7 @@ Not quite true.
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -89,7 +89,7 @@ Minor reason
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -151,7 +151,7 @@ Minor reason
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -211,7 +211,7 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -262,7 +262,7 @@ NSFL:
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -308,7 +308,7 @@ NSFW:
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -352,7 +352,7 @@ Not quite true.
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -402,7 +402,7 @@ SPOILER:
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -450,7 +450,7 @@ I get hungry;     Very valid`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -503,7 +503,7 @@ I get hungry;                     Very valid`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -558,7 +558,7 @@ I get hungry (see [section: soda]);     Very valid`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -617,7 +617,7 @@ I get hungry (see [section: soda]);       Very valid`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -679,7 +679,7 @@ Not quite true.
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([

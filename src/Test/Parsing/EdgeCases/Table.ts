@@ -16,7 +16,7 @@ Game [\\;;        Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -43,7 +43,7 @@ Game :\\\\;       Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -73,7 +73,7 @@ Game;                 Release Date
 Chrono Trigger [\\;;  1995
 Chrono Cross;         1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -100,7 +100,7 @@ Game;                   Release Date
 Chrono Trigger :\\\\;   1995
 Chrono Cross;           1999`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -128,7 +128,7 @@ Table: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized tables are too useful to leave out.`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText('Table: my favorite outline convention.')]),
         new Paragraph([new PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
@@ -149,7 +149,7 @@ Underline
 ####
 ****`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -186,7 +186,7 @@ Game\`s Title;        Game\`s Release Date
 Chrono Trigger;       1995
 Chrono Cross;         1999`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -213,7 +213,7 @@ Game;                         Release Decade
 Square\`s Chrono Trigger;     1990\`s
 Square\`s Chrono Cross;       1990\`s`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -243,7 +243,7 @@ Table
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -270,7 +270,7 @@ Game;                 Release Date
 {: Chrono Trigger;    1995 :}
 Chrono Cross;         1999`
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([

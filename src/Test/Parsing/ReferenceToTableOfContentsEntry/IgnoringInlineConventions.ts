@@ -58,7 +58,7 @@ Not quite true. For example, see [section: emphasis].`
     const stayOnTopicHeading =
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         stressAndEmphasisHeading,
         new Paragraph([
@@ -108,7 +108,7 @@ Not quite true. For example, see [section: *emphasis*].`
     const stayOnTopicHeading =
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         mainEmphasisHeading,
         new Paragraph([
@@ -152,7 +152,7 @@ Well, maybe I'm not so great.`
           new Audio('full transcript of my greatness', 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
@@ -194,7 +194,7 @@ Well, maybe I'm not so great.`
         new Bold([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -236,7 +236,7 @@ Well, maybe I'm not so helpful.`
         new PlainText(' menu item')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, see "),
@@ -277,7 +277,7 @@ Well, maybe I'm not so great.`
         new Highlight([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -318,7 +318,7 @@ Well, maybe I'm not so great.`
         new Image('full transcript of my greatness', 'https://example.com/transcript')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -360,7 +360,7 @@ Well, maybe I'm not so helpful.`
         new PlainText(' statement')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, see "),
@@ -407,7 +407,7 @@ Well, maybe I'm not so great.`
         new PlainText(" transcript of my greatness")
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -449,7 +449,7 @@ Well, maybe I'm not so great.`
         new InlineNsfl([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -490,7 +490,7 @@ Well, maybe I'm not so great.`
         new InlineNsfw([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -531,7 +531,7 @@ Well, maybe I'm not so great.`
         new InlineSpoiler([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -572,7 +572,7 @@ Well, maybe I'm not so great.`
         new Italic([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -615,7 +615,7 @@ Well, maybe I'm not so great.`
         ], 'https://example.com/transcript')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -659,7 +659,7 @@ Well, maybe I'm not so great.`
         new PlainText(" transcript of my greatness")
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -700,7 +700,7 @@ Well, maybe I'm not so great.`
         new RevisionDeletion([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -741,7 +741,7 @@ Well, maybe I'm not so great.`
         new RevisionInsertion([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -785,7 +785,7 @@ Well, maybe I'm not so great.`
         new PlainText(" transcript of my greatness")
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -826,7 +826,7 @@ Well, maybe I'm not so great.`
         new Stress([new PlainText("full transcript of my greatness")])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -867,7 +867,7 @@ Well, maybe I'm not so great.`
         new Video('full transcript of my greatness', 'https://example.com/transcript')
       ], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),

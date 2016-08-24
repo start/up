@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
   it('comes from the "video" config term', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(up.toDocument(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -24,7 +24,7 @@ describe('The term that represents video conventions', () => {
     const lowercase = '[watch: Nevada caucus footage][https://example.com/video.webm]'
     const mixedCase = '[WaTCH: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(up.toDocument(lowercase)).to.be.eql(up.toDocument(mixedCase))
+    expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -36,7 +36,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -51,7 +51,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -66,7 +66,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm'),
         new Video('Nevada caucus footage', 'https://example.com/video.webm')

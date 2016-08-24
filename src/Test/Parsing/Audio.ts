@@ -10,7 +10,7 @@ import { Link } from '../../SyntaxNodes/Link'
 
 context('Bracketed (square bracketed or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
   it('produces an audio node with the first bracketed text treated as the description and the second treated as the audio URL', () => {
-    expect(Up.toDocument('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.be.eql(
+    expect(Up.toDocument('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I would never stay in a house with these sounds. '),
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -22,7 +22,7 @@ context('Bracketed (square bracketed or parenthesized) text starting with "audio
 
 context('An audio convention that is the only convention on its line is not placed inside a paragraph node.', () => {
   specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
-    expect(Up.toDocument('[audio: ghostly howling](http://example.com/ghosts.ogg)')).to.be.eql(
+    expect(Up.toDocument('[audio: ghostly howling](http://example.com/ghosts.ogg)')).to.deep.equal(
       new UpDocument([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
       ]))
@@ -31,7 +31,7 @@ context('An audio convention that is the only convention on its line is not plac
 
   context('This also applies when that audio convention', () => {
     specify('is surrounded by whitespace', () => {
-      expect(Up.toDocument(' \t [audio: ghostly howling](http://example.com/ghosts.ogg) \t ')).to.be.eql(
+      expect(Up.toDocument(' \t [audio: ghostly howling](http://example.com/ghosts.ogg) \t ')).to.deep.equal(
         new UpDocument([
           new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
         ]))
@@ -41,7 +41,7 @@ context('An audio convention that is the only convention on its line is not plac
       const markup =
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (hauntedhouse.com) \t '
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -53,7 +53,7 @@ context('An audio convention that is the only convention on its line is not plac
       const markup =
         ' \t ([audio: ghostly howling] [http://example.com/ghosts.ogg]) (hauntedhouse.com) \t '
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new Link([
             new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -104,7 +104,7 @@ context("When an audio convention has whitespace before its bracketed URL, there
 
 context("When an otherwise-valid audio convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('it does not produce an audio node', () => {
-    expect(Up.toDocument('[audio: scary]( \t \\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[audio: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[audio: scary]')
@@ -184,14 +184,14 @@ describe("An audio convention's URL", () => {
 
 describe('An audio description (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
-    expect(Up.toDocument('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.be.eql(
+    expect(Up.toDocument('(audio: (ghostly) howling)[http://example.com/?state=NE]')).to.deep.equal(
       new UpDocument([
         new Audio('(ghostly) howling', 'http://example.com/?state=NE')
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
-    expect(Up.toDocument('(audio: ((ghostly) howling))[http://example.com/?state=NE]')).to.be.eql(
+    expect(Up.toDocument('(audio: ((ghostly) howling))[http://example.com/?state=NE]')).to.deep.equal(
       new UpDocument([
         new Audio('((ghostly) howling)', 'http://example.com/?state=NE')
       ]))
@@ -201,14 +201,14 @@ describe('An audio description (enclosed in parentheses)', () => {
 
 describe('An audio description (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toDocument('[audio: [ghostly] howling](http://example.com/?state=NE)')).to.be.eql(
+    expect(Up.toDocument('[audio: [ghostly] howling](http://example.com/?state=NE)')).to.deep.equal(
       new UpDocument([
         new Audio('[ghostly] howling', 'http://example.com/?state=NE')
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
-    expect(Up.toDocument('[audio: [[ghostly] howling]](http://example.com/?state=NE)')).to.be.eql(
+    expect(Up.toDocument('[audio: [[ghostly] howling]](http://example.com/?state=NE)')).to.deep.equal(
       new UpDocument([
         new Audio('[[ghostly] howling]', 'http://example.com/?state=NE'),
       ]))
@@ -218,14 +218,14 @@ describe('An audio description (enclosed in square brackets)', () => {
 
 describe('An audio URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
-    expect(Up.toDocument('(audio: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.be.eql(
+    expect(Up.toDocument('(audio: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts eating luggage', 'http://example.com/?state=[NE]')
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
-    expect(Up.toDocument('(audio: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.be.eql(
+    expect(Up.toDocument('(audio: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts eating luggage', 'http://example.com/?[state=[NE]]')
       ]))
@@ -235,14 +235,14 @@ describe('An audio URL (enclosed in square brackets)', () => {
 
 describe('An audio URL (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
-    expect(Up.toDocument('[audio: ghosts eating luggage](http://example.com/?state=(NE))')).to.be.eql(
+    expect(Up.toDocument('[audio: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts eating luggage', 'http://example.com/?state=(NE)')
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
-    expect(Up.toDocument('[audio: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.be.eql(
+    expect(Up.toDocument('[audio: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts eating luggage', 'http://example.com/?(state=(NE))')
       ]))
@@ -252,21 +252,21 @@ describe('An audio URL (enclosed in parentheses)', () => {
 
 context('Audio descriptions are evaluated for typographical conventions:', () => {
   specify('En dashes', () => {
-    expect(Up.toDocument('[audio: ghosts--eating luggage] (http://example.com/poltergeists.webm)')).to.be.eql(
+    expect(Up.toDocument('[audio: ghosts--eating luggage] (http://example.com/poltergeists.webm)')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts–eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
   specify('Em dashes', () => {
-    expect(Up.toDocument('[audio: ghosts---eating luggage] (http://example.com/poltergeists.webm)')).to.be.eql(
+    expect(Up.toDocument('[audio: ghosts---eating luggage] (http://example.com/poltergeists.webm)')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts—eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
   specify('Plus-minus signs', () => {
-    expect(Up.toDocument('[audio: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.webm)')).to.be.eql(
+    expect(Up.toDocument('[audio: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.webm)')).to.deep.equal(
       new UpDocument([
         new Audio('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.webm')
       ]))

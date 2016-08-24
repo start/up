@@ -16,7 +16,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('An image convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces an image node within a link pointing to that second URL', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(http://example.com/finalbattle).')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -80,7 +80,7 @@ describe('Any image convention (with its URL) followed immediately by a (second)
 
 describe('An image convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Image('you fight Gary', 'https://example.com/fight.svg'),
@@ -95,7 +95,7 @@ describe('An image convention directly followed by an inline spoiler', () => {
 
 describe('An image directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Image('you fight Gary', 'https://example.com/fight.svg'),
@@ -110,7 +110,7 @@ describe('An image directly followed by an inline NSFW convention', () => {
 
 describe('An image directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.be.eql(
+    expect(Up.toDocument('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Image('you fight Gary', 'https://example.com/fight.svg'),
@@ -133,7 +133,7 @@ describe('An image directly followed by a footnote', () => {
       ], { referenceNumber: 1 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
@@ -148,7 +148,7 @@ describe('An image directly followed by a footnote', () => {
 
 describe('An otherwise-valid linkified image convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[image: phone call](https://example.com/phonecall.svg)(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Image('phone call', 'https://example.com/phonecall.svg'),
         new NormalParenthetical([
@@ -161,7 +161,7 @@ describe('An otherwise-valid linkified image convention with its linkifying URL 
 
 context("When an otherwise-valid linkified image convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the image convention is not linkified', () => {
-    expect(Up.toDocument('[image: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.be.eql(
+    expect(Up.toDocument('[image: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Image('phone call', 'https://example.com/phonecall.ogg'),
         new PlainText('( \t tel:5555555555)')

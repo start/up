@@ -15,7 +15,7 @@ My pies never turn out quite right.
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('My pies never turn out quite right.')
@@ -34,7 +34,7 @@ Turn out quite right
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -61,7 +61,7 @@ const pie = 3.5
 \`\`\`
 My pies never turn out quite right.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock('const pie = 3.5'),
         new Paragraph([
@@ -77,14 +77,14 @@ context('A code block with containing zero lines of code produces an empty code 
     const markup = `
 \`\`\`
 \`\`\``
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
-    expect(Up.toDocument('```')).to.be.eql(
+    expect(Up.toDocument('```')).to.deep.equal(
       new UpDocument([
         new CodeBlock(''),
       ]))
@@ -109,7 +109,7 @@ function factorial(n: number): number {
 \`\`\`
 document.write('The factorial of 5 is: ' + factorial(5))`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Check out the code below!')
@@ -133,7 +133,7 @@ describe('Within a code block, a streak of backticks matching the start streak b
 \`\`\`
  \`\`\`
 \`\`\``
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(' ```'),
       ]))

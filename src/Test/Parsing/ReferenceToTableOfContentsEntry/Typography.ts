@@ -27,7 +27,7 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -60,7 +60,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -93,7 +93,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -130,7 +130,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -163,7 +163,7 @@ Not quite true. For example, see [section: I drink soda—exclusively].`
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([

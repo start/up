@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
   it('comes from the "audio" config term', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.toDocument(markup)).to.be.eql(
+    expect(up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -24,7 +24,7 @@ describe('The term that represents video conventions', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
     const mixedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.toDocument(mixedCase)).to.be.eql(up.toDocument(lowercase))
+    expect(up.toDocument(mixedCase)).to.deep.equal(up.toDocument(lowercase))
   })
 
   it('is trimmed', () => {
@@ -36,7 +36,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -51,7 +51,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -66,7 +66,7 @@ describe('The term that represents video conventions', () => {
       }
     })
 
-    expect(document).to.be.eql(
+    expect(document).to.deep.equal(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')

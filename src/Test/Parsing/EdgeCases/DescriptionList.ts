@@ -21,7 +21,7 @@ Lick
 Night Shade
   Ghost type moves.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -73,7 +73,7 @@ Lick
 Night Shade
   Ghost type moves.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([

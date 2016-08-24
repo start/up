@@ -306,7 +306,7 @@ context('Most inline conventions are not applied if they have no content.', () =
 context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise-valid link...', () => {
   describe('with an empty URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[*Yggdra Union*][]')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('['),
@@ -323,7 +323,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with a blank URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
-      expect(Up.toDocument('[*Yggdra Union*]( \t )')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*]( \t )')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('['),
@@ -340,7 +340,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with empty content', () => {
     it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toDocument('()[https://google.com]')).to.be.eql(
+      expect(Up.toDocument('()[https://google.com]')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('()'),
           new SquareParenthetical([
@@ -357,7 +357,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with blank content', () => {
     it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toDocument('[ \t ](https://google.com)')).to.be.eql(
+      expect(Up.toDocument('[ \t ](https://google.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('[ \t ]'),
           new NormalParenthetical([
@@ -374,7 +374,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with empty content and an empty URL', () => {
     it('is treated as consecutive empty brackets', () => {
-      expect(Up.toDocument('Hello, [][]!')).to.be.eql(
+      expect(Up.toDocument('Hello, [][]!')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Hello, [][]!')
         ]))
@@ -384,7 +384,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with blank content and a blank URL', () => {
     it('is treated as consecutive blank brackets', () => {
-      expect(Up.toDocument('Beep boop, [ ][\t]!')).to.be.eql(
+      expect(Up.toDocument('Beep boop, [ ][\t]!')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Beep boop, [ ][\t]!')
         ]))
@@ -394,7 +394,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with escaped blank content', () => {
     specify('produces a link with its URL as its content', () => {
-      expect(Up.toDocument('[\\ ][https://google.com]')).to.be.eql(
+      expect(Up.toDocument('[\\ ][https://google.com]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Link([
             new PlainText('https://google.com')
@@ -406,7 +406,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
   describe('with an escaped blank URL', () => {
     it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.toDocument('[*Yggdra Union*](\\ )')).to.be.eql(
+      expect(Up.toDocument('[*Yggdra Union*](\\ )')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('['),
@@ -427,7 +427,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 context("Media conventions are handled a bit differently, because they also have URL.", () => {
   describe('An image with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[image:][http://example.com/hauntedhouse.svg]')).to.be.eql(
+      expect(Up.toDocument('[image:][http://example.com/hauntedhouse.svg]')).to.deep.equal(
         new UpDocument([
           new Image('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
@@ -437,7 +437,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.be.eql(
+      expect(Up.toDocument('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.deep.equal(
         new UpDocument([
           new Image('http://example.com/hauntedhouse.svg', 'http://example.com/hauntedhouse.svg')
         ]))
@@ -447,7 +447,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with an empty URL', () => {
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[image: Yggdra Union]{}')).to.be.eql(
+      expect(Up.toDocument('[image: Yggdra Union]{}')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('[image: Yggdra Union]')
@@ -460,7 +460,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An image with a blank URL', () => {
     it("does not produce an image. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
-      expect(Up.toDocument('[image: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[image: Yggdra Union]{ \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('[image: Yggdra Union]')
@@ -473,7 +473,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not an image. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toDocument('[image: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -484,7 +484,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toDocument('[image: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house] was written on the desk')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -496,7 +496,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toDocument('[image: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[image: haunted house] was written on the desk [really]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -514,7 +514,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+      expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
         new UpDocument([
           new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
@@ -524,7 +524,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.be.eql(
+      expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
         new UpDocument([
           new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
         ]))
@@ -534,7 +534,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty URL', () => {
     it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('(audio: Yggdra Union){}')).to.be.eql(
+      expect(Up.toDocument('(audio: Yggdra Union){}')).to.deep.equal(
         insideDocumentAndParagraph([
           new NormalParenthetical([
             new PlainText('(audio: Yggdra Union)')
@@ -547,7 +547,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with an empty URL', () => {
     it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('[audio: Yggdra Union]')
@@ -560,7 +560,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toDocument('[audio: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -571,7 +571,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -583,7 +583,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -601,7 +601,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with an empty description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[video:][http://example.com/hauntedhouse.webm]')).to.be.eql(
+      expect(Up.toDocument('[video:][http://example.com/hauntedhouse.webm]')).to.deep.equal(
         new UpDocument([
           new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
@@ -611,7 +611,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with a blank description', () => {
     it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.be.eql(
+      expect(Up.toDocument('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.deep.equal(
         new UpDocument([
           new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
         ]))
@@ -621,7 +621,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('A video with an empty URL', () => {
     it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('(video: Yggdra Union){}')).to.be.eql(
+      expect(Up.toDocument('(video: Yggdra Union){}')).to.deep.equal(
         insideDocumentAndParagraph([
           new NormalParenthetical([
             new PlainText('(video: Yggdra Union)')
@@ -634,7 +634,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe('An audio convention with a blank URL', () => {
     it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.be.eql(
+      expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
             new PlainText('[video: Yggdra Union]')
@@ -647,7 +647,7 @@ context("Media conventions are handled a bit differently, because they also have
 
   describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
     specify('nothing', () => {
-      expect(Up.toDocument('[video: haunted house]')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -658,7 +658,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toDocument('[video: haunted house] was written on the desk')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house] was written on the desk')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -670,7 +670,7 @@ context("Media conventions are handled a bit differently, because they also have
     })
 
     specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.be.eql(
+      expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new SquareParenthetical([
@@ -690,7 +690,7 @@ context("Media conventions are handled a bit differently, because they also have
 context("Conventions aren't linkified if the bracketed URL is...", () => {
   context('Empty:', () => {
     specify('highlight', () => {
-      expect(Up.toDocument('[highlight: Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[highlight: Ash fights Gary]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('Ash fights Gary')
@@ -700,7 +700,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Spoilers', () => {
-      expect(Up.toDocument('[SPOILER: Ash fights Gary]{}')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Ash fights Gary]{}')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -710,7 +710,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFW', () => {
-      expect(Up.toDocument('[NSFW: Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[NSFW: Ash fights Gary]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfw([
             new PlainText('Ash fights Gary')
@@ -720,7 +720,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFL', () => {
-      expect(Up.toDocument('[NSFL: Ash fights Gary][]')).to.be.eql(
+      expect(Up.toDocument('[NSFL: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -734,7 +734,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         new PlainText('Ash fights Gary')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^ Ash fights Gary]()')).to.be.eql(
+      expect(Up.toDocument('[^ Ash fights Gary]()')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -745,7 +745,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Audio', () => {
-      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)()')).to.be.eql(
+      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Audio('Ash fights Gary', 'https://example.com/audio'),
           new PlainText('()')
@@ -753,7 +753,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Images', () => {
-      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[]')).to.be.eql(
+      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('Ash fights Gary', 'https://example.com/image'),
           new PlainText('[]')
@@ -761,7 +761,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Videos', () => {
-      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){}')).to.be.eql(
+      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){}')).to.deep.equal(
         insideDocumentAndParagraph([
           new Video('Ash fights Gary', 'https://example.com/video'),
           new PlainText('{}')
@@ -771,7 +771,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
   context('Blank:', () => {
     specify('Highlights', () => {
-      expect(Up.toDocument('[highlight: Ash fights Gary]{\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[highlight: Ash fights Gary]{\t \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('Ash fights Gary')
@@ -781,7 +781,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Spoilers', () => {
-      expect(Up.toDocument('[SPOILER: Ash fights Gary]{\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[SPOILER: Ash fights Gary]{\t \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -791,7 +791,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFW', () => {
-      expect(Up.toDocument('[NSFW: Ash fights Gary](\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[NSFW: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfw([
             new PlainText('Ash fights Gary')
@@ -801,7 +801,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('NSFL', () => {
-      expect(Up.toDocument('[NSFL: Ash fights Gary][\t \t \t]')).to.be.eql(
+      expect(Up.toDocument('[NSFL: Ash fights Gary][\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfl([
             new PlainText('Ash fights Gary')
@@ -815,7 +815,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         new PlainText('Ash fights Gary')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^ Ash fights Gary](\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[^ Ash fights Gary](\t \t \t)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -826,7 +826,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Audio', () => {
-      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.be.eql(
+      expect(Up.toDocument('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Audio('Ash fights Gary', 'https://example.com/audio'),
           new PlainText('(\t \t \t)')
@@ -834,7 +834,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Images', () => {
-      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.be.eql(
+      expect(Up.toDocument('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Image('Ash fights Gary', 'https://example.com/image'),
           new PlainText('[\t \t \t]')
@@ -842,7 +842,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     })
 
     specify('Videos', () => {
-      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){\t \t \t}')).to.be.eql(
+      expect(Up.toDocument('[video: Ash fights Gary](example.com/video){\t \t \t}')).to.deep.equal(
         insideDocumentAndParagraph([
           new Video('Ash fights Gary', 'https://example.com/video'),
           new PlainText('{\t \t \t}')
@@ -854,7 +854,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
 describe('Revision insertion containing an empty revision deletion', () => {
   it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
-    expect(Up.toDocument('I built a trail: ++~~~~++')).to.be.eql(
+    expect(Up.toDocument('I built a trail: ++~~~~++')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I built a trail: '),
         new RevisionInsertion([
@@ -867,7 +867,7 @@ describe('Revision insertion containing an empty revision deletion', () => {
 
 describe('An inline spoiler convention with escaped blank content', () => {
   it('produces an inline spoiler node containing its content (whitespace)', () => {
-    expect(Up.toDocument("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.be.eql(
+    expect(Up.toDocument("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('The moral of this severely exciting, enriching story is '),
         new InlineSpoiler([
@@ -881,7 +881,7 @@ describe('An inline spoiler convention with escaped blank content', () => {
 
 describe('An otherwise-linkified NSFW convention with escaped blank content', () => {
   it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
-    expect(Up.toDocument("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.be.eql(
+    expect(Up.toDocument("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("On Professor Oak's right arm is a tattoo of "),
         new InlineNsfw([

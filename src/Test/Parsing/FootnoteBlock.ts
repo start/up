@@ -27,7 +27,7 @@ describe('A footnote in a paragph', () => {
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -53,7 +53,7 @@ describe('A paragraph with two footnotes', () => {
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -84,7 +84,7 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         new PlainText(" Never have.")
       ], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         heading,
         new FootnoteBlock([
@@ -110,7 +110,7 @@ Violets are blue (^Neither is this line. I think my mom made it up.)`
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -155,7 +155,7 @@ describe('Footnotes in unordered list items', () => {
       ], { referenceNumber: 4 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
 
@@ -207,7 +207,7 @@ describe('Footnotes in a blockquote', () => {
         new PlainText("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           new Paragraph([
@@ -240,7 +240,7 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
 
@@ -287,7 +287,7 @@ SPOILER:
         new PlainText("And this is a fun fact.")
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
@@ -321,7 +321,7 @@ SPOILER:
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
 
@@ -368,7 +368,7 @@ NSFW:
         new PlainText("And this is a fun fact.")
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new NsfwBlock([
           new Paragraph([
@@ -402,7 +402,7 @@ NSFW:
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new NsfwBlock([
 
@@ -449,7 +449,7 @@ NSFL:
         new PlainText("And this is a fun fact.")
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new NsflBlock([
           new Paragraph([
@@ -483,7 +483,7 @@ NSFL:
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new NsflBlock([
 
@@ -532,7 +532,7 @@ Final Fantasy II;   1988`
       new PlainText('Only the year')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -573,7 +573,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
       new PlainText('Almost 1989')
     ], { referenceNumber: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -621,7 +621,7 @@ Final Fantasy II;   1988 [^ Almost 1989]`
       new PlainText('Almost 1989')
     ], { referenceNumber: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -683,7 +683,7 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
       new PlainText('Almost 1989')
     ], { referenceNumber: 5 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -733,7 +733,7 @@ describe('Footnotes in ordered list items', () => {
       ], { referenceNumber: 2 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new OrderedList([
           new OrderedList.Item([
@@ -786,7 +786,7 @@ Gary
       ], { referenceNumber: 3 })
     ]
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new DescriptionList([
           new DescriptionList.Item([
@@ -855,7 +855,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new PlainText("It's actually been a dream of mine ever since I was young."),
       ], { referenceNumber: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
@@ -914,7 +914,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       new PlainText("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 3 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
@@ -987,7 +987,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       new PlainText("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 5 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
@@ -1052,7 +1052,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new PlainText("Probably."),
     ], { referenceNumber: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
@@ -1101,7 +1101,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new PlainText("Probably."),
     ], { referenceNumber: 2 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
@@ -1147,7 +1147,7 @@ I don't eat (^Or touch.) pumpkins.`
       new PlainText("Or touch.")
     ], { referenceNumber: 4 })
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),

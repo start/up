@@ -15,7 +15,7 @@ Hello, world!
 
 Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -39,7 +39,7 @@ Hello, world!
  \t
 Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -64,7 +64,7 @@ describe('A document that starts with 3 or more empty or blank lines', () => {
 \t
 Hello, world!`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -85,7 +85,7 @@ Hello, world!
  \t
 \t
 `
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -99,7 +99,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
   it('produces a thematic break node', () => {
     const markup = '#=-+~*^@:_+**###=~=~=~--~~~~'
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -125,14 +125,14 @@ describe('A thematic break streak', () => {
   it('can have whitespace interspersed throughout the line in any manner', () => {
     const markup = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
   })
 
   it('can contain as few as 3 non-whitespace characters', () => {
-    expect(Up.toDocument('= - ~')).to.be.eql(
+    expect(Up.toDocument('= - ~')).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -151,7 +151,7 @@ Hello.
 
 
 Goodbye.`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello.')
@@ -171,7 +171,7 @@ describe('Consecutive thematic break streaks', () => {
 =============================================
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 =============================================`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -257,7 +257,7 @@ context('When thematic break streaks are separated from each other by only blank
 
 --------`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -277,7 +277,7 @@ context('When thematic break streaks are separated from each other by only blank
 
 --------`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))

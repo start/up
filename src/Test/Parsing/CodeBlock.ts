@@ -14,7 +14,7 @@ describe('Text surrounded (underlined and overlined) by matching streaks of back
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock('const pie = 3.5'),
       ]))
@@ -30,7 +30,7 @@ describe('A code block', () => {
 // Such a pain!
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(
           `// Escaping backticks in typescript...
@@ -44,7 +44,7 @@ describe('A code block', () => {
 const lineBreak = "\\n"
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock('const lineBreak = "\\n"'),
       ]))
@@ -61,7 +61,7 @@ const lineBreak = "\\n"
 // Wait. Have I already said this?
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(
           `// Escaping backticks in typescript...
@@ -87,7 +87,7 @@ function factorial(n: number): number {
 \`\`\`
 \`\`\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
             `\`\`\`
@@ -114,7 +114,7 @@ function factorial(n: number): number {
 \`\`\`\`\`\`
 \`\`\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
             `\`\`\`\`\`\`
@@ -140,7 +140,7 @@ function factorial(n: number): number {
 }
 \`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
             `\`\`\`\`\`\`
@@ -170,7 +170,7 @@ function factorial(n: number): number {
 It's easy!
 \`\`\`\`\``
 
-      expect(Up.toDocument(markup)).to.be.eql(
+      expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
             `Wrap code in streaks of backticks! 
@@ -206,7 +206,7 @@ function factorial(n: number): number {
 
 document.write('The factorial of 5 is: ' + factorial(5))`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Check out the code below!')
@@ -237,7 +237,7 @@ SPOILER:
   
 I hope you were able to find a solution without cheating.`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
           new CodeBlock(

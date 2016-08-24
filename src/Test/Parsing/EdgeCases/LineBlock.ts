@@ -10,7 +10,7 @@ describe('A line starting with an escaped character in a line block', () => {
     const markup = `
 \\Roses are red
 Violets are blue`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -27,7 +27,7 @@ Violets are blue`
     const markup = `
 Roses are red
 \\Violets are blue`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -50,7 +50,7 @@ Violets are blue
 \\#~#~#~#~#~#~#~#~#
 Lyrics have lines
 And addresses do, too`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -81,7 +81,7 @@ Roses are red
 Violets are blue\\
 Lyrics have lines
 And addresses do, too`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -109,7 +109,7 @@ context("A line consisting of escaped whitespace is not included in a line block
 Roses are red
 \\ \t
 Violets are blue`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -128,7 +128,7 @@ Violets are blue`
 Roses are red
  \\   \\  \\\t  \t   
 Violets are blue`
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -151,7 +151,7 @@ Roses are red
  \\\t\t
 Skeltals are white`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([

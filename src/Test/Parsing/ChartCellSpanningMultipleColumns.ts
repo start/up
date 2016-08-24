@@ -14,7 +14,7 @@ Chart:
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -42,7 +42,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -86,7 +86,7 @@ Wednesday;;                             Break room repaired by CSV
 Thursday;     Really;                   Todd finished his work
 Friday;;                                Printer had ink`
 
-    expect(Up.toDocument(markup)).to.be.eql(
+    expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

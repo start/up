@@ -9,7 +9,7 @@ import { Stress } from '../../../SyntaxNodes/Stress'
 
 describe('Shouted text', () => {
   it('can have its emphasis node closed first even when followed by stressed text', () => {
-    expect(Up.toDocument('***Nimble* navigators?** **Tropical.**')).to.be.eql(
+    expect(Up.toDocument('***Nimble* navigators?** **Tropical.**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new Emphasis([
@@ -25,7 +25,7 @@ describe('Shouted text', () => {
   })
 
   it('can have its emphasis node closed first even when followed by emphasized text', () => {
-    expect(Up.toDocument('***Nimble* navigators?** *Tropical.*')).to.be.eql(
+    expect(Up.toDocument('***Nimble* navigators?** *Tropical.*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new Emphasis([
@@ -41,7 +41,7 @@ describe('Shouted text', () => {
   })
 
   it('can have its stress node closed first even when followed by stressed text', () => {
-    expect(Up.toDocument('***Nimble** navigators?* **Tropical.**')).to.be.eql(
+    expect(Up.toDocument('***Nimble** navigators?* **Tropical.**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new Stress([
@@ -57,7 +57,7 @@ describe('Shouted text', () => {
   })
 
   it('can have its stress node closed first even when followed by emphasized text', () => {
-    expect(Up.toDocument('***Nimble** navigators?* *Tropical.*')).to.be.eql(
+    expect(Up.toDocument('***Nimble** navigators?* *Tropical.*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new Stress([
@@ -76,7 +76,7 @@ describe('Shouted text', () => {
 
 describe('Shouted text inside of emphasized text', () => {
   it('can have its inner stress node closed early', () => {
-    expect(Up.toDocument('*Please ***stop** eating the cardboard* immediately*')).to.be.eql(
+    expect(Up.toDocument('*Please ***stop** eating the cardboard* immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Please '),
@@ -92,7 +92,7 @@ describe('Shouted text inside of emphasized text', () => {
   })
 
   it('can have its emphasis node closed early', () => {
-    expect(Up.toDocument('*Please ***stop* eating the cardboard** immediately*')).to.be.eql(
+    expect(Up.toDocument('*Please ***stop* eating the cardboard** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Please '),
@@ -108,7 +108,7 @@ describe('Shouted text inside of emphasized text', () => {
   })
 
   it('can have both the emphasis nodes closed before the stress node', () => {
-    expect(Up.toDocument('*Please ***stop* eating the cardboard* immediately**')).to.be.eql(
+    expect(Up.toDocument('*Please ***stop* eating the cardboard* immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Please '),
@@ -129,7 +129,7 @@ describe('Shouted text inside of emphasized text', () => {
 
 describe('An inflection convention starting with 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
-    expect(Up.toDocument('A ***bread* to believe in')).to.be.eql(
+    expect(Up.toDocument('A ***bread* to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
         new Emphasis([
@@ -143,7 +143,7 @@ describe('An inflection convention starting with 3 asterisks', () => {
 
 describe('An inflection convention starting with 3 asterisks', () => {
   it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
-    expect(Up.toDocument('A ***bread** to believe in')).to.be.eql(
+    expect(Up.toDocument('A ***bread** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
         new Stress([
@@ -157,7 +157,7 @@ describe('An inflection convention starting with 3 asterisks', () => {
 
 describe('A single starting asterisk', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
-    expect(Up.toDocument('A *bread*** to believe in')).to.be.eql(
+    expect(Up.toDocument('A *bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
         new Emphasis([
@@ -171,7 +171,7 @@ describe('A single starting asterisk', () => {
 
 describe('Double starting asterisks', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
-    expect(Up.toDocument('A **bread*** to believe in')).to.be.eql(
+    expect(Up.toDocument('A **bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
         new Stress([
@@ -185,7 +185,7 @@ describe('Double starting asterisks', () => {
 
 describe('Shouted text inside of stressed text', () => {
   it('can have its inner stress node closed early', () => {
-    expect(Up.toDocument('**Please ***stop** eating the cardboard* immediately**')).to.be.eql(
+    expect(Up.toDocument('**Please ***stop** eating the cardboard* immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new PlainText('Please '),
@@ -201,7 +201,7 @@ describe('Shouted text inside of stressed text', () => {
   })
 
   it('can have its emphasis node closed early', () => {
-    expect(Up.toDocument('**Please ***stop* eating the cardboard** immediately**')).to.be.eql(
+    expect(Up.toDocument('**Please ***stop* eating the cardboard** immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new PlainText('Please '),
@@ -217,7 +217,7 @@ describe('Shouted text inside of stressed text', () => {
   })
 
   it('can have both the stress nodes closed before the emphasis node', () => {
-    expect(Up.toDocument('**Please ***stop** eating the cardboard** immediately*')).to.be.eql(
+    expect(Up.toDocument('**Please ***stop** eating the cardboard** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new PlainText('Please '),
@@ -238,7 +238,7 @@ describe('Shouted text inside of stressed text', () => {
 
 describe('Inside of stressed text, shouted text with its inner stress node closed early', () => {
   it('can have the reamining emphasis node and stress node closed by 3 or more asterisks', () => {
-    expect(Up.toDocument('**Please ***stop** eating the cardboard immediately***')).to.be.eql(
+    expect(Up.toDocument('**Please ***stop** eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new PlainText('Please '),
@@ -256,7 +256,7 @@ describe('Inside of stressed text, shouted text with its inner stress node close
 
 describe('Inside of stressed text, shouted text with its inner emphasis node closed early', () => {
   it('can have the reamining two stress nodes closed by 4 or more asterisks', () => {
-    expect(Up.toDocument('**Please ***stop* eating the cardboard immediately****')).to.be.eql(
+    expect(Up.toDocument('**Please ***stop* eating the cardboard immediately****')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new PlainText('Please '),
@@ -274,7 +274,7 @@ describe('Inside of stressed text, shouted text with its inner emphasis node clo
 
 describe('Inside of emphasized text, shouted text with its inner stress node closed early', () => {
   it('can have the reamining two emphasis nodes closed by 3 or more asterisks', () => {
-    expect(Up.toDocument('*Please ***stop** eating the cardboard immediately***')).to.be.eql(
+    expect(Up.toDocument('*Please ***stop** eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Please '),
@@ -292,7 +292,7 @@ describe('Inside of emphasized text, shouted text with its inner stress node clo
 
 describe('Inside of emphasized text, shouted text with its inner emphasis node closed early', () => {
   it('can have the reamining stress node and emphasis node closed by 3 or more asterisks', () => {
-    expect(Up.toDocument('*Please ***stop* eating the cardboard immediately***')).to.be.eql(
+    expect(Up.toDocument('*Please ***stop* eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Please '),
@@ -310,7 +310,7 @@ describe('Inside of emphasized text, shouted text with its inner emphasis node c
 
 describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () => {
   it('are preserved as plain text', () => {
-    expect(Up.toDocument('I believe ***** will win the primary in ***** easily.')).to.be.eql(
+    expect(Up.toDocument('I believe ***** will win the primary in ***** easily.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I believe ***** will win the primary in ***** easily.')
       ]))
@@ -320,7 +320,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
 
 describe('Shouted text starting with 4+ asterisks, with an emphasis convention ended early, subsequently ending in 3+ additional asterisks', () => {
   it('produces an emphasis node nested within stress and emphasis nodes', () => {
-    expect(Up.toDocument('Well, ****Xamarin* is now free***!')).to.be.eql(
+    expect(Up.toDocument('Well, ****Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Well, '),
         new Stress([
@@ -339,7 +339,7 @@ describe('Shouted text starting with 4+ asterisks, with an emphasis convention e
 
 describe('Shouted text starting with 4 asterisks, with a stress convention ended early, subsequently ending in 3 additional asterisks', () => {
   it('produces nested stress nodes', () => {
-    expect(Up.toDocument('Well, ****Xamarin** is now free***!')).to.be.eql(
+    expect(Up.toDocument('Well, ****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Well, '),
         new Stress([
@@ -356,7 +356,7 @@ describe('Shouted text starting with 4 asterisks, with a stress convention ended
 
 describe('Shouted text starting with 5+ asterisks, with an emphasis convention ended early, subsequently ending in 3+ additional asterisks', () => {
   it('produces a stress node nested within stress and emphasis nodes', () => {
-    expect(Up.toDocument('Well, *****Xamarin** is now free***!')).to.be.eql(
+    expect(Up.toDocument('Well, *****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Well, '),
         new Stress([
