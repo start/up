@@ -12,7 +12,9 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 
 // A single non-blank line is treated as a paragraph.
 //
-// 2 or more consecutive non-blank lines are treated as... lines. Not paragraphs! For example:
+// A block of 2 or more non-blank lines are treated as... a block of lines. Not as paragraphs!
+//
+// For example:
 //
 // Roses are red
 // Violets are blue
@@ -27,7 +29,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   //
   // The terminating line itself is **not** included in the line block.
   //
-  // Here are the types of terminating lines:
+  // Here are the three types of terminating lines:
   //
   // 1. A blank line. We leave blank lines behind to be examined by another parser, like
   // `tryToParseBlankLineSeparation`.
@@ -83,7 +85,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
     isOnFirstLine = false
 
     if (!wasLineConsumed) {
-      // The line was blank, or it should be interpreted as another outline convention.
+      // The current line is blank, or it should be interpreted as another outline convention.
       //
       // Let's bail!
       break
