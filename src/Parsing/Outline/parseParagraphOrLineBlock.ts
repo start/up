@@ -16,10 +16,10 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // Roses are red
 // Violets are blue
-// Lyrics have line
+// Lyrics have lines
 // And addresses do, too
 
-export function parseRegularLines(args: OutlineParserArgs): void {
+export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // Line blocks are terminated early by a line if it wouldn't tbe parsed as a regular paragraph.

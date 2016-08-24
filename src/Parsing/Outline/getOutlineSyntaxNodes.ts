@@ -14,7 +14,7 @@ import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { tryToParseTableOrChart } from './tryToParseTableOrChart'
 import { getLabeledBlockParser } from './getLabeledBlockParser'
-import { parseRegularLines } from './parseRegularLines'
+import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { NON_BLANK_PATTERN } from '../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
@@ -85,7 +85,7 @@ export function getOutlineSyntaxNodes(
     }
 
     if (!outlineConventions.some(tryToParse => tryToParse(outlineParserArgs))) {
-      parseRegularLines(outlineParserArgs)
+      parseParagraphOrLineBlock(outlineParserArgs)
     }
   }
 
