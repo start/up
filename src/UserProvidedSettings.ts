@@ -13,7 +13,7 @@ export interface UserProvidedSettings {
 export namespace UserProvidedSettings {
   export interface Terms {
     markup?: Terms.Markup
-    output?: Terms.Output
+    output?: Terms.Rendered
   }
 
   export namespace Terms {
@@ -32,17 +32,16 @@ export namespace UserProvidedSettings {
 
     export type FoundInMarkup = string[] | string
 
-
-    export interface Output {
-      footnote?: Terms.FoundInOutput
-      footnoteReference?: Terms.FoundInOutput
-      itemReferencedByTableOfContents?: Terms.FoundInOutput
-      tableOfContents?: Terms.FoundInOutput
-      toggleNsfl?: Terms.FoundInOutput
-      toggleNsfw?: Terms.FoundInOutput
-      toggleSpoiler?: Terms.FoundInOutput
+    export interface Rendered {
+      footnote?: Terms.RenderedToOutput
+      footnoteReference?: Terms.RenderedToOutput
+      itemReferencedByTableOfContents?: Terms.RenderedToOutput
+      tableOfContents?: Terms.RenderedToOutput
+      toggleNsfl?: Terms.RenderedToOutput
+      toggleNsfw?: Terms.RenderedToOutput
+      toggleSpoiler?: Terms.RenderedToOutput
     }
 
-    export type FoundInOutput = string
+    export type RenderedToOutput = string
   }
 }

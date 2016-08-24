@@ -65,13 +65,13 @@ export class Config {
 export namespace Config {
   export class Terms {
     markup = new Terms.Markup()
-    output = new Terms.Output()
+    rendered = new Terms.Rendered()
 
     clone(): Terms {
       const clone = new Terms()
 
       clone.markup = this.markup.clone()
-      clone.output = this.output.clone()
+      clone.rendered = this.rendered.clone()
 
       return clone
     }
@@ -82,7 +82,7 @@ export namespace Config {
       }
 
       this.markup.applyUserProvidedSettings(terms.markup)
-      this.output.applyUserProvidedSettings(terms.output)
+      this.rendered.applyUserProvidedSettings(terms.output)
     }
   }
 
@@ -157,22 +157,22 @@ export namespace Config {
       }
     }
 
-    // Terms.FoundInOutput
-    export type FoundInOutput = string
 
+    // Terms.RenderedToOutput
+    export type RenderedToOutput = string
 
-    // Config.Terms.Output
-    export class Output {
-      footnote: Terms.FoundInOutput = 'footnote'
-      footnoteReference: Terms.FoundInOutput = 'footnote reference'
-      itemReferencedByTableOfContents: Terms.FoundInOutput = 'item'
-      tableOfContents: Terms.FoundInOutput = 'Table of Contents'
-      toggleNsfl: Terms.FoundInOutput = 'toggle NSFL'
-      toggleNsfw: Terms.FoundInOutput = 'toggle NSFW'
-      toggleSpoiler: Terms.FoundInOutput = 'toggle spoiler'
+    // Config.Terms.RenderedToOutput
+    export class Rendered {
+      footnote: Terms.RenderedToOutput = 'footnote'
+      footnoteReference: Terms.RenderedToOutput = 'footnote reference'
+      itemReferencedByTableOfContents: Terms.RenderedToOutput = 'item'
+      tableOfContents: Terms.RenderedToOutput = 'Table of Contents'
+      toggleNsfl: Terms.RenderedToOutput = 'toggle NSFL'
+      toggleNsfw: Terms.RenderedToOutput = 'toggle NSFW'
+      toggleSpoiler: Terms.RenderedToOutput = 'toggle spoiler'
 
-      clone(): Output {
-        const clone = new Output()
+      clone(): Rendered {
+        const clone = new Rendered()
 
         clone.footnote = this.footnote
         clone.footnoteReference = this.footnoteReference
@@ -185,7 +185,7 @@ export namespace Config {
         return clone
       }
 
-      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Output): void {
+      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Rendered): void {
         if (!terms) {
           return
         }
@@ -219,13 +219,13 @@ export namespace Config {
 // In Up, there are two types of terms:
 //
 // 1. Terms found in markup (e.g. "image", "table")
-// 2. Terms found in the output (e.g. "Table of Contents", "toggle NSFW")
+// 2. Terms rendered to output (e.g. "Table of Contents", "toggle NSFW")
 //
 // We allow multiple variations for terms found in markup. Internally, each markup term is
 // represented by an array of strings containing those variations.
 //
 // For custom markup terms, if the user wants multiple variations, those variations are
-// naturally specified using a string array, too. However, if the user doesn't want multiple
+// naturally specified using a string array. However, if the user doesn't want multiple
 // varaitions, they can specify the term with a plain string.
 //
 // This function converts takes the user's changes to a given markup term (if any) and
