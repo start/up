@@ -55,15 +55,15 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   //    [image: a cat](example.com/cat.jpg) (example.com/cat-gallery)
   //
   //    These lines are a bit special. Not only do they terminate the preceding line block, but
-  //    we "promte" their media conventions to the outline.
+  //    we "promote" their media conventions to the outline.
 
   const inlineNodesPerLine: InlineSyntaxNode[][] = []
   let nodesPromotedToOutline: OutlineSyntaxNode[] = []
 
-  // Normally, we need to determine whether each line should be be interpreted as another
-  // outline convention instead of a paragraph or line block (see list item 2 above).
+  // Normally, we need to determine whether each line should be interpreted as another outline
+  // convention instead of a paragraph or line block (see list item 2 above).
   //
-  // This is a bit expenseive.
+  // This is a bit expensive.
   //
   // Luckily, we can avoid doing this for the first line. If the first line satisfied another
   // outline convention, another parser would have already consumed it!
