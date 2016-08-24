@@ -19,7 +19,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     conflictingTermChanges: UserProvidedSettings.Terms.Markup
   }
 ): void {
-  const { markupForDefaultSettings, markupForConfigChanges, invalidMarkupForEmptyTerm } = args
+  const { markupForDefaultSettings, markupForConfigChanges, invalidMarkupForEmptyTerm, invalidMarkupForBlankTerm } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference...
   expect(markupForConfigChanges).to.not.be.eql(markupForDefaultSettings)
@@ -61,8 +61,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any empty or blank variations ignored", () => {
+      // First, let's make sure the empty or blank variations are not supported
       expect(Up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
 
+      // Now, let's'make sure empty or blank variations don't interfere with valid variations
       expect(Up.toDocument(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
@@ -92,7 +95,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any blank variations ignored", () => {
+      // First, let's make sure the empty or blank variations are not supported
       expect(up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+      expect(up.toDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.be.eql(whenEverythingIsDefault)
+
+      // Now, let's'make sure empty or blank variations don't interfere with valid variations
       expect(up.toDocument(markupForConfigChanges, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
     })
 
@@ -140,10 +147,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has any blank variations ignored", () => {
-      const up = new Up(equivalentConfigChangesWithEmptyAndBlankVariations)
+      // First, let's make sure the empty or blank variations are not supported
+      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(invalidMarkupForEmptyTerm)).to.not.be.eql(whenEverythingIsDefault)
+      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(invalidMarkupForBlankTerm)).to.not.be.eql(whenEverythingIsDefault)
 
-      expect(up.toDocument(invalidMarkupForEmptyTerm)).to.not.be.eql(whenEverythingIsDefault)
-      expect(up.toDocument(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
+      // Now, let's'make sure empty or blank variations don't interfere with valid variations
+      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).toDocument(markupForConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
