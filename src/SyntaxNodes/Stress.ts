@@ -6,8 +6,8 @@ import { Renderer } from '../Rendering/Renderer'
 //
 // Not to be confused with `Bold`! 
 export class Stress extends RichInlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.stress(this)
+  render(renderer: Renderer): string {
+    return renderer.stress(this)
   }
 
   protected STRESS(): void { }

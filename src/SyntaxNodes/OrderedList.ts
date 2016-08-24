@@ -43,8 +43,8 @@ export class OrderedList implements OutlineSyntaxNode {
       this.items.map(item => item.inlineDescendants()))
   }
 
-  write(writer: Renderer): string {
-    return writer.orderedList(this)
+  render(renderer: Renderer): string {
+    return renderer.orderedList(this)
   }
 }
 

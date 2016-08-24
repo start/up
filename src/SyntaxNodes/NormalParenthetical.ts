@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class NormalParenthetical extends ParentheticalSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.normalParenthetical(this)
+  render(renderer: Renderer): string {
+    return renderer.normalParenthetical(this)
   }
 
   protected NORMAL_PARENTHETICAL(): void { }

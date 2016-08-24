@@ -14,5 +14,5 @@ export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer i
     }
   }
 
-  abstract write(writer: Renderer): string
+  abstract render(renderer: Renderer): string
 }

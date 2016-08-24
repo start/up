@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Blockquote extends RichOutlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.blockquote(this)
+  render(renderer: Renderer): string {
+    return renderer.blockquote(this)
   }
 
   protected BLOCKQUOTE(): void { }

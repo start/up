@@ -62,7 +62,7 @@ export class HtmlRenderer extends Renderer {
   // checkbox.
   //
   // Because each Renderer class instance is only used once per document, we can simply increment a counter each
-  // time we write a spoiler (inline or block), appending the counter's value to the checkbox's ID.
+  // time we render a spoiler (inline or block), appending the counter's value to the checkbox's ID.
   //
   // We'll do the same for NSFW and NSFL conventions.
   private spoilerCount = 0
@@ -76,17 +76,17 @@ export class HtmlRenderer extends Renderer {
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
 
-  writeDocument(document: UpDocument): string {
+  renderDocument(document: UpDocument): string {
     const tableOfContents =
       document.tableOfContents.entries.length
         ? this.tableOfContents(document.tableOfContents)
         : ''
 
-    return tableOfContents + this.writeAll(document.children)
+    return tableOfContents + this.renderAll(document.children)
   }
 
-  writeInlineDocument(inlineDocument: InlineUpDocument): string {
-    return this.writeAll(inlineDocument.children)
+  renderInlineDocument(inlineDocument: InlineUpDocument): string {
+    return this.renderAll(inlineDocument.children)
   }
 
   blockquote(blockquote: Blockquote): string {
@@ -202,7 +202,7 @@ export class HtmlRenderer extends Renderer {
         // text by italicizing it.
         : new Italic([new PlainText(reference.snippetFromEntry)])
 
-    return representation.write(this)
+    return representation.render(this)
   }
 
   revisionInsertion(revisionInsertion: RevisionInsertion): string {
@@ -328,7 +328,7 @@ export class HtmlRenderer extends Renderer {
 
   link(link: Link): string {
     if (this.isInsideLink || !this.isUrlAllowed(link.url)) {
-      return this.writeAll(link.children)
+      return this.renderAll(link.children)
     }
 
     this.isInsideLink = true
@@ -404,7 +404,7 @@ export class HtmlRenderer extends Renderer {
     const title = new Heading([
       new PlainText(this.config.terms.output.tableOfContents)], { level: 1 })
 
-    return title.write(this)
+    return title.render(this)
   }
 
   private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
@@ -414,7 +414,7 @@ export class HtmlRenderer extends Renderer {
           this.tableOfContentsEntry(entry)
         ]))
 
-    return new UnorderedList(listItems).write(this)
+    return new UnorderedList(listItems).render(this)
   }
 
   private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry): OutlineSyntaxNode {
@@ -552,7 +552,7 @@ export class HtmlRenderer extends Renderer {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren(
-          'caption', this.writeEach(caption.children))
+          'caption', this.renderEach(caption.children))
         : '')
   }
 
@@ -600,13 +600,13 @@ export class HtmlRenderer extends Renderer {
 
     return htmlElementWithAlreadyEscapedChildren(
       tagName,
-      this.writeEach(cell.children),
+      this.renderEach(cell.children),
       attrs
     )
   }
 
   private element(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
-    return htmlElementWithAlreadyEscapedChildren(tagName, this.writeEach(children), attrs)
+    return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
   private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {

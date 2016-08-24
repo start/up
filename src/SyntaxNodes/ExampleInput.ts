@@ -18,7 +18,7 @@ export class ExampleInput implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.exampleInput(this)
+  render(renderer: Renderer): string {
+    return renderer.exampleInput(this)
   }
 }

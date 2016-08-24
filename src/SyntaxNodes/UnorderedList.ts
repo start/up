@@ -26,8 +26,8 @@ export class UnorderedList implements OutlineSyntaxNode {
       this.items.map(item => item.inlineDescendants()))
   }
 
-  write(writer: Renderer): string {
-    return writer.unorderedList(this)
+  render(renderer: Renderer): string {
+    return renderer.unorderedList(this)
   }
 }
 

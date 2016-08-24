@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class RevisionDeletion extends RichInlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.revisionDeletion(this)
+  render(renderer: Renderer): string {
+    return renderer.revisionDeletion(this)
   }
 
   protected REVISION_DELETION(): void { }

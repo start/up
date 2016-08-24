@@ -14,5 +14,5 @@ export abstract class RichInlineSyntaxNode extends InlineSyntaxNodeContainer imp
     return getSearchableText(this.children)
   }
 
-  abstract write(writer: Renderer): string
+  abstract render(renderer: Renderer): string
 }

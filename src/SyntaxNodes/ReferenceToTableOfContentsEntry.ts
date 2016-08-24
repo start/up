@@ -82,7 +82,7 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.referenceToTableOfContentsEntry(this)
+  render(renderer: Renderer): string {
+    return renderer.referenceToTableOfContentsEntry(this)
   }
 }

@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class SquareParenthetical extends ParentheticalSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.squareParenthetical(this)
+  render(renderer: Renderer): string {
+    return renderer.squareParenthetical(this)
   }
 
   protected SQUARE_PARENTHETICAL(): void { }

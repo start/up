@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Audio extends MediaSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.audio(this)
+  render(renderer: Renderer): string {
+    return renderer.audio(this)
   }
 
   protected AUDIO(): void { }

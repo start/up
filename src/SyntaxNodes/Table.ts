@@ -38,8 +38,8 @@ export class Table implements OutlineSyntaxNode {
       captionAndCells.map(captionOrCell => getInlineDescendants(captionOrCell.children)))
   }
 
-  write(writer: Renderer): string {
-    return writer.table(this)
+  render(renderer: Renderer): string {
+    return renderer.table(this)
   }
 }
 

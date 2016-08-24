@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Highlight extends RichInlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.highlight(this)
+  render(renderer: Renderer): string {
+    return renderer.highlight(this)
   }
 
   protected HIGHLIGHT(): void { }

@@ -35,7 +35,7 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.link(this)
+  render(renderer: Renderer): string {
+    return renderer.link(this)
   }
 }

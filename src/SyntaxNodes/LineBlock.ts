@@ -24,8 +24,8 @@ export class LineBlock implements OutlineSyntaxNode {
       this.lines.map(line => line.inlineDescendants()))
   }
 
-  write(writer: Renderer): string {
-    return writer.lineBlock(this)
+  render(renderer: Renderer): string {
+    return renderer.lineBlock(this)
   }
 }
 

@@ -17,7 +17,7 @@ export class InlineCode implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.inlineCode(this)
+  render(renderer: Renderer): string {
+    return renderer.inlineCode(this)
   }
 }

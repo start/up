@@ -21,8 +21,8 @@ export class CodeBlock implements OutlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.codeBlock(this)
+  render(renderer: Renderer): string {
+    return renderer.codeBlock(this)
   }
 
   protected CODE_BLOCK(): void { }

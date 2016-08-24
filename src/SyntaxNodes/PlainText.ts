@@ -17,8 +17,8 @@ export class PlainText implements InlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.plainText(this)
+  render(renderer: Renderer): string {
+    return renderer.plainText(this)
   }
 
   protected PLAIN_TEXT(): void { }

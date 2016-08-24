@@ -4,5 +4,5 @@ import { Renderer } from '../Rendering/Renderer'
 
 export interface SyntaxNode {
   inlineDescendants(): InlineSyntaxNode[]
-  write(writer: Renderer): string
+  render(renderer: Renderer): string
 }

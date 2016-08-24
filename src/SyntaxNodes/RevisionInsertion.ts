@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class RevisionInsertion extends RichInlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.revisionInsertion(this)
+  render(renderer: Renderer): string {
+    return renderer.revisionInsertion(this)
   }
 
   protected REVISION_INSERTION(): void { }

@@ -29,7 +29,7 @@ export class Footnote extends RichInlineSyntaxNode {
     return ''
   }
 
-  write(writer: Renderer): string {
-    return writer.referenceToFootnote(this)
+  render(renderer: Renderer): string {
+    return renderer.referenceToFootnote(this)
   }
 }

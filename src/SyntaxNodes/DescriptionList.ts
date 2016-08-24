@@ -26,8 +26,8 @@ export class DescriptionList implements OutlineSyntaxNode {
       this.items.map(item => item.inlineDescendants()))
   }
 
-  write(writer: Renderer): string {
-    return writer.descriptionList(this)
+  render(renderer: Renderer): string {
+    return renderer.descriptionList(this)
   }
 }
 

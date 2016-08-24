@@ -6,8 +6,8 @@ import { Renderer } from '../Rendering/Renderer'
 //
 // Not to be confused with `Italic`! 
 export class Emphasis extends RichInlineSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.emphasis(this)
+  render(renderer: Renderer): string {
+    return renderer.emphasis(this)
   }
 
   protected EMPHASIS(): void { }

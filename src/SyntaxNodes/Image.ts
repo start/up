@@ -3,8 +3,8 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Image extends MediaSyntaxNode {
-  write(writer: Renderer): string {
-    return writer.image(this)
+  render(renderer: Renderer): string {
+    return renderer.image(this)
   }
 
   protected IMAGE(): void { }

@@ -20,8 +20,8 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.paragraph(this)
+  render(renderer: Renderer): string {
+    return renderer.paragraph(this)
   }
 
   protected PARAGRAPH(): void { }

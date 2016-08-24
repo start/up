@@ -21,8 +21,8 @@ export class ThematicBreak implements OutlineSyntaxNode {
     return []
   }
 
-  write(writer: Renderer): string {
-    return writer.thematicBreak(this)
+  render(renderer: Renderer): string {
+    return renderer.thematicBreak(this)
   }
 
   protected THEMATIC_BREAK(): void { }

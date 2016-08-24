@@ -43,7 +43,7 @@ import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
 export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
 // Writers are designed to be single-use, so a new instance must be created every time a new
-// document is written. This makes it a bit simpler to write concrete writer classes, because
+// document is written. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
   private _result: string
@@ -95,12 +95,12 @@ export abstract class Renderer {
   abstract unorderedList(list: UnorderedList): string
   abstract video(video: Video): string
 
-  protected writeEach(nodes: SyntaxNode[]): string[] {
-    return nodes.map(node => node.write(this))
+  protected renderEach(nodes: SyntaxNode[]): string[] {
+    return nodes.map(node => node.render(this))
   }
 
-  protected writeAll(nodes: SyntaxNode[]): string {
-    return this.writeEach(nodes).join('')
+  protected renderAll(nodes: SyntaxNode[]): string {
+    return this.renderEach(nodes).join('')
   }
 
   protected getId(...parts: any[]): string {
@@ -112,14 +112,14 @@ export abstract class Renderer {
       .replace(WHITESPACE_PATTERN, '-')
   }
 
-  protected abstract writeDocument(document: EitherTypeOfUpDocument): string
-  protected abstract writeInlineDocument(inlineDocument: InlineUpDocument): string
+  protected abstract renderDocument(document: EitherTypeOfUpDocument): string
+  protected abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
 
   private writeEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
     return (
       document instanceof UpDocument
-        ? this.writeDocument(document)
-        : this.writeInlineDocument(document))
+        ? this.renderDocument(document)
+        : this.renderInlineDocument(document))
   }
 }
 
