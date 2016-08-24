@@ -15,6 +15,7 @@ import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Italic } from '../../../SyntaxNodes/Italic'
 import { Link } from '../../../SyntaxNodes/Link'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
@@ -564,6 +565,50 @@ Well, maybe I'm not so great.`
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
           new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
+          new PlainText('.')
+        ]),
+        sodaHeading,
+        new Paragraph([
+          new PlainText('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Paragraph([
+          new PlainText("Well, maybe I'm not so great.")
+        ])
+      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+  })
+
+  specify('Normal parentheticals', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: full (and exciting and amazing and]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read the full (and exciting and amazing and wonderful and fantastic) transcript of my greatness
+===========================================================================================================
+
+Well, maybe I'm not so great.`
+
+    const sodaHeading =
+      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const greatnessHeading =
+      new Heading([
+        new PlainText("I am great. Read the full "),
+        new NormalParenthetical([
+          new PlainText("(and exciting and amazing and wonderful and fantastic)")
+          ]),
+        new PlainText(" transcript of my greatness")          
+      ], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.toDocument(markup)).to.be.eql(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I'm a great guy. For more information, skip to "),
+          new ReferenceToTableOfContentsEntry('full (and exciting and amazing and', greatnessHeading),
           new PlainText('.')
         ]),
         sodaHeading,
