@@ -144,6 +144,33 @@ context("When a link is nested deeply within another link, it doesn't produce an
       + '</nav>'
       + '<h1 id="up-item-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })
+
+  specify('a link nested within another link within a table of contents entry... as presented by a reference to that entry', () => {
+    const heading =
+      new Heading([
+        new Link([
+          new Emphasis([
+            new Link([new PlainText('I enjoy apples')], 'https://bing.com')
+          ])
+        ], 'https://apple.com')
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('apples', heading)]),
+        heading
+      ], new UpDocument.TableOfContents([heading]))
+
+    expect(Up.toHtml(document)).to.be.eql(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '<ul>'
+      + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
+      + '</ul>'
+      + '</nav>'
+      + '<p><a href="#up-item-1"><em>I enjoy apples</em></a></p>'
+      + '<h1 id="up-item-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
+  })
 })
 
 
