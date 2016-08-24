@@ -10,11 +10,10 @@ import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// A single non-blank line is treated as a paragraph.
+// A single non-blank line is treated as a paragraph, while a block of consecutive non-blank
+// lines is treated as a line block.
 //
-// A block of consecutive non-blank lines are treated as... a block of lines!
-//
-// Here's an example:
+// Here's an example of a line block:
 //
 //   Roses are red
 //   Violets are blue
