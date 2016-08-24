@@ -55,6 +55,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("does not replace the default variations", () => {
       expect(Up.toDocument(markupForDefaultSettings, configChanges)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.be.eql(whenEverythingIsDefault)
+      expect(Up.toDocument(markupForDefaultSettings, conflictingConfigChanges)).to.be.eql(whenEverythingIsDefault)
     })
 
     it("has any empty or blank variations ignored", () => {
