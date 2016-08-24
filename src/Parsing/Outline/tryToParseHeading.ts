@@ -4,7 +4,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { getSortedUnderlineChars } from './getSortedUnderlineChars'
+import { getUnderlineHash } from './getUnderlineHash'
 
 
 // If text is underlined, it's treated as a heading. Headings can have an optional overline, too.
@@ -75,5 +75,5 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
 
 function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
-  return !overline || (getSortedUnderlineChars(overline) === getSortedUnderlineChars(underline))
+  return !overline || (getUnderlineHash(overline) === getUnderlineHash(underline))
 }

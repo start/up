@@ -24,6 +24,16 @@ export function remove<T>(items: T[], itemToRemove: T): void {
   }
 }
 
+// Returns the distinct items from `items` in their original order 
+export function distinct<T>(items: T[]): T[] {
+  return items.reduce((distinctItems, item) =>
+    (distinctItems.indexOf(item) !== -1)
+      ? distinctItems
+      : distinctItems.concat([item])
+    , [])
+}
+
+
 // Returns the first non-null value in `values`, if one exists. Otherwise, returns null.
 export function coalesce<T>(...values: T[]): T {
   for (const value of values) {

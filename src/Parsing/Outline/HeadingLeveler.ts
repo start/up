@@ -1,24 +1,24 @@
-import { getSortedUnderlineChars } from './getSortedUnderlineChars'
+import { getUnderlineHash } from './getUnderlineHash'
 
 
 // Keeps track of which underline characters are associated with which heading level.
 export class HeadingLeveler {
-  private registeredUnderlineChars: string[] = []
+  private previousUnderlineHashes: string[] = []
 
   registerUnderlineAndGetLevel(underline: string): number {
-    const underlineChars = getSortedUnderlineChars(underline)
+    const hash = getUnderlineHash(underline)
 
-    const isAlreadyRegistered =
-      this.registeredUnderlineChars.some((registered) => registered === underlineChars)
+    const hasUnderlineAlreadyBeenUsed =
+      this.previousUnderlineHashes.some(previousHash => previousHash === hash)
 
-    if (!isAlreadyRegistered) {
-      this.registeredUnderlineChars.push(underlineChars)
+    if (!hasUnderlineAlreadyBeenUsed) {
+      this.previousUnderlineHashes.push(hash)
     }
 
-    return this.getLevel(underlineChars)
+    return this.getLevel(hash)
   }
 
-  private getLevel(underlineChars: string): number {
-    return this.registeredUnderlineChars.indexOf(underlineChars) + 1
+  private getLevel(underlineHash: string): number {
+    return this.previousUnderlineHashes.indexOf(underlineHash) + 1
   }
 }
