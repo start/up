@@ -9,10 +9,11 @@ import { Audio } from '../../../SyntaxNodes/Audio'
 import { Video } from '../../../SyntaxNodes/Video'
 
 
-context('When the "writeUnsafeContent" config setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
+context('When the "renderUnsafeContent" config setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
   const up = new Up({
-    writeUnsafeContent: true
+    renderUnsafeContent: true
   })
+
 
   context('Links produce <a> elements even if their scheme is:', () => {
     specify('javascript', () => {

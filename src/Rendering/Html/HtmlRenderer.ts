@@ -625,7 +625,7 @@ export class HtmlRenderer extends Renderer {
 
   // TODO: Move all this functionality to HtmlRenderer
   private isUrlAllowed(url: string): boolean {
-    return this.config.writeUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+    return this.config.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 }
 

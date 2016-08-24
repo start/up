@@ -245,7 +245,7 @@ describe('The "tableOfContents" config setting', () => {
 })
 
 
-describe('The "writeUnsafeContent" config setting', () => {
+describe('The "renderUnsafeContent" config setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -253,10 +253,10 @@ describe('The "writeUnsafeContent" config setting', () => {
       ])
     ]),
     configChanges: {
-      writeUnsafeContent: true
+      renderUnsafeContent: true
     },
     conflictingConfigChanges: {
-      writeUnsafeContent: false
+      renderUnsafeContent: false
     }
   })
 })

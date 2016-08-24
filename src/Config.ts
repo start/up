@@ -4,7 +4,7 @@ import { coalesce } from './CollectionHelpers'
 
 export class Config {
   createSourceMap = false
-  writeUnsafeContent = false
+  renderUnsafeContent = false
   idPrefix = 'up'
   defaultUrlScheme = 'https://'
   baseForUrlsStartingWithSlash = ''
@@ -23,7 +23,7 @@ export class Config {
     const clone = new Config()
 
     clone.createSourceMap = this.createSourceMap
-    clone.writeUnsafeContent = this.writeUnsafeContent
+    clone.renderUnsafeContent = this.renderUnsafeContent
     clone.idPrefix = this.idPrefix
     clone.defaultUrlScheme = this.defaultUrlScheme
     clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
@@ -42,8 +42,8 @@ export class Config {
     this.createSourceMap =
       coalesce(settings.createSourceMap, this.createSourceMap)
 
-    this.writeUnsafeContent =
-      coalesce(settings.writeUnsafeContent, this.writeUnsafeContent)
+    this.renderUnsafeContent =
+      coalesce(settings.renderUnsafeContent, this.renderUnsafeContent)
 
     this.idPrefix =
       coalesce(settings.idPrefix, this.idPrefix)
