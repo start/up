@@ -59,26 +59,25 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   //    These lines are a bit special. Not only do they terminate the preceding line block, but
   //    we "promote" their media conventions to the outline.
 
-  const inlineNodesPerLine: InlineSyntaxNode[][] = []
-  let nodesPromotedToOutline: OutlineSyntaxNode[] = []
+  const inlineSyntaxNodesPerLine: InlineSyntaxNode[][] = []
 
   // Normally, we need to determine whether each line should be interpreted as another outline
   // convention instead of a paragraph or line block (see list item 2 above).
   //
-  // This is a bit expensive.
+  // That's a bit expensive.
   //
-  // Luckily, we can avoid doing this for the first line. If the first line satisfied another
-  // outline convention, another parser would have already consumed it!
+  // Luckily, we can avoid doing this for the first line. If the first line were able to satisfy
+  // another outline convention, another parser would have already consumed it!
   let isOnFirstLine = true
 
   while (true) {
-    let inlineNodes: InlineSyntaxNode[]
+    let inlineSyntaxNodes: InlineSyntaxNode[]
 
     const wasLineConsumed = markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.config),
       thenBeforeConsumingLine: line => {
-        inlineNodes = getInlineSyntaxNodes(line, args.config)
+        inlineSyntaxNodes = getInlineSyntaxNodes(line, args.config)
       }
     })
 
@@ -93,48 +92,66 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
 
     // If a line consists solely of escaped whitespace, it doesn't generate any syntax nodes. We
     // ignore these lines, but they don't terminate anything.
-    if (!inlineNodes.length) {
+    if (!inlineSyntaxNodes.length) {
       continue
     }
 
     // Before we include the current line in our paragraph or line block, let's make sure the line
     // didn't conssist solely of media conventions (see list item 3 above).
+    let mediaPromotedToOutline: OutlineSyntaxNode[] = []
+
     tryToPromoteMediaToOutline({
-      inlineNodes,
+      inlineSyntaxNodes,
       then: outlineNodes => {
-        nodesPromotedToOutline = outlineNodes
+        mediaPromotedToOutline = outlineNodes
       }
     })
 
-    if (nodesPromotedToOutline.length) {
-      break
+    if (mediaPromotedToOutline.length) {
+      // We're done! Let's include the promoted media nodes in our result.
+      args.then(
+        getResult(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
+        markupLineConsumer.countLinesConsumed)
+
+      return
     }
 
-    inlineNodesPerLine.push(inlineNodes)
+    // The current line survived the gauntlet!
+    inlineSyntaxNodesPerLine.push(inlineSyntaxNodes)
   }
 
-  const lengthConsumed = markupLineConsumer.countLinesConsumed
+  args.then(
+    getResult(inlineSyntaxNodesPerLine),
+    markupLineConsumer.countLinesConsumed)
+}
 
-  let resultOfAnyRegularLines: Paragraph | LineBlock
 
-  switch (inlineNodesPerLine.length) {
-    case 0:
-      // We can't produce a paragraph or line block from zero lines. We're done!
-      args.then(nodesPromotedToOutline, lengthConsumed)
-      return
+function getResult(
+  inlineSyntaxNodesPerLine: InlineSyntaxNode[][],
+  mediaPromotedToOutline: OutlineSyntaxNode[] = []
+): OutlineSyntaxNode[] {
+  let resultOfRegularLines: OutlineSyntaxNode[]
 
-    case 1:
-      resultOfAnyRegularLines = new Paragraph(inlineNodesPerLine[0])
+  switch (inlineSyntaxNodesPerLine.length) {
+    case 0: {
+      // We can't produce a paragraph or line block from zero lines.
+      resultOfRegularLines = []
+      break;
+    }
+
+    case 1: {
+      resultOfRegularLines = [new Paragraph(inlineSyntaxNodesPerLine[0])]
       break
+    }
 
     default: {
-      const lineBlockLines = inlineNodesPerLine
-        .map(inlineNodes => new LineBlock.Line(inlineNodes))
+      const lineBlockLines =
+        inlineSyntaxNodesPerLine.map(nodes => new LineBlock.Line(nodes))
 
-      resultOfAnyRegularLines = new LineBlock(lineBlockLines)
-      break
+      resultOfRegularLines = [new LineBlock(lineBlockLines)]
+      break;
     }
   }
 
-  args.then([resultOfAnyRegularLines, ...nodesPromotedToOutline], lengthConsumed)
+  return resultOfRegularLines.concat(mediaPromotedToOutline)
 }
