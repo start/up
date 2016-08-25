@@ -311,5 +311,18 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainText(' was damaged by water.')
         ]))
     })
+
+    specify('Because the convention is ignored, other inline conventions within the brackets are evaluated', () => {
+      expect(Up.toInlineDocument('My favorite discussion topic in class [topic: why math *is* great] is no longer allowed.')).to.deep.equal(
+        new InlineUpDocument([
+          new PlainText('My favorite discussion topic in class '),
+          new SquareParenthetical([
+            new PlainText('[topic: why math '),
+            new Emphasis([new PlainText('is')]),
+            new PlainText(' great]'),
+          ]),
+          new PlainText(' is no longer allowed.')
+        ]))
+    })
   })
 })
