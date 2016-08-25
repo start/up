@@ -67,8 +67,8 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 })
 
 
-describe('A naked URL', () => {
-  it('is terminated by a space', () => {
+context('Naked URLs are terminated by word boundaries. Specifically:', () => {
+  specify('Spaces', () => {
     expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
@@ -78,6 +78,19 @@ describe('A naked URL', () => {
       ]))
   })
 
+  specify('Tabs', () => {
+    expect(Up.toDocument('https://archive.org\tis exciting')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('archive.org')
+        ], 'https://archive.org'),
+        new PlainText('\tis exciting')
+      ]))
+  })
+})
+
+
+describe('A naked URL', () => {
   it('can contain escaped spaces', () => {
     expect(Up.toDocument('https://archive.org/fake\\ url')).to.deep.equal(
       insideDocumentAndParagraph([
