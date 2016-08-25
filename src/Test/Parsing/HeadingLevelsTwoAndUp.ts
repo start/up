@@ -59,7 +59,31 @@ Goodbye again, world!
 })
 
 
-describe('7 headings with different heading underlines', () => {
+describe('A heading with an overline', () => {
+  it('is considered distinct from a heading without an overline, so the two will never share the same level', () => {
+    const markup = `
+=============
+Hello, world!
+=============
+
+Goodbye, world!
+===============`
+
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+    ]
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument(
+        headings,
+        new UpDocument.TableOfContents(headings)
+      ))
+  })
+})
+
+
+describe('7 headings with different signatures', () => {
   it('produce 7 heading nodes, with levels in ascending order', () => {
     const markup = `
 ####################
@@ -73,11 +97,11 @@ Video Games
 
 
 Handheld Video Games
-********************
+####################
 
 
 Game Boy Games
-==============
+#~#~#~#~#~#~#~#
 
 
 Real-Time Strategy Game Boy Games
