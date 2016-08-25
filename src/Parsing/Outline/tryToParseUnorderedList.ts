@@ -4,7 +4,6 @@ import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
 import { optional, patternStartingWith, anyCharFrom } from '../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
-import { DIVIDER_STREAK_PATTERN } from '../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -27,7 +26,6 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
 
     const isLineBulleted = markupLineConsumer.consume({
       linePattern: BULLET_PATTERN,
-      if: line => !DIVIDER_STREAK_PATTERN.test(line),
       thenBeforeConsumingLine: line => {
         linesOfMarkupInCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
       }
