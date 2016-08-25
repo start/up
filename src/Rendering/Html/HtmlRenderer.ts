@@ -371,11 +371,10 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private parenthetical(parenthetical: ParentheticalSyntaxNode, cssClassName?: string): string {
-    const attrs =
-      cssClassName
-        ? { class: classAttrValue(cssClassName) }
-        : {}
+  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
+    const attrs = {
+      class: classAttrValue('parenthetical', ...extraCssClassNames)
+    }
 
     return this.element('small', parenthetical.children, attrs)
   }
