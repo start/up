@@ -51,9 +51,9 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     //
     // Or what if the content is a list with a single item? For example:
     //
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // * Buy milk
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
