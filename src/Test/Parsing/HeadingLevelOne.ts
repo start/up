@@ -90,7 +90,7 @@ Goodbye, world!
         [heading],
         new UpDocument.TableOfContents([heading])))
   })
-  
+
   it('can have an optional overline consisting of the same characters as its underline', () => {
     const markup = `
 #=-+~*@:
@@ -160,9 +160,9 @@ Hello, world!
 
   it('can have its characters arranged differently than in the underline', () => {
     const markup = `
-= - = - = - = - = - = - =
+=-~-=-~-=-~-=
 Hello, world!
-==  --  ==  --  ==  --  ==`
+==--~~~~~--==`
 
     const heading =
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })

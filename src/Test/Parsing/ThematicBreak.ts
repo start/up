@@ -122,17 +122,8 @@ describe('A thematic break streak', () => {
       ]))
   })
 
-  it('can have whitespace interspersed throughout the line in any manner', () => {
-    const markup = '+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_'
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument([
-        new ThematicBreak()
-      ]))
-  })
-
-  it('can contain as few as 3 non-whitespace characters', () => {
-    expect(Up.toDocument('= - ~')).to.deep.equal(
+  it('can be as short as 3 characters', () => {
+    expect(Up.toDocument('=-~')).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
