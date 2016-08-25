@@ -1,5 +1,8 @@
-Pointless empty methods
-=======================
+There are a couple of odd things about our syntax node classes.
+
+
+Empty methods
+=============
 
 We want our syntax node classes to be considered distinct by TypeScript's type system.
 
@@ -9,17 +12,17 @@ To work around this, syntax node classes that would otherwise be considered equi
 
 These methods are:
 
-1. Named in screaming case after their class (e.g. `EMPHASIS`) and their parent classes if there are any (e.g. `ORDERED_LIST ITEM`)
+1. Named in screaming case after their class (e.g. `EMPHASIS`) and their parent classes if there are any (e.g. `ORDERED_LIST_ITEM`)
 2. Totally empty
 3. Protected, because unused private methods are disallowed by the `noUnusedLocals` compiler option
 
 
-Bizarrely defaulting optional class fields to `undefined`
-=========================================================
+Defaulting optional class fields to `undefined`
+===============================================
 
 In short, we do this to ensure those fields always exist on their respective objects.
 
-This mimics the default TypeScript behavior, which in turn makes a few unit tests simpler to write.
+This mimics the default TypeScript behavior, which in turn makes some of our unit tests simpler to write.
 
 
 The details
@@ -41,9 +44,9 @@ constructor(public children: OutlineSyntaxNode[], options?: { ordinal: number })
 }
 ``````
 
-If we don't default `ordinal` to `undefined`, then *the `ordinal` field would only exist on the object if `options` were provided.*
+If we don't default `ordinal` to `undefined`, then the `ordinal` field would only exist on the object if `options` were provided.
 
-This is in contrast to the typical TypeScript behavior. If we had declared `ordinal` directly in the constructor signature and made it optional, it's always assigned.
+This is in contrast to the typical TypeScript behavior. If we had declared `ordinal` directly in the constructor signature and made it optional, it would always be assigned.
 
 ``````
 constructor(public children: OutlineSyntaxNode[], public ordinal?: number) {
