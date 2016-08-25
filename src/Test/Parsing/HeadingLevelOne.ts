@@ -12,7 +12,7 @@ describe("The first line in a document underlined by any combination or arrangem
   it('always produces a level-1 heading node', () => {
     const markup = `
 Hello, world!
-#=-+~*^@:_+**###=~=~=~--~~~~`
+#=-+~*@:+**###=~=~=~--~~~~`
 
     const heading =
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
@@ -57,22 +57,6 @@ Hello, world!
 
 
 describe("A heading", () => {
-  it('can have an optional overline consisting of the same characters as its underline', () => {
-    const markup = `
-#=-+~*^@:_
-Hello, world!
-#=-+~*^@:_`
-
-    const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument(
-        [heading],
-        new UpDocument.TableOfContents([heading])
-      ))
-  })
-
   it('does not need to be the first convention in the document', () => {
     const markup = `
 Hello, world!
@@ -105,6 +89,22 @@ Goodbye, world!
       new UpDocument(
         [heading],
         new UpDocument.TableOfContents([heading])))
+  })
+  
+  it('can have an optional overline consisting of the same characters as its underline', () => {
+    const markup = `
+#=-+~*@:
+Hello, world!
+#=-+~*@:`
+
+    const heading =
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument(
+        [heading],
+        new UpDocument.TableOfContents([heading])
+      ))
   })
 })
 
