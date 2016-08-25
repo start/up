@@ -1,5 +1,5 @@
 import { anyCharFrom, solely, either, exactly, streakOf, patternStartingWith } from './PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, ANY_WHITESPACE } from './PatternPieces'
+import { INLINE_WHITESPACE_CHAR } from './PatternPieces'
 
 
 const INDENT =
@@ -8,11 +8,9 @@ const INDENT =
 export const INDENTED_PATTERN =
   patternStartingWith(INDENT)
 
-const DIVIDER_STREAK_CHAR =
-  anyCharFrom('#', '=', '-', '+', '~', '*', '^', '@', ':', '_')
-
 export const DIVIDER_STREAK_PATTERN =
-  streakOf(DIVIDER_STREAK_CHAR + ANY_WHITESPACE)
+  streakOf(
+    anyCharFrom('#', '=', '-', '+', '~', '*', '^', '@', ':', '_'))
 
 export const BLANK_PATTERN =
   solely('')
