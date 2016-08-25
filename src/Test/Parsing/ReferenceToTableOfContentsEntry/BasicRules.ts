@@ -23,7 +23,6 @@ Not quite true. For example, see [section: soda].`
   const documentUsingSquareBracketsAndSectionTerm =
     Up.toDocument(markupUsingSectionTermAndSquareBrackets)
 
-
   specify('You can use "section:" with square brackets', () => {
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
@@ -46,7 +45,6 @@ Not quite true. For example, see [section: soda].`
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-
   specify('You can use "section:" with parentheses', () => {
     const markup = `
 I drink soda
@@ -62,7 +60,6 @@ Not quite true. For example, see (section: soda).`
     expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
 
-
   specify('You can use "topic:" with square brackets', () => {
     const markup = `
 I drink soda
@@ -77,7 +74,6 @@ Not quite true. For example, see [topic: soda].`
 
     expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
-
 
   specify('You can use "topic:" with parentheses', () => {
     const markup = `
