@@ -97,7 +97,7 @@ Hello, world!
 
 describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', () => {
   it('produces a thematic break node', () => {
-    const markup = '#=-+~*^@:_+**###=~=~=~--~~~~'
+    const markup = '#=-+~*@:+**###=~=~=~--~~~~'
 
     expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
