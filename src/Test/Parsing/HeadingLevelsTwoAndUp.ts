@@ -29,29 +29,11 @@ Goodbye, world!
         new UpDocument.TableOfContents(headings)
       ))
   })
-
-  it('produces a level-2 heading node when the underline characters only differ by spaces', () => {
-    const markup = `
-Hello, world!
-=============
-
-Goodbye, world!
-= = = = = = = =`
-
-    const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
-    ]
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument(
-        headings,
-        new UpDocument.TableOfContents(headings)
-      ))
-  })
+})
 
 
-  it('produces a level-2 heading node even when it is not the second heading in a document', () => {
+describe('The first level-2 heading', () => {
+  it('does not need to be second heading in a document', () => {
     const markup = `
 Hello, world!
 =============
@@ -78,7 +60,6 @@ Goodbye again, world!
 
 
 describe('7 headings with different heading underlines', () => {
-
   it('produce 7 heading nodes, with levels in ascending order', () => {
     const markup = `
 ####################

@@ -45,7 +45,7 @@ Hello, world!
 ###`
 
     const heading =
-      new Heading([new PlainText('Hello, world!!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(

@@ -7,9 +7,9 @@ import { Heading } from '../../../SyntaxNodes/Heading'
 
 
 describe('A thematic break streak', () => {
-  it('can directly precede a heading with different characters in its underline', () => {
+  it('can directly precede a heading with a different combination of characters in its underline', () => {
     const markup = `
-- - - - - - - - - - - 
+-------------------- 
 Not me. Us!
 @---------@`
 
@@ -23,7 +23,7 @@ Not me. Us!
       ], new UpDocument.TableOfContents([heading])))
   })
 
-  it('can directly precede a heading with the same characters in its underline, as long as that heading has an overline', () => {
+  it('can directly precede a heading with the same combination of characters in its underline, as long as that heading has an overline', () => {
     const markup = `
 ---------------------------------
 -----------
