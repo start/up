@@ -8,7 +8,7 @@ import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceT
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
 
-context('Bracketed text starting with "section:" produces a reference to a table of contents entry. Either type of brackets can be used:', () => {
+context('Bracketed text starting with "section:" or "topic:" produces a reference to a table of contents entry. The terms are interchangeable, as are the brackets:', () => {
   const markupUsingSquareBracketsAndSectionTerm = `
 I drink soda
 ============
@@ -24,29 +24,30 @@ Not quite true. For example, see [section: soda].`
     Up.toDocument(markupUsingSquareBracketsAndSectionTerm)
 
 
-  specify('Square brackets', () => {
-    const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+    specify('You can use "section:" with square brackets', () => {
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
-    const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(documentUsingSquareBracketsAndSectionTerm).to.deep.equal(
-      new UpDocument([
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('soda', sodaHeading),
-          new PlainText('.')
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
-  })
+      expect(documentUsingSquareBracketsAndSectionTerm).to.deep.equal(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+            new PlainText('.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
 
-  specify('Parenthesis', () => {
+
+  specify('You can use "section:" with parentheses', () => {
     const markup = `
 I drink soda
 ============
@@ -57,6 +58,38 @@ I never lie
 ===========
 
 Not quite true. For example, see (section: soda).`
+
+    expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
+  })
+
+
+  specify('You can use "topc:" with square brackets', () => {
+    const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [topc: soda].`
+
+    expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
+  })
+
+
+  specify('You can use "topc:" with parentheses', () => {
+    const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see (topc: soda).`
 
     expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
