@@ -59,8 +59,8 @@ Goodbye again, world!
 })
 
 
-describe('A heading with an overline', () => {
-  it('is considered distinct from a heading without an overline, so the two will never share the same level', () => {
+context('A heading with an overline is considered distinct from a heading without an overline, so the two will never share the same level, regardless of which appears first:', () => {
+  specify('When the overlined version appears first', () => {
     const markup = `
 =============
 Hello, world!
@@ -68,6 +68,27 @@ Hello, world!
 
 Goodbye, world!
 ===============`
+
+    const headings = [
+      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+    ]
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument(
+        headings,
+        new UpDocument.TableOfContents(headings)
+      ))
+  })
+
+  specify('When the non-overlined version appears first', () => {
+    const markup = `
+Hello, world!
+#~#~#~#~#~#~#
+
+#~~~~~~~~~~~#
+Goodbye, world!
+#~~~~~~~~~~~#`
 
     const headings = [
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
