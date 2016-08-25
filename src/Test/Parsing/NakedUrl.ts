@@ -89,9 +89,9 @@ context('Naked URLs are terminated by word boundaries. Including:', () => {
   })
 
   specify('Commas followed by spaces', () => {
-    expect(Up.toDocument('When you visit, https://archive.org, you will be happy.')).to.deep.equal(
+    expect(Up.toDocument('When you visit https://archive.org, you will be happy.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('When you visit, '),
+        new PlainText('When you visit '),
         new Link([
           new PlainText('archive.org')
         ], 'https://archive.org'),
