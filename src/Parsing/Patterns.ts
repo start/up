@@ -10,7 +10,7 @@ export const INDENTED_PATTERN =
 
 export const DIVIDER_STREAK_PATTERN =
   streakOf(
-    anyCharFrom('#', '=', '-', '+', '~', '*', '^', '@', ':', '_'))
+    anyCharFrom('#', '=', '-', '+', '~', '*', '@', ':'))
 
 export const BLANK_PATTERN =
   solely('')

@@ -8,7 +8,7 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Heading } from '../../SyntaxNodes/Heading'
 
 
-describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * ^ @ : _", () => {
+describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :", () => {
   it('always produces a level-1 heading node', () => {
     const markup = `
 Hello, world!
