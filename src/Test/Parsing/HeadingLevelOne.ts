@@ -25,11 +25,11 @@ Hello, world!
 })
 
 
-describe("An underline", () => {
-  it('can have whitespace interspersed throughout the underline in any manner', () => {
+describe("The heading's underline", () => {
+  it('can use as few as 1 one of those characters in its underline', () => {
     const markup = `
 Hello, world!
-+**###=~=~=~   --~~~~ # =   - +    ~ * ^\t @ :_`
+~~~~~~~~~~~~`
 
     const heading =
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
@@ -40,13 +40,13 @@ Hello, world!
         new UpDocument.TableOfContents([heading])))
   })
 
-  it('can use as few as 1 one of those characters in its underline', () => {
+  it('may be as short as 3 characters long', () => {
     const markup = `
 Hello, world!
-~~~~~~~~~~~~`
+###`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Heading([new PlainText('Hello, world!!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.toDocument(markup)).to.eql(
       new UpDocument(
