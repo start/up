@@ -91,6 +91,15 @@ context('Naked URLs are terminated by word boundaries. Specifically:', () => {
 
 
 describe('A naked URL', () => {
+  it('can have multiple subdomains', () => {
+    expect(Up.toDocument('https://this.is.a.very.real.url.co.uk')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('this.is.a.very.real.url.co.uk')
+        ], 'https://this.is.a.very.real.url.co.uk')
+      ]))
+  })
+
   it('can contain escaped spaces', () => {
     expect(Up.toDocument('https://archive.org/fake\\ url')).to.deep.equal(
       insideDocumentAndParagraph([
