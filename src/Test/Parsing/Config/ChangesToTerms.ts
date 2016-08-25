@@ -456,7 +456,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "referencedSection" config term', () => {
+describe('The "referenceToTableOfContentsEntry" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 I drink exotic soda
@@ -481,7 +481,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [section: exotic].`,
 
     termVariations: {
-      referencedSection: 'heading'
+      referenceToTableOfContentsEntry: 'heading'
     },
 
     invalidMarkupForEmptyTerm: `
@@ -507,16 +507,16 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
     equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      referencedSection: [null, 'heading', '', ' \t \t ', undefined]
+      referenceToTableOfContentsEntry: [null, 'heading', '', ' \t \t ', undefined]
     },
     onlyEmptyAndBlankTermVariations: {
-      referencedSection: [null, '', ' \t \t ', undefined]
+      referenceToTableOfContentsEntry: [null, '', ' \t \t ', undefined]
     },
     noTermVariations: {
-      referencedSection: []
+      referenceToTableOfContentsEntry: []
     },
     conflictingTermVariations: {
-      referencedSection: 'reference'
+      referenceToTableOfContentsEntry: 'reference'
     }
   })
 })

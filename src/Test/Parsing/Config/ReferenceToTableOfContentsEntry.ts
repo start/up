@@ -7,10 +7,10 @@ import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 
-describe('The "referencedSection" config term', () => {
+describe('The "referenceToTableOfContentsEntry" config term', () => {
   const up = new Up({
     terms: {
-      markup: { referencedSection: 'heading' }
+      markup: { referenceToTableOfContentsEntry: 'heading' }
     }
   })
 
@@ -88,7 +88,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          referencedSection: ' \t heading \t '
+          referenceToTableOfContentsEntry: ' \t heading \t '
         }
       }
     })
@@ -129,7 +129,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          referencedSection: '*heading*'
+          referenceToTableOfContentsEntry: '*heading*'
         }
       }
     })
@@ -170,7 +170,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.toDocument(markup, {
       terms: {
         markup: {
-          referencedSection: ['heading', 'ref']
+          referenceToTableOfContentsEntry: ['heading', 'ref']
         }
       }
     })

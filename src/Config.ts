@@ -107,7 +107,7 @@ export namespace Config {
       private _image: Terms.FoundInMarkup = []
       private _nsfl: Terms.FoundInMarkup = []
       private _nsfw: Terms.FoundInMarkup = []
-      private _referencedSection: Terms.FoundInMarkup = []
+      private _referenceToTableOfContentsEntry: Terms.FoundInMarkup = []
       private _spoiler: Terms.FoundInMarkup = []
       private _table: Terms.FoundInMarkup = []
       private _video: Terms.FoundInMarkup = []
@@ -136,8 +136,8 @@ export namespace Config {
         return distinct('nsfw', ...this._nsfw)
       }
 
-      get referencedSection(): Terms.FoundInMarkup {
-        return distinct('section', 'topic', ...this._referencedSection)
+      get referenceToTableOfContentsEntry(): Terms.FoundInMarkup {
+        return distinct('section', 'topic', ...this._referenceToTableOfContentsEntry)
       }
 
       get spoiler(): Terms.FoundInMarkup {
@@ -160,7 +160,7 @@ export namespace Config {
         clone._highlight = this._highlight
         clone._image = this._image
         clone._nsfl = this._nsfl
-        clone._referencedSection = this._referencedSection
+        clone._referenceToTableOfContentsEntry = this._referenceToTableOfContentsEntry
         clone._nsfw = this._nsfw
         clone._spoiler = this._spoiler
         clone._table = this._table
@@ -192,8 +192,8 @@ export namespace Config {
         this._nsfw =
           sanitizeVariations(terms.nsfw)
 
-        this._referencedSection =
-          sanitizeVariations(terms.referencedSection)
+        this._referenceToTableOfContentsEntry =
+          sanitizeVariations(terms.referenceToTableOfContentsEntry)
 
         this._spoiler =
           sanitizeVariations(terms.spoiler)

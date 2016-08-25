@@ -419,7 +419,7 @@ class Tokenizer {
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return BRACKETS.map(bracket =>
       new Convention({
-        startsWith: this.getLabeledBracketStartPattern(this.config.terms.markup.referencedSection, bracket),
+        startsWith: this.getLabeledBracketStartPattern(this.config.terms.markup.referenceToTableOfContentsEntry, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
