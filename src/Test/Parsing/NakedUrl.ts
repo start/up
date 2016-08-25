@@ -67,7 +67,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 })
 
 
-context('Naked URLs are terminated by word boundaries. Specifically:', () => {
+context('Naked URLs are terminated by word boundaries. Including:', () => {
   specify('Spaces', () => {
     expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -85,6 +85,17 @@ context('Naked URLs are terminated by word boundaries. Specifically:', () => {
           new PlainText('archive.org')
         ], 'https://archive.org'),
         new PlainText('\tis exciting')
+      ]))
+  })
+
+  specify('Commas followed by spaces', () => {
+    expect(Up.toDocument('When you visit, https://archive.org, you will be happy.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('When you visit, '),
+        new Link([
+          new PlainText('archive.org')
+        ], 'https://archive.org'),
+        new PlainText(', you will be happy.')
       ]))
   })
 })
