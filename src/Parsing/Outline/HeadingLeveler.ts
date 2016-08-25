@@ -1,12 +1,12 @@
 import { distinct } from '../../CollectionHelpers'
 
 
-// Instances of this class can track of which underline and overline characters are
+// Instances of this class track of which underline and overline characters are
 // associated with which heading level.
 export class HeadingLeveler {
-  private headingFingerprints: string[] = []
+  private headingSignatures: string[] = []
 
-  registerUnderlineAndGetLevel(underline: string, overline: string): number {
+  registerHeadingAndGetLevel(underline: string, overline: string): number {
     // Alright, this requires some explanation.
     //
     // First of all, we're going to assume that `underline` and `overline` obey the
@@ -14,8 +14,8 @@ export class HeadingLeveler {
     //
     // As explained in `tryToParseHeading.ts`:
     //
-    // 1. Headings with the same same combination of underline characters share the
-    //    same level
+    // 1. Headings with the same combination of underline characters share the same
+    //    level
     // 2. Headings with overlines are always considered distinct from headings without
     //    overlines, even if their underlines are the same. So a heading with an
     //    overline will never have the same level has a heading without an overline.
@@ -26,22 +26,23 @@ export class HeadingLeveler {
     // 1. The distinct characters in the underline
     // 2. Whether the heading has an overline
     //
-    // Hence this weird fingerprint. 
-    const headingFingerprint =
+    // These two pieces of information comprise a heading's signature, hence the
+    // following weird line.
+    const headingSignature =
       fingerprint(underline) + (overline ? 'with overline' : '')
 
     const hasCombinationOfUnderlineAndOverlineAlreadyBeenUsed =
-      this.headingFingerprints.some(previousHash => previousHash === headingFingerprint)
+      this.headingSignatures.indexOf(headingSignature) >= 0
 
     if (!hasCombinationOfUnderlineAndOverlineAlreadyBeenUsed) {
-      this.headingFingerprints.push(headingFingerprint)
+      this.headingSignatures.push(headingSignature)
     }
 
-    return this.getLevel(headingFingerprint)
+    return this.getLevel(headingSignature)
   }
 
-  private getLevel(headingFingerpring: string): number {
-    return this.headingFingerprints.indexOf(headingFingerpring) + 1
+  private getLevel(headingSignature: string): number {
+    return this.headingSignatures.indexOf(headingSignature) + 1
   }
 }
 

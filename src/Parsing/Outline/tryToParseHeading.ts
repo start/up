@@ -83,8 +83,11 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const children = getInlineSyntaxNodes(contentMarkup, args.config)
-  const level = args.headingLeveler.registerUnderlineAndGetLevel(underline, optionalOverline)
+  const children =
+    getInlineSyntaxNodes(contentMarkup, args.config)
+
+  const level =
+    args.headingLeveler.registerHeadingAndGetLevel(underline, optionalOverline)
 
   args.then(
     [new Heading(children, { level })],
