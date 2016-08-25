@@ -109,9 +109,9 @@ Hello, world!
 
 
 describe("A heading's optional overline", () => {
-  it('does not need to be the same length as the underline', () => {
+  it('may be as short as 3 characters long, even when the underline is longer', () => {
     const markup = `
---------
+---
 Hello, world!
 ----------`
 
