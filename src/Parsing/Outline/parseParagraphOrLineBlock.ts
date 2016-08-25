@@ -109,7 +109,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
     if (mediaPromotedToOutline.length) {
       // We're done! Let's include the promoted media nodes in our result.
       args.then(
-        getResult(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
+        getAppropriateOutlineNodes(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
         markupLineConsumer.countLinesConsumed)
 
       return
@@ -120,37 +120,35 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   }
 
   args.then(
-    getResult(inlineSyntaxNodesPerLine),
+    getAppropriateOutlineNodes(inlineSyntaxNodesPerLine),
     markupLineConsumer.countLinesConsumed)
 }
 
 
-function getResult(
+function getAppropriateOutlineNodes(
   inlineSyntaxNodesPerLine: InlineSyntaxNode[][],
   mediaPromotedToOutline: OutlineSyntaxNode[] = []
 ): OutlineSyntaxNode[] {
-  let resultOfRegularLines: OutlineSyntaxNode[]
+  let outlineNodes: OutlineSyntaxNode[]
 
   switch (inlineSyntaxNodesPerLine.length) {
-    case 0: {
+    case 0:
       // We can't produce a paragraph or line block from zero lines.
-      resultOfRegularLines = []
-      break;
-    }
-
-    case 1: {
-      resultOfRegularLines = [new Paragraph(inlineSyntaxNodesPerLine[0])]
+      outlineNodes = []
       break
-    }
 
-    default: {
+    case 1:
+      outlineNodes = [new Paragraph(inlineSyntaxNodesPerLine[0])]
+      break
+
+    default:
       const lineBlockLines =
-        inlineSyntaxNodesPerLine.map(nodes => new LineBlock.Line(nodes))
+        inlineSyntaxNodesPerLine.map(inlineNodes =>
+          new LineBlock.Line(inlineNodes))
 
-      resultOfRegularLines = [new LineBlock(lineBlockLines)]
-      break;
-    }
+      outlineNodes = [new LineBlock(lineBlockLines)]
+      break
   }
 
-  return resultOfRegularLines.concat(mediaPromotedToOutline)
+  return outlineNodes.concat(mediaPromotedToOutline)
 }
