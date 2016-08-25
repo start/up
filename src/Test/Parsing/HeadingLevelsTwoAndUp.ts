@@ -109,7 +109,7 @@ Real-Time Strategy Game Boy Games Published By Nintendo
 
 
 Warlocked
-- - - - -`
+---------`
 
     const headings = [
       new Heading([new PlainText('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),

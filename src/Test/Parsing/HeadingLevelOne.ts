@@ -4,7 +4,6 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Heading } from '../../SyntaxNodes/Heading'
 
 
@@ -110,39 +109,6 @@ Hello, world!
 
 
 describe("A heading's optional overline", () => {
-  it('must not contain spaces if the underline does not contains spaces', () => {
-    const markup = `
-- - - - - - -
-Hello, world!
--------------`
-
-    const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
-
-    expect(Up.toDocument(markup)).to.eql(
-      new UpDocument([
-        new ThematicBreak(),
-        heading
-      ], new UpDocument.TableOfContents([heading])))
-  })
-
-  it('must contain spaces if the underline contains spaces', () => {
-    const markup = `
--------------
-Hello, world!
-- - - - - - -`
-
-    const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
-
-    expect(Up.toDocument(markup)).to.eql(
-      new UpDocument([
-        new ThematicBreak(),
-        heading
-      ],
-        new UpDocument.TableOfContents([heading])))
-  })
-
   it('does not need to be the same length as the underline', () => {
     const markup = `
 --------
@@ -162,7 +128,7 @@ Hello, world!
     const markup = `
 =-~-=-~-=-~-=
 Hello, world!
-==--~~~~~--==`
+--==~~~~~==--`
 
     const heading =
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
