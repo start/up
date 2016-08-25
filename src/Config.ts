@@ -137,7 +137,7 @@ export namespace Config {
       }
 
       get referencedSection(): Terms.FoundInMarkup {
-        return distinct('section', ...this._referencedSection)
+        return distinct('section', 'topic', ...this._referencedSection)
       }
 
       get spoiler(): Terms.FoundInMarkup {
