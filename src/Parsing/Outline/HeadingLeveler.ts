@@ -6,10 +6,29 @@ import { distinct } from '../../CollectionHelpers'
 export class HeadingLeveler {
   private headingFingerprints: string[] = []
 
-  registerUnderlineAndGetLevel(underline: string, _overline: string): number {
-    // TODO: Incorporate overline in fingerprint
+  registerUnderlineAndGetLevel(underline: string, overline: string): number {
+    // Alright, this requires some explanation.
+    //
+    // First of all, we're going to assume that `underline` and `overline` obey the
+    // rules and both consist of the same combination of characters.
+    //
+    // As explained in `tryToParseHeading.ts`:
+    //
+    // 1. Headings with the same same combination of underline characters share the
+    //    same level
+    // 2. Headings with overlines are always considered distinct from headings without
+    //    overlines, even if their underlines are the same. So a heading with an
+    //    overline will never have the same level has a heading without an overline.
+    //
+    // Therefore, when determining the level of a given heading, we need just two
+    // pieces of information:
+    //
+    // 1. The distinct characters in the underline
+    // 2. Whether the heading has an overline
+    //
+    // Hence this weird fingerprint. 
     const headingFingerprint =
-      fingerprint(underline)
+      fingerprint(underline) + (overline ? 'with overline' : '')
 
     const hasCombinationOfUnderlineAndOverlineAlreadyBeenUsed =
       this.headingFingerprints.some(previousHash => previousHash === headingFingerprint)
@@ -21,8 +40,8 @@ export class HeadingLeveler {
     return this.getLevel(headingFingerprint)
   }
 
-  private getLevel(underlineHash: string): number {
-    return this.headingFingerprints.indexOf(underlineHash) + 1
+  private getLevel(headingFingerpring: string): number {
+    return this.headingFingerprints.indexOf(headingFingerpring) + 1
   }
 }
 
