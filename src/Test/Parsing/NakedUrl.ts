@@ -162,6 +162,15 @@ describe('A naked URL', () => {
       ]))
   })
 
+  it('can contain any number of nested matching square brackets', () => {
+    expect(Up.toDocument('https://archive.org/a[fake[url]]is[[[very]]]fun')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
+        ], 'https://archive.org/a[fake[url]]is[[[very]]]fun')
+      ]))
+  })
+
   it("can be inside a link", () => {
     expect(Up.toDocument('[https://inner.example.com/fake][https://outer.example.com/real]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -328,6 +337,19 @@ describe('Inside square brackets, a naked URL', () => {
           new Link([
             new PlainText('archive.org/fake[url]')
           ], 'https://archive.org/fake[url]'),
+          new PlainText(']')
+        ])
+      ]))
+  })
+
+  it('can contain any number of nested matching square brackets', () => {
+    expect(Up.toDocument('[https://archive.org/a[fake[url]]is[[[very]]]fun]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new SquareParenthetical([
+          new PlainText('['),
+          new Link([
+            new PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
+          ], 'https://archive.org/a[fake[url]]is[[[very]]]fun'),
           new PlainText(']')
         ])
       ]))
