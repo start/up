@@ -39,5 +39,7 @@ export enum TokenKind {
   SquareParentheticalStart,
   StressEnd,
   StressStart,
+  QuoteStart,
+  QuoteEnd,
   VideoStartAndDescription
 }

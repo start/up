@@ -1,4 +1,4 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -148,6 +148,7 @@ class Tokenizer {
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
+      this.getQuoteConvention(),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -268,6 +269,14 @@ class Tokenizer {
 
   private getLabeledBracketStartPattern(labels: Config.Terms.FoundInMarkup, bracket: Bracket): string {
     return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':' + ANY_WHITESPACE
+  }
+
+  private getQuoteConvention(): Convention {
+    return this.getTokenizableRichConvention({
+      richConvention: QUOTE_CONVENTION,
+      startsWith: '"' + NOT_FOLLOWED_BY_WHITESPACE,
+      endsWith: '"'
+    })
   }
 
   private getParentheticalConvention(
@@ -1416,7 +1425,7 @@ const BRACKET_END_PATTERNS =
 
 // The "h" is for the start of naked URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, 'h', '_', '`', '~',
+  WHITESPACE_CHAR, 'h', '"', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
   EXAMPLE_INPUT_START_DELIMITER,

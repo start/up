@@ -6,6 +6,7 @@ import { Highlight } from '../../SyntaxNodes/Highlight'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
@@ -57,6 +58,12 @@ export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: RevisionInsertion,
   startTokenKind: TokenKind.RevisionInsertionStart,
   endTokenKind: TokenKind.RevisionInsertionEnd
+}
+
+export const QUOTE_CONVENTION: RichConventionWithoutExtraFields = {
+  NodeType: InlineQuote,
+  startTokenKind: TokenKind.QuoteEnd,
+  endTokenKind: TokenKind.QuoteEnd
 }
 
 export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {

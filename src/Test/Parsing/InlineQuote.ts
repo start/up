@@ -65,12 +65,12 @@ describe('Nested inline quotes', () => {
   })
 
   it('can close at the same time', () => {
-    expect(Up.toDocument('"I walked away while she screamed "Come here right now!"", Bob recounted.')).to.deep.equal(
+    expect(Up.toDocument('"I walked away while she screamed "come here right now!"", Bob recounted.')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineQuote([
-          new PlainText(' I walked away while she screamed.'),
+          new PlainText('I walked away while she screamed '),
           new InlineQuote([
-            new PlainText('Come here right now!'),
+            new PlainText('come here right now!'),
           ]),
         ]),
         new PlainText(', Bob recounted.')

@@ -127,7 +127,7 @@ context('Except for footnots, every inline convention is supported in inline doc
         ]))
     })
 
-    specify('Inline spoilers', () => {
+    specify('Inline quotes', () => {
       expect(Up.toInlineDocument('I loved my "Game Boy", though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I loved my '),
