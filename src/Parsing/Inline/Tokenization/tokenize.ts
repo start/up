@@ -18,7 +18,7 @@ import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { Convention, OnConventionEvent, OnlyCloseConventionIf } from './Convention'
+import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimAbsolutelyAllOuterWhitespace } from './trimAbsolutelyAllOuterWhitespace'
 
@@ -328,7 +328,6 @@ class Tokenizer {
       startsWith: string
       endsWith: string
       startPatternContainsATerm?: boolean
-      onlyClosesIf?: OnlyCloseConventionIf
       whenOpening?: OnTextMatch
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
@@ -336,7 +335,7 @@ class Tokenizer {
       mustBeDirectlyFollowedBy?: Convention[]
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, onlyClosesIf, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
       // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
@@ -358,7 +357,6 @@ class Tokenizer {
       startsWith: startsWith + notFollowedBy((isMeaningfulWhenItContainsOnlyWhitespace ? '' : ANY_WHITESPACE) + endsWith),
       startPatternContainsATerm,
 
-      onlyClosesIf,
       endsWith,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -855,14 +853,10 @@ class Tokenizer {
     const { convention } = context
 
     return (
-      // If the convention can only close under certain conditions, let's first make sure we satisfy those
-      (!convention.onlyClosesIf || convention.onlyClosesIf())
-      // Okay! We can try to close the convention!
-      && (
-        (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-        || (
-          convention.endsWith
-          && this.markupConsumer.consume({ pattern: convention.endsWith }))))
+      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+      || (
+        convention.endsWith
+        && this.markupConsumer.consume({ pattern: convention.endsWith })))
   }
 
   private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {
