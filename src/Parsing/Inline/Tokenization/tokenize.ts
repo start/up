@@ -305,14 +305,13 @@ class Tokenizer {
       richConvention: RichConvention
       startsWith: string
       endsWith: string
-      cannotStartWithWhitespace?: boolean
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, cannotStartWithWhitespace } = args
+    const { richConvention, startsWith, endsWith } = args
 
     return this.getTokenizableRichConvention({
       richConvention,
-      startsWith: escapeForRegex(startsWith) + (cannotStartWithWhitespace ? NOT_FOLLOWED_BY_WHITESPACE : ''),
+      startsWith: escapeForRegex(startsWith),
       endsWith: escapeForRegex(endsWith),
 
       isMeaningfulWhenItContainsOnlyWhitespace: true,
