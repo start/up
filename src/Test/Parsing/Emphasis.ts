@@ -6,6 +6,7 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
+
 describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.toDocument('Hello, *world*!!')).to.deep.equal(
@@ -15,15 +16,6 @@ describe('Text surrounded by single asterisks', () => {
           new PlainText('world')
         ]),
         new PlainText('!!')
-      ]))
-  })
-})
-
-describe('Text separated from surrounding asterisks by whitespace', () => {
-  it('is not put inside an emphasis node', () => {
-    expect(Up.toDocument('Birdie Sanders * won * Wisconsin')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('Birdie Sanders * won * Wisconsin'),
       ]))
   })
 })
@@ -72,6 +64,7 @@ describe('Emphasized text', () => {
   })
 })
 
+
 describe('Double asterisks followed by two separate single closing asterisks', () => {
   it('produces 2 nested emphasis nodes', () => {
     expect(Up.toDocument('**Warning:* never feed this tarantula*')).to.deep.equal(
@@ -82,6 +75,16 @@ describe('Double asterisks followed by two separate single closing asterisks', (
           ]),
           new PlainText(' never feed this tarantula')
         ])
+      ]))
+  })
+})
+
+
+describe('Text separated from (otherwise surrounding) single asterisks by whitespace', () => {
+  it('is not put inside an emphasis node', () => {
+    expect(Up.toDocument('Birdie Sanders * won * Wisconsin')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Birdie Sanders * won * Wisconsin'),
       ]))
   })
 })

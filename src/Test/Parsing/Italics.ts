@@ -6,6 +6,7 @@ import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
+
 describe('Text surrounded by single underscores', () => {
   it('is put inside an italic node', () => {
     expect(Up.toDocument('Hello, _world_!!')).to.deep.equal(
@@ -15,15 +16,6 @@ describe('Text surrounded by single underscores', () => {
           new PlainText('world')
         ]),
         new PlainText('!!')
-      ]))
-  })
-})
-
-describe('Text separated from surrounding underscores by whitespace', () => {
-  it('is not put inside an italic node', () => {
-    expect(Up.toDocument('Birdie Sanders _ won _ Wisconsin')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('Birdie Sanders _ won _ Wisconsin'),
       ]))
   })
 })
@@ -82,6 +74,16 @@ describe('Double underscores followed by two separate single closing underscores
           ]),
           new PlainText(' never feed this tarantula')
         ])
+      ]))
+  })
+})
+
+
+describe('Text separated from (otherwise surrounding) underscores by whitespace', () => {
+  it('is not put inside an italic node', () => {
+    expect(Up.toDocument('Birdie Sanders _ won _ Wisconsin')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Birdie Sanders _ won _ Wisconsin'),
       ]))
   })
 })
