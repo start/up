@@ -9,6 +9,7 @@ import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Link } from '../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
 context('2 consecutive hyphens normally produce an en dash.', () => {
@@ -30,7 +31,10 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
     specify('Preceding a word', () => {
       expect(Up.toDocument('"I like Starcraft" --Mark Twain')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('"I like Starcraft" –Mark Twain')
+          new InlineQuote([
+            new PlainText('I like Starcraft')
+          ]),
+          new PlainText(' –Mark Twain')
         ]))
     })
 
@@ -88,7 +92,7 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
     })
 
     specify('Code blocks', () => {
-        const markup = `
+      const markup = `
 \`\`\`
 for (let i = items.length - 1; i >= 0; i--) { }
 \`\`\``

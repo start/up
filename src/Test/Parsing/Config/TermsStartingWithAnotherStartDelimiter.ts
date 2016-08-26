@@ -7,6 +7,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { Audio } from '../../../SyntaxNodes/Audio'
 import { Image } from '../../../SyntaxNodes/Image'
 import { Video } from '../../../SyntaxNodes/Video'
@@ -121,7 +122,9 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('a would-be audio convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
-        new PlainText('listen^: I guess this means "listen up"?')
+        new PlainText('listen^: I guess this means '),
+        new InlineQuote([new PlainText('listen up')]),
+        new PlainText('?')
       ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^listen^: I guess this means "listen up"?]')).to.deep.equal(
@@ -158,7 +161,9 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
-        new PlainText('look^: I guess this means "look up"?')
+        new PlainText('look^: I guess this means '),
+        new InlineQuote([new PlainText('look up')]),
+        new PlainText('?')
       ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^look^: I guess this means "look up"?]')).to.deep.equal(
@@ -195,7 +200,9 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Footnote([
-        new PlainText('watch^: I guess this means "watch up"?')
+        new PlainText('watch^: I guess this means '),
+        new InlineQuote([new PlainText('watch up')]),
+        new PlainText('?')
       ], { referenceNumber: 1 })
 
       expect(up.toDocument('[^watch^: I guess this means "watch up"?]')).to.deep.equal(

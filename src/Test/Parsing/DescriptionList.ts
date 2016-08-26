@@ -7,6 +7,7 @@ import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
 describe('A non-indented line followed by an indented line', () => {
@@ -62,7 +63,7 @@ Torchic
 describe("A subject in a description list", () => {
   it('can contain inline conventions', () => {
     const markup = `
-Ash *"Little Marco"* Ketchum
+Ash "Little Marco" Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
     expect(Up.toDocument(markup)).to.deep.equal(
@@ -71,7 +72,7 @@ Ash *"Little Marco"* Ketchum
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
               new PlainText('Ash '),
-              new Emphasis([new PlainText('"Little Marco"')]),
+              new InlineQuote([new PlainText('Little Marco')]),
               new PlainText(' Ketchum')
             ])
           ],
