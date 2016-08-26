@@ -7,26 +7,49 @@ import { remove } from '../../../CollectionHelpers'
 
 // Applies the (forgiving) rules for inflection conventions, pairing end delimiters with open start delimiters.   
 export class InflectionHandler {
+  private majorInflectionCost?: number
+
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
       conventionForMinorInflection: RichConvention
-      // The convention indicated by surrounding text with double delimiters character on either side.
-      conventionForMajorInflection: RichConvention
+      // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
+      conventionForMajorInflection?: RichConvention
       // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
-      // A callback to invoke whenever it comes time to treat an dangling start delimiter as plain text. 
+      // A callback to invoke whenever it comes time to treat a dangling start delimiter as plain text. 
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
-    // The two optional parameters below are for private use. Please see the `clone` method.
+    // The two optional parameters below are for internal use. Please see the `clone` method.
     private openStartDelimiters: InflectionStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
     this.delimiterPattern = this.delimiterPattern ||
       patternStartingWith(
         atLeastOne(escapeForRegex(args.delimiterChar)))
+
+    if (args.conventionForMajorInflection) {
+      // TODO: explain
+      this.majorInflectionCost = 2
+    }
+  }
+
+  // TODO: Explain for quotes
+  // 
+  // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
+  // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
+  //
+  // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
+  //
+  // 1. This is ***emphasized and stressed***.
+  // 2. This is also **********emphasized and stressed**********.
+  //
+  // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
+  // subsequently matched by other delimiters.
+  private get combinedInflectionMinCost(): number {
+    return MINOR_INFLECTION_COST + this.majorInflectionCost
   }
 
   addOpenStartDelimiter(delimiter: string, tokenIndex: number) {
@@ -41,7 +64,9 @@ export class InflectionHandler {
   }
 
   tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
-    if (endDelimiter.length === MINOR_INFLECTION_COSE) {
+    const { majorInflectionCost, combinedInflectionMinCost } = this
+
+    if (endDelimiter.length === MINOR_INFLECTION_COST) {
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
@@ -55,14 +80,14 @@ export class InflectionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canOnlyAfford(MINOR_INFLECTION_COSE) || startDelimiter.canAfford(MIN_SHOUTING_COST)) {
+        if (startDelimiter.canOnlyAfford(MINOR_INFLECTION_COST) || startDelimiter.canAfford(combinedInflectionMinCost)) {
           this.applyMinorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate minor inflection, we have nothing left to do.
           return true
         }
       }
-    } else if (endDelimiter.length === MAJOR_INFLECTION_COST) {
+    } else if (endDelimiter.length === this.majorInflectionCost) {
       // If an end delimiter is just 2 characters long, it can indicate major inflection, but it can't indicate both
       // major and minor inflection at the same time.
       //
@@ -76,7 +101,7 @@ export class InflectionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
+        if (startDelimiter.canAfford(majorInflectionCost)) {
           this.applyMajorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
@@ -95,18 +120,7 @@ export class InflectionHandler {
     for (let i = this.openStartDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
-      if (unspentEndDelimiterLength >= MIN_SHOUTING_COST && startDelimiter.canAfford(MIN_SHOUTING_COST)) {
-        // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
-        // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
-        //
-        // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
-        //
-        // 1. This is ***emphasized and stressed***.
-        // 2. This is also **********emphasized and stressed**********.
-        //
-        // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
-        // subsequently matched by other delimiters.
-
+      if (unspentEndDelimiterLength >= this.combinedInflectionMinCost && startDelimiter.canAfford(combinedInflectionMinCost)) {
         this.encloseWithin({
           richConvention: this.args.conventionForMinorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -126,9 +140,9 @@ export class InflectionHandler {
         continue
       }
 
-      if (unspentEndDelimiterLength >= MAJOR_INFLECTION_COST && startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
+      if (unspentEndDelimiterLength >= this.majorInflectionCost && startDelimiter.canAfford(majorInflectionCost)) {
         this.applyMajorInflection(startDelimiter)
-        unspentEndDelimiterLength -= MAJOR_INFLECTION_COST
+        unspentEndDelimiterLength -= majorInflectionCost
 
         continue
       }
@@ -137,7 +151,7 @@ export class InflectionHandler {
       // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
       // would have been removed from `startDelimitersFromMostToLeastRecent`.
       this.applyMinorInflection(startDelimiter)
-      unspentEndDelimiterLength -= MINOR_INFLECTION_COSE
+      unspentEndDelimiterLength -= MINOR_INFLECTION_COST
     }
 
     return unspentEndDelimiterLength < endDelimiter.length
@@ -164,11 +178,11 @@ export class InflectionHandler {
   }
 
   private applyMinorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.conventionForMinorInflection, MINOR_INFLECTION_COSE)
+    this.applyConvention(startDelimiter, this.args.conventionForMinorInflection, MINOR_INFLECTION_COST)
   }
 
   private applyMajorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, MAJOR_INFLECTION_COST)
+    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, this.majorInflectionCost)
   }
 
   private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {
@@ -190,6 +204,4 @@ export class InflectionHandler {
 }
 
 
-const MINOR_INFLECTION_COSE = 1
-const MAJOR_INFLECTION_COST = 2
-const MIN_SHOUTING_COST = MINOR_INFLECTION_COSE + MAJOR_INFLECTION_COST
+const MINOR_INFLECTION_COST = 1
