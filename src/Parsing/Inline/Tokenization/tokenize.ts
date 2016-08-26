@@ -105,6 +105,9 @@ class Tokenizer {
       delimiterChar: '_',
       conventionForMinorInflection: ITALIC_CONVENTION,
       conventionForMajorInflection: BOLD_CONVENTION
+    }, {
+      delimiterChar: '"',
+      conventionForMinorInflection: QUOTE_CONVENTION
     }
   ].map(args => this.getInflectionHandler(args))
 
@@ -147,8 +150,6 @@ class Tokenizer {
           labels: this.config.terms.markup.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
-
-      this.getQuoteConvention(),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -269,14 +270,6 @@ class Tokenizer {
 
   private getLabeledBracketStartPattern(labels: Config.Terms.FoundInMarkup, bracket: Bracket): string {
     return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':' + ANY_WHITESPACE
-  }
-
-  private getQuoteConvention(): Convention {
-    return this.getTokenizableRichConvention({
-      richConvention: QUOTE_CONVENTION,
-      startsWith: '"' + NOT_FOLLOWED_BY_WHITESPACE,
-      endsWith: '"'
-    })
   }
 
   private getParentheticalConvention(
@@ -691,8 +684,8 @@ class Tokenizer {
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
       conventionForMinorInflection: RichConvention
-      // The convention indicated by surrounding text with double delimiter characters on either side.
-      conventionForMajorInflection: RichConvention
+      // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
+      conventionForMajorInflection?: RichConvention
     }
   ): InflectionHandler {
     const { delimiterChar, conventionForMajorInflection, conventionForMinorInflection } = args

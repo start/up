@@ -2,7 +2,7 @@ export class InflectionStartDelimiter {
   constructor(
     public delimiterText: string,
     public tokenIndex: number,
-    // This optional parameter is considered private. Please see the `clone` method below.
+    // This optional parameter is for internal use only. Please see the `clone` method below.
     public unspentLength = delimiterText.length) { }
 
   canAfford(cost: number): boolean {

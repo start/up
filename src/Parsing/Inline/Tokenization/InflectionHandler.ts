@@ -22,7 +22,7 @@ export class InflectionHandler {
       // A callback to invoke whenever it comes time to treat a dangling start delimiter as plain text. 
       insertPlainTextToken: (text: string, atIndex: number) => void
     },
-    // The two optional parameters below are for internal use. Please see the `clone` method.
+    // The two optional parameters below are for internal use only. Please see the `clone` method.
     private openStartDelimiters: InflectionStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
@@ -126,10 +126,13 @@ export class InflectionHandler {
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
-        this.encloseWithin({
-          richConvention: this.args.conventionForMajorInflection,
-          startingBackAtTokenIndex: startDelimiter.tokenIndex
-        })
+        if (this.args.conventionForMajorInflection) {
+          // TODO: Explain
+          this.encloseWithin({
+            richConvention: this.args.conventionForMajorInflection,
+            startingBackAtTokenIndex: startDelimiter.tokenIndex
+          })
+        }
 
         const lengthInCommon =
           Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength)

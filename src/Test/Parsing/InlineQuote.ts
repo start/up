@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
@@ -37,14 +36,13 @@ describe('Inline quotes', () => {
     expect(Up.toDocument('John stood up. "Hello, my "little" world!"')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('John stood up. '),
-        new Emphasis([
-          new PlainText('my '),
-          new Emphasis([
+        new InlineQuote([
+          new PlainText('Hello, my '),
+          new InlineQuote([
             new PlainText('little')
           ]),
-          new PlainText(' world')
-        ]),
-        new PlainText('!')
+          new PlainText(' world!')
+        ])
       ]))
   })
 })
@@ -89,19 +87,7 @@ describe('Text separated from (otherwise surrounding) doublequotes by whitespace
 })
 
 
-context('Inline quotes can follow each other:', () => {
-  specify('Directly, with no space in between them', () => {
-    expect(Up.toDocument('"Thanks.""Okay."')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineQuote([
-          new PlainText('Thanks.')
-        ]),
-        new InlineQuote([
-          new PlainText('Okay.')
-        ])
-      ]))
-  })
-
+context('Inline quotes can follow each other in a paragraph', () => {
   specify('With a space in between them', () => {
     expect(Up.toDocument('"Thanks." "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -109,6 +95,19 @@ context('Inline quotes can follow each other:', () => {
           new PlainText('Thanks.')
         ]),
         new PlainText(' '),
+        new InlineQuote([
+          new PlainText('Okay.')
+        ])
+      ]))
+  })
+
+  specify('With words in between them', () => {
+    expect(Up.toDocument('"Thanks." He looked down. "Okay."')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineQuote([
+          new PlainText('Thanks.')
+        ]),
+        new PlainText(' He looked down. '),
         new InlineQuote([
           new PlainText('Okay.')
         ])
