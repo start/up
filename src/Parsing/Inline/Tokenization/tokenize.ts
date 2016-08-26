@@ -821,7 +821,7 @@ class Tokenizer {
       const context = this.openContexts[i]
 
       if (this.shouldClose(context)) {
-        if (this.tryToCloseConvention({ belongingToContextAtIndex: i })) {
+        if (this.tryToCloseConventionWhoseEndDelimiterWeAlreadyFound({ belongingToContextAtIndex: i })) {
           return true
         }
 
@@ -855,13 +855,17 @@ class Tokenizer {
     const { convention } = context
 
     return (
-      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-      || (
-        convention.endsWith
-        && this.markupConsumer.consume({ pattern: convention.endsWith })))
+      // If the convention can only close under certain conditions, let's first make sure we satisfy those
+      (!convention.onlyClosesIf || convention.onlyClosesIf())
+      // Okay! We can try to close the convention!
+      && (
+        (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+        || (
+          convention.endsWith
+          && this.markupConsumer.consume({ pattern: convention.endsWith }))))
   }
 
-  private tryToCloseConvention(args: { belongingToContextAtIndex: number }): boolean {
+  private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {
     const contextIndex = args.belongingToContextAtIndex
     const context = this.openContexts[contextIndex]
     const { convention } = context
