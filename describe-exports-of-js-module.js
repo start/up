@@ -47,6 +47,7 @@ context('Every syntax node class is exported:', () => {
     'InlineNsfl',
     'InlineNsfw',
     'InlineSpoiler',
+    'InlineQuote',
     'Italic',
     'LineBlock',
     'Link',
