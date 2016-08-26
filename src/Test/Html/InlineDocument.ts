@@ -21,6 +21,7 @@ import { Highlight } from '../../SyntaxNodes/Highlight'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
 describe('An empty inline document', () => {
@@ -254,6 +255,20 @@ context('In an inline document, every inline syntax node produces the same HTML 
         + '<input id="up-nsfl-1" role="button" type="checkbox">'
         + '<span role="alert">rotting Gary</span>'
         + '</span>'
+
+      expect(Up.toInlineHtml(inlineDocument)).to.equal(html)
+    })
+  })
+
+
+  describe('An inline quote node', () => {
+    it('produces a <q> element', () => {
+      const inlineDocument = new InlineUpDocument([
+        new InlineQuote([new PlainText('45.9%')])
+      ])
+
+      const html =
+        '<q>45.9%</q>'
 
       expect(Up.toInlineHtml(inlineDocument)).to.equal(html)
     })

@@ -16,6 +16,7 @@ import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
 import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { Link } from '../../SyntaxNodes/Link'
@@ -859,6 +860,24 @@ describe('A highlight node', () => {
     const html =
       '<p>'
       + '<mark>45.9%</mark>'
+      + '</p>'
+
+    expect(Up.toHtml(document)).to.equal(html)
+  })
+})
+
+
+describe('An inline quote node', () => {
+  it('produces a <q> element', () => {
+    const document = new UpDocument([
+      new Paragraph([
+        new InlineQuote([new PlainText('45.9%')])
+      ])
+    ])
+
+    const html =
+      '<p>'
+      + '<q>45.9%</q>'
       + '</p>'
 
     expect(Up.toHtml(document)).to.equal(html)
