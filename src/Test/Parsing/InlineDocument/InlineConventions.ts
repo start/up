@@ -12,6 +12,7 @@ import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { Italic } from '../../../SyntaxNodes/Italic'
 import { Link } from '../../../SyntaxNodes/Link'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
@@ -120,6 +121,17 @@ context('Except for footnots, every inline convention is supported in inline doc
         new InlineUpDocument([
           new PlainText('I loved my '),
           new InlineSpoiler([
+            new PlainText('Game Boy'),
+          ]),
+          new PlainText(', though I never took it with me when I left home.')
+        ]))
+    })
+
+    specify('Inline spoilers', () => {
+      expect(Up.toInlineDocument('I loved my "Game Boy", though I never took it with me when I left home.')).to.deep.equal(
+        new InlineUpDocument([
+          new PlainText('I loved my '),
+          new InlineQuote([
             new PlainText('Game Boy'),
           ]),
           new PlainText(', though I never took it with me when I left home.')
