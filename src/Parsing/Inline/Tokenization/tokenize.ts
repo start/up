@@ -18,7 +18,7 @@ import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { Convention, OnConventionEvent } from './Convention'
+import { Convention, OnConventionEvent, OnlyCloseConventionIf } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimAbsolutelyAllOuterWhitespace } from './trimAbsolutelyAllOuterWhitespace'
 
@@ -262,8 +262,8 @@ class Tokenizer {
       this.getTokenizableRichConvention({
         richConvention,
         startsWith: this.getLabeledBracketStartPattern(labels, bracket),
-        startPatternContainsATerm: true,
-        endsWith: bracket.endPattern
+        endsWith: bracket.endPattern,
+        startPatternContainsATerm: true
       }))
   }
 
@@ -326,8 +326,9 @@ class Tokenizer {
     args: {
       richConvention: RichConvention
       startsWith: string
-      startPatternContainsATerm?: boolean
       endsWith: string
+      startPatternContainsATerm?: boolean
+      onlyClosesIf?: OnlyCloseConventionIf
       whenOpening?: OnTextMatch
       isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
@@ -335,7 +336,7 @@ class Tokenizer {
       mustBeDirectlyFollowedBy?: Convention[]
     }
   ): Convention {
-    const { richConvention, startsWith, startPatternContainsATerm, endsWith, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, onlyClosesIf, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
       // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
@@ -357,6 +358,7 @@ class Tokenizer {
       startsWith: startsWith + notFollowedBy((isMeaningfulWhenItContainsOnlyWhitespace ? '' : ANY_WHITESPACE) + endsWith),
       startPatternContainsATerm,
 
+      onlyClosesIf,
       endsWith,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,

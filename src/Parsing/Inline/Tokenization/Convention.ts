@@ -5,9 +5,10 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 
 
 export class Convention {
-  canOnlyOpenIfDirectlyFollowing: TokenKind[]
   startsWith: RegExp
   endsWith: RegExp
+  canOnlyOpenIfDirectlyFollowing: TokenKind[]
+  onlyClosesIf: OnlyCloseConventionIf
   isCutShortByWhitespace: boolean
   canConsistSolelyOfWhitespace: boolean
   flushesBufferToPlainTextTokenBeforeOpening: boolean
@@ -24,10 +25,11 @@ export class Convention {
 
   constructor(
     args: {
-      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
       startsWith: string
-      startPatternContainsATerm?: boolean
       endsWith?: string
+      startPatternContainsATerm?: boolean
+      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
+      onlyClosesIf?: OnlyCloseConventionIf
       isCutShortByWhitespace?: boolean
       canConsistSolelyOfWhitespace?: boolean
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
@@ -43,8 +45,6 @@ export class Convention {
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ) {
-    this.canOnlyOpenIfDirectlyFollowing = args.canOnlyOpenIfDirectlyFollowing
-
     const { startsWith, endsWith } = args
 
     this.startsWith =
@@ -56,6 +56,8 @@ export class Convention {
       this.endsWith = patternStartingWith(endsWith)
     }
 
+    this.canOnlyOpenIfDirectlyFollowing = args.canOnlyOpenIfDirectlyFollowing
+    this.onlyClosesIf = args.onlyClosesIf    
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
     this.canConsistSolelyOfWhitespace = args.canConsistSolelyOfWhitespace
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
@@ -75,4 +77,8 @@ export class Convention {
 
 export interface OnConventionEvent {
   (context: ConventionContext): void
+}
+
+export interface OnlyCloseConventionIf {
+  (): boolean
 }
