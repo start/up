@@ -87,3 +87,31 @@ describe('Text separated from (otherwise surrounding) doublequotes by whitespace
       ]))
   })
 })
+
+
+context('Inline quotes can follow each other:', () => {
+  specify('Directly, with no space in between them', () => {
+    expect(Up.toDocument('"Thanks.""Okay."')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineQuote([
+          new PlainText('Thanks.')
+        ]),
+        new InlineQuote([
+          new PlainText('Okay.')
+        ])
+      ]))
+  })
+
+  specify('With a space in between them', () => {
+    expect(Up.toDocument('"Thanks." "Okay."')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineQuote([
+          new PlainText('Thanks.')
+        ]),
+        new PlainText(' '),
+        new InlineQuote([
+          new PlainText('Okay.')
+        ])
+      ]))
+  })
+})
