@@ -7,8 +7,6 @@ import { remove } from '../../../CollectionHelpers'
 
 // Applies the (forgiving) rules for inflection conventions, pairing end delimiters with open start delimiters.   
 export class InflectionHandler {
-  private majorInflectionCost?: number
-
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
@@ -29,27 +27,6 @@ export class InflectionHandler {
     this.delimiterPattern = this.delimiterPattern ||
       patternStartingWith(
         atLeastOne(escapeForRegex(args.delimiterChar)))
-
-    if (args.conventionForMajorInflection) {
-      // TODO: explain
-      this.majorInflectionCost = 2
-    }
-  }
-
-  // TODO: Explain for quotes
-  // 
-  // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
-  // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
-  //
-  // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
-  //
-  // 1. This is ***emphasized and stressed***.
-  // 2. This is also **********emphasized and stressed**********.
-  //
-  // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
-  // subsequently matched by other delimiters.
-  private get combinedInflectionMinCost(): number {
-    return MINOR_INFLECTION_COST + this.majorInflectionCost
   }
 
   addOpenStartDelimiter(delimiter: string, tokenIndex: number) {
@@ -64,7 +41,7 @@ export class InflectionHandler {
   }
 
   tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
-    const { majorInflectionCost, combinedInflectionMinCost } = this
+    const { supportsMajorInflection, combinedInflectionMinCost } = this
 
     if (endDelimiter.length === MINOR_INFLECTION_COST) {
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
@@ -87,7 +64,7 @@ export class InflectionHandler {
           return true
         }
       }
-    } else if (endDelimiter.length === this.majorInflectionCost) {
+    } else if (supportsMajorInflection && (endDelimiter.length === MAJOR_INFLECTION_COST)) {
       // If an end delimiter is just 2 characters long, it can indicate major inflection, but it can't indicate both
       // major and minor inflection at the same time.
       //
@@ -101,7 +78,7 @@ export class InflectionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAfford(majorInflectionCost)) {
+        if (startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
           this.applyMajorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
@@ -120,14 +97,14 @@ export class InflectionHandler {
     for (let i = this.openStartDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
-      if (unspentEndDelimiterLength >= this.combinedInflectionMinCost && startDelimiter.canAfford(combinedInflectionMinCost)) {
+      // Can we afford combined inflection?
+      if ((unspentEndDelimiterLength >= this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
         this.encloseWithin({
           richConvention: this.args.conventionForMinorInflection,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
-        if (this.args.conventionForMajorInflection) {
-          // TODO: Explain
+        if (supportsMajorInflection) {
           this.encloseWithin({
             richConvention: this.args.conventionForMajorInflection,
             startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -143,9 +120,14 @@ export class InflectionHandler {
         continue
       }
 
-      if (unspentEndDelimiterLength >= this.majorInflectionCost && startDelimiter.canAfford(majorInflectionCost)) {
+      // Assuming we support major inflection, can we afford it?
+      if (
+        supportsMajorInflection
+        && unspentEndDelimiterLength >= MAJOR_INFLECTION_COST
+        && startDelimiter.canAfford(MAJOR_INFLECTION_COST)
+      ) {
         this.applyMajorInflection(startDelimiter)
-        unspentEndDelimiterLength -= majorInflectionCost
+        unspentEndDelimiterLength -= MAJOR_INFLECTION_COST
 
         continue
       }
@@ -176,6 +158,26 @@ export class InflectionHandler {
       this.delimiterPattern)
   }
 
+  private get supportsMajorInflection(): boolean {
+    return (this.args.conventionForMajorInflection != null)
+  }
+
+  // TODO: Explain for quotes
+  // 
+  // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
+  // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
+  //
+  // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
+  //
+  // 1. This is ***emphasized and stressed***.
+  // 2. This is also **********emphasized and stressed**********.
+  //
+  // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
+  // subsequently matched by other delimiters.
+  private get combinedInflectionMinCost(): number {
+    return MINOR_INFLECTION_COST + (this.supportsMajorInflection ? MAJOR_INFLECTION_COST : 0)
+  }
+
   private encloseWithin(args: EncloseWithinConventionArgs) {
     this.args.encloseWithinConvention(args)
   }
@@ -185,7 +187,7 @@ export class InflectionHandler {
   }
 
   private applyMajorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, this.majorInflectionCost)
+    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, MAJOR_INFLECTION_COST)
   }
 
   private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {
@@ -208,3 +210,4 @@ export class InflectionHandler {
 
 
 const MINOR_INFLECTION_COST = 1
+const MAJOR_INFLECTION_COST = 2
