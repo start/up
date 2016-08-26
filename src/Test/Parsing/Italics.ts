@@ -64,8 +64,9 @@ describe('Italicized text', () => {
   })
 })
 
+
 describe('Double underscores followed by two separate single closing underscores', () => {
-  it('produces 2 nested emphasis nodes', () => {
+  it('produces 2 nested italic nodes', () => {
     expect(Up.toDocument('__Warning:_ never feed this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
