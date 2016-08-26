@@ -91,7 +91,7 @@ class Tokenizer {
   // contains a naked URL.
   private nakedUrlConvention = this.getNakedUrlConvention()
 
-  // Inflection means emphasis, stress, italics, and bold.
+  // Inflection means emphasis, stress, italic, and bold.
   //
   // We handle inflection in a manner incompatible with the rest of our conventions, so we throw all that
   // special logic into the InflectionHandler class. More information can be found in comments within that
@@ -525,14 +525,12 @@ class Tokenizer {
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
   // 
-  // For a "linkifiable" rich convention (e.g. a footnote), its entire contents are nested within a
-  // link, which itself is nested within the original convention.
-  // 
-  // On the other hand, when a media convention is linkified, it's simply placed inside a link.
+  // When a rich convention is linkified, its content gets wrapped in a link. On the other hand,
+  // when a media convention is linkified, it gets placed inside a link.
   //
-  // Like with link URLs, if we're sure the author intends to "linkfiy" a convention, we allow
-  // whitespace between the linkifying URL and the original convention. For more information, see
-  // `getConventionsForWhitespaceFollowedByLinkUrl`.
+  // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
+  // whitespace between the linkifying URL and the original convention. For more information,
+  // see `getConventionsForWhitespaceFollowedByLinkUrl`.
   private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT_CONVENTION,
@@ -827,7 +825,7 @@ class Tokenizer {
         }
 
         // Well, we couldn't successfully close the convention, so we've got to backtrack. For now, a
-        // convention will only fail to close if:
+        // convention can only fail to close if:
         //
         // 1. It must be followed by one of a set of specific conventions, and
         // 2. None of those conventions could be opened        
