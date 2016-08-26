@@ -5,7 +5,7 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 
 
 export class Convention {
-  onlyOpenIfDirectlyFollowing: TokenKind[]
+  canOnlyOpenIfDirectlyFollowing: TokenKind[]
   startsWith: RegExp
   endsWith: RegExp
   isCutShortByWhitespace: boolean
@@ -24,7 +24,7 @@ export class Convention {
 
   constructor(
     args: {
-      onlyOpenIfDirectlyFollowing?: TokenKind[]
+      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
       startsWith: string
       startPatternContainsATerm?: boolean
       endsWith?: string
@@ -43,7 +43,7 @@ export class Convention {
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
     }
   ) {
-    this.onlyOpenIfDirectlyFollowing = args.onlyOpenIfDirectlyFollowing
+    this.canOnlyOpenIfDirectlyFollowing = args.canOnlyOpenIfDirectlyFollowing
 
     const { startsWith, endsWith } = args
 

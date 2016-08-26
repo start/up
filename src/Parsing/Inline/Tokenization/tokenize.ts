@@ -547,11 +547,11 @@ class Tokenizer {
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
+          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
-          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
+          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
       ].map(args => this.getBracketedUrlConvention(args)),
@@ -559,11 +559,11 @@ class Tokenizer {
       ...[
         {
           bracket,
-          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
+          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
           ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
         }, {
           bracket,
-          onlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
+          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           ifUrlIsValidWheClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
       ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))
@@ -574,14 +574,14 @@ class Tokenizer {
   private getBracketedUrlConvention(
     args: {
       bracket: Bracket
-      onlyOpenIfDirectlyFollowing?: TokenKind[]
+      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
       whenClosing: (url: string) => void
     }
   ): Convention {
-    const { bracket, onlyOpenIfDirectlyFollowing, whenClosing } = args
+    const { bracket, canOnlyOpenIfDirectlyFollowing, whenClosing } = args
 
     return new Convention({
-      onlyOpenIfDirectlyFollowing,
+      canOnlyOpenIfDirectlyFollowing,
 
       startsWith: this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
 
@@ -607,14 +607,14 @@ class Tokenizer {
   private getConventionForWhitespaceFollowedByBracketedUrl(
     args: {
       bracket: Bracket
-      onlyOpenIfDirectlyFollowing?: TokenKind[]
+      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
       ifUrlIsValidWheClosing: (url: string) => void
     }
   ): Convention {
-    const { bracket, onlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
+    const { bracket, canOnlyOpenIfDirectlyFollowing, ifUrlIsValidWheClosing } = args
 
     return new Convention({
-      onlyOpenIfDirectlyFollowing,
+      canOnlyOpenIfDirectlyFollowing,
 
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
         either(
@@ -1219,11 +1219,11 @@ class Tokenizer {
       return false
     }
 
-    const { onlyOpenIfDirectlyFollowing } = conventionToOpen
+    const { canOnlyOpenIfDirectlyFollowing } = conventionToOpen
 
     return (
       !this.failedConventionTracker.hasFailed(conventionToOpen, textIndex)
-      && (!onlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(onlyOpenIfDirectlyFollowing)))
+      && (!canOnlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(canOnlyOpenIfDirectlyFollowing)))
   }
 
   private isDirectlyFollowing(tokenKinds: TokenKind[]): boolean {
