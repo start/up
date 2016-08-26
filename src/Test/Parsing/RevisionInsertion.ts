@@ -6,7 +6,7 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
 
 
-describe('markup surrounded by 2 plus signs', () => {
+describe('Markup surrounded by 2 plus signs', () => {
   it('is put inside a revision insertion node', () => {
     expect(Up.toDocument('I like ++to brush++ my teeth')).to.deep.equal(
       insideDocumentAndParagraph([
