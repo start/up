@@ -21,6 +21,7 @@ import { Highlight } from '../../SyntaxNodes/Highlight'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
@@ -223,6 +224,10 @@ export class HtmlRenderer extends Renderer {
 
   highlight(highlight: Highlight): string {
     return this.element('mark', highlight.children)
+  }
+
+  inlineQuote(inlineQuote: InlineQuote): string {
+    return this.element('q', inlineQuote.children)
   }
 
   inlineSpoiler(inlineSpoiler: InlineSpoiler): string {

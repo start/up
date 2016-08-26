@@ -20,6 +20,7 @@ import { Highlight } from '../SyntaxNodes/Highlight'
 import { InlineSpoiler } from '../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../SyntaxNodes/InlineNsfl'
+import { InlineQuote } from '../SyntaxNodes/InlineQuote'
 import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../SyntaxNodes/NsflBlock'
@@ -75,6 +76,7 @@ export abstract class Renderer {
   abstract inlineNsfl(inlineNsfl: InlineNsfl): string
   abstract inlineNsfw(inlineNsfw: InlineNsfw): string
   abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
+  abstract inlineQuote(inlineQuote: InlineQuote): string
   abstract italic(italic: Italic): string
   abstract lineBlock(lineBlock: LineBlock): string
   abstract link(link: Link): string
