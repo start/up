@@ -5,6 +5,8 @@ import { Link } from '../../SyntaxNodes/Link'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
+import { Italic } from '../../SyntaxNodes/Italic'
+import { Bold } from '../../SyntaxNodes/Bold'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
 import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
@@ -196,21 +198,52 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("can contain unescaped asterisks if not inside an emphasis convention", () => {
-    expect(Up.toDocument('https://example.org/a*normal*url')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('example.org/a*normal*url')
-        ], 'https://example.org/a*normal*url')
-      ]))
+  context('if not inside an emphasis/stress convention', () => {
+    specify("can contain unescaped asterisks", () => {
+      expect(Up.toDocument('https://example.org/a*normal*url')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('example.org/a*normal*url')
+          ], 'https://example.org/a*normal*url')
+        ]))
+    })
+
+    specify("can contain unescaped consecutive asterisks", () => {
+      expect(Up.toDocument('https://example.org/a**normal**url')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('example.org/a**normal**url')
+          ], 'https://example.org/a**normal**url')
+        ]))
+    })
+  })
+
+  context('if not inside an italic/bold convention', () => {
+    specify("can contain unescaped underscores", () => {
+      expect(Up.toDocument('https://example.org/a_normal_url')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('example.org/a_normal_url')
+          ], 'https://example.org/a_normal_url')
+        ]))
+    })
+
+    specify("can contain unescaped consecutive underscores", () => {
+      expect(Up.toDocument('https://example.org/a__normal__url')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('example.org/a__normal__url')
+          ], 'https://example.org/a__normal__url')
+        ]))
+    })
   })
 
   it("can contain unescaped consecutive plus signs if not inside a revision insertion convention", () => {
-    expect(Up.toDocument('https://example.org/normal++url')).to.deep.equal(
+    expect(Up.toDocument('https://example.org/a++normal++url')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
-          new PlainText('example.org/normal++url')
-        ], 'https://example.org/normal++url')
+          new PlainText('example.org/a++normal++url')
+        ], 'https://example.org/a++normal++url')
       ]))
   })
 })
@@ -345,6 +378,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
       ]))
   })
 
+
   context('Emphasis', () => {
     specify('Surrounded by 1 asterisk on either side', () => {
       expect(Up.toDocument('*I love https://archive.org/fake*!')).to.deep.equal(
@@ -372,7 +406,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
         ]))
     })
 
-    it('Starting with 2 asterisk and closing with 1', () => {
+    it('Starting with 2 asterisks and closing with 1', () => {
       expect(Up.toDocument('**I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
@@ -385,7 +419,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
         ]))
     })
 
-    it('Starting with 3+ asterisk and closing with 1', () => {
+    it('Starting with 3+ asterisks and closing with 1', () => {
       expect(Up.toDocument('***I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
@@ -398,6 +432,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
         ]))
     })
   })
+
 
   context('Stress', () => {
     specify('Surrounded by 2 asterisks on either side', () => {
@@ -413,7 +448,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
         ]))
     })
 
-    specify('Starting with 2 asterisk and closed with 3+)', () => {
+    specify('Starting with 2 asterisks and closed with 3+)', () => {
       expect(Up.toDocument('**I love https://archive.org/fake***!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
@@ -426,7 +461,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
         ]))
     })
 
-    it('Starting with 3+ asterisk and closing with 2', () => {
+    it('Starting with 3+ asterisks and closing with 2', () => {
       expect(Up.toDocument('***I love https://archive.org/fake**!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
@@ -440,11 +475,125 @@ context('Naked URLs are terminated when any outer convention closes. This includ
     })
   })
 
+
   specify('Emphasis and stress together', () => {
     expect(Up.toDocument('***I love https://archive.org/fake***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
           new Emphasis([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ])
+        ]),
+        new PlainText('!')
+      ]))
+  })
+
+
+  context('Italic', () => {
+    specify('Surrounded by 1 underscore on either side', () => {
+      expect(Up.toDocument('_I love https://archive.org/fake_!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Italic([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    specify('Starting with 1 underscore and closed with 3+)', () => {
+      expect(Up.toDocument('_I love https://archive.org/fake___!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Italic([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 2 underscores and closing with 1', () => {
+      expect(Up.toDocument('__I love https://archive.org/fake_!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Italic([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 3+ underscores and closing with 1', () => {
+      expect(Up.toDocument('___I love https://archive.org/fake_!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Italic([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+  })
+
+
+  context('Bold', () => {
+    specify('Surrounded by 2 underscores on either side', () => {
+      expect(Up.toDocument('__I love https://archive.org/fake__!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Bold([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    specify('Starting with 2 underscores and closed with 3+)', () => {
+      expect(Up.toDocument('__I love https://archive.org/fake___!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Bold([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 3+ underscores and closing with 2', () => {
+      expect(Up.toDocument('___I love https://archive.org/fake__!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Bold([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+  })
+
+
+  specify('Italic and bold together', () => {
+    expect(Up.toDocument('___I love https://archive.org/fake___!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Bold([
+          new Italic([
             new PlainText('I love '),
             new Link([
               new PlainText('archive.org/fake')
