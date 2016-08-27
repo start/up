@@ -232,6 +232,39 @@ context('Most inline conventions are not applied if they have no content.', () =
               new PlainText('*****\t  \t***')
             ]))
         })
+
+
+        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+          specify('1 character', () => {
+            expect(Up.toDocument('*')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('*')
+              ]))
+          })
+
+          specify('2 characters', () => {
+            expect(Up.toDocument('**')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('**')
+              ]))
+          })
+
+          specify('3 characters', () => {
+            // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+            expect(Up.toDocument('Stars! ***')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('Stars! ***')
+              ]))
+          })
+
+          specify('4 characters', () => {
+            // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+            expect(Up.toDocument('Stars! ****')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('Stars! ****')
+              ]))
+          })
+        })
       })
 
       context('With underscores:', () => {
@@ -262,39 +295,37 @@ context('Most inline conventions are not applied if they have no content.', () =
               new PlainText('_____\t  \t___')
             ]))
         })
-      })
-    })
 
 
-    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-      specify('1 character', () => {
-        expect(Up.toDocument('*')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('*')
-          ]))
-      })
+        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+          specify('1 character', () => {
+            expect(Up.toDocument('_')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('_')
+              ]))
+          })
 
-      specify('2 characters', () => {
-        expect(Up.toDocument('**')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('**')
-          ]))
-      })
+          specify('2 characters', () => {
+            expect(Up.toDocument('__')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('__')
+              ]))
+          })
 
-      specify('3 characters', () => {
-        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-        expect(Up.toDocument('Stars! ***')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('Stars! ***')
-          ]))
-      })
+          specify('3 characters', () => {
+            expect(Up.toDocument('___')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('___')
+              ]))
+          })
 
-      specify('4 characters', () => {
-        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-        expect(Up.toDocument('Stars! ****')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('Stars! ****')
-          ]))
+          specify('4 characters', () => {
+            expect(Up.toDocument('____')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('____')
+              ]))
+          })
+        })
       })
     })
   })
