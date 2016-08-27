@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
@@ -7,74 +6,11 @@ import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Stress } from '../../../SyntaxNodes/Stress'
 
 
-describe('Text that is emphasized and stressed at the same time', () => {
-  it('can have its emphasis convention closed first when followed by stressed text', () => {
-    expect(Up.toDocument('***Nimble* navigators?** **Tropical.**')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Stress([
-          new Emphasis([
-            new PlainText('Nimble')
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Stress([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
+// These test descriptions are a mess. Turn back now.
+//
+// TODO: Clarify tests and organize them into contexts.
 
-  it('can have its emphasis convention closed first when followed by emphasized text', () => {
-    expect(Up.toDocument('***Nimble* navigators?** *Tropical.*')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Stress([
-          new Emphasis([
-            new PlainText('Nimble')
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Emphasis([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-
-  it('can have its stress convention closed first when followed by stressed text', () => {
-    expect(Up.toDocument('***Nimble** navigators?* **Tropical.**')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new Stress([
-            new PlainText('Nimble')
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Stress([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-
-  it('can have its stress convention closed first when followed by emphasized text', () => {
-    expect(Up.toDocument('***Nimble** navigators?* *Tropical.*')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new Stress([
-            new PlainText('Nimble')
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Emphasis([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-})
-
-
-describe('Inside of emphasized text, text that is stressed and (again) emphasized at the same time', () => {
+describe('Inside of emphasized text, text that is stressed/again-emphasized at the same time', () => {
   it('can have its stress convention closed first', () => {
     expect(Up.toDocument('*Please ***stop** eating the cardboard* immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -127,7 +63,7 @@ describe('Inside of emphasized text, text that is stressed and (again) emphasize
 })
 
 
-describe('An inflection convention starting with 3 asterisks', () => {
+describe('An inflection start delimiter consisting of 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.toDocument('A ***bread* to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -138,10 +74,7 @@ describe('An inflection convention starting with 3 asterisks', () => {
         new PlainText(' to believe in')
       ]))
   })
-})
 
-
-describe('An inflection convention starting with 3 asterisks', () => {
   it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
     expect(Up.toDocument('A ***bread** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -155,7 +88,7 @@ describe('An inflection convention starting with 3 asterisks', () => {
 })
 
 
-describe('A single starting asterisk', () => {
+describe('An inflection start delimiter consisting of 1 asterisk', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.toDocument('A *bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -169,7 +102,7 @@ describe('A single starting asterisk', () => {
 })
 
 
-describe('Double starting asterisks', () => {
+describe('An inflection start delimiter consisting of 2 asterisks', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.toDocument('A **bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -183,7 +116,7 @@ describe('Double starting asterisks', () => {
 })
 
 
-describe('Inside of stressed text, text that is emphasized and (again) stressed at the same time', () => {
+describe('Inside of stressed text, text that is emphasized/again-stressed at the same time', () => {
   it('can have its inner stress convention closed first', () => {
     expect(Up.toDocument('**Please ***stop** eating the cardboard* immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -216,7 +149,7 @@ describe('Inside of stressed text, text that is emphasized and (again) stressed 
       ]))
   })
 
-  it('can have both the stress nodes closed before the emphasis node', () => {
+  it('can have both the stress conventions closed before the emphasis node', () => {
     expect(Up.toDocument('**Please ***stop** eating the cardboard** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
@@ -318,7 +251,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
 })
 
 
-describe('Emphasized/stressed text starting with 4+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
+describe('An inflection start delimiter consisting of 4+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
   it('produces an emphasis node nested within stress and emphasis nodes', () => {
     expect(Up.toDocument('Well, ****Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -337,7 +270,7 @@ describe('Emphasized/stressed text starting with 4+ asterisks, with an emphasis 
 })
 
 
-describe('Shouted text starting with 4 asterisks, with a stress convention ended first, subsequently ending in 3 additional asterisks', () => {
+describe('An inflection start delimiter consisting of 4+ asterisks, with a stress convention ended first, subsequently ending in 3 additional asterisks', () => {
   it('produces nested stress nodes', () => {
     expect(Up.toDocument('Well, ****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -354,7 +287,7 @@ describe('Shouted text starting with 4 asterisks, with a stress convention ended
 })
 
 
-describe('Shouted text starting with 5+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
+describe('An inflection start delimiter consisting of 5+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
   it('produces a stress node nested within stress and emphasis nodes', () => {
     expect(Up.toDocument('Well, *****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -368,6 +301,73 @@ describe('Shouted text starting with 5+ asterisks, with an emphasis convention e
           ]),
         ]),
         new PlainText('!')
+      ]))
+  })
+})
+
+
+describe('Text that is emphasized/stressed at the same time', () => {
+  it('can have its emphasis convention closed first and be followed by stressed text', () => {
+    expect(Up.toDocument('***Nimble* navigators?** **Tropical.**')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Stress([
+          new Emphasis([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Stress([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its emphasis convention closed first and be followed by emphasized text', () => {
+    expect(Up.toDocument('***Nimble* navigators?** *Tropical.*')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Stress([
+          new Emphasis([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Emphasis([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its stress convention closed first and be followed by stressed text', () => {
+    expect(Up.toDocument('***Nimble** navigators?* **Tropical.**')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Emphasis([
+          new Stress([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Stress([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its stress convention closed first and be followed by emphasized text', () => {
+    expect(Up.toDocument('***Nimble** navigators?* *Tropical.*')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Emphasis([
+          new Stress([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Emphasis([
+          new PlainText('Tropical.')
+        ])
       ]))
   })
 })

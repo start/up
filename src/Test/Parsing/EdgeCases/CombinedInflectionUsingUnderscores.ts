@@ -1,4 +1,3 @@
-
 import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
@@ -7,82 +6,19 @@ import { Italic } from '../../../SyntaxNodes/Italic'
 import { Bold } from '../../../SyntaxNodes/Bold'
 
 
-describe('Shouted text', () => {
-  it('can have its italic node closed first when followed by bold text', () => {
-    expect(Up.toDocument('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Bold([
-          new Italic([
-            new PlainText('Nimble'),
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Bold([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
+// These test descriptions are a mess. Turn back now.
+//
+// TODO: Clarify tests and organize them into contexts.
 
-  it('can have its italic node closed first when followed by emphasized text', () => {
-    expect(Up.toDocument('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Bold([
-          new Italic([
-            new PlainText('Nimble'),
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Italic([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-
-  it('can have its bold node closed first when followed by bold text', () => {
-    expect(Up.toDocument('___Nimble__ navigators?_ __Tropical.__')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Italic([
-          new Bold([
-            new PlainText('Nimble'),
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Bold([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-
-  it('can have its bold node closed first when followed by emphasized text', () => {
-    expect(Up.toDocument('___Nimble__ navigators?_ _Tropical._')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Italic([
-          new Bold([
-            new PlainText('Nimble'),
-          ]),
-          new PlainText(' navigators?')
-        ]),
-        new PlainText(' '),
-        new Italic([
-          new PlainText('Tropical.')
-        ])
-      ]))
-  })
-})
-
-
-describe('Shouted text inside of emphasized text', () => {
-  it('can have its inner bold node closed early', () => {
+describe('Inside of italiczed text, text that is bolded/again-italiczed at the same time', () => {
+  it('can have its bold convention closed first', () => {
     expect(Up.toDocument('_Please ___stop__ eating the cardboard_ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Please '),
           new Italic([
             new Bold([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
             new PlainText(' eating the cardboard'),
           ]),
@@ -91,14 +27,14 @@ describe('Shouted text inside of emphasized text', () => {
       ]))
   })
 
-  it('can have its italic node closed early', () => {
+  it('can have its inner mphasis convention closed first', () => {
     expect(Up.toDocument('_Please ___stop_ eating the cardboard__ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Please '),
           new Bold([
             new Italic([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
             new PlainText(' eating the cardboard'),
           ]),
@@ -107,14 +43,14 @@ describe('Shouted text inside of emphasized text', () => {
       ]))
   })
 
-  it('can have both the italic nodes closed before the bold node', () => {
+  it('can have the 2 italic conventions closed before the bold convention', () => {
     expect(Up.toDocument('_Please ___stop_ eating the cardboard_ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Please '),
           new Bold([
             new Italic([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
             new PlainText(' eating the cardboard'),
           ]),
@@ -127,8 +63,8 @@ describe('Shouted text inside of emphasized text', () => {
 })
 
 
-describe('An inflection convention starting with 3 underscores', () => {
-  it('can be closed by a single underscore if no other subsequent underscores close it, resulting in emphasized text and no stray underscores in the document', () => {
+describe('An inflection start delimiter consisting of 3 underscores', () => {
+  it('can be closed by a single underscore if no other subsequent underscores close it, resulting in italiczed text and no stray underscores in the document', () => {
     expect(Up.toDocument('A ___bread_ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
@@ -138,11 +74,8 @@ describe('An inflection convention starting with 3 underscores', () => {
         new PlainText(' to believe in')
       ]))
   })
-})
 
-
-describe('An inflection convention starting with 3 underscores', () => {
-  it('can be closed by double underscores if no other subsequent underscores close it, resulting in bold text and no stray underscores in the document', () => {
+  it('can be closed by double underscores if no other subsequent underscores close it, resulting in bolded text and no stray underscores in the document', () => {
     expect(Up.toDocument('A ___bread__ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('A '),
@@ -155,7 +88,7 @@ describe('An inflection convention starting with 3 underscores', () => {
 })
 
 
-describe('A single starting underscore', () => {
+describe('An inflection start delimiter consisting of 1 underscore', () => {
   it('can be closed by 3+ underscores, producing an italic node (if there are no other underscores to close) and no stray underscores in the document', () => {
     expect(Up.toDocument('A _bread___ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -169,7 +102,7 @@ describe('A single starting underscore', () => {
 })
 
 
-describe('Double starting underscores', () => {
+describe('An inflection start delimiter consisting of 2 underscores', () => {
   it('can be closed by 3+ underscores, producing an italic node (if there are no other underscores to close) and no stray underscores in the document', () => {
     expect(Up.toDocument('A __bread___ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -183,15 +116,15 @@ describe('Double starting underscores', () => {
 })
 
 
-describe('Shouted text inside of bold text', () => {
-  it('can have its inner bold node closed early', () => {
+describe('Inside of bolded text, text that is italiczed/again-bolded at the same time', () => {
+  it('can have its inner bold convention closed first', () => {
     expect(Up.toDocument('__Please ___stop__ eating the cardboard_ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('Please '),
           new Italic([
             new Bold([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
             new PlainText(' eating the cardboard'),
           ]),
@@ -200,71 +133,53 @@ describe('Shouted text inside of bold text', () => {
       ]))
   })
 
-  it('can have its italic node closed early', () => {
+  it('can have its italic convention closed first', () => {
     expect(Up.toDocument('__Please ___stop_ eating the cardboard__ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('Please '),
           new Bold([
             new Italic([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
-            new PlainText(' eating the cardboard'),
+            new PlainText(' eating the cardboard')
           ]),
           new PlainText(' immediately')
         ])
       ]))
   })
 
-  it('can have both the bold nodes closed before the italic node', () => {
+  it('can have both the bold conventions closed before the italic node', () => {
     expect(Up.toDocument('__Please ___stop__ eating the cardboard__ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('Please '),
           new Italic([
             new Bold([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
             new PlainText(' eating the cardboard'),
           ]),
         ]),
         new Italic([
           new PlainText(' immediately')
-        ]),
-      ]))
-  })
-})
-
-
-describe('Inside of bold text, shouted text with its inner bold node closed early', () => {
-  it('can have the reamining italic node and bold node closed by 3 or more underscores', () => {
-    expect(Up.toDocument('__Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Bold([
-          new PlainText('Please '),
-          new Italic([
-            new Bold([
-              new PlainText('stop'),
-            ]),
-            new PlainText(' eating the cardboard immediately'),
-          ]),
         ])
       ]))
   })
 })
 
 
-describe('Inside of bold text, shouted text with its inner italic node closed early', () => {
-  it('can have the reamining two bold nodes closed by 4 or more underscores', () => {
-    expect(Up.toDocument('__Please ___stop_ eating the cardboard immediately____')).to.deep.equal(
+describe('Inside of bolded text, italiczed/bolded text with its bold convention closed first', () => {
+  it('can have the reamining italic convention and bold convention closed by 3 or more underscores', () => {
+    expect(Up.toDocument('__Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('Please '),
-          new Bold([
-            new Italic([
-              new PlainText('stop'),
+          new Italic([
+            new Bold([
+              new PlainText('stop')
             ]),
-            new PlainText(' eating the cardboard immediately'),
+            new PlainText(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -272,35 +187,53 @@ describe('Inside of bold text, shouted text with its inner italic node closed ea
 })
 
 
-describe('Inside of emphasized text, shouted text with its inner bold node closed early', () => {
-  it('can have the reamining two italic nodes closed by 3 or more underscores', () => {
-    expect(Up.toDocument('_Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
+describe('Inside of bolded text, italiczed/bolded text with its italic convention closed first', () => {
+  it('can have the reamining 2 bold conventions closed by 4 or more underscores', () => {
+    expect(Up.toDocument('__Please ___stop_ eating the cardboard immediately____')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Italic([
+        new Bold([
           new PlainText('Please '),
-          new Italic([
-            new Bold([
-              new PlainText('stop'),
+          new Bold([
+            new Italic([
+              new PlainText('stop')
             ]),
-            new PlainText(' eating the cardboard immediately'),
-          ]),
+            new PlainText(' eating the cardboard immediately')
+          ])
         ])
       ]))
   })
 })
 
 
-describe('Inside of emphasized text, shouted text with its inner italic node closed early', () => {
-  it('can have the reamining bold node and italic node closed by 3 or more underscores', () => {
+describe('Inside of italiczed text, italiczed/bolded text with its bold convention closed first', () => {
+  it('can have the reamining two italic convention closed by 3 or more underscores', () => {
+    expect(Up.toDocument('_Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Italic([
+          new PlainText('Please '),
+          new Italic([
+            new Bold([
+              new PlainText('stop')
+            ]),
+            new PlainText(' eating the cardboard immediately')
+          ])
+        ])
+      ]))
+  })
+})
+
+
+describe('Inside of italiczed text, italiczed/bolded text with its inner italic convention closed first', () => {
+  it('can have the reamining bold convention and italic convention closed by 3 or more underscores', () => {
     expect(Up.toDocument('_Please ___stop_ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Please '),
           new Bold([
             new Italic([
-              new PlainText('stop'),
+              new PlainText('stop')
             ]),
-            new PlainText(' eating the cardboard immediately'),
+            new PlainText(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -318,7 +251,7 @@ describe('Matching clusters of 3+ underscores each surrounded by whitespce', () 
 })
 
 
-describe('Shouted text starting with 4+ underscores, with an italic convention ended early, subsequently ending in 3+ additional underscores', () => {
+describe('An inflection start delimiter consisting of 4+ underscores, with an italic convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces an italic node nested within bold and italic nodes', () => {
     expect(Up.toDocument('Well, ____Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -337,7 +270,7 @@ describe('Shouted text starting with 4+ underscores, with an italic convention e
 })
 
 
-describe('Shouted text starting with 4 underscores, with a bold convention ended early, subsequently ending in 3 additional underscores', () => {
+describe('An inflection start delimiter consisting of 4+ underscores, with a bold convention ended first, subsequently ending in 3 additional underscores', () => {
   it('produces nested bold nodes', () => {
     expect(Up.toDocument('Well, ____Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -354,7 +287,7 @@ describe('Shouted text starting with 4 underscores, with a bold convention ended
 })
 
 
-describe('Shouted text starting with 5+ underscores, with an italic convention ended early, subsequently ending in 3+ additional underscores', () => {
+describe('An inflection start delimiter consisting of 5+ underscores, with an italic convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces a bold node nested within bold and italic nodes', () => {
     expect(Up.toDocument('Well, _____Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -368,6 +301,73 @@ describe('Shouted text starting with 5+ underscores, with an italic convention e
           ]),
         ]),
         new PlainText('!')
+      ]))
+  })
+})
+
+
+describe('Text that is italiczed/bolded at the same time', () => {
+  it('can have its italic convention closed first and be followed by bolded text', () => {
+    expect(Up.toDocument('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Bold([
+          new Italic([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Bold([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its italic convention closed first and be followed by italiczed text', () => {
+    expect(Up.toDocument('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Bold([
+          new Italic([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Italic([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its bold convention closed first and be followed by bolded text', () => {
+    expect(Up.toDocument('___Nimble__ navigators?_ __Tropical.__')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Italic([
+          new Bold([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Bold([
+          new PlainText('Tropical.')
+        ])
+      ]))
+  })
+
+  it('can have its bold convention closed first and be followed by italiczed text', () => {
+    expect(Up.toDocument('___Nimble__ navigators?_ _Tropical._')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Italic([
+          new Bold([
+            new PlainText('Nimble')
+          ]),
+          new PlainText(' navigators?')
+        ]),
+        new PlainText(' '),
+        new Italic([
+          new PlainText('Tropical.')
+        ])
       ]))
   })
 })
