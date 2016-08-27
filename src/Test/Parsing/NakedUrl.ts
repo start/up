@@ -6,8 +6,13 @@ import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
+import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { Highlight } from '../../SyntaxNodes/Highlight'
+import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
+import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
@@ -142,43 +147,6 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('is terminated by an inline quote closing', () => {
-    expect(Up.toDocument('"https://archive.org/fake"')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineQuote([
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake'),
-        ])
-      ]))
-  })
-
-  it('is terminated by a parenthesized convention closing', () => {
-    expect(Up.toDocument('(https://archive.org/fake)')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake'),
-          new PlainText(')')
-        ])
-      ]))
-  })
-
-  it('is terminated by a square bracketed convention closing', () => {
-    expect(Up.toDocument('[https://archive.org/fake]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('['),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake'),
-          new PlainText(']')
-        ])
-      ]))
-  })
-
   it('can contain matching parentheses', () => {
     expect(Up.toDocument('https://archive.org/fake(url)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -228,36 +196,59 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it("is terminated by revision insertion closing", () => {
-    expect(Up.toDocument('++I love... https://archive.org/fake++!')).to.deep.equal(
+  it("can contain unescaped asterisks if not inside an emphasis convention", () => {
+    expect(Up.toDocument('https://example.org/a*normal*url')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('example.org/a*normal*url')
+        ], 'https://example.org/a*normal*url')
+      ]))
+  })
+})
+
+
+context('Naked URLs are terminated when any outer convention closes. This includes:', () => {
+  specify('Inline quotes', () => {
+    expect(Up.toDocument('"https://archive.org/fake"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineQuote([
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+        ])
+      ]))
+  })
+
+  specify('Parentheses', () => {
+    expect(Up.toDocument('(https://archive.org/fake)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainText(')')
+        ])
+      ]))
+  })
+
+  specify('Square brackets', () => {
+    expect(Up.toDocument('[https://archive.org/fake]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new SquareParenthetical([
+          new PlainText('['),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainText(']')
+        ])
+      ]))
+  })
+
+  specify("Revision insertion", () => {
+    expect(Up.toDocument('++I love https://archive.org/fake++!')).to.deep.equal(
       insideDocumentAndParagraph([
         new RevisionInsertion([
-          new PlainText('I love... '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is terminated by emphasis closing', () => {
-    expect(Up.toDocument('*I love... https://archive.org/fake*!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I love... '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is closed by stress closing', () => {
-    expect(Up.toDocument('**I love https://archive.org/fake**!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Stress([
           new PlainText('I love '),
           new Link([
             new PlainText('archive.org/fake')
@@ -267,7 +258,167 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('is closed by combined inflection closing', () => {
+  specify("Revision deletion", () => {
+    expect(Up.toDocument('~~I love https://archive.org/fake~~!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new RevisionDeletion([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake')
+        ]),
+        new PlainText('!')
+      ]))
+  })
+
+  specify("Highlights", () => {
+    expect(Up.toDocument('[highlight: I love https://archive.org/fake]!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Highlight([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake')
+        ]),
+        new PlainText('!')
+      ]))
+  })
+
+  specify("Inline spoilers", () => {
+    expect(Up.toDocument('[SPOILER: I love https://archive.org/fake and you should too!]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainText(' and you should too!')
+        ]),
+      ]))
+  })
+
+  specify("Inline NSFW", () => {
+    expect(Up.toDocument('[NSFW: I love https://archive.org/fake and you should too!]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineNsfw([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainText(' and you should too!')
+        ]),
+      ]))
+  })
+
+  specify("Inline NSFL", () => {
+    expect(Up.toDocument('[NSFL: I love https://archive.org/fake and you should too!]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineNsfl([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+          new PlainText(' and you should too!')
+        ]),
+      ]))
+  })
+
+  context('Emphasis', () => {
+    specify('Surrounded by 1 asterisk on either side', () => {
+      expect(Up.toDocument('*I love https://archive.org/fake*!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Emphasis([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    specify('Starting with 1 asterisk and closed with 3+)', () => {
+      expect(Up.toDocument('*I love https://archive.org/fake***!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Emphasis([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 2 asterisk and closing with 1', () => {
+      expect(Up.toDocument('**I love https://archive.org/fake*!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Emphasis([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 3+ asterisk and closing with 1', () => {
+      expect(Up.toDocument('***I love https://archive.org/fake*!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Emphasis([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+  })
+
+  context('Stress', () => {
+    specify('Surrounded by 2 asterisks on either side', () => {
+      expect(Up.toDocument('**I love https://archive.org/fake**!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Stress([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    specify('Starting with 2 asterisk and closed with 3+)', () => {
+      expect(Up.toDocument('**I love https://archive.org/fake***!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Stress([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+
+    it('Starting with 3+ asterisk and closing with 2', () => {
+      expect(Up.toDocument('***I love https://archive.org/fake**!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Stress([
+            new PlainText('I love '),
+            new Link([
+              new PlainText('archive.org/fake')
+            ], 'https://archive.org/fake')
+          ]),
+          new PlainText('!')
+        ]))
+    })
+  })
+
+  specify('Emphasis and stress together', () => {
     expect(Up.toDocument('***I love https://archive.org/fake***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
@@ -279,80 +430,6 @@ describe('A naked URL', () => {
           ])
         ]),
         new PlainText('!')
-      ]))
-  })
-
-  it('is closed by 3 or more asterisks closing emphasis', () => {
-    expect(Up.toDocument('*I love https://archive.org/fake***!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is closed by 3 or more asterisks closing emphasis', () => {
-    expect(Up.toDocument('**I love https://archive.org/fake***!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Stress([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is closed by emphasis (starting with 2 asterisks) closing with 1 asterisk', () => {
-    expect(Up.toDocument('**I love https://archive.org/fake*!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is closed by emphasis (starting with 3+ asterisks) closing with 1 asterisk', () => {
-    expect(Up.toDocument('***I love https://archive.org/fake*!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it('is closed by stress (starting with 3+ asterisks) closing with 2 asterisks', () => {
-    expect(Up.toDocument('***I love https://archive.org/fake**!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Stress([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  it("can contain unescaped asterisks if not inside an emphasis convention", () => {
-    expect(Up.toDocument('https://example.org/a*normal*url')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('example.org/a*normal*url')
-        ], 'https://example.org/a*normal*url')
       ]))
   })
 })
