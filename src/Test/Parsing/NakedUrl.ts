@@ -131,12 +131,12 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('can contain non-consecutive periods in its path)', () => {
-    expect(Up.toDocument('https://this.is.a.very.real.url.co.uk/and.i.love.full.stops')).to.deep.equal(
+  it('can contain consecutive periods in its path)', () => {
+    expect(Up.toDocument('https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
-          new PlainText('this.is.a.very.real.url.co.uk/and.i.love.full.stops')
-        ], 'https://this.is.a.very.real.url.co.uk/and.i.love.full.stops')
+          new PlainText('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
+        ], 'https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')
       ]))
   })
 
