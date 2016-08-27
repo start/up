@@ -8,7 +8,7 @@ import { Stress } from '../../../SyntaxNodes/Stress'
 
 
 describe('Shouted text', () => {
-  it('can have its emphasis node closed first even when followed by stressed text', () => {
+  it('can have its emphasis node closed first when followed by stressed text', () => {
     expect(Up.toDocument('***Nimble* navigators?** **Tropical.**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
@@ -24,7 +24,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its emphasis node closed first even when followed by emphasized text', () => {
+  it('can have its emphasis node closed first when followed by emphasized text', () => {
     expect(Up.toDocument('***Nimble* navigators?** *Tropical.*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([
@@ -40,7 +40,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its stress node closed first even when followed by stressed text', () => {
+  it('can have its stress node closed first when followed by stressed text', () => {
     expect(Up.toDocument('***Nimble** navigators?* **Tropical.**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
@@ -56,7 +56,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its stress node closed first even when followed by emphasized text', () => {
+  it('can have its stress node closed first when followed by emphasized text', () => {
     expect(Up.toDocument('***Nimble** navigators?* *Tropical.*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([

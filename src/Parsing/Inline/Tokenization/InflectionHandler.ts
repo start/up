@@ -5,11 +5,13 @@ import { escapeForRegex, patternStartingWith, atLeastOne } from '../../PatternHe
 import { remove } from '../../../CollectionHelpers'
 
 
-// Applies the (forgiving) rules for inflection conventions, pairing end delimiters with open start delimiters.   
+// For a given inflection delimiter character (`delimiterChar`), instances of this class match end delimiters with
+// start delimiters. 
 export class InflectionHandler {
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
+      // One or more of thse characters comprise every delimiter.
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
       conventionForMinorInflection: RichConvention
@@ -46,13 +48,30 @@ export class InflectionHandler {
     if (endDelimiter.length === MINOR_INFLECTION_COST) {
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
       //
-      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that either:
+      // If major inflection is not supported (i.e. for quotes), then we simply match with the nearest open
+      // start delimiter. If that start delimiter has just 1 character to "spend", we subsequently mark that
+      // start delimiter as closed (by removing it from `openStartDelimiters`).  On the other hand, if that
+      // start delimiter has 2 or more characters to spend, then we merely "spend" 1 of them. The start
+      // delimiter is still considered open, albeit with 1 fewer characters to spend.
       //
-      // 1. Can also only indicate minor inflection (1 character to spend)
-      // 2. Can indicate both minor and major inflection together (3+ characters to spend)
+      // If major inflection is supported (i.e. for asterisks and underscores), we don't blindly match with
+      // the closest start delimiter. If possible, we'd rather avoid matching with a start delimiter that has
+      // exactly 2 characters to spend, because the author of the text probably intended that start delimiter
+      // to be matched with an end delimiter that *also* has 2 characters to spend.
       //
-      // If we can't find any start delimiters that satisfy the above criteria, then we'll settle for a start delimiter
-      // that has 2 characters to spend. But this fallback happens later.
+      // For example:
+      //
+      //   I *love **drinking* whole** milk.
+      //
+      // The `*` end delimiter after "drinking" should be matched with the `*` start delimiter before "love".
+      // The nearest start delimiter---the `**` before "drinking"---should instead be matched with the `**`
+      // end delimiter with 2 asterisks that follows.
+      //
+      // To be clear, we're perfectly happy to match with the nearest start delimiter that has *more* than 2
+      // delimiter characters to spend! We'd simply like to avoid matching with start delimiters with exactly
+      // 2.
+      // That being said, if there aren't any start delimiters ' then we'll
+      // settle for a start delimiter that has 2 characters to spend. But this fallback happens later.
 
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
@@ -65,15 +84,16 @@ export class InflectionHandler {
         }
       }
     } else if (supportsMajorInflection && (endDelimiter.length === MAJOR_INFLECTION_COST)) {
-      // If an end delimiter is just 2 characters long, it can indicate major inflection, but it can't indicate both
-      // major and minor inflection at the same time.
+      // If major inflection is supported, and if an end delimiter is just 2 characters long, it can indicate major
+      // inflection, but it can't indicate both major and minor inflection at the same time.
       //
       // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
       // major inflection. It's okay if that start delimiter can indicate both major and minor inflection at the same
       // time! As long as it can indicate major inflection, we're good. 
       //
-      // Only if we can't find one, then we'll match with a delimiter that has just 1 character to spend. But this
-      // fallback happens later.
+      // If we can't find a start delimiter that can indicate major inflection, then we'll match with a start delimiter
+      // that has just 1 character to spend. But this fallback happens later (and when it does, it only indicates minor
+      // inflection).
 
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
@@ -162,10 +182,11 @@ export class InflectionHandler {
     return (this.args.conventionForMajorInflection != null)
   }
 
-  // TODO: Explain for quotes
-  // 
-  // When matching delimiters each have 3 or more characters to spend, the text they surround become "shouted"
-  // (major and minor inflected). Shouting delimiters cancel out as many of each other's characters as possible.
+  // When major inflection is supported (i.e. asterisks and underscores)
+  // ===================================================================
+  //
+  // When matching delimiters each have 3 or more characters to spend, the text they surround becomes both
+  // major and minor inflected. These delimiters cancel out as many of each other's characters as possible.
   //
   // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
   //
@@ -174,8 +195,16 @@ export class InflectionHandler {
   //
   // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
   // subsequently matched by other delimiters.
+  //
+  // When major inflection is not supported (i.e. quotes)
+  // ====================================================
+  //
+  // Delimiters will always cancel out as many of each other's characters as possible. 
   private get combinedInflectionMinCost(): number {
-    return MINOR_INFLECTION_COST + (this.supportsMajorInflection ? MAJOR_INFLECTION_COST : 0)
+    return (
+      this.supportsMajorInflection
+        ? MINOR_INFLECTION_COST + MAJOR_INFLECTION_COST
+        : MINOR_INFLECTION_COST * 2)
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs) {

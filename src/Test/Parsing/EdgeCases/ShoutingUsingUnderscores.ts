@@ -8,7 +8,7 @@ import { Bold } from '../../../SyntaxNodes/Bold'
 
 
 describe('Shouted text', () => {
-  it('can have its italic node closed first even when followed by bold text', () => {
+  it('can have its italic node closed first when followed by bold text', () => {
     expect(Up.toDocument('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
@@ -24,7 +24,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its italic node closed first even when followed by emphasized text', () => {
+  it('can have its italic node closed first when followed by emphasized text', () => {
     expect(Up.toDocument('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
@@ -40,7 +40,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its bold node closed first even when followed by bold text', () => {
+  it('can have its bold node closed first when followed by bold text', () => {
     expect(Up.toDocument('___Nimble__ navigators?_ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
@@ -56,7 +56,7 @@ describe('Shouted text', () => {
       ]))
   })
 
-  it('can have its bold node closed first even when followed by emphasized text', () => {
+  it('can have its bold node closed first when followed by emphasized text', () => {
     expect(Up.toDocument('___Nimble__ navigators?_ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
