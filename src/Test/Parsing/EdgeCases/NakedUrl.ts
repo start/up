@@ -50,19 +50,6 @@ describe('A naked URL following an open square bracket', () => {
 })
 
 
-describe('A naked URL following an open square bracket', () => {
-  it("can contain an escaped closing square bracket", () => {
-    expect(Up.toDocument('{https://nintendo.com\\}')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('{'),
-        new Link([
-          new PlainText('nintendo.com}')
-        ], 'https://nintendo.com}'),
-      ]))
-  })
-})
-
-
 describe("Unmatched opening parentheses in a naked URL", () => {
   it('do not affect any markup that follows the URL', () => {
     const markup = '(^Well, https://www.example.com/a(normal(url is my favorite site)'
