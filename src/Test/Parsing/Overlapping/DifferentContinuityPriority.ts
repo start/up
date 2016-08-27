@@ -19,6 +19,7 @@ import { SquareParenthetical } from'../../../SyntaxNodes/SquareParenthetical'
 import { Footnote } from'../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from'../../../SyntaxNodes/FootnoteBlock'
 import { Highlight } from'../../../SyntaxNodes/Highlight'
+import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 
 
 // TODO: Organize these tests into contexts for clarity
@@ -104,7 +105,7 @@ describe('A link overlapping italicized text', () => {
 
 
 context('When a link overlaps stressed text, the stressed text will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash **can](https://en.wikipedia.org/wiki/Waste_container) not** stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -121,7 +122,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
       ]))
   })
 
-  it('The italicized text opens first', () => {
+  specify('The italicized text opens first', () => {
     expect(Up.toDocument('I do **not (care** at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -141,7 +142,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
 
 
 context('When a link overlaps italicized text, the italicized text will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash _can](https://en.wikipedia.org/wiki/Waste_container) not_ stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -158,7 +159,7 @@ context('When a link overlaps italicized text, the italicized text will always b
       ]))
   })
 
-  it('The italicized text opens first', () => {
+  specify('The italicized text opens first', () => {
     expect(Up.toDocument('I do _not (care_ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -178,7 +179,7 @@ context('When a link overlaps italicized text, the italicized text will always b
 
 
 context('When a link overlaps bold text, the bold text will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash __can](https://en.wikipedia.org/wiki/Waste_container) not__ stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -195,7 +196,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
       ]))
   })
 
-  it('The bold text opens first', () => {
+  specify('The bold text opens first', () => {
     expect(Up.toDocument('I do __not (care__ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -215,7 +216,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
 
 
 context('When a link overlaps highlighted text, the highlighted text will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash (highlight: can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -232,7 +233,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
       ]))
   })
 
-  it('The highlight opens first', () => {
+  specify('The highlight opens first', () => {
     expect(Up.toDocument('I do [highlight: not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -252,7 +253,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
 
 
 context('When a link overlaps revision deletion, the revision deletion will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash ~~can](https://en.wikipedia.org/wiki/Waste_container) not~~ stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -269,7 +270,7 @@ context('When a link overlaps revision deletion, the revision deletion will alwa
       ]))
   })
 
-  it('The revision deletion opens first', () => {
+  specify('The revision deletion opens first', () => {
     expect(Up.toDocument('I do ~~not (care~~ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -289,7 +290,7 @@ context('When a link overlaps revision deletion, the revision deletion will alwa
 
 
 context('When a link overlaps revision insertion, the revision insertion will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash ++can](https://en.wikipedia.org/wiki/Waste_container) not++ stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -306,7 +307,7 @@ context('When a link overlaps revision insertion, the revision insertion will al
       ]))
   })
 
-  it('The revision deletion opens first', () => {
+  specify('The revision deletion opens first', () => {
     expect(Up.toDocument('I do ++not (care++ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -326,7 +327,7 @@ context('When a link overlaps revision insertion, the revision insertion will al
 
 
 context('When a link overlaps parenthesized text, the parenthesized text will always be split. This includes when:', () => {
-  it('The link opens first', () => {
+  specify('The link opens first', () => {
     expect(Up.toDocument('This [trash (can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
@@ -343,7 +344,7 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
       ]))
   })
 
-  it('The parenthesized text opens first', () => {
+  specify('The parenthesized text opens first', () => {
     expect(Up.toDocument('I do (not [care) at](https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
@@ -390,6 +391,43 @@ context('When a link overlaps square bracketed text, the square bracketed text w
         new Link([
           new SquareParenthetical([
             new PlainText('care]')
+          ]),
+          new PlainText(' at'),
+        ], 'https://en.wikipedia.org/wiki/Carrot'),
+        new PlainText(' all.')
+      ]))
+  })
+})
+
+
+context('When a link overlaps a quote, the quote will always be split. This includes when:', () => {
+  specify('the link opens first', () => {
+    expect(Up.toDocument('This [trash "can][https://en.wikipedia.org/wiki/Waste_container] not" stay here.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('This '),
+        new Link([
+          new PlainText('trash '),
+          new InlineQuote([
+            new PlainText('can')
+          ]),
+        ], 'https://en.wikipedia.org/wiki/Waste_container'),
+        new InlineQuote([
+          new PlainText(' not')
+        ]),
+        new PlainText(' stay here.')
+      ]))
+  })
+
+  specify('The quote opens first', () => {
+    expect(Up.toDocument('I do "not [care" at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I do '),
+        new InlineQuote([
+          new PlainText('not ')
+        ]),
+        new Link([
+          new InlineQuote([
+            new PlainText('care')
           ]),
           new PlainText(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),

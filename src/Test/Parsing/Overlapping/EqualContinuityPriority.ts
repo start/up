@@ -17,7 +17,7 @@ import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 // TODO: Organize these tests into contexts for clarity
 
 describe('Overlapped stressed and deleted text', () => {
-  it('splits the revision delietion node because it opened second', () => {
+  it('splits the revision deletion node because it opened second', () => {
     expect(Up.toDocument('I **love ~~drinking** whole~~ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
