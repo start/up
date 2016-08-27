@@ -253,7 +253,7 @@ describe('A naked URL', () => {
       ]))
   })
 
-  it('is closed by shouting closing', () => {
+  it('is closed by combined inflection closing', () => {
     expect(Up.toDocument('***I love https://archive.org/fake***!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Stress([

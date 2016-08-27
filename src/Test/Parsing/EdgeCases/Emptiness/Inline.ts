@@ -220,14 +220,14 @@ context('Most inline conventions are not applied if they have no content.', () =
             ]))
         })
 
-        specify('Shouting (emphasis and stress together)', () => {
+        specify('Combined inflection', () => {
           expect(Up.toDocument('Stars! *** \t \t ***')).to.eql(
             insideDocumentAndParagraph([
               new PlainText('Stars! *** \t \t ***')
             ]))
         })
 
-        specify('Shouting with imbalanced delimiters', () => {
+        specify('Imbalanced delimiters', () => {
           expect(Up.toDocument('Stars! *****\t  \t***')).to.eql(
             insideDocumentAndParagraph([
               new PlainText('Stars! *****\t  \t***')
@@ -252,14 +252,14 @@ context('Most inline conventions are not applied if they have no content.', () =
             ]))
         })
 
-        specify('Shouting (italics and bold together)', () => {
+        specify('Combined inflection', () => {
           expect(Up.toDocument('Stars! ___ \t \t ___')).to.eql(
             insideDocumentAndParagraph([
               new PlainText('Stars! ___ \t \t ___')
             ]))
         })
 
-        specify('Shouting with imbalanced delimiters', () => {
+        specify('Imbalanced delimiters', () => {
           expect(Up.toDocument('Stars! _____\t  \t___')).to.eql(
             insideDocumentAndParagraph([
               new PlainText('Stars! _____\t  \t___')
