@@ -87,6 +87,34 @@ describe('Text separated from (otherwise surrounding) doublequotes by whitespace
 })
 
 
+context('An unmatched doublequote (that would otherwise start a quote) is preserved as plain text. This unmatched doublequote:', () => {
+  specify('Can be the only doublequote in a paragraph', () => {
+    expect(Up.toDocument('I said, "I am still typi')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I said, "I am still typi'),
+      ]))
+  })
+
+  specify('Can follow another unmatched double quote', () => {
+    expect(Up.toDocument('Bob said, "I said, "I am still typi')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Bob said, "I said, "I am still typi'),
+      ]))
+  })
+
+  specify('Can follow a proper inline quote', () => {
+    expect(Up.toDocument('I said, "Hello world"! I repeat, "Hel')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I said, '),
+        new InlineQuote([
+          new PlainText('Hello world')
+        ]),
+        new PlainText('! I repeat, "Hel')
+      ]))
+  })
+})
+
+
 context('Inline quotes can follow each other in a paragraph', () => {
   specify('With a space in between them', () => {
     expect(Up.toDocument('"Thanks." "Okay."')).to.deep.equal(
@@ -145,6 +173,22 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
         new PlainText('Yeah, check the '),
         new InlineQuote([
           new PlainText('car')
+        ]),
+        new PlainText('.')
+      ]))
+  })
+
+
+  specify('This inline quote can contain nested inline quotes', () => {
+    expect(Up.toDocument('Yeah, check the """"new "office" building"""".')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Yeah, check the '),
+        new InlineQuote([
+          new PlainText('new '),
+          new InlineQuote([
+            new PlainText('office')
+          ]),
+          new PlainText(' building')
         ]),
         new PlainText('.')
       ]))
