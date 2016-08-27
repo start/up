@@ -11,6 +11,7 @@ import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
 import { NormalParenthetical } from'../../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from'../../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from'../../../SyntaxNodes/Highlight'
+import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 
 
 // TODO: Organize these tests into contexts for clarity
@@ -36,7 +37,7 @@ describe('Overlapped stressed and deleted text', () => {
 
 
 describe('Overlapped deleted and stressed text', () => {
-  it('split the stress node because it opened second', () => {
+  it('splits the stress node because it opened second', () => {
     expect(Up.toDocument('I ~~love **drinking~~ whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -56,7 +57,7 @@ describe('Overlapped deleted and stressed text', () => {
 
 
 describe('Overlapped emphasized and stressed text', () => {
-  it('split the stress node because it opened second', () => {
+  it('splits the stress node because it opened second', () => {
     expect(Up.toDocument('I *love **drinking* whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -76,7 +77,7 @@ describe('Overlapped emphasized and stressed text', () => {
 
 
 describe('Overlapped stressed and emphasized text', () => {
-  it('split the emphasis node because it opened second', () => {
+  it('splits the emphasis node because it opened second', () => {
     expect(Up.toDocument('I **love *drinking** whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -96,7 +97,7 @@ describe('Overlapped stressed and emphasized text', () => {
 
 
 describe('Overlapped italicized and emphasized text', () => {
-  it('split the emphasis node because it opened second', () => {
+  it('splits the emphasis node because it opened second', () => {
     expect(Up.toDocument('I _love *drinking_ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -116,7 +117,7 @@ describe('Overlapped italicized and emphasized text', () => {
 
 
 describe('Overlapped emphasized and italicized text', () => {
-  it('split the italic node because it opened second', () => {
+  it('splits the italic node because it opened second', () => {
     expect(Up.toDocument('I *love _drinking* whole_ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -136,7 +137,7 @@ describe('Overlapped emphasized and italicized text', () => {
 
 
 describe('Overlapped bold and stressed text', () => {
-  it('split the stress node because it opened second', () => {
+  it('splits the stress node because it opened second', () => {
     expect(Up.toDocument('I __love **drinking__ whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -156,7 +157,7 @@ describe('Overlapped bold and stressed text', () => {
 
 
 describe('Overlapped stressed and bold text', () => {
-  it('split the bold node because it opened second', () => {
+  it('splits the bold node because it opened second', () => {
     expect(Up.toDocument('I **love __drinking** whole__ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -176,7 +177,7 @@ describe('Overlapped stressed and bold text', () => {
 
 
 describe('Overlapped emphasized and inserted text', () => {
-  it('split the revision insertion node because it opened second', () => {
+  it('splits the revision insertion node because it opened second', () => {
     expect(Up.toDocument('I *love ++drinking* whole++ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -196,7 +197,7 @@ describe('Overlapped emphasized and inserted text', () => {
 
 
 describe('Overlapped inserted and emphasized text', () => {
-  it('split the emphasis node because it opened second', () => {
+  it('splits the emphasis node because it opened second', () => {
     expect(Up.toDocument('I ++love *drinking++ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -216,7 +217,7 @@ describe('Overlapped inserted and emphasized text', () => {
 
 
 describe('Overlapped highlighted and stressed text', () => {
-  it('split the stress node because it opened second', () => {
+  it('splits the stress node because it opened second', () => {
     expect(Up.toDocument('I [highlight: love **drinking] whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -236,7 +237,7 @@ describe('Overlapped highlighted and stressed text', () => {
 
 
 describe('Overlapped stressed and highlighted text', () => {
-  it('split the highlight node because it opened second', () => {
+  it('splits the highlight node because it opened second', () => {
     expect(Up.toDocument('I **love [highlight: drinking** whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
@@ -288,6 +289,126 @@ describe('Overlapped stressed and square bracketed text', () => {
         ]),
         new SquareParenthetical([
           new PlainText(' whole]')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped quoted and emphasized text', () => {
+  it('splits the emphasis node because it opened second', () => {
+    expect(Up.toDocument('I "love *drinking" whole* milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new InlineQuote([
+          new PlainText('love '),
+          new Emphasis([
+            new PlainText('drinking')
+          ])
+        ]),
+        new Emphasis([
+          new PlainText(' whole')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped emphasized and quoted text', () => {
+  it('splits the inline quote node because it opened second', () => {
+    expect(Up.toDocument('I *love "drinking* whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new Emphasis([
+          new PlainText('love '),
+          new InlineQuote([
+            new PlainText('drinking')
+          ])
+        ]),
+        new InlineQuote([
+          new PlainText(' whole')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped quoted and stressed text', () => {
+  it('splits the stress node because it opened second', () => {
+    expect(Up.toDocument('I **love "drinking** whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new Stress([
+          new PlainText('love '),
+          new InlineQuote([
+            new PlainText('drinking')
+          ])
+        ]),
+        new InlineQuote([
+          new PlainText(' whole')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped stressed and quoted text', () => {
+  it('splits the quoted node because it opened second', () => {
+    expect(Up.toDocument('I "love **drinking" whole** milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new InlineQuote([
+          new PlainText('love '),
+          new Stress([
+            new PlainText('drinking')
+          ])
+        ]),
+        new Stress([
+          new PlainText(' whole')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped quoted and highlighted text', () => {
+  it('splits the highlight node because it opened second', () => {
+    expect(Up.toDocument('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new Highlight([
+          new PlainText('love '),
+          new InlineQuote([
+            new PlainText('drinking')
+          ])
+        ]),
+        new InlineQuote([
+          new PlainText(' whole')
+        ]),
+        new PlainText(' milk.')
+      ]))
+  })
+})
+
+
+describe('Overlapped highlighted and quoted text', () => {
+  it('splits the quoted node because it opened second', () => {
+    expect(Up.toDocument('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I '),
+        new InlineQuote([
+          new PlainText('love '),
+          new Highlight([
+            new PlainText('drinking')
+          ])
+        ]),
+        new Highlight([
+          new PlainText(' whole')
         ]),
         new PlainText(' milk.')
       ]))
