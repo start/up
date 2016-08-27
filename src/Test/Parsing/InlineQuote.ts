@@ -95,7 +95,7 @@ context('An unmatched doublequote (that would otherwise start a quote) is preser
       ]))
   })
 
-  specify('Can follow another unmatched double quote', () => {
+  specify('Can follow another unmatched doublequote', () => {
     expect(Up.toDocument('Bob said, "I said, "I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Bob said, "I said, "I am still typi'),
@@ -110,6 +110,34 @@ context('An unmatched doublequote (that would otherwise start a quote) is preser
           new PlainText('Hello world')
         ]),
         new PlainText('! I repeat, "Hel')
+      ]))
+  })
+})
+
+
+context('An unmatched doublequote (that would otherwise end a quote) is preserved as plain text. This unmatched doublequote:', () => {
+  specify('Can be the only doublequote in a paragraph', () => {
+    expect(Up.toDocument('My model airplane has a 30" wingspan.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('My model airplane has a 30" wingspan.'),
+      ]))
+  })
+
+  specify('Can follow another unmatched doublequote', () => {
+    expect(Up.toDocument('My model airplane has a 30" wingspan and is 20" long')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('My model airplane has a 30" wingspan and is 20" long'),
+      ]))
+  })
+
+  specify('Can follow a proper inline quote', () => {
+    expect(Up.toDocument('I said, "Thanks!" My new model airplane has a 30" wingspan.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('I said, '),
+        new InlineQuote([
+          new PlainText('Thanks!')
+        ]),
+        new PlainText(' My new model airplane has a 30" wingspan.')
       ]))
   })
 })
