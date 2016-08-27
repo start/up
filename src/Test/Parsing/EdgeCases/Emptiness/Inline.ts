@@ -205,7 +205,7 @@ context('Most inline conventions are not applied if they have no content.', () =
     context("Delimiters containing only whitespace are preserved as plain text.", () => {
       context('With asterisks:', () => {
         specify('Emphasis', () => {
-          // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
+          // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
           expect(Up.toDocument('Stars! * \t \t *')).to.eql(
             insideDocumentAndParagraph([
               new PlainText('Stars! * \t \t *')
@@ -213,56 +213,53 @@ context('Most inline conventions are not applied if they have no content.', () =
         })
 
         specify('Stress', () => {
-          expect(Up.toDocument('Stars! **\t  \t**')).to.eql(
-            // If the inflection delimiters were alone on a line, they would be interpreted as a thematic break streak.
+          expect(Up.toDocument('**\t  \t**')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! **\t  \t**')
+              new PlainText('**\t  \t**')
             ]))
         })
 
         specify('Combined inflection', () => {
-          expect(Up.toDocument('Stars! *** \t \t ***')).to.eql(
+          expect(Up.toDocument('*** \t \t ***')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! *** \t \t ***')
+              new PlainText('*** \t \t ***')
             ]))
         })
 
         specify('Imbalanced delimiters', () => {
-          expect(Up.toDocument('Stars! *****\t  \t***')).to.eql(
+          expect(Up.toDocument('*****\t  \t***')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! *****\t  \t***')
+              new PlainText('*****\t  \t***')
             ]))
         })
       })
 
       context('With underscores:', () => {
         specify('Italics', () => {
-          // If the inflection delimiters were alone on a line, they would be interpreted as an unordered list.
-          expect(Up.toDocument('Stars! _ \t \t _')).to.eql(
+          expect(Up.toDocument('_ \t \t _')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! _ \t \t _')
+              new PlainText('_ \t \t _')
             ]))
         })
 
         specify('Bold', () => {
-          expect(Up.toDocument('Stars! __\t  \t__')).to.eql(
-            // If the inflection delimiters were alone on a line, they would be interpreted as a thematic break streak.
+          expect(Up.toDocument('__\t  \t__')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! __\t  \t__')
+              new PlainText('__\t  \t__')
             ]))
         })
 
         specify('Combined inflection', () => {
-          expect(Up.toDocument('Stars! ___ \t \t ___')).to.eql(
+          expect(Up.toDocument('___ \t \t ___')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! ___ \t \t ___')
+              new PlainText('___ \t \t ___')
             ]))
         })
 
         specify('Imbalanced delimiters', () => {
-          expect(Up.toDocument('Stars! _____\t  \t___')).to.eql(
+          expect(Up.toDocument('_____\t  \t___')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('Stars! _____\t  \t___')
+              new PlainText('_____\t  \t___')
             ]))
         })
       })
@@ -285,6 +282,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('3 characters', () => {
+        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
         expect(Up.toDocument('Stars! ***')).to.eql(
           insideDocumentAndParagraph([
             new PlainText('Stars! ***')
@@ -292,6 +290,7 @@ context('Most inline conventions are not applied if they have no content.', () =
       })
 
       specify('4 characters', () => {
+        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
         expect(Up.toDocument('Stars! ****')).to.eql(
           insideDocumentAndParagraph([
             new PlainText('Stars! ****')
