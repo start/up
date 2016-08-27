@@ -198,6 +198,7 @@ describe('A naked URL', () => {
       ]))
   })
 
+
   context('if not inside an emphasis/stress convention', () => {
     specify("can contain unescaped asterisks", () => {
       expect(Up.toDocument('https://example.org/a*normal*url')).to.deep.equal(
@@ -218,6 +219,7 @@ describe('A naked URL', () => {
     })
   })
 
+
   context('if not inside an italic/bold convention', () => {
     specify("can contain unescaped underscores", () => {
       expect(Up.toDocument('https://example.org/a_normal_url')).to.deep.equal(
@@ -237,6 +239,7 @@ describe('A naked URL', () => {
         ]))
     })
   })
+
 
   it("can contain unescaped consecutive plus signs if not inside a revision insertion convention", () => {
     expect(Up.toDocument('https://example.org/a++normal++url')).to.deep.equal(
