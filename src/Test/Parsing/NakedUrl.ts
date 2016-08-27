@@ -293,7 +293,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
             new PlainText('archive.org/fake')
           ], 'https://archive.org/fake'),
           new PlainText(' and you should too!')
-        ]),
+        ])
       ]))
   })
 
@@ -306,7 +306,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
             new PlainText('archive.org/fake')
           ], 'https://archive.org/fake'),
           new PlainText(' and you should too!')
-        ]),
+        ])
       ]))
   })
 
@@ -319,7 +319,20 @@ context('Naked URLs are terminated when any outer convention closes. This includ
             new PlainText('archive.org/fake')
           ], 'https://archive.org/fake'),
           new PlainText(' and you should too!')
-        ]),
+        ])
+      ]))
+  })
+
+  specify("Links", () => {
+    expect(Up.toDocument('[I love https://archive.org/fake] (example.com/outer) and you should too!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('I love '),
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+        ], 'https://example.com/outer'),
+        new PlainText(' and you should too!')
       ]))
   })
 
