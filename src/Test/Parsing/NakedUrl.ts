@@ -204,6 +204,15 @@ describe('A naked URL', () => {
         ], 'https://example.org/a*normal*url')
       ]))
   })
+
+  it("can contain unescaped consecutive plus signs if not inside a revision insertion convention", () => {
+    expect(Up.toDocument('https://example.org/normal++url')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('example.org/normal++url')
+        ], 'https://example.org/normal++url')
+      ]))
+  })
 })
 
 
