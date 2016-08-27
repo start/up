@@ -327,6 +327,68 @@ context('Most inline conventions are not applied if they have no content.', () =
           })
         })
       })
+
+
+      context('With doublequotes:', () => {
+        specify('Surrounded by 1', () => {
+          expect(Up.toDocument('" \t \t "')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('" \t \t "')
+            ]))
+        })
+
+        specify('Surrounded by 2', () => {
+          expect(Up.toDocument('""\t  \t""')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('""\t  \t""')
+            ]))
+        })
+
+        specify('Surrounded by 3', () => {
+          expect(Up.toDocument('""" \t \t """')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('""" \t \t """')
+            ]))
+        })
+
+        specify('Surrounded by 5', () => {
+          expect(Up.toDocument('"""""\t  \t"""')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('"""""\t  \t"""')
+            ]))
+        })
+
+
+        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+          specify('1 character', () => {
+            expect(Up.toDocument('"')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('"')
+              ]))
+          })
+
+          specify('2 characters', () => {
+            expect(Up.toDocument('""')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('""')
+              ]))
+          })
+
+          specify('3 characters', () => {
+            expect(Up.toDocument('"""')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('"""')
+              ]))
+          })
+
+          specify('4 characters', () => {
+            expect(Up.toDocument('""""')).to.eql(
+              insideDocumentAndParagraph([
+                new PlainText('""""')
+              ]))
+          })
+        })
+      })
     })
   })
 })
