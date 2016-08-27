@@ -8,6 +8,7 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
+import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
 context("Some naked URLs produce links. The content of those links is the URL without its scheme.", () => {
@@ -141,6 +142,17 @@ describe('A naked URL', () => {
       ]))
   })
 
+  it('is terminated by an inline quote closing', () => {
+    expect(Up.toDocument('"https://archive.org/fake"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineQuote([
+          new Link([
+            new PlainText('archive.org/fake')
+          ], 'https://archive.org/fake'),
+        ])
+      ]))
+  
+
   it('is terminated by a parenthesized convention closing', () => {
     expect(Up.toDocument('(https://archive.org/fake)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -165,7 +177,7 @@ describe('A naked URL', () => {
           new PlainText(']')
         ])
       ]))
-  })
+  })})
 
   it('can contain matching parentheses', () => {
     expect(Up.toDocument('https://archive.org/fake(url)')).to.deep.equal(
