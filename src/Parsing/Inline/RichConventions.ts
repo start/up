@@ -62,7 +62,7 @@ export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
 
 export const QUOTE_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: InlineQuote,
-  startTokenKind: TokenKind.QuoteEnd,
+  startTokenKind: TokenKind.QuoteStart,
   endTokenKind: TokenKind.QuoteEnd
 }
 

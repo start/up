@@ -94,7 +94,7 @@ export class InflectionHandler {
     let unspentEndDelimiterLength = endDelimiter.length
 
     // Once this delimiter has spent all of its characters, it has nothing left to do, so we terminate the loop.
-    for (let i = this.openStartDelimiters.length - 1; unspentEndDelimiterLength && i >= 0; i--) {
+    for (let i = this.openStartDelimiters.length - 1; (i >= 0) && unspentEndDelimiterLength; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
       // Can we afford combined inflection?
