@@ -160,6 +160,17 @@ context('Except for footnots, every inline convention is supported in inline doc
         ]))
     })
 
+    specify('Naked URLs', () => {
+      expect(Up.toInlineDocument('I went to https://nintendo.com and read everything I could find.')).to.deep.equal(
+        new InlineUpDocument([
+          new PlainText('I went to '),
+          new Link([
+            new PlainText('nintendo.com'),
+          ], 'https://nintendo.com'),
+          new PlainText(' and read everything I could find.')
+        ]))
+    })
+
     specify('Parnetheses', () => {
       expect(Up.toInlineDocument('I loved my (Nintendo) Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new InlineUpDocument([
