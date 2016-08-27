@@ -114,3 +114,39 @@ context('Inline quotes can follow each other in a paragraph', () => {
       ]))
   })
 })
+
+
+context('Text surrounded by multiple consecutive doublequotes produces a single inline quote.', () => {
+  specify('The doublequotes can be balanced', () => {
+    expect(Up.toDocument('Yeah, check the """"car"""".')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Yeah, check the '),
+        new InlineQuote([
+          new PlainText('car')
+        ]),
+        new PlainText('.')
+      ]))
+  })
+
+  specify('There can be more doublequotes on the starting side', () => {
+    expect(Up.toDocument('Yeah, check the """"""car"""".')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Yeah, check the '),
+        new InlineQuote([
+          new PlainText('car')
+        ]),
+        new PlainText('.')
+      ]))
+  })
+
+  specify('There can be more doublequotes on the ending side', () => {
+    expect(Up.toDocument('Yeah, check the """"car""""".')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Yeah, check the '),
+        new InlineQuote([
+          new PlainText('car')
+        ]),
+        new PlainText('.')
+      ]))
+  })
+})
