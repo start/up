@@ -151,7 +151,7 @@ describe('A naked URL', () => {
           ], 'https://archive.org/fake'),
         ])
       ]))
-  
+  })
 
   it('is terminated by a parenthesized convention closing', () => {
     expect(Up.toDocument('(https://archive.org/fake)')).to.deep.equal(
@@ -177,7 +177,7 @@ describe('A naked URL', () => {
           new PlainText(']')
         ])
       ]))
-  })})
+  })
 
   it('can contain matching parentheses', () => {
     expect(Up.toDocument('https://archive.org/fake(url)')).to.deep.equal(
@@ -216,12 +216,14 @@ describe('A naked URL', () => {
   })
 
   it("can be inside a link", () => {
-    expect(Up.toDocument('[https://inner.example.com/fake][https://outer.example.com/real]')).to.deep.equal(
+    expect(Up.toDocument('[Visit https://inner.example.com/fake right now!](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
+          new PlainText('Visit '),
           new Link([
             new PlainText('inner.example.com/fake')
-          ], 'https://inner.example.com/fake')
+          ], 'https://inner.example.com/fake'),
+          new PlainText(' right now!')
         ], 'https://outer.example.com/real')
       ]))
   })
