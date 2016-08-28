@@ -84,12 +84,20 @@ class Tokenizer {
   // Link URL conventions serve the same purpose as media URL conventions, but for links.  
   private linkUrlConventions = this.getLinkUrlConventions()
 
-  // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first.
+  // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first. Unlike
+  // other conventions, naked URLs cannot overlap.
   //
-  // Most of our conventions are just thrown in the `conventions` collection (and this one is, too), but we
-  // keep a direct reference to the naked URL convention to help us determine whether another convention
-  // contains a naked URL.
-  private nakedUrlConvention = this.getNakedUrlConvention()
+  // This isn't a problem for naked URLs consisting only of a protocol and a hostname (e.g.
+  // https://www.subdomain.example.co.uk). Any character that can close a convention will naturally
+  // terminate the naked URL, too.
+  //
+  // However, for the path part of a URL (e.g. /some/page?search=pokemon#4), that's not the case, because
+  // the path part of a URL can contain a wider variety of characters. We can no longer rely on the URL to
+  // naturally terminate anymore.
+  //
+  // We keep a direct reference to `nakedUrlPathConvention` to help us determine whether we have an active
+  // naked URL that needs to be terminated when an outer convention is closing. 
+  private nakedUrlPathConvention = this.getNakedUrlPathConvention()
 
   // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
   //
@@ -133,7 +141,7 @@ class Tokenizer {
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
     this.conventions = [
-      this.nakedUrlConvention,
+      this.nakedUrlPathConvention,
 
       ...concat([
         {
@@ -370,7 +378,7 @@ class Tokenizer {
     })
   }
 
-  private getNakedUrlConvention(): Convention {
+  private getNakedUrlPathConvention(): Convention {
     return new Convention({
       startsWith: 'http' + optional('s') + '://',
       isCutShortByWhitespace: true,
@@ -938,7 +946,7 @@ class Tokenizer {
       args ? (args.withinContextAtIndex + 1) : 0
 
     for (let i = outermostIndexThatMayBeNakedUrl; i < openContexts.length; i++) {
-      if (openContexts[i].convention === this.nakedUrlConvention) {
+      if (openContexts[i].convention === this.nakedUrlPathConvention) {
         this.flushBufferToNakedUrlEndToken()
 
         // We need to remove the naked URL's context, as well as the contexts of any raw text brackets

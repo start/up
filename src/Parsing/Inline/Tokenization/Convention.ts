@@ -4,6 +4,7 @@ import { TokenKind } from './TokenKind'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 
+// Represents the rules for single inline convention (e.g. an inline spoiler wrapped in square brackets).  
 export class Convention {
   startsWith: RegExp
   endsWith: RegExp
