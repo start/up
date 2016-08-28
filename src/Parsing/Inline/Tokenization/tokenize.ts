@@ -1,6 +1,6 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -463,7 +463,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBuffer())
         this.appendNewToken(TokenKind.MediaEndAndUrl, url)
       }
     }))
@@ -583,7 +583,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBuffer())
         whenClosing(url)
       }
     })
@@ -627,7 +627,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: (context) => {
-        const url = this.applyConfigSettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBuffer())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
@@ -1282,25 +1282,6 @@ class Tokenizer {
     this.flushNonEmptyBufferToTokenOfKind(TokenKind.PlainText)
   }
 
-  private applyConfigSettingsToUrl(url: string): string {
-    // Due to the various URL conventions' rules, we don't need to worry about the URL being blank.
-    // However, it might have some leading or trailing whitespace.
-    url = url.trim()
-
-    switch (url[0]) {
-      case FORWARD_SLASH:
-        return this.config.baseForUrlsStartingWithSlash + url
-
-      case HASH_MARK:
-        return this.config.baseForUrlsStartingWithHashMark + url
-    }
-
-    return (
-      URL_SCHEME_PATTERN.test(url)
-        ? url
-        : this.config.defaultUrlScheme + url)
-  }
-
   private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
     this.insertToken({
       token: new Token(TokenKind.PlainText, text),
@@ -1361,26 +1342,6 @@ const EXAMPLE_INPUT_END_DELIMITER =
 //
 // We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
 // surprising the author by producing a link when they probably didn't intend to produce one.
-
-export const LETTER_CHAR =
-  anyCharMatching(LETTER_CLASS)
-
-const URL_SCHEME_NAME =
-  LETTER_CHAR + everyOptional(
-    anyCharMatching(
-      LETTER_CLASS, DIGIT, ...['-', '+', '.'].map(escapeForRegex)))
-
-const URL_SCHEME =
-  URL_SCHEME_NAME + ':' + everyOptional('/')
-
-const URL_SCHEME_PATTERN =
-  patternStartingWith(URL_SCHEME)
-
-const FORWARD_SLASH =
-  '/'
-
-const HASH_MARK =
-  '#'
 
 const SUBDOMAIN =
   anyCharMatching(LETTER_CLASS, DIGIT)

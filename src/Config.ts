@@ -1,3 +1,5 @@
+import { FORWARD_SLASH, HASH_MARK } from './Parsing/PatternPieces'
+import { URL_SCHEME_PATTERN } from './Parsing/Patterns'
 import { UserProvidedSettings} from './UserProvidedSettings'
 import { coalesce, distinct } from './CollectionHelpers'
 
@@ -6,16 +8,37 @@ export class Config {
   createSourceMap = false
   renderUnsafeContent = false
   idPrefix = 'up'
-  defaultUrlScheme = 'https://'
-  baseForUrlsStartingWithSlash = ''
-  baseForUrlsStartingWithHashMark = ''
-
+  
   terms = new Config.Terms()
+  
+  private defaultUrlScheme = 'https://'
+  private baseForUrlsStartingWithSlash = ''
+  private baseForUrlsStartingWithHashMark = ''
 
   constructor(settings?: UserProvidedSettings) {
     if (settings) {
       this.applyUserProvidedSettings(settings)
     }
+  }
+
+  // Applies the relevant config settings to `url` and returns the result.
+  //
+  // This method assumes that `url` is nonblank.
+  applySettingsToUrl(url: string): string {
+    url = url.trim()
+
+    switch (url[0]) {
+      case FORWARD_SLASH:
+        return this.baseForUrlsStartingWithSlash + url
+
+      case HASH_MARK:
+        return this.baseForUrlsStartingWithHashMark + url
+    }
+
+    return (
+      URL_SCHEME_PATTERN.test(url)
+        ? url
+        : this.defaultUrlScheme + url)
   }
 
   // Returns a new `Config` object with the changes applied.
