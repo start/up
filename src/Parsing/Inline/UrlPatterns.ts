@@ -6,7 +6,7 @@ import { LETTER_CLASS, DIGIT } from '../PatternPieces'
 //
 // 1. To apply URL config settings
 // 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
-//    for the `getLinkUrlConventions` method in the `tokenizer.ts`.
+//    for the `getLinkUrlConventions` method.
 //
 // One important thing to note about that second point:
 //
@@ -49,4 +49,3 @@ export const EXPLICIT_URL_PREFIX =
     URL_SCHEME,
     FORWARD_SLASH,
     HASH_MARK)
-    
