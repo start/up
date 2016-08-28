@@ -96,7 +96,7 @@ class Tokenizer {
   // naturally terminate.
   //
   // We keep a direct reference to `nakedUrlPathConvention` to help us determine whether we have an active
-  // naked URL that needs to be manually terminated when an outer convention is closing.
+  // naked URL that needs to be manually closed when an outer convention is closing.
   private nakedUrlPathConvention = this.getNakedUrlPathConvention()
 
   // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
@@ -397,20 +397,26 @@ class Tokenizer {
     return new Convention({
       startsWith: FORWARD_SLASH,
       isCutShortByWhitespace: true,
+      
+      whenOpening: () => {
+        this.buffer += FORWARD_SLASH
+      },
 
       canOnlyOpenIfDirectlyFollowing: [TokenKind.NakedUrl],
       insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: () => this.appendBufferedPathToCurrentNakedUrl(),
-      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedPathToCurrentNakedUrl()
+      whenClosing: () => this.appendBufferedUlPathToCurrentNakedUrl(),
+      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedUlPathToCurrentNakedUrl()
     })
   }
 
   // This convention's HTML equivalent is the `<kbd>` element. It represents an example of user input.
   //
-  // Usage: Press {esc} to quit.
+  // Usage:
+  //
+  //   Press {esc} to quit.
   private getExampleInputConvention(): Convention {
     return new Convention({
       // Example input cannot be totally blank.
@@ -432,7 +438,9 @@ class Tokenizer {
 
   // This convention represents a reference to a table of contents entry.
   //
-  // Usage: For more information, see [reference: shading]
+  // Usage:
+  //
+  //   For more information, see [reference: shading]
   //
   // When written to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
@@ -526,7 +534,7 @@ class Tokenizer {
   }
 
   private probablyWasNotIntendedToBeAUrl(url: string): boolean {
-    return SOLELY_URL_PREFIX_PATTERN.test(url)
+    return URL_CONSISTING_SOLELY_OF_PREFIX.test(url)
   }
 
   private closeLink(url: string) {
@@ -958,7 +966,7 @@ class Tokenizer {
 
     for (let i = outermostIndexThatMayBeNakedUrl; i < openContexts.length; i++) {
       if (openContexts[i].convention === this.nakedUrlPathConvention) {
-        this.appendBufferedPathToCurrentNakedUrl()
+        this.appendBufferedUlPathToCurrentNakedUrl()
 
         // We need to remove the naked URL's context, as well as the contexts of any raw text brackets
         // inside it.
@@ -1261,7 +1269,7 @@ class Tokenizer {
     this.appendToken(new Token(kind, value))
   }
 
-  private appendBufferedPathToCurrentNakedUrl(): void {
+  private appendBufferedUlPathToCurrentNakedUrl(): void {
     if (this.mostRecentToken.kind === TokenKind.NakedUrl) {
       this.mostRecentToken.value += this.flushBuffer()
     } else {
@@ -1349,6 +1357,13 @@ const PLUS_MINUS_SIGN_PATTERN =
   patternStartingWith(escapeForRegex('+-'))
 
 
+// Our URL patterns (and associated string constants) are used to determine whether text was
+// likely intended to be a URL.
+//
+// We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply
+// want to avoid surprising the author by producing a link when they probably didn't intend
+// to produce one.
+
 const EXAMPLE_INPUT_START_DELIMITER =
   escapeForRegex('{')
 
@@ -1375,7 +1390,7 @@ const EXPLICIT_URL_PREFIX =
     FORWARD_SLASH,
     HASH_MARK)
 
-const SOLELY_URL_PREFIX_PATTERN =
+const URL_CONSISTING_SOLELY_OF_PREFIX =
   solely(EXPLICIT_URL_PREFIX)
 
 const NAKED_URL_SCHEME =
@@ -1399,7 +1414,7 @@ const BRACKET_END_PATTERNS =
 
 // The "h" is for the start of naked URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, HYPHEN, 'h', '"', '_', '`', '~',
+  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, 'h', '"', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
   EXAMPLE_INPUT_START_DELIMITER,
