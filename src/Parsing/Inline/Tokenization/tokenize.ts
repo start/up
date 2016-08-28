@@ -612,7 +612,7 @@ class Tokenizer {
         either(
           EXPLICIT_URL_PREFIX,
           DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
-            // If we're using the presence of a top-level domain as evicence that we're looking at a bracketed
+            // If we're using the presence of a top-level domain as evidence that we're looking at a bracketed
             // URL, then that top-level domain must either be followed by a forward slash...
             FORWARD_SLASH,
             // ... or be the end of the URL.
