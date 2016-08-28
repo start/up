@@ -259,7 +259,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
   })
 
 
-  specify('It has a top-level domain', () => {
+  specify('It has a subdomain and a top-level domain', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: Chrono Trigger',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
@@ -275,7 +275,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
   })
 
 
-  describe('When the URL merely has a top-level domain', () => {
+  describe('When the URL merely has a subdomain and a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: 'SPOILER: Advance Wars',

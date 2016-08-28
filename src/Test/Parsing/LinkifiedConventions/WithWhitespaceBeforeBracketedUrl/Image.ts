@@ -280,7 +280,7 @@ context('A linkified image convention can have whitespace between its image URL 
   })
 
 
-  specify('It has a top-level domain', () => {
+  specify('It has a subdomain and a top-level domain', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'image: Chrono Trigger' },
@@ -301,7 +301,7 @@ context('A linkified image convention can have whitespace between its image URL 
   })
 
 
-  describe('When the URL merely has a top-level domain', () => {
+  describe('When the URL merely has a subdomain and a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [

@@ -246,7 +246,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
   })
 
 
-  specify('It has a top-level domain', () => {
+  specify('It has a subdomain and a top-level domain', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'NSFL: Chrono Trigger',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
@@ -262,7 +262,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
   })
 
 
-  describe('When the URL merely has a top-level domain', () => {
+  describe('When the URL merely has a subdomain and a top-level domain', () => {
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       expectEveryPermutationOfBracketsAroundContentAndUrl({
         content: 'NSFL: Advance Wars',

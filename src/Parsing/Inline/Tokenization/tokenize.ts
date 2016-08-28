@@ -493,11 +493,11 @@ class Tokenizer {
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
   //    * Start with a hash mark ("#")
-  //    * Have a top-level domain
+  //    * Has a subdomain and a top-level domain
   //      
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
-  // 3. If the URL merely has a top-level domain:
+  // 3. If the URL merely has a subdomain and a top-level domain:
   //    * The top-level domain must consist solely of letters
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
@@ -619,7 +619,7 @@ class Tokenizer {
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
-          UL_DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+          URL_WITH_TOP_LEVEL_DOMAIN_AND_AT_LEAST_ONE_SUBDOMAIN + either(
             // If we're using the presence of a top-level domain as evidence that we're looking at a bracketed
             // URL, then that top-level domain must either be followed by a forward slash...
             FORWARD_SLASH,
@@ -1348,7 +1348,7 @@ const URL_SUBDOMAIN =
 const URL_TOP_LEVEL_DOMAIN =
   atLeastOne(LETTER_CHAR)
 
-const UL_DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
+const URL_WITH_TOP_LEVEL_DOMAIN_AND_AT_LEAST_ONE_SUBDOMAIN =
   atLeastOne(URL_SUBDOMAIN + escapeForRegex('.')) + URL_TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
