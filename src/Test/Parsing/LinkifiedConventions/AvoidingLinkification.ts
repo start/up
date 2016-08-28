@@ -171,7 +171,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
 })
 
 
-context('The following conventions cannot be linkified', () => {
+context('The following conventions cannot be linkified:', () => {
   specify('Links', () => {
     expect(Up.toDocument('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([

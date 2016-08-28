@@ -87,16 +87,16 @@ class Tokenizer {
   // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first. Unlike
   // other conventions, naked URLs cannot overlap.
   //
-  // This isn't a problem for naked URLs consisting only of a protocol and a hostname (e.g.
+  // This isn't a problem for naked URLs consisting only of a scheme and a hostname (e.g.
   // https://www.subdomain.example.co.uk). Any character that can close a convention will naturally
-  // terminate the naked URL, too.
+  // terminate the URL, too.
   //
   // However, for the path part of a URL (e.g. /some/page?search=pokemon#4), that's not the case, because
   // the path part of a URL can contain a wider variety of characters. We can no longer rely on the URL to
-  // naturally terminate anymore.
+  // naturally terminate.
   //
   // We keep a direct reference to `nakedUrlPathConvention` to help us determine whether we have an active
-  // naked URL that needs to be terminated when an outer convention is closing. 
+  // naked URL that needs to be manually terminated when an outer convention is closing.
   private nakedUrlPathConvention = this.getNakedUrlPathConvention()
 
   // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
@@ -141,8 +141,6 @@ class Tokenizer {
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
     this.conventions = [
-      this.nakedUrlPathConvention,
-
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
@@ -202,7 +200,9 @@ class Tokenizer {
           startsWith: '++',
           endsWith: '++'
         }
-      ].map(args => this.getRevisionConvention(args))
+      ].map(args => this.getRevisionConvention(args)),
+
+      this.nakedUrlPathConvention
     ]
   }
 
@@ -378,23 +378,33 @@ class Tokenizer {
     })
   }
 
+  private tryToTokenizeNakedUrlSchemeAndHostname(): boolean {
+    return this.markupConsumer.consume({
+      pattern: NAKED_URL_SCHEME_AND_HOSTNAME,
+      thenBeforeConsumingText: url => {
+        this.flushNonEmptyBufferToPlainTextToken()
+        this.appendNewToken(TokenKind.NakedUrl, url)
+      }
+    })
+  }
+
+  // In the following url:
+  //
+  //  https://www.subdomain.example.co.uk/some/page?search=pokemon#4
+  //
+  // The path is "/some/page?search=pokemon#4"
   private getNakedUrlPathConvention(): Convention {
     return new Convention({
-      startsWith: 'http' + optional('s') + '://',
+      startsWith: FORWARD_SLASH,
       isCutShortByWhitespace: true,
 
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-
-      whenOpening: urlScheme => {
-        this.appendNewToken(TokenKind.NakedUrlScheme, urlScheme)
-      },
-
+      canOnlyOpenIfDirectlyFollowing: [TokenKind.NakedUrl],
       insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
-      beforeClosingItAlwaysFlushesBufferTo: TokenKind.NakedUrlAfterScheme,
       whenClosingItAlsoClosesInnerConventions: true,
 
-      insteadOfFailingWhenLeftUnclosed: () => this.flushBufferToNakedUrlEndToken()
+      whenClosing: () => this.appendBufferedPathToCurrentNakedUrl(),
+      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedPathToCurrentNakedUrl()
     })
   }
 
@@ -619,9 +629,10 @@ class Tokenizer {
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
-          URL_WITH_TOP_LEVEL_DOMAIN_AND_AT_LEAST_ONE_SUBDOMAIN + either(
-            // If we're using the presence of a top-level domain as evidence that we're looking at a bracketed
-            // URL, then that top-level domain must either be followed by a forward slash...
+          TOP_LEVEL_DOMAIN_WITH_AT_LEAST_ONE_SUBDOMAIN + either(
+            // If we're using the presence a subdomain and top-level domain as evidence that we're
+            // looking at a bracketed URL, then that top-level domain must either be followed by a
+            // forward slash...
             FORWARD_SLASH,
             // ... or be the end of the URL.
             followedBy(bracket.endPattern)))),
@@ -947,7 +958,7 @@ class Tokenizer {
 
     for (let i = outermostIndexThatMayBeNakedUrl; i < openContexts.length; i++) {
       if (openContexts[i].convention === this.nakedUrlPathConvention) {
-        this.flushBufferToNakedUrlEndToken()
+        this.appendBufferedPathToCurrentNakedUrl()
 
         // We need to remove the naked URL's context, as well as the contexts of any raw text brackets
         // inside it.
@@ -1063,6 +1074,7 @@ class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
+      || this.tryToTokenizeNakedUrlSchemeAndHostname()
       || this.tryToStartInflectingOrTreatDelimiterAsPlainText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeTypographicalConvention())
@@ -1249,8 +1261,12 @@ class Tokenizer {
     this.appendToken(new Token(kind, value))
   }
 
-  private flushBufferToNakedUrlEndToken(): void {
-    this.flushBufferToTokenOfKind(TokenKind.NakedUrlAfterScheme)
+  private appendBufferedPathToCurrentNakedUrl(): void {
+    if (this.mostRecentToken.kind === TokenKind.NakedUrl) {
+      this.mostRecentToken.value += this.flushBuffer()
+    } else {
+      throw new Error('Most recent token is not a naked URL token')
+    }
   }
 
   private flushBuffer(): string {
@@ -1339,17 +1355,19 @@ const EXAMPLE_INPUT_START_DELIMITER =
 const EXAMPLE_INPUT_END_DELIMITER =
   escapeForRegex('}')
 
+const HYPHEN =
+  escapeForRegex('-')
 
 const URL_SUBDOMAIN =
   anyCharMatching(LETTER_CLASS, DIGIT)
-  + everyOptional(
-    anyCharMatching(LETTER_CLASS, DIGIT, escapeForRegex('-')))
+  + everyOptional(anyCharMatching(LETTER_CLASS, DIGIT, HYPHEN))
+  + escapeForRegex('.')
 
 const URL_TOP_LEVEL_DOMAIN =
   atLeastOne(LETTER_CHAR)
 
-const URL_WITH_TOP_LEVEL_DOMAIN_AND_AT_LEAST_ONE_SUBDOMAIN =
-  atLeastOne(URL_SUBDOMAIN + escapeForRegex('.')) + URL_TOP_LEVEL_DOMAIN
+const TOP_LEVEL_DOMAIN_WITH_AT_LEAST_ONE_SUBDOMAIN =
+  atLeastOne(URL_SUBDOMAIN) + URL_TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(
@@ -1359,6 +1377,14 @@ const EXPLICIT_URL_PREFIX =
 
 const SOLELY_URL_PREFIX_PATTERN =
   solely(EXPLICIT_URL_PREFIX)
+
+const NAKED_URL_SCHEME =
+  'http' + optional('s') + '://'
+
+const NAKED_URL_SCHEME_AND_HOSTNAME =
+  patternStartingWith(
+    NAKED_URL_SCHEME
+    + everyOptional(URL_SUBDOMAIN) + URL_TOP_LEVEL_DOMAIN)
 
 
 // The patterns below exist purely for optimization.
@@ -1373,12 +1399,12 @@ const BRACKET_END_PATTERNS =
 
 // The "h" is for the start of naked URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, 'h', '"', '_', '`', '~',
+  WHITESPACE_CHAR, HYPHEN, 'h', '"', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
   EXAMPLE_INPUT_START_DELIMITER,
   EXAMPLE_INPUT_END_DELIMITER,
-  ...[ESCAPER_CHAR, '-', '*', '+'].map(escapeForRegex)
+  ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)
 ]
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =

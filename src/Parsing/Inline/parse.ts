@@ -11,6 +11,7 @@ import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { Link } from '../../SyntaxNodes/Link'
 import { RevealableConvention } from './RevealableConvention'
+import { URL_SCHEME_PATTERN } from '../../Patterns'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
@@ -100,20 +101,11 @@ class Parser {
           continue
         }
 
-        case TokenKind.NakedUrlScheme: {
-          const urlScheme = token.value
+        case TokenKind.NakedUrl: {
+          const url = token.value
 
-          // The next token will be a TokenKind.NakedUrlAfterScheme
-          const nakedUrlAfterSchemeToken = this.getNextTokenAndAdvanceIndex()
-          const urlAfterScheme = nakedUrlAfterSchemeToken.value
-
-          if (!urlAfterScheme) {
-            // There's no point in creating a link for a URL scheme alone, so we treat the scheme as plain text
-            this.nodes.push(new PlainText(urlScheme))
-            continue
-          }
-
-          const url = urlScheme + urlAfterScheme
+          const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
+          const urlAfterScheme = url.substr(urlScheme.length)
 
           this.nodes.push(
             new LINK_CONVENTION.NodeType([new PlainText(urlAfterScheme)], url))
