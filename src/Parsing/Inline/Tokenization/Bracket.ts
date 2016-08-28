@@ -1,4 +1,4 @@
-import { escapeForRegex } from '../../PatternHelpers'
+import { escapeForRegex } from '../../../PatternHelpers'
 
 
 export class Bracket {

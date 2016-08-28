@@ -44,7 +44,7 @@ import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutline
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './ElementHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
-import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Parsing/PatternHelpers'
+import { patternIgnoringCapitalizationAndStartingWith, either } from '../../PatternHelpers'
 
 
 export class HtmlRenderer extends Renderer {

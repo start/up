@@ -1,9 +1,9 @@
 import { LineConsumer } from './LineConsumer'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
-import { optional, patternStartingWith, escapeForRegex, atLeastOne, either, anyCharFrom, capture } from '../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, DIGIT } from '../PatternPieces'
-import { DIVIDER_STREAK_PATTERN } from '../Patterns'
+import { optional, patternStartingWith, escapeForRegex, atLeastOne, either, anyCharFrom, capture } from '../../PatternHelpers'
+import { INLINE_WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
+import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getIndentedBlock } from './getIndentedBlock'
 

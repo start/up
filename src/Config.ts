@@ -1,5 +1,5 @@
-import { FORWARD_SLASH, HASH_MARK } from './Parsing/PatternPieces'
-import { URL_SCHEME_PATTERN } from './Parsing/Patterns'
+import { FORWARD_SLASH, HASH_MARK } from './PatternPieces'
+import { URL_SCHEME_PATTERN } from './Patterns'
 import { UserProvidedSettings} from './UserProvidedSettings'
 import { coalesce, distinct } from './CollectionHelpers'
 

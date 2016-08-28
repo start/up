@@ -1,7 +1,7 @@
 import { RichConvention } from './RichConvention'
 import { InflectionStartDelimiter } from './InflectionStartDelimiter'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { escapeForRegex, patternStartingWith, atLeastOne } from '../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, atLeastOne } from '../../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 

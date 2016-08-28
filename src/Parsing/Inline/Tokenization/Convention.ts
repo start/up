@@ -1,7 +1,7 @@
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './TextConsumer'
 import { TokenKind } from './TokenKind'
-import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
+import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 
 export class Convention {

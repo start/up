@@ -1,4 +1,4 @@
-import { patternStartingWith, patternEndingWith, atLeastOne, anyCharBut } from '../../PatternHelpers'
+import { patternStartingWith, patternEndingWith, atLeastOne, anyCharBut } from '../../../PatternHelpers'
 import { TextConsumer } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'

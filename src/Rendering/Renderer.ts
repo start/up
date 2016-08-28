@@ -38,7 +38,7 @@ import { CodeBlock } from '../SyntaxNodes/CodeBlock'
 import { ThematicBreak } from '../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { Config } from '../Config'
-import { SOME_WHITESPACE } from '../Parsing/PatternPieces'
+import { SOME_WHITESPACE } from '../PatternPieces'
 
 
 export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument

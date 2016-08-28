@@ -2,8 +2,8 @@ import { LineConsumer } from './LineConsumer'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
-import { optional, patternStartingWith, anyCharFrom } from '../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR } from '../PatternPieces'
+import { optional, patternStartingWith, anyCharFrom } from '../../PatternHelpers'
+import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

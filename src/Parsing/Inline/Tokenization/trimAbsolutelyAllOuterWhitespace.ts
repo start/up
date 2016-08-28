@@ -1,5 +1,5 @@
-import { escapeForRegex, patternStartingWith, patternEndingWith, everyOptional, optional, atLeastOne } from '../../PatternHelpers'
-import { SOME_WHITESPACE, WHITESPACE_CHAR } from '../../PatternPieces'
+import { escapeForRegex, patternStartingWith, patternEndingWith, everyOptional, optional, atLeastOne } from '../../../PatternHelpers'
+import { SOME_WHITESPACE, WHITESPACE_CHAR } from '../../../PatternPieces'
 import { ESCAPER_CHAR } from '../../Strings'
 
 

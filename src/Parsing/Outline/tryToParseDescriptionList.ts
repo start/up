@@ -3,7 +3,7 @@ import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { INDENTED_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
+import { INDENTED_PATTERN, BLANK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { getIndentedBlock } from './getIndentedBlock'
 

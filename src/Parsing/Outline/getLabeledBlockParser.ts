@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } from '../PatternHelpers'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } from '../../PatternHelpers'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

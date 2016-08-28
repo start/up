@@ -1,5 +1,5 @@
 import { Table } from '../../SyntaxNodes/Table'
-import { patternStartingWith, atLeastOne } from '../PatternHelpers'
+import { patternStartingWith, atLeastOne } from '../../PatternHelpers'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { Config } from '../../Config'
 import { last } from '../../CollectionHelpers'

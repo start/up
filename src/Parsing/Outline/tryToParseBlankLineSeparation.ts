@@ -1,6 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { BLANK_PATTERN } from '../Patterns'
+import { BLANK_PATTERN } from '../../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

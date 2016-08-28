@@ -1,9 +1,9 @@
 import { LineConsumer } from './LineConsumer'
 import { Table } from '../../SyntaxNodes/Table'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../PatternHelpers'
-import { BLANK_PATTERN } from '../Patterns'
-import { REST_OF_TEXT } from '../PatternPieces'
+import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../../PatternHelpers'
+import { BLANK_PATTERN } from '../../Patterns'
+import { REST_OF_TEXT } from '../../PatternPieces'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
 

@@ -1,8 +1,8 @@
 import { LineConsumer } from './LineConsumer'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
-import { patternStartingWith, optional } from '../PatternHelpers'
-import { ANY_WHITESPACE } from '../PatternPieces'
+import { patternStartingWith, optional } from '../../PatternHelpers'
+import { ANY_WHITESPACE } from '../../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

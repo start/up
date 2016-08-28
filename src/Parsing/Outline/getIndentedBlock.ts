@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { INDENTED_PATTERN, BLANK_PATTERN } from '../Patterns'
+import { INDENTED_PATTERN, BLANK_PATTERN } from '../../Patterns'
 
 
 // Indented blocks include indented and blank lines.

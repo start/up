@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { OutlineParserArgs } from './OutlineParserArgs'
-import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../Patterns'
+import { DIVIDER_STREAK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { isUnderlineConsistentWithOverline } from './HeadingLeveler'

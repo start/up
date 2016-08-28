@@ -1,4 +1,4 @@
-import { escapeForRegex } from './Parsing/PatternHelpers'
+import { escapeForRegex } from './PatternHelpers'
 
 
 export function isEqualIgnoringCapitalization(first: string, second: string): boolean {
