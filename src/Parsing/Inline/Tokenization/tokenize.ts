@@ -611,7 +611,7 @@ class Tokenizer {
       startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
-          DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
+          UL_DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN + either(
             // If we're using the presence of a top-level domain as evidence that we're looking at a bracketed
             // URL, then that top-level domain must either be followed by a forward slash...
             FORWARD_SLASH,
@@ -1332,27 +1332,16 @@ const EXAMPLE_INPUT_END_DELIMITER =
   escapeForRegex('}')
 
 
-// Our URL patterns and associated string constants serve two purposes:
-//
-// 1. To apply URL config settings
-// 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
-//    for the `getLinkUrlConventions` method.
-//
-// One important thing to note about that second point:
-//
-// We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
-// surprising the author by producing a link when they probably didn't intend to produce one.
-
-const SUBDOMAIN =
+const URL_SUBDOMAIN =
   anyCharMatching(LETTER_CLASS, DIGIT)
   + everyOptional(
     anyCharMatching(LETTER_CLASS, DIGIT, escapeForRegex('-')))
 
-const TOP_LEVEL_DOMAIN =
+const URL_TOP_LEVEL_DOMAIN =
   atLeastOne(LETTER_CHAR)
 
-const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
-  atLeastOne(SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
+const UL_DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
+  atLeastOne(URL_SUBDOMAIN + escapeForRegex('.')) + URL_TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(
