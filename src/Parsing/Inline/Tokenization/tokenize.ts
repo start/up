@@ -1,6 +1,7 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../../PatternPieces'
+import { escapeForRegex, patternStartingWith, solely, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../PatternHelpers'
+import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR } from '../../PatternPieces'
+import { EXPLICIT_URL_PREFIX, DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN, FORWARD_SLASH, HASH_MARK, URL_SCHEME_PATTERN } from '../UrlPatterns'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
@@ -1349,55 +1350,6 @@ const EXAMPLE_INPUT_START_DELIMITER =
 
 const EXAMPLE_INPUT_END_DELIMITER =
   escapeForRegex('}')
-
-
-// Our URL patterns and associated string constants serve two purposes:
-//
-// 1. To apply URL config settings
-// 2. To determine when bracketed text is intended to be a link URL. For more information, see the comments
-//    for the `getLinkUrlConventions` method.
-//
-// One important thing to note about that second point:
-//
-// We aren't in the business of exhaustively excluding every invalid URL. Instead, we simply want to avoid
-// surprising the author by producing a link when they probably didn't intend to produce one.
-
-export const LETTER_CHAR =
-  anyCharMatching(LETTER_CLASS)
-
-const URL_SCHEME_NAME =
-  LETTER_CHAR + everyOptional(
-    anyCharMatching(
-      LETTER_CLASS, DIGIT, ...['-', '+', '.'].map(escapeForRegex)))
-
-const URL_SCHEME =
-  URL_SCHEME_NAME + ':' + everyOptional('/')
-
-const URL_SCHEME_PATTERN =
-  patternStartingWith(URL_SCHEME)
-
-const FORWARD_SLASH =
-  '/'
-
-const HASH_MARK =
-  '#'
-
-const SUBDOMAIN =
-  anyCharMatching(LETTER_CLASS, DIGIT)
-  + everyOptional(
-    anyCharMatching(LETTER_CLASS, DIGIT, escapeForRegex('-')))
-
-const TOP_LEVEL_DOMAIN =
-  atLeastOne(LETTER_CHAR)
-
-const DOMAIN_PART_WITH_TOP_LEVEL_DOMAIN =
-  atLeastOne(SUBDOMAIN + escapeForRegex('.')) + TOP_LEVEL_DOMAIN
-
-const EXPLICIT_URL_PREFIX =
-  either(
-    URL_SCHEME,
-    FORWARD_SLASH,
-    HASH_MARK)
 
 const SOLELY_URL_PREFIX_PATTERN =
   solely(EXPLICIT_URL_PREFIX)
