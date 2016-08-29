@@ -99,30 +99,7 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
 })
 
 
-context('Bare URLs are terminated by whitespace:', () => {
-  specify('Spaces', () => {
-    expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org')
-        ], 'https://archive.org'),
-        new PlainText(' is exciting')
-      ]))
-  })
-
-  specify('Tabs', () => {
-    expect(Up.toDocument('https://archive.org\tis exciting')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org')
-        ], 'https://archive.org'),
-        new PlainText('\tis exciting')
-      ]))
-  })
-})
-
-
-context('Bare URLs are terminated by certain common punctuation', () => {
+context('Bare URLs are always terminated by whitespace:', () => {
   specify('Spaces', () => {
     expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
