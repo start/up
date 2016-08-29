@@ -710,4 +710,15 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
   })
+
+
+  specify('This occurs even if the punctuation is immediately followed by a valid URL path', () => {
+    expect(Up.toDocument('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('4chan.org')
+        ], 'https://4chan.org'),
+        new PlainText('.../r9k/ is a sad place.')
+      ]))
+  })
 })
