@@ -132,12 +132,22 @@ describe('A bare URL', () => {
       ]))
   })
 
-  it('can contain consecutive periods in its path)', () => {
+  it('can contain consecutive periods in its path', () => {
     expect(Up.toDocument('https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
         ], 'https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')
+      ]))
+  })
+
+  it('can have a path consisting only of a forward slash', () => {
+    expect(Up.toDocument('https://google.com/ is a neat site.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('google.com/')
+        ], 'https://google.com/'),
+        new PlainText(' is a neat site.')
       ]))
   })
 
