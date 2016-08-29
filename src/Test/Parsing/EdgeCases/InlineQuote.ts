@@ -9,8 +9,8 @@ import { Highlight } from '../../../SyntaxNodes/Highlight'
 import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
 
 
-context('Within an inline quote, an (inner) inline quote can be be the first convention within another any other inner convention.', () => {
-  context('This includes (but is not limited to):', () => {
+context('Within an inline quote, an (inner) inline quote can be the first convention within any other inner convention.', () => {
+  context('The other convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
       expect(Up.toDocument('Luigi stood up. "Hello, my ("leetle") Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -99,5 +99,74 @@ context('Within an inline quote, an (inner) inline quote can be be the first con
           new PlainText(' Mario!')
         ])
       ]))
+  })
+})
+
+
+context('Within an inline quote, an (inner) inline quote can close directly after a convention inside of it has closed.', () => {
+  context('The innermost convention can be (but is not limited to):', () => {
+    specify('Normal parentheticals', () => {
+      expect(Up.toDocument('"Luigi stood up. "Help me find brother (Mario)", I heard Luigi say."')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineQuote([
+            new PlainText('Luigi stood up. '),
+            new InlineQuote([
+              new PlainText('Help me find brother '),
+              new NormalParenthetical([
+                new PlainText('(Mario)'),
+              ]),
+            ]),
+            new PlainText(', I heard Luigi say.')
+          ])
+        ]))
+    })
+
+    specify('Emphasis', () => {
+      expect(Up.toDocument('"Luigi stood up. "Help me find brother *Mario*", I heard Luigi say."')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineQuote([
+            new PlainText('Luigi stood up. '),
+            new InlineQuote([
+              new PlainText('Help me find brother '),
+              new Emphasis([
+                new PlainText('Mario'),
+              ]),
+            ]),
+            new PlainText(', I heard Luigi say.')
+          ])
+        ]))
+    })
+
+    specify('Revision insertion', () => {
+      expect(Up.toDocument('"Luigi stood up. "Help me find brother ++Mario++", I heard Luigi say."')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineQuote([
+            new PlainText('Luigi stood up. '),
+            new InlineQuote([
+              new PlainText('Help me find brother '),
+              new RevisionInsertion([
+                new PlainText('Mario'),
+              ]),
+            ]),
+            new PlainText(', I heard Luigi say.')
+          ])
+        ]))
+    })
+
+    specify('Highlights (even when there is no space after the colon)', () => {
+      expect(Up.toDocument('"Luigi stood up. "Help me find brother [highlight:Mario]", I heard Luigi say."')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineQuote([
+            new PlainText('Luigi stood up. '),
+            new InlineQuote([
+              new PlainText('Help me find brother '),
+              new Highlight([
+                new PlainText('Mario'),
+              ]),
+            ]),
+            new PlainText(', I heard Luigi say.')
+          ])
+        ]))
+    })
   })
 })
