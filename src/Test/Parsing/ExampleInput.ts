@@ -57,9 +57,9 @@ describe('Example input', () => {
     })
   })
 
-  context('can contain unescaped opening curly brackets', () => {
+  context('can contain escaped opening curly brackets', () => {
     it('touching the delimiters', () => {
-      expect(Up.toDocument("Press {{} to view paths.")).to.deep.equal(
+      expect(Up.toDocument("Press {\\{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('{'),
@@ -68,7 +68,7 @@ describe('Example input', () => {
     })
 
     it('not touching the delimiters', () => {
-      expect(Up.toDocument("Press { { } to view paths.")).to.deep.equal(
+      expect(Up.toDocument("Press { \\{ } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
           new ExampleInput('{'),
