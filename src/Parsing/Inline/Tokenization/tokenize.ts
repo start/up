@@ -1190,7 +1190,10 @@ class Tokenizer {
   }
 
   private tryToTokenizeTypographicalConvention(): boolean {
-    return this.tryToTokenizeEnOrEmDash() || this.tryToTokenizePlusMinusSign()
+    return (
+      this.tryToTokenizeEnOrEmDash()
+      || this.tryToTokenizePlusMinusSign()
+      || this.tryToTokenizeEllipsis())
   }
 
   private tryToTokenizeEnOrEmDash(): boolean {
@@ -1219,6 +1222,15 @@ class Tokenizer {
       pattern: PLUS_MINUS_SIGN_PATTERN,
       thenBeforeConsumingText: () => {
         this.buffer += '±'
+      }
+    })
+  }
+
+  private tryToTokenizeEllipsis(): boolean {
+    return this.markupConsumer.consume({
+      pattern: ELLIPSIS_PATTERN,
+      thenBeforeConsumingText: () => {
+        this.buffer += this.config.ellipsis
       }
     })
   }
@@ -1419,6 +1431,12 @@ const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
 
 
+const PERIOD =
+  escapeForRegex('.')
+
+const ELLIPSIS_PATTERN =
+  patternStartingWith(atLeast(2, PERIOD))
+
 const EN_OR_EM_DASH_PATTERN =
   patternStartingWith(atLeast(2, '-'))
 
@@ -1480,7 +1498,7 @@ const BRACKET_END_PATTERNS =
 
 // The "h" is for the start of bare URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, 'h', '"', '_', '`', '~',
+  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, PERIOD, 'h', '"', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
   ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)
@@ -1492,7 +1510,10 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
         // An "h" can only trigger any tokenizer changes if it's the start of a bare URL scheme.
-        'h' + notFollowedBy('ttp' + optional('s') + '://'))))
+        'h' + notFollowedBy('ttp' + optional('s') + '://'),
+        // The tokenizer doesn't care about single periods! However, multiple periods produce
+        // ellipses.
+        PERIOD + notFollowedBy(PERIOD))))
 
 // This pattern matches all whitespace that isn't followed by an open bracket.
 //

@@ -115,49 +115,49 @@ context('Any number of consecutive periods produces a single ellipsis.', () => {
       ]))
   })
 
-    specify('3 periods', () => {
+  specify('3 periods', () => {
     expect(Up.toDocument("Okay... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('4 periods', () => {
+  specify('4 periods', () => {
     expect(Up.toDocument("Okay.... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('5 periods', () => {
+  specify('5 periods', () => {
     expect(Up.toDocument("Okay..... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('6 periods', () => {
+  specify('6 periods', () => {
     expect(Up.toDocument("Okay...... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('7 periods', () => {
+  specify('7 periods', () => {
     expect(Up.toDocument("Okay....... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('8 periods', () => {
+  specify('8 periods', () => {
     expect(Up.toDocument("Okay........ I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
-    specify('9 periods', () => {
+  specify('9 periods', () => {
     expect(Up.toDocument("Okay......... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
@@ -178,6 +178,13 @@ describe("When one of many consecutive periods is escaped, that period is treate
     expect(Up.toDocument("Just some typical punctuation usage: \\.\\.\\.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Just some typical punctuation usage: ...")
+      ]))
+  })
+
+  specify('Escaping the first of 2 periods produces consecutive periods', () => {
+    expect(Up.toDocument("Just some typical punctuation usage: \\..")).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText("Just some typical punctuation usage: ..")
       ]))
   })
 })
