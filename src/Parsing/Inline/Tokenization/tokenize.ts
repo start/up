@@ -10,7 +10,6 @@ import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnma
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { Bracket } from './Bracket'
-import { BRACKETS } from './Brackets'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
@@ -39,6 +38,13 @@ export function tokenize(markup: string, config: Config): Token[] {
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
   return new Tokenizer(markup, config, true).tokens
 }
+
+
+// Many of our conventions incorporate brackets. These are the ones we recognize.
+const BRACKETS = [
+  new Bracket('(', ')'),
+  new Bracket('[', ']')
+]
 
 
 class Tokenizer {
