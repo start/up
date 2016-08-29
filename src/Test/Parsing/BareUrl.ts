@@ -787,7 +787,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
           new Link([
             new PlainText('4chan.org')
           ], 'https://4chan.org'),
-          new PlainText('.../r9k/ is a sad place.')
+          new PlainText('…/r9k/ is a sad place.')
         ]))
     })
 

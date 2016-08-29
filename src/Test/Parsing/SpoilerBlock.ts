@@ -370,7 +370,7 @@ SPOILER:
       new UpDocument([
         new SpoilerBlock([
           new Paragraph([
-            new PlainText('Well...')
+            new PlainText('Well…')
           ]),
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')

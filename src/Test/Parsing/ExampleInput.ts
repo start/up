@@ -168,14 +168,14 @@ describe('An unmatched curly bracket', () => {
   it('is preserved as plain text', () => {
     expect(Up.toDocument('Yeah... :{ I hate pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah... :{ I hate pizza.')
+        new PlainText('Yeah… :{ I hate pizza.')
       ]))
   })
 
   it('does not interfere with subsequent inline conventions', () => {
     expect(Up.toDocument('Yeah... :{ I *hate* pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah... :{ I '),
+        new PlainText('Yeah… :{ I '),
         new Emphasis([
           new PlainText('hate'),
         ]),

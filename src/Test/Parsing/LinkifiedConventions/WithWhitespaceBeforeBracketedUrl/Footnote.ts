@@ -492,7 +492,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             footnote,
             new PlainText(' '),
             new NormalParenthetical([
-              new PlainText('(um..uh)')
+              new PlainText('(um…uh)')
             ])
           ]),
           new FootnoteBlock([footnote])

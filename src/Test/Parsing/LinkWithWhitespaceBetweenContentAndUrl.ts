@@ -361,7 +361,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(um..uh)')
+            new PlainText('(um…uh)')
           ])
         ]))
     })

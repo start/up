@@ -204,7 +204,7 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at di
         new RevisionDeletion([
           new PlainText("I need to sleep. "),
           new Emphasis([
-            new PlainText("Uhhh... "),
+            new PlainText("Uhhh… "),
             new Emphasis([
               new PlainText("So"),
             ])

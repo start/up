@@ -23,7 +23,7 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
     specify('Following a word', () => {
       expect(Up.toDocument("I have 10+- ...")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText("I have 10± ...")
+          new PlainText("I have 10± …")
         ]))
     })
 

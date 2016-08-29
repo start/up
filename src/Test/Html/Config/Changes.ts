@@ -237,7 +237,7 @@ describe('The "tableOfContents" config setting', () => {
     conflictingConfigChanges: {
       terms: {
         output: {
-          tableOfContents: 'Skip To...'
+          tableOfContents: 'Skip To…'
         }
       }
     }

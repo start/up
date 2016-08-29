@@ -250,7 +250,7 @@ describe("An almost-link (with whitespace between its content and URL) terminate
           ], 'https://example.com/sad:['),
           new PlainText(' is a strange page)')
         ]),
-        new PlainText(' ... '),
+        new PlainText(' … '),
         new Link([
           new PlainText('anyway, go here instead'),
         ], 'https://example.com/happy')

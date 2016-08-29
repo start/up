@@ -414,7 +414,7 @@ context('A linkified video convention can have whitespace between its video URL 
           new Video('Ash claiming to be his own father', 'https://example.com/video.webm'),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(um..uh)')
+            new PlainText('(um…uh)')
           ]),
         ]))
     })

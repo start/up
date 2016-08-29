@@ -22,7 +22,7 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
           ], 'https://example.com/ending:['),
           new PlainText(' has all the info)')
         ]),
-        new PlainText(' ... '),
+        new PlainText(' … '),
         new InlineSpoiler([
           new Link([
             new PlainText('anyway, go here instead')

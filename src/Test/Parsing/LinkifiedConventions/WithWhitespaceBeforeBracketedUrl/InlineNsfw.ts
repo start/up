@@ -383,7 +383,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(um..uh)')
+            new PlainText('(um…uh)')
           ]),
         ]))
     })

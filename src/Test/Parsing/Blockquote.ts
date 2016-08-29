@@ -217,7 +217,7 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
             new PlainText('Welp, I tried to leave earlier.')
           ]),
           new Paragraph([
-            new PlainText('This is awkward...')
+            new PlainText('This is awkward…')
           ])
         ])
       ]))
@@ -253,7 +253,7 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
               new PlainText('Welp, I tried to leave earlier.')
             ]),
             new Paragraph([
-              new PlainText('This is awkward...')
+              new PlainText('This is awkward…')
             ])
           ])
         ])
@@ -382,7 +382,7 @@ context('Within a given blockquote', () => {
             new PlainText('Goodbye, world!')
           ]),
           new Paragraph([
-            new PlainText('Ummm... I said goodbye.')
+            new PlainText('Ummm… I said goodbye.')
           ])
         ])
       ]))

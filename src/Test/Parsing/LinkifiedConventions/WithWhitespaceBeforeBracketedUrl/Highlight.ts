@@ -383,7 +383,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(um..uh)')
+            new PlainText('(um…uh)')
           ]),
         ]))
     })

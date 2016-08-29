@@ -383,7 +383,7 @@ context('A linkified spoiler can have whitespace between itself and its brackete
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(um..uh)')
+            new PlainText('(um…uh)')
           ]),
         ]))
     })

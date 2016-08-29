@@ -206,7 +206,7 @@ That's what I tell 'em.`
             new PlainText('.')
           ]),
           new Paragraph([
-            new PlainText('Anyway...')
+            new PlainText('Anyway…')
           ]),
           secondSodaHeading,
           new Paragraph([
@@ -256,7 +256,7 @@ Oops.`
             new PlainText('.')
           ]),
           new Paragraph([
-            new PlainText('Anyway...')
+            new PlainText('Anyway…')
           ]),
           secondSodaHeading,
           new Paragraph([
@@ -306,7 +306,7 @@ That's what I tell 'em.`
             new PlainText('.')
           ]),
           new Paragraph([
-            new PlainText('Anyway...')
+            new PlainText('Anyway…')
           ]),
           secondSodaHeading,
           new Paragraph([
@@ -444,7 +444,7 @@ And you'll believe it.`
           new PlainText('.')
         ]),
         new Paragraph([
-          new PlainText('Anyway...')
+          new PlainText('Anyway…')
         ]),
         secondSodaHeading,
         new Paragraph([

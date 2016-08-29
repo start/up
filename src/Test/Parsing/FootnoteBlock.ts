@@ -1074,7 +1074,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const footnoteInsideFirstInnerFootnote =
       new Footnote([
-        new PlainText("Only on Mondays..."),
+        new PlainText("Only on Mondays…"),
       ], { referenceNumber: 5 })
 
     const secondInnerFootnote = new Footnote([
