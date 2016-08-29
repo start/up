@@ -23,28 +23,29 @@ describe('A naked URL containing another URL', () => {
   })
 })
 
-
-describe('A naked URL following an open parenthesis', () => {
-  it("can contain an escaped closing parenthesis", () => {
-    expect(Up.toDocument('(https://nintendo.com\\)')).to.deep.equal(
+context('When a naked URL hostname follows an open square bracket', () => {
+  specify("it will not include a trailing escaped closing square bracket", () => {
+    expect(Up.toDocument('[https://nintendo.com\\]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('('),
+        new PlainText('['),
         new Link([
-          new PlainText('nintendo.com)')
-        ], 'https://nintendo.com)'),
+          new PlainText('nintendo.com')
+        ], 'https://nintendo.com'),
+        new PlainText(']')
       ]))
   })
 })
 
 
-describe('A naked URL following an open square bracket', () => {
-  it("can contain an escaped closing square bracket", () => {
-    expect(Up.toDocument('[https://nintendo.com\\]')).to.deep.equal(
+context('When a naked URL hostname follows an open parenthesis', () => {
+  specify("it will not include a trailing escaped closing parentheses", () => {
+    expect(Up.toDocument('(https://nintendo.com\\)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('['),
+        new PlainText('('),
         new Link([
-          new PlainText('nintendo.com]')
-        ], 'https://nintendo.com]'),
+          new PlainText('nintendo.com')
+        ], 'https://nintendo.com'),
+        new PlainText(')')
       ]))
   })
 })

@@ -41,8 +41,9 @@ describe('An otherwise-valid link with mismatched brackets surrounding its URL',
         ]),
         new PlainText('['),
         new Link([
-          new PlainText('stackoverflow.com).')
-        ], 'https://stackoverflow.com).'),
+          new PlainText('stackoverflow.com')
+        ], 'https://stackoverflow.com'),
+        new PlainText(').'),        
       ]))
   })
 })
