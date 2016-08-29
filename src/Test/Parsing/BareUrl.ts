@@ -455,7 +455,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 2 asterisks and closing with 1', () => {
+    specify('Starting with 2 asterisks and closing with 1', () => {
       expect(Up.toDocument('**I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
@@ -468,7 +468,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 3+ asterisks and closing with 1', () => {
+    specify('Starting with 3+ asterisks and closing with 1', () => {
       expect(Up.toDocument('***I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
@@ -510,7 +510,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 3+ asterisks and closing with 2', () => {
+    specify('Starting with 3+ asterisks and closing with 2', () => {
       expect(Up.toDocument('***I love https://archive.org/fake**!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
@@ -568,7 +568,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 2 underscores and closing with 1', () => {
+    specify('Starting with 2 underscores and closing with 1', () => {
       expect(Up.toDocument('__I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
@@ -581,7 +581,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 3+ underscores and closing with 1', () => {
+    specify('Starting with 3+ underscores and closing with 1', () => {
       expect(Up.toDocument('___I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
@@ -623,7 +623,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
         ]))
     })
 
-    it('Starting with 3+ underscores and closing with 2', () => {
+    specify('Starting with 3+ underscores and closing with 2', () => {
       expect(Up.toDocument('___I love https://archive.org/fake__!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Bold([
