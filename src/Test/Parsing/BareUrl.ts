@@ -18,7 +18,7 @@ import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
-context("Some bare URLs produce links. The content of those links is the URL without its scheme.", () => {
+context("Some bare URLs produce links. The content of a bare URL's link is the URL without its scheme.", () => {
   context('For a bare URL to produce a link, it must either:', () => {
     specify('Start with "https://', () => {
       expect(Up.toDocument('Check out https://archive.org')).to.deep.equal(
@@ -55,6 +55,30 @@ context("Some bare URLs produce links. The content of those links is the URL wit
         insideDocumentAndParagraph([
           new PlainText('https://')
         ]))
+    })
+
+
+    context("The scheme is immediately followed by punctuation, including (but not limited to):", () => {
+      specify("Commas", () => {
+        expect(Up.toDocument('http://, now that is my favorite URL scheme!')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new PlainText('http://, now that is my favorite URL scheme!')
+          ]))
+      })
+
+      specify("Periods", () => {
+        expect(Up.toDocument('http://. Now that is my favorite URL scheme!')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new PlainText('http://. Now that is my favorite URL scheme!')
+          ]))
+      })
+
+      specify("Dashes", () => {
+        expect(Up.toDocument('http://---now that is my favorite URL scheme!')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new PlainText('http://—now that is my favorite URL scheme!')
+          ]))
+      })
     })
   })
 
