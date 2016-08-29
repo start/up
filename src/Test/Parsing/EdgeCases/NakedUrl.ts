@@ -13,7 +13,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe('A naked URL containing another URL', () => {
-  it("produces a single link node. In the link's contnet, the second URL's scheme is preserved", () => {
+  it("produces a single link node. In the link's content, the second URL's scheme is preserved", () => {
     expect(Up.toDocument('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
