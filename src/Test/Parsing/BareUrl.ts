@@ -700,6 +700,26 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
 
+    specify("Question marks", () => {
+      expect(Up.toDocument('https://www.demo.example.co.uk? Now that is my favorite site!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('www.demo.example.co.uk')
+          ], 'https://www.demo.example.co.uk'),
+          new PlainText('? Now that is my favorite site!')
+        ]))
+    })
+
+    specify("Exclamation points", () => {
+      expect(Up.toDocument('https://www.demo.example.co.uk! Now that is my favorite site!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('www.demo.example.co.uk')
+          ], 'https://www.demo.example.co.uk'),
+          new PlainText('! Now that is my favorite site!')
+        ]))
+    })
+
     specify("Dashes", () => {
       expect(Up.toDocument('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -712,13 +732,98 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
   })
 
 
-  specify('This occurs even if the punctuation is immediately followed by a valid URL path', () => {
-    expect(Up.toDocument('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('4chan.org')
-        ], 'https://4chan.org'),
-        new PlainText('.../r9k/ is a sad place.')
-      ]))
+  context('The URL is terminated even when:', () => {
+
+
+
+    specify('The punctuation is immediately followed by a valid URL path', () => {
+      expect(Up.toDocument('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('4chan.org')
+          ], 'https://4chan.org'),
+          new PlainText('.../r9k/ is a sad place.')
+        ]))
+    })
+
+
+    specify('The punctuation is at the end of a paragraph.', () => {
+      expect(Up.toDocument('Avoid visiting https://4chan.org.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('Avoid visiting '),          
+          new Link([
+            new PlainText('4chan.org')
+          ], 'https://4chan.org'),
+          new PlainText('.')
+        ]))
+    })
+
+
+    context('The bare URL is inside another convention, including (but not limited to):', () => {
+      specify('Parentheses', () => {
+        expect(Up.toDocument('(For more info, visit https://archive.org!)')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new NormalParenthetical([
+              new PlainText('(For more info, visit '),
+              new Link([
+                new PlainText('archive.org')
+              ], 'https://archive.org'),
+              new PlainText('!)')
+            ])
+          ]))
+      })
+
+      specify('Square brackets', () => {
+        expect(Up.toDocument('[For more info, visit https://archive.org!]')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new SquareParenthetical([
+              new PlainText('[For more info, visit '),
+              new Link([
+                new PlainText('archive.org')
+              ], 'https://archive.org'),
+              new PlainText('!]')
+            ])
+          ]))
+      })
+
+      specify('Italics', () => {
+        expect(Up.toDocument('_For more info, visit https://archive.org!_')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Italic([
+              new PlainText('For more info, visit '),
+              new Link([
+                new PlainText('archive.org')
+              ], 'https://archive.org'),
+              new PlainText('!')
+            ])
+          ]))
+      })
+
+      specify('Revision insertion', () => {
+        expect(Up.toDocument('++For more info, visit https://archive.org!++')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new RevisionInsertion([
+              new PlainText('For more info, visit '),
+              new Link([
+                new PlainText('archive.org')
+              ], 'https://archive.org'),
+              new PlainText('!')
+            ])
+          ]))
+      })
+
+      specify('Highlight', () => {
+        expect(Up.toDocument('[highlight: For more info, visit https://archive.org!]')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Highlight([
+              new PlainText('For more info, visit '),
+              new Link([
+                new PlainText('archive.org')
+              ], 'https://archive.org'),
+              new PlainText('!')
+            ])
+          ]))
+      })
+    })
   })
 })
