@@ -8,6 +8,7 @@ export class Config {
   createSourceMap = false
   renderUnsafeContent = false
   idPrefix = 'up'
+  ellipsis = '…'
 
   terms = new Config.Terms()
 
@@ -48,6 +49,7 @@ export class Config {
     clone.createSourceMap = this.createSourceMap
     clone.renderUnsafeContent = this.renderUnsafeContent
     clone.idPrefix = this.idPrefix
+    clone.ellipsis = this.ellipsis
     clone.defaultUrlScheme = this.defaultUrlScheme
     clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
     clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark

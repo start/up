@@ -2,11 +2,12 @@ export interface UserProvidedSettings {
   createSourceMap?: boolean
   renderUnsafeContent?: boolean
   idPrefix?: string
+  ellipsis?: string
   defaultUrlScheme?: string
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
-
   terms?: UserProvidedSettings.Terms
+
 }
 
 
