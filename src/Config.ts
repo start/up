@@ -73,6 +73,9 @@ export class Config {
     this.idPrefix =
       coalesce(settings.idPrefix, this.idPrefix)
 
+    this.ellipsis =
+      coalesce(settings.ellipsis, this.ellipsis)
+
     this.defaultUrlScheme =
       coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
 

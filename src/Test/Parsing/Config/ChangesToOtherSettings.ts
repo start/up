@@ -134,6 +134,33 @@ describe('The "defaultUrlScheme" config setting', () => {
 })
 
 
+describe('The "ellipsis" config setting', () => {
+  itWorksAsAdvertised({
+    markup: 'I think so...',
+
+    documentWhenChangeIsApplied: new UpDocument([
+      new Paragraph([
+        new PlainText('I think so⋯')
+      ])
+    ]),
+
+    documentWhenSettingIsNotChanged: new UpDocument([
+      new Paragraph([
+        new PlainText('I think so…')
+      ])
+    ]),
+
+    configWithSettingChanged: {
+      ellipsis: '⋯'
+    },
+
+    configWithSettingSetToDefault: {
+      ellipsis: '…'
+    }
+  })
+})
+
+
 describe('The "baseForUrlsStartingWithSlash" config setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
