@@ -105,18 +105,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.toDocument("Select the {{Start Game{s}}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('{Select the '),
-          new ExampleInput('Start Game{s}'),
-          new PlainText(' menu item.}')
+          new PlainText('Select the '),
+          new ExampleInput('{Start Game{s}}'),
+          new PlainText(' menu item.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.toDocument("Select the { {Start Game{s}} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('{Select the '),
-          new ExampleInput('Start Game{s}'),
-          new PlainText(' menu item.}')
+          new PlainText('Select the '),
+          new ExampleInput('{Start Game{s}}'),
+          new PlainText(' menu item.')
         ]))
     })
   })

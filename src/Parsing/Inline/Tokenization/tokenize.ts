@@ -91,7 +91,11 @@ class Tokenizer {
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
   // otherwise cut short the URL (or media description, or references to table of contents entries, etc.)
-  private rawBracketConventions = this.getRawBracketConventions()
+  private typicalRawBracketConventions = this.getTypicalRawBracketConventions()
+
+  // Similar to `typicalRawBracketConventions`, raw curly brackets are only relevant inside of the example
+  // input convention.
+  private rawCurlyBracketConvention = this.getRawCurlyBracketConvention()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
   // description reaches its final bracket, we try to convert that media description context into a media URL
@@ -446,7 +450,9 @@ class Tokenizer {
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
       insteadOfOpeningNormalConventionsWhileOpen: () => {
-        this.tryToTokenizeTypographicalConvention() || this.bufferCurrentChar()
+        this.tryToOpen(this.rawCurlyBracketConvention)
+          || this.tryToTokenizeTypographicalConvention()
+          || this.bufferCurrentChar()
       },
 
       whenClosing: () => {
@@ -472,7 +478,7 @@ class Tokenizer {
 
         beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-        insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawBrackets(),
+        insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndTypicalRawBrackets(),
 
         whenClosing: () => {
           const snippetFromEntry = this.flushBuffer().trim()
@@ -490,7 +496,7 @@ class Tokenizer {
           endsWith: bracket.endPattern,
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawBrackets(),
+          insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndTypicalRawBrackets(),
 
           beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
@@ -714,8 +720,16 @@ class Tokenizer {
     last(this.tokens).value = url
   }
 
-  private getRawBracketConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket => new Convention({
+  private getTypicalRawBracketConventions(): Convention[] {
+    return TYPICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
+  }
+
+  private getRawCurlyBracketConvention(): Convention {
+    return this.getRawBracketConvention(CURLY_BRACKET)
+  }
+
+  private getRawBracketConvention(bracket: Bracket): Convention {
+    return new Convention({
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
@@ -723,7 +737,7 @@ class Tokenizer {
       whenClosing: () => { this.buffer += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
-    }))
+    })
   }
 
   private getInflectionHandler(
@@ -1342,17 +1356,17 @@ class Tokenizer {
   }
 
   private handleTextAwareOfRawBrackets(): void {
-    this.tryToOpenRawBracketConvention() || this.bufferCurrentChar()
+    this.tryToOpenTypicalRawBracketConvention() || this.bufferCurrentChar()
   }
 
-  private handleTextAwareOfTypographyAndRawBrackets(): void {
-    this.tryToOpenRawBracketConvention()
+  private handleTextAwareOfTypographyAndTypicalRawBrackets(): void {
+    this.tryToOpenTypicalRawBracketConvention()
       || this.tryToTokenizeTypographicalConvention()
       || this.bufferCurrentChar()
   }
 
-  private tryToOpenRawBracketConvention(): boolean {
-    return this.rawBracketConventions.some(convention => this.tryToOpen(convention))
+  private tryToOpenTypicalRawBracketConvention(): boolean {
+    return this.typicalRawBracketConventions.some(convention => this.tryToOpen(convention))
   }
 }
 
