@@ -126,7 +126,7 @@ class Tokenizer {
   //
   // However, let's look at the following contrived eample:
   //
-  //   Madam MeowMeow stood up. "I love my dog ("Bow-Wow" is her name), and you must rescue her!"
+  //   Madam MeowMeow stood up. "I love my dog ("Bow-Wow" is his name), and you must rescue him!"
   //
   // Intuitively, the second quotation mark opens an inner quote around"Bow-Wow".
   //
