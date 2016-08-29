@@ -1,6 +1,8 @@
 import { expect } from 'chai'
 import Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
+import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Link } from '../../SyntaxNodes/Link'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -16,6 +18,8 @@ import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
+import { Footnote } from '../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 context("Some bare URLs produce links. The content of a bare URL's link is the URL without its scheme.", () => {
@@ -399,6 +403,27 @@ context('Bare URLs are terminated when any outer convention closes. This include
           ], 'https://archive.org/fake'),
         ], 'https://example.com/outer'),
         new PlainText(' and you should too!')
+      ]))
+  })
+
+  specify("Footnotes", () => {
+    const markup = "I don't eat cereal. [^ Well, I do: https://example.com/cereal] Never have."
+
+    const footnote = new Footnote([
+      new PlainText('Well, I do: '),
+      new Link([
+        new PlainText('example.com/cereal')
+      ], 'https://example.com/cereal'),
+    ], { referenceNumber: 1 })
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
+          footnote,
+          new PlainText(' Never have.')
+        ]),
+        new FootnoteBlock([footnote])
       ]))
   })
 
