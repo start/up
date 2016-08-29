@@ -67,6 +67,9 @@ export namespace Up {
   export function toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
     return defaultUp.toInlineHtml(markupOrInlineDocument, settings)
   }
+
+  // This should always match the `version` field in `package.json`.
+  export const VERSION = '12.1.0'
 }
 
 
