@@ -101,7 +101,7 @@ class Parser {
           continue
         }
 
-        case TokenKind.NakedUrl: {
+        case TokenKind.BareUrl: {
           const url = token.value
 
           const [urlScheme] = URL_SCHEME_PATTERN.exec(url)

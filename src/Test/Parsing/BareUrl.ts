@@ -18,8 +18,8 @@ import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
-context("Some naked URLs produce links. The content of those links is the URL without its scheme.", () => {
-  context('For a naked URL to produce a link, it must either:', () => {
+context("Some bare URLs produce links. The content of those links is the URL without its scheme.", () => {
+  context('For a bare URL to produce a link, it must either:', () => {
     specify('Start with "https://', () => {
       expect(Up.toDocument('Check out https://archive.org')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -42,7 +42,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
   })
 
 
-  context('A naked URL will not produce a link if:', () => {
+  context('A bare URL will not produce a link if:', () => {
     specify("It consists solely of 'http://'", () => {
       expect(Up.toDocument('http://')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -75,7 +75,7 @@ context("Some naked URLs produce links. The content of those links is the URL wi
 })
 
 
-context('Naked URLs are terminated by whitespace:', () => {
+context('Bare URLs are terminated by whitespace:', () => {
   specify('Spaces', () => {
     expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -98,7 +98,7 @@ context('Naked URLs are terminated by whitespace:', () => {
 })
 
 
-context('Naked URLs are terminated by certain common punctuation', () => {
+context('Bare URLs are terminated by certain common punctuation', () => {
   specify('Spaces', () => {
     expect(Up.toDocument('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -121,7 +121,7 @@ context('Naked URLs are terminated by certain common punctuation', () => {
 })
 
 
-describe('A naked URL', () => {
+describe('A bare URL', () => {
   it('can have multiple subdomains', () => {
     expect(Up.toDocument('https://this.is.a.very.real.url.co.uk')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -252,7 +252,7 @@ describe('A naked URL', () => {
 })
 
 
-context('Naked URLs are terminated when any outer convention closes. This includes:', () => {
+context('Bare URLs are terminated when any outer convention closes. This includes:', () => {
   specify('Inline quotes', () => {
     expect(Up.toDocument('"https://archive.org/fake"')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -609,7 +609,7 @@ context('Naked URLs are terminated when any outer convention closes. This includ
 })
 
 
-describe('Inside parantheses, a naked URL', () => {
+describe('Inside parantheses, a bare URL', () => {
   it('can contain matching parentheses', () => {
     expect(Up.toDocument('(https://archive.org/fake(url))')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -638,7 +638,7 @@ describe('Inside parantheses, a naked URL', () => {
 })
 
 
-describe('Inside square brackets, a naked URL', () => {
+describe('Inside square brackets, a bare URL', () => {
   it('can contain matching square brackets', () => {
     expect(Up.toDocument('[https://archive.org/fake[url]]')).to.deep.equal(
       insideDocumentAndParagraph([

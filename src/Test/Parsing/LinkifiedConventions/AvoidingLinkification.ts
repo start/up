@@ -248,7 +248,7 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('Naked URLs', () => {
+  specify('Bare URLs', () => {
     expect(Up.toDocument('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([

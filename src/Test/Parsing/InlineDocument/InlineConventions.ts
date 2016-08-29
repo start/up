@@ -160,7 +160,7 @@ context('Except for footnots, every inline convention is supported in inline doc
         ]))
     })
 
-    specify('Naked URLs', () => {
+    specify('Bare URLs', () => {
       expect(Up.toInlineDocument('I went to https://nintendo.com and read everything I could find.')).to.deep.equal(
         new InlineUpDocument([
           new PlainText('I went to '),

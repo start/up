@@ -84,10 +84,10 @@ class Tokenizer {
   // Link URL conventions serve the same purpose as media URL conventions, but for links.  
   private linkUrlConventions = this.getLinkUrlConventions()
 
-  // As a rule, when a convention containing a naked URL is closed, the naked URL gets closed first. Unlike
-  // other conventions, naked URLs cannot overlap.
+  // As a rule, when a convention containing a bare URL is closed, the bare URL gets closed first. Unlike
+  // other conventions, bare URLs cannot overlap.
   //
-  // This isn't a problem for naked URLs consisting only of a scheme and a hostname (e.g.
+  // This isn't a problem for bare URLs consisting only of a scheme and a hostname (e.g.
   // https://www.subdomain.example.co.uk). Any character that can close a convention will naturally
   // terminate the URL, too.
   //
@@ -96,8 +96,8 @@ class Tokenizer {
   // naturally terminate.
   //
   // We keep a direct reference to `nakedUrlPathConvention` to help us determine whether we have an active
-  // naked URL that needs to be manually closed when an outer convention is closing.
-  private nakedUrlPathConvention = this.getNakedUrlPathConvention()
+  // bare URL that needs to be manually closed when an outer convention is closing.
+  private nakedUrlPathConvention = this.getBareUrlPathConvention()
 
   // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
   //
@@ -378,12 +378,12 @@ class Tokenizer {
     })
   }
 
-  private tryToTokenizeNakedUrlSchemeAndHostname(): boolean {
+  private tryToTokenizeBareUrlSchemeAndHostname(): boolean {
     return this.markupConsumer.consume({
       pattern: NAKED_URL_SCHEME_AND_HOSTNAME,
       thenBeforeConsumingText: url => {
         this.flushNonEmptyBufferToPlainTextToken()
-        this.appendNewToken(TokenKind.NakedUrl, url)
+        this.appendNewToken(TokenKind.BareUrl, url)
       }
     })
   }
@@ -393,7 +393,7 @@ class Tokenizer {
   //  https://www.subdomain.example.co.uk/some/page?search=pokemon#4
   //
   // The path is "/some/page?search=pokemon#4"
-  private getNakedUrlPathConvention(): Convention {
+  private getBareUrlPathConvention(): Convention {
     return new Convention({
       startsWith: FORWARD_SLASH,
       isCutShortByWhitespace: true,
@@ -402,13 +402,13 @@ class Tokenizer {
         this.buffer += FORWARD_SLASH
       },
 
-      canOnlyOpenIfDirectlyFollowing: [TokenKind.NakedUrl],
+      canOnlyOpenIfDirectlyFollowing: [TokenKind.BareUrl],
       insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: () => this.appendBufferedUlPathToCurrentNakedUrl(),
-      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedUlPathToCurrentNakedUrl()
+      whenClosing: () => this.appendBufferedUlPathToCurrentBareUrl(),
+      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedUlPathToCurrentBareUrl()
     })
   }
 
@@ -723,7 +723,7 @@ class Tokenizer {
       conventionForMajorInflection,
 
       encloseWithinConvention: (args) => {
-        this.closeNakedUrlContextIfOneIsOpen()
+        this.closeBareUrlContextIfOneIsOpen()
         this.encloseWithin(args)
       },
 
@@ -803,7 +803,7 @@ class Tokenizer {
     //
     // However, some conventions:
     //
-    // - Are cut short by whitespace (naked URLs)
+    // - Are cut short by whitespace (bare URLs)
     // - Fail if whitespace is encountered before they close (some bracketed URLs)
     //
     // Under normal circumstances, we can skip over (i.e. simply buffer) any whitespace that isn't followed
@@ -884,8 +884,8 @@ class Tokenizer {
     const context = this.openContexts[contextIndex]
     const { convention } = context
 
-    // As a rule, if a convention enclosing a naked URL is closed, the naked URL gets closed first.
-    this.closeNakedUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
+    // As a rule, if a convention enclosing a bare URL is closed, the bare URL gets closed first.
+    this.closeBareUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
 
     if (convention.beforeClosingItFlushesNonEmptyBufferTo != null) {
       this.flushNonEmptyBufferToTokenOfKind(convention.beforeClosingItFlushesNonEmptyBufferTo)
@@ -958,17 +958,17 @@ class Tokenizer {
     return NON_BLANK_PATTERN.test(this.markupConsumer.previousChar)
   }
 
-  private closeNakedUrlContextIfOneIsOpen(args?: { withinContextAtIndex: number }): void {
+  private closeBareUrlContextIfOneIsOpen(args?: { withinContextAtIndex: number }): void {
     const { openContexts } = this
 
-    const outermostIndexThatMayBeNakedUrl =
+    const outermostIndexThatMayBeBareUrl =
       args ? (args.withinContextAtIndex + 1) : 0
 
-    for (let i = outermostIndexThatMayBeNakedUrl; i < openContexts.length; i++) {
+    for (let i = outermostIndexThatMayBeBareUrl; i < openContexts.length; i++) {
       if (openContexts[i].convention === this.nakedUrlPathConvention) {
-        this.appendBufferedUlPathToCurrentNakedUrl()
+        this.appendBufferedUlPathToCurrentBareUrl()
 
-        // We need to remove the naked URL's context, as well as the contexts of any raw text brackets
+        // We need to remove the bare URL's context, as well as the contexts of any raw text brackets
         // inside it.
         this.openContexts.splice(i)
         return
@@ -1082,7 +1082,7 @@ class Tokenizer {
   private tryToOpenAnyConvention(): boolean {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
-      || this.tryToTokenizeNakedUrlSchemeAndHostname()
+      || this.tryToTokenizeBareUrlSchemeAndHostname()
       || this.tryToStartInflectingOrTreatDelimiterAsPlainText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeTypographicalConvention())
@@ -1269,11 +1269,11 @@ class Tokenizer {
     this.appendToken(new Token(kind, value))
   }
 
-  private appendBufferedUlPathToCurrentNakedUrl(): void {
-    if (this.mostRecentToken.kind === TokenKind.NakedUrl) {
+  private appendBufferedUlPathToCurrentBareUrl(): void {
+    if (this.mostRecentToken.kind === TokenKind.BareUrl) {
       this.mostRecentToken.value += this.flushBuffer()
     } else {
-      throw new Error('Most recent token is not a naked URL token')
+      throw new Error('Most recent token is not a bare URL token')
     }
   }
 
@@ -1412,7 +1412,7 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   BRACKETS.map(bracket => bracket.endPattern)
 
-// The "h" is for the start of naked URLs. 
+// The "h" is for the start of bare URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
   WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, 'h', '"', '_', '`', '~',
   ...BRACKET_START_PATTERNS,
@@ -1427,7 +1427,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
     atLeastOne(
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
-        // An "h" can only trigger any tokenizer changes if it's the start of a naked URL scheme.
+        // An "h" can only trigger any tokenizer changes if it's the start of a bare URL scheme.
         'h' + notFollowedBy('ttp' + optional('s') + '://'))))
 
 // This pattern matches all whitespace that isn't followed by an open bracket.

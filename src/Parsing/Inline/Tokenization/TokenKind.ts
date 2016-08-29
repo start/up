@@ -17,7 +17,7 @@ export enum TokenKind {
   LinkEndAndUrl,
   LinkStart,
   MediaEndAndUrl,
-  NakedUrl,
+  BareUrl,
   NsflEnd,
   NsflStart,
   NsfwEnd,

@@ -120,7 +120,7 @@ describe("A link's contents", () => {
       ]))
   })
 
-  it('is evaluated for naked URLs', () => {
+  it('is evaluated for bare URLs', () => {
     expect(Up.toDocument('[Google is not at https://bing.com][https://google.com].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
