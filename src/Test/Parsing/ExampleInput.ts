@@ -37,8 +37,9 @@ describe('Example input', () => {
       ]))
   })
 
+
   context('can contain escaped closing curly brackets', () => {
-    it('touching the delimiters', () => {
+    specify('touching the delimiters', () => {
       expect(Up.toDocument("Press {\\}} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
@@ -47,7 +48,7 @@ describe('Example input', () => {
         ]))
     })
 
-    it('not touching the delimiters', () => {
+    specify('not touching the delimiters', () => {
       expect(Up.toDocument("Press { \\} } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
@@ -57,8 +58,9 @@ describe('Example input', () => {
     })
   })
 
+
   context('can contain escaped opening curly brackets', () => {
-    it('touching the delimiters', () => {
+    specify('touching the delimiters', () => {
       expect(Up.toDocument("Press {\\{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
@@ -67,7 +69,7 @@ describe('Example input', () => {
         ]))
     })
 
-    it('not touching the delimiters', () => {
+    specify('not touching the delimiters', () => {
       expect(Up.toDocument("Press { \\{ } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Press '),
@@ -76,6 +78,49 @@ describe('Example input', () => {
         ]))
     })
   })
+
+
+  context('can contain unescaped matching curly brackets', () => {
+    specify('touching the delimiters', () => {
+      expect(Up.toDocument("Select the {Start Game{s}} menu item.")).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('Select the '),
+          new ExampleInput('Start Game{s}'),
+          new PlainText(' menu item.')
+        ]))
+    })
+
+    specify('not touching the delimiters', () => {
+      expect(Up.toDocument("Select the { Start Game{s} } menu item.")).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('Select the '),
+          new ExampleInput('Start Game{s}'),
+          new PlainText(' menu item.')
+        ]))
+    })
+  })
+
+
+  context('can contain unescaped nesting matching curly brackets', () => {
+    specify('touching the delimiters', () => {
+      expect(Up.toDocument("Select the {{Start Game{s}}} menu item.")).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('{Select the '),
+          new ExampleInput('Start Game{s}'),
+          new PlainText(' menu item.}')
+        ]))
+    })
+
+    specify('not touching the delimiters', () => {
+      expect(Up.toDocument("Select the { {Start Game{s}} } menu item.")).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('{Select the '),
+          new ExampleInput('Start Game{s}'),
+          new PlainText(' menu item.}')
+        ]))
+    })
+  })
+
 
   it('can be directly followed by another input instruction', () => {
     expect(Up.toDocument("Press {ctrl}{q} to quit.")).to.deep.equal(
