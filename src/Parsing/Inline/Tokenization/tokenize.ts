@@ -134,7 +134,15 @@ class Tokenizer {
   //
   // To get around this, we won't allow a delimiter to close an inflection convention if we have just
   // entered an outer convention.
-  private justEnteredAConvention = false
+  private markupIndexWeLastOpenedAConvention: number
+
+  private get justEnteredAConvention(): boolean {
+    return this.markupIndexWeLastOpenedAConvention === this.markupConsumer.index
+  }
+
+  private indicateWeJustOpenedAConvention(): void {
+    this.markupIndexWeLastOpenedAConvention = this.markupConsumer.index
+  }
 
   // The most recent token isn't necessarily the last token in the `tokens` collection.
   //
@@ -755,7 +763,6 @@ class Tokenizer {
 
   private tokenize(): void {
     do {
-      this.justEnteredAConvention = false
       this.bufferContentThatCannotOpenOrCloseAnyConventions()
     } while (
       !this.isDone()
@@ -946,8 +953,7 @@ class Tokenizer {
   }
 
   private tryToCloseAnyInflectionConventions(): boolean {
-
-    if (!this.isPreviousCharacterNonwhitespace()) {
+    if (this.justEnteredAConvention || !this.isPreviousCharacterNonwhitespace()) {
       return false
     }
 
@@ -1106,7 +1112,7 @@ class Tokenizer {
   }
 
   private tryToStartInflectingOrTreatDelimiterAsPlainText(): boolean {
-    return this.inflectionHandlers.some(handler =>
+    const didOpen = this.inflectionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
@@ -1124,6 +1130,12 @@ class Tokenizer {
           }
         }
       }))
+
+    if (didOpen) {
+      this.indicateWeJustOpenedAConvention()
+    }
+
+    return didOpen
   }
 
   // Inline code is the only convention that:
@@ -1193,7 +1205,7 @@ class Tokenizer {
   private tryToOpen(convention: Convention): boolean {
     const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
-    const didOpenConvention = (
+    const didOpen = (
       this.canTry(convention)
 
       && this.markupConsumer.consume({
@@ -1212,11 +1224,11 @@ class Tokenizer {
         }
       }))
 
-    if (didOpenConvention) {
-      this.justEnteredAConvention = true
+    if (didOpen) {
+      this.indicateWeJustOpenedAConvention()
     }
 
-    return didOpenConvention
+    return didOpen
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {
