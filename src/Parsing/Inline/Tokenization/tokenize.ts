@@ -47,9 +47,9 @@ const SQUARE_BRACKET =
   new Bracket('[', ']')
 
 // Many of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
-// All but one of these conventions support both paretheses and square brackets, allowing both kinds of
-// brackets to be used interchangeably.
-const TYPICAL_BRACKETS = [
+// These conventions support both paretheses and square brackets, allowing either kind of brackets to be
+// used interchangeably.
+const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
 ]
@@ -86,15 +86,15 @@ class Tokenizer {
   // 3. Link URL conventions (explained below)
   private conventions: Convention[]
 
-  // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or other
-  // contexts that ignore the typical conventions).
+  // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or a
+  // few other contexts that ignore the typical conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
-  // otherwise cut short the URL (or media description, or references to table of contents entries, etc.)
-  private typicalRawBracketConventions = this.getTypicalRawBracketConventions()
+  // otherwise cut short the URL (or media description, or reference to table of contents entry, etc.)
+  private rawParentheticalBracketConventions = this.getRawParentheticalBracketConventions()
 
-  // Similar to `typicalRawBracketConventions`, raw curly brackets are only relevant inside of the example
-  // input convention.
+  // This convention is similar to `parentheticalRawBracketConventions`, but raw curly brackets are only
+  // relevant inside of the example input convention.
   private rawCurlyBracketConvention = this.getRawCurlyBracketConvention()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
@@ -193,16 +193,16 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT_CONVENTION,
-          labels: this.config.terms.markup.highlight
+          term: this.config.terms.markup.highlight
         }, {
           richConvention: SPOILER_CONVENTION,
-          labels: this.config.terms.markup.spoiler
+          term: this.config.terms.markup.spoiler
         }, {
           richConvention: NSFW_CONVENTION,
-          labels: this.config.terms.markup.nsfw
+          term: this.config.terms.markup.nsfw
         }, {
           richConvention: NSFL_CONVENTION,
-          labels: this.config.terms.markup.nsfl
+          term: this.config.terms.markup.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -254,7 +254,7 @@ class Tokenizer {
   }
 
   private getFootnoteConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE_CONVENTION,
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
@@ -271,7 +271,7 @@ class Tokenizer {
   // In inline documents, this purpose can't be fulfilled, so we do the next best thing: we treat footnotes
   // as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: NORMAL_PARENTHETICAL_CONVENTION,
         startsWith: this.getFootnoteStartDelimiter(bracket),
@@ -294,7 +294,7 @@ class Tokenizer {
   }
 
   private getLinkContentConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: LINK_CONVENTION,
         startsWith: bracket.startPattern,
@@ -309,22 +309,22 @@ class Tokenizer {
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      labels: Config.Terms.FoundInMarkup
+      term: Config.Terms.FoundInMarkup
     }
   ): Convention[] {
-    const { richConvention, labels } = args
+    const { richConvention, term } = args
 
-    return TYPICAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: this.getLabeledBracketStartPattern(labels, bracket),
+        startsWith: this.getLabeledBracketStartPattern(term, bracket),
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
   }
 
-  private getLabeledBracketStartPattern(labels: Config.Terms.FoundInMarkup, bracket: Bracket): string {
-    return bracket.startPattern + either(...labels.map(escapeForRegex)) + ':' + ANY_WHITESPACE
+  private getLabeledBracketStartPattern(term: Config.Terms.FoundInMarkup, bracket: Bracket): string {
+    return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
   }
 
   private getParentheticalConvention(
@@ -495,7 +495,7 @@ class Tokenizer {
   //
   // When written to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       new Convention({
         startsWith: this.getLabeledBracketStartPattern(this.config.terms.markup.referenceToTableOfContentsEntry, bracket),
         startPatternContainsATerm: true,
@@ -503,7 +503,7 @@ class Tokenizer {
 
         beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-        insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndTypicalRawBrackets(),
+        insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
         whenClosing: () => {
           const snippetFromEntry = this.flushBuffer().trim()
@@ -515,13 +515,13 @@ class Tokenizer {
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
       [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
-        TYPICAL_BRACKETS.map(bracket => new Convention({
-          startsWith: this.getLabeledBracketStartPattern(media.labels(this.config.terms.markup), bracket),
+        PARENTHETICAL_BRACKETS.map(bracket => new Convention({
+          startsWith: this.getLabeledBracketStartPattern(media.term(this.config.terms.markup), bracket),
           startPatternContainsATerm: true,
           endsWith: bracket.endPattern,
 
           beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndTypicalRawBrackets(),
+          insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
           beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
           whenClosingItAlsoClosesInnerConventions: true,
@@ -530,7 +530,7 @@ class Tokenizer {
   }
 
   private getMediaUrlConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket => new Convention({
+    return PARENTHETICAL_BRACKETS.map(bracket => new Convention({
       startsWith: ANY_WHITESPACE + this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
@@ -572,7 +572,7 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): Convention[] {
-    return concat(TYPICAL_BRACKETS.map(bracket => [
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
       this.getBracketedUrlConvention({
         bracket,
         whenClosing: url => this.closeLink(url)
@@ -612,7 +612,7 @@ class Tokenizer {
     // All media conventions use the same end token
     const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaEndAndUrl]
 
-    return concat(TYPICAL_BRACKETS.map(bracket => [
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
       ...[
         {
           bracket,
@@ -745,8 +745,8 @@ class Tokenizer {
     last(this.tokens).value = url
   }
 
-  private getTypicalRawBracketConventions(): Convention[] {
-    return TYPICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
+  private getRawParentheticalBracketConventions(): Convention[] {
+    return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
   }
 
   private getRawCurlyBracketConvention(): Convention {
@@ -1391,17 +1391,17 @@ class Tokenizer {
   }
 
   private handleTextAwareOfRawBrackets(): void {
-    this.tryToOpenTypicalRawBracketConvention() || this.bufferCurrentChar()
+    this.tryToOpenRawParentheticalBracketConvention() || this.bufferCurrentChar()
   }
 
-  private handleTextAwareOfTypographyAndTypicalRawBrackets(): void {
-    this.tryToOpenTypicalRawBracketConvention()
+  private handleTextAwareOfTypographyAndRawParentheticalBrackets(): void {
+    this.tryToOpenRawParentheticalBracketConvention()
       || this.tryToTokenizeTypographicalConvention()
       || this.bufferCurrentChar()
   }
 
-  private tryToOpenTypicalRawBracketConvention(): boolean {
-    return this.typicalRawBracketConventions.some(convention => this.tryToOpen(convention))
+  private tryToOpenRawParentheticalBracketConvention(): boolean {
+    return this.rawParentheticalBracketConventions.some(convention => this.tryToOpen(convention))
   }
 }
 
