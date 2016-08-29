@@ -23,6 +23,7 @@ describe('A naked URL containing another URL', () => {
   })
 })
 
+
 context('When a naked URL hostname follows an open square bracket', () => {
   specify("it will not include a trailing escaped closing square bracket", () => {
     expect(Up.toDocument('[https://nintendo.com\\]')).to.deep.equal(
@@ -220,6 +221,20 @@ describe('A naked URL terminated by another convention closing, followed by a no
           new PlainText('way')
         ]),
         new PlainText(' too many tarantulas.')
+      ]))
+  })
+})
+
+
+context('When a naked URL consisting only of a hostname is followed by a space then a valid URL path', () => {
+  specify("the path is not included in the naked URL", () => {
+    expect(Up.toDocument('ahhhh oh my goodness help me i went to http://4chan.org /rk9/ is the saddest place ever')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('ahhhh oh my goodness help me i went to '),
+        new Link([
+          new PlainText('4chan.org')
+        ], 'http://4chan.org'),
+        new PlainText(' /rk9/ is the saddest place ever')        
       ]))
   })
 })
