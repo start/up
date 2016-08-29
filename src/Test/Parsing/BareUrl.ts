@@ -676,3 +676,38 @@ describe('Inside square brackets, a bare URL', () => {
       ]))
   })
 })
+
+
+context('If a bare URL does not have a path, it is terminated by any punctuation. ', () => {
+  context("This includes (but is not limited to):", () => {
+    specify("Commas", () => {
+      expect(Up.toDocument('https://www.demo.example.co.uk, now that is my favorite site!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('www.demo.example.co.uk')
+          ], 'https://www.demo.example.co.uk'),
+          new PlainText(', now that is my favorite site!')
+        ]))
+    })
+
+    specify("Periods", () => {
+      expect(Up.toDocument('https://www.demo.example.co.uk. Now that is my favorite site!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('www.demo.example.co.uk')
+          ], 'https://www.demo.example.co.uk'),
+          new PlainText('. Now that is my favorite site!')
+        ]))
+    })
+
+    specify("Dashes", () => {
+      expect(Up.toDocument('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('www.demo.example.co.uk')
+          ], 'https://www.demo.example.co.uk'),
+          new PlainText('—now that is my favorite site!')
+        ]))
+    })
+  })
+})
