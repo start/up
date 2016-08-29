@@ -73,11 +73,21 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
           ]))
       })
 
-      specify("Dashes", () => {
-        expect(Up.toDocument('http://---now that is my favorite URL scheme!')).to.deep.equal(
-          insideDocumentAndParagraph([
-            new PlainText('http://—now that is my favorite URL scheme!')
-          ]))
+
+      context('Dashes', () => {
+        specify("comprising a typographical convention", () => {
+          expect(Up.toDocument('http://---now that is my favorite URL scheme!')).to.deep.equal(
+            insideDocumentAndParagraph([
+              new PlainText('http://—now that is my favorite URL scheme!')
+            ]))
+        })
+
+        specify("not comprising a typographical convention", () => {
+          expect(Up.toDocument('http://-now that is my favorite URL scheme!')).to.deep.equal(
+            insideDocumentAndParagraph([
+              new PlainText('http://-now that is my favorite URL scheme!')
+            ]))
+        })
       })
     })
   })
@@ -720,22 +730,32 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         ]))
     })
 
-    specify("Dashes", () => {
-      expect(Up.toDocument('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Link([
-            new PlainText('www.demo.example.co.uk')
-          ], 'https://www.demo.example.co.uk'),
-          new PlainText('—now that is my favorite site!')
-        ]))
+
+    context('Dashes', () => {
+      specify("comprising a typographical convention", () => {
+        expect(Up.toDocument('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Link([
+              new PlainText('www.demo.example.co.uk')
+            ], 'https://www.demo.example.co.uk'),
+            new PlainText('—now that is my favorite site!')
+          ]))
+      })
+
+      specify("not comprising a typographical convention", () => {
+        expect(Up.toDocument('https://www.demo.example.co.uk-now that is my favorite site!')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Link([
+              new PlainText('www.demo.example.co.uk')
+            ], 'https://www.demo.example.co.uk'),
+            new PlainText('-now that is my favorite site!')
+          ]))
+      })
     })
   })
 
 
   context('The URL is terminated even when:', () => {
-
-
-
     specify('The punctuation is immediately followed by a valid URL path', () => {
       expect(Up.toDocument('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -750,7 +770,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
     specify('The punctuation is at the end of a paragraph.', () => {
       expect(Up.toDocument('Avoid visiting https://4chan.org.')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Avoid visiting '),          
+          new PlainText('Avoid visiting '),
           new Link([
             new PlainText('4chan.org')
           ], 'https://4chan.org'),
