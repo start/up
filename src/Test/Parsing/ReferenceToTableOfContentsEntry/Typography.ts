@@ -107,6 +107,39 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
+
+    specify('Plus-minus signs', () => {
+      const markup = `
+Daily, I drink 9 cans of soda... hourly
+=======================================
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
+
+      const sodaHeading =
+        new Heading([new PlainText('Daily, I drink 9 cans of soda… hourly')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.deep.equal(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true. For example, see '),
+            new ReferenceToTableOfContentsEntry('I drink 9 cans of soda… hourly', sodaHeading),
+            new PlainText('.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 })
 
