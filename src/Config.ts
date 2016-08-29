@@ -8,9 +8,9 @@ export class Config {
   createSourceMap = false
   renderUnsafeContent = false
   idPrefix = 'up'
-  
+
   terms = new Config.Terms()
-  
+
   private defaultUrlScheme = 'https://'
   private baseForUrlsStartingWithSlash = ''
   private baseForUrlsStartingWithHashMark = ''
@@ -23,7 +23,7 @@ export class Config {
 
   // Applies the relevant config settings to `url` and returns the result.
   //
-  // This method assumes that `url` is nonblank.
+  // This method assumes that `url` is non-blank.
   applySettingsToUrl(url: string): string {
     url = url.trim()
 

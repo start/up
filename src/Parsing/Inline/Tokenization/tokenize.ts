@@ -397,7 +397,7 @@ class Tokenizer {
     return new Convention({
       startsWith: FORWARD_SLASH,
       isCutShortByWhitespace: true,
-      
+
       whenOpening: () => {
         this.buffer += FORWARD_SLASH
       },
