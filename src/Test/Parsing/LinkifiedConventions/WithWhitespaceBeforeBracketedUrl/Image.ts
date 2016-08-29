@@ -425,7 +425,7 @@ context('A linkified image convention can have whitespace between its image URL 
           new Image('debilitating sadness', 'https://example.com/image.png'),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(4chan.org../r9k/)')
+            new PlainText('(4chan.org…/r9k/)')
           ]),
         ]))
     })

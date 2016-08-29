@@ -396,7 +396,7 @@ context('A linkified NSFW convention can have whitespace between itself and its 
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(4chan.org../r9k/)')
+            new PlainText('(4chan.org…/r9k/)')
           ]),
         ]))
     })

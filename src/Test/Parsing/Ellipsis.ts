@@ -34,7 +34,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
           new InlineQuote([
             new PlainText('I like Starcraft')
           ]),
-          new PlainText(' …Mark Twain')
+          new PlainText(' …still')
         ]))
     })
 
@@ -94,7 +94,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     specify('Code blocks', () => {
       const markup = `
 \`\`\`
-return distinct('highlight', 'mark', ...this._highlight) 
+return distinct('highlight', 'mark', ...this._highlight)
 \`\`\``
 
       expect(Up.toDocument(markup)).to.deep.equal(
@@ -170,7 +170,7 @@ describe("When one of many consecutive periods is escaped, that period is treate
   specify('Escaping a period in the middle of many periods produces a period sandwiched by elipsis', () => {
     expect(Up.toDocument("Just some typical punctuation usage: ...\\....")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText("Just some typical punctuation usage: ...\\....")
+        new PlainText("Just some typical punctuation usage: ….…")
       ]))
   })
 

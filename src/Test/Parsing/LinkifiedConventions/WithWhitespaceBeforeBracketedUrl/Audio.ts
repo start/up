@@ -425,7 +425,7 @@ context('A linkified audio convention can have whitespace between its audio URL 
           new Audio('debilitating sadness', 'https://example.com/sounds.ogg'),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(4chan.org../r9k/)')
+            new PlainText('(4chan.org…/r9k/)')
           ]),
         ]))
     })

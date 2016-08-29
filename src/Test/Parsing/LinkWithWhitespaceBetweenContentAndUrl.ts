@@ -374,7 +374,7 @@ context('A link can have whitespace between its bracketed content and bracketed 
           ]),
           new PlainText(' '),
           new NormalParenthetical([
-            new PlainText('(4chan.org../r9k/)')
+            new PlainText('(4chan.org…/r9k/)')
           ])
         ]))
     })
