@@ -119,6 +119,23 @@ class Tokenizer {
     }
   ].map(args => this.getInflectionHandler(args))
 
+  // Speaking of inflection conventions...
+  //
+  // For a delimiter to close any inflection conventions, it must look like it's touching the end of
+  // the content it's enclosing (i.e. it must be following a non-whitespace character).
+  //
+  // However, let's look at the following contrived eample:
+  //
+  //   Madam MeowMeow stood up. "I love my dog ("Bow-Wow" is her name), and you must rescue her!"
+  //
+  // Intuitively, the second quotation mark opens an inner quote around"Bow-Wow".
+  //
+  // However, that quotation mark is following a non-whitespace character!
+  //
+  // To get around this, we won't allow a delimiter to close an inflection convention if we have just
+  // entered an outer convention.
+  private justEnteredAConvention = false
+
   // The most recent token isn't necessarily the last token in the `tokens` collection.
   //
   // 1. When a rich convention is "linkified", its entire contents are nested within a link, which
@@ -738,6 +755,7 @@ class Tokenizer {
 
   private tokenize(): void {
     do {
+      this.justEnteredAConvention = false
       this.bufferContentThatCannotOpenOrCloseAnyConventions()
     } while (
       !this.isDone()
@@ -928,8 +946,7 @@ class Tokenizer {
   }
 
   private tryToCloseAnyInflectionConventions(): boolean {
-    // For a delimiter to close any inflection conventions, it must look like it's touching the end of
-    // some content (i.e. it must be following a non-whitespace character).
+
     if (!this.isPreviousCharacterNonwhitespace()) {
       return false
     }
@@ -1176,7 +1193,7 @@ class Tokenizer {
   private tryToOpen(convention: Convention): boolean {
     const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
 
-    return (
+    const didOpenConvention = (
       this.canTry(convention)
 
       && this.markupConsumer.consume({
@@ -1194,6 +1211,12 @@ class Tokenizer {
           }
         }
       }))
+
+    if (didOpenConvention) {
+      this.justEnteredAConvention = true
+    }
+
+    return didOpenConvention
   }
 
   private getCurrentSnapshot(): TokenizerSnapshot {

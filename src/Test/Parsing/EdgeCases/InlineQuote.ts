@@ -11,67 +11,67 @@ import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
 
 context('Within an inline quote, an (inner) inline quote can be be the first convention within another any other inner convention, including (but not limited to):', () => {
   specify('Normal parentheticals', () => {
-    expect(Up.toDocument('John stood up. "Hello, my ("little") world!"')).to.deep.equal(
+    expect(Up.toDocument('Luigi stood up. "Hello, my ("leetle") Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('John stood up. '),
+        new PlainText('Luigi stood up. '),
         new InlineQuote([
           new PlainText('Hello, my '),
           new NormalParenthetical([
             new PlainText('('),
             new InlineQuote([
-              new PlainText('little')
+              new PlainText('leetle')
             ]),
             new PlainText(')')
           ]),
-          new PlainText(' world!')
+          new PlainText(' Mario!')
         ])
       ]))
   })
 
   specify('Emphasis', () => {
-    expect(Up.toDocument('John stood up. "Hello, my *"little"* world!"')).to.deep.equal(
+    expect(Up.toDocument('Luigi stood up. "Hello, my *"leetle"* Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('John stood up. '),
+        new PlainText('Luigi stood up. '),
         new InlineQuote([
           new PlainText('Hello, my '),
           new Emphasis([
             new InlineQuote([
-              new PlainText('little')
+              new PlainText('leetle')
             ]),
           ]),
-          new PlainText(' world!')
+          new PlainText(' Mario!')
         ])
       ]))
   })
 
   specify('Revision insertion', () => {
-    expect(Up.toDocument('John stood up. "Hello, my ++"little"++ world!"')).to.deep.equal(
+    expect(Up.toDocument('Luigi stood up. "Hello, my ++"leetle"++ Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('John stood up. '),
+        new PlainText('Luigi stood up. '),
         new InlineQuote([
           new PlainText('Hello, my '),
           new RevisionInsertion([
             new InlineQuote([
-              new PlainText('little')
+              new PlainText('leetle')
             ]),
           ]),
-          new PlainText(' world!')
+          new PlainText(' Mario!')
         ])
       ]))
   })
 
   specify('Highlights (even when there is no space after the colon)', () => {
-    expect(Up.toDocument('John stood up. "Hello, my [highlight:"little"] world!"')).to.deep.equal(
+    expect(Up.toDocument('Luigi stood up. "Hello, my [highlight:"leetle"] Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('John stood up. '),
+        new PlainText('Luigi stood up. '),
         new InlineQuote([
           new PlainText('Hello, my '),
           new Highlight([
             new InlineQuote([
-              new PlainText('little')
+              new PlainText('leetle')
             ])
           ]),
-          new PlainText(' world!')
+          new PlainText(' Mario!')
         ])
       ]))
   })
