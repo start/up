@@ -740,28 +740,27 @@ class Tokenizer {
     // The media start token will always directly precede the media end token, which is currently the last token.
     const indexOfMediaStartToken = this.tokens.length - 2
 
-    this.encloseWithin({
-      richConvention: LINK_CONVENTION,
-      startingBackAtTokenIndex: indexOfMediaStartToken
-    })
-
-    // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
-    last(this.tokens).value = url
+    this.encloseWithinLink({ startingBackAtTokenIndex: indexOfMediaStartToken, url })
   }
 
   private closeLinkifyingUrlForExampleInputConvention(url: string): void {
     // We're going to (corretly) assume that the last token is `ExampleInput` 
     const indexOfExampleInputToken = this.tokens.length - 1
 
+    this.encloseWithinLink({ startingBackAtTokenIndex: indexOfExampleInputToken, url })
+  }
+
+  private encloseWithinLink(args: { startingBackAtTokenIndex: number, url: string }): void {
+    const { startingBackAtTokenIndex, url } = args
+
     this.encloseWithin({
       richConvention: LINK_CONVENTION,
-      startingBackAtTokenIndex: indexOfExampleInputToken
+      startingBackAtTokenIndex
     })
 
     // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
     last(this.tokens).value = url
   }
-
 
   private getRawParentheticalBracketConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
