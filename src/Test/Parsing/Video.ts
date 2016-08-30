@@ -90,7 +90,7 @@ describe('The term "vid"', () => {
 })
 
 
-context("When an video has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
+context("When a video has whitespace before its bracketed URL, there are no additional restrictions on the URL.", () => {
   specify("The URL can contain whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
@@ -116,7 +116,7 @@ context("When an video has whitespace before its bracketed URL, there are no add
 
 
 context("When an otherwise-valid video's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
-  specify('it does not produce an video node', () => {
+  specify('it does not produce a video node', () => {
     expect(Up.toDocument('[video: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([

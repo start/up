@@ -29,7 +29,7 @@ Do not pour the spiders into your sister's cereal.
 
 
 describe('An otherwise-valid video convention with mismatched brackets surrounding its description', () => {
-  it('does not produce an video node', () => {
+  it('does not produce a video node', () => {
     expect(Up.toDocument('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I like [video: ghosts}'),

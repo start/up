@@ -14,8 +14,8 @@ import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
-describe('An video convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
-  it('produces an video node within a link pointing to that second URL', () => {
+describe('A video convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
+  it('produces a video node within a link pointing to that second URL', () => {
     expect(Up.toDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
@@ -29,7 +29,7 @@ describe('An video convention (with its URL) followed immediately by a (second) 
 
 
 describe('Any video convention (with its URL) followed immediately by a (second) parenthesized/bracketed URL', () => {
-  it('produces an video node within a link pointing to that second URL. The types of brackets surrounding the video description, the video URL, and the "linkifying" URL can all be different', () => {
+  it('produces a video node within a link pointing to that second URL. The types of brackets surrounding the video description, the video URL, and the "linkifying" URL can all be different', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'video: you fight Gary' },
@@ -93,7 +93,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
 })
 
 
-describe('An video convention directly followed by an inline spoiler', () => {
+describe('A video convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.toDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
