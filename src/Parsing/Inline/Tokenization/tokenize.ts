@@ -181,11 +181,11 @@ class Tokenizer {
 
   constructor(markup: string, private config: Config, isTokenizingInlineDocument = false) {
     const trimmedMarkup =
-      trimEscapedAndUnescapedOuterWhitespace(markup) 
-    
+      trimEscapedAndUnescapedOuterWhitespace(markup)
+
     this.markupConsumer = new TextConsumer(trimmedMarkup)
     this.configureConventions(isTokenizingInlineDocument)
-    
+
     this.tokenize()
   }
 
@@ -1510,11 +1510,13 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
     oneOrMore(
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
-        // An "h" can only trigger any tokenizer changes if it's the start of a bare URL scheme.
+        // An "h" only has special meaning if it's the start of a bare URL scheme.
         'h' + notFollowedBy('ttp' + optional('s') + '://'),
-        // The tokenizer doesn't care about single periods! However, multiple periods produce
-        // ellipses.
-        PERIOD + notFollowedBy(PERIOD))))
+        // Multiple periods produce ellipses, but single periods have no special meaning.
+        PERIOD + notFollowedBy(PERIOD),
+        // Multiple hyphens produce en/em dashes, but single hyphens have no special meaning.
+        HYPHEN + notFollowedBy(HYPHEN)
+      )))
 
 // This pattern matches all whitespace that isn't followed by an open bracket.
 //
