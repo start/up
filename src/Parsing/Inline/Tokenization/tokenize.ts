@@ -304,9 +304,15 @@ class Tokenizer {
       }))
   }
 
-  // These conventions take the following form (for all brackets):
+  // Labeled rich brackets take the following form:
   //
-  // [label: some *exciting* text with inline conventions]
+  //    After beating the Elite Four in Pokémon Red, [SPOILER: you *still* must face your rival].
+  //
+  // For all labeled rich bracket conventions:
+  //
+  // 1. The term preceding the colon is case-insensitive
+  // 2. Whitespace after the colon is optional
+  // 3. Parentheses can be used instead of square brackets
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
