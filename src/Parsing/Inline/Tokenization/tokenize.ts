@@ -180,11 +180,12 @@ class Tokenizer {
   private mostRecentToken: Token
 
   constructor(markup: string, private config: Config, isTokenizingInlineDocument = false) {
-    this.markupConsumer =
-      new TextConsumer(trimEscapedAndUnescapedOuterWhitespace(markup))
-
+    const trimmedMarkup =
+      trimEscapedAndUnescapedOuterWhitespace(markup) 
+    
+    this.markupConsumer = new TextConsumer(trimmedMarkup)
     this.configureConventions(isTokenizingInlineDocument)
-
+    
     this.tokenize()
   }
 
