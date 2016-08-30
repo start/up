@@ -38,7 +38,6 @@ context('Any example input convention followed immediately by a (second) parenth
         { text: 'https://example.com/my-cart' }
       ],
       toProduce: insideDocumentAndParagraph([
-
         new Link([
           new ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
@@ -52,9 +51,9 @@ context("As long as there is no whitespace between the example input and the lin
   specify('The linkifying URL can start with whitespace', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
-      bracketedSegments: [
-        { text: ' \t \t https://example.com/my-cart' }
-      ],
+      bracketedSegments: [{
+        text: ' \t \t https://example.com/my-cart'
+      }],
       toProduce: insideDocumentAndParagraph([
         new Link([
           new ExampleInput('My Cart')
@@ -66,9 +65,9 @@ context("As long as there is no whitespace between the example input and the lin
   specify('The linkifying URL can contain whitespace', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
-      bracketedSegments: [
-        { text: 'https://example.com/my cart' }
-      ],
+      bracketedSegments: [{
+        text: 'https://example.com/my cart'
+      }],
       toProduce: insideDocumentAndParagraph([
         new Link([
           new ExampleInput('My Cart')
@@ -80,9 +79,9 @@ context("As long as there is no whitespace between the example input and the lin
   specify('The linkifying URL can start with whitespace, contain whitespace, and not have a URL scheme', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
-      bracketedSegments: [
-        { text: ' \t \t example.com/my cart' }
-      ],
+      bracketedSegments: [{
+        text: ' \t \t example.com/my cart'
+      }],
       toProduce: insideDocumentAndParagraph([
         new Link([
           new ExampleInput('My Cart')
