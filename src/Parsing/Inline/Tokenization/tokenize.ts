@@ -152,7 +152,7 @@ class Tokenizer {
   //
   //   Madam MeowMeow stood up. "I love my dog ("Bow-Wow" is his name), and you must rescue him!"
   //
-  // Intuitively, the second quotation mark opens an inner quote around"Bow-Wow".
+  // Intuitively, the second quotation mark should open an inner quote around "Bow-Wow".
   //
   // However, that quotation mark is following a non-whitespace character!
   //
@@ -1053,7 +1053,7 @@ class Tokenizer {
     // We can avoid some superficial overlapping by shifting our new end token past any overlapping end tokens
     // tokens (but not past any content!). For example:
     //
-    // I've had enough! **I hate [SPOILER: Professor Oak!**]
+    //   I've had enough! **I hate [SPOILER: Professor Oak!**]
     //
     // In the above example, the spoiler convention starts inside the stress convention and ends after the
     // stress convention. The two conventions overlap, but only by only their end tokens. By inserting the
@@ -1082,7 +1082,7 @@ class Tokenizer {
     //
     // For example:
     //
-    // *[Sadly*, Starcraft 2 is dead.] (reddit.com/r/starcraft)
+    //   *[Sadly*, Starcraft 2 is dead.] (reddit.com/r/starcraft)
     //
     // All rich conventions save the current count of tokens at the time of their opening, treating that count
     // as a start token index. When a given convention closes, it inserts its start token back at that saved
@@ -1525,7 +1525,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 // If there's a chunk of whitespace followed by an open bracket, we don't want to match any of the
 // chunk:
 //
-// [SPOILER: Gary battles Ash]   (http://bulbapedia.bulbagarden.net/wiki/Rival)
+//   [SPOILER: Gary battles Ash]   (http://bulbapedia.bulbagarden.net/wiki/Rival)
 //
 // To prevent our pattern from matching all but the last character of that whitespace, we make sure
 // our match is followed by neither an open bracket nor by another whitespace character. 
