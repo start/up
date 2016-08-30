@@ -49,20 +49,6 @@ context('Any example input convention followed immediately by a (second) parenth
 
 
 context("As long as there is no whitespace between the example input and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
-  specify('The linkifying URL can contain whitespace', () => {
-    expectEveryPermutationOfBrackets({
-      precededBy: '{ My Cart }',
-      bracketedSegments: [
-        { text: 'https://example.com/my cart' }
-      ],
-      toProduce: insideDocumentAndParagraph([
-        new Link([
-          new ExampleInput('My Cart')
-        ], 'https://example.com/my cart'),
-      ])
-    })
-  })
-
   specify('The linkifying URL can start with whitespace', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
@@ -73,6 +59,20 @@ context("As long as there is no whitespace between the example input and the lin
         new Link([
           new ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
+      ])
+    })
+  })
+
+  specify('The linkifying URL can contain whitespace', () => {
+    expectEveryPermutationOfBrackets({
+      precededBy: '{ My Cart }',
+      bracketedSegments: [
+        { text: 'https://example.com/my cart' }
+      ],
+      toProduce: insideDocumentAndParagraph([
+        new Link([
+          new ExampleInput('My Cart')
+        ], 'https://example.com/my cart'),
       ])
     })
   })

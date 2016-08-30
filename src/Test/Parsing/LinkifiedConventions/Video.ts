@@ -34,17 +34,32 @@ describe('Any video convention (with its URL) followed immediately by a (second)
       bracketedSegments: [
         { text: 'video: you fight Gary' },
         { text: 'https://example.com/fight.webm' },
-        { text: 'http://example.com/finalbattle' }
+        { text: 'http://example.com/final-battle' }
       ],
       toProduce: new UpDocument([
         new Link([
           new Video('you fight Gary', 'https://example.com/fight.webm')
-        ], 'http://example.com/finalbattle')
+        ], 'http://example.com/final-battle')
       ])
     })
   })
 
   context("As long as there is no whitespace between the video's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
+    specify('The linkifying URL can start with whitespace', () => {
+      expectEveryPermutationOfBrackets({
+        bracketedSegments: [
+          { text: 'video: you fight Gary' },
+          { text: 'https://example.com/fight.webm' },
+          { text: ' \t \t http://example.com/final battle' }
+        ],
+        toProduce: new UpDocument([
+          new Link([
+            new Video('you fight Gary', 'https://example.com/fight.webm')
+          ], 'http://example.com/final battle')
+        ])
+      })
+    })
+
     specify('The linkifying URL can contain whitespace', () => {
       expectEveryPermutationOfBrackets({
         bracketedSegments: [
@@ -61,18 +76,17 @@ describe('Any video convention (with its URL) followed immediately by a (second)
     })
   })
 
-
-  specify('The linkifying URL can start with whitespace', () => {
+  specify('The linkifying URL can start with whitespace, contain whitespace, and not have a URL scheme', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'video: you fight Gary' },
         { text: 'https://example.com/fight.webm' },
-        { text: ' \t \t http://example.com/final battle' }
+        { text: ' \t \t example.com/final battle' }
       ],
       toProduce: new UpDocument([
         new Link([
           new Video('you fight Gary', 'https://example.com/fight.webm')
-        ], 'http://example.com/final battle')
+        ], 'https://example.com/final battle')
       ])
     })
   })

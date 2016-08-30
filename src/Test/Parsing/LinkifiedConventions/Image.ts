@@ -47,6 +47,21 @@ describe('Any image convention (with its URL) followed immediately by a (second)
 
 
 context("As long as there is no whitespace between the image's URL and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
+  specify('The linkifying URL can start with whitespace', () => {
+    expectEveryPermutationOfBrackets({
+      bracketedSegments: [
+        { text: 'image: you fight Gary' },
+        { text: 'https://example.com/fight.svg' },
+        { text: ' \t \t http://example.com/final-battle' }
+      ],
+      toProduce: new UpDocument([
+        new Link([
+          new Image('you fight Gary', 'https://example.com/fight.svg')
+        ], 'http://example.com/final-battle')
+      ])
+    })
+  })
+
   specify('The linkifying URL can contain whitespace', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
@@ -62,17 +77,17 @@ context("As long as there is no whitespace between the image's URL and the linki
     })
   })
 
-  specify('The linkifying URL can contain whitespace', () => {
+  specify('The linkifying URL can start with whitespace, contain whitespace, and not have a URL scheme', () => {
     expectEveryPermutationOfBrackets({
       bracketedSegments: [
         { text: 'image: you fight Gary' },
         { text: 'https://example.com/fight.svg' },
-        { text: ' \t \t http://example.com/final battle' }
+        { text: ' \t \t example.com/final battle' }
       ],
       toProduce: new UpDocument([
         new Link([
           new Image('you fight Gary', 'https://example.com/fight.svg')
-        ], 'http://example.com/final battle')
+        ], 'https://example.com/final battle')
       ])
     })
   })
