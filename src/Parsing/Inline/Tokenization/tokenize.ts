@@ -491,9 +491,9 @@ class Tokenizer {
   //
   // Usage:
   //
-  //   For more information, see [reference: shading]
+  //   For more information, see [topic: shading]
   //
-  // When written to an output format (e.g. HTML), it should serve as a link to that entry.
+  // When rendered to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new Convention({
