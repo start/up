@@ -59,20 +59,21 @@ describe('Any video convention (with its URL) followed immediately by a (second)
         ])
       })
     })
+  })
 
-    specify('The linkifying URL can start with whitespace', () => {
-      expectEveryPermutationOfBrackets({
-        bracketedSegments: [
-          { text: 'video: you fight Gary' },
-          { text: 'https://example.com/fight.webm' },
-          { text: ' \t \t http://example.com/final battle' }
-        ],
-        toProduce: new UpDocument([
-          new Link([
-            new Video('you fight Gary', 'https://example.com/fight.webm')
-          ], 'http://example.com/final battle')
-        ])
-      })
+
+  specify('The linkifying URL can start with whitespace', () => {
+    expectEveryPermutationOfBrackets({
+      bracketedSegments: [
+        { text: 'video: you fight Gary' },
+        { text: 'https://example.com/fight.webm' },
+        { text: ' \t \t http://example.com/final battle' }
+      ],
+      toProduce: new UpDocument([
+        new Link([
+          new Video('you fight Gary', 'https://example.com/fight.webm')
+        ], 'http://example.com/final battle')
+      ])
     })
   })
 })
