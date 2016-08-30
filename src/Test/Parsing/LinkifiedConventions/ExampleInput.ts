@@ -77,7 +77,7 @@ context("As long as there is no whitespace between the example input and the lin
     })
   })
 
-  specify('The linkifying can start with whitespace, contain whitespace, and not have a URL scheme', () => {
+  specify('The linkifying URL can start with whitespace, contain whitespace, and not have a URL scheme', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
       bracketedSegments: [

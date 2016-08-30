@@ -67,12 +67,27 @@ context("As long as there is no whitespace between the audio's URL and the linki
       bracketedSegments: [
         { text: 'audio: you fight Gary' },
         { text: 'https://example.com/fight.ogg' },
-        { text: ' \t \thttp://example.com/final battle' }
+        { text: ' \t \thttp://example.com/final-battle' }
       ],
       toProduce: new UpDocument([
         new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
-        ], 'http://example.com/final battle')
+        ], 'http://example.com/final-battle')
+      ])
+    })
+  })
+
+  specify('The linkifying URL can start with whitespace, contain whitespace, and not have a URL scheme', () => {
+    expectEveryPermutationOfBrackets({
+      bracketedSegments: [
+        { text: 'audio: you fight Gary' },
+        { text: 'https://example.com/fight.ogg' },
+        { text: ' \t \t example.com/final battle' }
+      ],
+      toProduce: new UpDocument([
+        new Link([
+          new Audio('you fight Gary', 'https://example.com/fight.ogg')
+        ], 'https://example.com/final battle')
       ])
     })
   })
