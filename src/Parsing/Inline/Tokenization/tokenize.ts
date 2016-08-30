@@ -553,48 +553,42 @@ class Tokenizer {
     }))
   }
 
-  // Link's bracketed URLs directly follow their bracketed content:
+  // Links' bracketed URLs follow their bracketed content. For example:
   //
-  // You should try [Typescript](http://www.typescriptlang.org).
+  //   You should try [Typescript](http://www.typescriptlang.org).
   //
   // If we're very sure that the author is intending to produce a link, we allow whitespace between
-  // the link's bracketed content and its bracketed URL. For example:
+  // the link's bracketed URL and its bracketed content. For example:
   //
-  // You should try [Typescript] (http://www.typescriptlang.org).
+  //   You should try [Typescript] (http://www.typescriptlang.org).
   //
-  // To ensure the author actually intends to produce a link, we apply some extra rules if there is
-  // any whitespace between a link's content and its URL.
+  // To verify the author actually intends to produce a link, we apply some extra rules (but only if 
+  // there is whitespace between a link's content and its URL):
   //
   // 1. First, the URL must either:
   //    * Have a scheme (like "mailto:" or "https://")
   //    * Start with a slash
   //    * Start with a hash mark ("#")
-  //    * Has a subdomain and a top-level domain
+  //    * Have a subdomain and a top-level domain
   //      
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
-  // 3. If the URL merely has a subdomain and a top-level domain:
+  // 3. Lastly, if the URL had no scheme but did have a subdomain and a top-level domain:
   //    * The top-level domain must consist solely of letters
   //    * The URL must start with a number or a letter
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): Convention[] {
-    return concat(PARENTHETICAL_BRACKETS.map(bracket => {
-      return [
-        this.getBracketedUrlConvention({
-          bracket,
-          whenClosing: url => this.closeLink(url)
-        }),
-        this.getConventionForBracketedUrlOffsetByWhitespace({
-          bracket,
-          whenClosing: url => this.closeLink(url)
-        })
-      ]
-    }))
-  }
+    const whenClosing = (url: string) => {
+      // When closing a link URL, we're (correctly) going to assume that the most recent token is a
+      // `LinkEndToken`.
+      this.mostRecentToken.value = url
+    }
 
-  private closeLink(url: string) {
-    this.mostRecentToken.value = url
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
+      this.getConventionForBracketedUrl({ bracket, whenClosing }),
+      this.getConventionForBracketedUrlOffsetByWhitespace({ bracket, whenClosing })
+    ]))
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
@@ -628,7 +622,7 @@ class Tokenizer {
           canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
-      ].map(args => this.getBracketedUrlConvention(args)),
+      ].map(args => this.getConventionForBracketedUrl(args)),
 
       ...[
         {
@@ -645,7 +639,7 @@ class Tokenizer {
     ))
   }
 
-  private getBracketedUrlConvention(
+  private getConventionForBracketedUrl(
     args: {
       bracket: Bracket
       canOnlyOpenIfDirectlyFollowing?: TokenKind[]
