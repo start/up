@@ -173,6 +173,7 @@ context('An example input convention is not linkified when it is directly follow
   })
 })
 
+
 describe('An otherwise-valid linkified example input convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.toDocument('{ Call }(\\tel:5555555555)')).to.deep.equal(
