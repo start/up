@@ -47,7 +47,7 @@ const SQUARE_BRACKET =
   new Bracket('[', ']')
 
 // Many of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
-// These conventions support both paretheses and square brackets, allowing either kind of brackets to be
+// These conventions support both paretheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
 const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
@@ -55,8 +55,8 @@ const PARENTHETICAL_BRACKETS = [
 ]
 
 
-// The example input convention is the only convention to incorporate curly brackets. For more information
-// about that convention, see the `getExampleInputConvention` method below.
+// The example input convention is the only convention enclosed within curly brackets. For more information
+// about that convention, see the `getExampleInputConvention` method.
 const CURLY_BRACKET =
   new Bracket('{', '}')
 
@@ -594,7 +594,8 @@ class Tokenizer {
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
   // 
   // When a rich convention is linkified, its content gets wrapped in a link. On the other hand,
-  // when a media convention is linkified, it gets placed inside a link.
+  // when a media convention or example input convention is linkified, it gets placed inside a
+  // link.
   //
   // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information,
