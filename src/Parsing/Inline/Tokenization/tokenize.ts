@@ -573,20 +573,18 @@ class Tokenizer {
   //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): Convention[] {
-    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
-      this.getBracketedUrlConvention({
-        bracket,
-        whenClosing: url => this.closeLink(url)
-      }),
-      this.getConventionForBracketedUrlOffsetByWhitespace({
-        bracket,
-        whenClosing: url => this.closeLink(url)
-      })
-    ]))
-  }
-
-  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
-    return URL_CONSISTING_SOLELY_OF_PREFIX.test(url)
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => {
+      return [
+        this.getBracketedUrlConvention({
+          bracket,
+          whenClosing: url => this.closeLink(url)
+        }),
+        this.getConventionForBracketedUrlOffsetByWhitespace({
+          bracket,
+          whenClosing: url => this.closeLink(url)
+        })
+      ]
+    }))
   }
 
   private closeLink(url: string) {
@@ -715,6 +713,10 @@ class Tokenizer {
         }
       }
     })
+  }
+
+  private probablyWasNotIntendedToBeAUrl(url: string): boolean {
+    return URL_CONSISTING_SOLELY_OF_PREFIX.test(url)
   }
 
   private closeLinkifyingUrlForRichConventions(url: string): void {
