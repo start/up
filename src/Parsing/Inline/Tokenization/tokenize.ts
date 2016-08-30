@@ -577,7 +577,7 @@ class Tokenizer {
         bracket,
         whenClosing: url => this.closeLink(url)
       }),
-      this.getConventionForWhitespaceFollowedByBracketedUrl({
+      this.getConventionForBracketedUrlOffsetByWhitespace({
         bracket,
         whenClosing: url => this.closeLink(url)
       })
@@ -599,7 +599,7 @@ class Tokenizer {
   //
   // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information,
-  // see `getConventionsForWhitespaceFollowedByLinkUrl`.
+  // see `getConventionForBracketedUrlOffsetByWhitespace`.
   private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT_CONVENTION,
@@ -635,7 +635,7 @@ class Tokenizer {
           canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
           whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
         }
-      ].map(args => this.getConventionForWhitespaceFollowedByBracketedUrl(args))
+      ].map(args => this.getConventionForBracketedUrlOffsetByWhitespace(args))
     ]
     ))
   }
@@ -673,7 +673,7 @@ class Tokenizer {
         escapeForRegex(ESCAPER_CHAR)))
   }
 
-  private getConventionForWhitespaceFollowedByBracketedUrl(
+  private getConventionForBracketedUrlOffsetByWhitespace(
     args: {
       bracket: Bracket
       canOnlyOpenIfDirectlyFollowing?: TokenKind[]
