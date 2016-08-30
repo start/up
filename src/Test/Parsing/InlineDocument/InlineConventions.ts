@@ -233,6 +233,37 @@ context('Except for footnots, every inline convention is supported in inline doc
           new Video('cricket meowing', 'https://example.com/meow.webm')
         ]))
     })
+
+
+    context('Typography:', () => {
+      specify('En dashes', () => {
+        expect(Up.toInlineDocument('Pages 141--145 explain why Abra is the best Pokémon.')).to.deep.equal(
+          new InlineUpDocument([
+            new PlainText('Pages 141–145 explain why Abra is the best Pokémon.')
+          ]))
+      })
+
+      specify('Em dashes', () => {
+        expect(Up.toInlineDocument('Yeah---I believe you.')).to.deep.equal(
+          new InlineUpDocument([
+            new PlainText('Yeah—I believe you.')
+          ]))
+      })
+
+      specify('Ellipses', () => {
+        expect(Up.toInlineDocument('Yeah... I believe you.')).to.deep.equal(
+          new InlineUpDocument([
+            new PlainText('Yeah… I believe you.')
+          ]))
+      })
+
+      specify('Plus-minus signs', () => {
+        expect(Up.toInlineDocument('I would love 10 burgers please, +-9.')).to.deep.equal(
+          new InlineUpDocument([
+            new PlainText('I would love 10 burgers please, ±9.')
+          ]))
+      })
+    })
   })
 
 
