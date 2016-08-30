@@ -18,6 +18,10 @@ export function oneOrMore(pattern: string): string {
   return atLeast(1, pattern)
 }
 
+export function multiple(pattern: string): string {
+  return atLeast(2, pattern)
+}
+
 export function atLeast(count: number, pattern: string): string {
   return group(pattern) + `{${count},}`
 }

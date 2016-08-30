@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -1435,10 +1435,10 @@ const PERIOD =
   escapeForRegex('.')
 
 const ELLIPSIS_PATTERN =
-  patternStartingWith(atLeast(2, PERIOD))
+  patternStartingWith(multiple(PERIOD))
 
 const EN_OR_EM_DASH_PATTERN =
-  patternStartingWith(atLeast(2, '-'))
+  patternStartingWith(multiple('-'))
 
 const PLUS_MINUS_SIGN_PATTERN =
   patternStartingWith(escapeForRegex('+-'))
