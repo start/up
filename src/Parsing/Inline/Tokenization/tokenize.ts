@@ -668,7 +668,8 @@ class Tokenizer {
 
   private getStartPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
     return bracket.startPattern + notFollowedBy(
-      ANY_WHITESPACE + anyCharMatching(
+      ANY_WHITESPACE
+      + anyCharMatching(
         bracket.endPattern,
         escapeForRegex(ESCAPER_CHAR)))
   }
@@ -1504,6 +1505,10 @@ const NAKED_URL_SCHEME_AND_HOSTNAME =
 //
 // For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method.
 
+
+const PARENTHETICAL_BRACKET_START_PATTERNS =
+  PARENTHETICAL_BRACKETS.map(bracket => bracket.startPattern)
+
 const ALL_BRACKETS =
   [PARENTHESIS, SQUARE_BRACKET, CURLY_BRACKET]
 
@@ -1546,4 +1551,4 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   patternStartingWith(
     SOME_WHITESPACE + notFollowedBy(
-      anyCharMatching(...BRACKET_START_PATTERNS, WHITESPACE_CHAR)))
+      anyCharMatching(...PARENTHETICAL_BRACKET_START_PATTERNS, WHITESPACE_CHAR)))

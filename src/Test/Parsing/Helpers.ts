@@ -35,11 +35,14 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
 
 export function expectEveryPermutationOfBrackets(
   args: {
+    precededBy?: string
     bracketedSegments: BracketedSegment[]
     toProduce: UpDocument
   }
 ): void {
   const { toProduce } = args
+
+  const precededBy = args.precededBy || ''
 
   const segments = args.bracketedSegments.map(segment => ({
     prefixes: segment.prefixes || [''],
@@ -54,14 +57,15 @@ export function expectEveryPermutationOfBrackets(
   const permutationsBySegment =
     segments.map(segment =>
       concat(
-        segment.prefixes.map(prefix =>
+        segment.prefixes.map(segmentPrefix =>
           BRACKETS.map(bracket =>
-            prefix + wrapInBracket(segment.text, bracket)))))
+            precededBy + segmentPrefix + wrapInBracket(segment.text, bracket)))))
 
   for (const permutation of everyPermutation('', permutationsBySegment)) {
     expect(Up.toDocument(permutation)).to.deep.equal(toProduce)
   }
 }
+
 
 // Returns every permutation of the different values for each segment, each prefixed by `prefix`. 
 //
