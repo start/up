@@ -65,7 +65,21 @@ context("As long as there is no whitespace between the example input and the lin
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
       bracketedSegments: [
-        { text: ' \t \t https://example.com/my cart' }
+        { text: ' \t \t https://example.com/my-cart' }
+      ],
+      toProduce: insideDocumentAndParagraph([
+        new Link([
+          new ExampleInput('My Cart')
+        ], 'https://example.com/my-cart'),
+      ])
+    })
+  })
+
+  specify('The linkifying can start with whitespace, contain whitespace, and not have a URL scheme', () => {
+    expectEveryPermutationOfBrackets({
+      precededBy: '{ My Cart }',
+      bracketedSegments: [
+        { text: ' \t \t example.com/my cart' }
       ],
       toProduce: insideDocumentAndParagraph([
         new Link([
