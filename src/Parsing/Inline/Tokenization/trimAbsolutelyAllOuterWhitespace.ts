@@ -1,4 +1,4 @@
-import { escapeForRegex, patternStartingWith, patternEndingWith, everyOptional, optional, atLeastOne } from '../../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, patternEndingWith, everyOptional, optional, oneOrMore } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, WHITESPACE_CHAR } from '../../../PatternPieces'
 import { ESCAPER_CHAR } from '../../Strings'
 
@@ -22,7 +22,7 @@ const CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE =
 
 const ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
   patternStartingWith(
-    atLeastOne(
+    oneOrMore(
       CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE))
 
 

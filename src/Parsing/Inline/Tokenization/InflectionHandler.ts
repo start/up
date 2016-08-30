@@ -1,7 +1,7 @@
 import { RichConvention } from './RichConvention'
 import { InflectionStartDelimiter } from './InflectionStartDelimiter'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { escapeForRegex, patternStartingWith, atLeastOne } from '../../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
@@ -28,7 +28,7 @@ export class InflectionHandler {
   ) {
     this.delimiterPattern = this.delimiterPattern ||
       patternStartingWith(
-        atLeastOne(escapeForRegex(args.delimiterChar)))
+        oneOrMore(escapeForRegex(args.delimiterChar)))
   }
 
   addOpenStartDelimiter(delimiter: string, tokenIndex: number) {

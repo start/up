@@ -1,4 +1,4 @@
-import { patternStartingWith, patternEndingWith, atLeastOne, anyCharBut } from '../../../PatternHelpers'
+import { patternStartingWith, patternEndingWith, oneOrMore, anyCharBut } from '../../../PatternHelpers'
 import { TextConsumer } from './TextConsumer'
 import { TokenKind } from './TokenKind'
 import { Token } from './Token'
@@ -116,19 +116,19 @@ const CODE_DELIMITER_CHAR =
 
 const CONTENT_THAT_CANNOT_CLOSE_CODE_PATTERN =
   patternStartingWith(
-    atLeastOne(anyCharBut(CODE_DELIMITER_CHAR)))
+    oneOrMore(anyCharBut(CODE_DELIMITER_CHAR)))
 
 const CODE_DELIMITER_PATTERN =
   patternStartingWith(
-    atLeastOne(CODE_DELIMITER_CHAR))
+    oneOrMore(CODE_DELIMITER_CHAR))
 
-const AT_LEAST_ONE_SPACE =
-  atLeastOne(' ')
+const ONE_OR_MORE_SPACES =
+  oneOrMore(' ')
 
 const LEADING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
   patternStartingWith(
-    AT_LEAST_ONE_SPACE + CODE_DELIMITER_CHAR)
+    ONE_OR_MORE_SPACES + CODE_DELIMITER_CHAR)
 
 const TRAILING_SPACE_WAS_USED_FOR_SEPARATION_PATTERN =
   patternEndingWith(
-    CODE_DELIMITER_CHAR + AT_LEAST_ONE_SPACE)
+    CODE_DELIMITER_CHAR + ONE_OR_MORE_SPACES)

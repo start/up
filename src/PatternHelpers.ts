@@ -14,7 +14,7 @@ export function everyOptional(pattern: string): string {
   return group(pattern) + '*'
 }
 
-export function atLeastOne(pattern: string): string {
+export function oneOrMore(pattern: string): string {
   return atLeast(1, pattern)
 }
 

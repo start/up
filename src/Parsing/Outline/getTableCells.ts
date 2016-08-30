@@ -1,5 +1,5 @@
 import { Table } from '../../SyntaxNodes/Table'
-import { patternStartingWith, atLeastOne } from '../../PatternHelpers'
+import { patternStartingWith, oneOrMore } from '../../PatternHelpers'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { Config } from '../../Config'
 import { last } from '../../CollectionHelpers'
@@ -103,4 +103,4 @@ export function getTableCells(row: string, config: Config): Table.Cell[] {
 
 
 const DELIMITER_PATTERN =
-  patternStartingWith(atLeastOne(';'))
+  patternStartingWith(oneOrMore(';'))

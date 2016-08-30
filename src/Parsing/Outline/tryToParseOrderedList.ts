@@ -1,7 +1,7 @@
 import { LineConsumer } from './LineConsumer'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
-import { optional, patternStartingWith, escapeForRegex, atLeastOne, either, anyCharFrom, capture } from '../../PatternHelpers'
+import { optional, patternStartingWith, escapeForRegex, oneOrMore, either, anyCharFrom, capture } from '../../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
@@ -139,7 +139,7 @@ function getExplicitOrdinal(unparsedListItem: UnparsedListItem): number {
 
 
 export const INTEGER =
-  optional(escapeForRegex('-')) + atLeastOne(DIGIT)
+  optional(escapeForRegex('-')) + oneOrMore(DIGIT)
 
 const FIRST_INTEGER_PATTERN =
   new RegExp(INTEGER)

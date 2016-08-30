@@ -1,4 +1,4 @@
-import { anyCharMatching, everyOptional, atLeastOne, anyCharNotMatching, escapeForRegex } from './PatternHelpers'
+import { anyCharMatching, everyOptional, oneOrMore, anyCharNotMatching, escapeForRegex } from './PatternHelpers'
 
 
 export const INLINE_WHITESPACE_CHAR =
@@ -11,7 +11,7 @@ export const ANY_WHITESPACE =
   everyOptional(WHITESPACE_CHAR)
 
 export const SOME_WHITESPACE =
-  atLeastOne(WHITESPACE_CHAR)
+  oneOrMore(WHITESPACE_CHAR)
 
 export const LETTER_CLASS =
   'a-zA-Z'

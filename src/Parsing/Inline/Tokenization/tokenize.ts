@@ -1,5 +1,5 @@
 import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, atLeastOne, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
+import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, atLeast, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
@@ -1460,10 +1460,10 @@ const URL_SUBDOMAIN =
   + escapeForRegex('.')
 
 const URL_TOP_LEVEL_DOMAIN =
-  atLeastOne(LETTER_CHAR)
+  oneOrMore(LETTER_CHAR)
 
 const TOP_LEVEL_DOMAIN_WITH_AT_LEAST_ONE_SUBDOMAIN =
-  atLeastOne(URL_SUBDOMAIN) + URL_TOP_LEVEL_DOMAIN
+  oneOrMore(URL_SUBDOMAIN) + URL_TOP_LEVEL_DOMAIN
 
 const EXPLICIT_URL_PREFIX =
   either(
@@ -1506,7 +1506,7 @@ const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
 
 const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
   patternStartingWith(
-    atLeastOne(
+    oneOrMore(
       either(
         anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
         // An "h" can only trigger any tokenizer changes if it's the start of a bare URL scheme.
