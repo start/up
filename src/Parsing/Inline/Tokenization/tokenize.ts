@@ -19,7 +19,7 @@ import { Token } from './Token'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
-import { trimAbsolutelyAllOuterWhitespace } from './trimAbsolutelyAllOuterWhitespace'
+import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -181,7 +181,7 @@ class Tokenizer {
 
   constructor(markup: string, private config: Config, isTokenizingInlineDocument = false) {
     this.markupConsumer =
-      new TextConsumer(trimAbsolutelyAllOuterWhitespace(markup))
+      new TextConsumer(trimEscapedAndUnescapedOuterWhitespace(markup))
 
     this.configureConventions(isTokenizingInlineDocument)
 

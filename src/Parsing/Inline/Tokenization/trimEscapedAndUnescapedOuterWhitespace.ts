@@ -5,20 +5,18 @@ import { ESCAPER_CHAR } from '../../Strings'
 
 // For inline markup, any outer whitespace is considered meaningless, even when it's escaped.
 // This function strips it all away.
-export function trimAbsolutelyAllOuterWhitespace(markup: string): string {
+export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
   return markup
     .replace(ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
     .replace(ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
 }
 
 
-// For now, the escaper character is always going to be a backslash, which requires escaping
-// for inclusion in regular expressions.
-const ESCAPER_PATTERN =
+const ESCAPER =
   escapeForRegex(ESCAPER_CHAR)
 
 const CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE =
-  optional(ESCAPER_PATTERN) + SOME_WHITESPACE
+  optional(ESCAPER) + SOME_WHITESPACE
 
 const ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
   patternStartingWith(
@@ -62,4 +60,4 @@ const ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
   patternEndingWith(
     WHITESPACE_CHAR
     + everyOptional(CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE)
-    + optional(ESCAPER_PATTERN))
+    + optional(ESCAPER))
