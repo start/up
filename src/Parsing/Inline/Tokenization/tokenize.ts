@@ -608,9 +608,6 @@ class Tokenizer {
       FOOTNOTE_CONVENTION
     ].map(richConvention => richConvention.endTokenKind)
 
-    // All media conventions use the same end token
-    const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaEndAndUrl]
-
     return concat(PARENTHETICAL_BRACKETS.map(bracket => {
       const argsForRichConventions = {
         bracket,
@@ -620,13 +617,20 @@ class Tokenizer {
 
       const argsForMediaConentions = {
         bracket,
-        canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
+        canOnlyOpenIfDirectlyFollowing: [TokenKind.MediaEndAndUrl],
         whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
+      }
+
+      const argsForExampleInput = {
+        bracket,
+        canOnlyOpenIfDirectlyFollowing: [TokenKind.ExampleInput],
+        whenClosing: (url: string) => this.closeLinkifyingUrlForExampleInputConvention(url)
       }
 
       const allArgs = [
         argsForRichConventions,
-        argsForMediaConentions
+        argsForMediaConentions,
+        argsForExampleInput
       ]
 
       return concat(allArgs.map(args => ([
@@ -744,6 +748,20 @@ class Tokenizer {
     // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
     last(this.tokens).value = url
   }
+
+  private closeLinkifyingUrlForExampleInputConvention(url: string): void {
+    // We're going to (corretly) assume that the last token is `ExampleInput` 
+    const indexOfExampleInputToken = this.tokens.length - 1
+
+    this.encloseWithin({
+      richConvention: LINK_CONVENTION,
+      startingBackAtTokenIndex: indexOfExampleInputToken
+    })
+
+    // Now, the last token is a LinkEndAndUrl token. Let's assign its URL!
+    last(this.tokens).value = url
+  }
+
 
   private getRawParentheticalBracketConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
