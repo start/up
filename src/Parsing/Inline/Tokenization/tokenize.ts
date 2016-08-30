@@ -598,7 +598,7 @@ class Tokenizer {
   //
   // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information,
-  // see `getConventionForBracketedUrlOffsetByWhitespace`.
+  // see `getLinkUrlConventions`.
   private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT_CONVENTION,
@@ -611,32 +611,29 @@ class Tokenizer {
     // All media conventions use the same end token
     const KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS = [TokenKind.MediaEndAndUrl]
 
-    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
-      ...[
-        {
-          bracket,
-          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
-          whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
-        }, {
-          bracket,
-          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
-          whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
-        }
-      ].map(args => this.getConventionForBracketedUrl(args)),
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => {
+      const argsForRichConventions = {
+        bracket,
+        canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
+        whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
+      }
 
-      ...[
-        {
-          bracket,
-          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
-          whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
-        }, {
-          bracket,
-          canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
-          whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
-        }
-      ].map(args => this.getConventionForBracketedUrlOffsetByWhitespace(args))
-    ]
-    ))
+      const argsForMediaConentions = {
+        bracket,
+        canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_MEDIA_CONVENTIONS,
+        whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
+      }
+
+      const allArgs = [
+        argsForRichConventions,
+        argsForMediaConentions
+      ]
+
+      return concat(allArgs.map(args => ([
+        this.getConventionForBracketedUrl(args),
+        this.getConventionForBracketedUrlOffsetByWhitespace(args)
+      ])))
+    }))
   }
 
   private getConventionForBracketedUrl(
