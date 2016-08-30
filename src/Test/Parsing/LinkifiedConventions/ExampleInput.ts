@@ -8,6 +8,8 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
+import { Highlight } from '../../../SyntaxNodes/Highlight'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -91,8 +93,8 @@ context("As long as there is no whitespace between the example input and the lin
 })
 
 
-describe('An example input convention directly followed by an inline spoiler', () => {
-  it('is not linkified', () => {
+context('An example input convention is not linkified when it is directly followed by another bracketed convention, including (but not limited to):', () => {
+  specify('Inline spoilers', () => {
     expect(Up.toDocument('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
@@ -103,11 +105,8 @@ describe('An example input convention directly followed by an inline spoiler', (
         new PlainText('.')
       ]))
   })
-})
 
-
-describe('An example input convention directly followed by an inline NSFW convention', () => {
-  it('is not linkified', () => {
+  specify('Inline NSFW', () => {
     expect(Up.toDocument('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
@@ -118,11 +117,8 @@ describe('An example input convention directly followed by an inline NSFW conven
         new PlainText('.')
       ]))
   })
-})
 
-
-describe('An example input convention directly followed by an inline NSFL convention', () => {
-  it('is not linkified', () => {
+  specify('Inline NSFL', () => {
     expect(Up.toDocument('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
@@ -133,11 +129,29 @@ describe('An example input convention directly followed by an inline NSFL conven
         new PlainText('.')
       ]))
   })
-})
 
+  specify('Highlights', () => {
+    expect(Up.toDocument('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('To view your shopping cart, press '),
+        new ExampleInput('My Cart'),
+        new Highlight([
+          new PlainText('and then buy me stuff')
+        ]),
+        new PlainText('.')
+      ]))
+  })
 
-describe('An example input convention directly followed by a footnote', () => {
-  it("is not linkified", () => {
+  specify('References to table of contents entries', () => {
+    expect(Up.toDocument('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('To view your shopping cart, press '),
+        new ExampleInput('My Cart'),
+        new ReferenceToTableOfContentsEntry('shopping cart')
+      ]))
+  })
+
+  specify("Footnotes", () => {
     const markup = "To view your shopping cart, press { My Cart }[^Then buy me stuff!]."
 
     const footnotes = [
@@ -158,7 +172,6 @@ describe('An example input convention directly followed by a footnote', () => {
       ]))
   })
 })
-
 
 describe('An otherwise-valid linkified example input convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
