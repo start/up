@@ -58,8 +58,6 @@ context('Every syntax node class is exported:', () => {
     'NormalParenthetical',
     'PlainText',
     'ReferenceToTableOfContentsEntry',
-    'RevisionDeletion',
-    'RevisionInsertion',
     'SpoilerBlock',
     'SquareParenthetical',
     'Stress',
