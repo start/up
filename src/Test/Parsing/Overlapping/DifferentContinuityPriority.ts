@@ -12,8 +12,6 @@ import { Bold } from'../../../SyntaxNodes/Bold'
 import { InlineSpoiler } from'../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from'../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from'../../../SyntaxNodes/InlineNsfl'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from'../../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from'../../../SyntaxNodes/SquareParenthetical'
 import { Footnote } from'../../../SyntaxNodes/Footnote'
@@ -242,80 +240,6 @@ context('When a link overlaps highlighted text, the highlighted text will always
         ]),
         new Link([
           new Highlight([
-            new PlainText('care')
-          ]),
-          new PlainText(' at'),
-        ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new PlainText(' all.')
-      ]))
-  })
-})
-
-
-context('When a link overlaps revision deletion, the revision deletion will always be split. This includes when:', () => {
-  specify('The link opens first', () => {
-    expect(Up.toDocument('This [trash ~~can](https://en.wikipedia.org/wiki/Waste_container) not~~ stay here.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('This '),
-        new Link([
-          new PlainText('trash '),
-          new RevisionDeletion([
-            new PlainText('can')
-          ]),
-        ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new RevisionDeletion([
-          new PlainText(' not')
-        ]),
-        new PlainText(' stay here.')
-      ]))
-  })
-
-  specify('The revision deletion opens first', () => {
-    expect(Up.toDocument('I do ~~not (care~~ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('I do '),
-        new RevisionDeletion([
-          new PlainText('not ')
-        ]),
-        new Link([
-          new RevisionDeletion([
-            new PlainText('care')
-          ]),
-          new PlainText(' at'),
-        ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new PlainText(' all.')
-      ]))
-  })
-})
-
-
-context('When a link overlaps revision insertion, the revision insertion will always be split. This includes when:', () => {
-  specify('The link opens first', () => {
-    expect(Up.toDocument('This [trash ++can](https://en.wikipedia.org/wiki/Waste_container) not++ stay here.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('This '),
-        new Link([
-          new PlainText('trash '),
-          new RevisionInsertion([
-            new PlainText('can')
-          ]),
-        ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new RevisionInsertion([
-          new PlainText(' not')
-        ]),
-        new PlainText(' stay here.')
-      ]))
-  })
-
-  specify('The revision deletion opens first', () => {
-    expect(Up.toDocument('I do ++not (care++ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('I do '),
-        new RevisionInsertion([
-          new PlainText('not ')
-        ]),
-        new Link([
-          new RevisionInsertion([
             new PlainText('care')
           ]),
           new PlainText(' at'),

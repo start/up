@@ -6,8 +6,6 @@ import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { Stress } from'../../../SyntaxNodes/Stress'
 import { Italic } from'../../../SyntaxNodes/Italic'
 import { Bold } from'../../../SyntaxNodes/Bold'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
 import { NormalParenthetical } from'../../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from'../../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from'../../../SyntaxNodes/Highlight'
@@ -15,45 +13,6 @@ import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 
 
 // TODO: Organize these tests into contexts for clarity
-
-describe('Overlapped stressed and deleted text', () => {
-  it('splits the revision deletion node because it opened second', () => {
-    expect(Up.toDocument('I **love ~~drinking** whole~~ milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('I '),
-        new Stress([
-          new PlainText('love '),
-          new RevisionDeletion([
-            new PlainText('drinking')
-          ])
-        ]),
-        new RevisionDeletion([
-          new PlainText(' whole')
-        ]),
-        new PlainText(' milk.')
-      ]))
-  })
-})
-
-
-describe('Overlapped deleted and stressed text', () => {
-  it('splits the stress node because it opened second', () => {
-    expect(Up.toDocument('I ~~love **drinking~~ whole** milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('I '),
-        new RevisionDeletion([
-          new PlainText('love '),
-          new Stress([
-            new PlainText('drinking')
-          ])
-        ]),
-        new Stress([
-          new PlainText(' whole')
-        ]),
-        new PlainText(' milk.')
-      ]))
-  })
-})
 
 
 describe('Overlapped emphasized and stressed text', () => {
@@ -176,19 +135,19 @@ describe('Overlapped stressed and bold text', () => {
 })
 
 
-describe('Overlapped emphasized and inserted text', () => {
-  it('splits the revision insertion node because it opened second', () => {
-    expect(Up.toDocument('I *love ++drinking* whole++ milk.')).to.deep.equal(
+describe('Overlapped emphasized and square bracketed text', () => {
+  it('splits the square parenthetical node because it opened second', () => {
+    expect(Up.toDocument('I *love [drinking* whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
           new PlainText('love '),
-          new RevisionInsertion([
-            new PlainText('drinking')
+          new SquareParenthetical([
+            new PlainText('[drinking')
           ])
         ]),
-        new RevisionInsertion([
-          new PlainText(' whole')
+        new SquareParenthetical([
+          new PlainText(' whole]')
         ]),
         new PlainText(' milk.')
       ]))
@@ -196,15 +155,15 @@ describe('Overlapped emphasized and inserted text', () => {
 })
 
 
-describe('Overlapped inserted and emphasized text', () => {
+describe('Overlapped square bracketed and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
     expect(Up.toDocument('I ++love *drinking++ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
-        new RevisionInsertion([
-          new PlainText('love '),
+        new SquareParenthetical([
+          new PlainText('[love '),
           new Emphasis([
-            new PlainText('drinking')
+            new PlainText('drinking]')
           ])
         ]),
         new Emphasis([
