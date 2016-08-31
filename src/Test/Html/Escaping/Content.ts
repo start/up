@@ -12,7 +12,7 @@ import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Stress } from '../../../SyntaxNodes/Stress'
-import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
@@ -297,7 +297,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
       new Paragraph([
         new Emphasis([
           new Stress([
-            new RevisionDeletion([
+            new InlineQuote([
               new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])

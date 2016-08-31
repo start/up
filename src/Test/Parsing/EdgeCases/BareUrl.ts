@@ -4,7 +4,6 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
@@ -107,11 +106,11 @@ describe("Unmatched opening parentheses in a bare URL", () => {
 
 describe("Unmatched opening parentheses in a bare URL closed by another convention closing", () => {
   it('do not prevent parenthesis from closing a subsequent bare URL', () => {
-    const markup = "(^Well, ++https://www.example.com/a(normal(url++'s better than https://w3.org)"
+    const markup = "(^Well, *https://www.example.com/a(normal(url*'s better than https://w3.org)"
 
     const footnote = new Footnote([
       new PlainText('Well, '),
-      new RevisionInsertion([
+      new Emphasis([
         new Link([
           new PlainText('www.example.com/a(normal(url')
         ], 'https://www.example.com/a(normal(url'),
@@ -157,9 +156,9 @@ describe('A bare URL scheme followed by a space', () => {
 
 describe('A bare URL scheme (only) immediately followed by another convention closing', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toDocument('++A URL scheme: http://++')).to.deep.equal(
+    expect(Up.toDocument('*A URL scheme: http://*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new RevisionInsertion([
+        new Emphasis([
           new PlainText('A URL scheme: http://')
         ])
       ]))

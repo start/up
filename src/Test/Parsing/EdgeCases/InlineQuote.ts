@@ -6,7 +6,7 @@ import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
+import { Italic } from '../../../SyntaxNodes/Italic'
 
 
 context('Within an inline quote, an (inner) inline quote can be the first convention within any other inner convention.', () => {
@@ -45,13 +45,13 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         ]))
     })
 
-    specify('Revision insertion', () => {
-      expect(Up.toDocument('Luigi stood up. "Hello, my ++"leetle"++ Mario!"')).to.deep.equal(
+    specify('Italics', () => {
+      expect(Up.toDocument('Luigi stood up. "Hello, my _"leetle"_ Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new InlineQuote([
             new PlainText('Hello, my '),
-            new RevisionInsertion([
+            new Italic([
               new InlineQuote([
                 new PlainText('leetle')
               ]),
@@ -80,12 +80,12 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
 
 
   specify('The inner inline quote can open immediately after several conventions have just opened', () => {
-    expect(Up.toDocument('Luigi stood up. "Hello, my ++(*"leetle"*)++ Mario!"')).to.deep.equal(
+    expect(Up.toDocument('Luigi stood up. "Hello, my _(*"leetle"*)_ Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Luigi stood up. '),
         new InlineQuote([
           new PlainText('Hello, my '),
-          new RevisionInsertion([
+          new Italic([
             new NormalParenthetical([
               new PlainText('('),
               new Emphasis([
@@ -138,13 +138,13 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
     })
 
     specify('Revision insertion', () => {
-      expect(Up.toDocument('"Luigi stood up. "Help me find brother ++Mario++", I heard Luigi say."')).to.deep.equal(
+      expect(Up.toDocument('"Luigi stood up. "Help me find brother _Mario_", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('Luigi stood up. '),
             new InlineQuote([
               new PlainText('Help me find brother '),
-              new RevisionInsertion([
+              new Italic([
                 new PlainText('Mario'),
               ]),
             ]),

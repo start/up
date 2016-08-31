@@ -17,8 +17,6 @@ import { Italic } from '../../../SyntaxNodes/Italic'
 import { Link } from '../../../SyntaxNodes/Link'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
 import { Stress } from'../../../SyntaxNodes/Stress'
 import { Video } from'../../../SyntaxNodes/Video'
 
@@ -188,28 +186,6 @@ context('Except for footnots, every inline convention is supported in inline doc
           new PlainText('I loved my '),
           new SquareParenthetical([
             new PlainText('[Nintendo]'),
-          ]),
-          new PlainText(' Game Boy, though I never took it with me when I left home.')
-        ]))
-    })
-
-    specify('Revision deletion', () => {
-      expect(Up.toInlineDocument('I loved my ~~Nintendo~~ Game Boy, though I never took it with me when I left home.')).to.deep.equal(
-        new InlineUpDocument([
-          new PlainText('I loved my '),
-          new RevisionDeletion([
-            new PlainText('Nintendo'),
-          ]),
-          new PlainText(' Game Boy, though I never took it with me when I left home.')
-        ]))
-    })
-
-    specify('Revision insertion', () => {
-      expect(Up.toInlineDocument('I loved my ++Nintendo++ Game Boy, though I never took it with me when I left home.')).to.deep.equal(
-        new InlineUpDocument([
-          new PlainText('I loved my '),
-          new RevisionInsertion([
-            new PlainText('Nintendo'),
           ]),
           new PlainText(' Game Boy, though I never took it with me when I left home.')
         ]))
