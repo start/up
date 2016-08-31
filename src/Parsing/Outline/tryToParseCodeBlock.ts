@@ -9,6 +9,8 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // If no matching end streak is found, the code block extends to the end of the document (or to
 // the end of the current outline convention, if the code block is nested within one).
+//
+// Code blocks can contain streaks of backticks that aren't exactly as long as the enclosing streaks.
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
@@ -16,8 +18,8 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
   markupLineConsumer.consume({
     linePattern: CODE_BLOCK_STREAK_PATTERN,
-    thenBeforeConsumingLine: match => {
-      startStreak = match
+    thenBeforeConsumingLine: line => {
+      startStreak = line
     }
   })
 
@@ -33,8 +35,8 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
     markupLineConsumer.consume({
       linePattern: CODE_BLOCK_STREAK_PATTERN,
-      thenBeforeConsumingLine: match => {
-        possibleEndStreak = match
+      thenBeforeConsumingLine: line => {
+        possibleEndStreak = line
       }
     })
 
