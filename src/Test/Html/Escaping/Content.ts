@@ -305,7 +305,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
       ])
     ])
 
-    expect(Up.toHtml(document)).to.equal('<p><em><strong><del>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</del></strong></em></p>')
+    expect(Up.toHtml(document)).to.equal('<p><em><strong><q>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</q></strong></em></p>')
   })
 })
 
