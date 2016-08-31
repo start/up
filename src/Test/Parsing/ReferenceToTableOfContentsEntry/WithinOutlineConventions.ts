@@ -742,6 +742,52 @@ Not quite true.`
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
+    specify('When a subsquent heading contains the snippet (and a previous one does not)', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie. See [topic: lies]
+==============================
+
+Not quite true.
+
+My lies
+=======
+
+I never drink soda.`
+
+      const drinkSodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const liesHeading =
+        new Heading([new PlainText('My lies')], { level: 1, ordinalInTableOfContents: 3 })
+
+      const neverLieHeading =
+        new Heading([
+          new PlainText('I never lie. See '),
+          new ReferenceToTableOfContentsEntry('lies', liesHeading),
+        ], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.deep.equal(
+        new UpDocument([
+          drinkSodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          liesHeading,
+          new Paragraph([
+            new PlainText('I never drink soda.')
+          ])
+        ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
+    })
+
     specify('When a subsquent heading perfectly matches the snippet', () => {
       const markup = `
 I drink soda
