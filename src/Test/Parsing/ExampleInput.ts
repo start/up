@@ -7,7 +7,7 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
 describe('Text surrounded by curly brackets', () => {
-  it('is put into an input instruciton node', () => {
+  it('is put into an example input node', () => {
     expect(Up.toDocument('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Press '),
