@@ -3,8 +3,6 @@ import Up from '../../../../index'
 import { insideDocumentAndParagraph } from '../../Helpers'
 import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../../SyntaxNodes/Paragraph'
-import { RevisionInsertion } from '../../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../../../SyntaxNodes/RevisionDeletion'
 import { PlainText } from '../../../../SyntaxNodes/PlainText'
 import { Link } from '../../../../SyntaxNodes/Link'
 import { Emphasis } from '../../../../SyntaxNodes/Emphasis'
@@ -18,11 +16,12 @@ import { Highlight } from '../../../../SyntaxNodes/Highlight'
 import { InlineNsfw } from '../../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../../SyntaxNodes/InlineNsfl'
 import { InlineSpoiler } from '../../../../SyntaxNodes/InlineSpoiler'
+import { ReferenceToTableOfContentsEntry } from '../../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { FootnoteBlock } from '../../../../SyntaxNodes/FootnoteBlock'
 
 
-context('Most inline conventions are not applied if they have no content.', () => {
-  context('Specifically:', () => {
+context('Inline conventions are not recognized if they are empty or blank.', () => {
+  context('Empty:', () => {
     specify('Highlights', () => {
       expect(Up.toDocument('[highlight:]')).to.eql(
         insideDocumentAndParagraph([
@@ -59,6 +58,15 @@ context('Most inline conventions are not applied if they have no content.', () =
         ]))
     })
 
+    specify('References to table of contents entries', () => {
+      expect(Up.toDocument('[topic:]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareParenthetical([
+            new PlainText('[topic:]')
+          ])
+        ]))
+    })
+
     specify('Footnotes', () => {
       expect(Up.toDocument('(^)')).to.eql(
         insideDocumentAndParagraph([
@@ -82,317 +90,284 @@ context('Most inline conventions are not applied if they have no content.', () =
         ]))
     })
 
-    specify('Input instructions', () => {
+    specify('Example input', () => {
       expect(Up.toDocument('{}')).to.eql(
         insideDocumentAndParagraph([
           new PlainText('{}')
         ]))
     })
-
-    specify('Revision insertion', () => {
-      // If the revision insertion delimiters were alone on a line, they would be interpreted as a thematic break streak. 
-      expect(Up.toDocument('Spiders.++++')).to.eql(
-        insideDocumentAndParagraph([
-          new PlainText('Spiders.++++')
-        ]))
-    })
-
-    specify('Revision insertion', () => {
-      // If the revision deletion delimiters were alone on a line, they would be interpreted as a thematic break streak.
-      expect(Up.toDocument('Spiders.~~~~')).to.eql(
-        insideDocumentAndParagraph([
-          new PlainText('Spiders.~~~~')
-        ]))
-    })
-
-
-    context('Of those conventions, only the revision conventions apply when containing only unescaped whitespace.', () => {
-      specify('Revision insertion applies.', () => {
-        expect(Up.toDocument('no++ ++one')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('no'),
-            new RevisionInsertion([
-              new PlainText(' ')
-            ]),
-            new PlainText('one')
-          ]))
-      })
-
-      specify('Revision deletion applies.', () => {
-        expect(Up.toDocument('e~~ ~~mail')).to.eql(
-          insideDocumentAndParagraph([
-            new PlainText('e'),
-            new RevisionDeletion([
-              new PlainText(' ')
-            ]),
-            new PlainText('mail')
-          ]))
-      })
-
-
-      context("These don't:", () => {
-        specify('Highlights', () => {
-          expect(Up.toDocument('[highlight:  \t  \t ]')).to.eql(
-            insideDocumentAndParagraph([
-              new SquareParenthetical([
-                new PlainText('[highlight:  \t  \t ]')
-              ])
-            ]))
-        })
-
-        specify('Spoilers', () => {
-          expect(Up.toDocument('[SPOILER:  \t  \t ]')).to.eql(
-            insideDocumentAndParagraph([
-              new SquareParenthetical([
-                new PlainText('[SPOILER:  \t  \t ]')
-              ])
-            ]))
-        })
-
-        specify('NSFW', () => {
-          expect(Up.toDocument('(NSFW:  \t  \t )')).to.eql(
-            insideDocumentAndParagraph([
-              new NormalParenthetical([
-                new PlainText('(NSFW:  \t  \t )')
-              ])
-            ]))
-        })
-
-        specify('NSFL', () => {
-          expect(Up.toDocument('[NSFL:  \t  \t ]')).to.eql(
-            insideDocumentAndParagraph([
-              new SquareParenthetical([
-                new PlainText('[NSFL:  \t  \t ]')
-              ])
-            ]))
-        })
-
-        specify('Footnotes', () => {
-          expect(Up.toDocument('(^  \t \t )')).to.eql(
-            insideDocumentAndParagraph([
-              new NormalParenthetical([
-                new PlainText('(^  \t \t )')
-              ])
-            ]))
-        })
-
-        specify('Parentheses', () => {
-          expect(Up.toDocument('(  \t  \t )')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('(  \t  \t )')
-            ]))
-        })
-
-        specify('Square brackets', () => {
-          expect(Up.toDocument('[  \t  \t ]')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('[  \t  \t ]')
-            ]))
-        })
-
-        specify('Input instructions', () => {
-          expect(Up.toDocument('{  \t  \t }')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('{  \t  \t }')
-            ]))
-        })
-      })
-    })
   })
 
 
-  context("Due to the nature of the inflection syntax, inflection conventions cannot be empty or blank.", () => {
-    context("Delimiters containing only whitespace are preserved as plain text.", () => {
-      context('With asterisks:', () => {
-        specify('Emphasis', () => {
-          // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
-          expect(Up.toDocument('Stars! * \t \t *')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('Stars! * \t \t *')
-            ]))
-        })
+  context('Blank:', () => {
+    specify('Highlights', () => {
+      expect(Up.toDocument('[highlight:  \t  \t ]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareParenthetical([
+            new PlainText('[highlight:  \t  \t ]')
+          ])
+        ]))
+    })
 
-        specify('Stress', () => {
-          expect(Up.toDocument('**\t  \t**')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('**\t  \t**')
-            ]))
-        })
+    specify('Spoilers', () => {
+      expect(Up.toDocument('[SPOILER:  \t  \t ]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareParenthetical([
+            new PlainText('[SPOILER:  \t  \t ]')
+          ])
+        ]))
+    })
 
-        specify('Combined inflection', () => {
-          expect(Up.toDocument('*** \t \t ***')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('*** \t \t ***')
-            ]))
-        })
+    specify('NSFW', () => {
+      expect(Up.toDocument('(NSFW:  \t  \t )')).to.eql(
+        insideDocumentAndParagraph([
+          new NormalParenthetical([
+            new PlainText('(NSFW:  \t  \t )')
+          ])
+        ]))
+    })
 
-        specify('Imbalanced delimiters', () => {
-          expect(Up.toDocument('*****\t  \t***')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('*****\t  \t***')
-            ]))
-        })
+    specify('NSFL', () => {
+      expect(Up.toDocument('[NSFL:  \t  \t ]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareParenthetical([
+            new PlainText('[NSFL:  \t  \t ]')
+          ])
+        ]))
+    })
+
+    specify('References to table of contents entries', () => {
+      expect(Up.toDocument('[section:  \t  \t ]')).to.eql(
+        insideDocumentAndParagraph([
+          new SquareParenthetical([
+            new PlainText('[section:  \t  \t ]')
+          ])
+        ]))
+    })
+
+    specify('Footnotes', () => {
+      expect(Up.toDocument('(^  \t \t )')).to.eql(
+        insideDocumentAndParagraph([
+          new NormalParenthetical([
+            new PlainText('(^  \t \t )')
+          ])
+        ]))
+    })
+
+    specify('Parentheses', () => {
+      expect(Up.toDocument('(  \t  \t )')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainText('(  \t  \t )')
+        ]))
+    })
+
+    specify('Square brackets', () => {
+      expect(Up.toDocument('[  \t  \t ]')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainText('[  \t  \t ]')
+        ]))
+    })
+
+    specify('Example input', () => {
+      expect(Up.toDocument('{  \t  \t }')).to.eql(
+        insideDocumentAndParagraph([
+          new PlainText('{  \t  \t }')
+        ]))
+    })
+  })
+})
 
 
-        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-          specify('1 character', () => {
-            expect(Up.toDocument('*')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('*')
-              ]))
-          })
-
-          specify('2 characters', () => {
-            expect(Up.toDocument('**')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('**')
-              ]))
-          })
-
-          specify('3 characters', () => {
-            // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-            expect(Up.toDocument('Stars! ***')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('Stars! ***')
-              ]))
-          })
-
-          specify('4 characters', () => {
-            // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-            expect(Up.toDocument('Stars! ****')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('Stars! ****')
-              ]))
-          })
-        })
+context("Due to the nature of the inflection syntax, inflection conventions cannot be empty or blank.", () => {
+  context("Delimiters containing only whitespace are preserved as plain text.", () => {
+    context('With asterisks:', () => {
+      specify('Emphasis', () => {
+        // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
+        expect(Up.toDocument('Stars! * \t \t *')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('Stars! * \t \t *')
+          ]))
       })
 
-      context('With underscores:', () => {
-        specify('Italics', () => {
-          expect(Up.toDocument('_ \t \t _')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('_ \t \t _')
-            ]))
-        })
+      specify('Stress', () => {
+        expect(Up.toDocument('**\t  \t**')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('**\t  \t**')
+          ]))
+      })
 
-        specify('Bold', () => {
-          expect(Up.toDocument('__\t  \t__')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('__\t  \t__')
-            ]))
-        })
+      specify('Combined inflection', () => {
+        expect(Up.toDocument('*** \t \t ***')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('*** \t \t ***')
+          ]))
+      })
 
-        specify('Combined inflection', () => {
-          expect(Up.toDocument('___ \t \t ___')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('___ \t \t ___')
-            ]))
-        })
-
-        specify('Imbalanced delimiters', () => {
-          expect(Up.toDocument('_____\t  \t___')).to.eql(
-            insideDocumentAndParagraph([
-              new PlainText('_____\t  \t___')
-            ]))
-        })
-
-
-        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-          specify('1 character', () => {
-            expect(Up.toDocument('_')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('_')
-              ]))
-          })
-
-          specify('2 characters', () => {
-            expect(Up.toDocument('__')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('__')
-              ]))
-          })
-
-          specify('3 characters', () => {
-            expect(Up.toDocument('___')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('___')
-              ]))
-          })
-
-          specify('4 characters', () => {
-            expect(Up.toDocument('____')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('____')
-              ]))
-          })
-        })
+      specify('Imbalanced delimiters', () => {
+        expect(Up.toDocument('*****\t  \t***')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('*****\t  \t***')
+          ]))
       })
 
 
-      context('With doublequotes:', () => {
-        specify('Surrounded by 1', () => {
-          expect(Up.toDocument('" \t \t "')).to.eql(
+      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+        specify('1 character', () => {
+          expect(Up.toDocument('*')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('" \t \t "')
+              new PlainText('*')
             ]))
         })
 
-        specify('Surrounded by 2', () => {
-          expect(Up.toDocument('""\t  \t""')).to.eql(
+        specify('2 characters', () => {
+          expect(Up.toDocument('**')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('""\t  \t""')
+              new PlainText('**')
             ]))
         })
 
-        specify('Surrounded by 3', () => {
-          expect(Up.toDocument('""" \t \t """')).to.eql(
+        specify('3 characters', () => {
+          // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+          expect(Up.toDocument('Stars! ***')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('""" \t \t """')
+              new PlainText('Stars! ***')
             ]))
         })
 
-        specify('Surrounded by 5', () => {
-          expect(Up.toDocument('"""""\t  \t"""')).to.eql(
+        specify('4 characters', () => {
+          // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+          expect(Up.toDocument('Stars! ****')).to.eql(
             insideDocumentAndParagraph([
-              new PlainText('"""""\t  \t"""')
+              new PlainText('Stars! ****')
+            ]))
+        })
+      })
+    })
+
+    context('With underscores:', () => {
+      specify('Italics', () => {
+        expect(Up.toDocument('_ \t \t _')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('_ \t \t _')
+          ]))
+      })
+
+      specify('Bold', () => {
+        expect(Up.toDocument('__\t  \t__')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('__\t  \t__')
+          ]))
+      })
+
+      specify('Combined inflection', () => {
+        expect(Up.toDocument('___ \t \t ___')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('___ \t \t ___')
+          ]))
+      })
+
+      specify('Imbalanced delimiters', () => {
+        expect(Up.toDocument('_____\t  \t___')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('_____\t  \t___')
+          ]))
+      })
+
+
+      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+        specify('1 character', () => {
+          expect(Up.toDocument('_')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('_')
             ]))
         })
 
+        specify('2 characters', () => {
+          expect(Up.toDocument('__')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('__')
+            ]))
+        })
 
-        context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-          specify('1 character', () => {
-            expect(Up.toDocument('"')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('"')
-              ]))
-          })
+        specify('3 characters', () => {
+          expect(Up.toDocument('___')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('___')
+            ]))
+        })
 
-          specify('2 characters', () => {
-            expect(Up.toDocument('""')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('""')
-              ]))
-          })
+        specify('4 characters', () => {
+          expect(Up.toDocument('____')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('____')
+            ]))
+        })
+      })
+    })
 
-          specify('3 characters', () => {
-            expect(Up.toDocument('"""')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('"""')
-              ]))
-          })
 
-          specify('4 characters', () => {
-            expect(Up.toDocument('""""')).to.eql(
-              insideDocumentAndParagraph([
-                new PlainText('""""')
-              ]))
-          })
+    context('With doublequotes:', () => {
+      specify('Surrounded by 1', () => {
+        expect(Up.toDocument('" \t \t "')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('" \t \t "')
+          ]))
+      })
+
+      specify('Surrounded by 2', () => {
+        expect(Up.toDocument('""\t  \t""')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('""\t  \t""')
+          ]))
+      })
+
+      specify('Surrounded by 3', () => {
+        expect(Up.toDocument('""" \t \t """')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('""" \t \t """')
+          ]))
+      })
+
+      specify('Surrounded by 5', () => {
+        expect(Up.toDocument('"""""\t  \t"""')).to.eql(
+          insideDocumentAndParagraph([
+            new PlainText('"""""\t  \t"""')
+          ]))
+      })
+
+
+      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+        specify('1 character', () => {
+          expect(Up.toDocument('"')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('"')
+            ]))
+        })
+
+        specify('2 characters', () => {
+          expect(Up.toDocument('""')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('""')
+            ]))
+        })
+
+        specify('3 characters', () => {
+          expect(Up.toDocument('"""')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('"""')
+            ]))
+        })
+
+        specify('4 characters', () => {
+          expect(Up.toDocument('""""')).to.eql(
+            insideDocumentAndParagraph([
+              new PlainText('""""')
+            ]))
         })
       })
     })
   })
 })
-
 
 
 context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise-valid link...', () => {
@@ -602,186 +577,186 @@ context("Media conventions are handled a bit differently, because they also have
         ]))
     })
   })
+})
 
 
-  describe('An audio convention with an empty description', () => {
-    it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
-        new UpDocument([
-          new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
-        ]))
-    })
+describe('An audio convention with an empty description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.toDocument('[audio:][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
+      new UpDocument([
+        new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+      ]))
   })
+})
 
 
-  describe('An audio convention with a blank description', () => {
-    it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
-        new UpDocument([
-          new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
-        ]))
-    })
+describe('An audio convention with a blank description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.toDocument('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
+      new UpDocument([
+        new Audio('http://example.com/hauntedhouse.ogg', 'http://example.com/hauntedhouse.ogg')
+      ]))
   })
+})
 
 
-  describe('An audio convention with an empty URL', () => {
-    it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('(audio: Yggdra Union){}')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new NormalParenthetical([
-            new PlainText('(audio: Yggdra Union)')
-          ]),
-          new PlainText('{}')
-        ]))
-    })
+describe('An audio convention with an empty URL', () => {
+  it("does not produce An audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    expect(Up.toDocument('(audio: Yggdra Union){}')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('(audio: Yggdra Union)')
+        ]),
+        new PlainText('{}')
+      ]))
   })
+})
 
 
-  describe('An audio convention with an empty URL', () => {
-    it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.deep.equal(
-        insideDocumentAndParagraph([
+describe('An audio convention with an empty URL', () => {
+  it("does not produce an audio convention. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    expect(Up.toDocument('[audio: Yggdra Union]{ \t \t}')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new SquareParenthetical([
+          new PlainText('[audio: Yggdra Union]')
+        ]),
+        new PlainText('{ \t \t}')
+      ]))
+  })
+})
+
+
+describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
+  specify('nothing', () => {
+    expect(Up.toDocument('[audio: haunted house]')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
           new SquareParenthetical([
-            new PlainText('[audio: Yggdra Union]')
-          ]),
-          new PlainText('{ \t \t}')
-        ]))
-    })
-  })
-
-
-  describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by...", () => {
-    specify('nothing', () => {
-      expect(Up.toDocument('[audio: haunted house]')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[audio: haunted house]')
-            ])
+            new PlainText('[audio: haunted house]')
           ])
-        ]))
-    })
-
-    specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[audio: haunted house]')
-            ]),
-            new PlainText(' was written on the desk')
-          ])
-        ]))
-    })
-
-    specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[audio: haunted house]')
-            ]),
-            new PlainText(' was written on the desk '),
-            new SquareParenthetical([
-              new PlainText('[really]')
-            ]),
-          ])
-        ]))
-    })
+        ])
+      ]))
   })
 
-
-  describe('A video with an empty description', () => {
-    it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[video:][http://example.com/hauntedhouse.webm]')).to.deep.equal(
-        new UpDocument([
-          new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
-        ]))
-    })
-  })
-
-
-  describe('A video with a blank description', () => {
-    it('has its URL treated as its description', () => {
-      expect(Up.toDocument('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.deep.equal(
-        new UpDocument([
-          new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
-        ]))
-    })
-  })
-
-
-  describe('A video with an empty URL', () => {
-    it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('(video: Yggdra Union){}')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new NormalParenthetical([
-            new PlainText('(video: Yggdra Union)')
-          ]),
-          new PlainText('{}')
-        ]))
-    })
-  })
-
-
-  describe('An audio convention with a blank URL', () => {
-    it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
-      expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.deep.equal(
-        insideDocumentAndParagraph([
+  specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+    expect(Up.toDocument('[audio: haunted house] was written on the desk')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
           new SquareParenthetical([
-            new PlainText('[video: Yggdra Union]')
+            new PlainText('[audio: haunted house]')
           ]),
-          new PlainText('{ \t \t}')
-        ]))
-    })
+          new PlainText(' was written on the desk')
+        ])
+      ]))
   })
 
+  specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+    expect(Up.toDocument('[audio: haunted house] was written on the desk [really]')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new SquareParenthetical([
+            new PlainText('[audio: haunted house]')
+          ]),
+          new PlainText(' was written on the desk '),
+          new SquareParenthetical([
+            new PlainText('[really]')
+          ]),
+        ])
+      ]))
+  })
+})
 
-  describe("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
-    specify('nothing', () => {
-      expect(Up.toDocument('[video: haunted house]')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[video: haunted house]')
-            ])
-          ])
-        ]))
-    })
 
-    specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
-      expect(Up.toDocument('[video: haunted house] was written on the desk')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[video: haunted house]')
-            ]),
-            new PlainText(' was written on the desk')
-          ])
-        ]))
-    })
+describe('A video with an empty description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.toDocument('[video:][http://example.com/hauntedhouse.webm]')).to.deep.equal(
+      new UpDocument([
+        new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
+      ]))
+  })
+})
 
-    specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
-      expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.deep.equal(
-        new UpDocument([
-          new Paragraph([
-            new SquareParenthetical([
-              new PlainText('[video: haunted house]')
-            ]),
-            new PlainText(' was written on the desk '),
-            new SquareParenthetical([
-              new PlainText('[really]')
-            ]),
+
+describe('A video with a blank description', () => {
+  it('has its URL treated as its description', () => {
+    expect(Up.toDocument('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.deep.equal(
+      new UpDocument([
+        new Video('http://example.com/hauntedhouse.webm', 'http://example.com/hauntedhouse.webm')
+      ]))
+  })
+})
+
+
+describe('A video with an empty URL', () => {
+  it("does not produce A video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    expect(Up.toDocument('(video: Yggdra Union){}')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('(video: Yggdra Union)')
+        ]),
+        new PlainText('{}')
+      ]))
+  })
+})
+
+
+describe('An audio convention with a blank URL', () => {
+  it("does not produce a video. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+    expect(Up.toDocument('[video: Yggdra Union]{ \t \t}')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new SquareParenthetical([
+          new PlainText('[video: Yggdra Union]')
+        ]),
+        new PlainText('{ \t \t}')
+      ]))
+  })
+})
+
+
+context("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by...", () => {
+  specify('nothing', () => {
+    expect(Up.toDocument('[video: haunted house]')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new SquareParenthetical([
+            new PlainText('[video: haunted house]')
           ])
-        ]))
-    })
+        ])
+      ]))
+  })
+
+  specify('something other than bracketed text (and other than whitespace followed by a bracketed text)', () => {
+    expect(Up.toDocument('[video: haunted house] was written on the desk')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new SquareParenthetical([
+            new PlainText('[video: haunted house]')
+          ]),
+          new PlainText(' was written on the desk')
+        ])
+      ]))
+  })
+
+  specify('something other than a bracketed URL, even when bracketed text eventually follows', () => {
+    expect(Up.toDocument('[video: haunted house] was written on the desk [really]')).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new SquareParenthetical([
+            new PlainText('[video: haunted house]')
+          ]),
+          new PlainText(' was written on the desk '),
+          new SquareParenthetical([
+            new PlainText('[really]')
+          ]),
+        ])
+      ]))
   })
 })
 
 
 context("Conventions aren't linkified if the bracketed URL is...", () => {
   context('Empty:', () => {
-    specify('highlight', () => {
+    specify('Highlights', () => {
       expect(Up.toDocument('[highlight: Ash fights Gary]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
@@ -817,6 +792,14 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
           new InlineNsfl([
             new PlainText('Ash fights Gary')
           ]),
+          new PlainText('[]')
+        ]))
+    })
+
+    specify('References to table of contents entries', () => {
+      expect(Up.toDocument('[topic: Ash fights Gary][]')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new ReferenceToTableOfContentsEntry('Ash fights Gary'),
           new PlainText('[]')
         ]))
     })
@@ -902,6 +885,14 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
     })
 
+    specify('References to table of contents entries', () => {
+      expect(Up.toDocument('[topic: Ash fights Gary][\t \t \t]')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new ReferenceToTableOfContentsEntry('Ash fights Gary'),
+          new PlainText('[\t \t \t]')
+        ]))
+    })
+
     specify('Footnotes', () => {
       const footnote = new Footnote([
         new PlainText('Ash fights Gary')
@@ -940,19 +931,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
           new PlainText('{\t \t \t}')
         ]))
     })
-  })
-})
-
-
-describe('Revision insertion containing an empty revision deletion', () => {
-  it('produces a revision insertion convention containing the plain text delimiters of revision deletion', () => {
-    expect(Up.toDocument('I built a trail: ++~~~~++')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('I built a trail: '),
-        new RevisionInsertion([
-          new PlainText('~~~~')
-        ])
-      ]))
   })
 })
 

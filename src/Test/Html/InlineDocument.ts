@@ -13,8 +13,6 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
@@ -94,28 +92,6 @@ context('In an inline document, every inline syntax node produces the same HTML 
       ])
 
       expect(Up.toInlineHtml(inlineDocument)).to.equal('<kbd>esc</kbd>')
-    })
-  })
-
-
-  describe('A revision insertion node', () => {
-    it('produces an <ins> element', () => {
-      const inlineDocument = new InlineUpDocument([
-        new RevisionInsertion([new PlainText('Wario')])
-      ])
-
-      expect(Up.toInlineHtml(inlineDocument)).to.equal('<ins>Wario</ins>')
-    })
-  })
-
-
-  describe('A revision deletion node', () => {
-    it('produces a <del> element', () => {
-      const inlineDocument = new InlineUpDocument([
-        new RevisionDeletion([new PlainText('Koopa Troopa')])
-      ])
-
-      expect(Up.toInlineHtml(inlineDocument)).to.equal('<del>Koopa Troopa</del>')
     })
   })
 

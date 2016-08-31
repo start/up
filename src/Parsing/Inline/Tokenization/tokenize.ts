@@ -1376,13 +1376,6 @@ class Tokenizer {
     this.flushNonEmptyBufferToTokenOfKind(TokenKind.PlainText)
   }
 
-  private insertPlainTextTokenAtContextStart(text: string, context: ConventionContext): void {
-    this.insertToken({
-      token: new Token(TokenKind.PlainText, text),
-      atIndex: context.startTokenIndex
-    })
-  }
-
   private handleTextAwareOfRawBrackets(): void {
     this.tryToOpenRawParentheticalBracketConvention() || this.bufferCurrentChar()
   }

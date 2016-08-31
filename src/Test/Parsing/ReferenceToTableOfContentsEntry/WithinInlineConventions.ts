@@ -17,8 +17,6 @@ import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
 import { Stress } from'../../../SyntaxNodes/Stress'
 
 
@@ -464,88 +462,6 @@ I love all sorts of fancy stuff.`
             new PlainText('[See '),
             new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
             new PlainText('.]')
-          ])
-        ]),
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        interestingHeading,
-        new Paragraph([
-          new PlainText('I love all sorts of fancy stuff.')
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
-  })
-
-  specify('Revision deletion', () => {
-    const markup = `
-I have plenty of good traits. ~~See [section: interesting].~~
-
-I drink exotic soda
-=====================
-
-Actually, I only drink milk.
-
-I am interesting
-================
-
-I love all sorts of fancy stuff.`
-
-    const sodaHeading =
-      new Heading([new PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const interestingHeading =
-      new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument([
-        new Paragraph([
-          new PlainText('I have plenty of good traits. '),
-          new RevisionDeletion([
-            new PlainText('See '),
-            new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
-            new PlainText('.')
-          ])
-        ]),
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        interestingHeading,
-        new Paragraph([
-          new PlainText('I love all sorts of fancy stuff.')
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
-  })
-
-  specify('Revision insertion', () => {
-    const markup = `
-I have plenty of good traits. ++See [section: interesting].++
-
-I drink exotic soda
-=====================
-
-Actually, I only drink milk.
-
-I am interesting
-================
-
-I love all sorts of fancy stuff.`
-
-    const sodaHeading =
-      new Heading([new PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const interestingHeading =
-      new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument([
-        new Paragraph([
-          new PlainText('I have plenty of good traits. '),
-          new RevisionInsertion([
-            new PlainText('See '),
-            new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
-            new PlainText('.')
           ])
         ]),
         sodaHeading,

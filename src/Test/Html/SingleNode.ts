@@ -28,8 +28,6 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
-import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
-import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Stress } from '../../SyntaxNodes/Stress'
@@ -674,32 +672,6 @@ describe('An example input node', () => {
     ])
 
     expect(Up.toHtml(document)).to.equal('<p><kbd>esc</kbd></p>')
-  })
-})
-
-
-describe('A revision insertion node', () => {
-  it('produces an <ins> element', () => {
-    const document = new UpDocument([
-      new Paragraph([
-        new RevisionInsertion([new PlainText('Wario')])
-      ])
-    ])
-
-    expect(Up.toHtml(document)).to.equal('<p><ins>Wario</ins></p>')
-  })
-})
-
-
-describe('A revision deletion node', () => {
-  it('produces a <del> element', () => {
-    const document = new UpDocument([
-      new Paragraph([
-        new RevisionDeletion([new PlainText('Koopa Troopa')])
-      ])
-    ])
-
-    expect(Up.toHtml(document)).to.equal('<p><del>Koopa Troopa</del></p>')
   })
 })
 
