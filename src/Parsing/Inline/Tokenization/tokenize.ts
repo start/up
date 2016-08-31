@@ -1,4 +1,4 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, REVISION_DELETION_CONVENTION, REVISION_INSERTION_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
+import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
@@ -46,7 +46,7 @@ const PARENTHESIS =
 const SQUARE_BRACKET =
   new Bracket('[', ']')
 
-// Many of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
+// Most of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
 // These conventions support both paretheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
 const PARENTHETICAL_BRACKETS = [
@@ -238,18 +238,6 @@ class Tokenizer {
 
       this.getExampleInputConvention(),
 
-      ...[
-        {
-          richConvention: REVISION_DELETION_CONVENTION,
-          startsWith: '~~',
-          endsWith: '~~'
-        }, {
-          richConvention: REVISION_INSERTION_CONVENTION,
-          startsWith: '++',
-          endsWith: '++'
-        }
-      ].map(args => this.getRevisionConvention(args)),
-
       this.nakedUrlPathConvention
     ]
   }
@@ -354,28 +342,6 @@ class Tokenizer {
     })
   }
 
-  private getRevisionConvention(
-    args: {
-      richConvention: RichConvention
-      startsWith: string
-      endsWith: string
-    }
-  ): Convention {
-    const { richConvention, startsWith, endsWith } = args
-
-    return this.getTokenizableRichConvention({
-      richConvention,
-      startsWith: escapeForRegex(startsWith),
-      endsWith: escapeForRegex(endsWith),
-
-      isMeaningfulWhenItContainsOnlyWhitespace: true,
-
-      insteadOfFailingWhenLeftUnclosed: (context) => {
-        this.insertPlainTextTokenAtContextStart(startsWith, context)
-      }
-    })
-  }
-
   private getTokenizableRichConvention(
     args: {
       richConvention: RichConvention
@@ -383,13 +349,12 @@ class Tokenizer {
       endsWith: string
       startPatternContainsATerm?: boolean
       whenOpening?: OnTextMatch
-      isMeaningfulWhenItContainsOnlyWhitespace?: boolean
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       whenClosing?: OnConventionEvent
       mustBeDirectlyFollowedBy?: Convention[]
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, isMeaningfulWhenItContainsOnlyWhitespace, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
       // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
@@ -399,16 +364,13 @@ class Tokenizer {
       //
       // Therefore, we instead treat it as a parenthesized convention containing the text "NSFW:".
       //
-      // For most conventions, when they contain only whitespace, they aren't applied. For example, this would-be
+      // Additionally, when a convention contains only whitespace, it's never applied. For example, this would-be
       // inline NSFW convention contains only whitespace: 
       //
       // [NSFW:   ]
       //
       // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
-      //
-      // However, if `isMeaningfulWhenItContainsOnlyWhitespace` is true, we do apply the convention when it
-      // contains only whitespace. This is the case for revision deletion/insertion.
-      startsWith: startsWith + notFollowedBy((isMeaningfulWhenItContainsOnlyWhitespace ? '' : ANY_WHITESPACE) + endsWith),
+      startsWith: startsWith + notFollowedBy(ANY_WHITESPACE + endsWith),
       startPatternContainsATerm,
 
       endsWith,
@@ -1521,7 +1483,7 @@ const BRACKET_END_PATTERNS =
 
 // The "h" is for the start of bare URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, PERIOD, 'h', '"', '_', '`', '~',
+  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, PERIOD, 'h', '"', '_', '`',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
   ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)

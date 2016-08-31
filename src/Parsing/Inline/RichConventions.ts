@@ -48,18 +48,6 @@ export const HIGHLIGHT_CONVENTION: RichConventionWithoutExtraFields = {
   endTokenKind: TokenKind.HighlightEnd
 }
 
-export const REVISION_DELETION_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: RevisionDeletion,
-  startTokenKind: TokenKind.RevisionDeletionStart,
-  endTokenKind: TokenKind.RevisionDeletionEnd
-}
-
-export const REVISION_INSERTION_CONVENTION: RichConventionWithoutExtraFields = {
-  NodeType: RevisionInsertion,
-  startTokenKind: TokenKind.RevisionInsertionStart,
-  endTokenKind: TokenKind.RevisionInsertionEnd
-}
-
 export const QUOTE_CONVENTION: RichConventionWithoutExtraFields = {
   NodeType: InlineQuote,
   startTokenKind: TokenKind.QuoteStart,
