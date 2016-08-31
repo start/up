@@ -436,10 +436,10 @@ context('When most conventions completely overlap, they nest perfectly, with the
 
 context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second", () => {
   context('This includes:', () => {
-    specify('Italics and quoted text', () => {
-      expect(Up.toDocument('_Oh "_why would you do this?"')).to.deep.equal(
+    specify('Highlightex text and quoted text', () => {
+      expect(Up.toDocument('[highlight: Oh "]why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Italic([
+          new Highlight([
             new PlainText('Oh ')
           ]),
           new InlineQuote([
@@ -448,10 +448,10 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('Italics and a link whose content is wrapped in square brackets', () => {
-      expect(Up.toDocument('_Oh [_why would you do this?](example.com)')).to.deep.equal(
+    specify('A spoiler and a link whose content is wrapped in square brackets', () => {
+      expect(Up.toDocument('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Italic([
+          new InlineSpoiler([
             new PlainText('Oh ')
           ]),
           new Link([
