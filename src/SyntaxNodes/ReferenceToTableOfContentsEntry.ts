@@ -24,6 +24,9 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
     //
     // If we still don't have a match after that, then we're out of luck.
     //
+    // Throughout this whole process, we'll never match an entry (i.e. a heading) if it contains this 
+    // reference.
+    //
     // TODO: Continue searching using another algorithm (e.g. string distance).
     //
     // TODO: When searching, also include text of "outer" entries to help resolve ambiguities. "Outer"
@@ -34,14 +37,17 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
       const textOfEntry = entry.searchableText()
       const { snippetFromEntry } = this
 
-      if (isEqualIgnoringCapitalization(textOfEntry, snippetFromEntry)) {
+      if (isEqualIgnoringCapitalization(textOfEntry, snippetFromEntry) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
       }
 
       if (!this.entry) {
-        if (containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: snippetFromEntry })) {
+        if (
+          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: snippetFromEntry })
+          && this.canMatch(entry)
+        ) {
           // We've found non-perfect match. We'll keep searching in case there's a perfect match
           // further in the table of contents.
           this.entry = entry
@@ -84,5 +90,10 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
 
   render(renderer: Renderer): string {
     return renderer.referenceToTableOfContentsEntry(this)
+  }
+
+  private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {
+    // Right now, we have only one rule: We will not match an entry if it contains this reference.
+    return entry.inlineDescendants().indexOf(this) === -1
   }
 }

@@ -108,8 +108,10 @@ export namespace UpDocument {
       searchableText(): string
 
       // How the content of the entry should be represented inside the table of contents. This is
-      // in contrast to the representation of the entry's content in the document itself.
+      // in contrast to the representation of the entry in the document itself.
       representationOfContentWithinTableOfContents(): InlineSyntaxNode[]
+
+      inlineDescendants(): InlineSyntaxNode[]
     }
   }
 }

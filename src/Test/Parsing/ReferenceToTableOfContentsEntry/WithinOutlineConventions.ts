@@ -788,5 +788,39 @@ My least favorite drink.`
           ])
         ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, sodaHeading])))
     })
+
+    specify('When no other heading matches the snippet', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie. See [topic: lies]
+==============================
+
+Not quite true.`
+
+      const sodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const neverLieHeading =
+        new Heading([
+          new PlainText('I never lie. See '),
+          new ReferenceToTableOfContentsEntry('lies'),
+        ], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.deep.equal(
+        new UpDocument([
+          sodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ])
+        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
   })
 })
