@@ -4,31 +4,31 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
+import { Highlight } from '../../../SyntaxNodes/Highlight'
 
 
 describe('A paragraph with 2 separate instances of overlapped conventions', () => {
   it('prorduce the correct nodes for each', () => {
-    expect(Up.toDocument('I *love ~~drinking* whole~~ milk. I *love ~~drinking* whole~~ milk.')).to.deep.equal(
+    expect(Up.toDocument('I *love [highlight: drinking* whole] milk. I *love ~~drinking* whole~~ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
           new PlainText('love '),
-          new RevisionDeletion([
+          new Highlight([
             new PlainText('drinking')
           ])
         ]),
-        new RevisionDeletion([
+        new Highlight([
           new PlainText(' whole')
         ]),
         new PlainText(' milk. I '),
         new Emphasis([
           new PlainText('love '),
-          new RevisionDeletion([
+          new Highlight([
             new PlainText('drinking')
           ])
         ]),
-        new RevisionDeletion([
+        new Highlight([
           new PlainText(' whole')
         ]),
         new PlainText(' milk.')

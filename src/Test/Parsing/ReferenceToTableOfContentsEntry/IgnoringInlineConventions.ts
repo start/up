@@ -20,8 +20,6 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { Stress } from'../../../SyntaxNodes/Stress'
 import { Video } from'../../../SyntaxNodes/Video'
@@ -677,7 +675,7 @@ Well, maybe I'm not so great.`
       ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
   })
 
-  specify('Revision deletion', () => {
+  specify('Another reference to a table of contents entry', () => {
     const markup = `
 I'm a great guy. For more information, skip to [section: the full transcript]. 
 
@@ -686,8 +684,8 @@ I drink soda
 
 Actually, I only drink milk.
 
-I am great. Read the ~~full transcript of my greatness~~
-========================================================
+I am great. Read the [topic: full transcript of my greatness]
+=============================================================
 
 Well, maybe I'm not so great.`
 
@@ -697,48 +695,7 @@ Well, maybe I'm not so great.`
     const greatnessHeading =
       new Heading([
         new PlainText("I am great. Read the "),
-        new RevisionDeletion([new PlainText("full transcript of my greatness")])
-      ], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.toDocument(markup)).to.deep.equal(
-      new UpDocument([
-        new Paragraph([
-          new PlainText("I'm a great guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('the full transcript', greatnessHeading),
-          new PlainText('.')
-        ]),
-        sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
-        ]),
-        greatnessHeading,
-        new Paragraph([
-          new PlainText("Well, maybe I'm not so great.")
-        ])
-      ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
-  })
-
-  specify('Revision insertion', () => {
-    const markup = `
-I'm a great guy. For more information, skip to [section: the full transcript]. 
-
-I drink soda
-============
-
-Actually, I only drink milk.
-
-I am great. Read the ++full transcript of my greatness++
-========================================================
-
-Well, maybe I'm not so great.`
-
-    const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const greatnessHeading =
-      new Heading([
-        new PlainText("I am great. Read the "),
-        new RevisionInsertion([new PlainText("full transcript of my greatness")])
+        new ReferenceToTableOfContentsEntry("full transcript of my greatness")
       ], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.toDocument(markup)).to.deep.equal(

@@ -14,8 +14,9 @@ import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
+import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
@@ -191,13 +192,11 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('Revision insertion', () => {
-    expect(Up.toDocument('After you beat the Elite Four, ++you fight Gary++ (https://example.com).')).to.deep.equal(
+  specify('Example input', () => {
+    expect(Up.toDocument('After you beat the Elite Four, you press {A} (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new RevisionInsertion([
-          new PlainText('you fight Gary')
-        ]),
+        new PlainText('After you beat the Elite Four, you press'),
+        new ExampleInput('A'),
         new PlainText(' '),
         new NormalParenthetical([
           new PlainText('('),
@@ -210,13 +209,31 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('Revision deletion', () => {
-    expect(Up.toDocument('After you beat the Elite Four, you fight Gary ~~Ketchum~~ (https://example.com).')).to.deep.equal(
+  specify('References to table of contents entries', () => {
+    expect(Up.toDocument('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, you fight Gary '),
-        new RevisionDeletion([
-          new PlainText('Ketchum')
+        new PlainText('After you beat the Elite Four, you press'),
+        new ReferenceToTableOfContentsEntry('rival fights'),
+        new PlainText(' '),
+        new NormalParenthetical([
+          new PlainText('('),
+          new Link([
+            new PlainText('example.com')
+          ], 'https://example.com'),
+          new PlainText(')'),
         ]),
+        new PlainText('.')
+      ]))
+  })
+
+  specify('Inline quotes', () => {
+    expect(Up.toDocument('After you beat the Elite Four, you "win" (https://example.com).')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('After you beat the Elite Four, you '),
+        new InlineQuote([
+          new PlainText('win')
+        ]),
+        new ExampleInput('A'),
         new PlainText(' '),
         new NormalParenthetical([
           new PlainText('('),
