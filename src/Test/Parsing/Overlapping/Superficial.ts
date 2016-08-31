@@ -6,8 +6,8 @@ import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { Stress } from'../../../SyntaxNodes/Stress'
 import { Bold } from'../../../SyntaxNodes/Bold'
-import { RevisionInsertion } from'../../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from'../../../SyntaxNodes/RevisionDeletion'
+import { Italic } from'../../../SyntaxNodes/Italic'
+import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 import { InlineSpoiler } from'../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfl } from'../../../SyntaxNodes/InlineNsfl'
 import { InlineNsfw } from'../../../SyntaxNodes/InlineNsfw'
@@ -18,12 +18,12 @@ import { Highlight } from'../../../SyntaxNodes/Highlight'
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
   context('This includes:', () => {
-    specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) overlap a third (e.g. revision deletion)', () => {
-      expect(Up.toDocument('**++~~Hello++ good** friend!~~ Hi!')).to.deep.equal(
+    specify('Two "freely-splittable" conventions (e.g. stress, italics) overlap a third (e.g. quoted text)', () => {
+      expect(Up.toDocument('**_"Hello_ good** friend!" Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionDeletion([
+          new InlineQuote([
             new Stress([
-              new RevisionInsertion([
+              new Italic([
                 new PlainText('Hello')
               ]),
               new PlainText(' good')
@@ -50,11 +50,11 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Revision deletion and revision insertion', () => {
-      expect(Up.toDocument('~~++Oh~~ why would you do this?++')).to.deep.equal(
+    specify('Quoted text and italics', () => {
+      expect(Up.toDocument('"_Oh" why would you do this?_')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
-            new RevisionDeletion([
+          new Italic([
+            new InlineQuote([
               new PlainText('Oh')
             ]),
             new PlainText(' why would you do this?')
@@ -92,10 +92,10 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toDocument('~~(Oh~~ why would you do this?)')).to.deep.equal(
+      expect(Up.toDocument('"(Oh" why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new NormalParenthetical([
-            new RevisionDeletion([
+            new InlineQuote([
               new PlainText('(Oh')
             ]),
             new PlainText(' why would you do this?)')
@@ -104,10 +104,10 @@ context('When most otherwise-nested conventions overlap by only their start deli
     })
 
     specify('Square brackets', () => {
-      expect(Up.toDocument('~~[Oh~~ why would you do this?]')).to.deep.equal(
+      expect(Up.toDocument('"[Oh" why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
           new SquareParenthetical([
-            new RevisionDeletion([
+            new InlineQuote([
               new PlainText('[Oh')
             ]),
             new PlainText(' why would you do this?]')
@@ -120,14 +120,14 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
 context('When most otherwise-nested conventions overlap by only their end delimiters, they nest without being split.', () => {
   context('This includes:', () => {
-    specify('Two "freely-splittable" conventions (e.g. stress, revision insertion) being overlapped by a third (e.g. revision deletion)', () => {
-      expect(Up.toDocument('~~Hello **good ++friend!~~++** Hi!')).to.deep.equal(
+    specify('Two "freely-splittable" conventions (e.g. stress, italics) being overlapped by a third (e.g. quoted text)', () => {
+      expect(Up.toDocument('"Hello **good _friend!"_** Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('Hello '),
             new Stress([
               new PlainText('good '),
-              new RevisionInsertion([
+              new Italic([
                 new PlainText('friend!')
               ])
             ])
@@ -152,10 +152,10 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a freely-splittable convention (e.g. revision insertion)', () => {
-      expect(Up.toDocument('++There was another [NSFL: rotten body (NSFW: squish++)] Hi!')).to.deep.equal(
+    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a freely-splittable convention (e.g. italics)', () => {
+      expect(Up.toDocument('_There was another [NSFL: rotten body (NSFW: squish_)] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('There was another '),
             new InlineNsfl([
               new PlainText('rotten body '),
@@ -169,11 +169,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-      expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)__]. Hi!')).to.deep.equal(
+      expect(Up.toDocument('**There _was (SPOILER: another [NSFL: loud __stomp_**)__]. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
             new PlainText('There '),
-            new RevisionInsertion([
+            new Italic([
               new PlainText('was '),
               new InlineSpoiler([
                 new PlainText('another '),
@@ -191,11 +191,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single freely-splittable convention', () => {
-      expect(Up.toDocument('**There ++was (SPOILER: another [NSFL: loud __stomp++**)]__. Hi!')).to.deep.equal(
+      expect(Up.toDocument('**There _was (SPOILER: another [NSFL: loud __stomp_**)]__. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
             new PlainText('There '),
-            new RevisionInsertion([
+            new Italic([
               new PlainText('was '),
               new InlineSpoiler([
                 new PlainText('another '),
@@ -213,13 +213,13 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single convention that should only be split when necessary', () => {
-      expect(Up.toDocument('**There ++was ~~another [NSFL: loud (SPOILER: stomp++**~~]). Hi!')).to.deep.equal(
+      expect(Up.toDocument('**There _was "another [NSFL: loud (SPOILER: stomp_**"]). Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
             new PlainText('There '),
-            new RevisionInsertion([
+            new Italic([
               new PlainText('was '),
-              new RevisionDeletion([
+              new InlineQuote([
                 new PlainText('another '),
                 new InlineNsfl([
                   new PlainText('loud '),
@@ -316,9 +316,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toDocument('++Oh (why would you do this?++)')).to.deep.equal(
+      expect(Up.toDocument('_Oh (why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('Oh '),
             new NormalParenthetical([
               new PlainText('(why would you do this?')
@@ -331,9 +331,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toDocument('~~Oh [why would you do this?~~]')).to.deep.equal(
+      expect(Up.toDocument('"Oh [why would you do this?"]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('Oh '),
             new SquareParenthetical([
               new PlainText('[why would you do this?')
@@ -350,11 +350,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
 context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost.', () => {
   context('This includes:', () => {
-    specify('Revision insertion and stress', () => {
-      expect(Up.toDocument('++**Why would you do this?++**')).to.deep.equal(
+    specify('Italics and stress', () => {
+      expect(Up.toDocument('_**Why would you do this?_**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Stress([
-            new RevisionInsertion([
+            new Italic([
               new PlainText('Why would you do this?')
             ])
           ])
@@ -384,11 +384,11 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
   })
 
-  specify('Revision insertion and parentheses', () => {
-    expect(Up.toDocument('++(Why would you do this?++)')).to.deep.equal(
+  specify('Italics and parentheses', () => {
+    expect(Up.toDocument('_(Why would you do this?_)')).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('(Why would you do this?')
           ]),
           new PlainText(')')
@@ -396,11 +396,11 @@ context('When most conventions completely overlap, they nest perfectly, with the
       ]))
   })
 
-  specify('Revision deletion and square brackets', () => {
-    expect(Up.toDocument('~~[Why would you do this?~~]')).to.deep.equal(
+  specify('Quoted text and square brackets', () => {
+    expect(Up.toDocument('"[Why would you do this?"]')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('[Why would you do this?')
           ]),
           new PlainText(']')
@@ -408,11 +408,11 @@ context('When most conventions completely overlap, they nest perfectly, with the
       ]))
   })
 
-  specify('Parentheses and revision insertion', () => {
-    expect(Up.toDocument('++(Why would you do this?++)')).to.deep.equal(
+  specify('Parentheses and italics', () => {
+    expect(Up.toDocument('_(Why would you do this?_)')).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('(Why would you do this?')
           ]),
           new PlainText(')')
@@ -420,12 +420,12 @@ context('When most conventions completely overlap, they nest perfectly, with the
       ]))
   })
 
-  specify('Square brackets and revision deletion', () => {
-    expect(Up.toDocument('[~~Why would you do this?]~~')).to.deep.equal(
+  specify('Square brackets and quoted text', () => {
+    expect(Up.toDocument('["Why would you do this?]"')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('['),
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('Why would you do this?]')
           ]),
         ])
@@ -436,22 +436,22 @@ context('When most conventions completely overlap, they nest perfectly, with the
 
 context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second", () => {
   context('This includes:', () => {
-    specify('Revision insertion and revision deletion', () => {
-      expect(Up.toDocument('++Oh ~~++why would you do this?~~')).to.deep.equal(
+    specify('Italics and quoted text', () => {
+      expect(Up.toDocument('_Oh "_why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('Oh ')
           ]),
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('why would you do this?')
           ])
         ]))
     })
 
-    specify('Revision insertion and a link whose content is wrapped in square brackets', () => {
-      expect(Up.toDocument('++Oh [++why would you do this?](example.com)')).to.deep.equal(
+    specify('Italics and a link whose content is wrapped in square brackets', () => {
+      expect(Up.toDocument('_Oh [_why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('Oh ')
           ]),
           new Link([
@@ -460,13 +460,13 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('A link whose content is wrapped in square brackets and revision deletion', () => {
-      expect(Up.toDocument('[Well, well, ~~](example.com) why would you do this?~~')).to.deep.equal(
+    specify('A link whose content is wrapped in square brackets and quoted text', () => {
+      expect(Up.toDocument('[Well, well, "](example.com) why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
           new Link([
             new PlainText('Well, well, ')
           ], 'https://example.com'),
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText(' why would you do this?')
           ])
         ]))
@@ -475,9 +475,9 @@ context("When most conventions overlap by only the first convention's end delimi
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toDocument('++Oh (++why would you do this?)')).to.deep.equal(
+      expect(Up.toDocument('_Oh (_why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionInsertion([
+          new Italic([
             new PlainText('Oh '),
             new NormalParenthetical([
               new PlainText('(')
@@ -490,9 +490,9 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toDocument('~~Oh [~~why would you do this?]')).to.deep.equal(
+      expect(Up.toDocument('"Oh ["why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new RevisionDeletion([
+          new InlineQuote([
             new PlainText('Oh '),
             new SquareParenthetical([
               new PlainText('[')
