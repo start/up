@@ -13,8 +13,6 @@ import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
-import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
@@ -204,14 +202,6 @@ export class HtmlRenderer extends Renderer {
         : new Italic([new PlainText(reference.snippetFromEntry)])
 
     return representation.render(this)
-  }
-
-  revisionInsertion(revisionInsertion: RevisionInsertion): string {
-    return this.element('ins', revisionInsertion.children)
-  }
-
-  revisionDeletion(revisionDeletion: RevisionDeletion): string {
-    return this.element('del', revisionDeletion.children)
   }
 
   normalParenthetical(normalParenthetical: NormalParenthetical): string {

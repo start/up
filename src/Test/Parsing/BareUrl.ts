@@ -9,8 +9,6 @@ import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
-import { RevisionInsertion } from '../../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../../SyntaxNodes/RevisionDeletion'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
@@ -264,16 +262,6 @@ describe('A bare URL', () => {
         ]))
     })
   })
-
-
-  it("can contain unescaped consecutive plus signs if not inside a revision insertion convention", () => {
-    expect(Up.toDocument('https://example.org/a++normal++url')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('example.org/a++normal++url')
-        ], 'https://example.org/a++normal++url')
-      ]))
-  })
 })
 
 
@@ -312,32 +300,6 @@ context('Bare URLs are terminated when any outer convention closes. This include
           ], 'https://archive.org/fake'),
           new PlainText(']')
         ])
-      ]))
-  })
-
-  specify("Revision insertion", () => {
-    expect(Up.toDocument('++I love https://archive.org/fake++!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new RevisionInsertion([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
-      ]))
-  })
-
-  specify("Revision deletion", () => {
-    expect(Up.toDocument('~~I love https://archive.org/fake~~!')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new RevisionDeletion([
-          new PlainText('I love '),
-          new Link([
-            new PlainText('archive.org/fake')
-          ], 'https://archive.org/fake')
-        ]),
-        new PlainText('!')
       ]))
   })
 
@@ -844,10 +806,10 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
           ]))
       })
 
-      specify('Revision insertion', () => {
-        expect(Up.toDocument('++For more info, visit https://archive.org!++')).to.deep.equal(
+      specify('Highlight', () => {
+        expect(Up.toDocument('[highlight: For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
-            new RevisionInsertion([
+            new Highlight([
               new PlainText('For more info, visit '),
               new Link([
                 new PlainText('archive.org')
@@ -857,10 +819,10 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
           ]))
       })
 
-      specify('Highlight', () => {
-        expect(Up.toDocument('[highlight: For more info, visit https://archive.org!]')).to.deep.equal(
+      specify('Inline spoilers', () => {
+        expect(Up.toDocument('[SPOILER: For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Highlight([
+            new InlineSpoiler([
               new PlainText('For more info, visit '),
               new Link([
                 new PlainText('archive.org')

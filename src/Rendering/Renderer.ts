@@ -12,8 +12,6 @@ import { Italic } from '../SyntaxNodes/Italic'
 import { Bold } from '../SyntaxNodes/Bold'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
 import { ReferenceToTableOfContentsEntry } from '../SyntaxNodes/ReferenceToTableOfContentsEntry'
-import { RevisionInsertion } from '../SyntaxNodes/RevisionInsertion'
-import { RevisionDeletion } from '../SyntaxNodes/RevisionDeletion'
 import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../SyntaxNodes/Highlight'
@@ -88,8 +86,6 @@ export abstract class Renderer {
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string
   abstract referenceToTableOfContentsEntry(reference: ReferenceToTableOfContentsEntry): string
-  abstract revisionDeletion(revisionDeletion: RevisionDeletion): string
-  abstract revisionInsertion(revisionInsertion: RevisionInsertion): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   abstract stress(stress: Stress): string
