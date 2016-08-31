@@ -768,7 +768,7 @@ I never drink soda.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new ReferenceToTableOfContentsEntry('lies', liesHeading),
+          new ReferenceToTableOfContentsEntry('lies', liesHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.toDocument(markup)).to.deep.equal(
@@ -815,7 +815,7 @@ My least favorite drink.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+          new ReferenceToTableOfContentsEntry('soda', sodaHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.toDocument(markup)).to.deep.equal(
@@ -853,7 +853,7 @@ Not quite true.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new ReferenceToTableOfContentsEntry('lies'),
+          new ReferenceToTableOfContentsEntry('lies')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.toDocument(markup)).to.deep.equal(
@@ -867,6 +867,51 @@ Not quite true.`
             new PlainText('Not quite true.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+
+    specify('When a subsquent heading perfectly matches the snippet, but the snippet is the only convention in its own heading', () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+[topic: My lies]
+==============================
+
+Not quite true.
+
+My lies
+=======
+
+I never drink soda.`
+
+      const drinkSodaHeading =
+        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+      const liesHeading =
+        new Heading([new PlainText('My lies')], { level: 1, ordinalInTableOfContents: 3 })
+
+      const neverLieHeading =
+        new Heading([
+          new ReferenceToTableOfContentsEntry('My lies', liesHeading)
+        ], { level: 1, ordinalInTableOfContents: 2 })
+
+      expect(Up.toDocument(markup)).to.deep.equal(
+        new UpDocument([
+          drinkSodaHeading,
+          new Paragraph([
+            new PlainText('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Paragraph([
+            new PlainText('Not quite true.')
+          ]),
+          liesHeading,
+          new Paragraph([
+            new PlainText('I never drink soda.')
+          ])
+        ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
     })
   })
 })
