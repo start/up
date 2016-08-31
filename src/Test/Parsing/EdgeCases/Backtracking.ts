@@ -4,11 +4,12 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Stress } from '../../../SyntaxNodes/Stress'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 
 
-describe('Emphasized text containing an unmatched openining delimiter requiring backtracking', () => {
+describe('Emphasized text containing an unmatched opening delimiter requiring backtracking', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.toDocument('Hello, *my (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -22,7 +23,7 @@ describe('Emphasized text containing an unmatched openining delimiter requiring 
 })
 
 
-describe('A convention overlapping emphasis (containing an unmatched openining delimiter requiring backtracking)', () => {
+describe('A convention overlapping emphasis (containing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('[Hello, *my] (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -41,7 +42,7 @@ describe('A convention overlapping emphasis (containing an unmatched openining d
 })
 
 
-describe('A convention overlapping double emphasis (with both emphasis conventions enclosing an unmatched openining delimiter requiring backtracking)', () => {
+describe('A convention overlapping double emphasis (with both emphasis conventions enclosing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('[Hello, **my] (^lovely* world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -65,15 +66,15 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
 })
 
 
-describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking)', () => {
+describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.toDocument('[Hello, **my] lovely* (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
-          new PlainText('Hello, '),
+          new PlainText('[Hello, '),
           new Emphasis([
             new Emphasis([
-              new PlainText('my')
+              new PlainText('my]')
             ])
           ]),
         ]),
@@ -89,7 +90,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
 })
 
 
-describe('Double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking) followed by an extra closing asterisk', () => {
+describe('Double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('Hello, **my (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -106,7 +107,7 @@ describe('Double emphasis (with the inner emphasis enclosing an unmatched openin
 })
 
 
-describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched openining delimiter requiring backtracking) followed by an extra closing asterisk', () => {
+describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('[Hello, **my] (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -130,7 +131,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
 })
 
 
-describe('A convention overlapping double emphasis (with the outer emphasis enclosing an unmatched openining delimiter requiring backtracking) followed by an extra closing asterisk', () => {
+describe('A convention overlapping double emphasis (with the outer emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.toDocument('[Hello, **my] lovely* (^world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -156,25 +157,25 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
 
 describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the normal parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
-    expect(Up.toDocument('I **love (covertly [^ [drinking** whole) milk] all the time.')).to.deep.equal(
+    expect(Up.toDocument('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
           new PlainText('love '),
           new NormalParenthetical([
-            new PlainText('(covertly [^ '),
-            new SquareParenthetical([
-              new PlainText('[drinking')
+            new PlainText('(quickly [^ '),
+            new InlineQuote([
+              new PlainText('eating')
             ])
           ])
         ]),
         new NormalParenthetical([
-          new SquareParenthetical([
-            new PlainText(' whole)')
+          new InlineQuote([
+            new PlainText(' pepperoni)')
           ])
         ]),
-        new SquareParenthetical([
-          new PlainText(' milk]')
+        new InlineQuote([
+          new PlainText(' pizza')
         ]),
         new PlainText(' all the time.')
       ]))
@@ -184,25 +185,25 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
 
 describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the square parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
-    expect(Up.toDocument('I **love (covertly [drinking** [^ whole) milk]] all the time.')).to.deep.equal(
+    expect(Up.toDocument('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
           new PlainText('love '),
           new NormalParenthetical([
-            new PlainText('(covertly '),
-            new SquareParenthetical([
-              new PlainText('[drinking')
+            new PlainText('(quickly '),
+            new InlineQuote([
+              new PlainText('eating')
             ])
           ])
         ]),
         new NormalParenthetical([
-          new SquareParenthetical([
-            new PlainText(' [^ whole)')
+          new InlineQuote([
+            new PlainText(' [^ pepperoni)')
           ])
         ]),
-        new SquareParenthetical([
-          new PlainText(' milk]')
+        new InlineQuote([
+          new PlainText(' pizza')
         ]),
         new PlainText(' all the time.')
       ]))
