@@ -8,31 +8,31 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Link } from '../../../SyntaxNodes/Link'
-import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
-import { RevisionInsertion } from '../../../SyntaxNodes/RevisionInsertion'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
-describe('Overlapped stressed, deleted, and inserted text', () => {
-  it("split the revision deletion node once and the revision insertion node twice", () => {
-    expect(Up.toDocument('I **love ~~covertly ++drinking** whole~~ milk++ all the time.')).to.deep.equal(
+describe('Overlapped stressed, parenthesized, and inserted text', () => {
+  it("split the normal parenthetical node once and the square parenthetical node twice", () => {
+    expect(Up.toDocument('I **love (covertly [drinking** whole) milk] all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
           new PlainText('love '),
-          new RevisionDeletion([
-            new PlainText('covertly '),
-            new RevisionInsertion([
-              new PlainText('drinking')
+          new NormalParenthetical([
+            new PlainText('(covertly '),
+            new SquareParenthetical([
+              new PlainText('[drinking')
             ])
           ])
         ]),
-        new RevisionDeletion([
-          new RevisionInsertion([
-            new PlainText(' whole')
+        new NormalParenthetical([
+          new SquareParenthetical([
+            new PlainText(' whole)')
           ])
         ]),
-        new RevisionInsertion([
-          new PlainText(' milk')
+        new SquareParenthetical([
+          new PlainText(' milk]')
         ]),
         new PlainText(' all the time.')
       ]))
@@ -40,21 +40,21 @@ describe('Overlapped stressed, deleted, and inserted text', () => {
 })
 
 
-describe('Overlapped doubly emphasized text (closing at the same time) and revision deletion', () => {
-  it('splits the revision deletion node', () => {
-    expect(Up.toDocument("*I know. *Well, I don't ~~really.** Ha!~~ Hi!")).to.deep.equal(
+describe('Overlapped doubly emphasized text (closing at the same time) and parenthesized text', () => {
+  it('splits the normal parenthetical node', () => {
+    expect(Up.toDocument("*I know. *Well, I don't (really.** Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('I know. '),
           new Emphasis([
             new PlainText("Well, I don't "),
-            new RevisionDeletion([
-              new PlainText('really.')
+            new NormalParenthetical([
+              new PlainText('(really.')
             ])
           ]),
         ]),
-        new RevisionDeletion([
-          new PlainText(' Ha!')
+        new NormalParenthetical([
+          new PlainText(' Ha!)')
         ]),
         new PlainText(' Hi!')
       ]))
@@ -63,7 +63,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and revis
 
 
 describe('Nested spoilers (closing at the same time) overlapping a link', () => {
-  it('splits the revision deletion node', () => {
+  it('splits the normal parenthetical node', () => {
     expect(Up.toDocument("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
@@ -148,24 +148,24 @@ describe('An inline NSFW convention nested within an inline NSFL convention (clo
 })
 
 
-describe('Overlapped doubly emphasized text (closing at the different times) and revision deletion', () => {
+describe('Overlapped doubly emphasized text (closing at the different times) and parenthesized text', () => {
   it('splits the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
-    expect(Up.toDocument("*I know. *Well, I don't ~~really.* So there.* Ha!~~ Hi!")).to.deep.equal(
+    expect(Up.toDocument("*I know. *Well, I don't (really.* So there.* Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('I know. '),
           new Emphasis([
             new PlainText("Well, I don't "),
-            new RevisionDeletion([
-              new PlainText('really.')
+            new NormalParenthetical([
+              new PlainText('(really.')
             ])
           ]),
-          new RevisionDeletion([
+          new NormalParenthetical([
             new PlainText(' So there.')
           ])
         ]),
-        new RevisionDeletion([
-          new PlainText(' Ha!')
+        new NormalParenthetical([
+          new PlainText(' Ha!)')
         ]),
         new PlainText(' Hi!')
       ]))
@@ -173,15 +173,15 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
 })
 
 
-describe('Overlapped revision deletion and doubly emphasized text (opening at the same time)', () => {
+describe('Overlapped parenthesized text and doubly emphasized text (opening at the same time)', () => {
   it('splits the emphasis nodes', () => {
-    expect(Up.toDocument("~~I need to sleep. **So~~ what?* It's early.* Hi!")).to.deep.equal(
+    expect(Up.toDocument("(I need to sleep. **So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new RevisionDeletion([
-          new PlainText("I need to sleep. "),
+        new NormalParenthetical([
+          new PlainText("(I need to sleep. "),
           new Emphasis([
             new Emphasis([
-              new PlainText("So"),
+              new PlainText("So)"),
             ])
           ])
         ]),
@@ -197,16 +197,16 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at th
 })
 
 
-describe('Overlapped revision deletion and doubly emphasized text (opening at different times)', () => {
+describe('Overlapped parenthesized text and doubly emphasized text (opening at different times)', () => {
   it('splits the emphasis nodes', () => {
-    expect(Up.toDocument("~~I need to sleep. *Uhhh... *So~~ what?* It's early.* Hi!")).to.deep.equal(
+    expect(Up.toDocument("(I need to sleep. *Uhhh... *So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new RevisionDeletion([
-          new PlainText("I need to sleep. "),
+        new NormalParenthetical([
+          new PlainText("(I need to sleep. "),
           new Emphasis([
             new PlainText("Uhhh… "),
             new Emphasis([
-              new PlainText("So"),
+              new PlainText("So)"),
             ])
           ])
         ]),
@@ -222,18 +222,20 @@ describe('Overlapped revision deletion and doubly emphasized text (opening at di
 })
 
 
-describe('Emphasis nested within revision deletion, both of which overlap a link', () => {
+describe('Emphasis nested within parenthesized text, both of which overlap a link', () => {
   it('are both split by the link', () => {
-    expect(Up.toDocument("In Texas, ~~*I never eat [cereal*~~ outside](example.com/sun-flakes). Hi!")).to.deep.equal(
+    expect(Up.toDocument("In Texas, (*I never eat [cereal*) outside](example.com/sun-flakes). Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In Texas, '),
-        new RevisionDeletion([
+        new NormalParenthetical([
+          new PlainText('('),
           new Emphasis([
             new PlainText('I never eat '),
           ]),
+          new PlainText(')'),
         ]),
         new Link([
-          new RevisionDeletion([
+          new NormalParenthetical([
             new Emphasis([
               new PlainText('cereal')
             ])
@@ -246,23 +248,25 @@ describe('Emphasis nested within revision deletion, both of which overlap a link
 })
 
 
-describe('A link that overlaps both an emphasis convention and the revision deletion the emphasis convention is nested within', () => {
-  it('splits the revision deletion and emphasis conventions', () => {
-    expect(Up.toDocument("In [Texas, ~~*I](example.com/texas-hurricans) never eat cereal*~~ outside.")).to.deep.equal(
+describe('A link that overlaps both an emphasis convention and the parenthesized text the emphasis convention is nested within', () => {
+  it('splits the parenthesized text and emphasis conventions', () => {
+    expect(Up.toDocument("In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In '),
         new Link([
           new PlainText('Texas, '),
-          new RevisionDeletion([
+          new NormalParenthetical([
+            new PlainText('('),
             new Emphasis([
               new PlainText('I'),
             ]),
           ]),
         ], 'https://example.com/texas-hurricans'),
-        new RevisionDeletion([
+        new NormalParenthetical([
           new Emphasis([
             new PlainText(' never eat cereal')
-          ])
+          ]),
+          new PlainText(''),
         ]),
         new PlainText(' outside.')
       ]))

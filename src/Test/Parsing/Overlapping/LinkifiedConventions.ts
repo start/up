@@ -8,7 +8,7 @@ import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Link } from '../../../SyntaxNodes/Link'
-import { RevisionDeletion } from '../../../SyntaxNodes/RevisionDeletion'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
@@ -35,20 +35,20 @@ describe('Emphasis overlapping a linkified spoiler', () => {
 })
 
 
-describe('A linkified spoiler overlapping revision deletion', () => {
-  it('splits the revision deletion node', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary ~~Ketchum](http://example.com/finalbattle) and then the credits roll~~.')).to.deep.equal(
+describe('A linkified spoiler overlapping quoted text', () => {
+  it('splits the inline quote node', () => {
+    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary "Ketchum](http://example.com/finalbattle) and then the credits roll".')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
           new Link([
             new PlainText('you fight Gary '),
-            new RevisionDeletion([
+            new InlineQuote([
               new PlainText('Ketchum')
             ])
           ], 'http://example.com/finalbattle')
         ]),
-        new RevisionDeletion([
+        new InlineQuote([
           new PlainText(' and then the credits roll')
         ]),
         new PlainText('.')
