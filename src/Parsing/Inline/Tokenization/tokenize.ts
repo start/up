@@ -315,14 +315,10 @@ class Tokenizer {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: this.getLabeledBracketStartPattern(term, bracket),
+        startsWith: labeledBracketStartDelimiter(term, bracket),
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
-  }
-
-  private getLabeledBracketStartPattern(term: Config.Terms.FoundInMarkup, bracket: Bracket): string {
-    return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
   }
 
   private getParentheticalConvention(
@@ -374,7 +370,7 @@ class Tokenizer {
       // [NSFW:   ]
       //
       // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
-      startsWith: startDelimiterRequiringContentBeforeEndDelimiter(startsWith, endsWith),
+      startsWith: startDelimiterNotFollowedByEndDelimiter(startsWith, endsWith),
       startPatternContainsATerm,
 
       endsWith,
@@ -441,7 +437,7 @@ class Tokenizer {
     const endDelimiter = CURLY_BRACKET.endPattern
 
     return new Convention({
-      startsWith: startDelimiterRequiringContentBeforeEndDelimiter(startDelimiter, endDelimiter),
+      startsWith: startDelimiterNotFollowedByEndDelimiter(startDelimiter, endDelimiter),
       endsWith: endDelimiter,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -469,7 +465,7 @@ class Tokenizer {
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new Convention({
-        startsWith: this.getLabeledBracketStartPattern(this.config.terms.markup.referenceToTableOfContentsEntry, bracket),
+        startsWith: labeledBracketStartDelimiter(this.config.terms.markup.referenceToTableOfContentsEntry, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
@@ -486,24 +482,28 @@ class Tokenizer {
 
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
-      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media =>
-        PARENTHETICAL_BRACKETS.map(bracket => new Convention({
-          startsWith: this.getLabeledBracketStartPattern(media.term(this.config.terms.markup), bracket),
-          startPatternContainsATerm: true,
-          endsWith: bracket.endPattern,
+      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media => {
+        const mediaTerm = media.term(this.config.terms.markup)
 
-          beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-          insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
+        return PARENTHETICAL_BRACKETS.map(bracket =>
+          new Convention({
+            startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(mediaTerm, bracket), bracket.endPattern),
+            startPatternContainsATerm: true,
+            endsWith: bracket.endPattern,
 
-          beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
-          whenClosingItAlsoClosesInnerConventions: true,
-          mustBeDirectlyFollowedBy: this.mediaUrlConventions
-        }))))
+            beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+            insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
+
+            beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenKind,
+            whenClosingItAlsoClosesInnerConventions: true,
+            mustBeDirectlyFollowedBy: this.mediaUrlConventions
+          }))
+      }))
   }
 
   private getMediaUrlConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket => new Convention({
-      startsWith: ANY_WHITESPACE + this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
+      startsWith: ANY_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
@@ -618,7 +618,7 @@ class Tokenizer {
     return new Convention({
       canOnlyOpenIfDirectlyFollowing,
 
-      startsWith: this.getStartPatternForBracketedUrlAssumedToBeAUrl(bracket),
+      startsWith: this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
 
       endsWith: bracket.endPattern,
 
@@ -632,7 +632,7 @@ class Tokenizer {
     })
   }
 
-  private getStartPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
+  private startPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
     // The URL must not be blank, and its first character must not be escaped.
     return bracket.startPattern + notFollowedBy(
       ANY_WHITESPACE
@@ -1396,14 +1396,18 @@ class Tokenizer {
 }
 
 
-function startDelimiterRequiringContentBeforeEndDelimiter(startDelimiter: string, endDelimiter: string): string {
-  return startDelimiter + notFollowedBy(ANY_WHITESPACE + endDelimiter)
-}
-
-
 // `String.repeat` has very poor mobile support.
 function repeat(text: string, count: number): string {
   return new Array(count + 1).join(text)
+}
+
+
+function labeledBracketStartDelimiter(term: Config.Terms.FoundInMarkup, bracket: Bracket): string {
+  return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
+}
+
+function startDelimiterNotFollowedByEndDelimiter(startDelimiter: string, endDelimiter: string): string {
+  return startDelimiter + notFollowedBy(ANY_WHITESPACE + endDelimiter)
 }
 
 
