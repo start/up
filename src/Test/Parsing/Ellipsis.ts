@@ -94,13 +94,13 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     specify('Code blocks', () => {
       const markup = `
 \`\`\`
-return distinct('highlight', 'mark', ...this._highlight)
+return distinct('highlight', ...this._highlight)
 \`\`\``
 
       expect(Up.toDocument(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
-            `return distinct('highlight', 'mark', ...this._highlight)`)
+            `return distinct('highlight', ...this._highlight)`)
         ]))
     })
   })

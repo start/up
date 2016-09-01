@@ -41,13 +41,6 @@ describe('A highlight convention', () => {
     expect(Up.toDocument(withLowercase)).to.deep.equal(Up.toDocument(withRandomCase))
   })
 
-  it('can use the term "mark" instead', () => {
-    const withHighlight = 'After you beat the Elite Four, [highlight: you fight Gary].'
-    const withMark = 'After you beat the Elite Four, [mark: you fight Gary].'
-
-    expect(Up.toDocument(withHighlight)).to.deep.equal(Up.toDocument(withMark))
-  })
-
   it('is evaluated for other conventions', () => {
     expect(Up.toDocument('After you beat the Elite Four, [highlight: you fight *Gary*].')).to.deep.equal(
       insideDocumentAndParagraph([
