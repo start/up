@@ -37,7 +37,7 @@ export function tokenize(markup: string, config: Config): Token[] {
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
 export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
-  return new Tokenizer(markup, config, true).tokens
+  return new Tokenizer(markup, config, { isTokenizingInlineDocument: true }).tokens
 }
 
 
@@ -48,11 +48,11 @@ const SQUARE_BRACKET =
   new Bracket('[', ']')
 
 // Most of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
-// These conventions support both paretheses and square brackets, allowing either kind of bracket to be
+// These conventions support both parentheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
 //
-// TODO: Now that most of the conventions handled by the tokenizer class incorporate brackets, we should
-// consider grouping conventions by their stems.
+// TODO: Now that most of the conventions (handled within the tokenizer class) incorporate brackets, we
+// should consider grouping conventions by their stems.
 const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
@@ -183,12 +183,12 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(markup: string, private config: Config, isTokenizingInlineDocument = false) {
+  constructor(markup: string, private config: Config, options?: { isTokenizingInlineDocument: boolean }) {
     const trimmedMarkup =
       trimEscapedAndUnescapedOuterWhitespace(markup)
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
-    this.configureConventions(isTokenizingInlineDocument)
+    this.configureConventions(options && options.isTokenizingInlineDocument)
 
     this.tokenize()
   }
