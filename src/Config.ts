@@ -242,7 +242,7 @@ export namespace Config {
     export class Rendered {
       footnote: Terms.RenderedToOutput = 'footnote'
       footnoteReference: Terms.RenderedToOutput = 'footnote reference'
-      itemReferencedByTableOfContents: Terms.RenderedToOutput = 'item'
+      itemReferencedByTableOfContents: Terms.RenderedToOutput = 'topic'
       tableOfContents: Terms.RenderedToOutput = 'Table of Contents'
       toggleNsfl: Terms.RenderedToOutput = 'toggle NSFL'
       toggleNsfw: Terms.RenderedToOutput = 'toggle NSFW'
