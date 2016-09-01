@@ -206,7 +206,7 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at d
           new Emphasis([
             new PlainText("Uhhh… "),
             new Emphasis([
-              new PlainText("So)"),
+              new PlainText("So)")
             ])
           ])
         ]),
@@ -230,15 +230,15 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
         new NormalParenthetical([
           new PlainText('('),
           new Emphasis([
-            new PlainText('I never eat '),
+            new PlainText('I never eat ')
           ]),
-          new PlainText(')'),
         ]),
         new Link([
           new NormalParenthetical([
             new Emphasis([
               new PlainText('cereal')
-            ])
+            ]),
+            new PlainText(')'),
           ]),
           new PlainText(' outside')
         ], 'https://example.com/sun-flakes'),
