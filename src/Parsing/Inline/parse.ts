@@ -136,11 +136,6 @@ class Parser {
           // The next token will be a MediaEndAndUrl token
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
-          if (!description) {
-            // If there's no description, we treat the URL as the description
-            description = url
-          }
-
           this.nodes.push(new media.NodeType(description, url))
           continue TokenLoop
         }
