@@ -149,7 +149,7 @@ export namespace Config {
       }
 
       get highlight(): Terms.FoundInMarkup {
-        return distinct('highlight', 'mark', ...this._highlight)
+        return distinct('highlight', ...this._highlight)
       }
 
       get image(): Terms.FoundInMarkup {
