@@ -49,6 +49,9 @@ const SQUARE_BRACKET =
 // Most of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
 // These conventions support both paretheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
+//
+// TODO: Now that most of the conventions handled by the tokenizer class incorporate brackets, we should
+// consider grouping conventions by their stems.
 const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
