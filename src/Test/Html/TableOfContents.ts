@@ -30,10 +30,10 @@ context('When a document has a table of contents, its first HTML element is a <n
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>'
-        + '<h1 id="up-item-1">I enjoy apples</h1>')
+        + '<h1 id="up-topic-1">I enjoy apples</h1>')
     })
 
     specify('A level 2 heading entry is placed in an <h3>', () => {
@@ -47,10 +47,10 @@ context('When a document has a table of contents, its first HTML element is a <n
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h3><a href="#up-item-1">I enjoy apples</a></h3></li>'
+        + '<li><h3><a href="#up-topic-1">I enjoy apples</a></h3></li>'
         + '</ul>'
         + '</nav>'
-        + '<h2 id="up-item-1">I enjoy apples</h2>')
+        + '<h2 id="up-topic-1">I enjoy apples</h2>')
     })
 
     specify('A level 3 heading entry is placed in an <h4>', () => {
@@ -64,10 +64,10 @@ context('When a document has a table of contents, its first HTML element is a <n
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h4><a href="#up-item-1">I enjoy apples</a></h4></li>'
+        + '<li><h4><a href="#up-topic-1">I enjoy apples</a></h4></li>'
         + '</ul>'
         + '</nav>'
-        + '<h3 id="up-item-1">I enjoy apples</h3>')
+        + '<h3 id="up-topic-1">I enjoy apples</h3>')
     })
 
     specify('A level 4 heading entry entry contains an <h5>', () => {
@@ -81,10 +81,10 @@ context('When a document has a table of contents, its first HTML element is a <n
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h5><a href="#up-item-1">I enjoy apples</a></h5></li>'
+        + '<li><h5><a href="#up-topic-1">I enjoy apples</a></h5></li>'
         + '</ul>'
         + '</nav>'
-        + '<h4 id="up-item-1">I enjoy apples</h4>')
+        + '<h4 id="up-topic-1">I enjoy apples</h4>')
     })
 
     specify('A level 5 heading entry is placed in an <h6>', () => {
@@ -98,10 +98,10 @@ context('When a document has a table of contents, its first HTML element is a <n
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h6><a href="#up-item-1">I enjoy apples</a></h6></li>'
+        + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
         + '</ul>'
         + '</nav>'
-        + '<h5 id="up-item-1">I enjoy apples</h5>')
+        + '<h5 id="up-topic-1">I enjoy apples</h5>')
     })
 
     context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
@@ -116,10 +116,10 @@ context('When a document has a table of contents, its first HTML element is a <n
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h6><a href="#up-item-1">I enjoy apples</a></h6></li>'
+          + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
           + '</ul>'
           + '</nav>'
-          + '<h6 id="up-item-1">I enjoy apples</h6>')
+          + '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
 
       specify('A level 10 heading entry is placed in an <h6>', () => {
@@ -133,10 +133,10 @@ context('When a document has a table of contents, its first HTML element is a <n
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h6><a href="#up-item-1">I enjoy apples</a></h6></li>'
+          + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
           + '</ul>'
           + '</nav>'
-          + '<h6 id="up-item-1">I enjoy apples</h6>')
+          + '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
     })
   })
@@ -160,10 +160,10 @@ context("The table of contents has no effect on elements that aren't referenced 
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1">I enjoy apples</h1>'
+      + '<h1 id="up-topic-1">I enjoy apples</h1>'
       + '<blockquote>'
       + '<h1>I enjoy apples</h1>'
       + '</blockquote>')
@@ -221,27 +221,27 @@ context('When a table of contents has multiple entries', () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">Vegetables</a></h2></li>'
-      + '<li><h2><a href="#up-item-2">Fruit</a></h2></li>'
-      + '<li><h3><a href="#up-item-3">Apples</a></h3></li>'
-      + '<li><h4><a href="#up-item-4">Green apples</a></h4></li>'
-      + '<li><h2><a href="#up-item-5">Grains</a></h2></li>'
-      + '<li><h3><a href="#up-item-6">Rice</a></h3></li>'
+      + '<li><h2><a href="#up-topic-1">Vegetables</a></h2></li>'
+      + '<li><h2><a href="#up-topic-2">Fruit</a></h2></li>'
+      + '<li><h3><a href="#up-topic-3">Apples</a></h3></li>'
+      + '<li><h4><a href="#up-topic-4">Green apples</a></h4></li>'
+      + '<li><h2><a href="#up-topic-5">Grains</a></h2></li>'
+      + '<li><h3><a href="#up-topic-6">Rice</a></h3></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1">Vegetables</h1>'
+      + '<h1 id="up-topic-1">Vegetables</h1>'
       + '<ul>'
       + '<li>'
       + '<ol>'
       + '<li>'
-      + '<h1 id="up-item-2">Fruit</h1>'
+      + '<h1 id="up-topic-2">Fruit</h1>'
       + '<dl>'
       + '<dt>Apple</dt>'
       + '<dd>'
-      + '<h2 id="up-item-3">Apples</h2>'
-      + '<h3 id="up-item-4">Green apples</h3>'
-      + '<h1 id="up-item-5">Grains</h1>'
-      + '<h2 id="up-item-6">Rice</h2>'
+      + '<h2 id="up-topic-3">Apples</h2>'
+      + '<h3 id="up-topic-4">Green apples</h3>'
+      + '<h1 id="up-topic-5">Grains</h1>'
+      + '<h2 id="up-topic-6">Rice</h2>'
       + '</dd>'
       + '</dl>'
       + '</li>'
@@ -281,10 +281,10 @@ context("Within the table of contents itself", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples <em>and you should too</em></a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples <em>and you should too</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1">'
+      + '<h1 id="up-topic-1">'
       + 'I enjoy apples'
       + '<sup class="up-footnote-reference" id="up-footnote-reference-1">'
       + '<a href="#up-footnote-1">1</a>'
@@ -324,7 +324,7 @@ context("Within the table of contents, the IDs of revealable content elements do
     expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-item-1">'
+      + '<ul><li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
@@ -341,7 +341,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '</span>'
       + ' eat apples.'
       + '</p>'
-      + '<h1 id="up-item-1">'
+      + '<h1 id="up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-3">toggle spoiler</label>'
@@ -370,7 +370,7 @@ context("Within the table of contents, the IDs of revealable content elements do
     expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-item-1">'
+      + '<ul><li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-1">toggle NSFW</label>'
@@ -387,7 +387,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '</span>'
       + ' eat apples.'
       + '</p>'
-      + '<h1 id="up-item-1">'
+      + '<h1 id="up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-3">toggle NSFW</label>'
@@ -416,7 +416,7 @@ context("Within the table of contents, the IDs of revealable content elements do
     expect(Up.toHtml(document)).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-item-1">'
+      + '<ul><li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-1">toggle NSFL</label>'
@@ -433,7 +433,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '</span>'
       + ' eat apples.'
       + '</p>'
-      + '<h1 id="up-item-1">'
+      + '<h1 id="up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-3">toggle NSFL</label>'
@@ -457,10 +457,10 @@ context("When an item referenced by the table of contents has a source line numb
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 data-up-source-line="2" id="up-item-1">I enjoy apples</h1>')
+      + '<h1 data-up-source-line="2" id="up-topic-1">I enjoy apples</h1>')
   })
 })
 
@@ -494,18 +494,18 @@ context('When a table of contents entry reference node is associated with an ent
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I drink soda</a></h2></li>'
-      + '<li><h2><a href="#up-item-2">I never lie</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I drink soda</a></h2></li>'
+      + '<li><h2><a href="#up-topic-2">I never lie</a></h2></li>'
       + '</ul>'
       + '</nav>'
       + '<p>'
       + "I'm a great guy. For more information, skip to "
-      + '<a href="#up-item-2">I never lie</a>'
+      + '<a href="#up-topic-2">I never lie</a>'
       + '.'
       + '</p>'
-      + '<h1 id="up-item-1">I drink soda</h1>'
+      + '<h1 id="up-topic-1">I drink soda</h1>'
       + '<p>Actually, I only drink milk.</p>'
-      + '<h1 id="up-item-2">I never lie</h1>'
+      + '<h1 id="up-topic-2">I never lie</h1>'
       + '<p>Not quite true.</p>')
   })
 })

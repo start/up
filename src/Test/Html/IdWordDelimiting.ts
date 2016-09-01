@@ -44,7 +44,6 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</dl>')
     })
 
-
     specify('The "footnoteReference" term', () => {
       const footnote = new Footnote([
         new PlainText('Well, I do, but I pretend not to.')
@@ -239,10 +238,10 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#thread-11-reply-65-item-1">I enjoy apples</a></h2></li>'
+        + '<li><h2><a href="#thread-11-reply-65-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>'
-        + '<h1 id="thread-11-reply-65-item-1">I enjoy apples</h1>')
+        + '<h1 id="thread-11-reply-65-topic-1">I enjoy apples</h1>')
     })
   })
 })

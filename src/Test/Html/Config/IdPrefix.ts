@@ -868,10 +868,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1"></a></h2></li>'
+      + '<li><h2><a href="#up-topic-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1"></h1>'
+      + '<h1 id="up-topic-1"></h1>'
 
     expect(Up.toHtml(document)).to.equal(html)
   })
@@ -891,10 +891,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#reply-11-item-1"></a></h2></li>'
+      + '<li><h2><a href="#reply-11-topic-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="reply-11-item-1"></h1>'
+      + '<h1 id="reply-11-topic-1"></h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -913,10 +913,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#item-1"></a></h2></li>'
+      + '<li><h2><a href="#topic-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="item-1"></h1>'
+      + '<h1 id="topic-1"></h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -935,10 +935,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#item-1"></a></h2></li>'
+      + '<li><h2><a href="#topic-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="item-1"></h1>'
+      + '<h1 id="topic-1"></h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -957,10 +957,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1"></a></h2></li>'
+      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1"></h1>'
+      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -983,11 +983,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">Howdy there</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#up-item-1">Howdy there</a></p>'
-      + '<h1 id="up-item-1">Howdy there</h1>'
+      + '<p><a href="#up-topic-1">Howdy there</a></p>'
+      + '<h1 id="up-topic-1">Howdy there</h1>'
 
     expect(Up.toHtml(document)).to.equal(html)
   })
@@ -1012,11 +1012,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#reply-11-item-1">Howdy there</a></h2></li>'
+      + '<li><h2><a href="#reply-11-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#reply-11-item-1">Howdy there</a></p>'
-      + '<h1 id="reply-11-item-1">Howdy there</h1>'
+      + '<p><a href="#reply-11-topic-1">Howdy there</a></p>'
+      + '<h1 id="reply-11-topic-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -1040,11 +1040,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#item-1">Howdy there</a></h2></li>'
+      + '<li><h2><a href="#topic-1">Howdy there</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#item-1">Howdy there</a></p>'
-      + '<h1 id="item-1">Howdy there</h1>'
+      + '<p><a href="#topic-1">Howdy there</a></p>'
+      + '<h1 id="topic-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -1068,11 +1068,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#item-1">Howdy there</a></h2></li>'
+      + '<li><h2><a href="#topic-1">Howdy there</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#item-1">Howdy there</a></p>'
-      + '<h1 id="item-1">Howdy there</h1>'
+      + '<p><a href="#topic-1">Howdy there</a></p>'
+      + '<h1 id="topic-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })
@@ -1097,11 +1097,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</a></h2></li>'
+      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</a></p>'
-      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-item-1">Howdy there</h1>'
+      + '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></p>'
+      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</h1>'
 
     expect(up.toHtml(document)).to.equal(html)
   })

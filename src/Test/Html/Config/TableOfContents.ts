@@ -25,9 +25,9 @@ describe('The main heading within the table of contents', () => {
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1">I enjoy apples</h1>')
+      + '<h1 id="up-topic-1">I enjoy apples</h1>')
   })
 })

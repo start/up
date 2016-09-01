@@ -54,10 +54,10 @@ context('A link within a table of contents entry does not produce an <a> element
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
+      + '<h1 id="up-topic-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
 
   specify('in a reference to that table of contents entry', () => {
@@ -76,11 +76,11 @@ context('A link within a table of contents entry does not produce an <a> element
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1">I enjoy apples</a></h2></li>'
+      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#up-item-1">I enjoy apples</a></p>'
-      + '<h1 id="up-item-1"><a href="https://google.com">I enjoy apples</a></h1>')
+      + '<p><a href="#up-topic-1">I enjoy apples</a></p>'
+      + '<h1 id="up-topic-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
 })
 
@@ -139,10 +139,10 @@ context("When a link is nested deeply within another link, it doesn't produce an
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
+      + '<li><h2><a href="#up-topic-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<h1 id="up-item-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
+      + '<h1 id="up-topic-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })
 
   specify('a link nested within another link within a table of contents entry... as presented by a reference to that entry', () => {
@@ -165,11 +165,11 @@ context("When a link is nested deeply within another link, it doesn't produce an
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-item-1"><em>I enjoy apples</em></a></h2></li>'
+      + '<li><h2><a href="#up-topic-1"><em>I enjoy apples</em></a></h2></li>'
       + '</ul>'
       + '</nav>'
-      + '<p><a href="#up-item-1"><em>I enjoy apples</em></a></p>'
-      + '<h1 id="up-item-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
+      + '<p><a href="#up-topic-1"><em>I enjoy apples</em></a></p>'
+      + '<h1 id="up-topic-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })
 })
 
