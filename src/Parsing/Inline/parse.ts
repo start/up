@@ -1,5 +1,5 @@
-import { LINK_CONVENTION, EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from './RichConventions'
-import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from './MediaConventions'
+import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
+import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { isWhitespace } from '../isWhitespace'
@@ -24,25 +24,25 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 
 
 // This includes every rich convention except for links. Links have that pesky URL.
-const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
-  EMPHASIS_CONVENTION,
-  STRESS_CONVENTION,
-  ITALIC_CONVENTION,
-  BOLD_CONVENTION,
-  HIGHLIGHT_CONVENTION,
-  SPOILER_CONVENTION,
-  NSFW_CONVENTION,
-  NSFL_CONVENTION,
-  FOOTNOTE_CONVENTION,
-  NORMAL_PARENTHETICAL_CONVENTION,
-  SQUARE_PARENTHETICAL_CONVENTION,
-  QUOTE_CONVENTION
+const RICHS_WITHOUT_EXTRA_FIELDS = [
+  EMPHASIS,
+  STRESS,
+  ITALIC,
+  BOLD,
+  HIGHLIGHT,
+  SPOILER,
+  NSFW,
+  NSFL,
+  FOOTNOTE,
+  NORMAL_PARENTHETICAL,
+  SQUARE_PARENTHETICAL,
+  QUOTE
 ]
 
-const MEDIA_CONVENTIONS = [
-  AUDIO_CONVENTION,
-  IMAGE_CONVENTION,
-  VIDEO_CONVENTION
+const MEDIAS = [
+  AUDIO,
+  IMAGE,
+  VIDEO
 ]
 
 
@@ -106,12 +106,12 @@ class Parser {
           const urlAfterScheme = url.substr(urlScheme.length)
 
           this.nodes.push(
-            new LINK_CONVENTION.NodeType([new PlainText(urlAfterScheme)], url))
+            new LINK.NodeType([new PlainText(urlAfterScheme)], url))
 
           continue
         }
 
-        case LINK_CONVENTION.startTokenKind: {
+        case LINK.startTokenKind: {
           let children = this.getNodes({ fromHereUntil: TokenKind.LinkEndAndUrl })
 
           const isContentBlank = isBlank(children)
@@ -129,7 +129,7 @@ class Parser {
         }
       }
 
-      for (const media of MEDIA_CONVENTIONS) {
+      for (const media of MEDIAS) {
         if (token.kind === media.startAndDescriptionTokenKind) {
           let description = token.value.trim()
 
@@ -141,14 +141,14 @@ class Parser {
         }
       }
 
-      for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
+      for (const richConvention of RICHS_WITHOUT_EXTRA_FIELDS) {
         if (token.kind === richConvention.startTokenKind) {
           let children = this.getNodes({
             fromHereUntil: richConvention.endTokenKind,
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
-          if ((richConvention === FOOTNOTE_CONVENTION) && this.ancestorRevealableInlineConventions.length) {
+          if ((richConvention === FOOTNOTE) && this.ancestorRevealableInlineConventions.length) {
             // Okay, we're dealing with a footnote that is within a revealable inline convention.
             //
             // To prevent this footnote's contents from being exposed within its footnote block, we put its

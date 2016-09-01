@@ -1,9 +1,9 @@
-import { EMPHASIS_CONVENTION, STRESS_CONVENTION, ITALIC_CONVENTION, BOLD_CONVENTION, HIGHLIGHT_CONVENTION, QUOTE_CONVENTION, SPOILER_CONVENTION, NSFW_CONVENTION, NSFL_CONVENTION, FOOTNOTE_CONVENTION, LINK_CONVENTION, NORMAL_PARENTHETICAL_CONVENTION, SQUARE_PARENTHETICAL_CONVENTION } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN } from '../../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
-import { AUDIO_CONVENTION, IMAGE_CONVENTION, VIDEO_CONVENTION } from '../MediaConventions'
 import { Config } from '../../../Config'
 import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
@@ -135,15 +135,15 @@ class Tokenizer {
   private inflectionHandlers = [
     {
       delimiterChar: '*',
-      conventionForMinorInflection: EMPHASIS_CONVENTION,
-      conventionForMajorInflection: STRESS_CONVENTION
+      conventionForMinorInflection: EMPHASIS,
+      conventionForMajorInflection: STRESS
     }, {
       delimiterChar: '_',
-      conventionForMinorInflection: ITALIC_CONVENTION,
-      conventionForMajorInflection: BOLD_CONVENTION
+      conventionForMinorInflection: ITALIC,
+      conventionForMajorInflection: BOLD
     }, {
       delimiterChar: '"',
-      conventionForMinorInflection: QUOTE_CONVENTION
+      conventionForMinorInflection: QUOTE
     }
   ].map(args => this.getInflectionHandler(args))
 
@@ -197,16 +197,16 @@ class Tokenizer {
     this.conventions = [
       ...concat([
         {
-          richConvention: HIGHLIGHT_CONVENTION,
+          richConvention: HIGHLIGHT,
           term: this.config.terms.markup.highlight
         }, {
-          richConvention: SPOILER_CONVENTION,
+          richConvention: SPOILER,
           term: this.config.terms.markup.spoiler
         }, {
-          richConvention: NSFW_CONVENTION,
+          richConvention: NSFW,
           term: this.config.terms.markup.nsfw
         }, {
-          richConvention: NSFL_CONVENTION,
+          richConvention: NSFL,
           term: this.config.terms.markup.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
@@ -232,10 +232,10 @@ class Tokenizer {
 
       ...[
         {
-          richConvention: NORMAL_PARENTHETICAL_CONVENTION,
+          richConvention: NORMAL_PARENTHETICAL,
           bracket: PARENTHESIS
         }, {
-          richConvention: SQUARE_PARENTHETICAL_CONVENTION,
+          richConvention: SQUARE_PARENTHETICAL,
           bracket: SQUARE_BRACKET
         }
       ].map(args => this.getParentheticalConvention(args)),
@@ -249,7 +249,7 @@ class Tokenizer {
   private getFootnoteConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
-        richConvention: FOOTNOTE_CONVENTION,
+        richConvention: FOOTNOTE,
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
         //
         // We don't do this for footnotes in inline documents, however. For more information about footnotes
@@ -266,7 +266,7 @@ class Tokenizer {
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
-        richConvention: NORMAL_PARENTHETICAL_CONVENTION,
+        richConvention: NORMAL_PARENTHETICAL,
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
         whenOpening: () => {
@@ -289,7 +289,7 @@ class Tokenizer {
   private getLinkContentConventions(): Convention[] {
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
-        richConvention: LINK_CONVENTION,
+        richConvention: LINK,
         startsWith: bracket.startPattern,
         endsWith: bracket.endPattern,
         mustBeDirectlyFollowedBy: this.linkUrlConventions
@@ -483,7 +483,7 @@ class Tokenizer {
 
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
-      [IMAGE_CONVENTION, VIDEO_CONVENTION, AUDIO_CONVENTION].map(media => {
+      [IMAGE, VIDEO, AUDIO].map(media => {
         const mediaTerm = media.term(this.config.terms.markup)
 
         return PARENTHETICAL_BRACKETS.map(bracket =>
@@ -568,11 +568,11 @@ class Tokenizer {
   // see `getLinkUrlConventions`.
   private getLinkifyingUrlConventions(): Convention[] {
     const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
-      HIGHLIGHT_CONVENTION,
-      SPOILER_CONVENTION,
-      NSFW_CONVENTION,
-      NSFL_CONVENTION,
-      FOOTNOTE_CONVENTION
+      HIGHLIGHT,
+      SPOILER,
+      NSFW,
+      NSFL,
+      FOOTNOTE
     ].map(richConvention => richConvention.endTokenKind)
 
     return concat(PARENTHETICAL_BRACKETS.map(bracket => {
@@ -690,8 +690,8 @@ class Tokenizer {
   }
 
   private closeLinkifyingUrlForRichConventions(url: string): void {
-    const linkEndToken = new Token(LINK_CONVENTION.endTokenKind, url)
-    const linkStartToken = new Token(LINK_CONVENTION.startTokenKind)
+    const linkEndToken = new Token(LINK.endTokenKind, url)
+    const linkStartToken = new Token(LINK.startTokenKind)
     linkStartToken.enclosesContentBetweenItselfAnd(linkEndToken)
 
     // We'll insert our new link end token right before the original end token, and we'll insert our new link
@@ -723,7 +723,7 @@ class Tokenizer {
     const { startingBackAtTokenIndex, url } = args
 
     this.encloseWithin({
-      richConvention: LINK_CONVENTION,
+      richConvention: LINK,
       startingBackAtTokenIndex
     })
 

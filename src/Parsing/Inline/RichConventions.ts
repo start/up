@@ -16,55 +16,55 @@ import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFi
 import { RevealableConvention } from './RevealableConvention'
 
 
-export const EMPHASIS_CONVENTION: RichConventionWithoutExtraFields = {
+export const EMPHASIS: RichConventionWithoutExtraFields = {
   NodeType: Emphasis,
   startTokenKind: TokenKind.EmphasisStart,
   endTokenKind: TokenKind.EmphasisEnd
 }
 
-export const STRESS_CONVENTION: RichConventionWithoutExtraFields = {
+export const STRESS: RichConventionWithoutExtraFields = {
   NodeType: Stress,
   startTokenKind: TokenKind.StressStart,
   endTokenKind: TokenKind.StressEnd
 }
 
-export const ITALIC_CONVENTION: RichConventionWithoutExtraFields = {
+export const ITALIC: RichConventionWithoutExtraFields = {
   NodeType: Italic,
   startTokenKind: TokenKind.ItalicStart,
   endTokenKind: TokenKind.ItalicEnd
 }
 
-export const BOLD_CONVENTION: RichConventionWithoutExtraFields = {
+export const BOLD: RichConventionWithoutExtraFields = {
   NodeType: Bold,
   startTokenKind: TokenKind.BoldStart,
   endTokenKind: TokenKind.BoldEnd
 }
 
-export const HIGHLIGHT_CONVENTION: RichConventionWithoutExtraFields = {
+export const HIGHLIGHT: RichConventionWithoutExtraFields = {
   NodeType: Highlight,
   startTokenKind: TokenKind.HighlightStart,
   endTokenKind: TokenKind.HighlightEnd
 }
 
-export const QUOTE_CONVENTION: RichConventionWithoutExtraFields = {
+export const QUOTE: RichConventionWithoutExtraFields = {
   NodeType: InlineQuote,
   startTokenKind: TokenKind.QuoteStart,
   endTokenKind: TokenKind.QuoteEnd
 }
 
-export const FOOTNOTE_CONVENTION: RichConventionWithoutExtraFields = {
+export const FOOTNOTE: RichConventionWithoutExtraFields = {
   NodeType: Footnote,
   startTokenKind: TokenKind.FootnoteStart,
   endTokenKind: TokenKind.FootnoteEnd
 }
 
-export const NORMAL_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
+export const NORMAL_PARENTHETICAL: RichConventionWithoutExtraFields = {
   NodeType: NormalParenthetical,
   startTokenKind: TokenKind.NormalParentheticalStart,
   endTokenKind: TokenKind.NormalParentheticalEnd
 }
 
-export const SQUARE_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields = {
+export const SQUARE_PARENTHETICAL: RichConventionWithoutExtraFields = {
   NodeType: SquareParenthetical,
   startTokenKind: TokenKind.SquareParentheticalStart,
   endTokenKind: TokenKind.SquareParentheticalEnd
@@ -72,25 +72,25 @@ export const SQUARE_PARENTHETICAL_CONVENTION: RichConventionWithoutExtraFields =
 
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
 // `RichConventionWithoutExtraFields` interface.
-export const LINK_CONVENTION = {
+export const LINK = {
   NodeType: Link,
   startTokenKind: TokenKind.LinkStart,
   endTokenKind: TokenKind.LinkEndAndUrl
 }
 
-export const SPOILER_CONVENTION = new RevealableConvention({
+export const SPOILER = new RevealableConvention({
   NodeType: InlineSpoiler,
   startTokenKind: TokenKind.SpoilerStart,
   endTokenKind: TokenKind.SpoilerEnd
 })
 
-export const NSFW_CONVENTION = new RevealableConvention({
+export const NSFW = new RevealableConvention({
   NodeType: InlineNsfw,
   startTokenKind: TokenKind.NsfwStart,
   endTokenKind: TokenKind.NsfwEnd
 })
 
-export const NSFL_CONVENTION = new RevealableConvention({
+export const NSFL = new RevealableConvention({
   NodeType: InlineNsfl,
   startTokenKind: TokenKind.NsflStart,
   endTokenKind: TokenKind.NsflEnd

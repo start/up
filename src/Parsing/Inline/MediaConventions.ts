@@ -5,19 +5,19 @@ import { Video } from '../../SyntaxNodes/Video'
 import { TokenKind } from './Tokenization/TokenKind'
 
 
-export const AUDIO_CONVENTION: MediaConvention = {
+export const AUDIO: MediaConvention = {
   term: terms => terms.audio,
   NodeType: Audio,
   startAndDescriptionTokenKind: TokenKind.AudioStartAndDescription
 }
 
-export const IMAGE_CONVENTION: MediaConvention = {
+export const IMAGE: MediaConvention = {
   term: terms => terms.image,
   NodeType: Image,
   startAndDescriptionTokenKind: TokenKind.ImageStartAndDescription
 }
 
-export const VIDEO_CONVENTION: MediaConvention = {
+export const VIDEO: MediaConvention = {
   term: terms => terms.video,
   NodeType: Video,
   startAndDescriptionTokenKind: TokenKind.VideoStartAndDescription
