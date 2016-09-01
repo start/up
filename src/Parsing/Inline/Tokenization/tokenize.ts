@@ -9,6 +9,7 @@ import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
+import { repeat } from '../../../StringHelpers'
 import { Bracket } from './Bracket'
 import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
@@ -1393,12 +1394,6 @@ class Tokenizer {
   private tryToOpenRawParentheticalBracketConvention(): boolean {
     return this.rawParentheticalBracketConventions.some(convention => this.tryToOpen(convention))
   }
-}
-
-
-// `String.repeat` has very poor mobile support.
-function repeat(text: string, count: number): string {
-  return new Array(count + 1).join(text)
 }
 
 
