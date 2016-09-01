@@ -157,7 +157,7 @@ describe('Overlapped emphasized and square bracketed text', () => {
 
 describe('Overlapped square bracketed and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
-    expect(Up.toDocument('I ++love *drinking++ whole* milk.')).to.deep.equal(
+    expect(Up.toDocument('I [love *drinking] whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new SquareParenthetical([
