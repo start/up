@@ -15,7 +15,6 @@ import { Audio } from '../../../SyntaxNodes/Audio'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
@@ -216,7 +215,6 @@ context('The following conventions cannot be linkified:', () => {
         new InlineQuote([
           new PlainText('win')
         ]),
-        new ExampleInput('A'),
         new PlainText(' '),
         new NormalParenthetical([
           new PlainText('('),
