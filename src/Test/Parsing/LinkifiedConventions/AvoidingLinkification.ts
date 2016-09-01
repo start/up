@@ -192,23 +192,6 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('Example input', () => {
-    expect(Up.toDocument('After you beat the Elite Four, you press {A} (https://example.com).')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, you press'),
-        new ExampleInput('A'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
-          ], 'https://example.com'),
-          new PlainText(')'),
-        ]),
-        new PlainText('.')
-      ]))
-  })
-
   specify('References to table of contents entries', () => {
     expect(Up.toDocument('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
