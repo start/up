@@ -296,7 +296,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
   })
 
 
-  context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable', () => {
+  context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable,', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
       expect(Up.toDocument('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -434,7 +434,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
 })
 
 
-context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second", () => {
+context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second.", () => {
   context('This includes:', () => {
     specify('Highlightex text and quoted text', () => {
       expect(Up.toDocument('[highlight: Oh "]why would you do this?"')).to.deep.equal(
@@ -475,9 +475,9 @@ context("When most conventions overlap by only the first convention's end delimi
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses', () => {
-      expect(Up.toDocument('_Oh (_why would you do this?)')).to.deep.equal(
+      expect(Up.toDocument('[highlight: Oh (]why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Italic([
+          new Highlight([
             new PlainText('Oh '),
             new NormalParenthetical([
               new PlainText('(')
@@ -490,9 +490,9 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Square brackets', () => {
-      expect(Up.toDocument('"Oh ["why would you do this?]')).to.deep.equal(
+      expect(Up.toDocument('(highlight: Oh [)why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineQuote([
+          new Highlight([
             new PlainText('Oh '),
             new SquareParenthetical([
               new PlainText('[')
