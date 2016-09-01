@@ -94,6 +94,6 @@ export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
 
   private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {
     // Right now, we have only one rule: We will not match an entry if it contains this reference.
-    return entry.inlineDescendants().indexOf(this) === -1
+    return (entry.inlineDescendants().indexOf(this) === -1)
   }
 }
