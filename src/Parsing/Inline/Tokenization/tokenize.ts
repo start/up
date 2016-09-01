@@ -433,12 +433,9 @@ class Tokenizer {
   //
   //   Press {esc} to quit.
   private getExampleInputConvention(): Convention {
-    const startDelimiter = CURLY_BRACKET.startPattern
-    const endDelimiter = CURLY_BRACKET.endPattern
-
     return new Convention({
-      startsWith: startDelimiterNotFollowedByEndDelimiter(startDelimiter, endDelimiter),
-      endsWith: endDelimiter,
+      startsWith: startDelimiterNotFollowedByEndDelimiter(CURLY_BRACKET.startPattern, CURLY_BRACKET.endPattern),
+      endsWith: CURLY_BRACKET.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
@@ -463,9 +460,12 @@ class Tokenizer {
   //
   // When rendered to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
+    const term =
+      this.config.terms.markup.referenceToTableOfContentsEntry
+
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new Convention({
-        startsWith: labeledBracketStartDelimiter(this.config.terms.markup.referenceToTableOfContentsEntry, bracket),
+        startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(term, bracket), bracket.endPattern),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
