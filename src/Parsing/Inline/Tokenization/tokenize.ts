@@ -870,13 +870,13 @@ class Tokenizer {
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
-      tryToBuffer(CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN)
+      tryToBuffer(CONTENT_WITH_NO_SPECIAL_MEANING)
     } while (
       // Next, if we can try to buffer whitespace...
       canTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
       // we've got to bail, because the current character can't be skipped.     
-      && tryToBuffer(WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN))
+      && tryToBuffer(WHITESPACE_THAT_NORMALLY_HAS_NO_SPECIAL_MEANING))
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -1416,14 +1416,21 @@ const NOT_FOLLOWED_BY_WHITESPACE =
 const PERIOD =
   escapeForRegex('.')
 
+const HYPHEN =
+  escapeForRegex('-')
+
+const PLUS_SIGN =
+  escapeForRegex('+')
+
+
 const ELLIPSIS_PATTERN =
   patternStartingWith(multiple(PERIOD))
 
 const EN_OR_EM_DASH_PATTERN =
-  patternStartingWith(multiple('-'))
+  patternStartingWith(multiple(HYPHEN))
 
 const PLUS_MINUS_SIGN_PATTERN =
-  patternStartingWith(escapeForRegex('+-'))
+  patternStartingWith(PLUS_SIGN + HYPHEN)
 
 
 // Our URL patterns (and associated string constants) are used to determine whether text was
@@ -1433,13 +1440,11 @@ const PLUS_MINUS_SIGN_PATTERN =
 // want to avoid surprising the author by producing a link when they probably didn't intend
 // to produce one.
 
-const HYPHEN =
-  escapeForRegex('-')
 
 const URL_SUBDOMAIN =
   anyCharMatching(LETTER_CLASS, DIGIT)
   + everyOptional(anyCharMatching(LETTER_CLASS, DIGIT, HYPHEN))
-  + escapeForRegex('.')
+  + PERIOD
 
 const URL_TOP_LEVEL_DOMAIN =
   oneOrMore(LETTER_CHAR)
@@ -1482,15 +1487,15 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   ALL_BRACKETS.map(bracket => bracket.endPattern)
 
-// The "h" is for the start of bare URLs. 
 const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
-  WHITESPACE_CHAR, HYPHEN, FORWARD_SLASH, PERIOD, 'h', '"', '_', '`',
+  // The "h" is for the start of bare URLs. 
+  WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '`',
   ...BRACKET_START_PATTERNS,
   ...BRACKET_END_PATTERNS,
-  ...[ESCAPER_CHAR, '*', '+'].map(escapeForRegex)
+  ...[ESCAPER_CHAR, '*'].map(escapeForRegex)
 ]
 
-const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
+const CONTENT_WITH_NO_SPECIAL_MEANING =
   patternStartingWith(
     oneOrMore(
       either(
@@ -1503,7 +1508,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
         HYPHEN + notFollowedBy(HYPHEN)
       )))
 
-// This pattern matches all whitespace that isn't followed by an open bracket.
+// This pattern matches all whitespace that is *not* followed by an open bracket.
 //
 // If there's a chunk of whitespace followed by an open bracket, we don't want to match any of the
 // chunk:
@@ -1512,7 +1517,7 @@ const CONTENT_THAT_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
 //
 // To prevent our pattern from matching all but the last character of that whitespace, we make sure
 // our match is followed by neither an open bracket nor by another whitespace character. 
-const WHITESPACE_THAT_NORMALLY_CANNOT_OPEN_OR_CLOSE_ANY_CONVENTIONS_PATTERN =
+const WHITESPACE_THAT_NORMALLY_HAS_NO_SPECIAL_MEANING =
   patternStartingWith(
     SOME_WHITESPACE + notFollowedBy(
       anyCharMatching(...PARENTHETICAL_BRACKET_START_PATTERNS, WHITESPACE_CHAR)))
