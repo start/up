@@ -194,7 +194,7 @@ context('The following conventions cannot be linkified:', () => {
   specify('References to table of contents entries', () => {
     expect(Up.toDocument('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, you press'),
+        new PlainText('After you beat the Elite Four, you are not done. See '),
         new ReferenceToTableOfContentsEntry('rival fights'),
         new PlainText(' '),
         new NormalParenthetical([
