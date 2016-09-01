@@ -360,20 +360,21 @@ class Tokenizer {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
-      // If a convention is totally empty, it's never applied. For example, this would-be inline NSFW convention
-      // is empty:
+      // Up never applies empty conventions, and that naturally applies for rich conventions, too.
+      //
+      // For example, this would-be inline NSFW convention is empty:
       //
       // (NSFW:)
       //
       // Therefore, we instead treat it as a parenthesized convention containing the text "NSFW:".
       //
-      // Additionally, when a convention contains only whitespace, it's never applied. For example, this would-be
-      // inline NSFW convention contains only whitespace: 
+      // Furthermore, Up never recognizes rich conventions if they contain only whitespace. For example,
+      // this would-be inline NSFW convention contains only whitespace: 
       //
       // [NSFW:   ]
       //
       // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
-      startsWith: startsWith + notFollowedBy(ANY_WHITESPACE + endsWith),
+      startsWith: startDelimiterRequiringContentBeforeEndDelimiter(startsWith, endsWith),
       startPatternContainsATerm,
 
       endsWith,
@@ -436,13 +437,12 @@ class Tokenizer {
   //
   //   Press {esc} to quit.
   private getExampleInputConvention(): Convention {
-    const EXAMPLE_INPUT_START_DELIMITER = CURLY_BRACKET.startPattern
-    const EXAMPLE_INPUT_END_DELIMITER = CURLY_BRACKET.endPattern
+    const startDelimiter = CURLY_BRACKET.startPattern
+    const endDelimiter = CURLY_BRACKET.endPattern
 
     return new Convention({
-      // Example input cannot be totally blank.
-      startsWith: EXAMPLE_INPUT_START_DELIMITER + notFollowedBy(ANY_WHITESPACE + EXAMPLE_INPUT_END_DELIMITER),
-      endsWith: EXAMPLE_INPUT_END_DELIMITER,
+      startsWith: startDelimiterRequiringContentBeforeEndDelimiter(startDelimiter, endDelimiter),
+      endsWith: endDelimiter,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
@@ -633,6 +633,7 @@ class Tokenizer {
   }
 
   private getStartPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
+    // The URL must not be blank, and its first character must not be escaped.
     return bracket.startPattern + notFollowedBy(
       ANY_WHITESPACE
       + anyCharMatching(
@@ -1392,6 +1393,11 @@ class Tokenizer {
   private tryToOpenRawParentheticalBracketConvention(): boolean {
     return this.rawParentheticalBracketConventions.some(convention => this.tryToOpen(convention))
   }
+}
+
+
+function startDelimiterRequiringContentBeforeEndDelimiter(startDelimiter: string, endDelimiter: string): string {
+  return startDelimiter + notFollowedBy(ANY_WHITESPACE + endDelimiter)
 }
 
 
