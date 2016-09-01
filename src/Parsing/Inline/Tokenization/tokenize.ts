@@ -1487,7 +1487,7 @@ const BRACKET_START_PATTERNS =
 const BRACKET_END_PATTERNS =
   ALL_BRACKETS.map(bracket => bracket.endPattern)
 
-const CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS = [
+const CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING = [
   // The "h" is for the start of bare URLs. 
   WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '`',
   ...BRACKET_START_PATTERNS,
@@ -1499,13 +1499,16 @@ const CONTENT_WITH_NO_SPECIAL_MEANING =
   patternStartingWith(
     oneOrMore(
       either(
-        anyCharNotMatching(...CHAR_CLASSES_THAT_CAN_OPEN_OR_CLOSE_CONVENTIONS),
+        anyCharNotMatching(...CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING),
         // An "h" only has special meaning if it's the start of a bare URL scheme.
         'h' + notFollowedBy('ttp' + optional('s') + '://'),
         // Multiple periods produce ellipses, but single periods have no special meaning.
         PERIOD + notFollowedBy(PERIOD),
         // Multiple hyphens produce en/em dashes, but single hyphens have no special meaning.
-        HYPHEN + notFollowedBy(HYPHEN)
+        HYPHEN + notFollowedBy(HYPHEN),
+        // A plus sign followed by a minus sign produces a plus-minus sign, but otherwise, plus
+        // signs don't have any special meaning.
+        PLUS_SIGN + notFollowedBy(HYPHEN)
       )))
 
 // This pattern matches all whitespace that is *not* followed by an open bracket.
