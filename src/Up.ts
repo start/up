@@ -69,7 +69,7 @@ export namespace Up {
   }
 
   // This should always match the `version` field in `package.json`.
-  export const VERSION = '12.6.0'
+  export const VERSION = '13.0.0'
 }
 
 
