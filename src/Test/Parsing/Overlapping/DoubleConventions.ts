@@ -248,7 +248,7 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
 })
 
 
-describe('A link that overlaps both an emphasis convention and the parenthesized text the emphasis convention is nested within', () => {
+describe('A link that overlaps both an emphasis convention and some parenthesized text that the emphasis convention is nested within', () => {
   it('splits the parenthesized text and emphasis conventions', () => {
     expect(Up.toDocument("In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -266,7 +266,7 @@ describe('A link that overlaps both an emphasis convention and the parenthesized
           new Emphasis([
             new PlainText(' never eat cereal')
           ]),
-          new PlainText(''),
+          new PlainText(')'),
         ]),
         new PlainText(' outside.')
       ]))
