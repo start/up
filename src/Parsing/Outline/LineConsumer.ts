@@ -1,3 +1,6 @@
+// Instances of this class incrementally consume `lines` from start to finish.
+//
+// Lines from the start of `lines` are consumed when they match regular expression patterns.
 export class LineConsumer {
   private _countLinesConsumed = 0
 
