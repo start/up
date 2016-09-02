@@ -73,7 +73,7 @@ class Parser {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
-      switch (token.kind) {
+      switch (token.meaning) {
         case endTokenMeaning: {
           this.setResult()
           return
@@ -130,7 +130,7 @@ class Parser {
       }
 
       for (const media of MEDIAS) {
-        if (token.kind === media.startAndDescriptionTokenMeaning) {
+        if (token.meaning === media.startAndDescriptionTokenMeaning) {
           let description = token.value.trim()
 
           // The next token will be a MediaEndAndUrl token
@@ -142,7 +142,7 @@ class Parser {
       }
 
       for (const richConvention of RICHS_WITHOUT_EXTRA_FIELDS) {
-        if (token.kind === richConvention.startTokenMeaning) {
+        if (token.meaning === richConvention.startTokenMeaning) {
           let children = this.getNodes({
             fromHereUntil: richConvention.endTokenMeaning,
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null

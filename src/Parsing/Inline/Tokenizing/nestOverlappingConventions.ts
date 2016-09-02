@@ -119,9 +119,9 @@ class ConventionNester {
         //   This [highlight: does (highlight: not] make) much sense.
         //
         // The end token produced by `]` corresponds to the start token produced by `[highlight:`. By checking
-        // only the `kind` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
-        // conventions are overlapping.
-        if (unclosedStartToken.correspondingDelimiter.kind === endToken.kind) {
+        // only the `meaning` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
+        // conventions are overlapping. Mission accomplished!
+        if (unclosedStartToken.correspondingDelimiter.meaning === endToken.meaning) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -166,7 +166,7 @@ class ConventionNester {
       const potentialHeroStartToken = this.tokens[tokenIndex]
 
       const isStartTokenForHeroConvention =
-        potentialHeroStartToken.kind === conventionNotToSplit.startTokenMeaning
+        potentialHeroStartToken.meaning === conventionNotToSplit.startTokenMeaning
 
       if (!isStartTokenForHeroConvention) {
         continue
@@ -283,9 +283,9 @@ class ConventionNester {
 
 
 function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.kind === convention.startTokenMeaning)
+  return conventions.some(convention => token.meaning === convention.startTokenMeaning)
 }
 
 function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.kind === convention.endTokenMeaning)
+  return conventions.some(convention => token.meaning === convention.endTokenMeaning)
 }

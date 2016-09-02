@@ -567,7 +567,7 @@ class Tokenizer {
   // whitespace between the linkifying URL and the original convention. For more information,
   // see `getLinkUrlConventions`.
   private getLinkifyingUrlConventions(): Convention[] {
-    const KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS = [
+    const LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT,
       SPOILER,
       NSFW,
@@ -578,7 +578,7 @@ class Tokenizer {
     return concat(PARENTHETICAL_BRACKETS.map(bracket => {
       const argsForRichConventions = {
         bracket,
-        canOnlyOpenIfDirectlyFollowing: KINDS_OF_END_TOKENS_FOR_LINKIFIABLE_RICH_CONVENTIONS,
+        canOnlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
         whenClosing: (url: string) => this.closeLinkifyingUrlForRichConventions(url)
       }
 
@@ -933,11 +933,11 @@ class Tokenizer {
     this.closeBareUrlContextIfOneIsOpen({ withinContextAtIndex: contextIndex })
 
     if (convention.beforeClosingItFlushesNonEmptyBufferTo != null) {
-      this.flushNonEmptyBufferToTokenOfKind(convention.beforeClosingItFlushesNonEmptyBufferTo)
+      this.flushNonEmptyBufferToToken(convention.beforeClosingItFlushesNonEmptyBufferTo)
     }
 
     if (convention.beforeClosingItAlwaysFlushesBufferTo != null) {
-      this.flushBufferToTokenOfKind(convention.beforeClosingItAlwaysFlushesBufferTo)
+      this.flushBufferToToken(convention.beforeClosingItAlwaysFlushesBufferTo)
     }
 
     context.close()
@@ -1317,7 +1317,7 @@ class Tokenizer {
     return (
       !this.buffer
       && this.mostRecentToken
-      && tokenMeanings.some(tokenMeaning => this.mostRecentToken.kind === tokenMeaning))
+      && tokenMeanings.some(tokenMeaning => this.mostRecentToken.meaning === tokenMeaning))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
@@ -1332,12 +1332,12 @@ class Tokenizer {
     this.inflectionHandlers = snapshot.inflectionHandlers
   }
 
-  private appendNewToken(kind: TokenMeaning, value?: string): void {
-    this.appendToken(new Token(kind, value))
+  private appendNewToken(meaning: TokenMeaning, value?: string): void {
+    this.appendToken(new Token(meaning, value))
   }
 
   private appendBufferedUlPathToCurrentBareUrl(): void {
-    if (this.mostRecentToken.kind === TokenMeaning.BareUrl) {
+    if (this.mostRecentToken.meaning === TokenMeaning.BareUrl) {
       this.mostRecentToken.value += this.flushBuffer()
     } else {
       throw new Error('Most recent token is not a bare URL token')
@@ -1351,14 +1351,14 @@ class Tokenizer {
     return buffer
   }
 
-  private flushNonEmptyBufferToTokenOfKind(kind: TokenMeaning): void {
+  private flushNonEmptyBufferToToken(meaning: TokenMeaning): void {
     if (this.buffer) {
-      this.appendNewToken(kind, this.flushBuffer())
+      this.appendNewToken(meaning, this.flushBuffer())
     }
   }
 
-  private flushBufferToTokenOfKind(kind: TokenMeaning): void {
-    this.appendNewToken(kind, this.flushBuffer())
+  private flushBufferToToken(meaning: TokenMeaning): void {
+    this.appendNewToken(meaning, this.flushBuffer())
   }
 
   private insertToken(args: { token: Token, atIndex: number }): void {
@@ -1378,7 +1378,7 @@ class Tokenizer {
   }
 
   private flushNonEmptyBufferToPlainTextToken(): void {
-    this.flushNonEmptyBufferToTokenOfKind(TokenMeaning.PlainText)
+    this.flushNonEmptyBufferToToken(TokenMeaning.PlainText)
   }
 
   private handleTextAwareOfRawBrackets(): void {
