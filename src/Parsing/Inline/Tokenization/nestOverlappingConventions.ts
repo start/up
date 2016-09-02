@@ -37,6 +37,20 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 ]
 
 
+// Up offers no real support for self-overlapping conventions. When a convention overlaps one or more instances of itself,
+// the start/end delimiters are simply matched from innermost to outermost.
+//
+// For example, this:
+//
+//   This [SPOILER: does (SPOILER: not] make) much sense.
+//
+// ...should be parsed as though it were this:
+//
+//   This [SPOILER: does [SPOILER: not] make] much sense.
+//
+// Note the identical brackets in the second example.
+//
+// TODO: Explain how parser will handle this
 class ConventionNester {
   constructor(public tokens: Token[]) {
     this.tokens = tokens.slice()
@@ -89,11 +103,25 @@ class ConventionNester {
       // tokens), but this method uses the same helper method used to split links.
       let endTokensOfOverlappingConventions: Token[] = []
 
-      // We'll check the unclosed start tokens from most recently opened to least recently opened.
+      // We'll check the unclosed start tokens from most recently opened to least recently opened (from inner to
+      // outer).
       for (let i = unclosedStartTokens.length - 1; i >= 0; i--) {
         const unclosedStartToken = unclosedStartTokens[i]
 
-        if (unclosedStartToken.correspondingDelimiter === endToken) {
+        // We want to see whether this start token matches our end token. Why aren't we just doing
+        // `unclosedStartToken.correspondingDelimiter === endToken`?
+        //
+        // Well, as explained in the comments above this class, we ignore self-overlapping conventions, instead
+        // matching their start/end tokens from innermost to outermost.
+        //
+        // Let's look at this example of a highlight convention overlapping another highlight convention:
+        //
+        //   This [highlight: does (highlight: not] make) much sense.
+        //
+        // The end token produced by `]` corresponds to the start token produced by `[highlight:`. By checking
+        // only the `kind` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
+        // conventions are overlapping.
+        if (unclosedStartToken.correspondingDelimiter.kind === endToken.kind) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -101,6 +129,7 @@ class ConventionNester {
           break
         }
 
+        // Uh-oh. This start token belongs to an overlapping convention.
         endTokensOfOverlappingConventions.push(unclosedStartToken.correspondingDelimiter)
       }
 
@@ -127,6 +156,9 @@ class ConventionNester {
   }
 
   // This method assumes that any `splittableConventions` tokens are already properly nested within each other.
+  //
+  // By design, if `conventionNotToSplit` overlaps with another instance of itself, we don't do anything. Please
+  // see the comment above this class for more information.
   private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
     // To keep local variable names shorter, we'll refer to `conventionNotToSplit` as the hero convention.
 
