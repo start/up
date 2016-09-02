@@ -39,7 +39,7 @@ const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   QUOTE
 ]
 
-const MEDIAS = [
+const MEDIA_CONVENTIONS = [
   AUDIO,
   IMAGE,
   VIDEO
@@ -129,7 +129,7 @@ class Parser {
         }
       }
 
-      for (const media of MEDIAS) {
+      for (const media of MEDIA_CONVENTIONS) {
         if (token.role === media.startAndDescriptionTokenRole) {
           let description = token.value.trim()
 
