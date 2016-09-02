@@ -13,8 +13,8 @@ import { Footnote } from'../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from'../../../SyntaxNodes/FootnoteBlock'
 
 
-context('Up offers no special support for conventions that overlap themselves. When conventions overlap themselves, the overlapped portion is simply treated as nested.', () => {
-  specify('This is true for highlights, which have no special continuity priority', () => {
+context('Up offers no real support for conventions that overlap themselves. When conventions overlap themselves, the overlapped portion is simply treated as nested.', () => {
+  specify('This is true for highlights, which have no continuity priority', () => {
     expect(Up.toDocument('This [highlight: does (highlight: not] make) much sense.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
