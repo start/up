@@ -13,7 +13,7 @@ import { Footnote } from'../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from'../../../SyntaxNodes/FootnoteBlock'
 
 
-context('Up offers no real support for conventions that overlap themselves. When conventions overlap themselves, the overlapped portion is simply treated as nested.', () => {
+context('Up offers no real support for self-overlapping. When a convention overlaps itself, its start/end delimiters simply match from innermost to outermost.', () => {
   specify('This is true for highlights, which have no continuity priority', () => {
     expect(Up.toDocument('This [highlight: does (highlight: not] make) much sense.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -111,6 +111,82 @@ context('Up offers no real support for conventions that overlap themselves. When
           ]),
           new FootnoteBlock([outerFootnote, innerFootnote])
         ]))
+    })
+  })
+
+
+  context('This is also true when a convention overlaps multiple instances of itself.', () => {
+    context('A convention with no continuity priority:', () => {
+      specify('Two highlights overlapping another', () => {
+        expect(Up.toDocument('[highlight: This [highlight: does (highlight: not]] make) much sense.')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Highlight([
+              new PlainText('This '),
+              new Highlight([
+                new PlainText('does '),
+                new Highlight([
+                  new PlainText('not')
+                ]),
+              ]),
+              new PlainText(' make')
+            ]),
+            new PlainText(' much sense.')
+          ]))
+      })
+
+      specify('A highlight overlapping two others', () => {
+        expect(Up.toDocument('[highlight: This (highlight: does (highlight: not] make)) much sense.')).to.deep.equal(
+          insideDocumentAndParagraph([
+            new Highlight([
+              new PlainText('This '),
+              new Highlight([
+                new PlainText('does '),
+                new Highlight([
+                  new PlainText('not')
+                ]),
+                new PlainText(' make')
+              ]),
+            ]),
+            new PlainText(' much sense.')
+          ]))
+      })
+
+
+      context('A convention with continuity priority', () => {
+        specify('Two inline spoilers overlapping another', () => {
+          expect(Up.toDocument('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
+            insideDocumentAndParagraph([
+              new InlineSpoiler([
+                new PlainText('This '),
+                new InlineSpoiler([
+                  new PlainText('does '),
+                  new InlineSpoiler([
+                    new PlainText('not')
+                  ]),
+                ]),
+                new PlainText(' make')
+              ]),
+              new PlainText(' much sense.')
+            ]))
+        })
+
+        specify('An inline spoiler overlapping two others', () => {
+          expect(Up.toDocument('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
+            insideDocumentAndParagraph([
+              new InlineSpoiler([
+                new PlainText('This '),
+                new InlineSpoiler([
+                  new PlainText('does '),
+                  new InlineSpoiler([
+                    new PlainText('not')
+                  ]),
+                  new PlainText(' make')
+                ]),
+              ]),
+              new PlainText(' much sense.')
+            ]))
+        })
+      })
     })
   })
 })
