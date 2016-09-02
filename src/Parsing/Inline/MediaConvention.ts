@@ -1,4 +1,4 @@
-import { TokenMeaning } from './Tokenizing/TokenMeaning'
+import { TokenMeaning } from './TokenMeaning'
 import { Config } from '../../Config'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 

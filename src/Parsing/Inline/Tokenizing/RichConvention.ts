@@ -1,4 +1,4 @@
-import { TokenMeaning } from './TokenMeaning'
+import { TokenMeaning } from '../TokenMeaning'
 
 
 // In the context of tokenization, a rich inline convention is one that can contain

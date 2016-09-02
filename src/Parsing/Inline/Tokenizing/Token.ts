@@ -1,4 +1,4 @@
-import { TokenMeaning } from './TokenMeaning'
+import { TokenMeaning } from '../TokenMeaning'
 
 
 export class Token {

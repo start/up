@@ -1,4 +1,4 @@
-import { TokenMeaning } from './Tokenizing/TokenMeaning'
+import { TokenMeaning } from './TokenMeaning'
 import { RevealableInlineSyntaxNodeType } from '../../SyntaxNodes/RevealableInlineSyntaxNodeType'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 

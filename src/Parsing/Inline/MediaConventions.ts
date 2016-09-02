@@ -2,7 +2,7 @@ import { MediaConvention } from './MediaConvention'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
-import { TokenMeaning } from './Tokenizing/TokenMeaning'
+import { TokenMeaning } from './TokenMeaning'
 
 
 export const AUDIO: MediaConvention = {

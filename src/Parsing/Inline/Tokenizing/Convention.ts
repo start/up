@@ -1,6 +1,6 @@
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './TextConsumer'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenMeaning } from '../TokenMeaning'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 

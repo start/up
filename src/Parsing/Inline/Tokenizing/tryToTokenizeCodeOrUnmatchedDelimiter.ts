@@ -1,6 +1,6 @@
 import { patternStartingWith, patternEndingWith, oneOrMore, anyCharBut } from '../../../PatternHelpers'
 import { TextConsumer } from './TextConsumer'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenMeaning } from '../TokenMeaning'
 import { Token } from './Token'
 
 
