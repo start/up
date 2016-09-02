@@ -41,7 +41,7 @@ describe('Overlapped stressed, parenthesized, and inserted text', () => {
 
 
 describe('Overlapped doubly emphasized text (closing at the same time) and parenthesized text', () => {
-  it('splits the normal parenthetical node', () => {
+  it('split the normal parenthetical node', () => {
     expect(Up.toDocument("*I know. *Well, I don't (really.** Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
@@ -62,8 +62,51 @@ describe('Overlapped doubly emphasized text (closing at the same time) and paren
 })
 
 
+describe('Nested spoilers (closing at the same time) overlapping emphasis', () => {
+  it('split the emphasis node', () => {
+    expect(Up.toDocument("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('I know. '),
+          new InlineSpoiler([
+            new PlainText("Well, I don't "),
+            new Emphasis([
+              new PlainText('really.')
+            ])
+          ]),
+        ]),
+        new Emphasis([
+          new PlainText(' Good!')
+        ]),
+        new PlainText(' Hi!')
+      ]))
+  })
+})
+
+
+describe('Emphasis overlapping nested spoilers (opening at the same time)', () => {
+  it('split the emphasis node', () => {
+    expect(Up.toDocument("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Emphasis([
+          new PlainText("I suspect "),
+        ]),
+        new InlineSpoiler([
+          new InlineSpoiler([
+            new Emphasis([
+              new PlainText('you')
+            ]),
+            new PlainText(' fight Gary.')
+          ])
+        ]),
+        new PlainText(' Hi!')
+      ]))
+  })
+})
+
+
 describe('Nested spoilers (closing at the same time) overlapping a link', () => {
-  it('splits the normal parenthetical node', () => {
+  it('split the link node', () => {
     expect(Up.toDocument("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
@@ -149,7 +192,7 @@ describe('An inline NSFW convention nested within an inline NSFL convention (clo
 
 
 describe('Overlapped doubly emphasized text (closing at the different times) and parenthesized text', () => {
-  it('splits the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
+  it('split the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
     expect(Up.toDocument("*I know. *Well, I don't (really.* So there.* Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
@@ -174,7 +217,7 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
 
 
 describe('Overlapped parenthesized text and doubly emphasized text (opening at the same time)', () => {
-  it('splits the emphasis nodes', () => {
+  it('split the emphasis nodes', () => {
     expect(Up.toDocument("(I need to sleep. **So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
@@ -198,7 +241,7 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at t
 
 
 describe('Overlapped parenthesized text and doubly emphasized text (opening at different times)', () => {
-  it('splits the emphasis nodes', () => {
+  it('split the emphasis nodes', () => {
     expect(Up.toDocument("(I need to sleep. *Uhhh... *So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
