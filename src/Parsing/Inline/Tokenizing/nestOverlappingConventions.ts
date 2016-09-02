@@ -1,13 +1,14 @@
 import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Token'
+import { ParseableToken } from '../ParseableToken'
 
 
 // Rich conventions can overlap, which makes it painful to produce an abstract syntax tree. This function
 // rearranges and adds tokens to make that process simpler.
 //
 // Overlapping rich conventions are split into multiple pieces to ensure each piece has just a single parent.
-export function nestOverlappingConventions(tokens: Token[]): Token[] {
+export function nestOverlappingConventions(tokens: Token[]): ParseableToken[] {
   return new ConventionNester(tokens).tokens
 }
 
@@ -50,7 +51,13 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 //
 // Note the identical brackets in the second example.
 //
-// TODO: Explain how parser will handle this
+// As mentioned above, in cases of self-overlapping, we want to match tokens from innermost to outermost. Therefore, in the
+// first example, we want to match `(SPOILER:` with `]`.
+//
+// Luckily, we have an easy solution: Just leave the tokens alone!
+//
+// We return `ParseableToken` collection. A `ParseableToken` simply has a meaning (e.g. SpoilerStart) and an optional value.
+// Because it lacks the `correspondingDelimiter` field, so it's naturally impossible for them to express self-overlapping.
 class ConventionNester {
   constructor(public tokens: Token[]) {
     this.tokens = tokens.slice()

@@ -17,6 +17,7 @@ import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TextConsumer, OnTextMatch } from './TextConsumer'
 import { TokenMeaning } from '../TokenMeaning'
 import { Token } from './Token'
+import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
@@ -27,7 +28,7 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(markup: string, config: Config): Token[] {
+export function tokenize(markup: string, config: Config): ParseableToken[] {
   return new Tokenizer(markup, config).tokens
 }
 
@@ -36,7 +37,7 @@ export function tokenize(markup: string, config: Config): Token[] {
 // 1. Footnotes are treated as normal parentheticals
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
-export function tokenizeForInlineDocument(markup: string, config: Config): Token[] {
+export function tokenizeForInlineDocument(markup: string, config: Config): ParseableToken[] {
   return new Tokenizer(markup, config, { isTokenizingInlineDocument: true }).tokens
 }
 

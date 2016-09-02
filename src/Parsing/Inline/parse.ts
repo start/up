@@ -4,7 +4,7 @@ import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { isWhitespace } from '../isWhitespace'
 import { last } from '../../CollectionHelpers'
-import { Token } from './Tokenizing/Token'
+import { ParseableToken } from './ParseableToken'
 import { TokenMeaning } from './TokenMeaning'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
@@ -15,7 +15,7 @@ import { URL_SCHEME_PATTERN } from '../../Patterns'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
-export function parse(tokens: Token[]): InlineSyntaxNode[] {
+export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
   return new Parser({
     tokens,
     ancestorRevealableInlineConventions: []
@@ -24,7 +24,7 @@ export function parse(tokens: Token[]): InlineSyntaxNode[] {
 
 
 // This includes every rich convention except for links. Links have that pesky URL.
-const RICHS_WITHOUT_EXTRA_FIELDS = [
+const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   EMPHASIS,
   STRESS,
   ITALIC,
@@ -52,7 +52,7 @@ class Parser {
     countTokensParsed: number
   }
 
-  private tokens: Token[]
+  private tokens: ParseableToken[]
   private ancestorRevealableInlineConventions: RevealableConvention[]
   private tokenIndex = 0
   private countTokensParsed = 0
@@ -60,7 +60,7 @@ class Parser {
 
   constructor(
     args: {
-      tokens: Token[]
+      tokens: ParseableToken[]
       until?: TokenMeaning
       ancestorRevealableInlineConventions: RevealableConvention[]
     }
@@ -141,7 +141,7 @@ class Parser {
         }
       }
 
-      for (const richConvention of RICHS_WITHOUT_EXTRA_FIELDS) {
+      for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.meaning === richConvention.startTokenMeaning) {
           let children = this.getNodes({
             fromHereUntil: richConvention.endTokenMeaning,
@@ -165,6 +165,8 @@ class Parser {
           continue TokenLoop
         }
       }
+
+      throw new Error('Unrecognized token: ' + TokenMeaning[token.meaning])
     }
 
     this.setResult()
@@ -177,7 +179,7 @@ class Parser {
     }
   }
 
-  private getNextTokenAndAdvanceIndex(): Token {
+  private getNextTokenAndAdvanceIndex(): ParseableToken {
     return this.tokens[++this.tokenIndex]
   }
 
