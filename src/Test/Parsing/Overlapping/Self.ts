@@ -84,7 +84,7 @@ context('Up offers no special support for conventions that overlap themselves. W
       const outerFootnote = new Footnote([
         new PlainText('does'),
         innerFootnote,
-        new PlainText('make')
+        new PlainText(' make')
       ], { referenceNumber: 1 })
 
       expect(Up.toDocument('This [^ does (^ not] make) much sense.')).to.deep.equal(
