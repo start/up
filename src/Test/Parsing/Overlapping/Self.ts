@@ -8,9 +8,9 @@ import { InlineSpoiler } from'../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfl } from'../../../SyntaxNodes/InlineNsfl'
 import { InlineNsfw } from'../../../SyntaxNodes/InlineNsfw'
 import { Highlight } from'../../../SyntaxNodes/Highlight'
+import { Link } from '../../../SyntaxNodes/Link'
 import { Footnote } from'../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from'../../../SyntaxNodes/FootnoteBlock'
-
 
 
 context('Up offers no special support for conventions that overlap themselves. When conventions overlap themselves, the overlapped portion is simply treated as nested.', () => {
@@ -72,6 +72,21 @@ context('Up offers no special support for conventions that overlap themselves. W
             ]),
             new PlainText(' make')
           ]),
+          new PlainText(' much sense.')
+        ]))
+    })
+
+    specify('Links', () => {
+      expect(Up.toDocument('This [does (not][example.org] make)(google.com) much sense.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('This '),
+          new Link([
+            new PlainText('does '),
+            new Link([
+              new PlainText('not')
+            ], 'https://example.org'),
+            new PlainText(' make')
+          ], 'https://google.com'),
           new PlainText(' much sense.')
         ]))
     })
