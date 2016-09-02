@@ -12,7 +12,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // A labeled block can contain any outline convention, and its label's term is case-insensitive. 
 export function getLabeledBlockParser(
   labels: string[],
-  NodeType: new (children: OutlineSyntaxNode[]) => OutlineSyntaxNode
+  SyntaxNodeType: new (children: OutlineSyntaxNode[]) => OutlineSyntaxNode
 ) {
   return function tryToParseLabeledBlock(args: OutlineParserArgs): boolean {
     const markupLineConsumer = new LineConsumer(args.markupLines)
@@ -47,7 +47,7 @@ export function getLabeledBlockParser(
       config: args.config
     })
 
-    args.then([new NodeType(children)], markupLineConsumer.countLinesConsumed)
+    args.then([new SyntaxNodeType(children)], markupLineConsumer.countLinesConsumed)
     return true
   }
 }

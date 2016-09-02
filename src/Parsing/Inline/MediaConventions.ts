@@ -7,18 +7,18 @@ import { TokenKind } from './Tokenizing/TokenKind'
 
 export const AUDIO: MediaConvention = {
   term: terms => terms.audio,
-  NodeType: Audio,
+  SyntaxNodeType: Audio,
   startAndDescriptionTokenKind: TokenKind.AudioStartAndDescription
 }
 
 export const IMAGE: MediaConvention = {
   term: terms => terms.image,
-  NodeType: Image,
+  SyntaxNodeType: Image,
   startAndDescriptionTokenKind: TokenKind.ImageStartAndDescription
 }
 
 export const VIDEO: MediaConvention = {
   term: terms => terms.video,
-  NodeType: Video,
+  SyntaxNodeType: Video,
   startAndDescriptionTokenKind: TokenKind.VideoStartAndDescription
 }

@@ -4,18 +4,18 @@ import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFi
 
 
 export class RevealableConvention implements RichConventionWithoutExtraFields {
-  NodeType: RevealableInlineSyntaxNodeType
+  SyntaxNodeType: RevealableInlineSyntaxNodeType
   startTokenKind: TokenKind
   endTokenKind: TokenKind
 
   constructor(
     args: {
-      NodeType: RevealableInlineSyntaxNodeType
+      SyntaxNodeType: RevealableInlineSyntaxNodeType
       startTokenKind: TokenKind
       endTokenKind: TokenKind
     }
   ) {
-    this.NodeType = args.NodeType
+    this.SyntaxNodeType = args.SyntaxNodeType
     this.startTokenKind = args.startTokenKind
     this.endTokenKind = args.endTokenKind
   }

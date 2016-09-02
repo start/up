@@ -9,7 +9,7 @@ import { TokenKind } from './Tokenizing/TokenKind'
 // have no extra fields to parse. This excludes linkes, because the parser has to
 // worry about their URL.
 export interface RichConventionWithoutExtraFields {
-  NodeType: RichSyntaxNodeWithoutExtraFieldsType
+  SyntaxNodeType: RichSyntaxNodeWithoutExtraFieldsType
   startTokenKind: TokenKind
   endTokenKind: TokenKind
 }

@@ -106,7 +106,7 @@ class Parser {
           const urlAfterScheme = url.substr(urlScheme.length)
 
           this.nodes.push(
-            new LINK.NodeType([new PlainText(urlAfterScheme)], url))
+            new LINK.SyntaxNodeType([new PlainText(urlAfterScheme)], url))
 
           continue
         }
@@ -136,7 +136,7 @@ class Parser {
           // The next token will be a MediaEndAndUrl token
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
-          this.nodes.push(new media.NodeType(description, url))
+          this.nodes.push(new media.SyntaxNodeType(description, url))
           continue TokenLoop
         }
       }
@@ -158,10 +158,10 @@ class Parser {
             // On a side note, any footnotes within revealable *outline* conventions are placed into a footnote
             // block inside the revealable outline convention. This serves the same purpose. 
             const closestRevealableAncestorConvention = last(this.ancestorRevealableInlineConventions)
-            children = [new closestRevealableAncestorConvention.NodeType(children)]
+            children = [new closestRevealableAncestorConvention.SyntaxNodeType(children)]
           }
 
-          this.nodes.push(new richConvention.NodeType(children))
+          this.nodes.push(new richConvention.SyntaxNodeType(children))
           continue TokenLoop
         }
       }
