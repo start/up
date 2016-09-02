@@ -1,6 +1,9 @@
+// Instances of this class incrementally consume `entireText` from start to finish.
+//
+// Pieces from the start of `entireText` are consumed when they match regular expression patterns.
 export class TextConsumer {
   private _remaining: string
-  private _textIndex: number
+  private _index: number
   private _currentChar: string
   private _previousChar: string
 
@@ -13,11 +16,11 @@ export class TextConsumer {
   }
 
   get index(): number {
-    return this._textIndex
+    return this._index
   }
 
   set index(value: number) {
-    this._textIndex = value
+    this._index = value
     this.updateComputedTextFields()
   }
 
@@ -30,9 +33,12 @@ export class TextConsumer {
   }
 
   done(): boolean {
-    return this._textIndex >= this.entireText.length
+    return this._index >= this.entireText.length
   }
 
+  // Consumes text matching `pattern`.
+  //
+  // This method assumes `pattern` only matches the beginning of a string.  
   consume(
     args: {
       pattern: RegExp
@@ -47,7 +53,7 @@ export class TextConsumer {
     }
 
     const [match, ...captures] = result
-    const charAfterMatch = this.entireText[this._textIndex + match.length]
+    const charAfterMatch = this.entireText[this._index + match.length]
 
     if (thenBeforeConsumingText) {
       thenBeforeConsumingText(match, charAfterMatch, ...captures)
@@ -58,9 +64,9 @@ export class TextConsumer {
   }
 
   private updateComputedTextFields(): void {
-    this._remaining = this.entireText.substr(this._textIndex)
+    this._remaining = this.entireText.substr(this._index)
     this._currentChar = this._remaining[0]
-    this._previousChar = this.entireText[this._textIndex - 1]
+    this._previousChar = this.entireText[this._index - 1]
   }
 }
 

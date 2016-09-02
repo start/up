@@ -29,7 +29,7 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
 export function tokenize(markup: string, config: Config): ParseableToken[] {
-  return new Tokenizer(markup, config).tokens
+  return new Tokenizer(markup, config).result
 }
 
 // This function is identical to the `tokenize` function, except:
@@ -38,7 +38,10 @@ export function tokenize(markup: string, config: Config): ParseableToken[] {
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
 export function tokenizeForInlineDocument(markup: string, config: Config): ParseableToken[] {
-  return new Tokenizer(markup, config, { isTokenizingInlineDocument: true }).tokens
+  const { result } =
+    new Tokenizer(markup, config, { isTokenizingInlineDocument: true })
+
+  return result
 }
 
 
@@ -67,13 +70,25 @@ const CURLY_BRACKET =
 
 
 class Tokenizer {
-  tokens: Token[] = []
+  // This is our result! A collection of tokens that the parser can use to generate syntax nodes.
+  //
+  // Yes, it's hackish, but this class is designed to be single-use, almost like a function.
+  // 
+  // The reason we use a class instead of a function is because of the scoping a class provides. Ultimately,
+  // we shamefully hide this class behind the exported `tokenize` and `tokenizeForInlineDocument` functions.
+  result: ParseableToken[]
 
+  // This helps us consume markup
   private markupConsumer: TextConsumer
 
   // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
-  // flushed to a token, usually a PlainTextToken.
-  private buffer = ''
+  // flushed to a token, usually a `PlainText` token.
+  private textBuffer = ''
+
+  // Speaking of tokens, this is our collection! Unlike `ParseableToken`, a `Token` knows when it's part of
+  // a pair of tokens enclosing content. For example, an `EmphasisStart` token knows about its corresponding
+  // `EmphasisEnd` token. 
+  private tokens: Token[] = []
 
   // Any time we open a new convention, we create a new context for it and add it to this collection.
   private openContexts: ConventionContext[] = []
@@ -192,6 +207,7 @@ class Tokenizer {
     this.configureConventions(options && options.isTokenizingInlineDocument)
 
     this.tokenize()
+    this.result = nestOverlappingConventions(this.tokens)
   }
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
@@ -271,10 +287,10 @@ class Tokenizer {
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
         whenOpening: () => {
-          this.buffer += '('
+          this.textBuffer += '('
         },
         whenClosing: () => {
-          this.buffer += ')'
+          this.textBuffer += ')'
         }
       }))
   }
@@ -336,8 +352,8 @@ class Tokenizer {
       startsWith: bracket.startPattern + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.buffer += bracket.open },
-      whenClosing: () => { this.buffer += bracket.close },
+      whenOpening: () => { this.textBuffer += bracket.open },
+      whenClosing: () => { this.textBuffer += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /*  Neither fail nor do anything special  */ }
     })
@@ -416,7 +432,7 @@ class Tokenizer {
       isCutShortByWhitespace: true,
 
       whenOpening: () => {
-        this.buffer += FORWARD_SLASH
+        this.textBuffer += FORWARD_SLASH
       },
 
       canOnlyOpenIfDirectlyFollowing: [TokenMeaning.BareUrl],
@@ -458,7 +474,7 @@ class Tokenizer {
   //
   // Usage:
   //
-  //   For more information, see [topic: shading]
+  //   For more information, see [topic: shading].
   //
   // When rendered to an output format (e.g. HTML), it should serve as a link to that entry.
   private getReferenceToTableOfContentsEntryConventions(): Convention[] {
@@ -548,7 +564,7 @@ class Tokenizer {
   private getLinkUrlConventions(): Convention[] {
     const whenClosing = (url: string) => {
       // When closing a link URL, we're (correctly) going to assume that the most recent token is a
-      // `LinkEndToken`.
+      // `LinkEnd` token.
       this.mostRecentToken.value = url
     }
 
@@ -668,7 +684,7 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      whenOpening: (_1, _2, urlPrefix) => { this.buffer += urlPrefix },
+      whenOpening: (_1, _2, urlPrefix) => { this.textBuffer += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
@@ -701,7 +717,7 @@ class Tokenizer {
     const originalEndToken = this.mostRecentToken
     this.insertToken({ token: linkEndToken, atIndex: this.tokens.indexOf(originalEndToken) })
 
-    const originalStartToken = originalEndToken.correspondingDelimiter
+    const originalStartToken = originalEndToken.correspondingEnclosingToken
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
@@ -745,8 +761,8 @@ class Tokenizer {
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.buffer += bracket.open },
-      whenClosing: () => { this.buffer += bracket.close },
+      whenOpening: () => { this.textBuffer += bracket.open },
+      whenClosing: () => { this.textBuffer += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     })
@@ -793,8 +809,6 @@ class Tokenizer {
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
         || this.bufferCurrentChar()))
-
-    this.tokens = nestOverlappingConventions(this.tokens)
   }
 
   private isDone(): boolean {
@@ -822,7 +836,7 @@ class Tokenizer {
 
   private tryToCollectEscapedChar(): boolean {
     if (this.markupConsumer.currentChar === ESCAPER_CHAR) {
-      // The next character (if there is one) is preserved as plain text.
+      // The next character (if there is one) is escaped, so we buffer it.
       //
       // If there are no more characters, we're done! We don't preserve the `ESCAPER_CHAR`,
       // because those are only preserved if they are themselves escaped.
@@ -839,7 +853,7 @@ class Tokenizer {
     const tryToBuffer = (pattern: RegExp) =>
       this.markupConsumer.consume({
         pattern,
-        thenBeforeConsumingText: match => { this.buffer += match }
+        thenBeforeConsumingText: match => { this.textBuffer += match }
       })
 
     // Normally, whitespace doesn't have much of an impact on tokenization:
@@ -1084,7 +1098,7 @@ class Tokenizer {
     for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
       let token = this.tokens[i]
 
-      // If the current token has a `correspondingDelimiter`, it must be an end token. It cannot be a start
+      // If the current token has a `correspondingEnclosingToken`, it must be an end token. It cannot be a start
       // token, because:
       //
       // 1. Rich conventions' start tokens are added after the convention closes along with their end tokens
@@ -1097,14 +1111,14 @@ class Tokenizer {
       // Below, we break from the loop if we encounter actual content, so we can't ever encounter a start
       // token here.
       const isCurrentTokenAnEndToken =
-        token.correspondingDelimiter != null
+        token.correspondingEnclosingToken != null
 
       // We should insert our new end token before the current end token if...
       const shouldEndTokenAppearBeforeCurrentToken =
         // ...the current token is actually a rich convention's end token...
         isCurrentTokenAnEndToken
         // ...and our start token (that we just added) is inside the current end token's convention. 
-        && startTokenIndex > this.tokens.indexOf(token.correspondingDelimiter)
+        && startTokenIndex > this.tokens.indexOf(token.correspondingEnclosingToken)
 
       if (shouldEndTokenAppearBeforeCurrentToken) {
         // If all that applies, our end token should *also* be inside the current end token's convention.
@@ -1147,7 +1161,7 @@ class Tokenizer {
             // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as plain
             // text. We already learned the delimiter wasn't able to close any inflection start delimiters, and we
             // now know it can't open any, either.
-            this.buffer += delimiter
+            this.textBuffer += delimiter
           }
         }
       }))
@@ -1196,7 +1210,7 @@ class Tokenizer {
         //
         // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
         // Any extra hyphens (naturally either 1 or 2) are ignored.
-        this.buffer +=
+        this.textBuffer +=
           dashes.length >= COUNT_DASHES_PER_EM_DASH
             ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
             : EN_DASH
@@ -1208,7 +1222,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: PLUS_MINUS_SIGN_PATTERN,
       thenBeforeConsumingText: () => {
-        this.buffer += '±'
+        this.textBuffer += '±'
       }
     })
   }
@@ -1217,7 +1231,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: ELLIPSIS_PATTERN,
       thenBeforeConsumingText: () => {
-        this.buffer += this.config.ellipsis
+        this.textBuffer += this.config.ellipsis
       }
     })
   }
@@ -1229,7 +1243,7 @@ class Tokenizer {
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
-    this.buffer += this.markupConsumer.currentChar
+    this.textBuffer += this.markupConsumer.currentChar
     this.markupConsumer.index += 1
 
     return true
@@ -1270,7 +1284,7 @@ class Tokenizer {
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
       inflectionHandlers: this.inflectionHandlers.map(handler => handler.clone()),
-      buffer: this.buffer
+      textBuffer: this.textBuffer
     }
   }
 
@@ -1316,7 +1330,7 @@ class Tokenizer {
 
   private isDirectlyFollowing(tokenMeanings: TokenMeaning[]): boolean {
     return (
-      !this.buffer
+      !this.textBuffer
       && this.mostRecentToken
       && tokenMeanings.some(tokenMeaning => this.mostRecentToken.meaning === tokenMeaning))
   }
@@ -1327,7 +1341,7 @@ class Tokenizer {
     const { snapshot } = context
 
     this.tokens = snapshot.tokens
-    this.buffer = snapshot.buffer
+    this.textBuffer = snapshot.textBuffer
     this.markupConsumer.index = snapshot.markupIndex
     this.openContexts = snapshot.openContexts
     this.inflectionHandlers = snapshot.inflectionHandlers
@@ -1346,14 +1360,14 @@ class Tokenizer {
   }
 
   private flushBuffer(): string {
-    const buffer = this.buffer
-    this.buffer = ''
+    const buffer = this.textBuffer
+    this.textBuffer = ''
 
     return buffer
   }
 
   private flushNonEmptyBufferToToken(meaning: TokenMeaning): void {
-    if (this.buffer) {
+    if (this.textBuffer) {
       this.appendNewToken(meaning, this.flushBuffer())
     }
   }
