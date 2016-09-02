@@ -1,6 +1,6 @@
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './TextConsumer'
-import { TokenKind } from './TokenKind'
+import { TokenMeaning } from './TokenMeaning'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 
@@ -8,7 +8,7 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 export class Convention {
   startsWith: RegExp
   endsWith: RegExp
-  canOnlyOpenIfDirectlyFollowing: TokenKind[]
+  canOnlyOpenIfDirectlyFollowing: TokenMeaning[]
   isCutShortByWhitespace: boolean
   canConsistSolelyOfWhitespace: boolean
   flushesBufferToPlainTextTokenBeforeOpening: boolean
@@ -16,8 +16,8 @@ export class Convention {
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
   insteadOfOpeningNormalConventionsWhileOpen: OnConventionEvent
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
-  beforeClosingItFlushesNonEmptyBufferTo: TokenKind
-  beforeClosingItAlwaysFlushesBufferTo: TokenKind
+  beforeClosingItFlushesNonEmptyBufferTo: TokenMeaning
+  beforeClosingItAlwaysFlushesBufferTo: TokenMeaning
   whenClosingItAlsoClosesInnerConventions: boolean
   mustBeDirectlyFollowedBy: Convention[]
   whenClosing: OnConventionEvent
@@ -28,7 +28,7 @@ export class Convention {
       startsWith: string
       endsWith?: string
       startPatternContainsATerm?: boolean
-      canOnlyOpenIfDirectlyFollowing?: TokenKind[]
+      canOnlyOpenIfDirectlyFollowing?: TokenMeaning[]
       isCutShortByWhitespace?: boolean
       canConsistSolelyOfWhitespace?: boolean
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
@@ -36,8 +36,8 @@ export class Convention {
       insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
       insteadOfOpeningNormalConventionsWhileOpen?: OnConventionEvent
       failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
-      beforeClosingItAlwaysFlushesBufferTo?: TokenKind
-      beforeClosingItFlushesNonEmptyBufferTo?: TokenKind
+      beforeClosingItAlwaysFlushesBufferTo?: TokenMeaning
+      beforeClosingItFlushesNonEmptyBufferTo?: TokenMeaning
       whenClosingItAlsoClosesInnerConventions?: boolean
       mustBeDirectlyFollowedBy?: Convention[]
       whenClosing?: OnConventionEvent

@@ -166,7 +166,7 @@ class ConventionNester {
       const potentialHeroStartToken = this.tokens[tokenIndex]
 
       const isStartTokenForHeroConvention =
-        potentialHeroStartToken.kind === conventionNotToSplit.startTokenKind
+        potentialHeroStartToken.kind === conventionNotToSplit.startTokenMeaning
 
       if (!isStartTokenForHeroConvention) {
         continue
@@ -283,9 +283,9 @@ class ConventionNester {
 
 
 function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.kind === convention.startTokenKind)
+  return conventions.some(convention => token.kind === convention.startTokenMeaning)
 }
 
 function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.kind === convention.endTokenKind)
+  return conventions.some(convention => token.kind === convention.endTokenMeaning)
 }

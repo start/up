@@ -5,7 +5,7 @@ import { PlainText } from '../../SyntaxNodes/PlainText'
 import { isWhitespace } from '../isWhitespace'
 import { last } from '../../CollectionHelpers'
 import { Token } from './Tokenizing/Token'
-import { TokenKind } from './Tokenizing/TokenKind'
+import { TokenMeaning } from './Tokenizing/TokenMeaning'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
@@ -61,45 +61,45 @@ class Parser {
   constructor(
     args: {
       tokens: Token[]
-      until?: TokenKind
+      until?: TokenMeaning
       ancestorRevealableInlineConventions: RevealableConvention[]
     }
   ) {
     this.tokens = args.tokens
     this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
-    const endTokenKind = args.until
+    const endTokenMeaning = args.until
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
       switch (token.kind) {
-        case endTokenKind: {
+        case endTokenMeaning: {
           this.setResult()
           return
         }
 
-        case TokenKind.PlainText: {
+        case TokenMeaning.PlainText: {
           this.nodes.push(new PlainText(token.value))
           continue
         }
 
-        case TokenKind.Code: {
+        case TokenMeaning.Code: {
           this.nodes.push(new InlineCode(token.value))
           continue
         }
 
-        case TokenKind.ExampleInput: {
+        case TokenMeaning.ExampleInput: {
           this.nodes.push(new ExampleInput(token.value))
           continue
         }
 
-        case TokenKind.ReferenceToTableOfContentsEntry: {
+        case TokenMeaning.ReferenceToTableOfContentsEntry: {
           this.nodes.push(new ReferenceToTableOfContentsEntry(token.value))
           continue
         }
 
-        case TokenKind.BareUrl: {
+        case TokenMeaning.BareUrl: {
           const url = token.value
 
           const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
@@ -111,8 +111,8 @@ class Parser {
           continue
         }
 
-        case LINK.startTokenKind: {
-          let children = this.getNodes({ fromHereUntil: TokenKind.LinkEndAndUrl })
+        case LINK.startTokenMeaning: {
+          let children = this.getNodes({ fromHereUntil: TokenMeaning.LinkEndAndUrl })
 
           const isContentBlank = isBlank(children)
 
@@ -130,7 +130,7 @@ class Parser {
       }
 
       for (const media of MEDIAS) {
-        if (token.kind === media.startAndDescriptionTokenKind) {
+        if (token.kind === media.startAndDescriptionTokenMeaning) {
           let description = token.value.trim()
 
           // The next token will be a MediaEndAndUrl token
@@ -142,9 +142,9 @@ class Parser {
       }
 
       for (const richConvention of RICHS_WITHOUT_EXTRA_FIELDS) {
-        if (token.kind === richConvention.startTokenKind) {
+        if (token.kind === richConvention.startTokenMeaning) {
           let children = this.getNodes({
-            fromHereUntil: richConvention.endTokenKind,
+            fromHereUntil: richConvention.endTokenMeaning,
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
@@ -183,7 +183,7 @@ class Parser {
 
   private getNodes(
     args: {
-      fromHereUntil: TokenKind
+      fromHereUntil: TokenMeaning
       parentRevealableInlineConvention?: RevealableConvention
     }
   ): InlineSyntaxNode[] {

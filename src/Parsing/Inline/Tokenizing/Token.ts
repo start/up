@@ -1,10 +1,10 @@
-import { TokenKind } from './TokenKind'
+import { TokenMeaning } from './TokenMeaning'
 
 
 export class Token {
   correspondingDelimiter: Token
 
-  constructor(public kind: TokenKind, public value?: string) { }
+  constructor(public kind: TokenMeaning, public value?: string) { }
 
   // Associates a start token with an end token.
   enclosesContentBetweenItselfAnd(correspondingDelimiter: Token): void {

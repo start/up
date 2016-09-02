@@ -1,22 +1,22 @@
-import { TokenKind } from './Tokenizing/TokenKind'
+import { TokenMeaning } from './Tokenizing/TokenMeaning'
 import { RevealableInlineSyntaxNodeType } from '../../SyntaxNodes/RevealableInlineSyntaxNodeType'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
 
 export class RevealableConvention implements RichConventionWithoutExtraFields {
   SyntaxNodeType: RevealableInlineSyntaxNodeType
-  startTokenKind: TokenKind
-  endTokenKind: TokenKind
+  startTokenMeaning: TokenMeaning
+  endTokenMeaning: TokenMeaning
 
   constructor(
     args: {
       SyntaxNodeType: RevealableInlineSyntaxNodeType
-      startTokenKind: TokenKind
-      endTokenKind: TokenKind
+      startTokenMeaning: TokenMeaning
+      endTokenMeaning: TokenMeaning
     }
   ) {
     this.SyntaxNodeType = args.SyntaxNodeType
-    this.startTokenKind = args.startTokenKind
-    this.endTokenKind = args.endTokenKind
+    this.startTokenMeaning = args.startTokenMeaning
+    this.endTokenMeaning = args.endTokenMeaning
   }
 }
