@@ -120,7 +120,7 @@ class ConventionNester {
         // Well, as explained in the comments above this class, we ignore self-overlapping conventions, instead
         // matching their start/end tokens from innermost to outermost.
         //
-        // Let's look at this example of a highlight convention overlapping another highlight convention:
+        // Let's look at this example of one highlight overlapping another:
         //
         //   This [highlight: does (highlight: not] make) much sense.
         //
