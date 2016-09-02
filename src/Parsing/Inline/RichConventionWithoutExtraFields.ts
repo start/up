@@ -6,7 +6,7 @@ import { TokenRole } from './TokenRole'
 // A rich inline convention is one that can contain other inline conventions.
 //
 // The `RichConventionWithoutExtraFields` interface represents rich conventions that
-// have no extra fields to parse. This excludes linkes, because the parser has to
+// have no extra fields to parse. This excludes links, because the parser has to
 // worry about their URL.
 export interface RichConventionWithoutExtraFields {
   SyntaxNodeType: RichSyntaxNodeWithoutExtraFieldsType

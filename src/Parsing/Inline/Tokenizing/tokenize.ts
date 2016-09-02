@@ -79,10 +79,10 @@ class Tokenizer {
   // we shamefully hide this class behind the exported `tokenize` and `tokenizeForInlineDocument` functions.
   result: ParseableToken[]
 
-  // This helps us consume markup
+  // We use this to keep track of where we are in the markup.
   private markupConsumer: TextConsumer
 
-  // The this buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
+  // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a `PlainText` token.
   private textBuffer = ''
 
@@ -93,7 +93,7 @@ class Tokenizer {
   // This additional information helps us nest overlapping conventions.
   private tokens: Token[] = []
 
-  // Any time we open a new convention, we create a new context for it and add it to this collection.
+  // When we open a new convention, we create a new context for it and add it to this collection.
   private openContexts: ConventionContext[] = []
 
   // When a convention is missing its closing delimiter, we backtrack and add the convention to our
@@ -104,9 +104,12 @@ class Tokenizer {
   //
   // The conventions not included in this collection are:
   //
-  // 1. Raw bracket conventions (explained below)
-  // 2. Media URL conventions (explained below)
-  // 3. Link URL conventions (explained below)
+  // 1. Media URL conventions
+  // 2. Link URL conventions
+  // 3. Raw bracket conventions
+  // 4. Inflection convections
+  //
+  // Those exceptions are all explained below.
   private conventions: Convention[]
 
   // These bracket conventions don't produce special tokens, and they can only appear inside URLs (or a
@@ -142,9 +145,9 @@ class Tokenizer {
   // the path part of a URL can contain a wider variety of characters. We can no longer rely on the URL to
   // naturally terminate.
   //
-  // We keep a direct reference to `nakedUrlPathConvention` to help us determine whether we have an active
+  // We keep a direct reference to `bareUrlPathConvention` to help us determine whether we have an active
   // bare URL that needs to be manually closed when an outer convention is closing.
-  private nakedUrlPathConvention = this.getBareUrlPathConvention()
+  private bareUrlPathConvention = this.getBareUrlPathConvention()
 
   // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
   //
@@ -262,7 +265,7 @@ class Tokenizer {
 
       this.getExampleInputConvention(),
 
-      this.nakedUrlPathConvention
+      this.bareUrlPathConvention
     ]
   }
 
@@ -416,7 +419,7 @@ class Tokenizer {
 
   private tryToTokenizeBareUrlSchemeAndHostname(): boolean {
     return this.markupConsumer.consume({
-      pattern: NAKED_URL_SCHEME_AND_HOSTNAME,
+      pattern: BARE_URL_SCHEME_AND_HOSTNAME,
       thenBeforeConsumingText: url => {
         this.flushNonEmptyBufferToPlainTextToken()
         this.appendNewToken(TokenRole.BareUrl, url)
@@ -443,8 +446,8 @@ class Tokenizer {
 
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: () => this.appendBufferedUlPathToCurrentBareUrl(),
-      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedUlPathToCurrentBareUrl()
+      whenClosing: () => this.appendBufferedUrlPathToCurrentBareUrl(),
+      insteadOfFailingWhenLeftUnclosed: () => this.appendBufferedUrlPathToCurrentBareUrl()
     })
   }
 
@@ -1026,8 +1029,8 @@ class Tokenizer {
       args ? (args.withinContextAtIndex + 1) : 0
 
     for (let i = outermostIndexThatMayBeBareUrl; i < openContexts.length; i++) {
-      if (openContexts[i].convention === this.nakedUrlPathConvention) {
-        this.appendBufferedUlPathToCurrentBareUrl()
+      if (openContexts[i].convention === this.bareUrlPathConvention) {
+        this.appendBufferedUrlPathToCurrentBareUrl()
 
         // We need to remove the bare URL's context, as well as the contexts of any raw text brackets
         // inside it.
@@ -1354,12 +1357,12 @@ class Tokenizer {
     this.appendToken(new Token(role, value))
   }
 
-  private appendBufferedUlPathToCurrentBareUrl(): void {
-    if (this.mostRecentToken.role === TokenRole.BareUrl) {
-      this.mostRecentToken.value += this.flushBuffer()
-    } else {
+  private appendBufferedUrlPathToCurrentBareUrl(): void {
+    if (this.mostRecentToken.role !== TokenRole.BareUrl) {
       throw new Error('Most recent token is not a bare URL token')
     }
+
+    this.mostRecentToken.value += this.flushBuffer()
   }
 
   private flushBuffer(): string {
@@ -1479,12 +1482,12 @@ const EXPLICIT_URL_PREFIX =
 const URL_CONSISTING_SOLELY_OF_PREFIX =
   solely(EXPLICIT_URL_PREFIX)
 
-const NAKED_URL_SCHEME =
+const BARE_URL_SCHEME =
   'http' + optional('s') + '://'
 
-const NAKED_URL_SCHEME_AND_HOSTNAME =
+const BARE_URL_SCHEME_AND_HOSTNAME =
   patternStartingWith(
-    NAKED_URL_SCHEME
+    BARE_URL_SCHEME
     + everyOptional(URL_SUBDOMAIN) + URL_TOP_LEVEL_DOMAIN)
 
 

@@ -163,8 +163,8 @@ class ConventionNester {
 
   // This method assumes that any `splittableConventions` tokens are already properly nested within each other.
   //
-  // By design, if `conventionNotToSplit` overlaps with another instance of itself, we don't do anything. Please
-  // see the comment above this class for more information.
+  // By design, this method does not resolve self-overlapping! If `conventionNotToSplit` overlaps another
+  // instance of itself, we do nothing abou it. Please see the comment above this class for more information.
   private resolveOverlapping(splittableConventions: RichConvention[], conventionNotToSplit: RichConvention): void {
     // To keep local variable names shorter, we'll refer to `conventionNotToSplit` as the hero convention.
 
