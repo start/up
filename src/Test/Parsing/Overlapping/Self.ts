@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from'.././Helpers'
 import { UpDocument } from'../../../SyntaxNodes/UpDocument'
 import { Paragraph } from'../../../SyntaxNodes/Paragraph'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
+import { Emphasis } from'../../../SyntaxNodes/Emphasis'
 import { InlineSpoiler } from'../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfl } from'../../../SyntaxNodes/InlineNsfl'
 import { InlineNsfw } from'../../../SyntaxNodes/InlineNsfw'
@@ -187,6 +188,32 @@ context('Up offers no real support for self-overlapping. When a convention overl
             ]))
         })
       })
+    })
+  })
+
+
+  context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy. It technically works, but needless splitting occers.', () => {
+    specify('Due to a lack of unique end delimiters among conventions with continuity priority, this monstrosity is only possible when the convention overlapping itself has higher continuity priority than the other one', () => {
+      expect(Up.toDocument('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new PlainText('This '),
+          new InlineSpoiler([
+            new PlainText('truly '),
+            new Emphasis([
+              new PlainText('does ')
+            ]),
+            new InlineSpoiler([
+              new Emphasis([
+                new PlainText('not')
+              ])
+            ]),
+            new Emphasis([
+              new PlainText(' make')
+            ]),
+            new PlainText(' much')
+          ]),
+          new PlainText(' sense.')
+        ]))
     })
   })
 })
