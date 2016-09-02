@@ -45,18 +45,19 @@ export function tokenizeForInlineDocument(markup: string, config: Config): Parse
 }
 
 
-const PARENTHESIS =
-  new Bracket('(', ')')
-
-const SQUARE_BRACKET =
-  new Bracket('[', ']')
-
 // Most of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
 // These conventions support both parentheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
 //
 // TODO: Now that most of the conventions (handled within the tokenizer class) incorporate brackets, we
 // should consider grouping conventions by their stems.
+
+const PARENTHESIS =
+  new Bracket('(', ')')
+
+const SQUARE_BRACKET =
+  new Bracket('[', ']')
+
 const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
@@ -88,6 +89,8 @@ class Tokenizer {
   // Speaking of tokens, this is our collection! Unlike `ParseableToken`, a `Token` knows when it's part of
   // a pair of tokens enclosing content. For example, an `EmphasisStart` token knows about its corresponding
   // `EmphasisEnd` token. 
+  //
+  // This additional information helps us nest overlapping conventions.
   private tokens: Token[] = []
 
   // Any time we open a new convention, we create a new context for it and add it to this collection.
