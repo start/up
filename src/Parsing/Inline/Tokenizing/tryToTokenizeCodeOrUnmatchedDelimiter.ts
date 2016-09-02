@@ -1,6 +1,6 @@
 import { patternStartingWith, patternEndingWith, oneOrMore, anyCharBut } from '../../../PatternHelpers'
 import { TextConsumer } from './TextConsumer'
-import { TokenMeaning } from '../TokenMeaning'
+import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 
 
@@ -84,7 +84,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter === startDelimiter) {
-      then(new Token(TokenMeaning.Code, trimCode(code)), markupConsumer.index)
+      then(new Token(TokenRole.Code, trimCode(code)), markupConsumer.index)
       return true
     }
 
@@ -93,7 +93,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
   // We couldn't find a matching end delimiter, so there's nothing left to do but treat the
   // start delimiter as plain text.
-  then(new Token(TokenMeaning.PlainText, startDelimiter), startDelimiter.length)
+  then(new Token(TokenRole.PlainText, startDelimiter), startDelimiter.length)
   return true
 }
 

@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../../SyntaxNodes/RichInlineSyntaxNode'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenRole } from './TokenRole'
 
 
 // A rich inline convention is one that can contain other inline conventions.
@@ -10,8 +10,8 @@ import { TokenMeaning } from './TokenMeaning'
 // worry about their URL.
 export interface RichConventionWithoutExtraFields {
   SyntaxNodeType: RichSyntaxNodeWithoutExtraFieldsType
-  startTokenMeaning: TokenMeaning
-  endTokenMeaning: TokenMeaning
+  startTokenRole: TokenRole
+  endTokenRole: TokenRole
 }
 
 

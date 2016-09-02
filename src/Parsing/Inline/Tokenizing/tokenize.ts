@@ -15,7 +15,7 @@ import { FailedConventionTracker } from './FailedConventionTracker'
 import { ConventionContext } from './ConventionContext'
 import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { TextConsumer, OnTextMatch } from './TextConsumer'
-import { TokenMeaning } from '../TokenMeaning'
+import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
@@ -394,7 +394,7 @@ class Tokenizer {
       endsWith,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-      beforeClosingItFlushesNonEmptyBufferTo: TokenMeaning.PlainText,
+      beforeClosingItFlushesNonEmptyBufferTo: TokenRole.PlainText,
 
       whenOpening,
 
@@ -416,7 +416,7 @@ class Tokenizer {
       pattern: NAKED_URL_SCHEME_AND_HOSTNAME,
       thenBeforeConsumingText: url => {
         this.flushNonEmptyBufferToPlainTextToken()
-        this.appendNewToken(TokenMeaning.BareUrl, url)
+        this.appendNewToken(TokenRole.BareUrl, url)
       }
     })
   }
@@ -435,7 +435,7 @@ class Tokenizer {
         this.textBuffer += FORWARD_SLASH
       },
 
-      canOnlyOpenIfDirectlyFollowing: [TokenMeaning.BareUrl],
+      canOnlyOpenIfDirectlyFollowing: [TokenRole.BareUrl],
       insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
       whenClosingItAlsoClosesInnerConventions: true,
@@ -465,7 +465,7 @@ class Tokenizer {
 
       whenClosing: () => {
         const exampleInput = this.flushBuffer().trim()
-        this.appendNewToken(TokenMeaning.ExampleInput, exampleInput)
+        this.appendNewToken(TokenRole.ExampleInput, exampleInput)
       }
     })
   }
@@ -493,7 +493,7 @@ class Tokenizer {
 
         whenClosing: () => {
           const snippetFromEntry = this.flushBuffer().trim()
-          this.appendNewToken(TokenMeaning.ReferenceToTableOfContentsEntry, snippetFromEntry)
+          this.appendNewToken(TokenRole.ReferenceToTableOfContentsEntry, snippetFromEntry)
         }
       }))
   }
@@ -512,7 +512,7 @@ class Tokenizer {
             beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
             insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
-            beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenMeaning,
+            beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenRole,
             whenClosingItAlsoClosesInnerConventions: true,
             mustBeDirectlyFollowedBy: this.mediaUrlConventions
           }))
@@ -531,7 +531,7 @@ class Tokenizer {
 
       whenClosing: () => {
         const url = this.config.applySettingsToUrl(this.flushBuffer())
-        this.appendNewToken(TokenMeaning.MediaEndAndUrl, url)
+        this.appendNewToken(TokenRole.MediaEndAndUrl, url)
       }
     }))
   }
@@ -590,7 +590,7 @@ class Tokenizer {
       NSFW,
       NSFL,
       FOOTNOTE
-    ].map(richConvention => richConvention.endTokenMeaning)
+    ].map(richConvention => richConvention.endTokenRole)
 
     return concat(PARENTHETICAL_BRACKETS.map(bracket => {
       const argsForRichConventions = {
@@ -601,13 +601,13 @@ class Tokenizer {
 
       const argsForMediaConentions = {
         bracket,
-        canOnlyOpenIfDirectlyFollowing: [TokenMeaning.MediaEndAndUrl],
+        canOnlyOpenIfDirectlyFollowing: [TokenRole.MediaEndAndUrl],
         whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
       }
 
       const argsForExampleInput = {
         bracket,
-        canOnlyOpenIfDirectlyFollowing: [TokenMeaning.ExampleInput],
+        canOnlyOpenIfDirectlyFollowing: [TokenRole.ExampleInput],
         whenClosing: (url: string) => this.closeLinkifyingUrlForExampleInputConvention(url)
       }
 
@@ -627,7 +627,7 @@ class Tokenizer {
   private getConventionForBracketedUrl(
     args: {
       bracket: Bracket
-      canOnlyOpenIfDirectlyFollowing?: TokenMeaning[]
+      canOnlyOpenIfDirectlyFollowing?: TokenRole[]
       whenClosing: (url: string) => void
     }
   ): Convention {
@@ -662,7 +662,7 @@ class Tokenizer {
   private getConventionForBracketedUrlOffsetByWhitespace(
     args: {
       bracket: Bracket
-      canOnlyOpenIfDirectlyFollowing?: TokenMeaning[]
+      canOnlyOpenIfDirectlyFollowing?: TokenRole[]
       whenClosing: (url: string) => void
     }
   ): Convention {
@@ -707,8 +707,8 @@ class Tokenizer {
   }
 
   private closeLinkifyingUrlForRichConventions(url: string): void {
-    const linkEndToken = new Token(LINK.endTokenMeaning, url)
-    const linkStartToken = new Token(LINK.startTokenMeaning)
+    const linkEndToken = new Token(LINK.endTokenRole, url)
+    const linkStartToken = new Token(LINK.startTokenRole)
     linkStartToken.enclosesContentBetweenItselfAnd(linkEndToken)
 
     // We'll insert our new link end token right before the original end token, and we'll insert our new link
@@ -791,7 +791,7 @@ class Tokenizer {
 
       insertPlainTextToken: (text, atIndex) => {
         this.insertToken({
-          token: new Token(TokenMeaning.PlainText, text),
+          token: new Token(TokenRole.PlainText, text),
           atIndex: atIndex
         })
       }
@@ -1070,8 +1070,8 @@ class Tokenizer {
     // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
     // spoiler’s end token inside the stress convention, we can avoid having to split the stress convention. 
 
-    const startToken = new Token(richConvention.startTokenMeaning)
-    const endToken = new Token(richConvention.endTokenMeaning)
+    const startToken = new Token(richConvention.startTokenRole)
+    const endToken = new Token(richConvention.endTokenRole)
     startToken.enclosesContentBetweenItselfAnd(endToken)
 
     // Rich conventions' start tokens aren't added until the convention closes (and that happens right here!).
@@ -1328,11 +1328,11 @@ class Tokenizer {
       && (!canOnlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(canOnlyOpenIfDirectlyFollowing)))
   }
 
-  private isDirectlyFollowing(tokenMeanings: TokenMeaning[]): boolean {
+  private isDirectlyFollowing(tokenRoles: TokenRole[]): boolean {
     return (
       !this.textBuffer
       && this.mostRecentToken
-      && tokenMeanings.some(tokenMeaning => this.mostRecentToken.meaning === tokenMeaning))
+      && tokenRoles.some(tokenRole => this.mostRecentToken.role === tokenRole))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
@@ -1347,12 +1347,12 @@ class Tokenizer {
     this.inflectionHandlers = snapshot.inflectionHandlers
   }
 
-  private appendNewToken(meaning: TokenMeaning, value?: string): void {
-    this.appendToken(new Token(meaning, value))
+  private appendNewToken(role: TokenRole, value?: string): void {
+    this.appendToken(new Token(role, value))
   }
 
   private appendBufferedUlPathToCurrentBareUrl(): void {
-    if (this.mostRecentToken.meaning === TokenMeaning.BareUrl) {
+    if (this.mostRecentToken.role === TokenRole.BareUrl) {
       this.mostRecentToken.value += this.flushBuffer()
     } else {
       throw new Error('Most recent token is not a bare URL token')
@@ -1366,14 +1366,14 @@ class Tokenizer {
     return buffer
   }
 
-  private flushNonEmptyBufferToToken(meaning: TokenMeaning): void {
+  private flushNonEmptyBufferToToken(role: TokenRole): void {
     if (this.textBuffer) {
-      this.appendNewToken(meaning, this.flushBuffer())
+      this.appendNewToken(role, this.flushBuffer())
     }
   }
 
-  private flushBufferToToken(meaning: TokenMeaning): void {
-    this.appendNewToken(meaning, this.flushBuffer())
+  private flushBufferToToken(role: TokenRole): void {
+    this.appendNewToken(role, this.flushBuffer())
   }
 
   private insertToken(args: { token: Token, atIndex: number }): void {
@@ -1393,7 +1393,7 @@ class Tokenizer {
   }
 
   private flushNonEmptyBufferToPlainTextToken(): void {
-    this.flushNonEmptyBufferToToken(TokenMeaning.PlainText)
+    this.flushNonEmptyBufferToToken(TokenRole.PlainText)
   }
 
   private handleTextAwareOfRawBrackets(): void {
@@ -1515,14 +1515,14 @@ const CONTENT_WITH_NO_SPECIAL_MEANING =
     oneOrMore(
       either(
         anyCharNotMatching(...CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING),
-        // An "h" only has special meaning if it's the start of a bare URL scheme.
+        // An "h" only has special role if it's the start of a bare URL scheme.
         'h' + notFollowedBy('ttp' + optional('s') + '://'),
-        // Multiple periods produce ellipses, but single periods have no special meaning.
+        // Multiple periods produce ellipses, but single periods have no special role.
         PERIOD + notFollowedBy(PERIOD),
-        // Multiple hyphens produce en/em dashes, but single hyphens have no special meaning.
+        // Multiple hyphens produce en/em dashes, but single hyphens have no special role.
         HYPHEN + notFollowedBy(HYPHEN),
         // A plus sign followed by a minus sign produces a plus-minus sign, but otherwise, plus
-        // signs don't have any special meaning.
+        // signs don't have any special role.
         PLUS_SIGN + notFollowedBy(HYPHEN)
       )))
 

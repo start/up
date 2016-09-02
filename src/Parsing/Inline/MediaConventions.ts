@@ -2,23 +2,23 @@ import { MediaConvention } from './MediaConvention'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenRole } from './TokenRole'
 
 
 export const AUDIO: MediaConvention = {
   term: terms => terms.audio,
   SyntaxNodeType: Audio,
-  startAndDescriptionTokenMeaning: TokenMeaning.AudioStartAndDescription
+  startAndDescriptionTokenRole: TokenRole.AudioStartAndDescription
 }
 
 export const IMAGE: MediaConvention = {
   term: terms => terms.image,
   SyntaxNodeType: Image,
-  startAndDescriptionTokenMeaning: TokenMeaning.ImageStartAndDescription
+  startAndDescriptionTokenRole: TokenRole.ImageStartAndDescription
 }
 
 export const VIDEO: MediaConvention = {
   term: terms => terms.video,
   SyntaxNodeType: Video,
-  startAndDescriptionTokenMeaning: TokenMeaning.VideoStartAndDescription
+  startAndDescriptionTokenRole: TokenRole.VideoStartAndDescription
 }

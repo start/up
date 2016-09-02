@@ -1,4 +1,4 @@
-import { TokenMeaning } from '../TokenMeaning'
+import { TokenRole } from '../TokenRole'
 import { ParseableToken } from '../ParseableToken'
 
 
@@ -6,7 +6,7 @@ export class Token implements ParseableToken {
   correspondingEnclosingToken: Token
 
   constructor(
-    public meaning: TokenMeaning,
+    public role: TokenRole,
     public value?: string) { }
 
   // Associates a start token with an end token.

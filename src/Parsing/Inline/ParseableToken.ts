@@ -1,7 +1,7 @@
-import { TokenMeaning } from './TokenMeaning'
+import { TokenRole } from './TokenRole'
 
 
 export interface ParseableToken {
-  meaning: TokenMeaning
+  role: TokenRole
   value?: string
 }

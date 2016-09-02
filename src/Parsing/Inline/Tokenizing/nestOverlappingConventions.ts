@@ -55,7 +55,7 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
 //
 // Luckily, we have an easy solution: Just leave the tokens alone!
 //
-// We return `ParseableToken` collection. A `ParseableToken` simply has a meaning (e.g. SpoilerStart) and an optional value.
+// We return `ParseableToken` collection. A `ParseableToken` simply has a role (e.g. SpoilerStart) and an optional value.
 // Because they lack the `correspondingEnclosingToken` field, it's naturally impossible for them to express self-overlapping.
 class ConventionNester {
   constructor(public tokens: Token[]) {
@@ -125,9 +125,9 @@ class ConventionNester {
         //   This [highlight: does (highlight: not] make) much sense.
         //
         // The end token produced by `]` corresponds to the start token produced by `[highlight:`. By checking
-        // only the `meaning` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
+        // only the `role` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
         // conventions are overlapping. Mission accomplished!
-        if (unclosedStartToken.correspondingEnclosingToken.meaning === endToken.meaning) {
+        if (unclosedStartToken.correspondingEnclosingToken.role === endToken.role) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -172,7 +172,7 @@ class ConventionNester {
       const potentialHeroStartToken = this.tokens[tokenIndex]
 
       const isStartTokenForHeroConvention =
-        potentialHeroStartToken.meaning === conventionNotToSplit.startTokenMeaning
+        potentialHeroStartToken.role === conventionNotToSplit.startTokenRole
 
       if (!isStartTokenForHeroConvention) {
         continue
@@ -289,9 +289,9 @@ class ConventionNester {
 
 
 function doesTokenStartAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.meaning === convention.startTokenMeaning)
+  return conventions.some(convention => token.role === convention.startTokenRole)
 }
 
 function doesTokenEndAnyConvention(token: Token, conventions: RichConvention[]): boolean {
-  return conventions.some(convention => token.meaning === convention.endTokenMeaning)
+  return conventions.some(convention => token.role === convention.endTokenRole)
 }

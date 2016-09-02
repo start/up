@@ -1,4 +1,4 @@
-export enum TokenMeaning {
+export enum TokenRole {
   AudioStartAndDescription = 1,
   BoldEnd,
   BoldStart,

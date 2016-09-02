@@ -11,87 +11,87 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { Link } from '../../SyntaxNodes/Link'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenRole } from './TokenRole'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 import { RevealableConvention } from './RevealableConvention'
 
 
 export const EMPHASIS: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Emphasis,
-  startTokenMeaning: TokenMeaning.EmphasisStart,
-  endTokenMeaning: TokenMeaning.EmphasisEnd
+  startTokenRole: TokenRole.EmphasisStart,
+  endTokenRole: TokenRole.EmphasisEnd
 }
 
 export const STRESS: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Stress,
-  startTokenMeaning: TokenMeaning.StressStart,
-  endTokenMeaning: TokenMeaning.StressEnd
+  startTokenRole: TokenRole.StressStart,
+  endTokenRole: TokenRole.StressEnd
 }
 
 export const ITALIC: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Italic,
-  startTokenMeaning: TokenMeaning.ItalicStart,
-  endTokenMeaning: TokenMeaning.ItalicEnd
+  startTokenRole: TokenRole.ItalicStart,
+  endTokenRole: TokenRole.ItalicEnd
 }
 
 export const BOLD: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Bold,
-  startTokenMeaning: TokenMeaning.BoldStart,
-  endTokenMeaning: TokenMeaning.BoldEnd
+  startTokenRole: TokenRole.BoldStart,
+  endTokenRole: TokenRole.BoldEnd
 }
 
 export const HIGHLIGHT: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Highlight,
-  startTokenMeaning: TokenMeaning.HighlightStart,
-  endTokenMeaning: TokenMeaning.HighlightEnd
+  startTokenRole: TokenRole.HighlightStart,
+  endTokenRole: TokenRole.HighlightEnd
 }
 
 export const QUOTE: RichConventionWithoutExtraFields = {
   SyntaxNodeType: InlineQuote,
-  startTokenMeaning: TokenMeaning.QuoteStart,
-  endTokenMeaning: TokenMeaning.QuoteEnd
+  startTokenRole: TokenRole.QuoteStart,
+  endTokenRole: TokenRole.QuoteEnd
 }
 
 export const FOOTNOTE: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Footnote,
-  startTokenMeaning: TokenMeaning.FootnoteStart,
-  endTokenMeaning: TokenMeaning.FootnoteEnd
+  startTokenRole: TokenRole.FootnoteStart,
+  endTokenRole: TokenRole.FootnoteEnd
 }
 
 export const NORMAL_PARENTHETICAL: RichConventionWithoutExtraFields = {
   SyntaxNodeType: NormalParenthetical,
-  startTokenMeaning: TokenMeaning.NormalParentheticalStart,
-  endTokenMeaning: TokenMeaning.NormalParentheticalEnd
+  startTokenRole: TokenRole.NormalParentheticalStart,
+  endTokenRole: TokenRole.NormalParentheticalEnd
 }
 
 export const SQUARE_PARENTHETICAL: RichConventionWithoutExtraFields = {
   SyntaxNodeType: SquareParenthetical,
-  startTokenMeaning: TokenMeaning.SquareParentheticalStart,
-  endTokenMeaning: TokenMeaning.SquareParentheticalEnd
+  startTokenRole: TokenRole.SquareParentheticalStart,
+  endTokenRole: TokenRole.SquareParentheticalEnd
 }
 
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
 // `RichConventionWithoutExtraFields` interface.
 export const LINK = {
   SyntaxNodeType: Link,
-  startTokenMeaning: TokenMeaning.LinkStart,
-  endTokenMeaning: TokenMeaning.LinkEndAndUrl
+  startTokenRole: TokenRole.LinkStart,
+  endTokenRole: TokenRole.LinkEndAndUrl
 }
 
 export const SPOILER = new RevealableConvention({
   SyntaxNodeType: InlineSpoiler,
-  startTokenMeaning: TokenMeaning.SpoilerStart,
-  endTokenMeaning: TokenMeaning.SpoilerEnd
+  startTokenRole: TokenRole.SpoilerStart,
+  endTokenRole: TokenRole.SpoilerEnd
 })
 
 export const NSFW = new RevealableConvention({
   SyntaxNodeType: InlineNsfw,
-  startTokenMeaning: TokenMeaning.NsfwStart,
-  endTokenMeaning: TokenMeaning.NsfwEnd
+  startTokenRole: TokenRole.NsfwStart,
+  endTokenRole: TokenRole.NsfwEnd
 })
 
 export const NSFL = new RevealableConvention({
   SyntaxNodeType: InlineNsfl,
-  startTokenMeaning: TokenMeaning.NsflStart,
-  endTokenMeaning: TokenMeaning.NsflEnd
+  startTokenRole: TokenRole.NsflStart,
+  endTokenRole: TokenRole.NsflEnd
 })

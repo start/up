@@ -170,7 +170,7 @@ describe('Consecutive thematic break streaks', () => {
 })
 
 
-context('Outline conventions are evaluated before inline conventions. Therefore, thematic break streaks can be comprised of characters that have special meaning inline. This includes:', () => {
+context('Outline conventions are evaluated before inline conventions. Therefore, thematic break streaks can be comprised of characters that have special role inline. This includes:', () => {
   context("3 hyphens (em dash). Just like any other thematic break streak, '---' can be:", () => {
     specify("Alone on a line", () => {
       const markup = `

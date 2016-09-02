@@ -5,7 +5,7 @@ import { PlainText } from '../../SyntaxNodes/PlainText'
 import { isWhitespace } from '../isWhitespace'
 import { last } from '../../CollectionHelpers'
 import { ParseableToken } from './ParseableToken'
-import { TokenMeaning } from './TokenMeaning'
+import { TokenRole } from './TokenRole'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
@@ -61,45 +61,45 @@ class Parser {
   constructor(
     args: {
       tokens: ParseableToken[]
-      until?: TokenMeaning
+      until?: TokenRole
       ancestorRevealableInlineConventions: RevealableConvention[]
     }
   ) {
     this.tokens = args.tokens
     this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
-    const endTokenMeaning = args.until
+    const endTokenRole = args.until
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
       const token = this.tokens[this.tokenIndex]
       this.countTokensParsed = this.tokenIndex + 1
 
-      switch (token.meaning) {
-        case endTokenMeaning: {
+      switch (token.role) {
+        case endTokenRole: {
           this.setResult()
           return
         }
 
-        case TokenMeaning.PlainText: {
+        case TokenRole.PlainText: {
           this.nodes.push(new PlainText(token.value))
           continue
         }
 
-        case TokenMeaning.Code: {
+        case TokenRole.Code: {
           this.nodes.push(new InlineCode(token.value))
           continue
         }
 
-        case TokenMeaning.ExampleInput: {
+        case TokenRole.ExampleInput: {
           this.nodes.push(new ExampleInput(token.value))
           continue
         }
 
-        case TokenMeaning.ReferenceToTableOfContentsEntry: {
+        case TokenRole.ReferenceToTableOfContentsEntry: {
           this.nodes.push(new ReferenceToTableOfContentsEntry(token.value))
           continue
         }
 
-        case TokenMeaning.BareUrl: {
+        case TokenRole.BareUrl: {
           const url = token.value
 
           const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
@@ -111,8 +111,8 @@ class Parser {
           continue
         }
 
-        case LINK.startTokenMeaning: {
-          let children = this.getNodes({ fromHereUntil: TokenMeaning.LinkEndAndUrl })
+        case LINK.startTokenRole: {
+          let children = this.getNodes({ fromHereUntil: TokenRole.LinkEndAndUrl })
 
           const isContentBlank = isBlank(children)
 
@@ -130,7 +130,7 @@ class Parser {
       }
 
       for (const media of MEDIAS) {
-        if (token.meaning === media.startAndDescriptionTokenMeaning) {
+        if (token.role === media.startAndDescriptionTokenRole) {
           let description = token.value.trim()
 
           // The next token will be a MediaEndAndUrl token
@@ -142,9 +142,9 @@ class Parser {
       }
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
-        if (token.meaning === richConvention.startTokenMeaning) {
+        if (token.role === richConvention.startTokenRole) {
           let children = this.getNodes({
-            fromHereUntil: richConvention.endTokenMeaning,
+            fromHereUntil: richConvention.endTokenRole,
             parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
           })
 
@@ -166,7 +166,7 @@ class Parser {
         }
       }
 
-      throw new Error('Unrecognized token: ' + TokenMeaning[token.meaning])
+      throw new Error('Unrecognized token: ' + TokenRole[token.role])
     }
 
     this.setResult()
@@ -185,7 +185,7 @@ class Parser {
 
   private getNodes(
     args: {
-      fromHereUntil: TokenMeaning
+      fromHereUntil: TokenRole
       parentRevealableInlineConvention?: RevealableConvention
     }
   ): InlineSyntaxNode[] {
