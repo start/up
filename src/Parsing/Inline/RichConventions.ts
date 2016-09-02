@@ -11,7 +11,7 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { Link } from '../../SyntaxNodes/Link'
-import { TokenKind } from './Tokenization/TokenKind'
+import { TokenKind } from './Tokenizing/TokenKind'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 import { RevealableConvention } from './RevealableConvention'
 

@@ -1,5 +1,5 @@
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { tokenize, tokenizeForInlineDocument } from './Tokenization/tokenize'
+import { tokenize, tokenizeForInlineDocument } from './Tokenizing/tokenize'
 import { parse } from './parse'
 import { Config } from '../../Config'
 

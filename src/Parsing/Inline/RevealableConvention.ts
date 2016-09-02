@@ -1,4 +1,4 @@
-import { TokenKind } from './Tokenization/TokenKind'
+import { TokenKind } from './Tokenizing/TokenKind'
 import { RevealableInlineSyntaxNodeType } from '../../SyntaxNodes/RevealableInlineSyntaxNodeType'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
