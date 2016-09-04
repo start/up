@@ -191,6 +191,45 @@ It's easy!`)
 })
 
 
+context('Any leading or trailing whitespace is ignored when matching code block fences.', () => {
+  specify('Whitespace around the opening fence is ignored', () => {
+    const markup = `
+I enjoy baking.
+
+ \t \`\`\` \t 
+const pie = 3.5
+\`\`\`
+
+Do you?`
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([new PlainText('I enjoy baking.')]),
+        new CodeBlock('const pie = 3.5'),
+        new Paragraph([new PlainText('Do you?')])
+      ]))
+  })
+
+  specify('Whitespace around the closing fence is ignored', () => {
+    const markup = `
+I enjoy baking.
+
+\`\`\` 
+const pie = 3.5
+ \t \`\`\` \t
+
+Do you?`
+
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([new PlainText('I enjoy baking.')]),
+        new CodeBlock('const pie = 3.5'),
+        new Paragraph([new PlainText('Do you?')])
+      ]))
+  })
+})
+
+
 context("An unmatched streak of backticks produces a code block that extends to the end of the code block's container", () => {
   specify("If the code block isn't nested within another convention, it extends to the end of the document", () => {
     const markup = `
