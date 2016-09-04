@@ -19,7 +19,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   markupLineConsumer.consume({
     linePattern: CODE_BLOCK_STREAK_PATTERN,
     thenBeforeConsumingLine: line => {
-      startStreak = line
+      startStreak = line.trim()
     }
   })
 
@@ -36,7 +36,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     markupLineConsumer.consume({
       linePattern: CODE_BLOCK_STREAK_PATTERN,
       thenBeforeConsumingLine: line => {
-        possibleEndStreak = line
+        possibleEndStreak = line.trim()
       }
     })
 

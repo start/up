@@ -4,6 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -127,15 +128,30 @@ document.write('The factorial of 5 is: ' + factorial(5))`
 })
 
 
-describe('Within a code block, a streak of backticks matching the start streak but preceded by a space', () => {
-  it('is preserved as code (and does not end the code block)', () => {
+context("For a streak of backticks to serve as a code block's fence, it must be alone on its line (ignoring any outer whitespace). This is true for:", () => {
+  specify('A potential opening fence', () => {
     const markup = `
-\`\`\`
- \`\`\`
-\`\`\``
+"\`\`\`"
+
+That's what the robot wrote!`
     expect(Up.toDocument(markup)).to.deep.equal(
       new UpDocument([
-        new CodeBlock(' ```'),
+        new Paragraph([
+          new InlineQuote([new PlainText('```')])
+        ]),
+        new Paragraph([
+          new PlainText("That's what the robot wrote!")
+        ])
+      ]))
+  })
+
+  specify('A potential closing fence', () => {
+    const markup = `
+\`\`\`
+"\`\`\`"`
+    expect(Up.toDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new CodeBlock('"```"'),
       ]))
   })
 })
