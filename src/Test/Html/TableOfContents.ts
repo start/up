@@ -17,7 +17,7 @@ import { Heading } from '../../SyntaxNodes/Heading'
 import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 
 
-context('When a document has a table of contents, its first HTML element is a <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
+context('A table of contents produces <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
   context("Following is an <ul> containing a <li> for each entry. In each <li> is a heading that's one level higher than the heading the entry references", () => {
     specify('A level 1 heading entry is placed in an <h2>', () => {
       const heading =
@@ -26,14 +26,18 @@ context('When a document has a table of contents, its first HTML element is a <n
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h1 id="up-topic-1">I enjoy apples</h1>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h1 id="up-topic-1">I enjoy apples</h1>')
     })
 
     specify('A level 2 heading entry is placed in an <h3>', () => {
