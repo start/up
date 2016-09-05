@@ -10,6 +10,11 @@ import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 export type MarkupOrDocument = string | UpDocument
 export type MarkupOrInlineDocument = string | InlineUpDocument
 
+export interface HtmlForDocumentAndTableOfContents {
+  documentHtml: string,
+  tableOfContentsHtml: string
+}
+
 
 export class Up {
   private config: Config
@@ -24,11 +29,22 @@ export class Up {
 
   toHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
     const document =
-      typeof markupOrDocument === 'string'
-        ? this.toDocument(markupOrDocument, extraSettings)
-        : markupOrDocument
+      this.getDocument(markupOrDocument, extraSettings)
 
     return new HtmlRenderer(document, this.config.withChanges(extraSettings)).render()
+  }
+
+  toHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    const document =
+      this.getDocument(markupOrDocument, extraSettings)
+
+    const htmlRenderer =
+      new HtmlRenderer(document, this.config.withChanges(extraSettings))
+
+    return {
+      documentHtml: htmlRenderer.render(),
+      tableOfContentsHtml: htmlRenderer.tableOfContents(document.tableOfContents)
+    }
   }
 
   toInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
@@ -42,6 +58,12 @@ export class Up {
         : markupOrInlineDocument
 
     return new HtmlRenderer(inlineDocument, this.config.withChanges(extraSettings)).render()
+  }
+
+  private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
+    return typeof markupOrDocument === 'string'
+      ? this.toDocument(markupOrDocument, extraSettings)
+      : markupOrDocument
   }
 }
 
@@ -68,6 +90,10 @@ export namespace Up {
 
   export function toHtml(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
     return defaultUp.toHtml(markupOrDocument, settings)
+  }
+
+  export function toHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    return defaultUp.toHtmlForDocumentAndTableOfContents(markupOrDocument, settings)
   }
 
   export function toInlineDocument(markup: string, settings?: UserProvidedSettings): InlineUpDocument {

@@ -45,12 +45,14 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 // document is rendered. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
-  constructor(
-    private document: EitherTypeOfUpDocument,
-    protected config: Config) { }
+  private documentChildren: SyntaxNode[]
+
+  constructor(document: EitherTypeOfUpDocument, protected config: Config) {
+    this.documentChildren = document.children
+  }
 
   render(): string {
-    return this.renderAll(this.document.children)
+    return this.renderAll(this.documentChildren)
   }
 
   abstract audio(audio: Audio): string
@@ -88,7 +90,7 @@ export abstract class Renderer {
   abstract unorderedList(list: UnorderedList): string
   abstract video(video: Video): string
 
-  protected abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
+  abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
 
   protected renderEach(nodes: SyntaxNode[]): string[] {
     return nodes.map(node => node.render(this))
