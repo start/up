@@ -74,8 +74,8 @@ export class HtmlRenderer extends Renderer {
   // One last hack! Within the table of contents itself:
   //
   // 1. No HTML is produced for footnotes. They're ignored.
-  // 2. The IDs for inline revealable conventions (described above) are given an additional prefix to prevent
-  //    clashes with the IDs in the document.   
+  // 2. The IDs for inline revealable elements' checkboxes (described above) are given an additional prefix to
+  //    prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
   document(document: EitherTypeOfUpDocument): string {
@@ -202,7 +202,7 @@ export class HtmlRenderer extends Renderer {
       entry
         // If this reference is associated with a table of contents entry, let's link to
         // actual entry in the document.
-        ? new Link(entry.representationOfContentWithinTableOfContents(), internalUrl(this.idOfActualEntryInDocument(entry)))
+        ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish the reference's snippet text from the surrounding
         // text by italicizing it.
         : new Italic([new PlainText(reference.snippetFromEntry)])
@@ -295,21 +295,19 @@ export class HtmlRenderer extends Renderer {
       return ''
     }
 
-    const innerLink = this.footnoteReferenceInnerLink(footnote)
-
     return this.element(
       'sup',
-      [innerLink], {
+      [this.footnoteReferenceInnerLink(footnote)], {
         id: this.footnoteReferenceId(footnote.referenceNumber),
         class: classAttrValue('footnote-reference')
       })
   }
 
   footnoteBlock(footnoteBlock: FootnoteBlock): string {
-    const attrs =
-      attrsFor(
-        footnoteBlock,
-        { class: classAttrValue('footnotes') })
+    const attrs = attrsFor(
+      footnoteBlock, {
+        class: classAttrValue('footnotes')
+      })
 
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
@@ -502,7 +500,18 @@ export class HtmlRenderer extends Renderer {
       attrsForOuterContainer?: any
     }
   ): string {
-    const checkboxId = this.idFor(args.conventionName, args.conventionCount)
+    let checkBoxIdParts = [args.conventionName, args.conventionCount]
+
+    // We use this nasty little hack to prevent the IDs of revealable elements' checkboxes
+    // within the table of contents from clashing with IDs within the document itself.
+    //
+    // More information about the HTML for revealable conventions can be found at the top
+    // of this class.
+    if (this.isInsideTableOfContents) {
+      checkBoxIdParts.unshift('toc')
+    }
+
+    const checkboxId = this.idFor(...checkBoxIdParts)
 
     const label =
       htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
@@ -607,16 +616,16 @@ export class HtmlRenderer extends Renderer {
     return this.idFor(this.config.terms.rendered.footnoteReference, referenceNumber)
   }
 
+  private isUrlAllowed(url: string): boolean {
+    return this.config.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+  }
+
   private reset(args?: { isInsideTableOfContents: boolean }): void {
     this.spoilerCount = 0
     this.nsfwCount = 0
     this.nsflCount = 0
     this.isInsideLink = false
     this.isInsideTableOfContents = args && args.isInsideTableOfContents
-  }
-
-  private isUrlAllowed(url: string): boolean {
-    return this.config.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 }
 
