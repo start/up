@@ -352,7 +352,7 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(plainText.content)
   }
 
-  tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
+  protected tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
     this.isInsideTableOfContents = true
 
     const html =

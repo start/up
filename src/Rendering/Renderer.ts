@@ -37,20 +37,41 @@ import { ThematicBreak } from '../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
 import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../PatternPieces'
+import { coalesce } from '../CollectionHelpers'
 
+
+export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
 // Renderers are designed to be single-use, so a new instance must be created every time a new
 // document is rendered. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
-  private documentChildren: SyntaxNode[]
+  private renderedDocument: string
+  private renderedTableOfContents: string
 
-  constructor(document: UpDocument | InlineUpDocument, protected config: Config) {
-    this.documentChildren = document.children
+  constructor(
+    private document: EitherTypeOfUpDocument,
+    protected config: Config) { }
+
+  renderDocument(): string {
+    this.renderedDocument = coalesce(
+      this.renderedDocument, this.renderAll(this.document.children))
+
+    return this.renderedDocument
   }
 
-  render(): string {
-    return this.renderAll(this.documentChildren)
+  renderTableOfContents(): string {
+    const { document } = this
+
+    if (document instanceof UpDocument) {
+      this.renderedTableOfContents = coalesce(
+        this.renderedTableOfContents, this.tableOfContents(document.tableOfContents))
+
+      return this.renderedTableOfContents
+    }
+
+    // This line will never be reached if the type system is respected.
+    throw new Error('Inline documents do not have tables of contents')
   }
 
   abstract audio(audio: Audio): string
@@ -88,7 +109,7 @@ export abstract class Renderer {
   abstract unorderedList(list: UnorderedList): string
   abstract video(video: Video): string
 
-  abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
+  protected abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
 
   protected renderEach(nodes: SyntaxNode[]): string[] {
     return nodes.map(node => node.render(this))

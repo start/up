@@ -253,7 +253,9 @@ context('When a table of contents has multiple entries', () => {
       ])
     ], tableOfContents)
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -264,8 +266,10 @@ context('When a table of contents has multiple entries', () => {
       + '<li><h2><a href="#up-topic-5">Grains</a></h2></li>'
       + '<li><h3><a href="#up-topic-6">Rice</a></h3></li>'
       + '</ul>'
-      + '</nav>'
-      + '<h1 id="up-topic-1">Vegetables</h1>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 id="up-topic-1">Vegetables</h1>'
       + '<ul>'
       + '<li>'
       + '<ol>'
@@ -313,14 +317,18 @@ context("Within the table of contents itself", () => {
         new FootnoteBlock([topLevelFootnote, nestedFootnote])
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">I enjoy apples <em>and you should too</em></a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<h1 id="up-topic-1">'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 id="up-topic-1">'
       + 'I enjoy apples'
       + '<sup class="up-footnote-reference" id="up-footnote-reference-1">'
       + '<a href="#up-footnote-1">1</a>'
@@ -357,7 +365,9 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-topic-1">'
@@ -368,8 +378,10 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<span role="alert">sometimes</span>'
       + '</span>'
       + '</a></h2></li></ul>'
-      + '</nav>'
-      + '<p>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<p>'
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-2">toggle spoiler</label>'
       + '<input id="up-spoiler-2" role="button" type="checkbox">'
@@ -403,7 +415,9 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-topic-1">'
@@ -414,8 +428,10 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<span role="alert">sometimes</span>'
       + '</span>'
       + '</a></h2></li></ul>'
-      + '</nav>'
-      + '<p>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<p>'
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-nsfw-2">toggle NSFW</label>'
       + '<input id="up-nsfw-2" role="button" type="checkbox">'
@@ -449,7 +465,9 @@ context("Within the table of contents, the IDs of revealable content elements do
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul><li><h2><a href="#up-topic-1">'
@@ -460,8 +478,10 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<span role="alert">sometimes</span>'
       + '</span>'
       + '</a></h2></li></ul>'
-      + '</nav>'
-      + '<p>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<p>'
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-nsfl-2">toggle NSFL</label>'
       + '<input id="up-nsfl-2" role="button" type="checkbox">'
@@ -489,14 +509,18 @@ context("When an item referenced by the table of contents has a source line numb
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<h1 data-up-source-line="2" id="up-topic-1">I enjoy apples</h1>')
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 data-up-source-line="2" id="up-topic-1">I enjoy apples</h1>')
   })
 })
 
@@ -526,15 +550,19 @@ context('When a table of contents entry reference node is associated with an ent
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">I drink soda</a></h2></li>'
       + '<li><h2><a href="#up-topic-2">I never lie</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<p>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<p>'
       + "I'm a great guy. For more information, skip to "
       + '<a href="#up-topic-2">I never lie</a>'
       + '.'

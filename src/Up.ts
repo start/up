@@ -31,7 +31,7 @@ export class Up {
     const document =
       this.getDocument(markupOrDocument, extraSettings)
 
-    return new HtmlRenderer(document, this.config.withChanges(extraSettings)).render()
+    return new HtmlRenderer(document, this.config.withChanges(extraSettings)).renderDocument()
   }
 
   toHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
@@ -41,10 +41,25 @@ export class Up {
     const htmlRenderer =
       new HtmlRenderer(document, this.config.withChanges(extraSettings))
 
-    return {
-      documentHtml: htmlRenderer.render(),
-      tableOfContentsHtml: htmlRenderer.tableOfContents(document.tableOfContents)
-    }
+    // Unfortunately, it's important that we render the table of contents *after* we render
+    // the document.
+    //
+    // As described in the `HtmlRenderer` class, revealable inline conventions (e.g. inline
+    // spoilers) are rendered with incrementing IDs.
+    //
+    // In the document, these IDs should always start at 1. If any table of contents entries
+    // contain revealable inline conventions, their IDs within the table of contents itself
+    // should continue incrementing where they left off in the document.
+    //
+    // Because we want the IDs to start at 1 in the document, not in the table of contents,
+    // we need to render the document first.
+    //
+    // TODO: Use a unique ID prefix in the table of contents to avoid this drama. 
+
+    const documentHtml = htmlRenderer.renderDocument()
+    const tableOfContentsHtml = htmlRenderer.renderTableOfContents()
+
+    return { documentHtml, tableOfContentsHtml }
   }
 
   toInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
@@ -57,7 +72,7 @@ export class Up {
         ? this.toInlineDocument(markupOrInlineDocument, extraSettings)
         : markupOrInlineDocument
 
-    return new HtmlRenderer(inlineDocument, this.config.withChanges(extraSettings)).render()
+    return new HtmlRenderer(inlineDocument, this.config.withChanges(extraSettings)).renderDocument()
   }
 
   private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
