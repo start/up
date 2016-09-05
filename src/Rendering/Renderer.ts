@@ -50,7 +50,7 @@ export abstract class Renderer {
     protected config: Config) { }
 
   render(): string {
-    return this.renderEitherTypeOfDocument(this.document)
+    return this.renderAll(this.document.children)
   }
 
   abstract audio(audio: Audio): string
@@ -88,6 +88,8 @@ export abstract class Renderer {
   abstract unorderedList(list: UnorderedList): string
   abstract video(video: Video): string
 
+  protected abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
+
   protected renderEach(nodes: SyntaxNode[]): string[] {
     return nodes.map(node => node.render(this))
   }
@@ -103,16 +105,6 @@ export abstract class Renderer {
     return rawId
       .trim()
       .replace(WHITESPACE_PATTERN, '-')
-  }
-
-  protected abstract renderDocument(document: EitherTypeOfUpDocument): string
-  protected abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
-
-  private renderEitherTypeOfDocument(document: EitherTypeOfUpDocument): string {
-    return (
-      document instanceof UpDocument
-        ? this.renderDocument(document)
-        : this.renderInlineDocument(document))
   }
 }
 

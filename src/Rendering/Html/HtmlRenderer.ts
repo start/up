@@ -1,6 +1,5 @@
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { Renderer } from '.././Renderer'
-import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
 import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
@@ -74,19 +73,6 @@ export class HtmlRenderer extends Renderer {
 
   // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
   private isInsideTableOfContents = false
-
-  renderDocument(document: UpDocument): string {
-    const tableOfContents =
-      document.tableOfContents.entries.length
-        ? this.tableOfContents(document.tableOfContents)
-        : ''
-
-    return tableOfContents + this.renderAll(document.children)
-  }
-
-  renderInlineDocument(inlineDocument: InlineUpDocument): string {
-    return this.renderAll(inlineDocument.children)
-  }
 
   blockquote(blockquote: Blockquote): string {
     return this.element('blockquote', blockquote.children, attrsFor(blockquote))
@@ -366,19 +352,7 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(plainText.content)
   }
 
-  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
-    const attrs = {
-      class: classAttrValue('parenthetical', ...extraCssClassNames)
-    }
-
-    return this.element('small', parenthetical.children, attrs)
-  }
-
-  private unorderedListItem(listItem: UnorderedList.Item): string {
-    return this.element('li', listItem.children)
-  }
-
-  private tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
+  protected tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
     this.isInsideTableOfContents = true
 
     const html =
@@ -420,6 +394,18 @@ export class HtmlRenderer extends Renderer {
     return new Link(
       entry.representationOfContentWithinTableOfContents(),
       internalUrl(this.idOfActualEntryInDocument(entry)))
+  }
+
+  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
+    const attrs = {
+      class: classAttrValue('parenthetical', ...extraCssClassNames)
+    }
+
+    return this.element('small', parenthetical.children, attrs)
+  }
+
+  private unorderedListItem(listItem: UnorderedList.Item): string {
+    return this.element('li', listItem.children)
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {
