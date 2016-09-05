@@ -47,14 +47,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h3><a href="#up-topic-1">I enjoy apples</a></h3></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h2 id="up-topic-1">I enjoy apples</h2>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h2 id="up-topic-1">I enjoy apples</h2>')
     })
 
     specify('A level 3 heading entry is placed in an <h4>', () => {
@@ -64,14 +68,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h4><a href="#up-topic-1">I enjoy apples</a></h4></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h3 id="up-topic-1">I enjoy apples</h3>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h3 id="up-topic-1">I enjoy apples</h3>')
     })
 
     specify('A level 4 heading entry entry contains an <h5>', () => {
@@ -81,14 +89,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h5><a href="#up-topic-1">I enjoy apples</a></h5></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h4 id="up-topic-1">I enjoy apples</h4>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h4 id="up-topic-1">I enjoy apples</h4>')
     })
 
     specify('A level 5 heading entry is placed in an <h6>', () => {
@@ -98,14 +110,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h5 id="up-topic-1">I enjoy apples</h5>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h5 id="up-topic-1">I enjoy apples</h5>')
     })
 
     context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
@@ -116,14 +132,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-        expect(Up.toHtml(document)).to.equal(
+        const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+        expect(result.tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
           + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
           + '</ul>'
-          + '</nav>'
-          + '<h6 id="up-topic-1">I enjoy apples</h6>')
+          + '</nav>')
+
+        expect(result.documentHtml).to.equal(
+          '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
 
       specify('A level 10 heading entry is placed in an <h6>', () => {
@@ -133,14 +153,18 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         const document =
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-        expect(Up.toHtml(document)).to.equal(
+        const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+        expect(result.tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
           + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
           + '</ul>'
-          + '</nav>'
-          + '<h6 id="up-topic-1">I enjoy apples</h6>')
+          + '</nav>')
+
+        expect(result.documentHtml).to.equal(
+          '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
     })
   })
