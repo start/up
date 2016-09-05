@@ -28,38 +28,20 @@ export class Up {
   }
 
   toHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
-    const document =
-      this.getDocument(markupOrDocument, extraSettings)
+    const htmlRenderer = this.getHtmlRenderer(extraSettings)
 
-    return new HtmlRenderer(document, this.config.withChanges(extraSettings)).renderDocument()
+    return htmlRenderer.document(
+      this.getDocument(markupOrDocument, extraSettings))
   }
 
   toHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    const document =
-      this.getDocument(markupOrDocument, extraSettings)
+    const htmlRenderer = this.getHtmlRenderer(extraSettings)
+    const document = this.getDocument(markupOrDocument, extraSettings)
 
-    const htmlRenderer =
-      new HtmlRenderer(document, this.config.withChanges(extraSettings))
-
-    // Unfortunately, it's important that we render the table of contents *after* we render
-    // the document.
-    //
-    // As described in the `HtmlRenderer` class, revealable inline conventions (e.g. inline
-    // spoilers) are rendered with incrementing IDs.
-    //
-    // In the document, these IDs should always start at 1. If any table of contents entries
-    // contain revealable inline conventions, their IDs within the table of contents itself
-    // should continue incrementing where they left off in the document.
-    //
-    // Because we want the IDs to start at 1 in the document, not in the table of contents,
-    // we need to render the document first.
-    //
-    // TODO: Use a unique ID prefix in the table of contents to avoid this drama. 
-
-    const documentHtml = htmlRenderer.renderDocument()
-    const tableOfContentsHtml = htmlRenderer.renderTableOfContents()
-
-    return { documentHtml, tableOfContentsHtml }
+    return {
+      documentHtml: htmlRenderer.document(document),
+      tableOfContentsHtml: htmlRenderer.tableOfContents(document.tableOfContents)
+    }
   }
 
   toInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
@@ -72,13 +54,17 @@ export class Up {
         ? this.toInlineDocument(markupOrInlineDocument, extraSettings)
         : markupOrInlineDocument
 
-    return new HtmlRenderer(inlineDocument, this.config.withChanges(extraSettings)).renderDocument()
+    return this.getHtmlRenderer(extraSettings).document(inlineDocument)
   }
 
   private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
     return typeof markupOrDocument === 'string'
       ? this.toDocument(markupOrDocument, extraSettings)
       : markupOrDocument
+  }
+
+  private getHtmlRenderer(extraSettings: UserProvidedSettings) {
+    return new HtmlRenderer(this.config.withChanges(extraSettings))
   }
 }
 

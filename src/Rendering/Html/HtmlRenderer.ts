@@ -1,5 +1,5 @@
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { Renderer } from '.././Renderer'
+import { Renderer, EitherTypeOfUpDocument } from '.././Renderer'
 import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
@@ -63,16 +63,36 @@ export class HtmlRenderer extends Renderer {
   // time we render a spoiler (inline or block), appending the counter's value to the checkbox's ID.
   //
   // We'll do the same for NSFW and NSFL conventions.
-  private spoilerCount = 0
-  private nsfwCount = 0
-  private nsflCount = 0
+  private spoilerCount: number
+  private nsfwCount: number
+  private nsflCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an <a> element for the inner link.
-  private isInsideLink = false
+  private isInsideLink: boolean
 
-  // One last hack!  Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
-  private isInsideTableOfContents = false
+  // One last hack! Within the table of contents itself:
+  //
+  // 1. No HTML is produced for footnotes. They're ignored.
+  // 2. The IDs for inline revealable conventions (described above) are given an additional prefix to prevent
+  //    clashes with the IDs in the document.   
+  private isInsideTableOfContents: boolean
+
+  document(document: EitherTypeOfUpDocument): string {
+    this.reset()
+    return this.renderAll(document.children)
+  }
+
+  tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
+    this.reset({ isInsideTableOfContents: true })
+
+    return htmlElementWithAlreadyEscapedChildren(
+      'nav', [
+        this.tableOfContentsTitle(),
+        this.tableOfContentsEntries(tableOfContents.entries)
+      ],
+      { class: classAttrValue("table-of-contents") })
+  }
 
   blockquote(blockquote: Blockquote): string {
     return this.element('blockquote', blockquote.children, attrsFor(blockquote))
@@ -352,22 +372,6 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(plainText.content)
   }
 
-  protected tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
-    this.isInsideTableOfContents = true
-
-    const html =
-      htmlElementWithAlreadyEscapedChildren(
-        'nav', [
-          this.tableOfContentsTitle(),
-          this.tableOfContentsEntries(tableOfContents.entries)
-        ],
-        { class: classAttrValue("table-of-contents") })
-
-    this.isInsideTableOfContents = false
-
-    return html
-  }
-
   private tableOfContentsTitle(): string {
     const title = new Heading([
       new PlainText(this.config.terms.rendered.tableOfContents)], { level: 1 })
@@ -601,6 +605,14 @@ export class HtmlRenderer extends Renderer {
 
   private footnoteReferenceId(referenceNumber: number): string {
     return this.idFor(this.config.terms.rendered.footnoteReference, referenceNumber)
+  }
+
+  private reset(args?: { isInsideTableOfContents: boolean }): void {
+    this.spoilerCount = 0
+    this.nsfwCount = 0
+    this.nsflCount = 0
+    this.isInsideLink = false
+    this.isInsideTableOfContents = args && args.isInsideTableOfContents
   }
 
   private isUrlAllowed(url: string): boolean {
