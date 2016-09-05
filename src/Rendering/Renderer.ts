@@ -39,15 +39,13 @@ import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../PatternPieces'
 
 
-export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
-
 // Renderers are designed to be single-use, so a new instance must be created every time a new
 // document is rendered. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
   private documentChildren: SyntaxNode[]
 
-  constructor(document: EitherTypeOfUpDocument, protected config: Config) {
+  constructor(document: UpDocument | InlineUpDocument, protected config: Config) {
     this.documentChildren = document.children
   }
 
