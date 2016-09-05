@@ -4,7 +4,7 @@ import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parseDocument } from './Parsing/parseDocument'
 import { parseInlineDocument } from './Parsing/parseInlineDocument'
-import { getHtml, getInlineHtml } from './Rendering//Html/getHtml'
+import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
 export type MarkupOrDocument = string | UpDocument
@@ -19,19 +19,29 @@ export class Up {
   }
 
   toDocument(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
-    return toDocument(markup, this.config.withChanges(extraSettings))
+    return parseDocument(markup, this.config.withChanges(extraSettings))
   }
 
   toHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
-    return toHtml(markupOrDocument, this.config.withChanges(extraSettings))
+    const document =
+      typeof markupOrDocument === 'string'
+        ? this.toDocument(markupOrDocument, extraSettings)
+        : markupOrDocument
+
+    return new HtmlRenderer(document, this.config.withChanges(extraSettings)).render()
   }
 
   toInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
-    return toInlineDocument(markup, this.config.withChanges(extraSettings))
+    return parseInlineDocument(markup, this.config.withChanges(extraSettings))
   }
 
   toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
-    return toInlineHtml(markupOrInlineDocument, this.config.withChanges(extraSettings))
+    const inlineDocument =
+      typeof markupOrInlineDocument === 'string'
+        ? this.toInlineDocument(markupOrInlineDocument, extraSettings)
+        : markupOrInlineDocument
+
+    return new HtmlRenderer(inlineDocument, this.config.withChanges(extraSettings)).render()
   }
 }
 
@@ -70,31 +80,4 @@ export namespace Up {
 
   // This should always match the `version` field in `package.json`.
   export const VERSION = '13.0.2'
-}
-
-
-function toDocument(markup: string, config: Config): UpDocument {
-  return parseDocument(markup, config)
-}
-
-function toHtml(markupOrDocument: MarkupOrDocument, config: Config): string {
-  const document =
-    typeof markupOrDocument === 'string'
-      ? toDocument(markupOrDocument, config)
-      : markupOrDocument
-
-  return getHtml(document, config)
-}
-
-function toInlineDocument(markup: string, config: Config): InlineUpDocument {
-  return parseInlineDocument(markup, config)
-}
-
-function toInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, config: Config): string {
-  const inlineDocument =
-    typeof markupOrInlineDocument === 'string'
-      ? toInlineDocument(markupOrInlineDocument, config)
-      : markupOrInlineDocument
-
-  return getInlineHtml(inlineDocument, config)
 }
