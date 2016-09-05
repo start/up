@@ -9,7 +9,7 @@ import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
+import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
@@ -179,22 +179,30 @@ context("The table of contents has no effect on elements that aren't referenced 
     const document =
       new UpDocument([
         headingInTableOfContents,
-        new Blockquote([
+        new NsfwBlock([
           new Heading([new PlainText('I enjoy apples')], { level: 1 })
         ])
       ], new UpDocument.TableOfContents([headingInTableOfContents]))
 
-    expect(Up.toHtml(document)).to.equal(
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<h1 id="up-topic-1">I enjoy apples</h1>'
-      + '<blockquote>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 id="up-topic-1">I enjoy apples</h1>'
+      + '<div class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert">'
       + '<h1>I enjoy apples</h1>'
-      + '</blockquote>')
+      + '</div>'
+      + '</div>')
   })
 })
 
