@@ -45,17 +45,12 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 // document is rendered. This makes it a bit simpler to write concrete renderer classes, because
 // they don't have to worry about resetting any counters.
 export abstract class Renderer {
-  private _result: string
-
   constructor(
     private document: EitherTypeOfUpDocument,
     protected config: Config) { }
 
-  get result(): string {
-    this._result =
-      this._result || this.renderEitherTypeOfDocument(this.document)
-
-    return this._result
+  render(): string {
+    return this.renderEitherTypeOfDocument(this.document)
   }
 
   abstract audio(audio: Audio): string
