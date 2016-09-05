@@ -513,9 +513,6 @@ export class HtmlRenderer extends Renderer {
 
     const checkboxId = this.idFor(...checkBoxIdParts)
 
-    const label =
-      htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
-
     const checkbox =
       singleTagHtmlElement(
         'input', {
@@ -523,6 +520,9 @@ export class HtmlRenderer extends Renderer {
           type: 'checkbox',
           role: 'button'
         })
+
+    const label =
+      htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
 
     const revealableContent =
       this.element(

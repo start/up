@@ -350,11 +350,17 @@ context("Within the table of contents itself", () => {
 
 context("Within the table of contents, the IDs of revealable content elements do not clash with those in the document:", () => {
   specify('Inline spoilers', () => {
-    const heading =
+    const applesHeading =
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineSpoiler([new PlainText('sometimes')])
       ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const grapesHeading =
+      new Heading([
+        new PlainText('I enjoy grapes '),
+        new InlineSpoiler([new PlainText('usually')])
+      ], { level: 1, ordinalInTableOfContents: 2 })
 
     const document =
       new UpDocument([
@@ -362,22 +368,33 @@ context("Within the table of contents, the IDs of revealable content elements do
           new InlineSpoiler([new PlainText('Never')]),
           new PlainText(' eat apples.'),
         ]),
-        heading,
-      ], new UpDocument.TableOfContents([heading]))
+        applesHeading,
+        grapesHeading,
+      ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const result = Up.toHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-topic-1">'
+      + '<ul>'
+      + '<li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-toc-spoiler-1">toggle spoiler</label>'
       + '<input id="up-toc-spoiler-1" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
-      + '</a></h2></li></ul>'
+      + '</a></h2></li>'
+      + '<li><h2><a href="#up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-spoiler up-revealable">'
+      + '<label for="up-toc-spoiler-2">toggle spoiler</label>'
+      + '<input id="up-toc-spoiler-2" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
+      + '</span>'
+      + '</a></h2></li>'
+      + '</ul>'
       + '</nav>')
 
     expect(result.documentHtml).to.equal(
@@ -396,15 +413,29 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<input id="up-spoiler-2" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
+      + '</h1>'
+      + '<h1 id="up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-spoiler up-revealable">'
+      + '<label for="up-spoiler-3">toggle spoiler</label>'
+      + '<input id="up-spoiler-3" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
+      + '</span>'
       + '</h1>')
   })
 
   specify('Inline NSFW conventions', () => {
-    const heading =
+    const applesHeading =
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineNsfw([new PlainText('sometimes')])
       ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const grapesHeading =
+      new Heading([
+        new PlainText('I enjoy grapes '),
+        new InlineNsfw([new PlainText('usually')])
+      ], { level: 1, ordinalInTableOfContents: 2 })
 
     const document =
       new UpDocument([
@@ -412,22 +443,33 @@ context("Within the table of contents, the IDs of revealable content elements do
           new InlineNsfw([new PlainText('Never')]),
           new PlainText(' eat apples.'),
         ]),
-        heading,
-      ], new UpDocument.TableOfContents([heading]))
+        applesHeading,
+        grapesHeading,
+      ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const result = Up.toHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-topic-1">'
+      + '<ul>'
+      + '<li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfw up-revealable">'
       + '<label for="up-toc-nsfw-1">toggle NSFW</label>'
       + '<input id="up-toc-nsfw-1" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
-      + '</a></h2></li></ul>'
+      + '</a></h2></li>'
+      + '<li><h2><a href="#up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="up-toc-nsfw-2">toggle NSFW</label>'
+      + '<input id="up-toc-nsfw-2" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
+      + '</span>'
+      + '</a></h2></li>'
+      + '</ul>'
       + '</nav>')
 
     expect(result.documentHtml).to.equal(
@@ -446,15 +488,29 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<input id="up-nsfw-2" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
+      + '</h1>'
+      + '<h1 id="up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-3">toggle NSFW</label>'
+      + '<input id="up-nsfw-3" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
+      + '</span>'
       + '</h1>')
   })
 
   specify('Inline NSFL conventions', () => {
-    const heading =
+    const applesHeading =
       new Heading([
         new PlainText('I enjoy apples '),
         new InlineNsfl([new PlainText('sometimes')])
       ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const grapesHeading =
+      new Heading([
+        new PlainText('I enjoy grapes '),
+        new InlineNsfl([new PlainText('usually')])
+      ], { level: 1, ordinalInTableOfContents: 2 })
 
     const document =
       new UpDocument([
@@ -462,22 +518,33 @@ context("Within the table of contents, the IDs of revealable content elements do
           new InlineNsfl([new PlainText('Never')]),
           new PlainText(' eat apples.'),
         ]),
-        heading,
-      ], new UpDocument.TableOfContents([heading]))
+        applesHeading,
+        grapesHeading,
+      ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const result = Up.toHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
-      + '<ul><li><h2><a href="#up-topic-1">'
+      + '<ul>'
+      + '<li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-nsfl up-revealable">'
       + '<label for="up-toc-nsfl-1">toggle NSFL</label>'
       + '<input id="up-toc-nsfl-1" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
-      + '</a></h2></li></ul>'
+      + '</a></h2></li>'
+      + '<li><h2><a href="#up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-nsfl up-revealable">'
+      + '<label for="up-toc-nsfl-2">toggle NSFL</label>'
+      + '<input id="up-toc-nsfl-2" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
+      + '</span>'
+      + '</a></h2></li>'
+      + '</ul>'
       + '</nav>')
 
     expect(result.documentHtml).to.equal(
@@ -495,6 +562,14 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<label for="up-nsfl-2">toggle NSFL</label>'
       + '<input id="up-nsfl-2" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
+      + '</span>'
+      + '</h1>'
+      + '<h1 id="up-topic-2">'
+      + 'I enjoy grapes '
+      + '<span class="up-nsfl up-revealable">'
+      + '<label for="up-nsfl-3">toggle NSFL</label>'
+      + '<input id="up-nsfl-3" role="button" type="checkbox">'
+      + '<span role="alert">usually</span>'
       + '</span>'
       + '</h1>')
   })
