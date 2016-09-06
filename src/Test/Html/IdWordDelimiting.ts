@@ -85,14 +85,18 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         }
       }
 
-      expect(Up.toHtml(document, config)).to.equal(
+      const result = Up.toHtmlForDocumentAndTableOfContents(document, config)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h2><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h2></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h1 id="up-table-of-contents-entry-1">I enjoy apples</h1>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h1 id="up-table-of-contents-entry-1">I enjoy apples</h1>')
     })
   })
 
@@ -234,14 +238,22 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(
+      const config = {
+        idPrefix: 'thread 11 reply 65'
+      }
+
+      const result = Up.toHtmlForDocumentAndTableOfContents(document, config)
+
+      expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h2><a href="#thread-11-reply-65-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
-        + '</nav>'
-        + '<h1 id="thread-11-reply-65-topic-1">I enjoy apples</h1>')
+        + '</nav>')
+
+      expect(result.documentHtml).to.equal(
+        '<h1 id="thread-11-reply-65-topic-1">I enjoy apples</h1>')
     })
   })
 })

@@ -13,22 +13,56 @@ I enjoy apples
 LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
-    const html = Up.toHtml(markup, {
+    const config = {
       createSourceMap: true,
       terms: {
         markup: { spoiler: 'LOOK AWAY' },
         output: { tableOfContents: 'In This Article' }
       }
-    })
+    }
 
-    expect(html).to.equal(
+    expect(Up.toHtml(markup, config)).to.equal(
+      '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
+      + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
+      + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
+      + '<label for="up-spoiler-1">toggle spoiler</label>'
+      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<div role="alert">'
+      + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
+      + '</div>'
+      + '</div>')
+  })
+
+  specify('If you provide the toHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the toDocument method for you using configuration you provide', () => {
+    const markup = `
+Anyway, let us get to the point.
+
+I enjoy apples
+==============
+
+LOOK AWAY
+  After beating the Elite Four, Blue steals a Red Delicious from Red.`
+
+    const config = {
+      createSourceMap: true,
+      terms: {
+        markup: { spoiler: 'LOOK AWAY' },
+        output: { tableOfContents: 'In This Article' }
+      }
+    }
+
+    const result = Up.toHtmlForDocumentAndTableOfContents(markup, config)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
       + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
