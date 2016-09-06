@@ -1093,16 +1093,18 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const html =
+    const result = up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></p>'
-      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</h1>'
+      + '</nav>')
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(result.documentHtml).to.equal(
+      '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></p>'
+      + '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</h1>')
   })
 })

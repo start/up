@@ -193,14 +193,18 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    expect(up.toHtml(document)).to.equal(
+    const result = up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<h1 id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</h1>')
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</h1>')
   })
 })
 
