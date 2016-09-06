@@ -1004,7 +1004,6 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       + '<h1 id="up-topic-1">Howdy there</h1>')
   })
 
-
   it("is prefixed with the ID prefix, if one was provided", () => {
     const up = new Up({
       idPrefix: 'reply-11'
@@ -1094,7 +1093,6 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       '<p><a href="#topic-1">Howdy there</a></p>'
       + '<h1 id="topic-1">Howdy there</h1>')
   })
-
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
     const up = new Up({
