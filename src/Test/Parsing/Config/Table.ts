@@ -20,7 +20,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toDocument(markup)).to.deep.equal(
+    expect(up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -54,7 +54,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.toDocument(uppercase)).to.deep.equal(up.toDocument(mixedCase))
+    expect(up.parseDocument(uppercase)).to.deep.equal(up.parseDocument(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -65,7 +65,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: {
           table: ' \t data \t '
@@ -100,7 +100,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: {
           table: '*data*'
@@ -142,7 +142,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: {
           table: ['data', 'info']

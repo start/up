@@ -16,7 +16,7 @@ Not me. Us!
     const heading =
       new Heading([new PlainText('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.eql(
+    expect(Up.parseDocument(markup)).to.eql(
       new UpDocument([
         new ThematicBreak(),
         heading
@@ -33,7 +33,7 @@ Not me. Us!
     const heading =
       new Heading([new PlainText('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.toDocument(markup)).to.eql(
+    expect(Up.parseDocument(markup)).to.eql(
       new UpDocument([
         new ThematicBreak(),
         heading

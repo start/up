@@ -32,7 +32,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         }
       }
 
-      expect(Up.toHtml(document, config)).to.equal(
+      expect(Up.renderHtml(document, config)).to.equal(
         '<p>'
         + '<sup class="up-footnote-reference" id="up-footnote-reference-1">'
         + '<a href="#up-some-extra-info-1">1</a>'
@@ -60,7 +60,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         }
       }
 
-      expect(Up.toHtml(document, config)).to.equal(
+      expect(Up.renderHtml(document, config)).to.equal(
         '<p>'
         + '<sup class="up-footnote-reference" id="up-original-footnote-location-1">'
         + '<a href="#up-footnote-1">1</a>'
@@ -85,7 +85,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         }
       }
 
-      const result = Up.toHtmlForDocumentAndTableOfContents(document, config)
+      const result = Up.renderHtmlForDocumentAndTableOfContents(document, config)
 
       expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -118,7 +118,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
     specify('The ID of the checkboxes for inline NSFW conventions', () => {
@@ -137,7 +137,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
     specify('The ID of the checkboxes for inline NSFL conventions', () => {
@@ -156,7 +156,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</span>'
         + '</p>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
     specify('The ID of the checkboxes for spoiler blocks', () => {
@@ -173,7 +173,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
     specify('The ID of the checkboxes for NSFW blocks', () => {
@@ -190,7 +190,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
     specify('The ID of the checkboxes for NSFL blocks', () => {
@@ -207,7 +207,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
     specify('Footnotes and footnote references', () => {
       const footnote = new Footnote([
@@ -219,7 +219,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new FootnoteBlock([footnote])
       ])
 
-      expect(Up.toHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(
+      expect(Up.renderHtml(document, { idPrefix: 'thread 11 reply 65' })).to.equal(
         '<p>'
         + '<sup class="up-footnote-reference" id="thread-11-reply-65-footnote-reference-1">'
         + '<a href="#thread-11-reply-65-footnote-1">1</a>'
@@ -242,7 +242,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         idPrefix: 'thread 11 reply 65'
       }
 
-      const result = Up.toHtmlForDocumentAndTableOfContents(document, config)
+      const result = Up.renderHtmlForDocumentAndTableOfContents(document, config)
 
       expect(result.tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'

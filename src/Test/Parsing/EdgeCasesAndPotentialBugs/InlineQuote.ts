@@ -12,7 +12,7 @@ import { Italic } from '../../../SyntaxNodes/Italic'
 context('Within an inline quote, an (inner) inline quote can be the first convention within any other inner convention.', () => {
   context('The other convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.toDocument('Luigi stood up. "Hello, my ("leetle") Mario!"')).to.deep.equal(
+      expect(Up.parseDocument('Luigi stood up. "Hello, my ("leetle") Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new InlineQuote([
@@ -30,7 +30,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
     })
 
     specify('Emphasis', () => {
-      expect(Up.toDocument('Luigi stood up. "Hello, my *"leetle"* Mario!"')).to.deep.equal(
+      expect(Up.parseDocument('Luigi stood up. "Hello, my *"leetle"* Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new InlineQuote([
@@ -46,7 +46,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
     })
 
     specify('Italics', () => {
-      expect(Up.toDocument('Luigi stood up. "Hello, my _"leetle"_ Mario!"')).to.deep.equal(
+      expect(Up.parseDocument('Luigi stood up. "Hello, my _"leetle"_ Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new InlineQuote([
@@ -62,7 +62,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.toDocument('Luigi stood up. "Hello, my [highlight:"leetle"] Mario!"')).to.deep.equal(
+      expect(Up.parseDocument('Luigi stood up. "Hello, my [highlight:"leetle"] Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new InlineQuote([
@@ -80,7 +80,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
 
 
   specify('The inner inline quote can open immediately after several conventions have just opened', () => {
-    expect(Up.toDocument('Luigi stood up. "Hello, my _(*"leetle"*)_ Mario!"')).to.deep.equal(
+    expect(Up.parseDocument('Luigi stood up. "Hello, my _(*"leetle"*)_ Mario!"')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Luigi stood up. '),
         new InlineQuote([
@@ -106,7 +106,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
 context('Within an inline quote, an (inner) inline quote can close directly after a convention inside of it has closed.', () => {
   context('The innermost convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.toDocument('"Luigi stood up. "Help me find brother (Mario)", I heard Luigi say."')).to.deep.equal(
+      expect(Up.parseDocument('"Luigi stood up. "Help me find brother (Mario)", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('Luigi stood up. '),
@@ -122,7 +122,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
     })
 
     specify('Emphasis', () => {
-      expect(Up.toDocument('"Luigi stood up. "Help me find brother *Mario*", I heard Luigi say."')).to.deep.equal(
+      expect(Up.parseDocument('"Luigi stood up. "Help me find brother *Mario*", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('Luigi stood up. '),
@@ -138,7 +138,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
     })
 
     specify('Revision insertion', () => {
-      expect(Up.toDocument('"Luigi stood up. "Help me find brother _Mario_", I heard Luigi say."')).to.deep.equal(
+      expect(Up.parseDocument('"Luigi stood up. "Help me find brother _Mario_", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('Luigi stood up. '),
@@ -154,7 +154,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.toDocument('"Luigi stood up. "Help me find brother [highlight:Mario]", I heard Luigi say."')).to.deep.equal(
+      expect(Up.parseDocument('"Luigi stood up. "Help me find brother [highlight:Mario]", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('Luigi stood up. '),

@@ -23,7 +23,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       ])
     ])
 
-    expect(Up.toHtml(document)).to.equal(
+    expect(Up.renderHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="up-footnote-reference-3"><a href="#up-footnote-3">3</a></sup></p>')
   })
 
@@ -38,7 +38,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       ])
     ])
 
-    expect(up.toHtml(document)).to.equal(
+    expect(up.renderHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="reply-11-footnote-reference-3"><a href="#reply-11-footnote-3">3</a></sup></p>')
   })
 
@@ -53,7 +53,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       ])
     ])
 
-    expect(up.toHtml(document)).to.equal(
+    expect(up.renderHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
@@ -68,7 +68,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       ])
     ])
 
-    expect(up.toHtml(document)).to.equal(
+    expect(up.renderHtml(document)).to.equal(
       '<p><sup class="up-footnote-reference" id="footnote-reference-3"><a href="#footnote-3">3</a></sup></p>')
   })
 
@@ -83,7 +83,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       ])
     ])
 
-    expect(up.toHtml(document)).to.equal(
+    expect(up.renderHtml(document)).to.equal(
       '<p>'
       + '<sup class="up-footnote-reference" id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-reference-3">'
       + '<a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-3">3</a>'
@@ -113,7 +113,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="up-footnote-3"><a href="#up-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
   it("is prefixed with the provided ID prefix", () => {
@@ -139,7 +139,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="reply-11-footnote-3"><a href="#reply-11-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -165,7 +165,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -191,7 +191,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="footnote-3"><a href="#footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
@@ -217,7 +217,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       + '<dt id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-3"><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-footnote-reference-3">3</a></dt><dd>Killer Bees</dd>'
       + '</dl>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -239,7 +239,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -263,7 +263,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -286,7 +286,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -309,7 +309,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -333,7 +333,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -355,7 +355,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -379,7 +379,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -402,7 +402,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -425,7 +425,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -449,7 +449,7 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -471,7 +471,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -495,7 +495,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -518,7 +518,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -541,7 +541,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -565,7 +565,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       + '</span>'
       + '</p>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -585,7 +585,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -605,7 +605,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -624,7 +624,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -643,7 +643,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
@@ -662,7 +662,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -680,7 +680,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -700,7 +700,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -719,7 +719,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -738,7 +738,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
@@ -757,7 +757,7 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -775,7 +775,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(Up.toHtml(document)).to.equal(html)
+    expect(Up.renderHtml(document)).to.equal(html)
   })
 
 
@@ -795,7 +795,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -814,7 +814,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
@@ -833,7 +833,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
@@ -852,7 +852,7 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       + '<div role="alert"></div>'
       + '</div>'
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(up.renderHtml(document)).to.equal(html)
   })
 })
 
@@ -864,7 +864,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -889,7 +889,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -913,7 +913,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -937,7 +937,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -961,7 +961,7 @@ describe("The ID of an element referenced by the table of contents", () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -989,7 +989,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -1019,7 +1019,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -1049,7 +1049,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -1079,7 +1079,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -1109,7 +1109,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'

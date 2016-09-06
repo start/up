@@ -13,7 +13,7 @@ describe('The "highlight" config term', () => {
   })
 
   it('is used to indicate highlighted text', () => {
-    expect(up.toDocument('[mark: Ash fights Gary]')).to.deep.equal(
+    expect(up.parseDocument('[mark: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
@@ -25,13 +25,13 @@ describe('The "highlight" config term', () => {
     const lowercase = '[mark: Ash fights Gary]'
     const mixedCase = '[mArK: Ash fights Gary]'
 
-    expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
+    expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
   })
 
   it('is trimmed', () => {
     const markup = '[mark: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { markup: { highlight: ' \t mark \t ' } } })).to.deep.equal(
+    expect(Up.parseDocument(markup, { terms: { markup: { highlight: ' \t mark \t ' } } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
@@ -42,7 +42,7 @@ describe('The "highlight" config term', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*mark*: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { markup: { highlight: '*mark*' } } })).to.deep.equal(
+    expect(Up.parseDocument(markup, { terms: { markup: { highlight: '*mark*' } } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')
@@ -53,7 +53,7 @@ describe('The "highlight" config term', () => {
   it('can have multiple variations', () => {
     const markup = '[paint: Ash fights Gary][mark: Ash fights Gary]'
 
-    expect(Up.toDocument(markup, { terms: { markup: { highlight: ['mark', 'paint'] } } })).to.deep.equal(
+    expect(Up.parseDocument(markup, { terms: { markup: { highlight: ['mark', 'paint'] } } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('Ash fights Gary')

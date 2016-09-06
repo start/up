@@ -15,7 +15,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('Emphasis overlapping a linkified spoiler', () => {
   it('splits the emphasis node', () => {
-    expect(Up.toDocument('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Emphasis([
@@ -37,7 +37,7 @@ describe('Emphasis overlapping a linkified spoiler', () => {
 
 describe('A linkified spoiler overlapping quoted text', () => {
   it('splits the inline quote node', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [SPOILER: you fight Gary "Ketchum](http://example.com/finalbattle) and then the credits roll".')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, [SPOILER: you fight Gary "Ketchum](http://example.com/finalbattle) and then the credits roll".')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -71,7 +71,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
         ])
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Eventually, I will think of one'),
@@ -103,7 +103,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
         new PlainText(' is his last name')
       ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new InlineNsfl([

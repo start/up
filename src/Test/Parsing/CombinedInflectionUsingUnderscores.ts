@@ -12,7 +12,7 @@ import { Bold } from '../../SyntaxNodes/Bold'
 
 describe('Text surrounded by 3 underscores', () => {
   it('is italicized and bolded', () => {
-    expect(Up.toDocument('Xamarin is now ___free___!')).to.deep.equal(
+    expect(Up.parseDocument('Xamarin is now ___free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Xamarin is now '),
         new Bold([
@@ -28,7 +28,7 @@ describe('Text surrounded by 3 underscores', () => {
 
 describe('Text that is italicized/bolded at the same time', () => {
   it('can be surrounded by more than 3 underscores', () => {
-    expect(Up.toDocument('Koopas! ______Mario is on his way!______ Grab your shells!')).to.deep.equal(
+    expect(Up.parseDocument('Koopas! ______Mario is on his way!______ Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Koopas! '),
         new Bold([
@@ -41,7 +41,7 @@ describe('Text that is italicized/bolded at the same time', () => {
   })
 
   it('can be surrounded by an uneven number of underscores, as long as there are at least 3', () => {
-    expect(Up.toDocument('Koopas! ______Mario is on his way!_________ Grab your shells!')).to.deep.equal(
+    expect(Up.parseDocument('Koopas! ______Mario is on his way!_________ Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Koopas! '),
         new Bold([
@@ -54,7 +54,7 @@ describe('Text that is italicized/bolded at the same time', () => {
   })
 
   it('can have its italic convention closed first (and thus opened second), with the remaining text being bolded', () => {
-    expect(Up.toDocument('Hello, ___my_ world__!')).to.deep.equal(
+    expect(Up.parseDocument('Hello, ___my_ world__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Bold([
@@ -68,7 +68,7 @@ describe('Text that is italicized/bolded at the same time', () => {
   })
 
   it('can have its italic convention closed first (and thus opened second), with the remaining text being italicized', () => {
-    expect(Up.toDocument('Hello, ___my__ world_!')).to.deep.equal(
+    expect(Up.parseDocument('Hello, ___my__ world_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Italic([
@@ -85,7 +85,7 @@ describe('Text that is italicized/bolded at the same time', () => {
 
 context("You can italicize/bold text at the same time when you're already within", () => {
   specify('an italic convention', () => {
-    expect(Up.toDocument('_Please ___stop eating the cardboard___ immediately_')).to.deep.equal(
+    expect(Up.parseDocument('_Please ___stop eating the cardboard___ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Please '),
@@ -100,7 +100,7 @@ context("You can italicize/bold text at the same time when you're already within
   })
 
   specify('a bold convention', () => {
-    expect(Up.toDocument('__Please ___stop eating the cardboard___ immediately__')).to.deep.equal(
+    expect(Up.parseDocument('__Please ___stop eating the cardboard___ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('Please '),
@@ -118,7 +118,7 @@ context("You can italicize/bold text at the same time when you're already within
 
 context('An inflection start delimiter consisting of 3 underscores with its italic ended first', () => {
   it('can have its bold convention closed with 3 underscores', () => {
-    expect(Up.toDocument('Well, ___Xamarin_ is now free___!')).to.deep.equal(
+    expect(Up.parseDocument('Well, ___Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Well, '),
         new Bold([
@@ -135,7 +135,7 @@ context('An inflection start delimiter consisting of 3 underscores with its ital
 
 describe('An inflection start delimiter consisting of 3 underscores with its bold ended first', () => {
   it('can have its italic convention closed with 3 underscores', () => {
-    expect(Up.toDocument('Well, ___Xamarin__ is now free___!')).to.deep.equal(
+    expect(Up.parseDocument('Well, ___Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Well, '),
         new Italic([
@@ -152,7 +152,7 @@ describe('An inflection start delimiter consisting of 3 underscores with its bol
 
 context('Text that is bolded then italicized can have both conventions closed together by', () => {
   specify('3 underscores', () => {
-    expect(Up.toDocument('Xamarin is __now _free___!')).to.deep.equal(
+    expect(Up.parseDocument('Xamarin is __now _free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Xamarin is '),
         new Bold([
@@ -166,7 +166,7 @@ context('Text that is bolded then italicized can have both conventions closed to
   })
 
   specify('4 or more underscores', () => {
-    expect(Up.toDocument('Xamarin is __now _free____!')).to.deep.equal(
+    expect(Up.parseDocument('Xamarin is __now _free____!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Xamarin is '),
         new Bold([
@@ -183,7 +183,7 @@ context('Text that is bolded then italicized can have both conventions closed to
 
 context('Text that is italicized then bolded can have both conventions closed together by', () => {
   specify('3 underscores', () => {
-    expect(Up.toDocument('_He has won __six in a row!___')).to.deep.equal(
+    expect(Up.parseDocument('_He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -195,7 +195,7 @@ context('Text that is italicized then bolded can have both conventions closed to
   })
 
   specify('4 or more underscores', () => {
-    expect(Up.toDocument('_He has won __six in a row!_____')).to.deep.equal(
+    expect(Up.parseDocument('_He has won __six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -210,7 +210,7 @@ context('Text that is italicized then bolded can have both conventions closed to
 
 context('Doubly italicized text can be closed together by', () => {
   specify('2 underscores', () => {
-    expect(Up.toDocument('_He has won _six in a row!__')).to.deep.equal(
+    expect(Up.parseDocument('_He has won _six in a row!__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -222,7 +222,7 @@ context('Doubly italicized text can be closed together by', () => {
   })
 
   specify('3 underscores', () => {
-    expect(Up.toDocument('_He has won _six in a row!___')).to.deep.equal(
+    expect(Up.parseDocument('_He has won _six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -234,7 +234,7 @@ context('Doubly italicized text can be closed together by', () => {
   })
 
   specify('4 or more underscores', () => {
-    expect(Up.toDocument('_He has won _six in a row!_____')).to.deep.equal(
+    expect(Up.parseDocument('_He has won _six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -249,7 +249,7 @@ context('Doubly italicized text can be closed together by', () => {
 
 context('Doubly bolded text can be closed together by', () => {
   specify('4 underscores', () => {
-    expect(Up.toDocument('__He has won __six in a row!____')).to.deep.equal(
+    expect(Up.parseDocument('__He has won __six in a row!____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('He has won '),
@@ -261,7 +261,7 @@ context('Doubly bolded text can be closed together by', () => {
   })
 
   specify('5 or more underscores', () => {
-    expect(Up.toDocument('__He has won __six in a row!_____')).to.deep.equal(
+    expect(Up.parseDocument('__He has won __six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Bold([
           new PlainText('He has won '),
@@ -276,7 +276,7 @@ context('Doubly bolded text can be closed together by', () => {
 
 describe('Two inflection start delimiters, both consisting of 2 underscores,', () => {
   it('can be closed by 3 underscores, bolding the inner text and italicizing the outer text', () => {
-    expect(Up.toDocument('__He has won __six in a row!___')).to.deep.equal(
+    expect(Up.parseDocument('__He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has won '),
@@ -291,7 +291,7 @@ describe('Two inflection start delimiters, both consisting of 2 underscores,', (
 
 context('Triply italicized text can be closed together by', () => {
   specify('3 underscores', () => {
-    expect(Up.toDocument('_He has _won _six in a row!___')).to.deep.equal(
+    expect(Up.parseDocument('_He has _won _six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has '),
@@ -306,7 +306,7 @@ context('Triply italicized text can be closed together by', () => {
   })
 
   specify('4 or more underscores', () => {
-    expect(Up.toDocument('_He has _won _six in a row!_____')).to.deep.equal(
+    expect(Up.parseDocument('_He has _won _six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('He has '),
@@ -324,7 +324,7 @@ context('Triply italicized text can be closed together by', () => {
 
 describe('Quadruple underscores followed by 4 separate single closing underscores', () => {
   it('produces 4 nested italic nodes', () => {
-    expect(Up.toDocument('____Warning:_ never_ feed_ this tarantula_')).to.deep.equal(
+    expect(Up.parseDocument('____Warning:_ never_ feed_ this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new Italic([

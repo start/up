@@ -14,7 +14,7 @@ import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 describe('Overlapped stressed, parenthesized, and inserted text', () => {
   it("split the normal parenthetical node once and the square parenthetical node twice", () => {
-    expect(Up.toDocument('I **love (covertly [drinking** whole) milk] all the time.')).to.deep.equal(
+    expect(Up.parseDocument('I **love (covertly [drinking** whole) milk] all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -42,7 +42,7 @@ describe('Overlapped stressed, parenthesized, and inserted text', () => {
 
 describe('Overlapped doubly emphasized text (closing at the same time) and parenthesized text', () => {
   it('split the normal parenthetical node', () => {
-    expect(Up.toDocument("*I know. *Well, I don't (really.** Ha!) Hi!")).to.deep.equal(
+    expect(Up.parseDocument("*I know. *Well, I don't (really.** Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('I know. '),
@@ -64,7 +64,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and paren
 
 describe('Nested spoilers (closing at the same time) overlapping emphasis', () => {
   it('split the emphasis node', () => {
-    expect(Up.toDocument("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
+    expect(Up.parseDocument("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('I know. '),
@@ -86,7 +86,7 @@ describe('Nested spoilers (closing at the same time) overlapping emphasis', () =
 
 describe('Emphasis overlapping nested spoilers (opening at the same time)', () => {
   it('split the emphasis node', () => {
-    expect(Up.toDocument("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
+    expect(Up.parseDocument("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText("I suspect "),
@@ -107,7 +107,7 @@ describe('Emphasis overlapping nested spoilers (opening at the same time)', () =
 
 describe('Nested spoilers (closing at the same time) overlapping a link', () => {
   it('split the link node', () => {
-    expect(Up.toDocument("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
+    expect(Up.parseDocument("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('I know. '),
@@ -129,7 +129,7 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
 
 describe('A link overlapping nested spoilers (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toDocument("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.deep.equal(
+    expect(Up.parseDocument("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText("I suspect "),
@@ -150,7 +150,7 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 
 describe('A link overlapping an inline NSFL convention containing an inline NSFW convention (opening at the same time)', () => {
   it('splits the link node', () => {
-    expect(Up.toDocument("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.deep.equal(
+    expect(Up.parseDocument("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText("I suspect "),
@@ -171,7 +171,7 @@ describe('A link overlapping an inline NSFL convention containing an inline NSFW
 
 describe('An inline NSFW convention nested within an inline NSFL convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
-    expect(Up.toDocument("[NSFL: I know. [NSFW: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
+    expect(Up.parseDocument("[NSFL: I know. [NSFW: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineNsfl([
           new PlainText('I know. '),
@@ -193,7 +193,7 @@ describe('An inline NSFW convention nested within an inline NSFL convention (clo
 
 describe('Overlapped doubly emphasized text (closing at the different times) and parenthesized text', () => {
   it('split the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
-    expect(Up.toDocument("*I know. *Well, I don't (really.* So there.* Ha!) Hi!")).to.deep.equal(
+    expect(Up.parseDocument("*I know. *Well, I don't (really.* So there.* Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('I know. '),
@@ -218,7 +218,7 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
 
 describe('Overlapped parenthesized text and doubly emphasized text (opening at the same time)', () => {
   it('split the emphasis nodes', () => {
-    expect(Up.toDocument("(I need to sleep. **So) what?* It's early.* Hi!")).to.deep.equal(
+    expect(Up.parseDocument("(I need to sleep. **So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
           new PlainText("(I need to sleep. "),
@@ -242,7 +242,7 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at t
 
 describe('Overlapped parenthesized text and doubly emphasized text (opening at different times)', () => {
   it('split the emphasis nodes', () => {
-    expect(Up.toDocument("(I need to sleep. *Uhhh... *So) what?* It's early.* Hi!")).to.deep.equal(
+    expect(Up.parseDocument("(I need to sleep. *Uhhh... *So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
           new PlainText("(I need to sleep. "),
@@ -267,7 +267,7 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at d
 
 describe('Emphasis nested within parenthesized text, both of which overlap a link', () => {
   it('are both split by the link', () => {
-    expect(Up.toDocument("In Texas, (*I never eat [cereal*) outside](example.com/sun-flakes). Hi!")).to.deep.equal(
+    expect(Up.parseDocument("In Texas, (*I never eat [cereal*) outside](example.com/sun-flakes). Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In Texas, '),
         new NormalParenthetical([
@@ -293,7 +293,7 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
 
 describe('A link that overlaps both an emphasis convention and some parenthesized text that the emphasis convention is nested within', () => {
   it('splits the parenthesized text and emphasis conventions', () => {
-    expect(Up.toDocument("In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.")).to.deep.equal(
+    expect(Up.parseDocument("In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In '),
         new Link([
@@ -319,7 +319,7 @@ describe('A link that overlaps both an emphasis convention and some parenthesize
 
 describe('A link that overlaps nested emphasis conventions', () => {
   it('splits both emphasis conventions', () => {
-    expect(Up.toDocument("In [Texas, **I](example.com/texas-hurricans) never* eat cereal* outside.")).to.deep.equal(
+    expect(Up.parseDocument("In [Texas, **I](example.com/texas-hurricans) never* eat cereal* outside.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In '),
         new Link([
@@ -344,7 +344,7 @@ describe('A link that overlaps nested emphasis conventions', () => {
 
 describe('A link that overlaps nested already-overlapping emphasis and stress conventions', () => {
   it('splits both the emphasis convention and the already-split stress convention', () => {
-    expect(Up.toDocument("Hello [Gary, *my **very](example.com/rhyme) dear* friend**.")).to.deep.equal(
+    expect(Up.parseDocument("Hello [Gary, *my **very](example.com/rhyme) dear* friend**.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello '),
         new Link([
@@ -372,7 +372,7 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
 
 describe('A link that overlaps nested already-overlapping double emphasis and stress conventions', () => {
   it('splits both emphasis conventions and the already-split stress convention', () => {
-    expect(Up.toDocument("Hello [Gary, *my *own **very](example.com/rhyme) dear* and kind* friend**.")).to.deep.equal(
+    expect(Up.parseDocument("Hello [Gary, *my *own **very](example.com/rhyme) dear* and kind* friend**.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello '),
         new Link([
@@ -408,7 +408,7 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
 
 describe('Emphasis nested with an inline spoiler, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {
-    expect(Up.toDocument("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.deep.equal(
+    expect(Up.parseDocument("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('In Texas, '),
         new InlineSpoiler([
@@ -431,7 +431,7 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
 
 describe('Emphasis overlapping a linkified NSFL convention', () => {
   it('splits the emphasis node, not the NSF: or link nodes', () => {
-    expect(Up.toDocument('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
+    expect(Up.parseDocument('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I do '),
         new Emphasis([
@@ -453,7 +453,7 @@ describe('Emphasis overlapping a linkified NSFL convention', () => {
 
 describe('A linkified spoiler overlapping emphasized text', () => {
   it('splits the emphasis node, not the spoiler or link nodes', () => {
-    expect(Up.toDocument('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.deep.equal(
+    expect(Up.parseDocument('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
         new InlineSpoiler([
@@ -475,7 +475,7 @@ describe('A linkified spoiler overlapping emphasized text', () => {
 
 describe('An inline spoiler overlapping an emphasis convention split in two (by a link) ending in the second piece of the split emphasis', () => {
   it('splits the emphasis node again', () => {
-    expect(Up.toDocument('This [SPOILER: old (trash *can)(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.deep.equal(
+    expect(Up.parseDocument('This [SPOILER: old (trash *can)(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
         new InlineSpoiler([

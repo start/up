@@ -29,48 +29,48 @@ function itWorksAsAdvertised(
 
 
   context('is disabled by default', () => {
-    specify('when the default toDocument method is called', () => {
-      expect(Up.toDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
+    specify('when the default parseDocument method is called', () => {
+      expect(Up.parseDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
 
-    specify('when the toDocument method is called on an Up object', () => {
-      expect(new Up().toDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
+    specify('when the parseDocument method is called on an Up object', () => {
+      expect(new Up().parseDocument(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
   })
 
 
   context('works when enabled', () => {
-    specify('when calling the default toDocument method', () => {
-      expect(Up.toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when calling the default parseDocument method', () => {
+      expect(Up.parseDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
-      expect(new Up(configWithSettingChanged).toDocument(markup)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(new Up(configWithSettingChanged).parseDocument(markup)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the toDocument method on an Up object', () => {
-      expect(new Up().toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when calling the parseDocument method on an Up object', () => {
+      expect(new Up().parseDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the toDocument method on an Up object that had the setting explictly set to default when the object was created', () => {
-      expect(new Up(configWithSettingSetToDefault).toDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when calling the parseDocument method on an Up object that had the setting explictly set to default when the object was created', () => {
+      expect(new Up(configWithSettingSetToDefault).parseDocument(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
     })
   })
 
 
-  specify('can be set back to default when calling the toDocument method on an Up object that had the setting changed when the object was created', () => {
-    expect(new Up(configWithSettingChanged).toDocument(markup, configWithSettingSetToDefault)).to.deep.equal(documentWhenSettingIsNotChanged)
+  specify('can be set back to default when calling the parseDocument method on an Up object that had the setting changed when the object was created', () => {
+    expect(new Up(configWithSettingChanged).parseDocument(markup, configWithSettingSetToDefault)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 
   context('does not affect subsequent calls when provided', () => {
-    specify('when calling the default toDocument method', () => {
-      expect(Up.toDocument(markup, configWithSettingChanged)).to.be.not.eql(Up.toDocument(markup))
+    specify('when calling the default parseDocument method', () => {
+      expect(Up.parseDocument(markup, configWithSettingChanged)).to.be.not.eql(Up.parseDocument(markup))
     })
 
-    specify('when calling the toDocument method on an Up object', () => {
+    specify('when calling the parseDocument method on an Up object', () => {
       const up = new Up()
-      expect(up.toDocument(markup, configWithSettingChanged)).to.be.not.eql(up.toDocument(markup))
+      expect(up.parseDocument(markup, configWithSettingChanged)).to.be.not.eql(up.parseDocument(markup))
     })
   })
 }

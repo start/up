@@ -15,7 +15,7 @@ Table:
 Chrono Trigger
 Starcraft`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -44,7 +44,7 @@ Chrono Trigger
 ;
 Starcraft`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

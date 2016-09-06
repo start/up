@@ -15,7 +15,7 @@ Hello, world!
 
 Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -39,7 +39,7 @@ Hello, world!
  \t
 Goodbye, world!`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -64,7 +64,7 @@ describe('A document that starts with 3 or more empty or blank lines', () => {
 \t
 Hello, world!`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -85,7 +85,7 @@ Hello, world!
  \t
 \t
 `
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello, world!')
@@ -99,7 +99,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
   it('produces a thematic break node', () => {
     const markup = '#=-+~*@:+**###=~=~=~--~~~~'
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -113,7 +113,7 @@ describe('A thematic break streak', () => {
 ~-~-~-~-~
 60.4%`
 
-    expect(Up.toDocument(markup)).to.eql(
+    expect(Up.parseDocument(markup)).to.eql(
       new UpDocument([
         new ThematicBreak(),
         new Paragraph([
@@ -123,7 +123,7 @@ describe('A thematic break streak', () => {
   })
 
   it('can be as short as 3 characters', () => {
-    expect(Up.toDocument('=-~')).to.deep.equal(
+    expect(Up.parseDocument('=-~')).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -142,7 +142,7 @@ Hello.
 
 
 Goodbye.`
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Hello.')
@@ -162,7 +162,7 @@ describe('Consecutive thematic break streaks', () => {
 =============================================
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 =============================================`
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -178,7 +178,7 @@ context('Outline conventions are evaluated before inline conventions. Therefore,
 
 And that's my story.`
 
-      expect(Up.toDocument(markup)).to.eql(
+      expect(Up.parseDocument(markup)).to.eql(
         new UpDocument([
           new ThematicBreak(),
           new Paragraph([
@@ -193,7 +193,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.toDocument(markup)).to.eql(
+      expect(Up.parseDocument(markup)).to.eql(
         new UpDocument([
           new ThematicBreak(),
           new Paragraph([
@@ -211,7 +211,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.toDocument(markup)).to.eql(
+      expect(Up.parseDocument(markup)).to.eql(
         new UpDocument([
           new ThematicBreak(),
           new Paragraph([
@@ -226,7 +226,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.toDocument(markup)).to.eql(
+      expect(Up.parseDocument(markup)).to.eql(
         new UpDocument([
           new ThematicBreak(),
           new Paragraph([
@@ -248,7 +248,7 @@ context('When thematic break streaks are separated from each other by only blank
 
 --------`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))
@@ -268,7 +268,7 @@ context('When thematic break streaks are separated from each other by only blank
 
 --------`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new ThematicBreak()
       ]))

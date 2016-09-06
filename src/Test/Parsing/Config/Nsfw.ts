@@ -17,7 +17,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
 
   context('For inline NSFW conventions, the config term', () => {
     it('is used', () => {
-      expect(up.toDocument('[ruins ending: Ash fights Gary]')).to.deep.equal(
+      expect(up.parseDocument('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineNsfw([
             new PlainText('Ash fights Gary')
@@ -29,11 +29,11 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
-      expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
+      expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
     })
 
     it('is trimmed', () => {
-      const document = Up.toDocument(
+      const document = Up.parseDocument(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
             markup: { nsfw: ' \t ruins ending \t ' }
@@ -49,7 +49,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     })
 
     it('ignores inline conventions and regular expression rules', () => {
-      const document = Up.toDocument(
+      const document = Up.parseDocument(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
             markup: { nsfw: '*ruins* ending' }
@@ -65,7 +65,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
     })
 
     it('can have multiple variations', () => {
-      const document = Up.toDocument(
+      const document = Up.parseDocument(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
             markup: { nsfw: ['look away', 'ruins ending'] }
@@ -94,7 +94,7 @@ ruins ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toDocument(markup)).to.deep.equal(
+      expect(up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           new NsfwBlock([
             new Paragraph([
@@ -122,7 +122,7 @@ ruINs eNDiNg:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
+      expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
     })
 
     it('is trimmed', () => {
@@ -133,7 +133,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.toDocument(markup, {
+      const document = Up.parseDocument(markup, {
         terms: {
           markup: { nsfw: ' \t ruins ending \t ' }
         }
@@ -160,7 +160,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.toDocument(markup, {
+      const document = Up.parseDocument(markup, {
         terms: {
           markup: { nsfw: '*ruins* ending' }
         }
@@ -189,7 +189,7 @@ LOOK AWAY:
     
     Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.toDocument(markup, {
+      const document = Up.parseDocument(markup, {
         terms: {
           markup: { nsfw: ['look away', 'ruins ending'] }
         }

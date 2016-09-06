@@ -16,7 +16,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('An audio convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces an audio node within a link pointing to that second URL', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -96,7 +96,7 @@ context("As long as there is no whitespace between the audio's URL and the linki
 
 describe('An audio convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Audio('you fight Gary', 'https://example.com/fight.ogg'),
@@ -111,7 +111,7 @@ describe('An audio convention directly followed by an inline spoiler', () => {
 
 describe('An audio convention directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Audio('you fight Gary', 'https://example.com/fight.ogg'),
@@ -126,7 +126,7 @@ describe('An audio convention directly followed by an inline NSFW convention', (
 
 describe('An audio convention directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.deep.equal(
+    expect(Up.parseDocument('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Audio('you fight Gary', 'https://example.com/fight.ogg'),
@@ -149,7 +149,7 @@ describe('An audio convention directly followed by a footnote', () => {
       ], { referenceNumber: 1 })
     ]
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
@@ -164,7 +164,7 @@ describe('An audio convention directly followed by a footnote', () => {
 
 describe('An otherwise-valid linkified audio convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('[audio: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.deep.equal(
+    expect(Up.parseDocument('[audio: phone call](https://example.com/phonecall.ogg)(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Audio('phone call', 'https://example.com/phonecall.ogg'),
         new NormalParenthetical([
@@ -177,7 +177,7 @@ describe('An otherwise-valid linkified audio convention with its linkifying URL 
 
 context("When an otherwise-valid linkified audio convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the audio convention is not linkified', () => {
-    expect(Up.toDocument('[audio: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
+    expect(Up.parseDocument('[audio: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Audio('phone call', 'https://example.com/phonecall.ogg'),
         new PlainText('( \t tel:5555555555)')

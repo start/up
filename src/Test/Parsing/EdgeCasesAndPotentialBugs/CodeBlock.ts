@@ -16,7 +16,7 @@ My pies never turn out quite right.
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('My pies never turn out quite right.')
@@ -35,7 +35,7 @@ Turn out quite right
 const pie = 3.5
 \`\`\``
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([
@@ -62,7 +62,7 @@ const pie = 3.5
 \`\`\`
 My pies never turn out quite right.`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock('const pie = 3.5'),
         new Paragraph([
@@ -78,14 +78,14 @@ context('A code block with containing zero lines of code produces an empty code 
     const markup = `
 \`\`\`
 \`\`\``
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
-    expect(Up.toDocument('```')).to.deep.equal(
+    expect(Up.parseDocument('```')).to.deep.equal(
       new UpDocument([
         new CodeBlock(''),
       ]))
@@ -110,7 +110,7 @@ function factorial(n: number): number {
 \`\`\`
 document.write('The factorial of 5 is: ' + factorial(5))`
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('Check out the code below!')
@@ -134,7 +134,7 @@ context("For a streak of backticks to serve as a code block's fence, it must be 
 "\`\`\`"
 
 That's what the robot wrote!`
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new InlineQuote([new PlainText('```')])
@@ -149,7 +149,7 @@ That's what the robot wrote!`
     const markup = `
 \`\`\`
 "\`\`\`"`
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new CodeBlock('"```"'),
       ]))

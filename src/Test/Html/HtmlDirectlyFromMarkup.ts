@@ -3,7 +3,7 @@ import Up from '../../index'
 
 
 context("You can produce HTML directly from markup!", () => {
-  specify('If you provide the toHtml method with markup, it (internally) calls the toDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderHtml method with markup, it (internally) calls the parseDocument method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -21,7 +21,7 @@ LOOK AWAY
       }
     }
 
-    expect(Up.toHtml(markup, config)).to.equal(
+    expect(Up.renderHtml(markup, config)).to.equal(
       '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
       + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
@@ -33,7 +33,7 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the toHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the toDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the parseDocument method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -51,7 +51,7 @@ LOOK AWAY
       }
     }
 
-    const result = Up.toHtmlForDocumentAndTableOfContents(markup, config)
+    const result = Up.renderHtmlForDocumentAndTableOfContents(markup, config)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -73,10 +73,10 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the toInlineHtml method with markup, it (internally) calls the toInlineDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderInlineHtml method with markup, it (internally) calls the parseInlineDocument method for you using configuration you provide', () => {
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
-    const html = Up.toInlineHtml(markup, {
+    const html = Up.renderInlineHtml(markup, {
       idPrefix: 'reply 104',
       terms: {
         markup: { spoiler: 'LOOK AWAY' }

@@ -55,71 +55,71 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     configChangesFor(args.conflictingTermVariations)
 
   const whenEverythingIsDefault =
-    Up.toDocument(markupForDefaultSettings)
+    Up.parseDocument(markupForDefaultSettings)
 
 
-  describe("when provided to the default toDocument method", () => {
+  describe("when provided to the default parseDocument method", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
-      expect(Up.toDocument(markupForTermVariations, configChanges)).to.deep.equal(Up.toDocument(markupForDefaultSettings))
+      expect(Up.parseDocument(markupForTermVariations, configChanges)).to.deep.equal(Up.parseDocument(markupForDefaultSettings))
     })
 
     it("does not replace the default variations", () => {
-      expect(Up.toDocument(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.toDocument(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.toDocument(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has any empty or blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(Up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(Up.toDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(Up.toDocument(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(Up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
-      expect(Up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(Up.parseDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
     })
   })
 
 
-  describe("when provided to an Up object's toDocument method", () => {
+  describe("when provided to an Up object's parseDocument method", () => {
     const up = new Up()
 
     it("does not alter the Up object's original settings", () => {
-      expect(up.toDocument(markupForTermVariations, configChanges)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForTermVariations, configChanges)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("does not replace the default variations", () => {
-      expect(up.toDocument(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(up.toDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(up.toDocument(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(up.toDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
-      expect(up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
     })
   })
 
@@ -128,54 +128,54 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up(configChanges)
 
     const whenProvidingChangesAtCreation =
-      up.toDocument(markupForTermVariations)
+      up.parseDocument(markupForTermVariations)
 
-    it('has the same result as providing the term when calling the default toDocument method', () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.toDocument(markupForTermVariations, configChanges))
+    it('has the same result as providing the term when calling the default parseDocument method', () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parseDocument(markupForTermVariations, configChanges))
     })
 
-    it("has the same result as providing the term when calling the Up object's toDocument method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().toDocument(markupForTermVariations, configChanges))
+    it("has the same result as providing the term when calling the Up object's parseDocument method", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().parseDocument(markupForTermVariations, configChanges))
     })
 
-    it("has the same result as providing the term when calling the Up object's toDocument method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingConfigChanges).toDocument(markupForTermVariations, configChanges))
+    it("has the same result as providing the term when calling the Up object's parseDocument method, overwriting the term provided at creation", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingConfigChanges).parseDocument(markupForTermVariations, configChanges))
     })
 
     it("does not replace the default variations", () => {
-      expect(up.toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
 
-      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithNoVariations).toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(conflictingConfigChanges).toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(new Up(configChangesWithNoVariations).parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(new Up(conflictingConfigChanges).parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
     })
 
-    it("can be overwritten by providing different custom terms to the toDocument method", () => {
-      expect(up.toDocument(markupForTermVariations, configChangesWithOnlyEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForTermVariations, configChangesWithNoVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.toDocument(markupForTermVariations, conflictingConfigChanges)).to.not.deep.equal(whenEverythingIsDefault)
+    it("can be overwritten by providing different custom terms to the parseDocument method", () => {
+      expect(up.parseDocument(markupForTermVariations, configChangesWithOnlyEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForTermVariations, configChangesWithNoVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForTermVariations, conflictingConfigChanges)).to.not.deep.equal(whenEverythingIsDefault)
     })
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(invalidMarkupForEmptyTerm)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).toDocument(invalidMarkupForBlankTerm)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parseDocument(invalidMarkupForEmptyTerm)).to.not.deep.equal(whenEverythingIsDefault)
+      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parseDocument(invalidMarkupForBlankTerm)).to.not.deep.equal(whenEverythingIsDefault)
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).toDocument(markupForTermVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).parseDocument(markupForTermVariations)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if all variations are empty or blank", () => {
       const up = new Up(configChangesWithOnlyEmptyAndBlankVariations)
 
-      expect(up.toDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
     })
 
     it("has no effect if there are no variations", () => {
       const up = new Up(configChangesWithNoVariations)
 
-      expect(up.toDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expect(up.parseDocument(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
     })
   })
 }
@@ -532,7 +532,7 @@ context('Config settings are totally independent. When one setting is changed, t
       }
     })
 
-    expect(up.toDocument('[SPOILER: Ash fights Gary]')).to.deep.equal(
+    expect(up.parseDocument('[SPOILER: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new PlainText('Ash fights Gary')
@@ -542,7 +542,7 @@ context('Config settings are totally independent. When one setting is changed, t
 
   specify('the default Up object', () => {
     const document =
-      Up.toDocument('[SPOILER: Ash fights Gary]', {
+      Up.parseDocument('[SPOILER: Ash fights Gary]', {
         terms: {
           markup: {
             nsfw: 'ruins ending'

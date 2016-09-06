@@ -68,7 +68,7 @@ describe("Inline NSFW conventions and NSFW blocks", () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.toHtml(node)).to.equal(html)
+    expect(Up.renderHtml(node)).to.equal(html)
   })
 })
 
@@ -101,7 +101,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
         ])
       ])
 
-    expect(up.toHtml(node)).to.equal(up.toHtml(node))
+    expect(up.renderHtml(node)).to.equal(up.renderHtml(node))
   })
 })
 
@@ -128,6 +128,6 @@ describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)
         ])
       ])
 
-    expect(up.toHtml(node)).to.equal(up.toHtml(node))
+    expect(up.renderHtml(node)).to.equal(up.renderHtml(node))
   })
 })

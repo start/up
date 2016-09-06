@@ -7,12 +7,12 @@ const EXPORTS = require('./dist/index')
 context('The Up library is exported two ways.', () => {
   specify('As default', () => {
     const Up = EXPORTS.default
-    expect(Up.toHtml('It actually worked?')).to.be.eql('<p>It actually worked?</p>')
+    expect(Up.renderHtml('It actually worked?')).to.be.eql('<p>It actually worked?</p>')
   })
 
   specify('As Up', () => {
     const Up = EXPORTS.Up
-    expect(Up.toHtml('That seems *very* unlikely.')).to.be.eql('<p>That seems <em>very</em> unlikely.</p>')
+    expect(Up.renderHtml('That seems *very* unlikely.')).to.be.eql('<p>That seems <em>very</em> unlikely.</p>')
   })
 
   specify('Both exports point to the same object', () => {

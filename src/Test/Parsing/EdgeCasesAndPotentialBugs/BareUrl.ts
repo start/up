@@ -13,7 +13,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('A bare URL containing another URL', () => {
   it("produces a single link node. In the link's content, the second URL's scheme is preserved", () => {
-    expect(Up.toDocument('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.deep.equal(
+    expect(Up.parseDocument('https://web.archive.org/web/19961222145127/http://www.nintendo.com/')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('web.archive.org/web/19961222145127/http://www.nintendo.com/')
@@ -25,7 +25,7 @@ describe('A bare URL containing another URL', () => {
 
 context('When a bare URL hostname follows an open square bracket', () => {
   specify("it will not include a trailing escaped closing square bracket", () => {
-    expect(Up.toDocument('[https://nintendo.com\\]')).to.deep.equal(
+    expect(Up.parseDocument('[https://nintendo.com\\]')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('['),
         new Link([
@@ -39,7 +39,7 @@ context('When a bare URL hostname follows an open square bracket', () => {
 
 context('When a bare URL hostname follows an open parenthesis', () => {
   specify("it will not include a trailing escaped closing parentheses", () => {
-    expect(Up.toDocument('(https://nintendo.com\\)')).to.deep.equal(
+    expect(Up.parseDocument('(https://nintendo.com\\)')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('('),
         new Link([
@@ -63,7 +63,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
       new PlainText(' is my favorite site')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -91,7 +91,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
       ], 'https://w3.org'),
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -121,7 +121,7 @@ describe("Unmatched opening parentheses in a bare URL closed by another conventi
       ], 'https://w3.org'),
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -136,7 +136,7 @@ describe("Unmatched opening parentheses in a bare URL closed by another conventi
 
 describe('A paragraph ending with a bare URL scheme (without the rest of the URL)', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toDocument('This is a URL scheme: http://')).to.deep.equal(
+    expect(Up.parseDocument('This is a URL scheme: http://')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This is a URL scheme: http://')
       ]))
@@ -146,7 +146,7 @@ describe('A paragraph ending with a bare URL scheme (without the rest of the URL
 
 describe('A bare URL scheme followed by a space', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toDocument('http:// is my favorite URL scheme.')).to.deep.equal(
+    expect(Up.parseDocument('http:// is my favorite URL scheme.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('http:// is my favorite URL scheme.')
       ]))
@@ -156,7 +156,7 @@ describe('A bare URL scheme followed by a space', () => {
 
 describe('A bare URL scheme (only) immediately followed by another convention closing', () => {
   it("is preserved as plain text", () => {
-    expect(Up.toDocument('*A URL scheme: http://*')).to.deep.equal(
+    expect(Up.parseDocument('*A URL scheme: http://*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('A URL scheme: http://')
@@ -174,7 +174,7 @@ describe('A bare URL followed by a space then a footnote', () => {
       new PlainText('An old search engine.')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new Link([
@@ -190,7 +190,7 @@ describe('A bare URL followed by a space then a footnote', () => {
 
 describe('A bare URL inside a link', () => {
   it("does not need a space between itself and the closing bracket that follows", () => {
-    expect(Up.toDocument('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.deep.equal(
+    expect(Up.parseDocument('[Trust me: https://inner.example.com/fake](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Trust me: '),
@@ -205,7 +205,7 @@ describe('A bare URL inside a link', () => {
 
 describe('A bare URL terminated by another convention closing, followed by a non-whitespace character,', () => {
   it('does not prevent other conventions from being evaluated afterward', () => {
-    expect(Up.toDocument('I found a weird site (https://archive.org/fake). It had *way* too many tarantulas.')).to.deep.equal(
+    expect(Up.parseDocument('I found a weird site (https://archive.org/fake). It had *way* too many tarantulas.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I found a weird site '),
         new NormalParenthetical([
@@ -227,7 +227,7 @@ describe('A bare URL terminated by another convention closing, followed by a non
 
 context('When a bare URL consisting only of a hostname is followed by a space then a valid URL path', () => {
   specify("the path is not included in the bare URL", () => {
-    expect(Up.toDocument('ahhhh oh my goodness help me i went to http://4chan.org /rk9/ is the saddest place ever')).to.deep.equal(
+    expect(Up.parseDocument('ahhhh oh my goodness help me i went to http://4chan.org /rk9/ is the saddest place ever')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('ahhhh oh my goodness help me i went to '),
         new Link([

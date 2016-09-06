@@ -21,57 +21,57 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const { document, configChanges, conflictingConfigChanges } = args
 
   const htmlFromDefaultSettings =
-    Up.toHtmlForDocumentAndTableOfContents(document)
+    Up.renderHtmlForDocumentAndTableOfContents(document)
 
 
-  describe("when provided to the default toHtmlForDocumentAndTableOfContents method", () => {
+  describe("when provided to the default renderHtmlForDocumentAndTableOfContents method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the provided config changes would actually change the HTML
-      expect(Up.toHtmlForDocumentAndTableOfContents(document, configChanges)).to.not.equal(htmlFromDefaultSettings)
+      expect(Up.renderHtmlForDocumentAndTableOfContents(document, configChanges)).to.not.equal(htmlFromDefaultSettings)
 
       // Now, let's make sure the config changes don't alter subsequent calls
-      expect(Up.toHtmlForDocumentAndTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
+      expect(Up.renderHtmlForDocumentAndTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
     })
   })
 
 
   const whenProvidingConfigAtCreation =
-    new Up(configChanges).toHtmlForDocumentAndTableOfContents(document)
+    new Up(configChanges).renderHtmlForDocumentAndTableOfContents(document)
 
 
-  describe("when provided to an Up object's toHtmlForDocumentAndTableOfContents method", () => {
+  describe("when provided to an Up object's renderHtmlForDocumentAndTableOfContents method", () => {
     it("does not alter the Up object's original settings", () => {
       const up = new Up(configChanges)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.toHtmlForDocumentAndTableOfContents(document, conflictingConfigChanges)).to.not.equal(whenProvidingConfigAtCreation)
+      expect(up.renderHtmlForDocumentAndTableOfContents(document, conflictingConfigChanges)).to.not.equal(whenProvidingConfigAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.toHtmlForDocumentAndTableOfContents(document, configChanges)).to.deep.equal(whenProvidingConfigAtCreation)
+      expect(up.renderHtmlForDocumentAndTableOfContents(document, configChanges)).to.deep.equal(whenProvidingConfigAtCreation)
     })
   })
 
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.toHtmlForDocumentAndTableOfContents(document, configChanges)
+    Up.renderHtmlForDocumentAndTableOfContents(document, configChanges)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().toHtmlForDocumentAndTableOfContents(document, configChanges)
+    new Up().renderHtmlForDocumentAndTableOfContents(document, configChanges)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).toHtmlForDocumentAndTableOfContents(document, configChanges)
+    new Up(conflictingConfigChanges).renderHtmlForDocumentAndTableOfContents(document, configChanges)
 
 
   describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the setting when calling the default toHtmlForDocumentAndTableOfContents method', () => {
+    it('has the same result as providing the setting when calling the default renderHtmlForDocumentAndTableOfContents method', () => {
       expect(whenProvidingConfigAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
-    it("has the same result as providing the setting when calling the Up object's toHtmlForDocumentAndTableOfContents method", () => {
+    it("has the same result as providing the setting when calling the Up object's renderHtmlForDocumentAndTableOfContents method", () => {
       expect(whenProvidingConfigAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the setting when calling the Up object's toHtmlForDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
+    it("has the same result as providing the setting when calling the Up object's renderHtmlForDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
       expect(whenProvidingConfigAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })

@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
   it('comes from the "video" config term', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(up.toDocument(markup)).to.deep.equal(
+    expect(up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
@@ -24,13 +24,13 @@ describe('The term that represents video conventions', () => {
     const lowercase = '[watch: Nevada caucus footage][https://example.com/video.webm]'
     const mixedCase = '[WaTCH: Nevada caucus footage][https://example.com/video.webm]'
 
-    expect(up.toDocument(lowercase)).to.deep.equal(up.toDocument(mixedCase))
+    expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
   })
 
   it('is trimmed', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: { video: ' \t watch \t ' }
       }
@@ -45,7 +45,7 @@ describe('The term that represents video conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*watch*: Nevada caucus footage][https://example.com/video.webm]'
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: { video: '*watch*' }
       }
@@ -60,7 +60,7 @@ describe('The term that represents video conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[watch: Nevada caucus footage](https://example.com/video.webm) [view: Nevada caucus footage](https://example.com/video.webm)'
 
-    const document = Up.toDocument(markup, {
+    const document = Up.parseDocument(markup, {
       terms: {
         markup: { video: ['view', 'watch'] }
       }

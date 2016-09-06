@@ -21,7 +21,7 @@ describe('The ID of an element referenced by the table of contents', () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.toHtmlForDocumentAndTableOfContents(document)
+    const result = up.renderHtmlForDocumentAndTableOfContents(document)
 
     expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'

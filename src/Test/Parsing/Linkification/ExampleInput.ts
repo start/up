@@ -18,7 +18,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('An example input convention followed by a parenthesized/bracketd URL', () => {
   it('produces an example input node within a link pointing to the URL', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new Link([
@@ -94,7 +94,7 @@ context("As long as there is no whitespace between the example input and the lin
 
 context('An example input convention is not linkified when it is directly followed by another bracketed convention, including (but not limited to):', () => {
   specify('Inline spoilers', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
@@ -106,7 +106,7 @@ context('An example input convention is not linkified when it is directly follow
   })
 
   specify('Inline NSFW', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
@@ -118,7 +118,7 @@ context('An example input convention is not linkified when it is directly follow
   })
 
   specify('Inline NSFL', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
@@ -130,7 +130,7 @@ context('An example input convention is not linkified when it is directly follow
   })
 
   specify('Highlights', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
@@ -142,7 +142,7 @@ context('An example input convention is not linkified when it is directly follow
   })
 
   specify('References to table of contents entries', () => {
-    expect(Up.toDocument('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
+    expect(Up.parseDocument('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
@@ -159,7 +159,7 @@ context('An example input convention is not linkified when it is directly follow
       ], { referenceNumber: 1 })
     ]
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("To view your shopping cart, press "),
@@ -175,7 +175,7 @@ context('An example input convention is not linkified when it is directly follow
 
 describe('An otherwise-valid linkified example input convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.toDocument('{ Call }(\\tel:5555555555)')).to.deep.equal(
+    expect(Up.parseDocument('{ Call }(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new ExampleInput('Call'),
         new NormalParenthetical([
@@ -188,7 +188,7 @@ describe('An otherwise-valid linkified example input convention with its linkify
 
 context("When an otherwise-valid linkified example input convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the example input convention is not linkified', () => {
-    expect(Up.toDocument('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
+    expect(Up.parseDocument('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new ExampleInput('Call'),
         new PlainText('( \t tel:5555555555)')

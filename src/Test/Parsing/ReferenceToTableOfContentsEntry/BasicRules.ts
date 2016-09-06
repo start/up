@@ -21,7 +21,7 @@ I never lie
 Not quite true. For example, see [section: soda].`
 
   const documentUsingSquareBracketsAndSectionTerm =
-    Up.toDocument(markupUsingSectionTermAndSquareBrackets)
+    Up.parseDocument(markupUsingSectionTermAndSquareBrackets)
 
   specify('You can use "section:" with square brackets', () => {
     const sodaHeading =
@@ -57,7 +57,7 @@ I never lie
 
 Not quite true. For example, see (section: soda).`
 
-    expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
+    expect(Up.parseDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
 
   specify('You can use "topic:" with square brackets', () => {
@@ -72,7 +72,7 @@ I never lie
 
 Not quite true. For example, see [topic: soda].`
 
-    expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
+    expect(Up.parseDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
 
   specify('You can use "topic:" with parentheses', () => {
@@ -87,7 +87,7 @@ I never lie
 
 Not quite true. For example, see (topic: soda).`
 
-    expect(Up.toDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
+    expect(Up.parseDocument(markup)).to.deep.equal(documentUsingSquareBracketsAndSectionTerm)
   })
 })
 
@@ -112,7 +112,7 @@ Not quite true. For example, see [section: I drink soda].`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -147,7 +147,7 @@ Not quite true.`
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
@@ -193,7 +193,7 @@ That's what I tell 'em.`
       const secondSodaHeading =
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           firstSodaHeading,
           new Paragraph([
@@ -243,7 +243,7 @@ Oops.`
       const secondSodaHeading =
         new Heading([new PlainText('I lied when I said I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           firstSodaHeading,
           new Paragraph([
@@ -293,7 +293,7 @@ That's what I tell 'em.`
       const secondSodaHeading =
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           firstSodaHeading,
           new Paragraph([
@@ -336,7 +336,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
       const interestingHeading =
         new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -371,7 +371,7 @@ I love all sorts of fancy stuff.`
       const interestingHeading =
         new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText('I have plenty of good traits. See '),
@@ -431,7 +431,7 @@ And you'll believe it.`
     const thirdSodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 4 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         firstSodaHeading,
         new Paragraph([
@@ -487,7 +487,7 @@ Not quite true.
       const neverLieHeading =
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-      expect(Up.toDocument(markup)).to.deep.equal(
+      expect(Up.parseDocument(markup)).to.deep.equal(
         new UpDocument([
           sodaHeading,
           new Paragraph([
@@ -535,7 +535,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
     const honestHeading =
       new Heading([new PlainText('I am honest')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText('There are plenty of important facts about me. For my favorite, skip to '),
@@ -582,7 +582,7 @@ Not quite true.`
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
@@ -621,7 +621,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
     const neverLieHeading =
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -659,7 +659,7 @@ The zombies could arrive at any moment.`
     const prepareHeading =
       new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a concerned kind of guy. For more information, skip to "),
@@ -697,7 +697,7 @@ That's what the internet told me.`
     const surviveHeading =
       new Heading([new PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
@@ -735,7 +735,7 @@ That's what the internet told me.`
     const surviveHeading =
       new Heading([new PlainText('Those who prep are superdramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
@@ -784,7 +784,7 @@ Not quite true. For example, see [section: emphasis].`
     const stayOnTopicHeading =
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
-    expect(Up.toDocument(markup)).to.deep.equal(
+    expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
         stressAndEmphasisHeading,
         new Paragraph([
@@ -808,7 +808,7 @@ Not quite true. For example, see [section: emphasis].`
 context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the reference itself.', () => {
   context('When the reference is enclosed by square brackets:', () => {
     specify('The snippet can contain matching square brackets', () => {
-      expect(Up.toDocument('[section: I [really] love apples]')).to.deep.equal(
+      expect(Up.parseDocument('[section: I [really] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I [really] love apples')
@@ -817,7 +817,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain matching nested square brackets', () => {
-      expect(Up.toDocument('[section: I [really [truly [honestly]]] love apples]')).to.deep.equal(
+      expect(Up.parseDocument('[section: I [really [truly [honestly]]] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I [really [truly [honestly]]] love apples')
@@ -826,7 +826,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain an escaped unmatched closing square bracket', () => {
-      expect(Up.toDocument('[section: I love :\\] apples]')).to.deep.equal(
+      expect(Up.parseDocument('[section: I love :\\] apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I love :] apples')
@@ -835,7 +835,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain an escaped unmatched opening square bracket', () => {
-      expect(Up.toDocument('[section: I miss :\\[ apples]')).to.deep.equal(
+      expect(Up.parseDocument('[section: I miss :\\[ apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I miss :[ apples')
@@ -847,7 +847,7 @@ context('The snippet belonging to a table of contents entry reference can contai
 
   context('When the reference is enclosed by parentheses:', () => {
     specify('The snippet can contain matching parentheses', () => {
-      expect(Up.toDocument('(section: I (really) love apples)')).to.deep.equal(
+      expect(Up.parseDocument('(section: I (really) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I (really) love apples')
@@ -856,7 +856,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain matching nested parentheses', () => {
-      expect(Up.toDocument('(section: I (really (truly (honestly))) love apples)')).to.deep.equal(
+      expect(Up.parseDocument('(section: I (really (truly (honestly))) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I (really (truly (honestly))) love apples')
@@ -865,7 +865,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain an escaped unmatched closing parenthesis', () => {
-      expect(Up.toDocument('(section: I love :\\) apples)')).to.deep.equal(
+      expect(Up.parseDocument('(section: I love :\\) apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I love :) apples')
@@ -874,7 +874,7 @@ context('The snippet belonging to a table of contents entry reference can contai
     })
 
     specify('The snippet can contain an escaped unmatched opening parenthesis', () => {
-      expect(Up.toDocument('(section: I miss :\\( apples)')).to.deep.equal(
+      expect(Up.parseDocument('(section: I miss :\\( apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new ReferenceToTableOfContentsEntry('I miss :( apples')

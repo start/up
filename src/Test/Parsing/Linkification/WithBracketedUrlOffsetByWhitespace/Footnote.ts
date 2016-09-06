@@ -54,7 +54,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('the phone was dead')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.deep.equal(
+      expect(Up.parseDocument('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -76,7 +76,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('email')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^email) (mailto:)')).to.deep.equal(
+      expect(Up.parseDocument('(^email) (mailto:)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -94,7 +94,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('local files')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^local files) (file:///)')).to.deep.equal(
+      expect(Up.parseDocument('(^local files) (file:///)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -130,7 +130,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('email')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^email) (\\mailto:daniel@wants.email)')).to.deep.equal(
+      expect(Up.parseDocument('(^email) (\\mailto:daniel@wants.email)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -170,7 +170,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('the phone was dead')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^the phone was dead) (/r9k/ was talking about it)')).to.deep.equal(
+      expect(Up.parseDocument('(^the phone was dead) (/r9k/ was talking about it)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -188,7 +188,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('slash')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^slash) (/)')).to.deep.equal(
+      expect(Up.parseDocument('(^slash) (/)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -224,7 +224,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('slash')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^slash) (\\/r9k/)')).to.deep.equal(
+      expect(Up.parseDocument('(^slash) (\\/r9k/)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -282,7 +282,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('the game was dead')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^the game was dead) (#starcraft2 was never trending)')).to.deep.equal(
+      expect(Up.parseDocument('(^the game was dead) (#starcraft2 was never trending)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -300,7 +300,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('hash mark')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^hash mark) (#)')).to.deep.equal(
+      expect(Up.parseDocument('(^hash mark) (#)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -318,7 +318,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('hash mark')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('(^hash mark) (\\#starcraft2)')).to.deep.equal(
+      expect(Up.parseDocument('(^hash mark) (\\#starcraft2)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -394,7 +394,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('that place')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^that place] (4chan.org-terrifying)')).to.deep.equal(
+      expect(Up.parseDocument('[^that place] (4chan.org-terrifying)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -431,7 +431,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new PlainText('username')
         ], { referenceNumber: 1 })
 
-        expect(Up.toDocument('[^username] (john.e.smith5)')).to.deep.equal(
+        expect(Up.parseDocument('[^username] (john.e.smith5)')).to.deep.equal(
           new UpDocument([
             new Paragraph([
               footnote,
@@ -449,7 +449,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
           new PlainText('username')
         ], { referenceNumber: 1 })
 
-        expect(Up.toDocument('[^username] (john.e.smith-kline)')).to.deep.equal(
+        expect(Up.parseDocument('[^username] (john.e.smith-kline)')).to.deep.equal(
           new UpDocument([
             new Paragraph([
               footnote,
@@ -468,7 +468,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('top-level domain')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^top-level domain] (.co.uk)')).to.deep.equal(
+      expect(Up.parseDocument('[^top-level domain] (.co.uk)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -486,7 +486,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('Ash is not his own father')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^Ash is not his own father] (um..uh)')).to.deep.equal(
+      expect(Up.parseDocument('[^Ash is not his own father] (um..uh)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -504,7 +504,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('debilitating sadness')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
+      expect(Up.parseDocument('[^debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -540,7 +540,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('yeah')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^yeah] (ign.com had some hilarious forums)')).to.deep.equal(
+      expect(Up.parseDocument('[^yeah] (ign.com had some hilarious forums)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -558,7 +558,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         new PlainText('yeah')
       ], { referenceNumber: 1 })
 
-      expect(Up.toDocument('[^yeah] (\\ign.com)')).to.deep.equal(
+      expect(Up.parseDocument('[^yeah] (\\ign.com)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             footnote,
@@ -578,7 +578,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       new PlainText('the phone was dead')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument('(^the phone was dead) (really)')).to.deep.equal(
+    expect(Up.parseDocument('(^the phone was dead) (really)')).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote,
@@ -599,7 +599,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
       new PlainText('something terrible')
     ], { referenceNumber: 1 })
 
-    expect(Up.toDocument('[^something terrible]  \\  (https://example.com)')).to.deep.equal(
+    expect(Up.parseDocument('[^something terrible]  \\  (https://example.com)')).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote,
