@@ -18,6 +18,33 @@ import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTa
 
 
 context('A table of contents produces <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
+  specify('When a document has no table of contents entries, the HTML for the table of contents consists only of the above', () => {
+    const document =
+      new UpDocument([
+        new NsfwBlock([
+          new Heading([new PlainText('I enjoy apples')], { level: 1 })
+        ])
+      ])
+
+    const result = Up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
+      '<nav class="up-table-of-contents">'
+      + '<h1>Table of Contents</h1>'
+      + '</nav>')
+
+    expect(result.documentHtml).to.equal(
+      '<h1 id="up-topic-1">I enjoy apples</h1>'
+      + '<div class="up-nsfw up-revealable">'
+      + '<label for="up-nsfw-1">toggle NSFW</label>'
+      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div role="alert">'
+      + '<h1>I enjoy apples</h1>'
+      + '</div>'
+      + '</div>')
+  })
+
+
   context("Following is an <ul> containing a <li> for each entry. In each <li> is a heading that's one level higher than the heading the entry references", () => {
     specify('A level 1 heading entry is placed in an <h2>', () => {
       const heading =
