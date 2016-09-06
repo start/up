@@ -728,6 +728,25 @@ describe('A table of contents entry reference node that is not associated with a
 })
 
 
+describe('A table of contents entry reference node that is associated with an entry', () => {
+  it("produces a link to the entry in the document", () => {
+    const heading = new Heading([
+      new PlainText('Howdy there')
+    ], { level: 1, ordinalInTableOfContents: 1 })
+
+    const document =
+      new UpDocument([
+        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        heading,
+      ], new UpDocument.TableOfContents([heading]))
+
+    expect(Up.renderHtml(document)).to.equal(
+      '<p><a href="#up-topic-1">Howdy there</a></p>'
+      + '<h1 id="up-topic-1">Howdy there</h1>')
+  })
+})
+
+
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const document = new UpDocument([
