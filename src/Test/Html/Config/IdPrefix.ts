@@ -1008,17 +1008,19 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const html =
+    const result = up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#reply-11-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<p><a href="#reply-11-topic-1">Howdy there</a></p>'
-      + '<h1 id="reply-11-topic-1">Howdy there</h1>'
+      + '</nav>')
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(result.documentHtml).to.equal(
+      '<p><a href="#reply-11-topic-1">Howdy there</a></p>'
+      + '<h1 id="reply-11-topic-1">Howdy there</h1>')
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
@@ -1064,17 +1066,19 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
-    const html =
+    const result = up.toHtmlForDocumentAndTableOfContents(document)
+
+    expect(result.tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
       + '<li><h2><a href="#topic-1">Howdy there</a></h2></li>'
       + '</ul>'
-      + '</nav>'
-      + '<p><a href="#topic-1">Howdy there</a></p>'
-      + '<h1 id="topic-1">Howdy there</h1>'
+      + '</nav>')
 
-    expect(up.toHtml(document)).to.equal(html)
+    expect(result.documentHtml).to.equal(
+      '<p><a href="#topic-1">Howdy there</a></p>'
+      + '<h1 id="topic-1">Howdy there</h1>')
   })
 
 
