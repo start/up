@@ -378,6 +378,10 @@ export class HtmlRenderer extends Renderer {
   }
 
   private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
+    if (!entries.length) {
+      return ''
+    }
+
     const listItems =
       entries.map(entry =>
         new UnorderedList.Item([
