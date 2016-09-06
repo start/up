@@ -997,12 +997,11 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">Howdy there</a></h2></li>'
       + '</ul>'
-      + '<p><a href="#up-topic-1">Howdy there</a></p>'
-      + '<h1 id="up-topic-1">Howdy there</h1>')
+      + '</nav>')
 
     expect(result.documentHtml).to.equal(
-      '<p><a href="#reply-11-topic-1">Howdy there</a></p>'
-      + '<h1 id="reply-11-topic-1">Howdy there</h1>')
+      '<p><a href="#up-topic-1">Howdy there</a></p>'
+      + '<h1 id="up-topic-1">Howdy there</h1>')
   })
 
 
@@ -1062,7 +1061,8 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
       + '</nav>')
 
     expect(result.documentHtml).to.equal(
-      '<h1 id="topic-1">Howdy there</h1>')
+      '<p><a href="#topic-1">Howdy there</a></p>'
+      + '<h1 id="topic-1">Howdy there</h1>')
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
