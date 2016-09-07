@@ -4,7 +4,7 @@ import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// A horizontal streak of characters indicates roleful separation between outline conventions.
+// A horizontal streak of characters indicates purposeful separation between outline conventions.
 export function tryToParseThematicBreakStreak(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
