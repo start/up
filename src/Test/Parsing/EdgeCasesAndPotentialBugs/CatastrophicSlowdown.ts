@@ -74,8 +74,40 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify("At the start of a media convention's URL", () => {
+    expect(Up.parseDocument('[image: ear](' + lotsOfWhitespace + 'example.com/ear.svg)')).to.deep.equal(
+      new UpDocument([
+        new Image('ear', 'https://example.com/ear.svg')
+      ]))
+  })
+
+  specify("At the end of a media convention's URL", () => {
+    expect(Up.parseDocument('[image: ear](example.com/ear.svg' + lotsOfWhitespace + ')')).to.deep.equal(
+      new UpDocument([
+        new Image('ear', 'https://example.com/ear.svg')
+      ]))
+  })
+
   specify("Between a linkified media convention's bracketed URL and its linkifying URL", () => {
     expect(Up.parseDocument('[image: ear] (example.com/ear.svg)' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+      new UpDocument([
+        new Link([
+          new Image('ear', 'https://example.com/ear.svg')
+        ], 'https://example.com')
+      ]))
+  })
+
+  specify("At the start of a linkified media convention's linkifying URL", () => {
+    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
+      new UpDocument([
+        new Link([
+          new Image('ear', 'https://example.com/ear.svg')
+        ], 'https://example.com')
+      ]))
+  })
+
+  specify("At the end of a linkified media convention's linkifying URL", () => {
+    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com' + lotsOfWhitespace + ')')).to.deep.equal(
       new UpDocument([
         new Link([
           new Image('ear', 'https://example.com/ear.svg')
