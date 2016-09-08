@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { repeat } from '../../../StringHelpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { Link } from '../../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
@@ -124,6 +125,36 @@ However, we have to go with it.`
         new Paragraph([
           new PlainText('This is not reasonable.')
         ]),
+        new Paragraph([
+          new PlainText('However, we have to go with it.')
+        ])
+      ]))
+  })
+
+  specify('At the start of a thematic break streak that is not the first convention within a document', () => {
+    const markup = lotsOfWhitespace + `
+This is not reasonable.
+
+${lotsOfWhitespace}-~-~-~-~-~-`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText('This is not reasonable.')
+        ]),
+        new ThematicBreak()
+      ]))
+  })
+
+  specify('At the end of a thematic break streak that is not the last convention within a document', () => {
+    const markup = lotsOfWhitespace + `
+-~-~-~-~-~-~-~-${lotsOfWhitespace}
+
+However, we have to go with it.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new ThematicBreak(),
         new Paragraph([
           new PlainText('However, we have to go with it.')
         ])
