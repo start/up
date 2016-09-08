@@ -97,9 +97,10 @@ This is not reasonable.`
       ]))
   })
 
-  specify('On a blank line at the start of a document', () => {
-    const markup = lotsOfWhitespace + `
-This is not reasonable.`
+  specify('On a blank line at the end of a document', () => {
+    const markup = `
+This is not reasonable.
+` + lotsOfWhitespace
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       insideDocumentAndParagraph([
