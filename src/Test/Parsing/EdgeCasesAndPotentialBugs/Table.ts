@@ -137,6 +137,35 @@ I almost didn't include them; however, I realized tables are too useful to leave
 })
 
 
+describe("A table's header row", () => {
+  it('cannot be followed by two or more blank lines', () => {
+    const markup = `
+Table: Good games on the Sega Genesis
+
+Game;           Release Date
+
+
+I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
+          ]),
+          [],
+          new Table.Caption([
+            new PlainText('Good games on the Sega Genesis')
+          ])),
+        new Paragraph([
+          new PlainText("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
+        ])
+      ]))
+  })
+})
+
+
 
 describe('A table with one column', () => {
   it('can contain cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
