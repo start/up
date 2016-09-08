@@ -8,6 +8,7 @@ import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { Link } from '../../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
+import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -29,6 +30,15 @@ context('A long string of whitespace should never cause cause the parser to hang
         new Link([
           new PlainText('Hear me?')
         ], 'https://example.com')
+      ]))
+  })
+
+  specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
+    expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('(SPOILER:' + lotsOfWhitespace + ')')
+        ])
       ]))
   })
 
