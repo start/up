@@ -33,30 +33,19 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
-    expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
+  specify("At the end of linked content", () => {
+    expect(Up.parseDocument('[Hear me?' + lotsOfWhitespace + '](example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new NormalParenthetical([
-          new PlainText('(SPOILER:' + lotsOfWhitespace + ')')
-        ])
+        new Link([
+          new PlainText('Hear me?' + lotsOfWhitespace)
+        ], 'https://example.com')
       ]))
   })
 
-  specify("At the start of a rich convention", () => {
-    expect(Up.parseDocument('[SPOILER:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('He did not die.')
-        ])
-      ]))
-  })
-
-  specify("At the end of a rich convention", () => {
-    expect(Up.parseDocument('[SPOILER: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('He did not die.' + lotsOfWhitespace)
-        ])
+  specify("At the end of a media convention's description", () => {
+    expect(Up.parseDocument('[image: ear' + lotsOfWhitespace + '](example.com/ear.svg)')).to.deep.equal(
+      new UpDocument([
+        new Image('ear', 'https://example.com/ear.svg')
       ]))
   })
 
@@ -83,6 +72,33 @@ context('A long string of whitespace should never cause cause the parser to hang
           new Link([
             new PlainText('His ear grew back!')
           ], 'https://example.com')
+        ])
+      ]))
+  })
+
+  specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
+    expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('(SPOILER:' + lotsOfWhitespace + ')')
+        ])
+      ]))
+  })
+
+  specify("At the start of a rich convention", () => {
+    expect(Up.parseDocument('[SPOILER:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('He did not die.')
+        ])
+      ]))
+  })
+
+  specify("At the end of a rich convention", () => {
+    expect(Up.parseDocument('[SPOILER: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('He did not die.' + lotsOfWhitespace)
         ])
       ]))
   })
