@@ -21,6 +21,7 @@ const unreasonablyManyCharacters = 5000
 const lotsOfWhitespace = repeat(' ', unreasonablyManyCharacters)
 const oneCharShortOfLotsOfWhitespace = repeat(' ', unreasonablyManyCharacters - 1)
 
+
 context('A long string of whitespace should never cause cause the parser to hang:', () => {
   specify('Between words', () => {
     expect(Up.parseDocument('Hear' + lotsOfWhitespace + 'me?')).to.deep.equal(

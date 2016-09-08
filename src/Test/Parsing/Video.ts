@@ -199,7 +199,7 @@ describe('A video description produced by square brackets', () => {
 
 
 describe('A video description (enclosed by parentheses)', () => {
-  it('can contain matching parenthes\es', () => {
+  it('can contain matching parentheses', () => {
     expect(Up.parseDocument('(video: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
       new UpDocument([
         new Video('ghosts eating (luggage)', 'http://example.com/?state=NE')

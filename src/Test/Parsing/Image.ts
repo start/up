@@ -213,7 +213,7 @@ describe('An image description (enclosed in square brackets)', () => {
 
 
 describe('An image description (enclosed by parentheses)', () => {
-  it('can contain matching parenthes\es', () => {
+  it('can contain matching parentheses', () => {
     expect(Up.parseDocument('(image: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
       new UpDocument([
         new Image('ghosts eating (luggage)', 'http://example.com/?state=NE'),
