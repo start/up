@@ -14,7 +14,7 @@ describe('The term that represents video conventions', () => {
   it('comes from the "audio" config term', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.parseDocument(markup)).to.deep.equal(
+    expect(up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
@@ -24,13 +24,13 @@ describe('The term that represents video conventions', () => {
     const lowercase = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
     const mixedCase = '[LiStEn: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    expect(up.parseDocument(mixedCase)).to.deep.equal(up.parseDocument(lowercase))
+    expect(up.parse(mixedCase)).to.deep.equal(up.parse(lowercase))
   })
 
   it('is trimmed', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: { audio: ' \t listen \t ' }
       }
@@ -45,7 +45,7 @@ describe('The term that represents video conventions', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*listen*: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: { audio: '*listen*' }
       }
@@ -60,7 +60,7 @@ describe('The term that represents video conventions', () => {
   it('can have multiple variations', () => {
     const markup = '[hear: chanting at Nevada caucus](https://example.com/audio.ogg) [listen: chanting at Nevada caucus](https://example.com/audio.ogg)'
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: { audio: ['hear', 'listen'] }
       }

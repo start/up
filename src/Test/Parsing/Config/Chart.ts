@@ -20,7 +20,7 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.parseDocument(markup)).to.deep.equal(
+    expect(up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -52,7 +52,7 @@ dAtA:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(up.parseDocument(uppercase)).to.deep.equal(up.parseDocument(mixedCase))
+    expect(up.parse(uppercase)).to.deep.equal(up.parse(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -63,7 +63,7 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           chart: ' \t data \t '
@@ -96,7 +96,7 @@ Chrono Cross;     1999`
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           chart: '*data*'
@@ -136,7 +136,7 @@ Data:
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           chart: ['data', 'info']

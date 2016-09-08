@@ -16,7 +16,7 @@ Game [\\;;        Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -43,7 +43,7 @@ Game :\\\\;       Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -73,7 +73,7 @@ Game;                 Release Date
 Chrono Trigger [\\;;  1995
 Chrono Cross;         1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -100,7 +100,7 @@ Game;                   Release Date
 Chrono Trigger :\\\\;   1995
 Chrono Cross;           1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -128,7 +128,7 @@ Table: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized tables are too useful to leave out.`
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText('Table: my favorite outline convention.')]),
         new Paragraph([new PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
@@ -147,7 +147,7 @@ Game;           Release Date
 
 I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -177,7 +177,7 @@ Underline
 ####
 ****`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -214,7 +214,7 @@ Game\`s Title;        Game\`s Release Date
 Chrono Trigger;       1995
 Chrono Cross;         1999`
 
-      expect(Up.parseDocument(markup)).to.deep.equal(
+      expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -241,7 +241,7 @@ Game;                         Release Decade
 Square\`s Chrono Trigger;     1990\`s
 Square\`s Chrono Cross;       1990\`s`
 
-      expect(Up.parseDocument(markup)).to.deep.equal(
+      expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -271,7 +271,7 @@ Table
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-      expect(Up.parseDocument(markup)).to.deep.equal(
+      expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([
@@ -298,7 +298,7 @@ Game;                 Release Date
 {: Chrono Trigger;    1995 :}
 Chrono Cross;         1999`
 
-      expect(Up.parseDocument(markup)).to.deep.equal(
+      expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new Table(
             new Table.Header([

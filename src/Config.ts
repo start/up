@@ -125,7 +125,7 @@ export namespace Config {
       //
       // However, users *can* overwrite their own terms! If the user creates an `Up` object
       // and provides custom markup terms to its constructor, those terms can be overwritten
-      // by providing the `parseDocument` method with a different set of terms.
+      // by providing the `parse` method with a different set of terms.
       //
       // The private fields below represent the (sanitized) variations provided by the user
       // for each term.

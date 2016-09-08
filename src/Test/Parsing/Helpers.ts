@@ -62,7 +62,7 @@ export function expectEveryPermutationOfBrackets(
             precededBy + segmentPrefix + wrapInBracket(segment.text, bracket)))))
 
   for (const permutation of everyPermutation('', permutationsBySegment)) {
-    expect(Up.parseDocument(permutation)).to.deep.equal(toProduce)
+    expect(Up.parse(permutation)).to.deep.equal(toProduce)
   }
 }
 

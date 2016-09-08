@@ -44,7 +44,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.parseDocument('{ Ask Question } (https://stackoverflow.com is nice)')).to.deep.equal(
+      expect(Up.parse('{ Ask Question } (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Ask Question'),
           new PlainText(' '),
@@ -59,7 +59,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.parseDocument('{ Send Email } (mailto:)')).to.deep.equal(
+      expect(Up.parse('{ Send Email } (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Send Email'),
           new PlainText(' '),
@@ -70,7 +70,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.parseDocument('{ Rustle Files } (file:///)')).to.deep.equal(
+      expect(Up.parse('{ Rustle Files } (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Rustle Files'),
           new PlainText(' '),
@@ -96,7 +96,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.parseDocument('{ Send Email } (\\mailto:daniel@wants.email)')).to.deep.equal(
+      expect(Up.parse('{ Send Email } (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Send Email'),
           new PlainText(' '),
@@ -126,7 +126,7 @@ context('A linkified example input convention can have whitespace between itself
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.parseDocument('{ Something Terrible } (/r9k/ created it)')).to.deep.equal(
+      expect(Up.parse('{ Something Terrible } (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Something Terrible'),
           new PlainText(' '),
@@ -137,7 +137,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     it('must have something after the slash', () => {
-      expect(Up.parseDocument('{ Slash } (/)')).to.deep.equal(
+      expect(Up.parse('{ Slash } (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Slash'),
           new PlainText(' '),
@@ -163,7 +163,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.parseDocument('{ Get Sad } (\\/r9k/)')).to.deep.equal(
+      expect(Up.parse('{ Get Sad } (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Get Sad'),
           new PlainText(' '),
@@ -208,7 +208,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.parseDocument('{ Hash } (#)')).to.deep.equal(
+      expect(Up.parse('{ Hash } (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Hash'),
           new PlainText(' '),
@@ -219,7 +219,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.parseDocument('{ Play } (#starcraft2 was never trending)')).to.deep.equal(
+      expect(Up.parse('{ Play } (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Play'),
           new PlainText(' '),
@@ -230,7 +230,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.parseDocument('{Play} (\\#starcraft2)')).to.deep.equal(
+      expect(Up.parse('{Play} (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Play'),
           new PlainText(' '),
@@ -290,7 +290,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.parseDocument('{ Get Scared } (4chan.org-terrifying)')).to.deep.equal(
+      expect(Up.parse('{ Get Scared } (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Get Scared'),
           new PlainText(' '),
@@ -317,7 +317,7 @@ context('A linkified example input convention can have whitespace between itself
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.parseDocument('{ Create User } (john.e.smith5)')).to.deep.equal(
+        expect(Up.parse('{ Create User } (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new ExampleInput('Create User'),
             new PlainText(' '),
@@ -328,7 +328,7 @@ context('A linkified example input convention can have whitespace between itself
       })
 
       specify('No hyphens', () => {
-        expect(Up.parseDocument('{Create User} (john.e.smith-kline)')).to.deep.equal(
+        expect(Up.parse('{Create User} (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new ExampleInput('Create User'),
             new PlainText(' '),
@@ -340,7 +340,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.parseDocument('{ Buy Domain } (.co.uk)')).to.deep.equal(
+      expect(Up.parse('{ Buy Domain } (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Buy Domain'),
           new PlainText(' '),
@@ -351,7 +351,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.parseDocument('{ Claim To Be Your Own Father } (um..uh)')).to.deep.equal(
+      expect(Up.parse('{ Claim To Be Your Own Father } (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Claim To Be Your Own Father'),
           new PlainText(' '),
@@ -362,7 +362,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.parseDocument('{ Get Sad } (4chan.org../r9k/)')).to.deep.equal(
+      expect(Up.parse('{ Get Sad } (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Get Sad'),
           new PlainText(' '),
@@ -388,7 +388,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.parseDocument('{ Create Topic } (ign.com had some hilarious forums)')).to.deep.equal(
+      expect(Up.parse('{ Create Topic } (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Create Topic'),
           new PlainText(' '),
@@ -399,7 +399,7 @@ context('A linkified example input convention can have whitespace between itself
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.parseDocument('{Create Topic} (\\ign.com)')).to.deep.equal(
+      expect(Up.parse('{Create Topic} (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new ExampleInput('Create Topic'),
           new PlainText(' '),
@@ -412,7 +412,7 @@ context('A linkified example input convention can have whitespace between itself
 
 
   specify('If none of the conditions are satisfied, the audio convention is not linkified', () => {
-    expect(Up.parseDocument('{Try} (really)')).to.deep.equal(
+    expect(Up.parse('{Try} (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new ExampleInput('Try'),
         new PlainText(' '),
@@ -426,7 +426,7 @@ context('A linkified example input convention can have whitespace between itself
 
 describe("If there is whitespace between an otherwise-valid linkified audio convention's audio URL and its linkifying URL", () => {
   it('the audio convention is not linkified', () => {
-    expect(Up.parseDocument('{ Something Terrible }  \\  (https://example.com)')).to.deep.equal(
+    expect(Up.parse('{ Something Terrible }  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new ExampleInput('Something Terrible'),
         new PlainText('    '),

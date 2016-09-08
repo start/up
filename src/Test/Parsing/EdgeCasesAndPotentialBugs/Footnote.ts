@@ -20,7 +20,7 @@ describe('Before a footnote, an escaped space followed by several non-escaped sp
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal. "),
@@ -40,7 +40,7 @@ describe('A footnote reference at the end of a paragraph', () => {
       new PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal."),
@@ -68,7 +68,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
       new PlainText(' See?')
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -95,7 +95,7 @@ describe('A footnote produced by square brackets that contains nested square bra
       new PlainText(' See?')
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote
@@ -115,7 +115,7 @@ describe('Inside an outline convention, blockquoted footnote references', () => 
       new PlainText("Well, I do, but I pretend not to."),
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
@@ -162,7 +162,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
       footnoteInsideSecondFootnote
     ], { referenceNumber: 2 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
@@ -189,7 +189,7 @@ describe('A footnote reference at the beginning of a paragraph', () => {
       new PlainText('I would never eat cereal.')
     ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           footnote,

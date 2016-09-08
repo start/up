@@ -11,7 +11,7 @@ import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 
 describe('Emphasized text containing an unmatched opening delimiter requiring backtracking', () => {
   it('is put inside an emphasis node', () => {
-    expect(Up.parseDocument('Hello, *my (^world*!!')).to.deep.equal(
+    expect(Up.parse('Hello, *my (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -25,7 +25,7 @@ describe('Emphasized text containing an unmatched opening delimiter requiring ba
 
 describe('A convention overlapping emphasis (containing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.parseDocument('[Hello, *my] (^world*!!')).to.deep.equal(
+    expect(Up.parse('[Hello, *my] (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[Hello, '),
@@ -44,7 +44,7 @@ describe('A convention overlapping emphasis (containing an unmatched opening del
 
 describe('A convention overlapping double emphasis (with both emphasis conventions enclosing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.parseDocument('[Hello, **my] (^lovely* world*!!')).to.deep.equal(
+    expect(Up.parse('[Hello, **my] (^lovely* world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[Hello, '),
@@ -68,7 +68,7 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
 
 describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking)', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
-    expect(Up.parseDocument('[Hello, **my] lovely* (^world*!!')).to.deep.equal(
+    expect(Up.parse('[Hello, **my] lovely* (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[Hello, '),
@@ -92,7 +92,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
 
 describe('Double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
-    expect(Up.parseDocument('Hello, **my (^lovely* world*!!*')).to.deep.equal(
+    expect(Up.parse('Hello, **my (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Emphasis([
@@ -109,7 +109,7 @@ describe('Double emphasis (with the inner emphasis enclosing an unmatched openin
 
 describe('A convention overlapping double emphasis (with the inner emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
-    expect(Up.parseDocument('[Hello, **my] (^lovely* world*!!*')).to.deep.equal(
+    expect(Up.parse('[Hello, **my] (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[Hello, '),
@@ -133,7 +133,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
 
 describe('A convention overlapping double emphasis (with the outer emphasis enclosing an unmatched opening delimiter requiring backtracking) followed by an extra closing asterisk', () => {
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
-    expect(Up.parseDocument('[Hello, **my] lovely* (^world*!!*')).to.deep.equal(
+    expect(Up.parse('[Hello, **my] lovely* (^world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new SquareParenthetical([
           new PlainText('[Hello, '),
@@ -157,7 +157,7 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
 
 describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the normal parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
-    expect(Up.parseDocument('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
+    expect(Up.parse('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -185,7 +185,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
 
 describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the square parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
-    expect(Up.parseDocument('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
+    expect(Up.parse('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -213,7 +213,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
 
 describe('Several unmatched footnote start delimiters in the same paragraph, with varying different of leading whitespace,', () => {
   it('are all preserved as plain text, along with all their leading whitespace', () => {
-    expect(Up.parseDocument("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.deep.equal(
+    expect(Up.parse("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
       ]))

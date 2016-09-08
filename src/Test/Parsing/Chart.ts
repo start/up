@@ -17,7 +17,7 @@ Chart: AND operator logic
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -49,7 +49,7 @@ Chart:
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -79,7 +79,7 @@ Chart
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -115,7 +115,7 @@ Final Fantasy II; 1988
 Chrono Trigger;   1995
 Chrono Cross;     1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -149,7 +149,7 @@ Chart:
  \t Chrono Trigger\t ;\t   1995
  \t Chrono Cross\t ;\t     1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -182,7 +182,7 @@ Chart: AND operator logic
 1;true;false
 0;false;false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -219,7 +219,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -259,7 +259,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -300,7 +300,7 @@ Chrono Cross;     1999
 
 I don't like video games; in fact, I never have.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -342,7 +342,7 @@ Wednesday
 Thursday
 Friday`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -378,7 +378,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -425,7 +425,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -462,7 +462,7 @@ Chart:
 Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -493,7 +493,7 @@ Final Fantasy II;       1988 (almost 1989)
 Chrono Trigger;         1995
 Chrono Cross;           1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -535,7 +535,7 @@ Chart:
 Final Fantasy\\; Final Fantasy II;  Square [\\; Soft
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -563,7 +563,7 @@ Chart:  \t  \t  \t
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -593,7 +593,7 @@ Chart:  \t  \t  \t
 1;      true;   false
 0;      false;  false`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -626,7 +626,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -654,7 +654,7 @@ Chart:
 Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     [: Playstation;     1999 :]`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -682,7 +682,7 @@ Chart:
 [: Chrono Trigger;    Super :] Nintendo;   1995
 Chrono Cross;         Playstation;         1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -710,7 +710,7 @@ Chart
 
 	      Release Date`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

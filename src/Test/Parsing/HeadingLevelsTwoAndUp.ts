@@ -23,7 +23,7 @@ Goodbye, world!
       new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument(
         headings,
         new UpDocument.TableOfContents(headings)
@@ -50,7 +50,7 @@ Goodbye again, world!
       new Heading([new PlainText('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument(
         headings,
         new UpDocument.TableOfContents(headings)
@@ -74,7 +74,7 @@ Goodbye, world!
       new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument(
         headings,
         new UpDocument.TableOfContents(headings)
@@ -95,7 +95,7 @@ Goodbye, world!
       new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument(
         headings,
         new UpDocument.TableOfContents(headings)
@@ -147,7 +147,7 @@ Warlocked
       new Heading([new PlainText('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument(
         headings,
         new UpDocument.TableOfContents(headings)))
@@ -176,7 +176,7 @@ Goodbye, world!
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
@@ -215,7 +215,7 @@ Goodbye, world!
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
@@ -255,7 +255,7 @@ Awkward
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
@@ -296,7 +296,7 @@ Goodbye, world!
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         helloHeading,
         goodbyeHeading,
@@ -333,7 +333,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           helloHeading,
@@ -374,7 +374,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           helloHeading,
@@ -414,7 +414,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const keysHeading =
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
           helloHeading,

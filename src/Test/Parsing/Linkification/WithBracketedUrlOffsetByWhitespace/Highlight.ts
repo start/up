@@ -41,7 +41,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.parseDocument('[highlight: something terrible] (https://stackoverflow.com is nice)')).to.deep.equal(
+      expect(Up.parse('[highlight: something terrible] (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('something terrible')
@@ -58,7 +58,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('there must be somethng after the scheme', () => {
-      expect(Up.parseDocument('[highlight: email] (mailto:)')).to.deep.equal(
+      expect(Up.parse('[highlight: email] (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('email')
@@ -71,7 +71,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
-      expect(Up.parseDocument('[highlight: local files] (file:///)')).to.deep.equal(
+      expect(Up.parse('[highlight: local files] (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('local files')
@@ -99,7 +99,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the scheme must not be escaped', () => {
-      expect(Up.parseDocument('[highlight: email] (\\mailto:daniel@wants.email)')).to.deep.equal(
+      expect(Up.parse('[highlight: email] (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('email')
@@ -131,7 +131,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
-      expect(Up.parseDocument('[highlight: something terrible] (/r9k/ created it)')).to.deep.equal(
+      expect(Up.parse('[highlight: something terrible] (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('something terrible')
@@ -144,7 +144,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must have something after the slash', () => {
-      expect(Up.parseDocument('[highlight: slash] (/)')).to.deep.equal(
+      expect(Up.parse('[highlight: slash] (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('slash')
@@ -172,7 +172,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not have its slash escaped', () => {
-      expect(Up.parseDocument('[highlight: yeah] (\\/r9k/)')).to.deep.equal(
+      expect(Up.parse('[highlight: yeah] (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('yeah')
@@ -219,7 +219,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must have something after the hash mark', () => {
-      expect(Up.parseDocument('[highlight: hash mark] (#)')).to.deep.equal(
+      expect(Up.parse('[highlight: hash mark] (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('hash mark')
@@ -232,7 +232,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not contain any spaces', () => {
-      expect(Up.parseDocument('[highlight: something terrible] (#starcraft2 was never trending)')).to.deep.equal(
+      expect(Up.parse('[highlight: something terrible] (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('something terrible')
@@ -245,7 +245,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     it('must not have its hashmark escaped', () => {
-      expect(Up.parseDocument('[highlight: yeah] (\\#starcraft2)')).to.deep.equal(
+      expect(Up.parse('[highlight: yeah] (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('yeah')
@@ -307,7 +307,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
-      expect(Up.parseDocument('[highlight: that place] (4chan.org-terrifying)')).to.deep.equal(
+      expect(Up.parse('[highlight: that place] (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('that place')
@@ -336,7 +336,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
-        expect(Up.parseDocument('[highlight: username] (john.e.smith5)')).to.deep.equal(
+        expect(Up.parse('[highlight: username] (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Highlight([
               new PlainText('username')
@@ -349,7 +349,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
       })
 
       specify('No hyphens', () => {
-        expect(Up.parseDocument('[highlight: username] (john.e.smith-kline)')).to.deep.equal(
+        expect(Up.parse('[highlight: username] (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Highlight([
               new PlainText('username')
@@ -363,7 +363,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must start with a letter or a number, not a period', () => {
-      expect(Up.parseDocument('[highlight: top-level domain] (.co.uk)')).to.deep.equal(
+      expect(Up.parse('[highlight: top-level domain] (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('top-level domain')
@@ -376,7 +376,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
-      expect(Up.parseDocument('[highlight: Ash is not his own father] (um..uh)')).to.deep.equal(
+      expect(Up.parse('[highlight: Ash is not his own father] (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('Ash is not his own father')
@@ -389,7 +389,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
-      expect(Up.parseDocument('[highlight: debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
+      expect(Up.parse('[highlight: debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('debilitating sadness')
@@ -417,7 +417,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the URL must not contain any spaces', () => {
-      expect(Up.parseDocument('[highlight: yeah] (ign.com had some hilarious forums)')).to.deep.equal(
+      expect(Up.parse('[highlight: yeah] (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('yeah')
@@ -430,7 +430,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
     })
 
     specify('the domain part must not be escaped', () => {
-      expect(Up.parseDocument('[highlight: yeah] (\\ign.com)')).to.deep.equal(
+      expect(Up.parse('[highlight: yeah] (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Highlight([
             new PlainText('yeah')
@@ -445,7 +445,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
 
   specify('If none of the conditions are satisfied, the highlight is not linkified', () => {
-    expect(Up.parseDocument('[highlight: something terrible] (really)')).to.deep.equal(
+    expect(Up.parse('[highlight: something terrible] (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('something terrible')
@@ -461,7 +461,7 @@ context('A linkified highlight can have whitespace between itself and its bracke
 
 describe('If there is nothing but whitspace between a highlight and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the highlight is not linkified', () => {
-    expect(Up.parseDocument('[highlight: something terrible]  \\  (https://example.com)')).to.deep.equal(
+    expect(Up.parse('[highlight: something terrible]  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Highlight([
           new PlainText('something terrible')

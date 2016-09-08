@@ -17,7 +17,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -54,7 +54,7 @@ Final Fantasy II; \t \t
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -91,7 +91,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -131,7 +131,7 @@ Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -171,7 +171,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -218,7 +218,7 @@ Chrono Trigger;       \t  ;               Super Nintendo;   March 11, 1995
 Command & Conquer;  Westwood Studios;      \t ;             August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -265,7 +265,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

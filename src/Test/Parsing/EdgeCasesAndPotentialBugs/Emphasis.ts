@@ -12,7 +12,7 @@ import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
 context('Within emphasis, (inner) emphasis can be the first convention within any other inner convention.', () => {
   context('The other convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.parseDocument('Luigi stood up. *Hello, my (*leetle*) Mario!*')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. *Hello, my (*leetle*) Mario!*')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Emphasis([
@@ -30,7 +30,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
     })
 
     specify('Italics', () => {
-      expect(Up.parseDocument('Luigi stood up. *Hello, my _*leetle*_ Mario!*')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. *Hello, my _*leetle*_ Mario!*')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Emphasis([
@@ -46,7 +46,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
     })
 
     specify('Inline quotes', () => {
-      expect(Up.parseDocument('Luigi stood up. *Hello, my "*leetle*" Mario!*')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. *Hello, my "*leetle*" Mario!*')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Emphasis([
@@ -62,7 +62,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parseDocument('Luigi stood up. *Hello, my [highlight:*leetle*] Mario!*')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. *Hello, my [highlight:*leetle*] Mario!*')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Emphasis([
@@ -80,7 +80,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
 
 
   specify('The inner emphasis can open immediately after several conventions have just opened', () => {
-    expect(Up.parseDocument('Luigi stood up. *Hello, my "(_*leetle*_)" Mario!*')).to.deep.equal(
+    expect(Up.parse('Luigi stood up. *Hello, my "(_*leetle*_)" Mario!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Luigi stood up. '),
         new Emphasis([
@@ -106,7 +106,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
 context('Within emphasis, (inner) emphasis can close directly after a convention inside of it has closed.', () => {
   context('The innermost convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.parseDocument('*Luigi stood up. *Help me find brother (Mario)*, I heard Luigi say.*')).to.deep.equal(
+      expect(Up.parse('*Luigi stood up. *Help me find brother (Mario)*, I heard Luigi say.*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
             new PlainText('Luigi stood up. '),
@@ -122,7 +122,7 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
     })
 
     specify('Italics', () => {
-      expect(Up.parseDocument('*Luigi stood up. *Help me find brother _Mario_*, I heard Luigi say.*')).to.deep.equal(
+      expect(Up.parse('*Luigi stood up. *Help me find brother _Mario_*, I heard Luigi say.*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
             new PlainText('Luigi stood up. '),
@@ -138,7 +138,7 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
     })
 
     specify('Inline quotes', () => {
-      expect(Up.parseDocument('*Luigi stood up. *Help me find brother "Mario"*, I heard Luigi say.*')).to.deep.equal(
+      expect(Up.parse('*Luigi stood up. *Help me find brother "Mario"*, I heard Luigi say.*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
             new PlainText('Luigi stood up. '),
@@ -154,7 +154,7 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parseDocument('*Luigi stood up. *Help me find brother [highlight:Mario]*, I heard Luigi say.*')).to.deep.equal(
+      expect(Up.parse('*Luigi stood up. *Help me find brother [highlight:Mario]*, I heard Luigi say.*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Emphasis([
             new PlainText('Luigi stood up. '),
@@ -174,14 +174,14 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
 
 describe('An unmatched opening asterisk', () => {
   it('does not create an emphasis node', () => {
-    expect(Up.parseDocument('Hello, *world!')).to.deep.equal(
+    expect(Up.parse('Hello, *world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, *world!')
       ]))
   })
 
   it('does not create an emphasis node, even when following 2 matching asterisks', () => {
-    expect(Up.parseDocument('*Hello*, *world!')).to.deep.equal(
+    expect(Up.parse('*Hello*, *world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Emphasis([
           new PlainText('Hello'),
@@ -194,7 +194,7 @@ describe('An unmatched opening asterisk', () => {
 
 describe('Matching single asterisks each surrounded by whitespace', () => {
   it('are preserved as plain text', () => {
-    expect(Up.parseDocument('I believe * will win the primary in * easily.')).to.deep.equal(
+    expect(Up.parse('I believe * will win the primary in * easily.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I believe * will win the primary in * easily.')
       ]))
@@ -204,7 +204,7 @@ describe('Matching single asterisks each surrounded by whitespace', () => {
 
 describe('An asterisk followed by whitespace with a matching asterisk touching the end of a word', () => {
   it('does not produce an emphasis node and is preserved as plain text', () => {
-    expect(Up.parseDocument('I believe* my spelling* was wrong.')).to.deep.equal(
+    expect(Up.parse('I believe* my spelling* was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I believe* my spelling* was wrong.')
       ]))
@@ -214,7 +214,7 @@ describe('An asterisk followed by whitespace with a matching asterisk touching t
 
 describe('An asterisk touching the beginning of a word with a matching asterisk preceded by whitespace', () => {
   it('does not produce an emphasis node and is preserved as plain text', () => {
-    expect(Up.parseDocument('I *believe my *spelling was wrong.')).to.deep.equal(
+    expect(Up.parse('I *believe my *spelling was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I *believe my *spelling was wrong.')
       ]))

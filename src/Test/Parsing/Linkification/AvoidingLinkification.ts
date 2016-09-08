@@ -21,7 +21,7 @@ import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
   specify('Spoilers', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineSpoiler([
@@ -42,7 +42,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('NSFW', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineNsfw([
@@ -63,7 +63,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('NSFL', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new InlineNsfl([
@@ -93,7 +93,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("I don't eat cereal"),
@@ -113,7 +113,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Audio', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -132,7 +132,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Images', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -151,7 +151,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
   })
 
   specify('Videos', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -173,7 +173,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
 
 context('The following conventions cannot be linkified:', () => {
   specify('Links', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -192,7 +192,7 @@ context('The following conventions cannot be linkified:', () => {
   })
 
   specify('References to table of contents entries', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, you are not done. See '),
         new ReferenceToTableOfContentsEntry('rival fights'),
@@ -209,7 +209,7 @@ context('The following conventions cannot be linkified:', () => {
   })
 
   specify('Inline quotes', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, you "win" (https://example.com).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, you "win" (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, you '),
         new InlineQuote([
@@ -228,7 +228,7 @@ context('The following conventions cannot be linkified:', () => {
   })
 
   specify('Inline code', () => {
-    expect(Up.parseDocument("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.deep.equal(
+    expect(Up.parse("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I look forward to '),
         new InlineCode('--strictNullChecks'),
@@ -247,7 +247,7 @@ context('The following conventions cannot be linkified:', () => {
   })
 
   specify('Bare URLs', () => {
-    expect(Up.parseDocument('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.deep.equal(
+    expect(Up.parse('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('goo.gl/7y3XBV')
@@ -264,7 +264,7 @@ context('The following conventions cannot be linkified:', () => {
   })
 
   specify('Regular text (e.g. a word)', () => {
-    expect(Up.parseDocument('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.deep.equal(
+    expect(Up.parse('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('The Mini-NES comes out November eleventh '),
         new NormalParenthetical([

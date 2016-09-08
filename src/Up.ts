@@ -2,8 +2,8 @@ import { UpDocument } from './SyntaxNodes/UpDocument'
 import { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
 import { Config } from './Config'
 import { UserProvidedSettings } from './UserProvidedSettings'
-import { parseDocument } from './Parsing/parseDocument'
-import { parseInlineDocument } from './Parsing/parseInlineDocument'
+import { parse } from './Parsing/parse'
+import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
@@ -23,12 +23,12 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  parseDocument(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
-    return parseDocument(markup, this.config.withChanges(extraSettings))
+  parse(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
+    return parse(markup, this.config.withChanges(extraSettings))
   }
 
-  parseInlineDocument(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
-    return parseInlineDocument(markup, this.config.withChanges(extraSettings))
+  parseInline(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
+    return parseInline(markup, this.config.withChanges(extraSettings))
   }
 
   renderHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
@@ -51,7 +51,7 @@ export class Up {
   renderInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
     const inlineDocument =
       typeof markupOrInlineDocument === 'string'
-        ? this.parseInlineDocument(markupOrInlineDocument, extraSettings)
+        ? this.parseInline(markupOrInlineDocument, extraSettings)
         : markupOrInlineDocument
 
     return this.getHtmlRenderer(extraSettings).document(inlineDocument)
@@ -59,7 +59,7 @@ export class Up {
 
   private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
     return typeof markupOrDocument === 'string'
-      ? this.parseDocument(markupOrDocument, extraSettings)
+      ? this.parse(markupOrDocument, extraSettings)
       : markupOrDocument
   }
 
@@ -85,12 +85,12 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function parseDocument(markup: string, settings?: UserProvidedSettings): UpDocument {
-    return defaultUp.parseDocument(markup, settings)
+  export function parse(markup: string, settings?: UserProvidedSettings): UpDocument {
+    return defaultUp.parse(markup, settings)
   }
 
-  export function parseInlineDocument(markup: string, settings?: UserProvidedSettings): InlineUpDocument {
-    return defaultUp.parseInlineDocument(markup, settings)
+  export function parseInline(markup: string, settings?: UserProvidedSettings): InlineUpDocument {
+    return defaultUp.parseInline(markup, settings)
   }
 
   export function renderHtml(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {

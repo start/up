@@ -12,7 +12,7 @@ import { Highlight } from '../../../SyntaxNodes/Highlight'
 context('Within italics, (inner) italics can be the first convention within any other inner convention.', () => {
   context('The other convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.parseDocument('Luigi stood up. _Hello, my (_leetle_) Mario!_')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. _Hello, my (_leetle_) Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Italic([
@@ -30,7 +30,7 @@ context('Within italics, (inner) italics can be the first convention within any 
     })
 
     specify('Emphasis', () => {
-      expect(Up.parseDocument('Luigi stood up. _Hello, my *_leetle_* Mario!_')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. _Hello, my *_leetle_* Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Italic([
@@ -46,7 +46,7 @@ context('Within italics, (inner) italics can be the first convention within any 
     })
 
     specify('Inline quotes', () => {
-      expect(Up.parseDocument('Luigi stood up. _Hello, my "_leetle_" Mario!_')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. _Hello, my "_leetle_" Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Italic([
@@ -62,7 +62,7 @@ context('Within italics, (inner) italics can be the first convention within any 
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parseDocument('Luigi stood up. _Hello, my [highlight:_leetle_] Mario!_')).to.deep.equal(
+      expect(Up.parse('Luigi stood up. _Hello, my [highlight:_leetle_] Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('Luigi stood up. '),
           new Italic([
@@ -80,7 +80,7 @@ context('Within italics, (inner) italics can be the first convention within any 
 
 
   specify('The inner italics can open immediately after several conventions have just opened', () => {
-    expect(Up.parseDocument('Luigi stood up. _Hello, my "(*_leetle_*)" Mario!_')).to.deep.equal(
+    expect(Up.parse('Luigi stood up. _Hello, my "(*_leetle_*)" Mario!_')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Luigi stood up. '),
         new Italic([
@@ -106,7 +106,7 @@ context('Within italics, (inner) italics can be the first convention within any 
 context('Within italics, (inner) italics can close directly after a convention inside of it has closed.', () => {
   context('The innermost convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
-      expect(Up.parseDocument('_Luigi stood up. _Help me find brother (Mario)_, I heard Luigi say._')).to.deep.equal(
+      expect(Up.parse('_Luigi stood up. _Help me find brother (Mario)_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
             new PlainText('Luigi stood up. '),
@@ -122,7 +122,7 @@ context('Within italics, (inner) italics can close directly after a convention i
     })
 
     specify('Emphasis', () => {
-      expect(Up.parseDocument('_Luigi stood up. _Help me find brother *Mario*_, I heard Luigi say._')).to.deep.equal(
+      expect(Up.parse('_Luigi stood up. _Help me find brother *Mario*_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
             new PlainText('Luigi stood up. '),
@@ -138,7 +138,7 @@ context('Within italics, (inner) italics can close directly after a convention i
     })
 
     specify('Inline quotes', () => {
-      expect(Up.parseDocument('_Luigi stood up. _Help me find brother "Mario"_, I heard Luigi say._')).to.deep.equal(
+      expect(Up.parse('_Luigi stood up. _Help me find brother "Mario"_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
             new PlainText('Luigi stood up. '),
@@ -154,7 +154,7 @@ context('Within italics, (inner) italics can close directly after a convention i
     })
 
     specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parseDocument('_Luigi stood up. _Help me find brother [highlight:Mario]_, I heard Luigi say._')).to.deep.equal(
+      expect(Up.parse('_Luigi stood up. _Help me find brother [highlight:Mario]_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
           new Italic([
             new PlainText('Luigi stood up. '),
@@ -174,14 +174,14 @@ context('Within italics, (inner) italics can close directly after a convention i
 
 describe('An unmatched opening underscore', () => {
   it('does not create an italic node', () => {
-    expect(Up.parseDocument('Hello, _world!')).to.deep.equal(
+    expect(Up.parse('Hello, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, _world!')
       ]))
   })
 
   it('does not create an italic node, even when following 2 matching underscores', () => {
-    expect(Up.parseDocument('_Hello_, _world!')).to.deep.equal(
+    expect(Up.parse('_Hello_, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Italic([
           new PlainText('Hello'),
@@ -194,7 +194,7 @@ describe('An unmatched opening underscore', () => {
 
 describe('Matching single underscores each surrounded by whitespace', () => {
   it('are preserved as plain text', () => {
-    expect(Up.parseDocument('I believe _ will win the primary in _ easily.')).to.deep.equal(
+    expect(Up.parse('I believe _ will win the primary in _ easily.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I believe _ will win the primary in _ easily.')
       ]))
@@ -204,7 +204,7 @@ describe('Matching single underscores each surrounded by whitespace', () => {
 
 describe('An underscore followed by whitespace with a matching underscore touching the end of a word', () => {
   it('does not produce an italic node and is preserved as plain text', () => {
-    expect(Up.parseDocument('I believe_ my spelling_ was wrong.')).to.deep.equal(
+    expect(Up.parse('I believe_ my spelling_ was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I believe_ my spelling_ was wrong.')
       ]))
@@ -214,7 +214,7 @@ describe('An underscore followed by whitespace with a matching underscore touchi
 
 describe('An underscore touching the beginning of a word with a matching underscore preceded by whitespace', () => {
   it('does not produce an italic node and is preserved as plain text', () => {
-    expect(Up.parseDocument('I _believe my _spelling was wrong.')).to.deep.equal(
+    expect(Up.parse('I _believe my _spelling was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I _believe my _spelling was wrong.')
       ]))

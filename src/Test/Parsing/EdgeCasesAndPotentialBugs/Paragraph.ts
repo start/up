@@ -12,7 +12,7 @@ You'll never believe this fake evidence!
  \\   \\  \t \\\t 
 \\   \t\\   \\  \t \\\t `
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("You'll never believe this fake evidence!")
       ]))
@@ -25,7 +25,7 @@ You'll never believe this fake evidence!
  \\   \\  \t \\\t 
 You'll never believe this fake evidence!`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("You'll never believe this fake evidence!")
       ]))
@@ -41,7 +41,7 @@ You'll never believe this fake evidence!
 \\   \\  \t \\\t 
  \\   \\  \t \\\t `
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("You'll never believe this fake evidence!")
       ]))

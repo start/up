@@ -32,7 +32,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const interestingHeading =
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
-    expect(up.parseDocument(markup)).to.deep.equal(
+    expect(up.parse(markup)).to.deep.equal(
       new UpDocument([
         sodaHeading,
         new Paragraph([
@@ -70,7 +70,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [HeAdInG: exotic].`
 
-    expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
+    expect(up.parse(lowercase)).to.deep.equal(up.parse(mixedCase))
   })
 
   it('is trimmed', () => {
@@ -85,7 +85,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           referenceToTableOfContentsEntry: ' \t heading \t '
@@ -126,7 +126,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           referenceToTableOfContentsEntry: '*heading*'
@@ -167,7 +167,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
-    const document = Up.parseDocument(markup, {
+    const document = Up.parse(markup, {
       terms: {
         markup: {
           referenceToTableOfContentsEntry: ['heading', 'ref']

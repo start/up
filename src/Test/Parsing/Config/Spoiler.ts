@@ -17,7 +17,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
 
   context('For inline spoilers, the config term', () => {
     it('is used', () => {
-      expect(up.parseDocument('[ruins ending: Ash fights Gary]')).to.deep.equal(
+      expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new PlainText('Ash fights Gary')
@@ -29,11 +29,11 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
       const lowercase = '[ruins ending: Ash fights Gary]'
       const mixedCase = '[ruINs eNDiNg: Ash fights Gary]'
 
-      expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
+      expect(up.parse(lowercase)).to.deep.equal(up.parse(mixedCase))
     })
 
     it('is trimmed', () => {
-      const document = Up.parseDocument(
+      const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
             markup: { spoiler: ' \t ruins ending \t ' }
@@ -49,7 +49,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     })
 
     it('ignores inline conventions and regular expression rules', () => {
-      const document = Up.parseDocument(
+      const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
             markup: { spoiler: '*ruins* ending' }
@@ -65,7 +65,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
     })
 
     it('can have multiple variations', () => {
-      const document = Up.parseDocument(
+      const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
             markup: { spoiler: ['look away', 'ruins ending'] }
@@ -94,7 +94,7 @@ ruins ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.parseDocument(markup)).to.deep.equal(
+      expect(up.parse(markup)).to.deep.equal(
         new UpDocument([
           new SpoilerBlock([
             new Paragraph([
@@ -122,7 +122,7 @@ ruINs eNDiNg:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      expect(up.parseDocument(lowercase)).to.deep.equal(up.parseDocument(mixedCase))
+      expect(up.parse(lowercase)).to.deep.equal(up.parse(mixedCase))
     })
 
     it('is trimmed', () => {
@@ -133,7 +133,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.parseDocument(markup, {
+      const document = Up.parse(markup, {
         terms: {
           markup: { spoiler: ' \t ruins ending \t ' }
         }
@@ -160,7 +160,7 @@ RUINS ending:
   
   Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.parseDocument(markup, {
+      const document = Up.parse(markup, {
         terms: {
           markup: { spoiler: '*ruins* ending' }
         }
@@ -189,7 +189,7 @@ LOOK AWAY:
     
     Luckily, Pikachu ultimately decided to stay.`
 
-      const document = Up.parseDocument(markup, {
+      const document = Up.parse(markup, {
         terms: {
           markup: { spoiler: ['look away', 'ruins ending'] }
         }

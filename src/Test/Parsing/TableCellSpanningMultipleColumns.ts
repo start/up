@@ -17,7 +17,7 @@ Final Fantasy II;   1988
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -55,7 +55,7 @@ Game;               Publisher;;                       Release Date
 
 Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -84,7 +84,7 @@ Game;               Director;;;                                             Rele
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -117,7 +117,7 @@ Terranigma;         Quintet;              Nintendo;         October 20, 1995
 Command & Conquer;  Westwood Studios;;                      August 31, 1995
 Starcraft;          Blizzard;;                              March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -165,7 +165,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -212,7 +212,7 @@ Game;               Publisher;;
 
 Terranigma;         Nintendo;             Enix`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -239,7 +239,7 @@ Game;               Director;;;
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -270,7 +270,7 @@ Terranigma;         Quintet;              Nintendo
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;;`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -313,7 +313,7 @@ Terranigma;         Quintet;              Nintendo;       Quintet
 Command & Conquer;  Westwood Studios;;;
 Starcraft;          Blizzard;;;`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -355,7 +355,7 @@ Game;               Publisher;; \t \t
 
 Terranigma;         Nintendo;             Enix`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -385,7 +385,7 @@ Terranigma;         Quintet;  \t \t       Nintendo
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;; \t \t`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -427,7 +427,7 @@ Jogged on treadmill;      Squats;                   March 11, 2018
 Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -466,7 +466,7 @@ Jogged on treadmill;      Squats;             Walked on treadmill;        March 
 Jogged on track;          Deadlifts;          Walked on track;            March 12, 2018
 Swam laps;                Sprints on track;   Treaded water;              March 14, 2018`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -509,7 +509,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 ;;                                                  March 13, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -554,7 +554,7 @@ Jogged on track;          Deadlifts;            Walked on track;            Marc
 ;;;                                                                         March 13, 2018
 Swam laps;                Sprints on track;     Treaded water;              March 14, 2018`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -600,7 +600,7 @@ Game;               Director;         ;;                                    Rele
 
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -634,7 +634,7 @@ Terranigma;         Quintet;              Nintendo;         Quintet;        Octo
 Command & Conquer;  Westwood Studios;                       ;;              August 31, 1995
 Starcraft;          Blizzard;                               ;;                March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

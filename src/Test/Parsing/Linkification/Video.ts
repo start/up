@@ -16,7 +16,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('A video convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
   it('produces a video node within a link pointing to that second URL', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(http://example.com/finalbattle).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Link([
@@ -95,7 +95,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
 
 describe('A video convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Video('you fight Gary', 'https://example.com/fight.webm'),
@@ -110,7 +110,7 @@ describe('A video convention directly followed by an inline spoiler', () => {
 
 describe('A video directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Video('you fight Gary', 'https://example.com/fight.webm'),
@@ -125,7 +125,7 @@ describe('A video directly followed by an inline NSFW convention', () => {
 
 describe('A video directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
-    expect(Up.parseDocument('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, '),
         new Video('you fight Gary', 'https://example.com/fight.webm'),
@@ -148,7 +148,7 @@ describe('A video directly followed by a footnote', () => {
       ], { referenceNumber: 1 })
     ]
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
@@ -163,7 +163,7 @@ describe('A video directly followed by a footnote', () => {
 
 describe('An otherwise-valid linkified video convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
-    expect(Up.parseDocument('[video: phone call](https://example.com/phonecall.webm)(\\tel:5555555555)')).to.deep.equal(
+    expect(Up.parse('[video: phone call](https://example.com/phonecall.webm)(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Video('phone call', 'https://example.com/phonecall.webm'),
         new NormalParenthetical([
@@ -176,7 +176,7 @@ describe('An otherwise-valid linkified video convention with its linkifying URL 
 
 context("When an otherwise-valid linkified video's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the video convention is not linkified', () => {
-    expect(Up.parseDocument('[video: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
+    expect(Up.parse('[video: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Video('phone call', 'https://example.com/phonecall.ogg'),
         new PlainText('( \t tel:5555555555)')

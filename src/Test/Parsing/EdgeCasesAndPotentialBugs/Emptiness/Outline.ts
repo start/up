@@ -5,7 +5,7 @@ import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
 
 describe('An empty document', () => {
   it('produces an empty document object', () => {
-    expect(Up.parseDocument('')).to.eql(new UpDocument([]))
+    expect(Up.parse('')).to.eql(new UpDocument([]))
   })
 })
 
@@ -18,7 +18,7 @@ describe('A document with only blank lines', () => {
       
       
 `
-    expect(Up.parseDocument(markup)).to.eql(new UpDocument([]))
+    expect(Up.parse(markup)).to.eql(new UpDocument([]))
   })
 })
 
@@ -31,6 +31,6 @@ describe('A document with only escaped blank lines', () => {
 \\   \\ \\       
 \\\t    \\       
  \\ `
-    expect(Up.parseDocument(markup)).to.eql(new UpDocument([]))
+    expect(Up.parse(markup)).to.eql(new UpDocument([]))
   })
 })

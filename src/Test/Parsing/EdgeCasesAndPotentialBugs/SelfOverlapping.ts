@@ -16,7 +16,7 @@ import { FootnoteBlock } from'../../../SyntaxNodes/FootnoteBlock'
 
 context('Up offers no real support for self-overlapping. When a convention overlaps itself, its start/end delimiters simply match from innermost to outermost.', () => {
   specify('This is true for highlights, which have no continuity priority', () => {
-    expect(Up.parseDocument('This [highlight: does (highlight: not] make) much sense.')).to.deep.equal(
+    expect(Up.parse('This [highlight: does (highlight: not] make) much sense.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This '),
         new Highlight([
@@ -33,7 +33,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
   context('This is true for conventions with continuity priority:', () => {
     specify('Inline spoilers', () => {
-      expect(Up.parseDocument('This [SPOILER: does (SPOILER: not] make) much sense.')).to.deep.equal(
+      expect(Up.parse('This [SPOILER: does (SPOILER: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('This '),
           new InlineSpoiler([
@@ -48,7 +48,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
     })
 
     specify('Inline NSFW', () => {
-      expect(Up.parseDocument('This [NSFW: does (NSFW: not] make) much sense.')).to.deep.equal(
+      expect(Up.parse('This [NSFW: does (NSFW: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('This '),
           new InlineNsfw([
@@ -63,7 +63,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
     })
 
     specify('Inline NSFL', () => {
-      expect(Up.parseDocument('This [NSFL: does (NSFL: not] make) much sense.')).to.deep.equal(
+      expect(Up.parse('This [NSFL: does (NSFL: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('This '),
           new InlineNsfl([
@@ -78,7 +78,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
     })
 
     specify('Links', () => {
-      expect(Up.parseDocument('This [does (not][example.org] make)(google.com) much sense.')).to.deep.equal(
+      expect(Up.parse('This [does (not][example.org] make)(google.com) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('This '),
           new Link([
@@ -103,7 +103,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
         new PlainText(' make')
       ], { referenceNumber: 1 })
 
-      expect(Up.parseDocument('This [^ does (^ not] make) much sense.')).to.deep.equal(
+      expect(Up.parse('This [^ does (^ not] make) much sense.')).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText('This'),
@@ -119,7 +119,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
   context('This is also true when a convention overlaps multiple instances of itself.', () => {
     context('A convention with no continuity priority:', () => {
       specify('Two highlights overlapping another', () => {
-        expect(Up.parseDocument('[highlight: This [highlight: does (highlight: not]] make) much sense.')).to.deep.equal(
+        expect(Up.parse('[highlight: This [highlight: does (highlight: not]] make) much sense.')).to.deep.equal(
           insideDocumentAndParagraph([
             new Highlight([
               new PlainText('This '),
@@ -136,7 +136,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
       })
 
       specify('A highlight overlapping two others', () => {
-        expect(Up.parseDocument('[highlight: This (highlight: does (highlight: not] make)) much sense.')).to.deep.equal(
+        expect(Up.parse('[highlight: This (highlight: does (highlight: not] make)) much sense.')).to.deep.equal(
           insideDocumentAndParagraph([
             new Highlight([
               new PlainText('This '),
@@ -155,7 +155,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
       context('A convention with continuity priority', () => {
         specify('Two inline spoilers overlapping another', () => {
-          expect(Up.parseDocument('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
+          expect(Up.parse('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
               new InlineSpoiler([
                 new PlainText('This '),
@@ -172,7 +172,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
         })
 
         specify('An inline spoiler overlapping two others', () => {
-          expect(Up.parseDocument('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
+          expect(Up.parse('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
               new InlineSpoiler([
                 new PlainText('This '),
@@ -194,7 +194,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
   context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy. It technically works, but needless splitting occers.', () => {
     specify('Due to a lack of unique end delimiters among conventions with continuity priority, this monstrosity is only possible when the convention overlapping itself has higher continuity priority than the other one', () => {
-      expect(Up.parseDocument('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
+      expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText('This '),
           new InlineSpoiler([

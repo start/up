@@ -9,7 +9,7 @@ import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 describe('Text surrounded by 2 underscores', () => {
   it('is put inside a stress node', () => {
-    expect(Up.parseDocument('Hello, __world__!')).to.deep.equal(
+    expect(Up.parse('Hello, __world__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Bold([
@@ -23,7 +23,7 @@ describe('Text surrounded by 2 underscores', () => {
 
 describe('Bold text', () => {
   it('is evaluated for inline conventions', () => {
-    expect(Up.parseDocument('Hello, __`world`__!')).to.deep.equal(
+    expect(Up.parse('Hello, __`world`__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Bold([
@@ -34,7 +34,7 @@ describe('Bold text', () => {
   })
 
   it('can contain further bold text', () => {
-    expect(Up.parseDocument('Hello, __my __little__ world__!')).to.deep.equal(
+    expect(Up.parse('Hello, __my __little__ world__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Bold([
@@ -49,7 +49,7 @@ describe('Bold text', () => {
   })
 
   it('can contain italicized text', () => {
-    expect(Up.parseDocument('Hello, __my _little_ world__!')).to.deep.equal(
+    expect(Up.parse('Hello, __my _little_ world__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hello, '),
         new Bold([

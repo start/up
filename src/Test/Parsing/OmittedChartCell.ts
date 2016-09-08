@@ -17,7 +17,7 @@ Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
 Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([
@@ -56,7 +56,7 @@ Chart:
 Final Fantasy;      1987;               This game has some interesting bugs.
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Table(
           new Table.Header([

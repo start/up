@@ -3,7 +3,7 @@ import Up from '../../index'
 
 
 context("You can produce HTML directly from markup!", () => {
-  specify('If you provide the renderHtml method with markup, it (internally) calls the parseDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderHtml method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -33,7 +33,7 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the renderHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the parseDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -74,7 +74,7 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the renderInlineHtml method with markup, it (internally) calls the parseInlineDocument method for you using configuration you provide', () => {
+  specify('If you provide the renderInlineHtml method with markup, it (internally) calls the parseInline method for you using configuration you provide', () => {
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
     const html = Up.renderInlineHtml(markup, {

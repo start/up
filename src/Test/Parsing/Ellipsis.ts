@@ -15,21 +15,21 @@ import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 context('Consecutive periods normally produce an ellipsis.', () => {
   context('This applies within regular text:', () => {
     specify('Between words', () => {
-      expect(Up.parseDocument("Okay...I'll eat the tarantula.")).to.deep.equal(
+      expect(Up.parse("Okay...I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText("Okay…I'll eat the tarantula.")
         ]))
     })
 
     specify('Following a word', () => {
-      expect(Up.parseDocument("Okay... I'll eat the tarantula.")).to.deep.equal(
+      expect(Up.parse("Okay... I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText("Okay… I'll eat the tarantula.")
         ]))
     })
 
     specify('Preceding a word', () => {
-      expect(Up.parseDocument('"I like Starcraft" ...still')).to.deep.equal(
+      expect(Up.parse('"I like Starcraft" ...still')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineQuote([
             new PlainText('I like Starcraft')
@@ -39,7 +39,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Surrounded by whitespace', () => {
-      expect(Up.parseDocument("Okay ... I'll eat the tarantula.")).to.deep.equal(
+      expect(Up.parse("Okay ... I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
           new PlainText("Okay … I'll eat the tarantula.")
         ]))
@@ -49,7 +49,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
 
   context('This does not apply within:', () => {
     specify('Link URLs', () => {
-      expect(Up.parseDocument("[American flag emoji] (https://example.com/empojis/US...flag?info)")).to.deep.equal(
+      expect(Up.parse("[American flag emoji] (https://example.com/empojis/US...flag?info)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Link([
             new PlainText("American flag emoji")
@@ -58,14 +58,14 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Media URLs', () => {
-      expect(Up.parseDocument('[video: ghosts eating luggage] (http://example.com/polter...geists.webm)')).to.deep.equal(
+      expect(Up.parse('[video: ghosts eating luggage] (http://example.com/polter...geists.webm)')).to.deep.equal(
         new UpDocument([
           new Video('ghosts eating luggage', 'http://example.com/polter...geists.webm')
         ]))
     })
 
     specify('Linkified media URLs', () => {
-      expect(Up.parseDocument('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final...battle)')).to.deep.equal(
+      expect(Up.parse('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final...battle)')).to.deep.equal(
         new UpDocument([
           new Link([
             new Image('you fight Gary', 'https://example.com/fight.svg')
@@ -74,7 +74,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Linkified URLs for non-media conventions', () => {
-      expect(Up.parseDocument('[SPOILER: you fight Gary] (http://example.com/final...battle)')).to.deep.equal(
+      expect(Up.parse('[SPOILER: you fight Gary] (http://example.com/final...battle)')).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineSpoiler([
             new Link([
@@ -85,7 +85,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     })
 
     specify('Inline code', () => {
-      expect(Up.parseDocument("`i---;`")).to.deep.equal(
+      expect(Up.parse("`i---;`")).to.deep.equal(
         insideDocumentAndParagraph([
           new InlineCode('i---;')
         ]))
@@ -97,7 +97,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
 return distinct('highlight', ...this._highlight)
 \`\`\``
 
-      expect(Up.parseDocument(markup)).to.deep.equal(
+      expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new CodeBlock(
             `return distinct('highlight', ...this._highlight)`)
@@ -109,56 +109,56 @@ return distinct('highlight', ...this._highlight)
 
 context('Any number of consecutive periods produces a single ellipsis.', () => {
   specify('2 periods', () => {
-    expect(Up.parseDocument("Okay.. I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay.. I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('3 periods', () => {
-    expect(Up.parseDocument("Okay... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('4 periods', () => {
-    expect(Up.parseDocument("Okay.... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay.... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('5 periods', () => {
-    expect(Up.parseDocument("Okay..... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay..... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('6 periods', () => {
-    expect(Up.parseDocument("Okay...... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay...... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('7 periods', () => {
-    expect(Up.parseDocument("Okay....... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay....... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('8 periods', () => {
-    expect(Up.parseDocument("Okay........ I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay........ I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
   })
 
   specify('9 periods', () => {
-    expect(Up.parseDocument("Okay......... I'll eat the tarantula.")).to.deep.equal(
+    expect(Up.parse("Okay......... I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay… I'll eat the tarantula.")
       ]))
@@ -168,21 +168,21 @@ context('Any number of consecutive periods produces a single ellipsis.', () => {
 
 describe("When one of many consecutive periods is escaped, that period is treated as a regular period. The periods around it are unaffected (unless they are also escaped):", () => {
   specify('Escaping a period in the middle of many periods produces a period sandwiched by elipsis', () => {
-    expect(Up.parseDocument("Just some typical punctuation usage: ...\\....")).to.deep.equal(
+    expect(Up.parse("Just some typical punctuation usage: ...\\....")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Just some typical punctuation usage: ….…")
       ]))
   })
 
   specify('Escaping consecutive periods produces consecutive periods', () => {
-    expect(Up.parseDocument("Just some typical punctuation usage: \\.\\.\\.")).to.deep.equal(
+    expect(Up.parse("Just some typical punctuation usage: \\.\\.\\.")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Just some typical punctuation usage: ...")
       ]))
   })
 
   specify('Escaping the first of 2 periods produces consecutive periods', () => {
-    expect(Up.parseDocument("Just some typical punctuation usage: \\..")).to.deep.equal(
+    expect(Up.parse("Just some typical punctuation usage: \\..")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Just some typical punctuation usage: ..")
       ]))

@@ -17,7 +17,7 @@ import { InlineQuote } from'../../../SyntaxNodes/InlineQuote'
 
 describe('Overlapped emphasized and stressed text', () => {
   it('splits the stress node because it opened second', () => {
-    expect(Up.parseDocument('I *love **drinking* whole** milk.')).to.deep.equal(
+    expect(Up.parse('I *love **drinking* whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -37,7 +37,7 @@ describe('Overlapped emphasized and stressed text', () => {
 
 describe('Overlapped stressed and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
-    expect(Up.parseDocument('I **love *drinking** whole* milk.')).to.deep.equal(
+    expect(Up.parse('I **love *drinking** whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -57,7 +57,7 @@ describe('Overlapped stressed and emphasized text', () => {
 
 describe('Overlapped italicized and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
-    expect(Up.parseDocument('I _love *drinking_ whole* milk.')).to.deep.equal(
+    expect(Up.parse('I _love *drinking_ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Italic([
@@ -77,7 +77,7 @@ describe('Overlapped italicized and emphasized text', () => {
 
 describe('Overlapped emphasized and italicized text', () => {
   it('splits the italic node because it opened second', () => {
-    expect(Up.parseDocument('I *love _drinking* whole_ milk.')).to.deep.equal(
+    expect(Up.parse('I *love _drinking* whole_ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -97,7 +97,7 @@ describe('Overlapped emphasized and italicized text', () => {
 
 describe('Overlapped bold and stressed text', () => {
   it('splits the stress node because it opened second', () => {
-    expect(Up.parseDocument('I __love **drinking__ whole** milk.')).to.deep.equal(
+    expect(Up.parse('I __love **drinking__ whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Bold([
@@ -117,7 +117,7 @@ describe('Overlapped bold and stressed text', () => {
 
 describe('Overlapped stressed and bold text', () => {
   it('splits the bold node because it opened second', () => {
-    expect(Up.parseDocument('I **love __drinking** whole__ milk.')).to.deep.equal(
+    expect(Up.parse('I **love __drinking** whole__ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -137,7 +137,7 @@ describe('Overlapped stressed and bold text', () => {
 
 describe('Overlapped emphasized and square bracketed text', () => {
   it('splits the square parenthetical node because it opened second', () => {
-    expect(Up.parseDocument('I *love [drinking* whole] milk.')).to.deep.equal(
+    expect(Up.parse('I *love [drinking* whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -157,7 +157,7 @@ describe('Overlapped emphasized and square bracketed text', () => {
 
 describe('Overlapped square bracketed and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
-    expect(Up.parseDocument('I [love *drinking] whole* milk.')).to.deep.equal(
+    expect(Up.parse('I [love *drinking] whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new SquareParenthetical([
@@ -177,7 +177,7 @@ describe('Overlapped square bracketed and emphasized text', () => {
 
 describe('Overlapped highlighted and stressed text', () => {
   it('splits the stress node because it opened second', () => {
-    expect(Up.parseDocument('I [highlight: love **drinking] whole** milk.')).to.deep.equal(
+    expect(Up.parse('I [highlight: love **drinking] whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Highlight([
@@ -197,7 +197,7 @@ describe('Overlapped highlighted and stressed text', () => {
 
 describe('Overlapped stressed and highlighted text', () => {
   it('splits the highlight node because it opened second', () => {
-    expect(Up.parseDocument('I **love [highlight: drinking** whole] milk.')).to.deep.equal(
+    expect(Up.parse('I **love [highlight: drinking** whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -217,7 +217,7 @@ describe('Overlapped stressed and highlighted text', () => {
 
 describe('Overlapped stressed and parenthesized text', () => {
   it('splits the normal parenthetical node because it opened second', () => {
-    expect(Up.parseDocument('I **love (drinking** whole) milk.')).to.deep.equal(
+    expect(Up.parse('I **love (drinking** whole) milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -237,7 +237,7 @@ describe('Overlapped stressed and parenthesized text', () => {
 
 describe('Overlapped stressed and square bracketed text', () => {
   it('splits the square parenthetical node because it opened second', () => {
-    expect(Up.parseDocument('I **love [drinking** whole] milk.')).to.deep.equal(
+    expect(Up.parse('I **love [drinking** whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -257,7 +257,7 @@ describe('Overlapped stressed and square bracketed text', () => {
 
 describe('Overlapped quoted and emphasized text', () => {
   it('splits the emphasis node because it opened second', () => {
-    expect(Up.parseDocument('I "love *drinking" whole* milk.')).to.deep.equal(
+    expect(Up.parse('I "love *drinking" whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new InlineQuote([
@@ -277,7 +277,7 @@ describe('Overlapped quoted and emphasized text', () => {
 
 describe('Overlapped emphasized and quoted text', () => {
   it('splits the inline quote node because it opened second', () => {
-    expect(Up.parseDocument('I *love "drinking* whole" milk.')).to.deep.equal(
+    expect(Up.parse('I *love "drinking* whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Emphasis([
@@ -297,7 +297,7 @@ describe('Overlapped emphasized and quoted text', () => {
 
 describe('Overlapped quoted and stressed text', () => {
   it('splits the stress node because it opened second', () => {
-    expect(Up.parseDocument('I **love "drinking** whole" milk.')).to.deep.equal(
+    expect(Up.parse('I **love "drinking** whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Stress([
@@ -317,7 +317,7 @@ describe('Overlapped quoted and stressed text', () => {
 
 describe('Overlapped stressed and quoted text', () => {
   it('splits the quoted node because it opened second', () => {
-    expect(Up.parseDocument('I "love **drinking" whole** milk.')).to.deep.equal(
+    expect(Up.parse('I "love **drinking" whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new InlineQuote([
@@ -337,7 +337,7 @@ describe('Overlapped stressed and quoted text', () => {
 
 describe('Overlapped quoted and highlighted text', () => {
   it('splits the highlight node because it opened second', () => {
-    expect(Up.parseDocument('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
+    expect(Up.parse('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new Highlight([
@@ -357,7 +357,7 @@ describe('Overlapped quoted and highlighted text', () => {
 
 describe('Overlapped highlighted and quoted text', () => {
   it('splits the quoted node because it opened second', () => {
-    expect(Up.parseDocument('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
+    expect(Up.parse('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I '),
         new InlineQuote([

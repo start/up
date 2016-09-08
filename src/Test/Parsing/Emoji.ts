@@ -7,7 +7,7 @@ import { Link } from '../../SyntaxNodes/Link'
 
 context('Emojis are always treated like any other other character. This includes when the emoji is within', () => {
   specify('a link URL', () => {
-    expect(Up.parseDocument("[American flag emoji](https://example.com/empojis/🇺🇸?info)")).to.deep.equal(
+    expect(Up.parse("[American flag emoji](https://example.com/empojis/🇺🇸?info)")).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText("American flag emoji")
@@ -16,7 +16,7 @@ context('Emojis are always treated like any other other character. This includes
   })
 
   specify('regular text', () => {
-    expect(Up.parseDocument("Okay. 🙄 I'll eat the tarantula. 🕷")).to.deep.equal(
+    expect(Up.parse("Okay. 🙄 I'll eat the tarantula. 🕷")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay. 🙄 I'll eat the tarantula. 🕷")
       ]))
@@ -26,7 +26,7 @@ context('Emojis are always treated like any other other character. This includes
 
 describe('Escaped emojis', () => {
   it('are preserved appropriately (rather than split into two pieces)', () => {
-    expect(Up.parseDocument("Okay. \\🙄 I'll eat the tarantula. \\🕷")).to.deep.equal(
+    expect(Up.parse("Okay. \\🙄 I'll eat the tarantula. \\🕷")).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText("Okay. 🙄 I'll eat the tarantula. 🕷")
       ]))

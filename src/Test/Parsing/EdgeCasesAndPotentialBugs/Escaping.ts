@@ -9,7 +9,7 @@ import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 describe('A backslash that is the first character in a paragraph', () => {
   it('correctly escapes the next character', () => {
-    expect(Up.parseDocument('\\*So many* Tuesdays')).to.deep.equal(
+    expect(Up.parse('\\*So many* Tuesdays')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('*So many* Tuesdays')
       ]))
@@ -23,7 +23,7 @@ describe("A backslash that is the first character in a line block's first line",
 \\Roses are red
 Violets are blue`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([new PlainText('Roses are red')]),
@@ -40,7 +40,7 @@ describe("A backslash that is the first character in a line block's second line"
 Roses are red
 \\Violets are blue`
 
-    expect(Up.parseDocument(markup)).to.deep.equal(
+    expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new LineBlock([
           new LineBlock.Line([new PlainText('Roses are red')]),
@@ -53,7 +53,7 @@ Roses are red
 
 describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
-    expect(Up.parseDocument('\\\\\\\\')).to.deep.equal(
+    expect(Up.parse('\\\\\\\\')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('\\\\')
       ]))
@@ -63,7 +63,7 @@ describe('4 consecutive backslashes', () => {
 
 describe('An escaped character', () => {
   it('can immediately follow inline code', () => {
-    expect(Up.parseDocument('`pennsylvania()`\\ avenue')).to.deep.equal(
+    expect(Up.parse('`pennsylvania()`\\ avenue')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode('pennsylvania()'),
         new PlainText(' avenue')
