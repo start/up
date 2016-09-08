@@ -5,7 +5,7 @@ import { Token } from './Token'
 
 export interface TokenizerSnapshot {
   markupIndex: number
-  textBuffer: string
+  bufferedContent: string
   tokens: Token[]
   openContexts: ConventionContext[]
   inflectionHandlers: InflectionHandler[]

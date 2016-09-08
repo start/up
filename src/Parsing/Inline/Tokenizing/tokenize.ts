@@ -84,7 +84,7 @@ class Tokenizer {
 
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
   // flushed to a token, usually a `PlainText` token.
-  private textBuffer = ''
+  private bufferedContent = ''
 
   // Speaking of tokens, this is our collection! Unlike `ParseableToken`, a `Token` knows when it's part of
   // a pair of tokens enclosing content. For example, an `EmphasisStart` token knows about its corresponding
@@ -293,10 +293,10 @@ class Tokenizer {
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
         whenOpening: () => {
-          this.textBuffer += '('
+          this.bufferedContent += '('
         },
         whenClosing: () => {
-          this.textBuffer += ')'
+          this.bufferedContent += ')'
         }
       }))
   }
@@ -358,8 +358,8 @@ class Tokenizer {
       startsWith: bracket.startPattern + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.textBuffer += bracket.open },
-      whenClosing: () => { this.textBuffer += bracket.close },
+      whenOpening: () => { this.bufferedContent += bracket.open },
+      whenClosing: () => { this.bufferedContent += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /*  Neither fail nor do anything special  */ }
     })
@@ -438,7 +438,7 @@ class Tokenizer {
       isCutShortByWhitespace: true,
 
       whenOpening: () => {
-        this.textBuffer += FORWARD_SLASH
+        this.bufferedContent += FORWARD_SLASH
       },
 
       canOnlyOpenIfDirectlyFollowing: [TokenRole.BareUrl],
@@ -690,7 +690,7 @@ class Tokenizer {
 
       endsWith: bracket.endPattern,
 
-      whenOpening: (_1, _2, urlPrefix) => { this.textBuffer += urlPrefix },
+      whenOpening: (_1, _2, urlPrefix) => { this.bufferedContent += urlPrefix },
 
       failsIfWhitespaceIsEnounteredBeforeClosing: true,
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
@@ -767,8 +767,8 @@ class Tokenizer {
       startsWith: bracket.startPattern,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.textBuffer += bracket.open },
-      whenClosing: () => { this.textBuffer += bracket.close },
+      whenOpening: () => { this.bufferedContent += bracket.open },
+      whenClosing: () => { this.bufferedContent += bracket.close },
 
       insteadOfFailingWhenLeftUnclosed: () => { /* Neither fail nor do anything special */ }
     })
@@ -859,7 +859,7 @@ class Tokenizer {
     const tryToBuffer = (pattern: RegExp) =>
       this.markupConsumer.consume({
         pattern,
-        thenBeforeConsumingText: match => { this.textBuffer += match }
+        thenBeforeConsumingText: match => { this.bufferedContent += match }
       })
 
     // Normally, whitespace doesn't have much of an impact on tokenization:
@@ -1167,7 +1167,7 @@ class Tokenizer {
             // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as plain
             // text. We already learned the delimiter wasn't able to close any inflection start delimiters, and we
             // now know it can't open any, either.
-            this.textBuffer += delimiter
+            this.bufferedContent += delimiter
           }
         }
       }))
@@ -1216,7 +1216,7 @@ class Tokenizer {
         //
         // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
         // Any extra hyphens (naturally either 1 or 2) are ignored.
-        this.textBuffer +=
+        this.bufferedContent +=
           dashes.length >= COUNT_DASHES_PER_EM_DASH
             ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
             : EN_DASH
@@ -1228,7 +1228,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: PLUS_MINUS_SIGN_PATTERN,
       thenBeforeConsumingText: () => {
-        this.textBuffer += '±'
+        this.bufferedContent += '±'
       }
     })
   }
@@ -1237,7 +1237,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: ELLIPSIS_PATTERN,
       thenBeforeConsumingText: () => {
-        this.textBuffer += this.config.ellipsis
+        this.bufferedContent += this.config.ellipsis
       }
     })
   }
@@ -1249,7 +1249,7 @@ class Tokenizer {
 
   // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
   private bufferCurrentChar(): boolean {
-    this.textBuffer += this.markupConsumer.currentChar
+    this.bufferedContent += this.markupConsumer.currentChar
     this.markupConsumer.index += 1
 
     return true
@@ -1290,7 +1290,7 @@ class Tokenizer {
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
       inflectionHandlers: this.inflectionHandlers.map(handler => handler.clone()),
-      textBuffer: this.textBuffer
+      bufferedContent: this.bufferedContent
     }
   }
 
@@ -1336,7 +1336,7 @@ class Tokenizer {
 
   private isDirectlyFollowing(tokenRoles: TokenRole[]): boolean {
     return (
-      !this.textBuffer
+      !this.bufferedContent
       && this.mostRecentToken
       && tokenRoles.some(tokenRole => this.mostRecentToken.role === tokenRole))
   }
@@ -1347,7 +1347,7 @@ class Tokenizer {
     const { snapshot } = context
 
     this.tokens = snapshot.tokens
-    this.textBuffer = snapshot.textBuffer
+    this.bufferedContent = snapshot.bufferedContent
     this.markupConsumer.index = snapshot.markupIndex
     this.openContexts = snapshot.openContexts
     this.inflectionHandlers = snapshot.inflectionHandlers
@@ -1366,14 +1366,14 @@ class Tokenizer {
   }
 
   private flushBuffer(): string {
-    const buffer = this.textBuffer
-    this.textBuffer = ''
+    const buffer = this.bufferedContent
+    this.bufferedContent = ''
 
     return buffer
   }
 
   private flushNonEmptyBufferToToken(role: TokenRole): void {
-    if (this.textBuffer) {
+    if (this.bufferedContent) {
       this.appendNewToken(role, this.flushBuffer())
     }
   }
