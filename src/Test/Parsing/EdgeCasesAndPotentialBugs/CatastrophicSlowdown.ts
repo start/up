@@ -33,11 +33,29 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("At the end of linked content", () => {
+  specify("At the end of a link's content", () => {
     expect(Up.parseDocument('[Hear me?' + lotsOfWhitespace + '](example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Hear me?' + lotsOfWhitespace)
+        ], 'https://example.com')
+      ]))
+  })
+
+  specify("At the beginning of a link's URL", () => {
+    expect(Up.parseDocument('[Hear me?](' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('Hear me?')
+        ], 'https://example.com')
+      ]))
+  })
+
+  specify("At the end a link's URL", () => {
+    expect(Up.parseDocument('[Hear me?](example.com' + lotsOfWhitespace + ')')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Link([
+          new PlainText('Hear me?')
         ], 'https://example.com')
       ]))
   })
