@@ -466,7 +466,7 @@ class Tokenizer {
       insteadOfOpeningRegularConventionsWhileOpen: () => {
         this.tryToOpen(this.rawCurlyBracketConvention)
           || this.tryToTokenizeTypographicalConvention()
-          || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
+          || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
       },
 
       whenClosing: () => {
@@ -819,7 +819,7 @@ class Tokenizer {
         || this.tryToOpenAnyConvention()
 
       if (!didAnything) {
-        this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
+        this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
       }
     }
   }
@@ -860,7 +860,7 @@ class Tokenizer {
     this.markupConsumer.index += 1
 
     if (!this.markupConsumer.done()) {
-      this.bufferCurrentChar()
+      this.addCurrentCharToContentBuffer()
     }
 
     return true
@@ -1308,18 +1308,20 @@ class Tokenizer {
     this.tokens.push(token)
     this.mostRecentToken = token
   }
- 
-  private addCurrentCharOrChunkOfWhitespaceToContentBuffer(): void {
-    // Due to Up's syntax, if a given whitespace character isn't part of a delimiter, then neither
-    // are all consecutive whitespace characters. They're all regular content.
+
+  private addCurrentCharOrStreakOfWhitespaceToContentBuffer(): void {
+    // Due to Up's syntax, if a given whitespace character isn't part of a delimiter, then we
+    // can guarantee the same is true for all consecutive whitespace characters. They're all
+    // just regular content.
     //
-    // As an optimization, we'll go ahead and add them all to our content buffer.
+    // As an optimization, if we're adding a whitespace character to our content buffer, we'll go
+    // ahead and add any consecutive whitespace characters to our content buffer, too.
     //
     // For more information, see `bufferContentThatCanNeverServeAsDelimiter`.
     if (WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)) {
       this.buffer(LEADING_WHITESPACE)
     } else {
-      this.bufferCurrentChar()
+      this.addCurrentCharToContentBuffer()
     }
   }
 
@@ -1332,7 +1334,7 @@ class Tokenizer {
     })
   }
 
-  private bufferCurrentChar(): void {
+  private addCurrentCharToContentBuffer(): void {
     this.bufferedContent += this.markupConsumer.currentChar
     this.markupConsumer.index += 1
   }
@@ -1485,13 +1487,13 @@ class Tokenizer {
   }
 
   private handleTextAwareOfRawBrackets(): void {
-    this.tryToOpenRawParentheticalBracketConvention() || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
+    this.tryToOpenRawParentheticalBracketConvention() || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
   }
 
   private handleTextAwareOfTypographyAndRawParentheticalBrackets(): void {
     this.tryToOpenRawParentheticalBracketConvention()
       || this.tryToTokenizeTypographicalConvention()
-      || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
+      || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
   }
 
   private tryToOpenRawParentheticalBracketConvention(): boolean {
