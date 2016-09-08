@@ -9,6 +9,7 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
+import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -21,6 +22,20 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parseDocument('Hear' + lotsOfWhitespace + 'me?')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Hear' + lotsOfWhitespace + 'me?')
+      ]))
+  })
+
+  specify('As the sole content of inline code', () => {
+    expect(Up.parseDocument('`' + lotsOfWhitespace + '`' )).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineCode(lotsOfWhitespace)
+      ]))
+  })
+
+  specify('In the middle of inline code', () => {
+    expect(Up.parseDocument('`odd' + lotsOfWhitespace + 'code`' )).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineCode('odd' + lotsOfWhitespace + 'code')
       ]))
   })
 
