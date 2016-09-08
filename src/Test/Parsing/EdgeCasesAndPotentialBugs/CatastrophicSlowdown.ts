@@ -2,7 +2,9 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { repeat } from '../../../StringHelpers'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Link } from '../../../SyntaxNodes/Link'
+import { Image } from '../../../SyntaxNodes/Image'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -24,6 +26,13 @@ context('A long string of whitespace should never cause cause the parser to hang
         new Link([
           new PlainText('Hear me?')
         ], 'https://example.com')
+      ]))
+  })
+
+  specify("Between an images's bracketed description and its bracketed URL", () => {
+    expect(Up.parseDocument('[image: ear]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+      new UpDocument([
+        new Image('ear', 'https://example.com')
       ]))
   })
 })
