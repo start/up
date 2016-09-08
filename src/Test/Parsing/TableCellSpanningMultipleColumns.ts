@@ -14,7 +14,6 @@ Game;               Release Date
 
 Final Fantasy;      1987
 Final Fantasy II;   1988
-
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
@@ -115,7 +114,6 @@ Game;               Developer;            Publisher;        Release Date
 
 Chrono Trigger;     Square;;                                March 11, 1995
 Terranigma;         Quintet;              Nintendo;         October 20, 1995
-
 Command & Conquer;  Westwood Studios;;                      August 31, 1995
 Starcraft;          Blizzard;;                              March 31, 1998`
 
@@ -164,7 +162,6 @@ Game;               Developer;            Publisher;        Marketer;       Rele
 
 Chrono Trigger;     Square;;;                                               March 11, 1995
 Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
-
 Command & Conquer;  Westwood Studios;;;                                     August 31, 1995
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
@@ -270,7 +267,6 @@ Game;               Developer;            Publisher
 
 Chrono Trigger;     Square;;
 Terranigma;         Quintet;              Nintendo
-
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;;`
 
@@ -314,7 +310,6 @@ Game;               Developer;            Publisher;      Marketer
 
 Chrono Trigger;     Square;;;
 Terranigma;         Quintet;              Nintendo;       Quintet
-
 Command & Conquer;  Westwood Studios;;;
 Starcraft;          Blizzard;;;`
 
@@ -387,7 +382,6 @@ Game;               Developer;            Publisher
 
 Chrono Trigger;     Square;; \t \t
 Terranigma;         Quintet;  \t \t       Nintendo
-
 Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;; \t \t`
 
@@ -637,7 +631,6 @@ Game;               Developer;            Publisher;        Marketer;       Rele
 
 Chrono Trigger;     Square;                                 ;;              March 11, 1995
 Terranigma;         Quintet;              Nintendo;         Quintet;        October 20, 1995
-
 Command & Conquer;  Westwood Studios;                       ;;              August 31, 1995
 Starcraft;          Blizzard;                               ;;                March 31, 1998`
 

@@ -14,7 +14,6 @@ Chart:
 
 Final Fantasy;      1987
 Final Fantasy II;
-
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
@@ -52,7 +51,6 @@ Chart:
 
 Final Fantasy;      1987
 Final Fantasy II; \t \t 
-
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
@@ -90,7 +88,6 @@ Chart:
 
 Final Fantasy;      1987;             This game has some interesting bugs.     
 Final Fantasy II;
-
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
@@ -131,7 +128,6 @@ Chart:
 
 Final Fantasy;      1987;             This game has some interesting bugs.     
 Final Fantasy II;
-
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
@@ -172,7 +168,6 @@ Chart:
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
-
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
@@ -220,7 +215,6 @@ Chart:
 
 Chrono Trigger;       \t  ;               Super Nintendo;   March 11, 1995
  \t ;               Quintet;              Super Nintendo;   October 20, 1995
-
 Command & Conquer;  Westwood Studios;      \t ;             August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
@@ -268,7 +262,6 @@ Chart:
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
-
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 

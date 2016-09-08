@@ -484,7 +484,6 @@ Hello, world!
 
  \t Final Fantasy; 1987
  \t  Final Fantasy II; 1988
-
  \t Chrono Trigger; 1995
  \t  Chrono Cross; 1999`
 

@@ -14,7 +14,6 @@ Chart:
 
 Chrono Trigger;     Square
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
-
 Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
