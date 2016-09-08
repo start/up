@@ -58,7 +58,7 @@ const PARENTHESIS =
 const SQUARE_BRACKET =
   new Bracket('[', ']')
 
-const PARENTHETICAL_BRACKETS = [
+const NORMAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
 ]
@@ -270,7 +270,7 @@ class Tokenizer {
   }
 
   private getFootnoteConventions(): Convention[] {
-    return PARENTHETICAL_BRACKETS.map(bracket =>
+    return NORMAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE,
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
@@ -287,7 +287,7 @@ class Tokenizer {
   // In inline documents, this purpose can't be fulfilled, so we do the next best thing: we treat footnotes
   // as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
-    return PARENTHETICAL_BRACKETS.map(bracket =>
+    return NORMAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: NORMAL_PARENTHETICAL,
         startsWith: this.getFootnoteStartDelimiter(bracket),
@@ -310,7 +310,7 @@ class Tokenizer {
   }
 
   private getLinkContentConventions(): Convention[] {
-    return PARENTHETICAL_BRACKETS.map(bracket =>
+    return NORMAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: LINK,
         startsWith: bracket.startPattern,
@@ -336,7 +336,7 @@ class Tokenizer {
   ): Convention[] {
     const { richConvention, term } = args
 
-    return PARENTHETICAL_BRACKETS.map(bracket =>
+    return NORMAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
         startsWith: labeledBracketStartDelimiter(term, bracket),
@@ -470,7 +470,7 @@ class Tokenizer {
       },
 
       whenClosing: () => {
-        const exampleInput = this.flushBuffer().trim()
+        const exampleInput = this.flushBufferedContent().trim()
         this.appendNewToken(TokenRole.ExampleInput, exampleInput)
       }
     })
@@ -487,7 +487,7 @@ class Tokenizer {
     const term =
       this.config.terms.markup.referenceToTableOfContentsEntry
 
-    return PARENTHETICAL_BRACKETS.map(bracket =>
+    return NORMAL_BRACKETS.map(bracket =>
       new Convention({
         startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(term, bracket), bracket.endPattern),
         startPatternContainsATerm: true,
@@ -498,7 +498,7 @@ class Tokenizer {
         insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
         whenClosing: () => {
-          const snippetFromEntry = this.flushBuffer().trim()
+          const snippetFromEntry = this.flushBufferedContent().trim()
           this.appendNewToken(TokenRole.ReferenceToTableOfContentsEntry, snippetFromEntry)
         }
       }))
@@ -509,7 +509,7 @@ class Tokenizer {
       [IMAGE, VIDEO, AUDIO].map(media => {
         const mediaTerm = media.term(this.config.terms.markup)
 
-        return PARENTHETICAL_BRACKETS.map(bracket =>
+        return NORMAL_BRACKETS.map(bracket =>
           new Convention({
             startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(mediaTerm, bracket), bracket.endPattern),
             startPatternContainsATerm: true,
@@ -526,7 +526,7 @@ class Tokenizer {
   }
 
   private getMediaUrlConventions(): Convention[] {
-    return PARENTHETICAL_BRACKETS.map(bracket => new Convention({
+    return NORMAL_BRACKETS.map(bracket => new Convention({
       startsWith: ANY_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
@@ -536,7 +536,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.config.applySettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
         this.appendNewToken(TokenRole.MediaEndAndUrl, url)
       }
     }))
@@ -574,7 +574,7 @@ class Tokenizer {
       this.mostRecentToken.value = url
     }
 
-    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
+    return concat(NORMAL_BRACKETS.map(bracket => [
       this.getConventionForBracketedUrl({ bracket, whenClosing }),
       this.getConventionForBracketedUrlOffsetByWhitespace({ bracket, whenClosing })
     ]))
@@ -598,7 +598,7 @@ class Tokenizer {
       FOOTNOTE
     ].map(richConvention => richConvention.endTokenRole)
 
-    return concat(PARENTHETICAL_BRACKETS.map(bracket => {
+    return concat(NORMAL_BRACKETS.map(bracket => {
       const argsForRichConventions = {
         bracket,
         canOnlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
@@ -650,7 +650,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.config.applySettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
         whenClosing(url)
       }
     })
@@ -697,7 +697,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: (context) => {
-        const url = this.config.applySettingsToUrl(this.flushBuffer())
+        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
@@ -755,7 +755,7 @@ class Tokenizer {
   }
 
   private getRawParentheticalBracketConventions(): Convention[] {
-    return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
+    return NORMAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
   }
 
   private getRawCurlyBracketConvention(): Convention {
@@ -856,7 +856,7 @@ class Tokenizer {
 
   // This method exists purely for optimization.
   private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
-    const tryToBuffer = (pattern: RegExp) =>
+    const tryToBufferContent = (pattern: RegExp) =>
       this.markupConsumer.consume({
         pattern,
         thenBeforeConsumingText: match => { this.bufferedContent += match }
@@ -891,13 +891,63 @@ class Tokenizer {
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
-      tryToBuffer(CONTENT_WITH_NO_SPECIAL_MEANING)
+      tryToBufferContent(CONTENT_WITH_NO_SPECIAL_MEANING)
     } while (
       // Next, if we can try to buffer whitespace...
       canTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
       // we've got to bail, because the current character can't be skipped.     
-      && tryToBuffer(WHITESPACE_THAT_NORMALLY_HAS_NO_SPECIAL_MEANING))
+      && this.tryToBufferWhitespaceGuaranteedToBeRegularContent())
+  }
+
+  // This method exists purely for optimization.
+  //
+  // In writing, spaces delimits words. Those spaces are meaningful to the author, but to our tokenizer,
+  // those spaces are just regular content.
+  //
+  // However, not all whitespace represents regular content! For example, the (optional) whitespace between a
+  // link's bracketed content and its bracketed URL doesn't actually represent any content:
+  //
+  //   You should try [Typescript] (http://www.typescriptlang.org).
+  //
+  // Same with the whitespace before a footnote.
+  //
+  // This method will buffer any regular whitespace content.
+  //
+  // Any special whitespace is left behind to be consumed by the appropriate convention, where it can have
+  // special meaning. Please see the `getLinkUrlConventions` method for more information.
+  private tryToBufferWhitespaceGuaranteedToBeRegularContent(): boolean {
+    // As it turns out, special whitespace is always followed by an open bracket!
+    //
+    // That makes our job easy.
+    //
+    // Note: To avoid catastrophic slowdown, we don't use a single regular expression for this. For more
+    // information, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
+
+    const remainingMarkup = this.markupConsumer.remaining
+    const matchResult = LEADING_WHITESPACE.exec(remainingMarkup)
+
+    if (!matchResult) {
+      return false
+    }
+
+    const [leadingWhitespace] = matchResult
+
+    const charFollowingLeadingWhitespace =
+      remainingMarkup[leadingWhitespace.length]
+
+    if (NORMAL_OPEN_BRACKET_PATTERN.test(charFollowingLeadingWhitespace)) {
+      // Uh-oh. That whitespace might be special. Let's bail!
+      return false
+    }
+
+    // Phew! Now we know that the leading whitespace is just regular content!
+
+    // Let's buffer it and consume it.
+    this.bufferedContent += leadingWhitespace
+    this.markupConsumer.index += leadingWhitespace.length
+
+    return true
   }
 
   private tryToCloseAnyConvention(): boolean {
@@ -1362,10 +1412,10 @@ class Tokenizer {
       throw new Error('Most recent token is not a bare URL token')
     }
 
-    this.mostRecentToken.value += this.flushBuffer()
+    this.mostRecentToken.value += this.flushBufferedContent()
   }
 
-  private flushBuffer(): string {
+  private flushBufferedContent(): string {
     const buffer = this.bufferedContent
     this.bufferedContent = ''
 
@@ -1374,12 +1424,12 @@ class Tokenizer {
 
   private flushNonEmptyBufferToToken(role: TokenRole): void {
     if (this.bufferedContent) {
-      this.appendNewToken(role, this.flushBuffer())
+      this.appendNewToken(role, this.flushBufferedContent())
     }
   }
 
   private flushBufferToToken(role: TokenRole): void {
-    this.appendNewToken(role, this.flushBuffer())
+    this.appendNewToken(role, this.flushBufferedContent())
   }
 
   private insertToken(args: { token: Token, atIndex: number }): void {
@@ -1495,24 +1545,25 @@ const BARE_URL_SCHEME_AND_HOSTNAME =
 //
 // For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method.
 
-
-const PARENTHETICAL_BRACKET_START_PATTERNS =
-  PARENTHETICAL_BRACKETS.map(bracket => bracket.startPattern)
+const NORMAL_OPEN_BRACKET_PATTERN =
+  patternStartingWith(
+    anyCharMatching(
+      ...NORMAL_BRACKETS.map(bracket => bracket.startPattern)))
 
 const ALL_BRACKETS =
   [PARENTHESIS, SQUARE_BRACKET, CURLY_BRACKET]
 
-const BRACKET_START_PATTERNS =
+const OPEN_BRACKET_PATTERNS =
   ALL_BRACKETS.map(bracket => bracket.startPattern)
 
-const BRACKET_END_PATTERNS =
+const CLOSE_BRACKET_PATTERNS =
   ALL_BRACKETS.map(bracket => bracket.endPattern)
 
 const CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING = [
   // The "h" is for the start of bare URLs. 
   WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '`',
-  ...BRACKET_START_PATTERNS,
-  ...BRACKET_END_PATTERNS,
+  ...OPEN_BRACKET_PATTERNS,
+  ...CLOSE_BRACKET_PATTERNS,
   ...[ESCAPER_CHAR, '*'].map(escapeForRegex)
 ]
 
@@ -1532,16 +1583,5 @@ const CONTENT_WITH_NO_SPECIAL_MEANING =
         PLUS_SIGN + notFollowedBy(HYPHEN)
       )))
 
-// This pattern matches all whitespace that is *not* followed by an open bracket.
-//
-// If there's a chunk of whitespace followed by an open bracket, we don't want to match any of the
-// chunk:
-//
-//   [SPOILER: Gary battles Ash]   (http://bulbapedia.bulbagarden.net/wiki/Rival)
-//
-// To prevent our pattern from matching all but the last character of that whitespace, we make sure
-// our match is followed by neither an open bracket nor by another whitespace character. 
-const WHITESPACE_THAT_NORMALLY_HAS_NO_SPECIAL_MEANING =
-  patternStartingWith(
-    SOME_WHITESPACE + notFollowedBy(
-      anyCharMatching(...PARENTHETICAL_BRACKET_START_PATTERNS, WHITESPACE_CHAR)))
+const LEADING_WHITESPACE =
+  patternStartingWith(SOME_WHITESPACE)

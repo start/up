@@ -1,28 +1,27 @@
-import { escapeForRegex, patternStartingWith, patternEndingWith, everyOptional, optional, oneOrMore } from '../../../PatternHelpers'
-import { SOME_WHITESPACE, WHITESPACE_CHAR } from '../../../PatternPieces'
 import { ESCAPER_CHAR } from '../../Strings'
 
 
 // For inline markup, any outer whitespace is considered roleless, even when it's escaped.
 // This function strips it all away.
 export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
-  return markup
-    .replace(ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
-    .replace(ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN, '')
+  // Note: To avoid catastrophic slowdown, we don't use a single regular expression for this. For more
+  // information, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
+
+  while (true) {
+    markup = markup.trim()
+
+    const { length } = markup
+    const secondToLastChar = markup[length - 2]
+    const lastChar = markup[length - 1]
+
+    if ((lastChar === ESCAPER_CHAR) && (secondToLastChar !== ESCAPER_CHAR)) {
+      markup = markup.slice(0, -1)
+      continue
+    }
+
+    return markup
+  }
 }
-
-
-const ESCAPER =
-  escapeForRegex(ESCAPER_CHAR)
-
-const CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE =
-  optional(ESCAPER) + SOME_WHITESPACE
-
-const ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
-  patternStartingWith(
-    oneOrMore(
-      CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE))
-
 
 // This next pattern requires some explaination.
 //
@@ -56,8 +55,3 @@ const ALL_LEADING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
 // In that example, the third backslash is preceded by the second, but the second backslash
 // is escaped! So it doesn't actually escape the third backslash. The pattern would leave
 // the backslash for the tokenizer to handle, just like the simpler pattern we're using.
-const ALL_TRAILING_ESCAPED_AND_UNESCAPED_WHITESPACE_PATTERN =
-  patternEndingWith(
-    WHITESPACE_CHAR
-    + everyOptional(CHUNK_OF_POSSIBLY_ESCAPED_WHITESPACE)
-    + optional(ESCAPER))
