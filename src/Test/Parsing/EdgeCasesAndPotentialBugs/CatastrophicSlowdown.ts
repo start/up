@@ -42,6 +42,24 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify("At the start of a rich convention", () => {
+    expect(Up.parseDocument('[SPOILER:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('He did not die.')
+        ])
+      ]))
+  })
+
+  specify("At the end of a rich convention", () => {
+    expect(Up.parseDocument('[SPOILER: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new PlainText('He did not die.' + lotsOfWhitespace)
+        ])
+      ]))
+  })
+
   specify("Between a media convention's bracketed description and its bracketed URL", () => {
     expect(Up.parseDocument('[image: ear]' + lotsOfWhitespace + '(example.com/ear.svg)')).to.deep.equal(
       new UpDocument([
