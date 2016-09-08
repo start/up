@@ -115,7 +115,7 @@ Table:
 })
 
 
-context('Table rows are terminated by:', () => {
+context('The rows of a table (and thus the table itself) are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
 Table:

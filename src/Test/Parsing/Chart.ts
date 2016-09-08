@@ -205,7 +205,7 @@ Chart: AND operator logic
 })
 
 
-context('A chart is terminated by:', () => {
+context('The rows of a chart (and thus the chart itself) are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
 Chart:
