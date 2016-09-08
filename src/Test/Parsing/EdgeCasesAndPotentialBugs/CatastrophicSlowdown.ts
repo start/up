@@ -3,6 +3,7 @@ import Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { repeat } from '../../../StringHelpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Link } from '../../../SyntaxNodes/Link'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
@@ -77,7 +78,7 @@ This is not reasonable.`
       ]))
   })
 
-  specify('Starting a non-blank line at the beginning of a document', () => {
+  specify('At the start of a non-blank line at the beginning of a document', () => {
     const markup = lotsOfWhitespace + 'This is not reasonable.'
 
     expect(Up.parseDocument(markup)).to.deep.equal(
@@ -86,12 +87,29 @@ This is not reasonable.`
       ]))
   })
 
-  specify('Ending a non-blank line at the end of a document', () => {
+  specify('At the end of a non-blank line at the end of a document', () => {
     const markup = 'This is not reasonable.' + lotsOfWhitespace
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('This is not reasonable.')
+      ]))
+  })
+
+  specify('At the start of a non-blank paragraph that is not the first convention within a document', () => {
+    const markup = lotsOfWhitespace + `
+This is not reasonable.
+
+${lotsOfWhitespace}However, we have to go with it.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText('This is not reasonable.')
+        ]),
+        new Paragraph([
+          new PlainText('However, we have to go with it.')
+        ])
       ]))
   })
 })
