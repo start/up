@@ -74,6 +74,16 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify("Between an otherwise-valid link's bracketed content and the unmatched open bracket for its URL", () => {
+    expect(Up.parseDocument('(Unreasonable)' + lotsOfWhitespace + '(https://')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new NormalParenthetical([
+          new PlainText('(Unreasonable)')
+        ]),
+        new PlainText(lotsOfWhitespace + '(https://')
+      ]))
+  })
+
   specify('Preceding an unmatched footnote start delimiter', () => {
     expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[^')).to.deep.equal(
       insideDocumentAndParagraph([
