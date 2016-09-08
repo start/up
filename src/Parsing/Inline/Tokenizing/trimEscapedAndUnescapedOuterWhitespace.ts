@@ -1,7 +1,7 @@
 import { ESCAPER_CHAR } from '../../Strings'
 
 
-// For inline markup, any outer whitespace is considered roleless, even when it's escaped.
+// For inline markup, any outer whitespace is considered meaningless, even when it's escaped.
 // This function strips it all away.
 export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
   // Note: To avoid catastrophic slowdown, we don't use a single regular expression for this. For more

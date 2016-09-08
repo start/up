@@ -4,7 +4,7 @@ import { InlineUpDocument } from'../../../SyntaxNodes/InlineUpDocument'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 
 
-context("In inline documents, all outer whitespace is considered roleless, even when it's escaped. This includes:", () => {
+context("In inline documents, all outer whitespace is considered meaningless, even when it's escaped. This includes:", () => {
   context("Trailing whitespace:", () => {
     specify('Not escaped', () => {
       expect(Up.parseInlineDocument("I'm just a normal guy who only eats when it's raining. Isn't everyone like that?  \t  \t ")).to.deep.equal(
