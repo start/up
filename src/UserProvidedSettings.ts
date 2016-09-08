@@ -7,7 +7,6 @@ export interface UserProvidedSettings {
   baseForUrlsStartingWithSlash?: string
   baseForUrlsStartingWithHashMark?: string
   terms?: UserProvidedSettings.Terms
-
 }
 
 
