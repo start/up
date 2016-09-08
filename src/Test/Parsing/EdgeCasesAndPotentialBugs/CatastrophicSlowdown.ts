@@ -4,6 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { repeat } from '../../../StringHelpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Link } from '../../../SyntaxNodes/Link'
+import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
@@ -36,12 +37,23 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("Between a media convention's bracketed URL and a 'linkifying' URL", () => {
+  specify("Between a linkified media convention's bracketed URL and its linkifying URL", () => {
     expect(Up.parseDocument('[image: ear] (example.com/ear.svg)' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
       new UpDocument([
         new Link([
           new Image('ear', 'https://example.com/ear.svg')
         ], 'https://example.com')
+      ]))
+  })
+
+  specify("Between a non-media convention's bracketed URL and its linkifying URL", () => {
+    expect(Up.parseDocument('[SPOILER: His ear grew back!]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new Link([
+            new PlainText('His ear grew back!')
+          ], 'https://example.com')
+        ])
       ]))
   })
 })
