@@ -14,7 +14,7 @@ export class Convention {
   flushesBufferToPlainTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
-  insteadOfOpeningNormalConventionsWhileOpen: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
   failsIfWhitespaceIsEnounteredBeforeClosing: boolean
   beforeClosingItFlushesNonEmptyBufferTo: TokenRole
   beforeClosingItAlwaysFlushesBufferTo: TokenRole
@@ -34,7 +34,7 @@ export class Convention {
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
       whenOpening?: OnTextMatch
       insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
-      insteadOfOpeningNormalConventionsWhileOpen?: OnConventionEvent
+      insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
       failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
       beforeClosingItAlwaysFlushesBufferTo?: TokenRole
       beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
@@ -61,7 +61,7 @@ export class Convention {
     this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
     this.whenOpening = args.whenOpening
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
-    this.insteadOfOpeningNormalConventionsWhileOpen = args.insteadOfOpeningNormalConventionsWhileOpen
+    this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
     this.failsIfWhitespaceIsEnounteredBeforeClosing = args.failsIfWhitespaceIsEnounteredBeforeClosing
     this.beforeClosingItFlushesNonEmptyBufferTo = args.beforeClosingItFlushesNonEmptyBufferTo
     this.beforeClosingItAlwaysFlushesBufferTo = args.beforeClosingItAlwaysFlushesBufferTo

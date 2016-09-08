@@ -442,7 +442,7 @@ class Tokenizer {
       },
 
       canOnlyOpenIfDirectlyFollowing: [TokenRole.BareUrl],
-      insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
+      insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
       whenClosingItAlsoClosesInnerConventions: true,
 
@@ -463,7 +463,7 @@ class Tokenizer {
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-      insteadOfOpeningNormalConventionsWhileOpen: () => {
+      insteadOfOpeningRegularConventionsWhileOpen: () => {
         this.tryToOpen(this.rawCurlyBracketConvention)
           || this.tryToTokenizeTypographicalConvention()
           || this.bufferCurrentChar()
@@ -495,7 +495,7 @@ class Tokenizer {
 
         beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
 
-        insteadOfOpeningNormalConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
+        insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
         whenClosing: () => {
           const snippetFromEntry = this.flushBufferedContent().trim()
@@ -805,16 +805,23 @@ class Tokenizer {
   }
 
   private tokenize(): void {
-    do {
-      this.bufferContentThatCannotOpenOrCloseAnyConventions()
-    } while (
-      !this.isDone()
-      && (
+    while (true) {
+      this.bufferContentThatCanNeverServeAsDelimiter()
+
+      if (this.isDone()) {
+        break
+      }
+
+      const didAnything =
         this.tryToCollectEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
-        || this.bufferCurrentChar()))
+
+      if (!didAnything) {
+        this.bufferCurrentChar()
+      }
+    }
   }
 
   private isDone(): boolean {
@@ -848,20 +855,25 @@ class Tokenizer {
       // because those are only preserved if they are themselves escaped.
 
       this.markupConsumer.index += 1
-      return this.markupConsumer.done() || this.bufferCurrentChar()
+
+      if (!this.markupConsumer.done()) {
+        this.bufferCurrentChar()
+      }
+
+      return true
     }
 
     return false
   }
 
-  // This method exists purely for optimization.
-  private bufferContentThatCannotOpenOrCloseAnyConventions(): void {
-    const tryToBufferContent = (pattern: RegExp) =>
-      this.markupConsumer.consume({
-        pattern,
-        thenBeforeConsumingText: match => { this.bufferedContent += match }
-      })
-
+  // This method exists solely for optimization.
+  //
+  // It buffers any leading content that can guarantee will never:
+  //
+  // 1. Open any conventions
+  // 2. Close any conventions
+  // 3. Serve as a delimiter of any sort
+  private bufferContentThatCanNeverServeAsDelimiter(): void {
     // Normally, whitespace doesn't have much of an impact on tokenization:
     //
     // - It can't close most conventions
@@ -891,7 +903,10 @@ class Tokenizer {
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
-      tryToBufferContent(CONTENT_WITH_NO_SPECIAL_MEANING)
+      this.markupConsumer.consume({
+        pattern: CONTENT_WITH_NO_SPECIAL_MEANING,
+        thenBeforeConsumingText: match => { this.bufferedContent += match }
+      })
     } while (
       // Next, if we can try to buffer whitespace...
       canTryToBufferWhitespace
@@ -1297,12 +1312,9 @@ class Tokenizer {
     this.mostRecentToken = token
   }
 
-  // This method always returns true, allowing us to cleanly chain it with other boolean tokenizer methods. 
-  private bufferCurrentChar(): boolean {
+  private bufferCurrentChar(): void {
     this.bufferedContent += this.markupConsumer.currentChar
     this.markupConsumer.index += 1
-
-    return true
   }
 
   private tryToOpen(convention: Convention): boolean {
@@ -1540,7 +1552,7 @@ const BARE_URL_SCHEME_AND_HOSTNAME =
 
 // The patterns below exist purely for optimization.
 //
-// For more information, see the `bufferContentThatCannotOpenOrCloseAnyConventions` method.
+// For more information, see the `bufferContentThatCanNeverServeAsDelimiter` method.
 
 const NORMAL_OPEN_BRACKET_PATTERN =
   patternStartingWith(
