@@ -12,6 +12,26 @@ import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 
 
+describe('Before a footnote, an escaped space followed by several non-escaped spaces', () => {
+  it('produces a footnote node following a single space', () => {
+    const markup = "I don't eat cereal.\\           (^Well, I do, but I pretend not to.)"
+
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
+    ], { referenceNumber: 1 })
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I don't eat cereal. "),
+          footnote
+        ]),
+        new FootnoteBlock([footnote])
+      ]))
+  })
+})
+
+
 describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
