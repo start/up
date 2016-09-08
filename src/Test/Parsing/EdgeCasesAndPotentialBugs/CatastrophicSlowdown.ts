@@ -15,7 +15,9 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 // For context, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
 
-const lotsOfWhitespace = repeat(' ', 5000)
+const unreasonabllyManyCharacters = 5000
+const lotsOfWhitespace = repeat(' ', unreasonabllyManyCharacters)
+const oneCharShortOfLotsOfWhitespace = repeat(' ', unreasonabllyManyCharacters - 1)
 
 context('A long string of whitespace should never cause cause the parser to hang:', () => {
   specify('Between words', () => {
@@ -36,6 +38,20 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parseDocument('`odd' + lotsOfWhitespace + 'code`' )).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode('odd' + lotsOfWhitespace + 'code')
+      ]))
+  })
+
+  specify('At the start of inline code, directly followed by backticks within the inline code', () => {
+    expect(Up.parseDocument('`' + lotsOfWhitespace + '``code`` `' )).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineCode(oneCharShortOfLotsOfWhitespace + '``code``')
+      ]))
+  })
+
+  specify('At the end of inline code, directly following backticks within the inline code', () => {
+    expect(Up.parseDocument('` ``code``' + lotsOfWhitespace + '`' )).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineCode('``code``' + oneCharShortOfLotsOfWhitespace)
       ]))
   })
 
