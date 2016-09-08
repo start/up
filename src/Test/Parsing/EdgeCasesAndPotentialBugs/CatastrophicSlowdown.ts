@@ -74,6 +74,20 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify('Preceding an unmatched footnote start delimiter', () => {
+    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[^')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Still typing' + lotsOfWhitespace + '[^')
+      ]))
+  })
+
+  specify('Preceding anmatched bracketed rich convention start delimiter', () => {
+    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[SPOILER:')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Still typing' + lotsOfWhitespace + '[SPOILER:')
+      ]))
+  })
+
   specify("Between a link's bracketed content and its bracketed URL", () => {
     expect(Up.parseDocument('[Hear me?]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
