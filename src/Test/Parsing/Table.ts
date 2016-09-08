@@ -46,7 +46,6 @@ Game;Release Date
 
 Final Fantasy;1987
 Final Fantasy II;1988
-
 Chrono Trigger;1995
 Chrono Cross;1999`
 
@@ -82,10 +81,8 @@ Chrono Cross;1999`
 Table:
 
  \t Game\t ; \t Release Date \t
-
  \t Final Fantasy\t ;\t 1987 \t 
  \t Final Fantasy II\t ;\t 1988 \t 
-
  \t Chrono Trigger\t ;\t 1995 \t 
  \t Chrono Cross\t ;\t 1999 \t `
 
@@ -118,7 +115,51 @@ Table:
 })
 
 
-context('A table is terminated by', () => {
+context('Table rows are terminated by (and do not consume):', () => {
+  specify('A blank line', () => {
+    const markup = `
+Table:
+
+Game;Release Date
+
+Final Fantasy;1987
+Final Fantasy II;1988
+Chrono Trigger;1995
+Chrono Cross;1999
+
+
+I don't like video games; in fact, I never have.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([new PlainText('Game')]),
+            new Table.Header.Cell([new PlainText('Release Date')])
+          ]), [
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy')]),
+              new Table.Row.Cell([new PlainText('1987')])
+            ]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+              new Table.Row.Cell([new PlainText('1988')])
+            ]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+              new Table.Row.Cell([new PlainText('1995')])
+            ]),
+            new Table.Row([
+              new Table.Row.Cell([new PlainText('Chrono Cross')]),
+              new Table.Row.Cell([new PlainText('1999')])
+            ]),
+          ]),
+        new Paragraph([
+          new PlainText("I don't like video games; in fact, I never have.")
+        ])
+      ]))
+  })
+
   specify('2 consecutive blank lines', () => {
     const markup = `
 Table:
@@ -127,7 +168,6 @@ Game;Release Date
 
 Final Fantasy;1987
 Final Fantasy II;1988
-
 Chrono Trigger;1995
 Chrono Cross;1999
 
@@ -172,7 +212,6 @@ Game;Release Date
 
 Final Fantasy;1987
 Final Fantasy II;1988
-
 Chrono Trigger;1995
 Chrono Cross;1999
 
@@ -247,7 +286,6 @@ Game;               Developer;            Platform;         Release Date
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
-
 Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
@@ -299,7 +337,6 @@ Game;               Release Date (year only)
 
 Final Fantasy;      1987
 Final Fantasy II;   1988
-
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
@@ -374,7 +411,6 @@ Game;               Release Date
 
 Final Fantasy;      1987
 Final Fantasy II;   1988 (almost 1989)
-
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
