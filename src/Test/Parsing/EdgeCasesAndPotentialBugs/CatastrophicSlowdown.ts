@@ -81,7 +81,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify('Preceding anmatched bracketed rich convention start delimiter', () => {
+  specify('Preceding an unmatched start delimiter from a rich bracketed convention', () => {
     expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Still typing' + lotsOfWhitespace + '[SPOILER:')
