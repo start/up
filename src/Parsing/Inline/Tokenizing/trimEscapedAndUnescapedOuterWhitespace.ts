@@ -1,5 +1,5 @@
 import { WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
-import { ESCAPER_CHAR } from '../../Strings'
+import { BACKSLASH } from '../../Strings'
 
 
 // For inline markup, any outer whitespace is considered meaningless, even when it's escaped.
@@ -9,7 +9,8 @@ export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
   // information, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
 
   // Let's review the rules!
-  // Escaper characters (i.e. backslashes) are only preserved when:
+  //
+  // Backslashes are only preserved when:
   //
   // 1. They are themselves escaped
   // 2. They appear in inline code
@@ -25,7 +26,7 @@ export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
     const { length } = markup
 
     const isFirstCharEscapingWhitespace =
-      markup[0] === ESCAPER_CHAR
+      markup[0] === BACKSLASH
       && (
         markup.length === 1
         || WHITESPACE_CHAR_PATTERN.test(markup[1])
@@ -39,7 +40,7 @@ export function trimEscapedAndUnescapedOuterWhitespace(markup: string): string {
     const secondToLastChar = markup[length - 2]
     const lastChar = markup[length - 1]
 
-    if ((lastChar === ESCAPER_CHAR) && (secondToLastChar !== ESCAPER_CHAR)) {
+    if ((lastChar === BACKSLASH) && (secondToLastChar !== BACKSLASH)) {
       // This will trim away the final backslash, even if there isn't any whitespace before it.
       // That's fine! As discussed above, unless a trailing backslash is escaped, it should be
       // ignored.

@@ -3,7 +3,7 @@ import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
-import { ESCAPER_CHAR } from '../../Strings'
+import { BACKSLASH } from '../../Strings'
 import { Config } from '../../../Config'
 import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
@@ -662,7 +662,7 @@ class Tokenizer {
       ANY_WHITESPACE
       + anyCharMatching(
         bracket.endPattern,
-        escapeForRegex(ESCAPER_CHAR)))
+        escapeForRegex(BACKSLASH)))
   }
 
   private getConventionForBracketedUrlOffsetByWhitespace(
@@ -813,7 +813,7 @@ class Tokenizer {
       }
 
       const didAnything =
-        this.tryToBufferEscapedChar()
+        this.tryToEscapeCurrentChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
@@ -847,15 +847,15 @@ class Tokenizer {
     return true
   }
 
-  private tryToBufferEscapedChar(): boolean {
-    if (this.markupConsumer.currentChar !== ESCAPER_CHAR) {
+  private tryToEscapeCurrentChar(): boolean {
+    if (this.markupConsumer.currentChar !== BACKSLASH) {
       return false
     }
 
     // The next character (if there is one) is escaped, so we buffer it.
     //
-    // If there are no more characters, we're done! We don't preserve the `ESCAPER_CHAR`,
-    // because those are only preserved if they are themselves escaped.
+    // If there are no more characters, we're done! We don't preserve the backslash,
+    // because they are only preserved if they are themselves escaped.
 
     this.markupConsumer.index += 1
 
@@ -1593,7 +1593,7 @@ const CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING = [
   WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '`',
   ...OPEN_BRACKET_PATTERNS,
   ...CLOSE_BRACKET_PATTERNS,
-  ...[ESCAPER_CHAR, '*'].map(escapeForRegex)
+  ...[BACKSLASH, '*'].map(escapeForRegex)
 ]
 
 const CONTENT_WITH_NO_SPECIAL_MEANING =

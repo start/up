@@ -3,7 +3,7 @@ import { patternStartingWith, oneOrMore } from '../../PatternHelpers'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { Config } from '../../Config'
 import { last } from '../../CollectionHelpers'
-import { ESCAPER_CHAR } from '../Strings'
+import { BACKSLASH } from '../Strings'
 
 
 // `Table.Cell` is an abstract class extended by both`Table.Header.Cell` and
@@ -42,7 +42,7 @@ export function getTableCells(row: string, config: Config): Table.Cell[] {
   for (; charIndex < row.length; charIndex++) {
     const char = row[charIndex]
 
-    if (char === ESCAPER_CHAR) {
+    if (char === BACKSLASH) {
       // Escaped delimiters don't delimit cells, so we can safely skip the next character.
       charIndex++
       continue
