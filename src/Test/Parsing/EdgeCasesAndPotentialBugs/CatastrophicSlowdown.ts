@@ -126,6 +126,28 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify("At the start of a non-media convention's linkifying URL", () => {
+    expect(Up.parseDocument('[SPOILER: His ear grew back!](' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new Link([
+            new PlainText('His ear grew back!')
+          ], 'https://example.com')
+        ])
+      ]))
+  })
+
+  specify("At the end of a non-media convention's linkifying URL", () => {
+    expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com' + lotsOfWhitespace + ')')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new Link([
+            new PlainText('His ear grew back!')
+          ], 'https://example.com')
+        ])
+      ]))
+  })
+
   specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
     expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
       insideDocumentAndParagraph([
