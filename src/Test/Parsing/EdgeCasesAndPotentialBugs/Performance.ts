@@ -17,50 +17,51 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 // For context, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
-
-const unreasonablyManyCharacters = 5000
-const lotsOfWhitespace = repeat(' ', unreasonablyManyCharacters)
-const oneCharShortOfLotsOfWhitespace = repeat(' ', unreasonablyManyCharacters - 1)
+const lotsOfSpaces = repeat(' ', 10000)
 
 
 context('A long string of whitespace should never cause cause the parser to hang:', () => {
   specify('Between words', () => {
-    expect(Up.parseDocument('Hear' + lotsOfWhitespace + 'me?')).to.deep.equal(
+    expect(Up.parseDocument('Hear' + lotsOfSpaces + 'me?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hear' + lotsOfWhitespace + 'me?')
+        new PlainText('Hear' + lotsOfSpaces + 'me?')
       ]))
   })
 
-  specify('As the sole content of inline code', () => {
-    expect(Up.parseDocument('`' + lotsOfWhitespace + '`')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineCode(lotsOfWhitespace)
-      ]))
+
+  context('In inline code:', () => {
+    specify('As the sole content', () => {
+      expect(Up.parseDocument('`' + lotsOfSpaces + '`')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineCode(lotsOfSpaces)
+        ]))
+    })
+
+    specify('In the middle of other code', () => {
+      expect(Up.parseDocument('`odd' + lotsOfSpaces + 'code`')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineCode('odd' + lotsOfSpaces + 'code')
+        ]))
+    })
+
+    specify('At the start, directly followed by backticks', () => {
+      expect(Up.parseDocument('`' + lotsOfSpaces + '``code`` `')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineCode(lotsOfSpaces.slice(1) + '``code``')
+        ]))
+    })
+
+    specify('At the end, directly following backticks', () => {
+      expect(Up.parseDocument('` ``code``' + lotsOfSpaces + '`')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineCode('``code``' + lotsOfSpaces.slice(1))
+        ]))
+    })
   })
 
-  specify('In the middle of inline code', () => {
-    expect(Up.parseDocument('`odd' + lotsOfWhitespace + 'code`')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineCode('odd' + lotsOfWhitespace + 'code')
-      ]))
-  })
-
-  specify('At the start of inline code, directly followed by backticks within the inline code', () => {
-    expect(Up.parseDocument('`' + lotsOfWhitespace + '``code`` `')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineCode(oneCharShortOfLotsOfWhitespace + '``code``')
-      ]))
-  })
-
-  specify('At the end of inline code, directly following backticks within the inline code', () => {
-    expect(Up.parseDocument('` ``code``' + lotsOfWhitespace + '`')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineCode('``code``' + oneCharShortOfLotsOfWhitespace)
-      ]))
-  })
 
   specify("Before a footnote", () => {
-    const markup = "I don't eat cereal." + lotsOfWhitespace + "(^Well, I do, but I pretend not to.)"
+    const markup = "I don't eat cereal." + lotsOfSpaces + "(^Well, I do, but I pretend not to.)"
 
     const footnote = new Footnote([
       new PlainText('Well, I do, but I pretend not to.')
@@ -77,31 +78,31 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify('Before an unmatched footnote start delimiter', () => {
-    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[^')).to.deep.equal(
+    expect(Up.parseDocument('Still typing' + lotsOfSpaces + '[^')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Still typing' + lotsOfWhitespace + '[^')
+        new PlainText('Still typing' + lotsOfSpaces + '[^')
       ]))
   })
 
   specify("Between an otherwise-valid link's bracketed content and the unmatched open bracket for its URL", () => {
-    expect(Up.parseDocument('(Unreasonable)' + lotsOfWhitespace + '(https://')).to.deep.equal(
+    expect(Up.parseDocument('(Unreasonable)' + lotsOfSpaces + '(https://')).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
           new PlainText('(Unreasonable)')
         ]),
-        new PlainText(lotsOfWhitespace + '(https://')
+        new PlainText(lotsOfSpaces + '(https://')
       ]))
   })
 
   specify('Before an unmatched start delimiter from a rich bracketed convention', () => {
-    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[SPOILER:')).to.deep.equal(
+    expect(Up.parseDocument('Still typing' + lotsOfSpaces + '[SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Still typing' + lotsOfWhitespace + '[SPOILER:')
+        new PlainText('Still typing' + lotsOfSpaces + '[SPOILER:')
       ]))
   })
 
   specify("Between a link's bracketed content and its bracketed URL", () => {
-    expect(Up.parseDocument('[Hear me?]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+    expect(Up.parseDocument('[Hear me?]' + lotsOfSpaces + '(example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Hear me?')
@@ -110,92 +111,103 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify("At the end of a link's content", () => {
-    expect(Up.parseDocument('[Hear me?' + lotsOfWhitespace + '](example.com)')).to.deep.equal(
+    expect(Up.parseDocument('[Hear me?' + lotsOfSpaces + '](example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
-          new PlainText('Hear me?' + lotsOfWhitespace)
+          new PlainText('Hear me?' + lotsOfSpaces)
         ], 'https://example.com')
       ]))
   })
 
-  specify("At the beginning of a link's URL", () => {
-    expect(Up.parseDocument('[Hear me?](' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Hear me?')
-        ], 'https://example.com')
-      ]))
+
+  context("In a link's URL:", () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[Hear me?](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('Hear me?')
+          ], 'https://example.com')
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[Hear me?](example.com' + lotsOfSpaces + ')')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('Hear me?')
+          ], 'https://example.com')
+        ]))
+    })
+
+    specify("Before an open bracket", () => {
+      expect(Up.parseDocument('[Hear me?](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Link([
+            new PlainText('Hear me?')
+          ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
+        ]))
+    })
   })
 
-  specify("At the end a link's URL", () => {
-    expect(Up.parseDocument('[Hear me?](example.com' + lotsOfWhitespace + ')')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Hear me?')
-        ], 'https://example.com')
-      ]))
+
+  context("In a media convention's description:", () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[image:' + lotsOfSpaces + 'ear](example.com/ear.svg)')).to.deep.equal(
+        new UpDocument([
+          new Image('ear', 'https://example.com/ear.svg')
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[image: ear' + lotsOfSpaces + '](example.com/ear.svg)')).to.deep.equal(
+        new UpDocument([
+          new Image('ear', 'https://example.com/ear.svg')
+        ]))
+    })
+
+    specify("Before an open bracket", () => {
+      expect(Up.parseDocument('[image: haunted' + lotsOfSpaces + '[house]](http://example.com/?state=NE)')).to.deep.equal(
+        new UpDocument([
+          new Image('haunted' + lotsOfSpaces + '[house]', 'http://example.com/?state=NE'),
+        ]))
+    })
   })
 
-  specify("Before an open bracket in a link's URL", () => {
-    expect(Up.parseDocument('[Hear me?](example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Hear me?')
-        ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
-      ]))
-  })
-
-  specify("At the start of a media convention's description", () => {
-    expect(Up.parseDocument('[image:' + lotsOfWhitespace + 'ear](example.com/ear.svg)')).to.deep.equal(
-      new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg')
-      ]))
-  })
-
-  specify("At the end of a media convention's description", () => {
-    expect(Up.parseDocument('[image: ear' + lotsOfWhitespace + '](example.com/ear.svg)')).to.deep.equal(
-      new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg')
-      ]))
-  })
-
-  specify("Before an open bracket in a media convention's description", () => {
-    expect(Up.parseDocument('[image: haunted' + lotsOfWhitespace + '[house]](http://example.com/?state=NE)')).to.deep.equal(
-      new UpDocument([
-        new Image('haunted' + lotsOfWhitespace + '[house]', 'http://example.com/?state=NE'),
-      ]))
-  })
 
   specify("Between a media convention's bracketed description and its bracketed URL", () => {
-    expect(Up.parseDocument('[image: ear]' + lotsOfWhitespace + '(example.com/ear.svg)')).to.deep.equal(
+    expect(Up.parseDocument('[image: ear]' + lotsOfSpaces + '(example.com/ear.svg)')).to.deep.equal(
       new UpDocument([
         new Image('ear', 'https://example.com/ear.svg')
       ]))
   })
 
-  specify("At the start of a media convention's URL", () => {
-    expect(Up.parseDocument('[image: ear](' + lotsOfWhitespace + 'example.com/ear.svg)')).to.deep.equal(
-      new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg')
-      ]))
+
+  context("In a media convention's URL:", () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[image: ear](' + lotsOfSpaces + 'example.com/ear.svg)')).to.deep.equal(
+        new UpDocument([
+          new Image('ear', 'https://example.com/ear.svg')
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[image: ear](example.com/ear.svg' + lotsOfSpaces + ')')).to.deep.equal(
+        new UpDocument([
+          new Image('ear', 'https://example.com/ear.svg')
+        ]))
+    })
+
+    specify("Before an open bracket", () => {
+      expect(Up.parseDocument('[image: ear](example.com/ear.svg?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
+        new UpDocument([
+          new Image('ear', 'https://example.com/ear.svg?some=ridiculous-' + lotsOfSpaces + '[arg]')
+        ]))
+    })
   })
 
-  specify("At the end of a media convention's URL", () => {
-    expect(Up.parseDocument('[image: ear](example.com/ear.svg' + lotsOfWhitespace + ')')).to.deep.equal(
-      new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg')
-      ]))
-  })
-
-  specify("Before an open bracket in a media convention's URL", () => {
-    expect(Up.parseDocument('[image: ear](example.com/ear.svg?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
-      new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg?some=ridiculous-' + lotsOfWhitespace + '[arg]')
-      ]))
-  })
 
   specify("Between a linkified media convention's bracketed URL and its linkifying URL", () => {
-    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)' + lotsOfSpaces + '(example.com)')).to.deep.equal(
       new UpDocument([
         new Link([
           new Image('ear', 'https://example.com/ear.svg')
@@ -203,35 +215,39 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("At the start of a linkified media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
-      new UpDocument([
-        new Link([
-          new Image('ear', 'https://example.com/ear.svg')
-        ], 'https://example.com')
-      ]))
+
+  context("In a linkified media convention's linkifying URL:", () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(' + lotsOfSpaces + 'example.com)')).to.deep.equal(
+        new UpDocument([
+          new Link([
+            new Image('ear', 'https://example.com/ear.svg')
+          ], 'https://example.com')
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com' + lotsOfSpaces + ')')).to.deep.equal(
+        new UpDocument([
+          new Link([
+            new Image('ear', 'https://example.com/ear.svg')
+          ], 'https://example.com')
+        ]))
+    })
+
+    specify("Before an open bracketURL", () => {
+      expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
+        new UpDocument([
+          new Link([
+            new Image('ear', 'https://example.com/ear.svg')
+          ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
+        ]))
+    })
   })
 
-  specify("At the end of a linkified media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com' + lotsOfWhitespace + ')')).to.deep.equal(
-      new UpDocument([
-        new Link([
-          new Image('ear', 'https://example.com/ear.svg')
-        ], 'https://example.com')
-      ]))
-  })
-
-  specify("Before an open bracket in a linkified media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
-      new UpDocument([
-        new Link([
-          new Image('ear', 'https://example.com/ear.svg')
-        ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
-      ]))
-  })
 
   specify("Between a non-media convention's bracketed URL and its linkifying URL", () => {
-    expect(Up.parseDocument('[SPOILER: His ear grew back!]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+    expect(Up.parseDocument('[SPOILER: His ear grew back!]' + lotsOfSpaces + '(example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineSpoiler([
           new Link([
@@ -241,89 +257,100 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("At the start of a non-media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[SPOILER: His ear grew back!](' + lotsOfWhitespace + 'example.com)')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new Link([
-            new PlainText('His ear grew back!')
-          ], 'https://example.com')
-        ])
-      ]))
+
+  context("In a non-media convention's linkifying URL:", () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[SPOILER: His ear grew back!](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineSpoiler([
+            new Link([
+              new PlainText('His ear grew back!')
+            ], 'https://example.com')
+          ])
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com' + lotsOfSpaces + ')')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineSpoiler([
+            new Link([
+              new PlainText('His ear grew back!')
+            ], 'https://example.com')
+          ])
+        ]))
+    })
+
+    specify("Before a an open bracket", () => {
+      expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineSpoiler([
+            new Link([
+              new PlainText('His ear grew back!')
+            ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
+          ])
+        ]))
+    })
   })
 
-  specify("At the end of a non-media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com' + lotsOfWhitespace + ')')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new Link([
-            new PlainText('His ear grew back!')
-          ], 'https://example.com')
-        ])
-      ]))
-  })
-
-  specify("Before a an open bracket in a non-media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new Link([
-            new PlainText('His ear grew back!')
-          ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
-        ])
-      ]))
-  })
 
   specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
-    expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
+    expect(Up.parseDocument('(SPOILER:' + lotsOfSpaces + ')')).to.deep.equal(
       insideDocumentAndParagraph([
         new NormalParenthetical([
-          new PlainText('(SPOILER:' + lotsOfWhitespace + ')')
+          new PlainText('(SPOILER:' + lotsOfSpaces + ')')
         ])
       ]))
   })
 
-  specify("At the start of a rich convention", () => {
-    expect(Up.parseDocument('[SPOILER:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('He did not die.')
-        ])
-      ]))
+
+  context('In a rich convention:', () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[SPOILER:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineSpoiler([
+            new PlainText('He did not die.')
+          ])
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[SPOILER: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new InlineSpoiler([
+            new PlainText('He did not die.' + lotsOfSpaces)
+          ])
+        ]))
+    })
   })
 
-  specify("At the end of a rich convention", () => {
-    expect(Up.parseDocument('[SPOILER: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('He did not die.' + lotsOfWhitespace)
-        ])
-      ]))
+
+  context('In a reference to a table of contents entry', () => {
+    specify("At the start", () => {
+      expect(Up.parseDocument('[topic:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new ReferenceToTableOfContentsEntry('He did not die.')
+        ]))
+    })
+
+    specify("At the end", () => {
+      expect(Up.parseDocument('[topic: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new ReferenceToTableOfContentsEntry('He did not die.')
+        ]))
+    })
+
+    specify("Before an open bracket", () => {
+      expect(Up.parseDocument('[topic: He did not die.' + lotsOfSpaces + '(Really.)]')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new ReferenceToTableOfContentsEntry('He did not die.' + lotsOfSpaces + '(Really.)')
+        ]))
+    })
   })
 
-  specify("At the start of a reference to a table of contents entry", () => {
-    expect(Up.parseDocument('[topic:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new ReferenceToTableOfContentsEntry('He did not die.')
-      ]))
-  })
-
-  specify("At the end of a reference to a table of contents entry", () => {
-    expect(Up.parseDocument('[topic: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new ReferenceToTableOfContentsEntry('He did not die.')
-      ]))
-  })
-
-  specify("Before an open bracket in a reference to a table of contents entry", () => {
-    expect(Up.parseDocument('[topic: He did not die.' + lotsOfWhitespace + '(Really.)]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new ReferenceToTableOfContentsEntry('He did not die.' + lotsOfWhitespace + '(Really.)')
-      ]))
-  })
 
   specify('On a blank line at the start of a document', () => {
-    const markup = lotsOfWhitespace + `
+    const markup = lotsOfSpaces + `
 This is not reasonable.`
 
     expect(Up.parseDocument(markup)).to.deep.equal(
@@ -335,7 +362,7 @@ This is not reasonable.`
   specify('On a blank line at the end of a document', () => {
     const markup = `
 This is not reasonable.
-` + lotsOfWhitespace
+` + lotsOfSpaces
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       insideDocumentAndParagraph([
@@ -344,7 +371,7 @@ This is not reasonable.
   })
 
   specify('At the start of a paragraph at the beginning of a document', () => {
-    const markup = lotsOfWhitespace + 'This is not reasonable.'
+    const markup = lotsOfSpaces + 'This is not reasonable.'
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       insideDocumentAndParagraph([
@@ -353,7 +380,7 @@ This is not reasonable.
   })
 
   specify('At the end of a paragraph at the end of a document', () => {
-    const markup = 'This is not reasonable.' + lotsOfWhitespace
+    const markup = 'This is not reasonable.' + lotsOfSpaces
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       insideDocumentAndParagraph([
@@ -362,10 +389,10 @@ This is not reasonable.
   })
 
   specify('At the start of a paragraph that is not the first convention within a document', () => {
-    const markup = lotsOfWhitespace + `
+    const markup = lotsOfSpaces + `
 This is not reasonable.
 
-${lotsOfWhitespace}However, we have to go with it.`
+${lotsOfSpaces}However, we have to go with it.`
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
@@ -379,8 +406,8 @@ ${lotsOfWhitespace}However, we have to go with it.`
   })
 
   specify('At the end of a paragraph that is not the last convention within a document', () => {
-    const markup = lotsOfWhitespace + `
-This is not reasonable.${lotsOfWhitespace}
+    const markup = lotsOfSpaces + `
+This is not reasonable.${lotsOfSpaces}
 
 However, we have to go with it.`
 
@@ -396,10 +423,10 @@ However, we have to go with it.`
   })
 
   specify('At the start of a thematic break streak that is not the first convention within a document', () => {
-    const markup = lotsOfWhitespace + `
+    const markup = lotsOfSpaces + `
 This is not reasonable.
 
-${lotsOfWhitespace}-~-~-~-~-~-`
+${lotsOfSpaces}-~-~-~-~-~-`
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
@@ -411,8 +438,8 @@ ${lotsOfWhitespace}-~-~-~-~-~-`
   })
 
   specify('At the end of a thematic break streak that is not the last convention within a document', () => {
-    const markup = lotsOfWhitespace + `
--~-~-~-~-~-~-~-${lotsOfWhitespace}
+    const markup = lotsOfSpaces + `
+-~-~-~-~-~-~-~-${lotsOfSpaces}
 
 However, we have to go with it.`
 
