@@ -115,7 +115,7 @@ Table:
 })
 
 
-context('Table rows are terminated by (and do not consume):', () => {
+context('Table rows are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
 Table:
@@ -126,7 +126,6 @@ Final Fantasy;1987
 Final Fantasy II;1988
 Chrono Trigger;1995
 Chrono Cross;1999
-
 
 I don't like video games; in fact, I never have.`
 
