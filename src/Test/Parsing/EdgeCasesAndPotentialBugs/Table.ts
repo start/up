@@ -166,7 +166,6 @@ I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 })
 
 
-
 describe('A table with one column', () => {
   it('can contain cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
     const markup = `

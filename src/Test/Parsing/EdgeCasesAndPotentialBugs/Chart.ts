@@ -129,6 +129,35 @@ I almost didn't include them; however, I realized charts are too useful to leave
 })
 
 
+describe("A chart's header row", () => {
+  it('cannot be followed by two or more blank lines', () => {
+    const markup = `
+Chart: Good games on the Sega Genesis
+
+        Release Date
+
+
+I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Table(
+          new Table.Header([
+            new Table.Header.Cell([]),
+            new Table.Header.Cell([new PlainText('Release Date')])
+          ]),
+          [],
+          new Table.Caption([
+            new PlainText('Good games on the Sega Genesis')
+          ])),
+        new Paragraph([
+          new PlainText("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
+        ])
+      ]))
+  })
+})
+
+
 describe('A chart with one column', () => {
   it('can contain row header cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
     const markup = `
