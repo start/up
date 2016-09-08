@@ -1,5 +1,5 @@
 import { anyCharFrom, solely, either, exactly, streakOf, patternStartingWith } from './PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, URL_SCHEME } from './PatternPieces'
+import { INLINE_WHITESPACE_CHAR, WHITESPACE_CHAR, URL_SCHEME } from './PatternPieces'
 
 
 const INDENT =
@@ -17,6 +17,9 @@ export const BLANK_PATTERN =
 
 export const NON_BLANK_PATTERN =
   /\S/
+
+export const WHITESPACE_CHAR_PATTERN =
+  new RegExp(WHITESPACE_CHAR)
 
 export const URL_SCHEME_PATTERN =
   patternStartingWith(URL_SCHEME)

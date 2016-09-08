@@ -2,7 +2,7 @@ import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, 
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
-import { NON_BLANK_PATTERN } from '../../../Patterns'
+import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { ESCAPER_CHAR } from '../../Strings'
 import { Config } from '../../../Config'
 import { RichConvention } from './RichConvention'
@@ -1476,9 +1476,6 @@ function startDelimiterNotFollowedByEndDelimiter(startDelimiter: string, endDeli
   return startDelimiter + notFollowedBy(ANY_WHITESPACE + endDelimiter)
 }
 
-
-const WHITESPACE_CHAR_PATTERN =
-  new RegExp(WHITESPACE_CHAR)
 
 const NOT_FOLLOWED_BY_WHITESPACE =
   notFollowedBy(WHITESPACE_CHAR)
