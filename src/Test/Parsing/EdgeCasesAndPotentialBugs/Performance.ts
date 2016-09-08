@@ -12,6 +12,7 @@ import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
+import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -136,11 +137,11 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify("Before an open bracket in a link's URL", () => {
-    expect(Up.parseDocument('[Hear me?](example.com?some=[ridiculous-arg' + lotsOfWhitespace + '])')).to.deep.equal(
+    expect(Up.parseDocument('[Hear me?](example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
       insideDocumentAndParagraph([
         new Link([
           new PlainText('Hear me?')
-        ], 'https://example.com?some=[ridiculous-arg' + lotsOfWhitespace + ']')
+        ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
       ]))
   })
 
@@ -187,9 +188,9 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify("Before an open bracket in a media convention's URL", () => {
-    expect(Up.parseDocument('[image: ear](example.com/ear.svg?some=[ridiculous-arg' + lotsOfWhitespace + '])')).to.deep.equal(
+    expect(Up.parseDocument('[image: ear](example.com/ear.svg?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
       new UpDocument([
-        new Image('ear', 'https://example.com/ear.svg?some=[ridiculous-arg' + lotsOfWhitespace + ']')
+        new Image('ear', 'https://example.com/ear.svg?some=ridiculous-' + lotsOfWhitespace + '[arg]')
       ]))
   })
 
@@ -221,11 +222,11 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify("Before an open bracket in a linkified media convention's linkifying URL", () => {
-    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com?some=[ridiculous-arg' + lotsOfWhitespace + '])')).to.deep.equal(
+    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)(example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
       new UpDocument([
         new Link([
           new Image('ear', 'https://example.com/ear.svg')
-        ], 'https://example.com?some=[ridiculous-arg' + lotsOfWhitespace + ']')
+        ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
       ]))
   })
 
@@ -262,6 +263,17 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify("Before a an open bracket in a non-media convention's linkifying URL", () => {
+    expect(Up.parseDocument('[SPOILER: His ear grew back!](example.com?some=ridiculous-' + lotsOfWhitespace + '[arg])')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new InlineSpoiler([
+          new Link([
+            new PlainText('His ear grew back!')
+          ], 'https://example.com?some=ridiculous-' + lotsOfWhitespace + '[arg]')
+        ])
+      ]))
+  })
+
   specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
     expect(Up.parseDocument('(SPOILER:' + lotsOfWhitespace + ')')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -286,6 +298,27 @@ context('A long string of whitespace should never cause cause the parser to hang
         new InlineSpoiler([
           new PlainText('He did not die.' + lotsOfWhitespace)
         ])
+      ]))
+  })
+
+  specify("At the start of a reference to a table of contents entry", () => {
+    expect(Up.parseDocument('[topic:' + lotsOfWhitespace + 'He did not die.]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new ReferenceToTableOfContentsEntry('He did not die.')
+      ]))
+  })
+
+  specify("At the end of a reference to a table of contents entry", () => {
+    expect(Up.parseDocument('[topic: He did not die.' + lotsOfWhitespace + ']')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new ReferenceToTableOfContentsEntry('He did not die.')
+      ]))
+  })
+
+  specify("Before an open bracket in a reference to a table of contents entry", () => {
+    expect(Up.parseDocument('[topic: He did not die.' + lotsOfWhitespace + '(Really.)]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new ReferenceToTableOfContentsEntry('He did not die.' + lotsOfWhitespace + '(Really.)')
       ]))
   })
 
