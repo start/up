@@ -14,7 +14,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 // For context, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
 
-const lotsOfWhitespace = repeat(' ', 2000)
+const lotsOfWhitespace = repeat(' ', 5000)
 
 context('A long string of whitespace should never cause cause the parser to hang:', () => {
   specify('Between words', () => {
