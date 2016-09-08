@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { Table } from '../../SyntaxNodes/Table'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../../PatternHelpers'
-import { BLANK_PATTERN } from '../../Patterns'
+import { BLANK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
 import { REST_OF_TEXT } from '../../PatternPieces'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
@@ -22,13 +22,13 @@ import { getTableCells } from './getTableCells'
 //
 // A table must have a header, but it doesn't need to have any rows.
 //
-// Within a table, single blank lines are allowed. However, two consecutive blank
-// lines terminates the table. Any trailing blank lines after the table are not
-// consumed.
+// Single blank lines are before and after the table's header, but a table rows
+// must all be consecutive.
 //
-// Here's an example table. The whitespace used for padding is optional and gets
-// trimmed away:
+// Any trailing blank lines after the table are not consumed.
 //
+// Here's an example table. The whitespace used for padding between cells is
+// optional and gets trimmed away:
 //
 // Table: Video games
 //
@@ -36,21 +36,18 @@ import { getTableCells } from './getTableCells'
 //
 // Chrono Trigger;     Square;;                                March 11, 1995
 // Terranigma;         Quintet;              Nintendo;         October 20, 1995
-//
 // Command & Conquer;  Westwood Studios;;                      August 31, 1995
 // Starcraft;          Blizzard;;                              March 31, 1998
 //
 //
-//
 // Charts are tables with a second, vertical header. The only differences are:
 //
-// 1. Charts use the configurable term for "chart" instead of "table"
-// 2. An empty cell is automatically added to the beginning of the chart's header
-//    row (the top left corner) due to the header column beneath it 
-// 3. The first cell of each row in a chart is treated as a header for that row.
+// 1. Charts use the configurable term for "chart" instead of "table".
+// 2. The first cell of each row in a chart is treated as a header for that row.
+// 3. An empty cell is automatically added to the beginning of the chart's header
+//    row (the top left corner) due to the header column beneath it.
 //
 // Here's an example chart:
-//
 //
 // Chart: `AND` operator logic
 //
@@ -68,31 +65,36 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
   let captionMarkup: string
 
-  const setRawCaptionContent = (_: string, caption: string): void => {
+  function setRawCaptionMarkup(_: string, caption: string): void {
     captionMarkup = (caption || '').trim()
   }
 
   const isTable =
     markupLineConsumer.consume({
       linePattern: getLabelPattern(config.terms.markup.table),
-      thenBeforeConsumingLine: setRawCaptionContent
+      thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
   const isChart =
     !isTable && markupLineConsumer.consume({
       linePattern: getLabelPattern(config.terms.markup.chart),
-      thenBeforeConsumingLine: setRawCaptionContent
+      thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
   if (!isTable && !isChart) {
     return false
   }
 
+  // We have our label line (with an optional caption).
+  //
+  // Let's consume the optional blank line before the header row. 
+  consumeBlankLine(markupLineConsumer)
+
   let headerCells: Table.Header.Cell[]
 
   const hasHeader =
-    !tryToTerminateTable(markupLineConsumer)
-    && markupLineConsumer.consume({
+    markupLineConsumer.consume({
+      linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
         headerCells = getTableCells(line, config).map(toHeaderCell)
       }
@@ -124,13 +126,19 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       : undefined
 
   const rows: Table.Row[] = []
-  let countLinesConsumed: number
 
-  do {
-    countLinesConsumed = markupLineConsumer.countLinesConsumed
-  } while (
-    !tryToTerminateTable(markupLineConsumer)
-    && markupLineConsumer.consume({
+  // Any trailing blank lines after the table are not consumed, and we don't know whether
+  // the table will have any rows. Therefore, until we find our first row, we'll assume
+  // the table ends here.
+  let countLinesConsumed = markupLineConsumer.countLinesConsumed
+
+  // Let's consume the optional blank line after the header row. 
+  consumeBlankLine(markupLineConsumer)
+
+  // Phew! We're finally ready to start consuming any rows!
+  while (
+    markupLineConsumer.consume({
+      linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
         const cells = getTableCells(line, config)
 
@@ -142,7 +150,10 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
         rows.push(new Table.Row(cells.map(toRowCell), rowHeaderCell))
       }
-    }))
+    })
+  ) {
+    countLinesConsumed = markupLineConsumer.countLinesConsumed
+  }
 
   args.then(
     [new Table(header, rows, caption)],
@@ -152,17 +163,9 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 }
 
 
-// Returns true if it's able to consume 2 blank lines.
-//
-// Note: If there was just 1 blank line, this function will still consume it.
-function tryToTerminateTable(markupLineConsumer: LineConsumer): boolean {
-  function consumeBlankLine(): boolean {
-    return markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
-  }
-
-  return consumeBlankLine() && consumeBlankLine()
+function consumeBlankLine(markupLineConsumer: LineConsumer): boolean {
+  return markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
 }
-
 
 const toHeaderCell = (cell: Table.Cell) =>
   new Table.Header.Cell(cell.children, cell.countColumnsSpanned)
