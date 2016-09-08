@@ -58,7 +58,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
+  specify("Before a footnote", () => {
     const markup = "I don't eat cereal." + lotsOfWhitespace + "(^Well, I do, but I pretend not to.)"
 
     const footnote = new Footnote([
@@ -75,6 +75,13 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
+  specify('Before an unmatched footnote start delimiter', () => {
+    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[^')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new PlainText('Still typing' + lotsOfWhitespace + '[^')
+      ]))
+  })
+
   specify("Between an otherwise-valid link's bracketed content and the unmatched open bracket for its URL", () => {
     expect(Up.parseDocument('(Unreasonable)' + lotsOfWhitespace + '(https://')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -85,14 +92,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify('Preceding an unmatched footnote start delimiter', () => {
-    expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[^')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new PlainText('Still typing' + lotsOfWhitespace + '[^')
-      ]))
-  })
-
-  specify('Preceding an unmatched start delimiter from a rich bracketed convention', () => {
+  specify('Before an unmatched start delimiter from a rich bracketed convention', () => {
     expect(Up.parseDocument('Still typing' + lotsOfWhitespace + '[SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('Still typing' + lotsOfWhitespace + '[SPOILER:')
