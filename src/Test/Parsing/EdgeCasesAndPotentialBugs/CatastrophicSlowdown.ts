@@ -78,7 +78,7 @@ This is not reasonable.`
       ]))
   })
 
-  specify('At the start of a non-blank line at the beginning of a document', () => {
+  specify('At the start of a paragraph at the beginning of a document', () => {
     const markup = lotsOfWhitespace + 'This is not reasonable.'
 
     expect(Up.parseDocument(markup)).to.deep.equal(
@@ -87,7 +87,7 @@ This is not reasonable.`
       ]))
   })
 
-  specify('At the end of a non-blank line at the end of a document', () => {
+  specify('At the end of a paragraph at the end of a document', () => {
     const markup = 'This is not reasonable.' + lotsOfWhitespace
 
     expect(Up.parseDocument(markup)).to.deep.equal(
@@ -96,11 +96,28 @@ This is not reasonable.`
       ]))
   })
 
-  specify('At the start of a non-blank paragraph that is not the first convention within a document', () => {
+  specify('At the start of a paragraph that is not the first convention within a document', () => {
     const markup = lotsOfWhitespace + `
 This is not reasonable.
 
 ${lotsOfWhitespace}However, we have to go with it.`
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText('This is not reasonable.')
+        ]),
+        new Paragraph([
+          new PlainText('However, we have to go with it.')
+        ])
+      ]))
+  })
+
+  specify('At the end of a paragraph that is not the last convention within a document', () => {
+    const markup = lotsOfWhitespace + `
+This is not reasonable.${lotsOfWhitespace}
+
+However, we have to go with it.`
 
     expect(Up.parseDocument(markup)).to.deep.equal(
       new UpDocument([
