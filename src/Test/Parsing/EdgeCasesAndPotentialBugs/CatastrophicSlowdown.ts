@@ -10,6 +10,8 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { Image } from '../../../SyntaxNodes/Image'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
+import { Footnote } from '../../../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -28,30 +30,47 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
   specify('As the sole content of inline code', () => {
-    expect(Up.parseDocument('`' + lotsOfWhitespace + '`' )).to.deep.equal(
+    expect(Up.parseDocument('`' + lotsOfWhitespace + '`')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode(lotsOfWhitespace)
       ]))
   })
 
   specify('In the middle of inline code', () => {
-    expect(Up.parseDocument('`odd' + lotsOfWhitespace + 'code`' )).to.deep.equal(
+    expect(Up.parseDocument('`odd' + lotsOfWhitespace + 'code`')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode('odd' + lotsOfWhitespace + 'code')
       ]))
   })
 
   specify('At the start of inline code, directly followed by backticks within the inline code', () => {
-    expect(Up.parseDocument('`' + lotsOfWhitespace + '``code`` `' )).to.deep.equal(
+    expect(Up.parseDocument('`' + lotsOfWhitespace + '``code`` `')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode(oneCharShortOfLotsOfWhitespace + '``code``')
       ]))
   })
 
   specify('At the end of inline code, directly following backticks within the inline code', () => {
-    expect(Up.parseDocument('` ``code``' + lotsOfWhitespace + '`' )).to.deep.equal(
+    expect(Up.parseDocument('` ``code``' + lotsOfWhitespace + '`')).to.deep.equal(
       insideDocumentAndParagraph([
         new InlineCode('``code``' + oneCharShortOfLotsOfWhitespace)
+      ]))
+  })
+
+  specify("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
+    const markup = "I don't eat cereal." + lotsOfWhitespace + "(^Well, I do, but I pretend not to.)"
+
+    const footnote = new Footnote([
+      new PlainText('Well, I do, but I pretend not to.')
+    ], { referenceNumber: 1 })
+
+    expect(Up.parseDocument(markup)).to.deep.equal(
+      new UpDocument([
+        new Paragraph([
+          new PlainText("I don't eat cereal."),
+          footnote
+        ]),
+        new FootnoteBlock([footnote])
       ]))
   })
 
