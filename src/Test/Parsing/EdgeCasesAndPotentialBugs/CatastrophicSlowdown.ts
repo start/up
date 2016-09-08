@@ -29,10 +29,19 @@ context('A long string of whitespace should never cause cause the parser to hang
       ]))
   })
 
-  specify("Between an images's bracketed description and its bracketed URL", () => {
-    expect(Up.parseDocument('[image: ear]' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+  specify("Between a media convention's bracketed description and its bracketed URL", () => {
+    expect(Up.parseDocument('[image: ear]' + lotsOfWhitespace + '(example.com/ear.svg)')).to.deep.equal(
       new UpDocument([
-        new Image('ear', 'https://example.com')
+        new Image('ear', 'https://example.com/ear.svg')
+      ]))
+  })
+
+  specify("Between a media convention's bracketed URL and a 'linkifying' URL", () => {
+    expect(Up.parseDocument('[image: ear] (example.com/ear.svg)' + lotsOfWhitespace + '(example.com)')).to.deep.equal(
+      new UpDocument([
+        new Link([
+          new Image('ear', 'https://example.com/ear.svg')
+        ], 'https://example.com')
       ]))
   })
 })
