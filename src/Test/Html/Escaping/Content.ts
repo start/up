@@ -363,9 +363,10 @@ context('Within a table of contents entry, all instances of < and & are escaped:
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -373,7 +374,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })
 
@@ -391,9 +392,10 @@ context('Within a table of contents entry, all instances of < and & are escaped:
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -401,7 +403,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></p>'
       + '<h1 id="up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })

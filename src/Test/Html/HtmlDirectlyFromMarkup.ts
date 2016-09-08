@@ -51,9 +51,10 @@ LOOK AWAY
       }
     }
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(markup, config)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(markup, config)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'
@@ -61,7 +62,7 @@ LOOK AWAY
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
       + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'

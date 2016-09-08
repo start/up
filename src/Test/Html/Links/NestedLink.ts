@@ -50,9 +50,10 @@ context('A link within a table of contents entry does not produce an <a> element
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -60,7 +61,7 @@ context('A link within a table of contents entry does not produce an <a> element
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-topic-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
 
@@ -76,9 +77,10 @@ context('A link within a table of contents entry does not produce an <a> element
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -86,7 +88,7 @@ context('A link within a table of contents entry does not produce an <a> element
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1">I enjoy apples</a></p>'
       + '<h1 id="up-topic-1"><a href="https://google.com">I enjoy apples</a></h1>')
   })
@@ -143,9 +145,10 @@ context("When a link is nested deeply within another link, it doesn't produce an
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -153,7 +156,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-topic-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })
 
@@ -173,9 +176,10 @@ context("When a link is nested deeply within another link, it doesn't produce an
         heading
       ], new UpDocument.TableOfContents([heading]))
 
-    const result = Up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -183,7 +187,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1"><em>I enjoy apples</em></a></p>'
       + '<h1 id="up-topic-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
   })

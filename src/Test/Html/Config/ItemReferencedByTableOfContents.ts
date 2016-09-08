@@ -21,9 +21,10 @@ describe('The ID of an element referenced by the table of contents', () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -31,7 +32,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-table-of-contents-entry-1">I enjoy apples</h1>')
   })
 })

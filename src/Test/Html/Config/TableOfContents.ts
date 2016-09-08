@@ -21,9 +21,10 @@ describe('The main heading within the table of contents', () => {
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>In This Article</h1>'
       + '<ul>'
@@ -31,7 +32,7 @@ describe('The main heading within the table of contents', () => {
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-topic-1">I enjoy apples</h1>')
   })
 })

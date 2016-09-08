@@ -193,9 +193,10 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const document =
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-    const result = up.renderHtmlForDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      up.renderHtmlForDocumentAndTableOfContents(document)
 
-    expect(result.tableOfContentsHtml).to.equal(
+    expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<h1>Table of Contents</h1>'
       + '<ul>'
@@ -203,7 +204,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</ul>'
       + '</nav>')
 
-    expect(result.documentHtml).to.equal(
+    expect(documentHtml).to.equal(
       '<h1 id="up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</h1>')
   })
 })
