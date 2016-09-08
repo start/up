@@ -86,7 +86,7 @@ class Tokenizer {
   // flushed to a token, usually a `PlainText` token.
   private bufferedContent = ''
 
-  // Speaking of tokens, this is our collection! Unlike `ParseableToken`, a `Token` knows when it's part of
+  // Speaking of tokens, this is our collection! Unlike a `ParseableToken`, a `Token` knows when it's part of
   // a pair of tokens enclosing content. For example, an `EmphasisStart` token knows about its corresponding
   // `EmphasisEnd` token. 
   //
@@ -466,7 +466,7 @@ class Tokenizer {
       insteadOfOpeningRegularConventionsWhileOpen: () => {
         this.tryToOpen(this.rawCurlyBracketConvention)
           || this.tryToTokenizeTypographicalConvention()
-          || this.bufferCurrentChar()
+          || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
       },
 
       whenClosing: () => {
@@ -813,13 +813,13 @@ class Tokenizer {
       }
 
       const didAnything =
-        this.tryToCollectEscapedChar()
+        this.tryToBufferEscapedChar()
         || this.tryToCloseAnyConvention()
         || this.performContextSpecificBehaviorInsteadOfTryingToOpenRegularConventions()
         || this.tryToOpenAnyConvention()
 
       if (!didAnything) {
-        this.bufferCurrentChar()
+        this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
       }
     }
   }
@@ -847,23 +847,23 @@ class Tokenizer {
     return true
   }
 
-  private tryToCollectEscapedChar(): boolean {
-    if (this.markupConsumer.currentChar === ESCAPER_CHAR) {
-      // The next character (if there is one) is escaped, so we buffer it.
-      //
-      // If there are no more characters, we're done! We don't preserve the `ESCAPER_CHAR`,
-      // because those are only preserved if they are themselves escaped.
-
-      this.markupConsumer.index += 1
-
-      if (!this.markupConsumer.done()) {
-        this.bufferCurrentChar()
-      }
-
-      return true
+  private tryToBufferEscapedChar(): boolean {
+    if (this.markupConsumer.currentChar !== ESCAPER_CHAR) {
+      return false
     }
 
-    return false
+    // The next character (if there is one) is escaped, so we buffer it.
+    //
+    // If there are no more characters, we're done! We don't preserve the `ESCAPER_CHAR`,
+    // because those are only preserved if they are themselves escaped.
+
+    this.markupConsumer.index += 1
+
+    if (!this.markupConsumer.done()) {
+      this.bufferCurrentChar()
+    }
+
+    return true
   }
 
   // This method exists solely for optimization.
@@ -903,10 +903,7 @@ class Tokenizer {
 
     do {
       // First, let's try to skip any content that will *never* open or close any conventions.
-      this.markupConsumer.consume({
-        pattern: CONTENT_WITH_NO_SPECIAL_MEANING,
-        thenBeforeConsumingText: match => { this.bufferedContent += match }
-      })
+      this.buffer(CONTENT_WITH_NO_SPECIAL_MEANING)
     } while (
       // Next, if we can try to buffer whitespace...
       canTryToBufferWhitespace
@@ -1311,6 +1308,29 @@ class Tokenizer {
     this.tokens.push(token)
     this.mostRecentToken = token
   }
+ 
+  private addCurrentCharOrChunkOfWhitespaceToContentBuffer(): void {
+    // Due to Up's syntax, if a given whitespace character isn't part of a delimiter, then neither
+    // are all consecutive whitespace characters. They're all regular content.
+    //
+    // As an optimization, we'll go ahead and add them all to our content buffer.
+    //
+    // For more information, see `bufferContentThatCanNeverServeAsDelimiter`.
+    if (WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)) {
+      this.buffer(LEADING_WHITESPACE)
+    } else {
+      this.bufferCurrentChar()
+    }
+  }
+
+  private buffer(pattern: RegExp): void {
+    this.markupConsumer.consume({
+      pattern,
+      thenBeforeConsumingText: match => {
+        this.bufferedContent += match
+      }
+    })
+  }
 
   private bufferCurrentChar(): void {
     this.bufferedContent += this.markupConsumer.currentChar
@@ -1465,13 +1485,13 @@ class Tokenizer {
   }
 
   private handleTextAwareOfRawBrackets(): void {
-    this.tryToOpenRawParentheticalBracketConvention() || this.bufferCurrentChar()
+    this.tryToOpenRawParentheticalBracketConvention() || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
   }
 
   private handleTextAwareOfTypographyAndRawParentheticalBrackets(): void {
     this.tryToOpenRawParentheticalBracketConvention()
       || this.tryToTokenizeTypographicalConvention()
-      || this.bufferCurrentChar()
+      || this.addCurrentCharOrChunkOfWhitespaceToContentBuffer()
   }
 
   private tryToOpenRawParentheticalBracketConvention(): boolean {
