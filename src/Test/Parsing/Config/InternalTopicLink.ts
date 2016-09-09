@@ -14,7 +14,7 @@ describe('The "internalTopicLink" config term', () => {
     }
   })
 
-  it('is used to indicate references to table of contents entries', () => {
+  it('is used to indicate internal topic links', () => {
     const markup = `
 I drink exotic soda
 =====================

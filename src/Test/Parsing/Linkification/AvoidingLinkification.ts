@@ -191,7 +191,7 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('References to table of contents entries', () => {
+  specify('Internal topic links', () => {
     expect(Up.parse('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, you are not done. See '),

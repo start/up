@@ -141,7 +141,7 @@ context('An example input convention is not linkified when it is directly follow
       ]))
   })
 
-  specify('References to table of contents entries', () => {
+  specify('Internal topic links', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),

@@ -245,7 +245,7 @@ class Tokenizer {
           : [
             // We'll support regular footnotes
             ...this.getFootnoteConventions(),
-            // And we'll support references to table of contents entries!
+            // And we'll support internal topic links!
             ...this.getInternalTopicLinkConventions()
           ]),
 

@@ -641,7 +641,7 @@ context("When an item referenced by the table of contents has a source line numb
 })
 
 
-context('When a table of contents entry reference node is associated with an entry', () => {
+context('When an internal topic link node is associated with an entry', () => {
   specify("it produces a link to the actual entry in the document. The link's contents are the same as the entry's contents within the <nav> element of the table of contents", () => {
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })

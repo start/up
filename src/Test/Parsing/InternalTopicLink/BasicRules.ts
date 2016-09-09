@@ -805,7 +805,7 @@ Not quite true. For example, see [section: emphasis].`
 })
 
 
-context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the internal topic link itself.', () => {
+context('The snippet belonging to an internal topic link can contain the same type of brackets used to to enclose the internal topic link itself.', () => {
   context('When the internal topic link is enclosed by square brackets:', () => {
     specify('The snippet can contain matching square brackets', () => {
       expect(Up.parse('[section: I [really] love apples]')).to.deep.equal(

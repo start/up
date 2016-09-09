@@ -17,7 +17,7 @@ import { Table } from '../../../SyntaxNodes/Table'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 
 
-context('References to table of contents entries can appear within any outline convention that contains inline conventions:', () => {
+context('Internal topic links can appear within any outline convention that contains inline conventions:', () => {
   specify('Blockquotes', () => {
     const markup = `
 I drink soda
