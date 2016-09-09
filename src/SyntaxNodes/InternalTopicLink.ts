@@ -4,28 +4,26 @@ import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 
 
+// An internal topic link is essentially a reference to an item referenced by the table of contents.
 export class InternalTopicLink implements InlineSyntaxNode {
   constructor(
-    public snippetFromEntry: string,
+    public topicSnippet: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll use `snippetFromEntry` to match this reference object with the most appropriate table of
-    // contents entry.
+    // We'll use `topicSnippet` to try to match this internal topic link with the most appropriate
+    // item referenced by the table of contents.
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this reference with the first entry whose text exactly equals
-    // `snippetFromEntry`. We don't care about capitalization, but the text otherwise has to be an exact
-    // match. 
+    // First, we'll try to associate this topic syntax node with the first entry whose text exactly
+    // equals `topicSnippet`. We don't care about capitalization, but the text otherwise has to be
+    // an exact match. 
     //
-    // If there are no exact matches, then we'll try to associate this reference with the first entry
-    // whose text contains `snippetFromEntry`.
+    // If there are no exact matches, then we'll try to associate this object with the first entry
+    // whose text contains `topicSnippet`.
     //
-    // If we still don't have a match after that, then we're out of luck.
-    //
-    // Throughout this whole process, we'll never match an entry (i.e. a heading) if it contains this 
-    // reference.
+    // If we still don't have a match after that, then we're out of luck. We give up.
     //
     // TODO: Continue searching using another algorithm (e.g. string distance).
     //
@@ -35,9 +33,9 @@ export class InternalTopicLink implements InlineSyntaxNode {
 
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.searchableText()
-      const { snippetFromEntry } = this
+      const { topicSnippet } = this
 
-      if (isEqualIgnoringCapitalization(textOfEntry, snippetFromEntry) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(textOfEntry, topicSnippet) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
@@ -45,7 +43,7 @@ export class InternalTopicLink implements InlineSyntaxNode {
 
       if (!this.entry) {
         if (
-          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: snippetFromEntry })
+          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: topicSnippet })
           && this.canMatch(entry)
         ) {
           // We've found non-perfect match. We'll keep searching in case there's a perfect match
@@ -60,28 +58,21 @@ export class InternalTopicLink implements InlineSyntaxNode {
     return (
       this.entry
         ? this.entry.searchableText()
-        : this.snippetFromEntry)
+        : this.topicSnippet)
   }
-
-  // Our snippet is the only searchable text we expose.
+  
+  // Right now, searchable text is only used for one thing: to determine whether a given table of
+  // contents entry contains (or equals) the `topicSnippet` of an internal topic link.
   //
-  // Right now, searchable text is only used for one thing: to determine whether a table of contents
-  // entry matches the snippet of a reference.
+  // Therefore, this method will only be called if a table of contents entry (i.e. a heading) were
+  // to inexplicably contain an internal topic link.
   //
-  // This is a confusing edge case, but:
+  // Why do we only expose `this.topicSnippet` as searchable? Why not `this.entry.searchableText()`?
   //
-  // 1. If a table of contents entry (i.e. a heading) inexplicably contains a reference to another
-  //    entry...
-  //
-  // 2. And if that reference's snippet contains only a word or two from the second entry...
-  //
-  // ... Then as far as searching is concerned, it could potentially be confusing if *all* of the text
-  // from the second entry were considered part of the first entry. Searching for any partial text
-  // within the second entry would always match the first entry instead. 
-  //
-  // I'm not sure what the best behavior is, and luckily, it'll probably never matter.   
+  // Because if a heading *were* to contain this syntax node, we don't want that heading to be
+  // "findable" using text from the heading this syntax node is referencing. 
   searchableText(): string {
-    return this.snippetFromEntry
+    return this.topicSnippet
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
@@ -93,7 +84,7 @@ export class InternalTopicLink implements InlineSyntaxNode {
   }
 
   private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {
-    // Right now, we have only one rule: We will not match an entry if it contains this reference.
+    // Right now, we have only one rule: We will not match an entry if it contains this syntax node.
     return (entry.inlineDescendants().indexOf(this) === -1)
   }
 }

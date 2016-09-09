@@ -7,7 +7,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 
 
-describe('The snippet from a reference to a table of contents entry', () => {
+describe('The snippet from an internal topic link', () => {
   context('is evaluated for typographical conventions:', () => {
     specify('En dashes', () => {
       const markup = `
@@ -144,8 +144,8 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
 })
 
 
-context('Typographical conventions are applied before matching references with their entries. That means a reference can match with an entry when', () => {
-  specify('The reference uses the typographical convention but the entry uses the corresponding fancy character itself', () => {
+context('Typographical conventions are applied before matching internal topic links with their entries. That means an internal topic link can match with an entry when', () => {
+  specify('The internal topic link uses the typographical convention but the entry uses the corresponding fancy character itself', () => {
     const markup = `
 I drink soda—exclusively
 =========================
@@ -178,7 +178,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify('The entry uses the typographical convention but the reference uses the corresponding fancy character itself', () => {
+  specify('The entry uses the typographical convention but the internal topic link uses the corresponding fancy character itself', () => {
     const markup = `
 I drink soda---exclusively
 =========================

@@ -25,7 +25,7 @@ import { Stress } from'../../../SyntaxNodes/Stress'
 import { Video } from'../../../SyntaxNodes/Video'
 
 
-context("A a table of contents entry reference's snippet ignores inline conventions. It only cares about matching literal text.", () => {
+context("A table of contents entry reference's snippet ignores inline conventions. It only cares about matching literal text.", () => {
   specify("The snippet ignores inline conventions within the entry", () => {
     const markup = `
 Stress and emphasis are commonly used in writing

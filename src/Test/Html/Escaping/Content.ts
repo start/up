@@ -378,7 +378,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       '<h1 id="up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })
 
-  specify('In a reference to that table of contents entry', () => {
+  specify('In an internal topic link referencing that table of contents entry', () => {
     const heading =
       new Heading([
         new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
@@ -410,7 +410,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 })
 
 
-context('Within a table of contents entry reference that was never actually associated with an entry', () => {
+context('Within an internal topic link that was never actually associated with an entry', () => {
   specify('all instances of all instances of < and & are escaped', () => {
     const document =
       new UpDocument([

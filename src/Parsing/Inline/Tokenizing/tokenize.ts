@@ -116,7 +116,7 @@ class Tokenizer {
   // few other contexts that ignore the typical conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
-  // otherwise cut short the URL (or media description, or reference to table of contents entry, etc.)
+  // otherwise cut short the URL (or media description, or internal topic link, etc.)
   private rawParentheticalBracketConventions = this.getRawParentheticalBracketConventions()
 
   // This convention is similar to `parentheticalRawBracketConventions`, but raw curly brackets are only
@@ -496,8 +496,8 @@ class Tokenizer {
         insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
         whenClosing: () => {
-          const snippetFromEntry = this.flushBufferedContent().trim()
-          this.appendNewToken(TokenRole.InternalTopicLink, snippetFromEntry)
+          const topicSnippet = this.flushBufferedContent().trim()
+          this.appendNewToken(TokenRole.InternalTopicLink, topicSnippet)
         }
       }))
   }

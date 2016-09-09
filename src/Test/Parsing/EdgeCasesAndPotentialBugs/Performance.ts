@@ -325,7 +325,7 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
 
-  context('In a reference to a table of contents entry', () => {
+  context('In an internal topic link', () => {
     specify("At the start", () => {
       expect(Up.parse('[topic:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([

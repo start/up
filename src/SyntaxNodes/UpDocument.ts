@@ -12,7 +12,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
-  // 3. Internal references associated with the apprioriate table of contents entries
+  // 3. Internal topic links associated with the apprioriate table of contents entries
   //
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
   static create(children: OutlineSyntaxNode[]): UpDocument {
@@ -45,8 +45,8 @@ export namespace UpDocument {
   export class TableOfContents {
     // Returns a `TableOfContents` object with entries from `documentChildren`.
     //
-    // If there are references to table of contents entries within `documentChildren`, they are
-    // associated with the appropriate entries (mutating the references).
+    // If there are internal topic links within `documentChildren`, they are associated with the
+    // appropriate entries (mutating the internal topic links).
     //
     // This methods also mutates the entries themselves, assigning them their table of contents
     // ordinals.
@@ -103,8 +103,7 @@ export namespace UpDocument {
       //
       //    Why documents should consist solely of <font> elements
       //
-      // References to table of contents entries try to match their `snippetFromEntry` with this
-      // value.
+      // Internal topic links try to match their `topicSnippet` with this value.
       searchableText(): string
 
       // How the content of the entry should be represented inside the table of contents. This is

@@ -8,7 +8,7 @@ import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
 
-context('Bracketed text starting with "section:" or "topic:" produces a reference to a table of contents entry. The terms are interchangeable, as are the brackets:', () => {
+context('Bracketed text starting with "section:" or "topic:" produces an internal topic link. The terms are interchangeable, as are the brackets:', () => {
   const markupUsingSectionTermAndSquareBrackets = `
 I drink soda
 ============
@@ -92,9 +92,9 @@ Not quite true. For example, see (topic: soda).`
 })
 
 
-context('A reference to a table of contents entry will try to match the first entry whose text exactly matches its own snippet.', () => {
+context('An internal topic link will try to match the first entry whose text exactly matches its own snippet.', () => {
   context('The exact match can come:', () => {
-    specify('Before the reference', () => {
+    specify('Before the internal topic link', () => {
       const markup = `
 I drink soda
 ============
@@ -127,7 +127,7 @@ Not quite true. For example, see [section: I drink soda].`
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('After the reference', () => {
+    specify('After the internal topic link', () => {
       const markup = `
 I'm a great guy. For more information, skip to [section: I never lie]. 
 
@@ -317,8 +317,8 @@ That's what I tell 'em.`
   })
 
 
-  context('If there are no perfectly matching entries, the reference will match with the first entry to contain its snippet. That entry can come:', () => {
-    specify('Before the reference', () => {
+  context('If there are no perfectly matching entries, the internal topic link will match with the first entry to contain its snippet. That entry can come:', () => {
+    specify('Before the internal topic link', () => {
       const markup = `
 I drink exotic soda
 =====================
@@ -351,7 +351,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
         ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
     })
 
-    specify('After the reference', () => {
+    specify('After the internal topic link', () => {
       const markup = `
 I have plenty of good traits. See [section: interesting].
 
@@ -562,7 +562,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
 
 
 context("If there are no matching table of contents entries for a given reference", () => {
-  specify("the reference simply won't be associated with an entry", () => {
+  specify("the internal topic link simply won't be associated with an entry", () => {
     const markup = `
 I'm a great guy. For more information, skip to [section: I became a world leader]. 
 
@@ -602,7 +602,7 @@ Not quite true.`
 })
 
 
-describe('The term used to create a reference to a table of contents entry ("section" by default)', () => {
+describe('The term used to create an internal topic link ("section" by default)', () => {
   it('is case-insensitive', () => {
     const markup = `
 I drink soda
@@ -638,7 +638,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
 })
 
 
-context('Whitespace within the snippet of a reference to a table of contents entry is significant.', () => {
+context('Whitespace within the snippet of an internal topic link is significant.', () => {
   specify('If there is a space between words in the entry, there must be a space between those words in the snippet', () => {
     const markup = `
 I'm a concerned kind of guy. For more information, skip to [section: prepare]. 
@@ -805,8 +805,8 @@ Not quite true. For example, see [section: emphasis].`
 })
 
 
-context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the reference itself.', () => {
-  context('When the reference is enclosed by square brackets:', () => {
+context('The snippet belonging to a table of contents entry reference can contain the same type of brackets used to to enclose the internal topic link itself.', () => {
+  context('When the internal topic link is enclosed by square brackets:', () => {
     specify('The snippet can contain matching square brackets', () => {
       expect(Up.parse('[section: I [really] love apples]')).to.deep.equal(
         new UpDocument([
@@ -845,7 +845,7 @@ context('The snippet belonging to a table of contents entry reference can contai
   })
 
 
-  context('When the reference is enclosed by parentheses:', () => {
+  context('When the internal topic link is enclosed by parentheses:', () => {
     specify('The snippet can contain matching parentheses', () => {
       expect(Up.parse('(section: I (really) love apples)')).to.deep.equal(
         new UpDocument([

@@ -715,7 +715,7 @@ describe('A link node', () => {
 })
 
 
-describe('A table of contents entry reference node that is not associated with an entry', () => {
+describe('An internal topic link node that is not associated with a table of contents entry', () => {
   it("produces an <i> element containing the unmatched snippet", () => {
     const document = new UpDocument([
       new Paragraph([
@@ -728,7 +728,7 @@ describe('A table of contents entry reference node that is not associated with a
 })
 
 
-describe('A table of contents entry reference node that is associated with an entry', () => {
+describe('An internal topic link node that is associated with a table of contents entry', () => {
   it("produces a link to the entry in the document", () => {
     const heading = new Heading([
       new PlainText('Howdy there')

@@ -20,7 +20,7 @@ import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { Stress } from'../../../SyntaxNodes/Stress'
 
 
-context('References to table of contents can be within any rich inline convention:', () => {
+context('Internal topic links can be within any rich inline convention:', () => {
   specify('Bold', () => {
     const markup = `
 I have plenty of good traits. __See [section: interesting].__

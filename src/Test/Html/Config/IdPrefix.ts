@@ -982,7 +982,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 })
 
 
-describe("The URL of a reference to a table of contents entry (which is the ID of the actual entry in the document)", () => {
+describe("The URL of an internal topic link (which is the ID of the actual entry in the document)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Heading([
       new PlainText('Howdy there')

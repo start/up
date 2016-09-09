@@ -204,7 +204,7 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Italic([new PlainText(internalTopicLink.snippetFromEntry)])
+        : new Italic([new PlainText(internalTopicLink.topicSnippet)])
 
     return representation.render(this)
   }
