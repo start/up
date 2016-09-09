@@ -110,7 +110,7 @@ export namespace Config {
       }
 
       this.markup.applyUserProvidedSettings(terms.markup)
-      this.rendered.applyUserProvidedSettings(terms.output)
+      this.rendered.applyUserProvidedSettings(terms.rendered)
     }
   }
 

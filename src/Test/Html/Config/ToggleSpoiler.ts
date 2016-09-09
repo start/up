@@ -10,7 +10,7 @@ describe("The text in an inline spoiler's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           toggleSpoiler: 'show/hide'
         }
       }
@@ -40,7 +40,7 @@ describe("The text in a spoiler block's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           toggleSpoiler: 'show/hide'
         }
       }

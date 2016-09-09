@@ -28,7 +28,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       const config = {
         terms: {
-          output: { footnote: 'some extra info' }
+          rendered: { footnote: 'some extra info' }
         }
       }
 
@@ -56,7 +56,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       const config = {
         terms: {
-          output: { footnoteReference: 'original footnote location' }
+          rendered: { footnoteReference: 'original footnote location' }
         }
       }
 
@@ -81,7 +81,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       const config = {
         terms: {
-          output: { itemReferencedByTableOfContents: 'table of contents entry' }
+          rendered: { itemReferencedByTableOfContents: 'table of contents entry' }
         }
       }
 

@@ -17,7 +17,7 @@ LOOK AWAY
       createSourceMap: true,
       terms: {
         markup: { spoiler: 'LOOK AWAY' },
-        output: { tableOfContents: 'In This Article' }
+        rendered: { tableOfContents: 'In This Article' }
       }
     }
 
@@ -47,7 +47,7 @@ LOOK AWAY
       createSourceMap: true,
       terms: {
         markup: { spoiler: 'LOOK AWAY' },
-        output: { tableOfContents: 'In This Article' }
+        rendered: { tableOfContents: 'In This Article' }
       }
     }
 

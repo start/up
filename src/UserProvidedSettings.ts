@@ -13,7 +13,7 @@ export interface UserProvidedSettings {
 export namespace UserProvidedSettings {
   export interface Terms {
     markup?: Terms.Markup
-    output?: Terms.Rendered
+    rendered?: Terms.Rendered
   }
 
   export namespace Terms {

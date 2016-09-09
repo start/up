@@ -11,7 +11,7 @@ describe("A footnote reference's ID", () => {
   it('uses the provided term for "footnote reference"', () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           footnoteReference: 'ref'
         }
       }
@@ -33,7 +33,7 @@ describe("The ID of the footnote reference referencing the footnote", () => {
   it('uses the provided term for "footnote reference"', () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           footnoteReference: 'ref'
         }
       }

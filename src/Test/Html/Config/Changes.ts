@@ -104,14 +104,14 @@ describe('The "footnote reference" config term', () => {
     ]),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           footnoteReference: 'ref'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           footnoteReference: 'fn ref'
         }
       }
@@ -129,14 +129,14 @@ describe('The "footnote" config term', () => {
     ]),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           footnote: 'fn'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           footnote: 'note'
         }
       }
@@ -154,14 +154,14 @@ describe('The "toggleSpoiler" config term', () => {
     ]),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleSpoiler: 'show/hide'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleSpoiler: 'see spoiler?'
         }
       }
@@ -179,14 +179,14 @@ describe('The "toggleNsfw" config term', () => {
     ]),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleNsfw: 'see/hide'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleNsfw: 'show nsfw?'
         }
       }
@@ -204,14 +204,14 @@ describe('The "toggleNsfl" config term', () => {
     ]),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleNsfl: 'see/hide'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           toggleNsfl: 'show nsfl?'
         }
       }
@@ -229,14 +229,14 @@ describe('The "tableOfContents" config setting', () => {
       new UpDocument.TableOfContents([heading])),
     configChanges: {
       terms: {
-        output: {
+        rendered: {
           tableOfContents: 'In This Article'
         }
       }
     },
     conflictingConfigChanges: {
       terms: {
-        output: {
+        rendered: {
           tableOfContents: 'Skip To…'
         }
       }

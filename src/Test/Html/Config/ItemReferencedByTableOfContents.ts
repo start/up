@@ -9,7 +9,7 @@ describe('The ID of an element referenced by the table of contents', () => {
   it('uses the config term for "itemReferencedByTableOfContents"', () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           itemReferencedByTableOfContents: 'table of contents entry'
         }
       }

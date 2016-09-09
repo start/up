@@ -9,7 +9,7 @@ describe('The main heading within the table of contents', () => {
   it('uses the config term for "tableOfContents"', () => {
     const up = new Up({
       terms: {
-        output: {
+        rendered: {
           tableOfContents: 'In This Article'
         }
       }
