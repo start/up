@@ -145,6 +145,31 @@ describe('The "footnote" config term', () => {
 })
 
 
+describe('The "sectionReferencedByTableOfContents" config setting', () => {
+  const heading = new Heading([], { level: 1 })
+
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    document: new UpDocument(
+      [heading],
+      new UpDocument.TableOfContents([heading])),
+    configChanges: {
+      terms: {
+        rendered: {
+          sectionReferencedByTableOfContents: 'heading'
+        }
+      }
+    },
+    conflictingConfigChanges: {
+      terms: {
+        rendered: {
+          sectionReferencedByTableOfContents: 'item'
+        }
+      }
+    }
+  })
+})
+
+
 describe('The "toggleSpoiler" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
