@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 
 
 describe('The "referenceToTableOfContentsEntry" config term', () => {
@@ -41,7 +41,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+          new InternalTopicLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -108,7 +108,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+          new InternalTopicLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -149,7 +149,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+          new InternalTopicLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -186,13 +186,13 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         sodaHeading,
         new Paragraph([
           new PlainText("Actually, I only drink milk. But I'm still great, as "),
-          new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
+          new InternalTopicLink('interesting', interestingHeading),
           new PlainText(' demonstrates.')
         ]),
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+          new InternalTopicLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))

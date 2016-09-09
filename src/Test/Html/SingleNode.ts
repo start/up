@@ -27,7 +27,7 @@ import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Stress } from '../../SyntaxNodes/Stress'
@@ -719,7 +719,7 @@ describe('A table of contents entry reference node that is not associated with a
   it("produces an <i> element containing the unmatched snippet", () => {
     const document = new UpDocument([
       new Paragraph([
-        new ReferenceToTableOfContentsEntry('When I became ruler of the world')
+        new InternalTopicLink('When I became ruler of the world')
       ])
     ])
 
@@ -736,7 +736,7 @@ describe('A table of contents entry reference node that is associated with an en
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 

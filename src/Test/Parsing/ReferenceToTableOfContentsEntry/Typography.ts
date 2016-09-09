@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 
 
 describe('The snippet from a reference to a table of contents entry', () => {
@@ -36,7 +36,7 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda–exclusively', sodaHeading),
+            new InternalTopicLink('I drink soda–exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -69,7 +69,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda—exclusively', sodaHeading),
+            new InternalTopicLink('I drink soda—exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -102,7 +102,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink 9 cans of soda ±2', sodaHeading),
+            new InternalTopicLink('I drink 9 cans of soda ±2', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -135,7 +135,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink 9 cans of soda… hourly', sodaHeading),
+            new InternalTopicLink('I drink 9 cans of soda… hourly', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -172,7 +172,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('I drink soda—exclusively', sodaHeading),
+          new InternalTopicLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -205,7 +205,7 @@ Not quite true. For example, see [section: I drink soda—exclusively].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('I drink soda—exclusively', sodaHeading),
+          new InternalTopicLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))

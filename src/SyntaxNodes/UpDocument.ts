@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { Heading } from './Heading'
-import { ReferenceToTableOfContentsEntry } from './ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from './InternalTopicLink'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { concat } from '../CollectionHelpers'
 
@@ -64,7 +64,7 @@ export namespace UpDocument {
         documentChildren.map(child => child.inlineDescendants()))
 
       for (const inlineSyntaxNode of allInlineSyntaxNodes) {
-        if (inlineSyntaxNode instanceof ReferenceToTableOfContentsEntry) {
+        if (inlineSyntaxNode instanceof InternalTopicLink) {
           inlineSyntaxNode.referenceMostAppropriateTableOfContentsEntry(tableOfContents)
         }
       }

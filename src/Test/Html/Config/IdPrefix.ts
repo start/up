@@ -12,7 +12,7 @@ import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 import { Heading } from '../../../SyntaxNodes/Heading'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -990,7 +990,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1021,7 +1021,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1052,7 +1052,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1083,7 +1083,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1114,7 +1114,7 @@ describe("The URL of a reference to a table of contents entry (which is the ID o
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('howdy', heading)]),
+        new Paragraph([new InternalTopicLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 

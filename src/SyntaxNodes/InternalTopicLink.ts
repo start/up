@@ -4,7 +4,7 @@ import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 
 
-export class ReferenceToTableOfContentsEntry implements InlineSyntaxNode {
+export class InternalTopicLink implements InlineSyntaxNode {
   constructor(
     public snippetFromEntry: string,
     public entry?: UpDocument.TableOfContents.Entry) { }

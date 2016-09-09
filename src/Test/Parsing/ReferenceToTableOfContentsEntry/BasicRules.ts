@@ -4,7 +4,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
 
@@ -39,7 +39,7 @@ Not quite true. For example, see [section: soda].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+          new InternalTopicLink('soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -121,7 +121,7 @@ Not quite true. For example, see [section: I drink soda].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda', sodaHeading),
+            new InternalTopicLink('I drink soda', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -151,7 +151,7 @@ Not quite true.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new ReferenceToTableOfContentsEntry('I never lie', neverLieHeading),
+            new InternalTopicLink('I never lie', neverLieHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -202,7 +202,7 @@ That's what I tell 'em.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda', firstSodaHeading),
+            new InternalTopicLink('I drink soda', firstSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -252,7 +252,7 @@ Oops.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda', firstSodaHeading),
+            new InternalTopicLink('I drink soda', firstSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -302,7 +302,7 @@ That's what I tell 'em.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new ReferenceToTableOfContentsEntry('I drink soda', secondSodaHeading),
+            new InternalTopicLink('I drink soda', secondSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -345,7 +345,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
           interestingHeading,
           new Paragraph([
             new PlainText('I love all sorts of fancy stuff. For example, see '),
-            new ReferenceToTableOfContentsEntry('exotic', sodaHeading),
+            new InternalTopicLink('exotic', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -375,7 +375,7 @@ I love all sorts of fancy stuff.`
         new UpDocument([
           new Paragraph([
             new PlainText('I have plenty of good traits. See '),
-            new ReferenceToTableOfContentsEntry('interesting', interestingHeading),
+            new InternalTopicLink('interesting', interestingHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -440,7 +440,7 @@ And you'll believe it.`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('I drink soda', secondSodaHeading),
+          new InternalTopicLink('I drink soda', secondSodaHeading),
           new PlainText('.')
         ]),
         new Paragraph([
@@ -501,7 +501,7 @@ Not quite true.
             new OrderedList.Item([
               new Paragraph([
                 new PlainText('First, see '),
-                new ReferenceToTableOfContentsEntry('soda', sodaHeading),
+                new InternalTopicLink('soda', sodaHeading),
                 new PlainText('.')
               ])
             ], { ordinal: 1 }),
@@ -539,7 +539,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
       new UpDocument([
         new Paragraph([
           new PlainText('There are plenty of important facts about me. For my favorite, skip to '),
-          new ReferenceToTableOfContentsEntry('honest', honestHeading),
+          new InternalTopicLink('honest', honestHeading),
           new PlainText('.')
         ]),
         new OrderedList([
@@ -586,7 +586,7 @@ Not quite true.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('I became a world leader'),
+          new InternalTopicLink('I became a world leader'),
           new PlainText('.')
         ]),
         sodaHeading,
@@ -630,7 +630,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('I drink soda', sodaHeading),
+          new InternalTopicLink('I drink soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -663,7 +663,7 @@ The zombies could arrive at any moment.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a concerned kind of guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('prepare', prepareHeading),
+          new InternalTopicLink('prepare', prepareHeading),
           new PlainText('.')
         ]),
         surviveHeading,
@@ -701,7 +701,7 @@ That's what the internet told me.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('prep are', surviveHeading),
+          new InternalTopicLink('prep are', surviveHeading),
           new PlainText('.')
         ]),
         prepareHeading,
@@ -739,7 +739,7 @@ That's what the internet told me.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('drama', surviveHeading),
+          new InternalTopicLink('drama', surviveHeading),
           new PlainText('.')
         ]),
         prepareHeading,
@@ -797,7 +797,7 @@ Not quite true. For example, see [section: emphasis].`
         stayOnTopicHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new ReferenceToTableOfContentsEntry('emphasis', emphasisSubHeading),
+          new InternalTopicLink('emphasis', emphasisSubHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
@@ -811,7 +811,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('[section: I [really] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I [really] love apples')
+            new InternalTopicLink('I [really] love apples')
           ])
         ]))
     })
@@ -820,7 +820,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('[section: I [really [truly [honestly]]] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I [really [truly [honestly]]] love apples')
+            new InternalTopicLink('I [really [truly [honestly]]] love apples')
           ])
         ]))
     })
@@ -829,7 +829,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('[section: I love :\\] apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I love :] apples')
+            new InternalTopicLink('I love :] apples')
           ])
         ]))
     })
@@ -838,7 +838,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('[section: I miss :\\[ apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I miss :[ apples')
+            new InternalTopicLink('I miss :[ apples')
           ])
         ]))
     })
@@ -850,7 +850,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('(section: I (really) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I (really) love apples')
+            new InternalTopicLink('I (really) love apples')
           ])
         ]))
     })
@@ -859,7 +859,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('(section: I (really (truly (honestly))) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I (really (truly (honestly))) love apples')
+            new InternalTopicLink('I (really (truly (honestly))) love apples')
           ])
         ]))
     })
@@ -868,7 +868,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('(section: I love :\\) apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I love :) apples')
+            new InternalTopicLink('I love :) apples')
           ])
         ]))
     })
@@ -877,7 +877,7 @@ context('The snippet belonging to a table of contents entry reference can contai
       expect(Up.parse('(section: I miss :\\( apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new ReferenceToTableOfContentsEntry('I miss :( apples')
+            new InternalTopicLink('I miss :( apples')
           ])
         ]))
     })

@@ -9,7 +9,7 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -146,7 +146,7 @@ context('An example input convention is not linkified when it is directly follow
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
-        new ReferenceToTableOfContentsEntry('shopping cart')
+        new InternalTopicLink('shopping cart')
       ]))
   })
 

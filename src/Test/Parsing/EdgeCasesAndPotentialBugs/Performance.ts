@@ -12,7 +12,7 @@ import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
@@ -329,21 +329,21 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("At the start", () => {
       expect(Up.parse('[topic:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new ReferenceToTableOfContentsEntry('He did not die.')
+          new InternalTopicLink('He did not die.')
         ]))
     })
 
     specify("At the end", () => {
       expect(Up.parse('[topic: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
         insideDocumentAndParagraph([
-          new ReferenceToTableOfContentsEntry('He did not die.')
+          new InternalTopicLink('He did not die.')
         ]))
     })
 
     specify("Before an open bracket", () => {
       expect(Up.parse('[topic: He did not die.' + lotsOfSpaces + '(Really.)]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new ReferenceToTableOfContentsEntry('He did not die.' + lotsOfSpaces + '(Really.)')
+          new InternalTopicLink('He did not die.' + lotsOfSpaces + '(Really.)')
         ]))
     })
   })

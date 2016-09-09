@@ -4,7 +4,7 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
@@ -73,7 +73,7 @@ context('A link within a table of contents entry does not produce an <a> element
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('apples', heading)]),
+        new Paragraph([new InternalTopicLink('apples', heading)]),
         heading
       ], new UpDocument.TableOfContents([heading]))
 
@@ -172,7 +172,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
     const document =
       new UpDocument([
-        new Paragraph([new ReferenceToTableOfContentsEntry('apples', heading)]),
+        new Paragraph([new InternalTopicLink('apples', heading)]),
         heading
       ], new UpDocument.TableOfContents([heading]))
 

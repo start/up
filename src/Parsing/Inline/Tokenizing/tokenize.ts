@@ -499,7 +499,7 @@ class Tokenizer {
 
         whenClosing: () => {
           const snippetFromEntry = this.flushBufferedContent().trim()
-          this.appendNewToken(TokenRole.ReferenceToTableOfContentsEntry, snippetFromEntry)
+          this.appendNewToken(TokenRole.InternalTopicLink, snippetFromEntry)
         }
       }))
   }

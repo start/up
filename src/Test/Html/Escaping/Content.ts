@@ -18,7 +18,7 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
-import { ReferenceToTableOfContentsEntry } from '../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
 
@@ -387,7 +387,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
     const document =
       new UpDocument([
         new Paragraph([
-          new ReferenceToTableOfContentsEntry('coincidence', heading)
+          new InternalTopicLink('coincidence', heading)
         ]),
         heading
       ], new UpDocument.TableOfContents([heading]))
@@ -415,7 +415,7 @@ context('Within a table of contents entry reference that was never actually asso
     const document =
       new UpDocument([
         new Paragraph([
-          new ReferenceToTableOfContentsEntry('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+          new InternalTopicLink('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
         ])
       ])
 

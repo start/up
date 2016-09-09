@@ -16,7 +16,7 @@ import { Highlight } from '../../../../SyntaxNodes/Highlight'
 import { InlineNsfw } from '../../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../../SyntaxNodes/InlineNsfl'
 import { InlineSpoiler } from '../../../../SyntaxNodes/InlineSpoiler'
-import { ReferenceToTableOfContentsEntry } from '../../../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../../../SyntaxNodes/InternalTopicLink'
 import { FootnoteBlock } from '../../../../SyntaxNodes/FootnoteBlock'
 
 
@@ -875,7 +875,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('References to table of contents entries', () => {
       expect(Up.parse('[topic: Ash fights Gary][\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new ReferenceToTableOfContentsEntry('Ash fights Gary'),
+          new InternalTopicLink('Ash fights Gary'),
           new PlainText('[\t \t \t]')
         ]))
     })

@@ -11,7 +11,7 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
@@ -195,7 +195,7 @@ export class HtmlRenderer extends Renderer {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  referenceToTableOfContentsEntry(reference: ReferenceToTableOfContentsEntry): string {
+  referenceToTableOfContentsEntry(reference: InternalTopicLink): string {
     const { entry } = reference
 
     const representation =

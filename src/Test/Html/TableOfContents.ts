@@ -14,7 +14,7 @@ import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { Heading } from '../../SyntaxNodes/Heading'
-import { ReferenceToTableOfContentsEntry } from '../../SyntaxNodes/ReferenceToTableOfContentsEntry'
+import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
 
 
 context('A table of contents produces <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
@@ -653,7 +653,7 @@ context('When a table of contents entry reference node is associated with an ent
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new ReferenceToTableOfContentsEntry('never', neverLieHeading),
+          new InternalTopicLink('never', neverLieHeading),
           new PlainText('.')
         ]),
         sodaHeading,
