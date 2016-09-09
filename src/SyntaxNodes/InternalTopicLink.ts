@@ -62,15 +62,14 @@ export class InternalTopicLink implements InlineSyntaxNode {
   }
   
   // Right now, searchable text is only used for one thing: to determine whether a given table of
-  // contents entry contains (or equals) the `topicSnippet` of an internal topic link.
+  // contents entry (i.e. a heading) contains the `topicSnippet` of an internal topic link.
   //
-  // Therefore, this method will only be called if a table of contents entry (i.e. a heading) were
-  // to inexplicably contain an internal topic link.
+  // Therefore, this method will only be called if a heading were to inexplicably contain an
+  // internal topic link.
   //
-  // Why do we only expose `this.topicSnippet` as searchable? Why not `this.entry.searchableText()`?
-  //
-  // Because if a heading *were* to contain this syntax node, we don't want that heading to be
-  // "findable" using text from the heading this syntax node is referencing. 
+  // Why do we expose only `topicSnippet` as searchable? Why not expose our entry's searchable
+  // text? Because if a heading *were* to contain this syntax node, we don't want that heading to
+  // to "matchable" using text from the heading this syntax node is referencing.
   searchableText(): string {
     return this.topicSnippet
   }
