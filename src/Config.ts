@@ -135,7 +135,7 @@ export namespace Config {
       private _image: Terms.FoundInMarkup = []
       private _nsfl: Terms.FoundInMarkup = []
       private _nsfw: Terms.FoundInMarkup = []
-      private _referenceToTableOfContentsEntry: Terms.FoundInMarkup = []
+      private _internalTopicLink: Terms.FoundInMarkup = []
       private _spoiler: Terms.FoundInMarkup = []
       private _table: Terms.FoundInMarkup = []
       private _video: Terms.FoundInMarkup = []
@@ -165,7 +165,7 @@ export namespace Config {
       }
 
       get internalTopicLink(): Terms.FoundInMarkup {
-        return distinct('section', 'topic', ...this._referenceToTableOfContentsEntry)
+        return distinct('section', 'topic', ...this._internalTopicLink)
       }
 
       get spoiler(): Terms.FoundInMarkup {
@@ -188,7 +188,7 @@ export namespace Config {
         clone._highlight = this._highlight
         clone._image = this._image
         clone._nsfl = this._nsfl
-        clone._referenceToTableOfContentsEntry = this._referenceToTableOfContentsEntry
+        clone._internalTopicLink = this._internalTopicLink
         clone._nsfw = this._nsfw
         clone._spoiler = this._spoiler
         clone._table = this._table
@@ -220,7 +220,7 @@ export namespace Config {
         this._nsfw =
           sanitizeVariations(terms.nsfw)
 
-        this._referenceToTableOfContentsEntry =
+        this._internalTopicLink =
           sanitizeVariations(terms.internalTopicLink)
 
         this._spoiler =
