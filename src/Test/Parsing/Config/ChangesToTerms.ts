@@ -456,7 +456,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "referenceToTableOfContentsEntry" config term', () => {
+describe('The "internalTopicLink" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 I drink exotic soda
@@ -481,7 +481,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [section: exotic].`,
 
     termVariations: {
-      referenceToTableOfContentsEntry: 'heading'
+      internalTopicLink: 'heading'
     },
 
     invalidMarkupForEmptyTerm: `
@@ -507,16 +507,16 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
     equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      referenceToTableOfContentsEntry: [null, 'heading', '', ' \t \t ', undefined]
+      internalTopicLink: [null, 'heading', '', ' \t \t ', undefined]
     },
     onlyEmptyAndBlankTermVariations: {
-      referenceToTableOfContentsEntry: [null, '', ' \t \t ', undefined]
+      internalTopicLink: [null, '', ' \t \t ', undefined]
     },
     noTermVariations: {
-      referenceToTableOfContentsEntry: []
+      internalTopicLink: []
     },
     conflictingTermVariations: {
-      referenceToTableOfContentsEntry: 'reference'
+      internalTopicLink: 'reference'
     }
   })
 })

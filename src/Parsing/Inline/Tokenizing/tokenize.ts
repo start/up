@@ -246,7 +246,7 @@ class Tokenizer {
             // We'll support regular footnotes
             ...this.getFootnoteConventions(),
             // And we'll support references to table of contents entries!
-            ...this.getReferenceToTableOfContentsEntryConventions()
+            ...this.getInternalTopicLinkConventions()
           ]),
 
       ...this.getLinkifyingUrlConventions(),
@@ -476,16 +476,14 @@ class Tokenizer {
     })
   }
 
-  // This convention represents a reference to a table of contents entry.
+  // This convention represents a link to an item referenced by the table of contents.
   //
   // Usage:
   //
   //   For more information, see [topic: shading].
-  //
-  // When rendered to an output format (e.g. HTML), it should serve as a link to that entry.
-  private getReferenceToTableOfContentsEntryConventions(): Convention[] {
+  private getInternalTopicLinkConventions(): Convention[] {
     const term =
-      this.config.terms.markup.referenceToTableOfContentsEntry
+      this.config.terms.markup.internalTopicLink
 
     return NORMAL_BRACKETS.map(bracket =>
       new Convention({

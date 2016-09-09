@@ -7,10 +7,10 @@ import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
 
 
-describe('The "referenceToTableOfContentsEntry" config term', () => {
+describe('The "internalTopicLink" config term', () => {
   const up = new Up({
     terms: {
-      markup: { referenceToTableOfContentsEntry: 'heading' }
+      markup: { internalTopicLink: 'heading' }
     }
   })
 
@@ -88,7 +88,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          referenceToTableOfContentsEntry: ' \t heading \t '
+          internalTopicLink: ' \t heading \t '
         }
       }
     })
@@ -129,7 +129,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          referenceToTableOfContentsEntry: '*heading*'
+          internalTopicLink: '*heading*'
         }
       }
     })
@@ -170,7 +170,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          referenceToTableOfContentsEntry: ['heading', 'ref']
+          internalTopicLink: ['heading', 'ref']
         }
       }
     })

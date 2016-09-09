@@ -195,17 +195,16 @@ export class HtmlRenderer extends Renderer {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  referenceToTableOfContentsEntry(reference: InternalTopicLink): string {
-    const { entry } = reference
+  internalTopicLink(internalTopicLink: InternalTopicLink): string {
+    const { entry } = internalTopicLink
 
     const representation =
       entry
-        // If this reference is associated with a table of contents entry, let's link to
-        // actual entry in the document.
+        // If this internal topic link is associated with a table of contents entry, let's link to
+        // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
-        // Otherwise, we'll distinguish the reference's snippet text from the surrounding
-        // text by italicizing it.
-        : new Italic([new PlainText(reference.snippetFromEntry)])
+        // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
+        : new Italic([new PlainText(internalTopicLink.snippetFromEntry)])
 
     return representation.render(this)
   }

@@ -89,7 +89,7 @@ export class InternalTopicLink implements InlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.referenceToTableOfContentsEntry(this)
+    return renderer.internalTopicLink(this)
   }
 
   private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {

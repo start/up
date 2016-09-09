@@ -75,7 +75,7 @@ export abstract class Renderer {
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string
-  abstract referenceToTableOfContentsEntry(reference: InternalTopicLink): string
+  abstract internalTopicLink(internalTopicLink: InternalTopicLink): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   abstract stress(stress: Stress): string
