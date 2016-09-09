@@ -1,47 +1,53 @@
 export interface UserProvidedSettings {
-  createSourceMap?: boolean
-  renderUnsafeContent?: boolean
-  idPrefix?: string
-  ellipsis?: string
-  defaultUrlScheme?: string
-  baseForUrlsStartingWithSlash?: string
-  baseForUrlsStartingWithHashMark?: string
-  terms?: UserProvidedSettings.Terms
+  parsing: UserProvidedSettings.Parsing
+  rendering: UserProvidedSettings.Rendering
 }
 
 
 export namespace UserProvidedSettings {
-  export interface Terms {
-    markup?: Terms.Markup
-    rendered?: Terms.Rendered
+  export interface Parsing {
+    createSourceMap?: boolean
+    defaultUrlScheme?: string
+    baseForUrlsStartingWithSlash?: string
+    baseForUrlsStartingWithHashMark?: string
+    ellipsis?: string
+    terms?: Parsing.Terms
   }
 
-  export namespace Terms {
-    export interface Markup {
-      audio?: Terms.FoundInMarkup
-      chart?: Terms.FoundInMarkup
-      highlight?: Terms.FoundInMarkup
-      image?: Terms.FoundInMarkup
-      nsfl?: Terms.FoundInMarkup
-      nsfw?: Terms.FoundInMarkup
-      sectionLink?: Terms.FoundInMarkup
-      spoiler?: Terms.FoundInMarkup
-      table?: Terms.FoundInMarkup
-      video?: Terms.FoundInMarkup
+  export namespace Parsing {
+    export interface Terms {
+      audio?: Term
+      chart?: Term
+      highlight?: Term
+      image?: Term
+      nsfl?: Term
+      nsfw?: Term
+      sectionLink?: Term
+      spoiler?: Term
+      table?: Term
+      video?: Term
     }
 
-    export type FoundInMarkup = string[] | string
+    export type Term = string[] | string
+  }
 
-    export interface Rendered {
-      footnote?: Terms.RenderedToOutput
-      footnoteReference?: Terms.RenderedToOutput
-      sectionReferencedByTableOfContents?: Terms.RenderedToOutput
-      tableOfContents?: Terms.RenderedToOutput
-      toggleNsfl?: Terms.RenderedToOutput
-      toggleNsfw?: Terms.RenderedToOutput
-      toggleSpoiler?: Terms.RenderedToOutput
+
+  export interface Rendering {
+    renderUnsafeContent?: boolean
+    terms?: Rendering.Terms
+  }
+
+  export namespace Rendering {
+    export interface Terms {
+      footnote?: Term
+      footnoteReference?: Term
+      sectionReferencedByTableOfContents?: Term
+      tableOfContents?: Term
+      toggleNsfl?: Term
+      toggleNsfw?: Term
+      toggleSpoiler?: Term
     }
 
-    export type RenderedToOutput = string
+    export type Term = string
   }
 }
