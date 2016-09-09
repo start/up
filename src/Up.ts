@@ -23,14 +23,6 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  parse(markup: string, extraSettings?: UserProvidedSettings): UpDocument {
-    return parse(markup, this.config.withChanges(extraSettings))
-  }
-
-  parseInline(markup: string, extraSettings?: UserProvidedSettings): InlineUpDocument {
-    return parseInline(markup, this.config.withChanges(extraSettings))
-  }
-
   renderHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
     const htmlRenderer = this.getHtmlRenderer(extraSettings)
 
@@ -55,6 +47,18 @@ export class Up {
         : markupOrInlineDocument
 
     return this.getHtmlRenderer(extraSettings).document(inlineDocument)
+  }
+
+  parse(markup: string, extraSettings?: UserProvidedSettings.Parsing): UpDocument {
+    return parse(markup, this.getConfigWithUpdatedParsingSettings(extraSettings))
+  }
+
+  parseInline(markup: string, extraSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+    return parseInline(markup, this.getConfigWithUpdatedParsingSettings(extraSettings))
+  }
+
+  private getConfigWithUpdatedParsingSettings(extraSettings?: UserProvidedSettings.Parsing): Config {
+    return this.config.withChanges({ parsing: extraSettings })
   }
 
   private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
@@ -85,14 +89,6 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function parse(markup: string, settings?: UserProvidedSettings): UpDocument {
-    return defaultUp.parse(markup, settings)
-  }
-
-  export function parseInline(markup: string, settings?: UserProvidedSettings): InlineUpDocument {
-    return defaultUp.parseInline(markup, settings)
-  }
-
   export function renderHtml(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
     return defaultUp.renderHtml(markupOrDocument, settings)
   }
@@ -103,6 +99,14 @@ export namespace Up {
 
   export function renderInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
     return defaultUp.renderInlineHtml(markupOrInlineDocument, settings)
+  }
+
+  export function parse(markup: string, settings?: UserProvidedSettings.Parsing): UpDocument {
+    return defaultUp.parse(markup, settings)
+  }
+
+  export function parseInline(markup: string, settings?: UserProvidedSettings.Parsing): InlineUpDocument {
+    return defaultUp.parseInline(markup, settings)
   }
 
   // This should always match the `version` field in `package.json`.

@@ -1,6 +1,6 @@
 export interface UserProvidedSettings {
-  parsing: UserProvidedSettings.Parsing
-  rendering: UserProvidedSettings.Rendering
+  parsing?: UserProvidedSettings.Parsing
+  rendering?: UserProvidedSettings.Rendering
 }
 
 
