@@ -16,11 +16,11 @@ import { Link } from '../../../SyntaxNodes/Link'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { Stress } from'../../../SyntaxNodes/Stress'
 
 
-context('Internal topic links can be within any rich inline convention:', () => {
+context('Section links can be within any rich inline convention:', () => {
   specify('Bold', () => {
     const markup = `
 I have plenty of good traits. __See [section: interesting].__
@@ -47,7 +47,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Bold([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -88,7 +88,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Emphasis([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -125,7 +125,7 @@ I love all sorts of fancy stuff.`
 
     const footnote = new Footnote([
       new PlainText('See '),
-      new InternalTopicLink('interesting', interestingHeading),
+      new SectionLink('interesting', interestingHeading),
       new PlainText('.')
     ], { referenceNumber: 1 })
 
@@ -173,7 +173,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Highlight([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -214,7 +214,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new InlineNsfl([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -255,7 +255,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new InlineNsfw([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -296,7 +296,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new InlineSpoiler([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -337,7 +337,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Italic([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),
@@ -378,7 +378,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Link([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading)
+            new SectionLink('interesting', interestingHeading)
           ], 'https://example.com'),
           new PlainText('.')
         ]),
@@ -419,7 +419,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new NormalParenthetical([
             new PlainText('(See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.)')
           ])
         ]),
@@ -460,7 +460,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new SquareParenthetical([
             new PlainText('[See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.]')
           ])
         ]),
@@ -501,7 +501,7 @@ I love all sorts of fancy stuff.`
           new PlainText('I have plenty of good traits. '),
           new Stress([
             new PlainText('See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ])
         ]),

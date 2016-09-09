@@ -19,13 +19,13 @@ import { Italic } from '../../../SyntaxNodes/Italic'
 import { Link } from '../../../SyntaxNodes/Link'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { Stress } from'../../../SyntaxNodes/Stress'
 import { Video } from'../../../SyntaxNodes/Video'
 
 
-context("An internal topic link's snippet ignores inline conventions. It only cares about matching literal text.", () => {
+context("A section link's snippet ignores inline conventions. It only cares about matching literal text.", () => {
   specify("The snippet ignores inline conventions within the entry", () => {
     const markup = `
 Stress and emphasis are commonly used in writing
@@ -69,7 +69,7 @@ Not quite true. For example, see [section: emphasis].`
         stayOnTopicHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('emphasis', emphasisSubHeading),
+          new SectionLink('emphasis', emphasisSubHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
@@ -119,7 +119,7 @@ Not quite true. For example, see [section: *emphasis*].`
         stayOnTopicHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('*emphasis*', emphasisSubHeading),
+          new SectionLink('*emphasis*', emphasisSubHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
@@ -154,7 +154,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -195,7 +195,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -237,7 +237,7 @@ Well, maybe I'm not so helpful.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a helpful guy. For more information, see "),
-            new InternalTopicLink('mac menu', greatnessHeading),
+            new SectionLink('mac menu', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -278,7 +278,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -319,7 +319,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -361,7 +361,7 @@ Well, maybe I'm not so helpful.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a helpful guy. For more information, see "),
-            new InternalTopicLink("SQL's delete", greatnessHeading),
+            new SectionLink("SQL's delete", greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -408,7 +408,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('fantastic transcript', greatnessHeading),
+            new SectionLink('fantastic transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -450,7 +450,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -491,7 +491,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -532,7 +532,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -573,7 +573,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -616,7 +616,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -660,7 +660,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('full (and exciting and amazing and', greatnessHeading),
+            new SectionLink('full (and exciting and amazing and', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -702,14 +702,14 @@ Uhhh...`
       const greatnessHeading =
         new Heading([
           new PlainText("I am great. Read the "),
-          new InternalTopicLink("full transcript of my greatness", transcriptHeading)
+          new SectionLink("full transcript of my greatness", transcriptHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -757,7 +757,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('full [and exciting and amazing and', greatnessHeading),
+            new SectionLink('full [and exciting and amazing and', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -798,7 +798,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -839,7 +839,7 @@ Well, maybe I'm not so great.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('the full transcript', greatnessHeading),
+            new SectionLink('the full transcript', greatnessHeading),
             new PlainText('.')
           ]),
           sodaHeading,

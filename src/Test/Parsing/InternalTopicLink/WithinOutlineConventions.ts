@@ -11,13 +11,13 @@ import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { Table } from '../../../SyntaxNodes/Table'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
 
 
-context('Internal topic links can appear within any outline convention that contains inline conventions:', () => {
+context('Section links can appear within any outline convention that contains inline conventions:', () => {
   specify('Blockquotes', () => {
     const markup = `
 I drink soda
@@ -53,7 +53,7 @@ Not quite true.
         new Blockquote([
           new Paragraph([
             new PlainText('First of all, see '),
-            new InternalTopicLink('soda', sodaHeading),
+            new SectionLink('soda', sodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -105,7 +105,7 @@ Minor reason
                 new PlainText('Main reason '),
                 new NormalParenthetical([
                   new PlainText('(see '),
-                  new InternalTopicLink('soda', sodaHeading),
+                  new SectionLink('soda', sodaHeading),
                   new PlainText(')')
                 ])
               ])
@@ -169,7 +169,7 @@ Minor reason
             ], new DescriptionList.Item.Description([
               new Paragraph([
                 new PlainText('See '),
-                new InternalTopicLink('soda', sodaHeading),
+                new SectionLink('soda', sodaHeading),
                 new PlainText('.')
               ])
             ])),
@@ -230,7 +230,7 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
           ]),
           new LineBlock.Line([
             new PlainText('See '),
-            new InternalTopicLink('soda', sodaHeading)
+            new SectionLink('soda', sodaHeading)
           ]),
           new LineBlock.Line([
             new PlainText("I've been alive for hundreds of years. I'm bound to have lied at some point"),
@@ -275,7 +275,7 @@ NSFL:
         new NsflBlock([
           new Paragraph([
             new PlainText('First of all, see '),
-            new InternalTopicLink('soda', sodaHeading),
+            new SectionLink('soda', sodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -321,7 +321,7 @@ NSFW:
         new NsfwBlock([
           new Paragraph([
             new PlainText('First of all, see '),
-            new InternalTopicLink('soda', sodaHeading),
+            new SectionLink('soda', sodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -366,7 +366,7 @@ Not quite true.
           new OrderedList.Item([
             new Paragraph([
               new PlainText('First of all, see '),
-              new InternalTopicLink('soda', sodaHeading),
+              new SectionLink('soda', sodaHeading),
               new PlainText('.')
             ])
           ]),
@@ -415,7 +415,7 @@ SPOILER:
         new SpoilerBlock([
           new Paragraph([
             new PlainText('First of all, see '),
-            new InternalTopicLink('soda', sodaHeading),
+            new SectionLink('soda', sodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -473,7 +473,7 @@ I get hungry;     Very valid`
               new PlainText('Reasons I lie '),
               new NormalParenthetical([
                 new PlainText('(see '),
-                new InternalTopicLink('soda', sodaHeading),
+                new SectionLink('soda', sodaHeading),
                 new PlainText(')')
               ])
             ]))
@@ -519,7 +519,7 @@ I get hungry;                     Very valid`
                 new PlainText('Reason '),
                 new NormalParenthetical([
                   new PlainText('(see '),
-                  new InternalTopicLink('soda', sodaHeading),
+                  new SectionLink('soda', sodaHeading),
                   new PlainText(')')
                 ])
               ]),
@@ -580,7 +580,7 @@ I get hungry (see [section: soda]);     Very valid`
                   new PlainText('I get hungry '),
                   new NormalParenthetical([
                     new PlainText('(see '),
-                    new InternalTopicLink('soda', sodaHeading),
+                    new SectionLink('soda', sodaHeading),
                     new PlainText(')')
                   ])
                 ]),
@@ -645,7 +645,7 @@ I get hungry (see [section: soda]);       Very valid`
                 new PlainText("I get hungry "),
                 new NormalParenthetical([
                   new PlainText('(see '),
-                  new InternalTopicLink('soda', sodaHeading),
+                  new SectionLink('soda', sodaHeading),
                   new PlainText(')')
                 ])
               ]))
@@ -693,7 +693,7 @@ Not quite true.
           new UnorderedList.Item([
             new Paragraph([
               new PlainText('First of all, see '),
-              new InternalTopicLink('soda', sodaHeading),
+              new SectionLink('soda', sodaHeading),
               new PlainText('.')
             ])
           ]),
@@ -726,7 +726,7 @@ Not quite true.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new InternalTopicLink('soda', sodaHeading),
+          new SectionLink('soda', sodaHeading),
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -768,7 +768,7 @@ I never drink soda.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new InternalTopicLink('lies', liesHeading)
+          new SectionLink('lies', liesHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -815,7 +815,7 @@ My least favorite drink.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new InternalTopicLink('soda', sodaHeading)
+          new SectionLink('soda', sodaHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -853,7 +853,7 @@ Not quite true.`
       const neverLieHeading =
         new Heading([
           new PlainText('I never lie. See '),
-          new InternalTopicLink('lies')
+          new SectionLink('lies')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -894,7 +894,7 @@ I never drink soda.`
 
       const neverLieHeading =
         new Heading([
-          new InternalTopicLink('My lies', liesHeading)
+          new SectionLink('My lies', liesHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(

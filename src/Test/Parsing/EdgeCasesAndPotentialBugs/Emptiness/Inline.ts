@@ -16,7 +16,7 @@ import { Highlight } from '../../../../SyntaxNodes/Highlight'
 import { InlineNsfw } from '../../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../../SyntaxNodes/InlineNsfl'
 import { InlineSpoiler } from '../../../../SyntaxNodes/InlineSpoiler'
-import { InternalTopicLink } from '../../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../../SyntaxNodes/SectionLink'
 import { FootnoteBlock } from '../../../../SyntaxNodes/FootnoteBlock'
 
 
@@ -58,7 +58,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         ]))
     })
 
-    specify('Internal topic links', () => {
+    specify('Section links', () => {
       expect(Up.parse('[topic:]')).to.eql(
         insideDocumentAndParagraph([
           new SquareParenthetical([
@@ -136,7 +136,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         ]))
     })
 
-    specify('Internal topic links', () => {
+    specify('Section links', () => {
       expect(Up.parse('[section:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new SquareParenthetical([
@@ -872,10 +872,10 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
     })
 
-    specify('Internal topic links', () => {
+    specify('Section links', () => {
       expect(Up.parse('[topic: Ash fights Gary][\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new InternalTopicLink('Ash fights Gary'),
+          new SectionLink('Ash fights Gary'),
           new PlainText('[\t \t \t]')
         ]))
     })

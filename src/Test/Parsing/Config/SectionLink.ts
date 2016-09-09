@@ -4,17 +4,17 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
-describe('The "internalTopicLink" config term', () => {
+describe('The "sectionLink" config term', () => {
   const up = new Up({
     terms: {
-      markup: { internalTopicLink: 'heading' }
+      markup: { sectionLink: 'heading' }
     }
   })
 
-  it('is used to indicate internal topic links', () => {
+  it('is used to indicate section links', () => {
     const markup = `
 I drink exotic soda
 =====================
@@ -41,7 +41,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new InternalTopicLink('exotic', sodaHeading),
+          new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -88,7 +88,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          internalTopicLink: ' \t heading \t '
+          sectionLink: ' \t heading \t '
         }
       }
     })
@@ -108,7 +108,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new InternalTopicLink('exotic', sodaHeading),
+          new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -129,7 +129,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          internalTopicLink: '*heading*'
+          sectionLink: '*heading*'
         }
       }
     })
@@ -149,7 +149,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new InternalTopicLink('exotic', sodaHeading),
+          new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
@@ -170,7 +170,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     const document = Up.parse(markup, {
       terms: {
         markup: {
-          internalTopicLink: ['heading', 'ref']
+          sectionLink: ['heading', 'ref']
         }
       }
     })
@@ -186,13 +186,13 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
         sodaHeading,
         new Paragraph([
           new PlainText("Actually, I only drink milk. But I'm still great, as "),
-          new InternalTopicLink('interesting', interestingHeading),
+          new SectionLink('interesting', interestingHeading),
           new PlainText(' demonstrates.')
         ]),
         interestingHeading,
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff. For example, see '),
-          new InternalTopicLink('exotic', sodaHeading),
+          new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))

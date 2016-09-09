@@ -10,7 +10,7 @@ export enum TokenRole {
   FootnoteStart,
   HighlightEnd,
   HighlightStart,
-  InternalTopicLink,
+  SectionLink,
   ImageStartAndDescription,
   ItalicEnd,
   ItalicStart,

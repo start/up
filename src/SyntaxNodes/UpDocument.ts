@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 import { Heading } from './Heading'
-import { InternalTopicLink } from './InternalTopicLink'
+import { SectionLink } from './SectionLink'
 import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { concat } from '../CollectionHelpers'
 
@@ -12,7 +12,7 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
-  // 3. Internal topic links associated with the apprioriate table of contents entries
+  // 3. Section links associated with the apprioriate table of contents entries
   //
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
   static create(children: OutlineSyntaxNode[]): UpDocument {
@@ -45,8 +45,8 @@ export namespace UpDocument {
   export class TableOfContents {
     // Returns a `TableOfContents` object with entries from `documentChildren`.
     //
-    // If there are internal topic links within `documentChildren`, they are associated with the
-    // appropriate entries (mutating the internal topic links).
+    // If there are section links within `documentChildren`, they are associated with the
+    // appropriate entries (mutating the section links).
     //
     // This methods also mutates the entries themselves, assigning them their table of contents
     // ordinals.
@@ -64,7 +64,7 @@ export namespace UpDocument {
         documentChildren.map(child => child.inlineDescendants()))
 
       for (const inlineSyntaxNode of allInlineSyntaxNodes) {
-        if (inlineSyntaxNode instanceof InternalTopicLink) {
+        if (inlineSyntaxNode instanceof SectionLink) {
           inlineSyntaxNode.referenceMostAppropriateTableOfContentsEntry(tableOfContents)
         }
       }
@@ -103,7 +103,7 @@ export namespace UpDocument {
       //
       //    Why documents should consist solely of <font> elements
       //
-      // Internal topic links try to match their `topicSnippet` with this value.
+      // Section links try to match their `sectionTitleSnippet` with this value.
       searchableText(): string
 
       // How the content of the entry should be represented inside the table of contents. This is

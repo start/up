@@ -4,11 +4,11 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { OrderedList } from '../../../SyntaxNodes/OrderedList'
 
 
-context('Bracketed text starting with "section:" or "topic:" produces an internal topic link. The terms are interchangeable, as are the brackets:', () => {
+context('Bracketed text starting with "section:" or "topic:" produces a section link. The terms are interchangeable, as are the brackets:', () => {
   const markupUsingSectionTermAndSquareBrackets = `
 I drink soda
 ============
@@ -39,7 +39,7 @@ Not quite true. For example, see [section: soda].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('soda', sodaHeading),
+          new SectionLink('soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -92,9 +92,9 @@ Not quite true. For example, see (topic: soda).`
 })
 
 
-context('An internal topic link will try to match the first entry whose text exactly matches its own snippet.', () => {
+context('A section link will try to match the first entry whose text exactly matches its own snippet.', () => {
   context('The exact match can come:', () => {
-    specify('Before the internal topic link', () => {
+    specify('Before the section link', () => {
       const markup = `
 I drink soda
 ============
@@ -121,13 +121,13 @@ Not quite true. For example, see [section: I drink soda].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda', sodaHeading),
+            new SectionLink('I drink soda', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('After the internal topic link', () => {
+    specify('After the section link', () => {
       const markup = `
 I'm a great guy. For more information, skip to [section: I never lie]. 
 
@@ -151,7 +151,7 @@ Not quite true.`
         new UpDocument([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
-            new InternalTopicLink('I never lie', neverLieHeading),
+            new SectionLink('I never lie', neverLieHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -202,7 +202,7 @@ That's what I tell 'em.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda', firstSodaHeading),
+            new SectionLink('I drink soda', firstSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -252,7 +252,7 @@ Oops.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda', firstSodaHeading),
+            new SectionLink('I drink soda', firstSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -302,7 +302,7 @@ That's what I tell 'em.`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda', secondSodaHeading),
+            new SectionLink('I drink soda', secondSodaHeading),
             new PlainText('.')
           ]),
           new Paragraph([
@@ -317,8 +317,8 @@ That's what I tell 'em.`
   })
 
 
-  context('If there are no perfectly matching entries, the internal topic link will match with the first entry to contain its snippet. That entry can come:', () => {
-    specify('Before the internal topic link', () => {
+  context('If there are no perfectly matching entries, the section link will match with the first entry to contain its snippet. That entry can come:', () => {
+    specify('Before the section link', () => {
       const markup = `
 I drink exotic soda
 =====================
@@ -345,13 +345,13 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
           interestingHeading,
           new Paragraph([
             new PlainText('I love all sorts of fancy stuff. For example, see '),
-            new InternalTopicLink('exotic', sodaHeading),
+            new SectionLink('exotic', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
     })
 
-    specify('After the internal topic link', () => {
+    specify('After the section link', () => {
       const markup = `
 I have plenty of good traits. See [section: interesting].
 
@@ -375,7 +375,7 @@ I love all sorts of fancy stuff.`
         new UpDocument([
           new Paragraph([
             new PlainText('I have plenty of good traits. See '),
-            new InternalTopicLink('interesting', interestingHeading),
+            new SectionLink('interesting', interestingHeading),
             new PlainText('.')
           ]),
           sodaHeading,
@@ -440,7 +440,7 @@ And you'll believe it.`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('I drink soda', secondSodaHeading),
+          new SectionLink('I drink soda', secondSodaHeading),
           new PlainText('.')
         ]),
         new Paragraph([
@@ -501,7 +501,7 @@ Not quite true.
             new OrderedList.Item([
               new Paragraph([
                 new PlainText('First, see '),
-                new InternalTopicLink('soda', sodaHeading),
+                new SectionLink('soda', sodaHeading),
                 new PlainText('.')
               ])
             ], { ordinal: 1 }),
@@ -539,7 +539,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
       new UpDocument([
         new Paragraph([
           new PlainText('There are plenty of important facts about me. For my favorite, skip to '),
-          new InternalTopicLink('honest', honestHeading),
+          new SectionLink('honest', honestHeading),
           new PlainText('.')
         ]),
         new OrderedList([
@@ -562,7 +562,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
 
 
 context("If there are no matching table of contents entries for a given reference", () => {
-  specify("the internal topic link simply won't be associated with an entry", () => {
+  specify("the section link simply won't be associated with an entry", () => {
     const markup = `
 I'm a great guy. For more information, skip to [section: I became a world leader]. 
 
@@ -586,7 +586,7 @@ Not quite true.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new InternalTopicLink('I became a world leader'),
+          new SectionLink('I became a world leader'),
           new PlainText('.')
         ]),
         sodaHeading,
@@ -602,7 +602,7 @@ Not quite true.`
 })
 
 
-describe('The term used to create an internal topic link ("section" by default)', () => {
+describe('The term used to create a section link ("section" by default)', () => {
   it('is case-insensitive', () => {
     const markup = `
 I drink soda
@@ -630,7 +630,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('I drink soda', sodaHeading),
+          new SectionLink('I drink soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -638,7 +638,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
 })
 
 
-context('Whitespace within the snippet of an internal topic link is significant.', () => {
+context('Whitespace within the snippet of a section link is significant.', () => {
   specify('If there is a space between words in the entry, there must be a space between those words in the snippet', () => {
     const markup = `
 I'm a concerned kind of guy. For more information, skip to [section: prepare]. 
@@ -663,7 +663,7 @@ The zombies could arrive at any moment.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a concerned kind of guy. For more information, skip to "),
-          new InternalTopicLink('prepare', prepareHeading),
+          new SectionLink('prepare', prepareHeading),
           new PlainText('.')
         ]),
         surviveHeading,
@@ -701,7 +701,7 @@ That's what the internet told me.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
-          new InternalTopicLink('prep are', surviveHeading),
+          new SectionLink('prep are', surviveHeading),
           new PlainText('.')
         ]),
         prepareHeading,
@@ -739,7 +739,7 @@ That's what the internet told me.`
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
-          new InternalTopicLink('drama', surviveHeading),
+          new SectionLink('drama', surviveHeading),
           new PlainText('.')
         ]),
         prepareHeading,
@@ -797,7 +797,7 @@ Not quite true. For example, see [section: emphasis].`
         stayOnTopicHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('emphasis', emphasisSubHeading),
+          new SectionLink('emphasis', emphasisSubHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
@@ -805,13 +805,13 @@ Not quite true. For example, see [section: emphasis].`
 })
 
 
-context('The snippet belonging to an internal topic link can contain the same type of brackets used to to enclose the internal topic link itself.', () => {
-  context('When the internal topic link is enclosed by square brackets:', () => {
+context('The snippet belonging to a section link can contain the same type of brackets used to to enclose the section link itself.', () => {
+  context('When the section link is enclosed by square brackets:', () => {
     specify('The snippet can contain matching square brackets', () => {
       expect(Up.parse('[section: I [really] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I [really] love apples')
+            new SectionLink('I [really] love apples')
           ])
         ]))
     })
@@ -820,7 +820,7 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('[section: I [really [truly [honestly]]] love apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I [really [truly [honestly]]] love apples')
+            new SectionLink('I [really [truly [honestly]]] love apples')
           ])
         ]))
     })
@@ -829,7 +829,7 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('[section: I love :\\] apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I love :] apples')
+            new SectionLink('I love :] apples')
           ])
         ]))
     })
@@ -838,19 +838,19 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('[section: I miss :\\[ apples]')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I miss :[ apples')
+            new SectionLink('I miss :[ apples')
           ])
         ]))
     })
   })
 
 
-  context('When the internal topic link is enclosed by parentheses:', () => {
+  context('When the section link is enclosed by parentheses:', () => {
     specify('The snippet can contain matching parentheses', () => {
       expect(Up.parse('(section: I (really) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I (really) love apples')
+            new SectionLink('I (really) love apples')
           ])
         ]))
     })
@@ -859,7 +859,7 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('(section: I (really (truly (honestly))) love apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I (really (truly (honestly))) love apples')
+            new SectionLink('I (really (truly (honestly))) love apples')
           ])
         ]))
     })
@@ -868,7 +868,7 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('(section: I love :\\) apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I love :) apples')
+            new SectionLink('I love :) apples')
           ])
         ]))
     })
@@ -877,7 +877,7 @@ context('The snippet belonging to an internal topic link can contain the same ty
       expect(Up.parse('(section: I miss :\\( apples)')).to.deep.equal(
         new UpDocument([
           new Paragraph([
-            new InternalTopicLink('I miss :( apples')
+            new SectionLink('I miss :( apples')
           ])
         ]))
     })

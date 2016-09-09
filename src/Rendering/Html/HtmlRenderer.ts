@@ -11,7 +11,7 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
@@ -195,16 +195,16 @@ export class HtmlRenderer extends Renderer {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  internalTopicLink(internalTopicLink: InternalTopicLink): string {
-    const { entry } = internalTopicLink
+  sectionLink(sectionLink: SectionLink): string {
+    const { entry } = sectionLink
 
     const representation =
       entry
-        // If this internal topic link is associated with a table of contents entry, let's link to
+        // If this section link is associated with a table of contents entry, let's link to
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Italic([new PlainText(internalTopicLink.topicSnippet)])
+        : new Italic([new PlainText(sectionLink.sectionTitleSnippet)])
 
     return representation.render(this)
   }

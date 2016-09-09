@@ -12,7 +12,7 @@ import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 import { Heading } from '../../../SyntaxNodes/Heading'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -982,7 +982,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 })
 
 
-describe("The URL of an internal topic link (which is the ID of the actual entry in the document)", () => {
+describe("The URL of a section link (which is the ID of the actual entry in the document)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Heading([
       new PlainText('Howdy there')
@@ -990,7 +990,7 @@ describe("The URL of an internal topic link (which is the ID of the actual entry
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1021,7 +1021,7 @@ describe("The URL of an internal topic link (which is the ID of the actual entry
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1052,7 +1052,7 @@ describe("The URL of an internal topic link (which is the ID of the actual entry
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1083,7 +1083,7 @@ describe("The URL of an internal topic link (which is the ID of the actual entry
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 
@@ -1114,7 +1114,7 @@ describe("The URL of an internal topic link (which is the ID of the actual entry
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 

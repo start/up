@@ -15,7 +15,7 @@ import { Audio } from '../../../SyntaxNodes/Audio'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
@@ -191,11 +191,11 @@ context('The following conventions cannot be linkified:', () => {
       ]))
   })
 
-  specify('Internal topic links', () => {
+  specify('Section links', () => {
     expect(Up.parse('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('After you beat the Elite Four, you are not done. See '),
-        new InternalTopicLink('rival fights'),
+        new SectionLink('rival fights'),
         new PlainText(' '),
         new NormalParenthetical([
           new PlainText('('),

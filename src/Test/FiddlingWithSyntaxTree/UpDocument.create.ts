@@ -7,7 +7,7 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 
 
 context("The `UpDocument.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
@@ -107,7 +107,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       new Heading([new PlainText('I never lie')], { level: 1 }),
       new Paragraph([
         new PlainText('Not quite true. For example, see '),
-        new InternalTopicLink('soda'),
+        new SectionLink('soda'),
         new PlainText('.')
       ])
     ]
@@ -129,7 +129,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('soda', sodaHeading),
+          new SectionLink('soda', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))

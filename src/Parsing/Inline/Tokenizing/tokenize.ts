@@ -116,7 +116,7 @@ class Tokenizer {
   // few other contexts that ignore the typical conventions).
   //
   // They allow matching brackets to be included without having to escape closing brackets that would
-  // otherwise cut short the URL (or media description, or internal topic link, etc.)
+  // otherwise cut short the URL (or media description, or section link, etc.)
   private rawParentheticalBracketConventions = this.getRawParentheticalBracketConventions()
 
   // This convention is similar to `parentheticalRawBracketConventions`, but raw curly brackets are only
@@ -245,7 +245,7 @@ class Tokenizer {
           : [
             // We'll support regular footnotes
             ...this.getFootnoteConventions(),
-            // And we'll support internal topic links!
+            // And we'll support section links!
             ...this.getInternalTopicLinkConventions()
           ]),
 
@@ -486,7 +486,7 @@ class Tokenizer {
   //   =================
   private getInternalTopicLinkConventions(): Convention[] {
     const term =
-      this.config.terms.markup.internalTopicLink
+      this.config.terms.markup.sectionLink
 
     return NORMAL_BRACKETS.map(bracket =>
       new Convention({
@@ -499,8 +499,8 @@ class Tokenizer {
         insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
         whenClosing: () => {
-          const topicSnippet = this.flushBufferedContent().trim()
-          this.appendNewToken(TokenRole.InternalTopicLink, topicSnippet)
+          const sectionTitleSnippet = this.flushBufferedContent().trim()
+          this.appendNewToken(TokenRole.SectionLink, sectionTitleSnippet)
         }
       }))
   }

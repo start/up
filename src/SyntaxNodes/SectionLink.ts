@@ -4,24 +4,24 @@ import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 
 
-// An internal topic link is essentially a reference to an item referenced by the table of contents.
-export class InternalTopicLink implements InlineSyntaxNode {
+// A section link is essentially a reference to an item referenced by the table of contents.
+export class SectionLink implements InlineSyntaxNode {
   constructor(
-    public topicSnippet: string,
+    public sectionTitleSnippet: string,
     public entry?: UpDocument.TableOfContents.Entry) { }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
-    // We'll use `topicSnippet` to try to match this internal topic link with the most appropriate
+    // We'll use `sectionTitleSnippet` to try to match this section link with the most appropriate
     // item referenced by the table of contents.
     //
     // Here's our strategy:
     //
     // First, we'll try to associate this topic syntax node with the first entry whose text exactly
-    // equals `topicSnippet`. We don't care about capitalization, but the text otherwise has to be
+    // equals `sectionTitleSnippet`. We don't care about capitalization, but the text otherwise has to be
     // an exact match. 
     //
     // If there are no exact matches, then we'll try to associate this object with the first entry
-    // whose text contains `topicSnippet`.
+    // whose text contains `sectionTitleSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck. We give up.
     //
@@ -33,9 +33,9 @@ export class InternalTopicLink implements InlineSyntaxNode {
 
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.searchableText()
-      const { topicSnippet } = this
+      const { sectionTitleSnippet } = this
 
-      if (isEqualIgnoringCapitalization(textOfEntry, topicSnippet) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(textOfEntry, sectionTitleSnippet) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
@@ -43,7 +43,7 @@ export class InternalTopicLink implements InlineSyntaxNode {
 
       if (!this.entry) {
         if (
-          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: topicSnippet })
+          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: sectionTitleSnippet })
           && this.canMatch(entry)
         ) {
           // We've found non-perfect match. We'll keep searching in case there's a perfect match
@@ -58,20 +58,20 @@ export class InternalTopicLink implements InlineSyntaxNode {
     return (
       this.entry
         ? this.entry.searchableText()
-        : this.topicSnippet)
+        : this.sectionTitleSnippet)
   }
   
   // Right now, searchable text is only used for one thing: to determine whether a given table of
-  // contents entry (i.e. a heading) contains the `topicSnippet` of an internal topic link.
+  // contents entry (i.e. a heading) contains the `sectionTitleSnippet` of a section link.
   //
   // Therefore, this method will only be called if a heading were to inexplicably contain this
   // syntax node.
   //
-  // Why do we expose only `topicSnippet` as searchable? Why not expose our entry's searchable
+  // Why do we expose only `sectionTitleSnippet` as searchable? Why not expose our entry's searchable
   // text? Because if a heading *were* to contain this syntax node, we don't want that heading to
   // to "matchable" using text from the heading this syntax node is referencing.
   searchableText(): string {
-    return this.topicSnippet
+    return this.sectionTitleSnippet
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
@@ -79,7 +79,7 @@ export class InternalTopicLink implements InlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.internalTopicLink(this)
+    return renderer.sectionLink(this)
   }
 
   private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {

@@ -4,10 +4,10 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
-describe('The snippet from an internal topic link', () => {
+describe('The snippet from a section link', () => {
   context('is evaluated for typographical conventions:', () => {
     specify('En dashes', () => {
       const markup = `
@@ -36,7 +36,7 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda–exclusively', sodaHeading),
+            new SectionLink('I drink soda–exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -69,7 +69,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink soda—exclusively', sodaHeading),
+            new SectionLink('I drink soda—exclusively', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -102,7 +102,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink 9 cans of soda ±2', sodaHeading),
+            new SectionLink('I drink 9 cans of soda ±2', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -135,7 +135,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
           neverLieHeading,
           new Paragraph([
             new PlainText('Not quite true. For example, see '),
-            new InternalTopicLink('I drink 9 cans of soda… hourly', sodaHeading),
+            new SectionLink('I drink 9 cans of soda… hourly', sodaHeading),
             new PlainText('.')
           ])
         ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
@@ -144,8 +144,8 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
 })
 
 
-context('Typographical conventions are applied before matching internal topic links with their entries. That means an internal topic link can match with an entry when', () => {
-  specify('The internal topic link uses the typographical convention but the entry uses the corresponding fancy character itself', () => {
+context('Typographical conventions are applied before matching section links with their entries. That means a section link can match with an entry when', () => {
+  specify('The section link uses the typographical convention but the entry uses the corresponding fancy character itself', () => {
     const markup = `
 I drink soda—exclusively
 =========================
@@ -172,13 +172,13 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('I drink soda—exclusively', sodaHeading),
+          new SectionLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify('The entry uses the typographical convention but the internal topic link uses the corresponding fancy character itself', () => {
+  specify('The entry uses the typographical convention but the section link uses the corresponding fancy character itself', () => {
     const markup = `
 I drink soda---exclusively
 =========================
@@ -205,7 +205,7 @@ Not quite true. For example, see [section: I drink soda—exclusively].`
         neverLieHeading,
         new Paragraph([
           new PlainText('Not quite true. For example, see '),
-          new InternalTopicLink('I drink soda—exclusively', sodaHeading),
+          new SectionLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))

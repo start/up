@@ -8,7 +8,7 @@ import { ParseableToken } from './ParseableToken'
 import { TokenRole } from './TokenRole'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
-import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { Link } from '../../SyntaxNodes/Link'
 import { RevealableConvention } from './RevealableConvention'
 import { URL_SCHEME_PATTERN } from '../../Patterns'
@@ -94,8 +94,8 @@ class Parser {
           continue
         }
 
-        case TokenRole.InternalTopicLink: {
-          this.nodes.push(new InternalTopicLink(token.value))
+        case TokenRole.SectionLink: {
+          this.nodes.push(new SectionLink(token.value))
           continue
         }
 

@@ -11,7 +11,7 @@ import { Stress } from '../SyntaxNodes/Stress'
 import { Italic } from '../SyntaxNodes/Italic'
 import { Bold } from '../SyntaxNodes/Bold'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
-import { InternalTopicLink } from '../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../SyntaxNodes/Highlight'
@@ -75,7 +75,7 @@ export abstract class Renderer {
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract plainText(plainText: PlainText): string
-  abstract internalTopicLink(internalTopicLink: InternalTopicLink): string
+  abstract sectionLink(sectionLink: SectionLink): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   abstract stress(stress: Stress): string

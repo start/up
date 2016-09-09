@@ -456,7 +456,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "internalTopicLink" config term', () => {
+describe('The "sectionLink" config term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 I drink exotic soda
@@ -481,7 +481,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [section: exotic].`,
 
     termVariations: {
-      internalTopicLink: 'heading'
+      sectionLink: 'heading'
     },
 
     invalidMarkupForEmptyTerm: `
@@ -507,16 +507,16 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
     equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      internalTopicLink: [null, 'heading', '', ' \t \t ', undefined]
+      sectionLink: [null, 'heading', '', ' \t \t ', undefined]
     },
     onlyEmptyAndBlankTermVariations: {
-      internalTopicLink: [null, '', ' \t \t ', undefined]
+      sectionLink: [null, '', ' \t \t ', undefined]
     },
     noTermVariations: {
-      internalTopicLink: []
+      sectionLink: []
     },
     conflictingTermVariations: {
-      internalTopicLink: 'reference'
+      sectionLink: 'reference'
     }
   })
 })

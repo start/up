@@ -27,7 +27,7 @@ import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Stress } from '../../SyntaxNodes/Stress'
@@ -715,11 +715,11 @@ describe('A link node', () => {
 })
 
 
-describe('An internal topic link node that is not associated with a table of contents entry', () => {
+describe('A section link node that is not associated with a table of contents entry', () => {
   it("produces an <i> element containing the unmatched snippet", () => {
     const document = new UpDocument([
       new Paragraph([
-        new InternalTopicLink('When I became ruler of the world')
+        new SectionLink('When I became ruler of the world')
       ])
     ])
 
@@ -728,7 +728,7 @@ describe('An internal topic link node that is not associated with a table of con
 })
 
 
-describe('An internal topic link node that is associated with a table of contents entry', () => {
+describe('A section link node that is associated with a table of contents entry', () => {
   it("produces a link to the entry in the document", () => {
     const heading = new Heading([
       new PlainText('Howdy there')
@@ -736,7 +736,7 @@ describe('An internal topic link node that is associated with a table of content
 
     const document =
       new UpDocument([
-        new Paragraph([new InternalTopicLink('howdy', heading)]),
+        new Paragraph([new SectionLink('howdy', heading)]),
         heading,
       ], new UpDocument.TableOfContents([heading]))
 

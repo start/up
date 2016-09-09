@@ -18,7 +18,7 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { Video } from '../../../SyntaxNodes/Video'
 import { Audio } from '../../../SyntaxNodes/Audio'
 
@@ -378,7 +378,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       '<h1 id="up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
   })
 
-  specify('In an internal topic link referencing that table of contents entry', () => {
+  specify('In a section link referencing that table of contents entry', () => {
     const heading =
       new Heading([
         new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
@@ -387,7 +387,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
     const document =
       new UpDocument([
         new Paragraph([
-          new InternalTopicLink('coincidence', heading)
+          new SectionLink('coincidence', heading)
         ]),
         heading
       ], new UpDocument.TableOfContents([heading]))
@@ -410,12 +410,12 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 })
 
 
-context('Within an internal topic link that was never actually associated with an entry', () => {
+context('Within a section link that was never actually associated with an entry', () => {
   specify('all instances of all instances of < and & are escaped', () => {
     const document =
       new UpDocument([
         new Paragraph([
-          new InternalTopicLink('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+          new SectionLink('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
         ])
       ])
 

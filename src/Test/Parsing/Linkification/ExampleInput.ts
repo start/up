@@ -9,7 +9,7 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { InternalTopicLink } from '../../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -141,12 +141,12 @@ context('An example input convention is not linkified when it is directly follow
       ]))
   })
 
-  specify('Internal topic links', () => {
+  specify('Section links', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('To view your shopping cart, press '),
         new ExampleInput('My Cart'),
-        new InternalTopicLink('shopping cart')
+        new SectionLink('shopping cart')
       ]))
   })
 

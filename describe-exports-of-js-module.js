@@ -57,7 +57,7 @@ context('Every syntax node class is exported:', () => {
     'Paragraph',
     'NormalParenthetical',
     'PlainText',
-    'InternalTopicLink',
+    'SectionLink',
     'SpoilerBlock',
     'SquareParenthetical',
     'Stress',

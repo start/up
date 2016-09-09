@@ -14,7 +14,7 @@ import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 import { Heading } from '../../SyntaxNodes/Heading'
-import { InternalTopicLink } from '../../SyntaxNodes/InternalTopicLink'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 
 
 context('A table of contents produces <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
@@ -641,7 +641,7 @@ context("When an item referenced by the table of contents has a source line numb
 })
 
 
-context('When an internal topic link node is associated with an entry', () => {
+context('When a section link node is associated with an entry', () => {
   specify("it produces a link to the actual entry in the document. The link's contents are the same as the entry's contents within the <nav> element of the table of contents", () => {
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
@@ -653,7 +653,7 @@ context('When an internal topic link node is associated with an entry', () => {
       new UpDocument([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
-          new InternalTopicLink('never', neverLieHeading),
+          new SectionLink('never', neverLieHeading),
           new PlainText('.')
         ]),
         sodaHeading,

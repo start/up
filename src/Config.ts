@@ -164,7 +164,7 @@ export namespace Config {
         return distinct('nsfw', ...this._nsfw)
       }
 
-      get internalTopicLink(): Terms.FoundInMarkup {
+      get sectionLink(): Terms.FoundInMarkup {
         return distinct('section', 'topic', ...this._internalTopicLink)
       }
 
@@ -221,7 +221,7 @@ export namespace Config {
           sanitizeVariations(terms.nsfw)
 
         this._internalTopicLink =
-          sanitizeVariations(terms.internalTopicLink)
+          sanitizeVariations(terms.sectionLink)
 
         this._spoiler =
           sanitizeVariations(terms.spoiler)
