@@ -134,16 +134,16 @@ class Tokenizer {
   // Link URL conventions serve the same purpose as media URL conventions, but for links.  
   private linkUrlConventions = this.getLinkUrlConventions()
 
-  // As a rule, when a convention containing a bare URL is closed, the bare URL gets closed first. Unlike
-  // other conventions, bare URLs cannot overlap.
+  // As a rule, when a convention containing a bare URL is closed, the bare URL gets closed first. As a
+  // consequence, bare URLs cannot overlap with other conventions.
   //
-  // This isn't a problem for bare URLs consisting only of a scheme and a hostname (e.g.
-  // https://www.subdomain.example.co.uk). Any character that can close a convention will naturally
-  // terminate the URL, too.
+  // This isn't a concern for bare URLs consisting only of a scheme and a hostname (e.g.
+  // https://www.subdomain.example.co.uk), because top-level domains must be followed by a forward slash.
+  // Any other character will naturally terminate the bare URL.
   //
-  // However, for the path part of a URL (e.g. /some/page?search=pokemon#4), that's not the case, because
+  // However, for the "path" part of a URL (e.g. /some/page?search=pokemon#4), that's not the case, because
   // the path part of a URL can contain a wider variety of characters. We can no longer rely on the URL to
-  // naturally terminate.
+  // naturally terminate when it reaches a character that should close an outer convention.
   //
   // We keep a direct reference to `bareUrlPathConvention` to help us determine whether we have an active
   // bare URL that needs to be manually closed when an outer convention is closing.
@@ -481,6 +481,9 @@ class Tokenizer {
   // Usage:
   //
   //   For more information, see [topic: shading].
+  //
+  //   Shading pixel art
+  //   =================
   private getInternalTopicLinkConventions(): Convention[] {
     const term =
       this.config.terms.markup.internalTopicLink
