@@ -72,7 +72,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         + '</dl>')
     })
 
-    specify('The "itemReferencedByTableOfContents" term', () => {
+    specify('The "sectionReferencedByTableOfContents" term', () => {
       const heading =
         new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
@@ -81,7 +81,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       const config = {
         terms: {
-          rendered: { itemReferencedByTableOfContents: 'table of contents entry' }
+          rendered: { sectionReferencedByTableOfContents: 'table of contents entry' }
         }
       }
 

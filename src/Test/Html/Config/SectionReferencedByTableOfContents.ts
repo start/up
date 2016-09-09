@@ -6,11 +6,11 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The ID of an element referenced by the table of contents', () => {
-  it('uses the config term for "itemReferencedByTableOfContents"', () => {
+  it('uses the config term for "sectionReferencedByTableOfContents"', () => {
     const up = new Up({
       terms: {
         rendered: {
-          itemReferencedByTableOfContents: 'table of contents entry'
+          sectionReferencedByTableOfContents: 'table of contents entry'
         }
       }
     })

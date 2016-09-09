@@ -182,7 +182,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const up = new Up({
       terms: {
         rendered: {
-          itemReferencedByTableOfContents: 'look "away" & smile & forget'
+          sectionReferencedByTableOfContents: 'look "away" & smile & forget'
         }
       }
     })

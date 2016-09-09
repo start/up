@@ -607,7 +607,7 @@ export class HtmlRenderer extends Renderer {
 
   private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {
     return this.idFor(
-      this.config.terms.rendered.itemReferencedByTableOfContents,
+      this.config.terms.rendered.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
   }
 

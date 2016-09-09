@@ -16,20 +16,20 @@ export class SectionLink implements InlineSyntaxNode {
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this topic syntax node with the first entry whose text exactly
-    // equals `sectionTitleSnippet`. We don't care about capitalization, but the text otherwise has to be
-    // an exact match. 
+    // First, we'll try to associate this section link with the first entry whose text exactly
+    // equals `sectionTitleSnippet`. We don't care about capitalization, but the text otherwise has
+    // to be an exact match. 
     //
-    // If there are no exact matches, then we'll try to associate this object with the first entry
-    // whose text contains `sectionTitleSnippet`.
+    // If there are no exact matches, then we'll try to associate this section link with the first
+    // entry whose text contains `sectionTitleSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck. We give up.
     //
     // TODO: Continue searching using another algorithm (e.g. string distance).
     //
-    // TODO: When searching, also include text of "outer" entries to help resolve ambiguities. "Outer"
-    // entries are those that conceptually enclose a given an entry. For example, a level-3 heading is
-    // enclosed by a level-2 and a level-1 heading.
+    // TODO: When searching, also include text of "outer" entries to help resolve ambiguities.
+    // "Outer" entries are those that conceptually enclose a given an entry. For example, a level-3
+    // heading is enclosed by a level-2 and a level-1 heading.
 
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.searchableText()
@@ -67,9 +67,9 @@ export class SectionLink implements InlineSyntaxNode {
   // Therefore, this method will only be called if a heading were to inexplicably contain this
   // syntax node.
   //
-  // Why do we expose only `sectionTitleSnippet` as searchable? Why not expose our entry's searchable
-  // text? Because if a heading *were* to contain this syntax node, we don't want that heading to
-  // to "matchable" using text from the heading this syntax node is referencing.
+  // Why do we expose only `sectionTitleSnippet` as searchable? Why not instead expose our entry's 
+  // searchable text? Because if a heading *were* to contain this syntax node, we don't want that
+  // heading to be "matchable" using text from the heading this syntax node is referencing.
   searchableText(): string {
     return this.sectionTitleSnippet
   }

@@ -135,7 +135,7 @@ export namespace Config {
       private _image: Terms.FoundInMarkup = []
       private _nsfl: Terms.FoundInMarkup = []
       private _nsfw: Terms.FoundInMarkup = []
-      private _internalTopicLink: Terms.FoundInMarkup = []
+      private _sectionLink: Terms.FoundInMarkup = []
       private _spoiler: Terms.FoundInMarkup = []
       private _table: Terms.FoundInMarkup = []
       private _video: Terms.FoundInMarkup = []
@@ -165,7 +165,7 @@ export namespace Config {
       }
 
       get sectionLink(): Terms.FoundInMarkup {
-        return distinct('section', 'topic', ...this._internalTopicLink)
+        return distinct('section', 'topic', ...this._sectionLink)
       }
 
       get spoiler(): Terms.FoundInMarkup {
@@ -188,7 +188,7 @@ export namespace Config {
         clone._highlight = this._highlight
         clone._image = this._image
         clone._nsfl = this._nsfl
-        clone._internalTopicLink = this._internalTopicLink
+        clone._sectionLink = this._sectionLink
         clone._nsfw = this._nsfw
         clone._spoiler = this._spoiler
         clone._table = this._table
@@ -220,7 +220,7 @@ export namespace Config {
         this._nsfw =
           sanitizeVariations(terms.nsfw)
 
-        this._internalTopicLink =
+        this._sectionLink =
           sanitizeVariations(terms.sectionLink)
 
         this._spoiler =
@@ -242,7 +242,7 @@ export namespace Config {
     export class Rendered {
       footnote: Terms.RenderedToOutput = 'footnote'
       footnoteReference: Terms.RenderedToOutput = 'footnote reference'
-      itemReferencedByTableOfContents: Terms.RenderedToOutput = 'topic'
+      sectionReferencedByTableOfContents: Terms.RenderedToOutput = 'topic'
       tableOfContents: Terms.RenderedToOutput = 'Table of Contents'
       toggleNsfl: Terms.RenderedToOutput = 'toggle NSFL'
       toggleNsfw: Terms.RenderedToOutput = 'toggle NSFW'
@@ -253,7 +253,7 @@ export namespace Config {
 
         clone.footnote = this.footnote
         clone.footnoteReference = this.footnoteReference
-        clone.itemReferencedByTableOfContents = this.itemReferencedByTableOfContents
+        clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
         clone.tableOfContents = this.tableOfContents
         clone.toggleNsfl = this.toggleNsfl
         clone.toggleNsfw = this.toggleNsfw
@@ -273,8 +273,8 @@ export namespace Config {
         this.footnoteReference =
           coalesce(terms.footnoteReference, this.footnoteReference)
 
-        this.itemReferencedByTableOfContents =
-          coalesce(terms.itemReferencedByTableOfContents, this.itemReferencedByTableOfContents)
+        this.sectionReferencedByTableOfContents =
+          coalesce(terms.sectionReferencedByTableOfContents, this.sectionReferencedByTableOfContents)
 
         this.tableOfContents =
           coalesce(terms.tableOfContents, this.tableOfContents)

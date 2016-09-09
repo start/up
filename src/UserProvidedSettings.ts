@@ -35,7 +35,7 @@ export namespace UserProvidedSettings {
     export interface Rendered {
       footnote?: Terms.RenderedToOutput
       footnoteReference?: Terms.RenderedToOutput
-      itemReferencedByTableOfContents?: Terms.RenderedToOutput
+      sectionReferencedByTableOfContents?: Terms.RenderedToOutput
       tableOfContents?: Terms.RenderedToOutput
       toggleNsfl?: Terms.RenderedToOutput
       toggleNsfw?: Terms.RenderedToOutput
