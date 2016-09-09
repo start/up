@@ -64,8 +64,8 @@ export class InternalTopicLink implements InlineSyntaxNode {
   // Right now, searchable text is only used for one thing: to determine whether a given table of
   // contents entry (i.e. a heading) contains the `topicSnippet` of an internal topic link.
   //
-  // Therefore, this method will only be called if a heading were to inexplicably contain an
-  // internal topic link.
+  // Therefore, this method will only be called if a heading were to inexplicably contain this
+  // syntax node.
   //
   // Why do we expose only `topicSnippet` as searchable? Why not expose our entry's searchable
   // text? Because if a heading *were* to contain this syntax node, we don't want that heading to
