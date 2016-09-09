@@ -1,187 +1,166 @@
 import { FORWARD_SLASH, HASH_MARK } from './PatternPieces'
 import { URL_SCHEME_PATTERN } from './Patterns'
-import { UserProvidedSettings} from './UserProvidedSettings'
+import { UserProvidedSettings } from './UserProvidedSettings'
 import { coalesce, distinct } from './CollectionHelpers'
 
 
 export class Config {
-  createSourceMap = false
-  renderUnsafeContent = false
-  idPrefix = 'up'
-  ellipsis = '…'
-
-  terms = new Config.Terms()
-
-  private defaultUrlScheme = 'https://'
-  private baseForUrlsStartingWithSlash = ''
-  private baseForUrlsStartingWithHashMark = ''
+  parsing = new Config.Parsing()
+  rendering = new Config.Rendering()
 
   constructor(settings?: UserProvidedSettings) {
-    if (settings) {
-      this.applyUserProvidedSettings(settings)
-    }
-  }
-
-  // Applies the relevant config settings to `url` and returns the result.
-  //
-  // This method assumes that `url` is non-blank.
-  applySettingsToUrl(url: string): string {
-    url = url.trim()
-
-    switch (url[0]) {
-      case FORWARD_SLASH:
-        return this.baseForUrlsStartingWithSlash + url
-
-      case HASH_MARK:
-        return this.baseForUrlsStartingWithHashMark + url
-    }
-
-    return (
-      URL_SCHEME_PATTERN.test(url)
-        ? url
-        : this.defaultUrlScheme + url)
+    this.applyUserProvidedSettings(settings)
   }
 
   // Returns a new `Config` object with the changes applied.
   withChanges(changes: UserProvidedSettings): Config {
     const clone = new Config()
 
-    clone.createSourceMap = this.createSourceMap
-    clone.renderUnsafeContent = this.renderUnsafeContent
-    clone.idPrefix = this.idPrefix
-    clone.ellipsis = this.ellipsis
-    clone.defaultUrlScheme = this.defaultUrlScheme
-    clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
-    clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
+    this.parsing = this.parsing.clone()
+    this.rendering = this.rendering.clone()
 
-    clone.terms = this.terms.clone()
-
-    if (changes) {
-      clone.applyUserProvidedSettings(changes)
-    }
+    clone.applyUserProvidedSettings(changes)
 
     return clone
   }
 
   private applyUserProvidedSettings(settings: UserProvidedSettings): void {
-    this.createSourceMap =
-      coalesce(settings.createSourceMap, this.createSourceMap)
+    if (!settings) {
+      return
+    }
 
-    this.renderUnsafeContent =
-      coalesce(settings.renderUnsafeContent, this.renderUnsafeContent)
-
-    this.idPrefix =
-      coalesce(settings.idPrefix, this.idPrefix)
-
-    this.ellipsis =
-      coalesce(settings.ellipsis, this.ellipsis)
-
-    this.defaultUrlScheme =
-      coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
-
-    this.baseForUrlsStartingWithSlash =
-      coalesce(settings.baseForUrlsStartingWithSlash, this.baseForUrlsStartingWithSlash)
-
-    this.baseForUrlsStartingWithHashMark =
-      coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
-
-    this.terms.applyUserProvidedSettings(settings.terms)
+    this.parsing.applyUserProvidedSettings(settings.parsing)
+    this.rendering.applyUserProvidedSettings(settings.rendering)
   }
 }
 
 
+
 export namespace Config {
-  export class Terms {
-    markup = new Terms.Markup()
-    rendered = new Terms.Rendered()
+  export class Parsing {
+    createSourceMap = false
+    ellipsis = '…'
+    terms = new Parsing.Terms()
 
-    clone(): Terms {
-      const clone = new Terms()
+    private defaultUrlScheme = 'https://'
+    private baseForUrlsStartingWithSlash = ''
+    private baseForUrlsStartingWithHashMark = ''
 
-      clone.markup = this.markup.clone()
-      clone.rendered = this.rendered.clone()
+    clone(): Parsing {
+      const clone = new Parsing()
+
+      clone.createSourceMap = this.createSourceMap
+      clone.ellipsis = this.ellipsis
+      clone.terms = this.terms.clone()
 
       return clone
     }
 
-    applyUserProvidedSettings(terms: UserProvidedSettings.Terms): void {
-      if (!terms) {
-        return
+    applyUserProvidedSettings(settings: UserProvidedSettings.Parsing): void {
+      this.createSourceMap =
+        coalesce(settings.createSourceMap, this.createSourceMap)
+
+      this.ellipsis =
+        coalesce(settings.ellipsis, this.ellipsis)
+
+      this.defaultUrlScheme =
+        coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)
+
+      this.baseForUrlsStartingWithSlash =
+        coalesce(settings.baseForUrlsStartingWithSlash, this.baseForUrlsStartingWithSlash)
+
+      this.baseForUrlsStartingWithHashMark =
+        coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
+
+      this.terms.applyUserProvidedSettings(settings.terms)
+    }
+
+    // Applies the relevant config settings to `url` and returns the result.
+    //
+    // This method assumes that `url` is non-blank.
+    applySettingsToUrl(url: string): string {
+      url = url.trim()
+
+      switch (url[0]) {
+        case FORWARD_SLASH:
+          return this.baseForUrlsStartingWithSlash + url
+
+        case HASH_MARK:
+          return this.baseForUrlsStartingWithHashMark + url
       }
 
-      this.markup.applyUserProvidedSettings(terms.markup)
-      this.rendered.applyUserProvidedSettings(terms.rendered)
+      return (
+        URL_SCHEME_PATTERN.test(url)
+          ? url
+          : this.defaultUrlScheme + url)
     }
   }
 
-  export namespace Terms {
-    // Config.Terms.FoundInMarkup
-    export type FoundInMarkup = string[]
 
-    // Config.Terms.Markup
-    export class Markup {
-      // Users can provide new variations for markup terms, but they can't overwrite the
+  export namespace Parsing {
+    export class Terms {
+      // Users can provide custom variations for markup terms, but they can't overwrite the
       // defaults.
       //
-      // However, users *can* overwrite their own terms! If the user creates an `Up` object
-      // and provides custom markup terms to its constructor, those terms can be overwritten
-      // by providing the `parse` method with a different set of terms.
+      // However, users *can* overwrite their own custom terms! If the user creates an `Up`
+      // object and provides custom markup terms to its constructor, those terms can be
+      // overwritten by providing the `parse` method with a different set of terms.
       //
       // The private fields below represent the (sanitized) variations provided by the user
       // for each term.
-      private _audio: Terms.FoundInMarkup = []
-      private _chart: Terms.FoundInMarkup = []
-      private _highlight: Terms.FoundInMarkup = []
-      private _image: Terms.FoundInMarkup = []
-      private _nsfl: Terms.FoundInMarkup = []
-      private _nsfw: Terms.FoundInMarkup = []
-      private _sectionLink: Terms.FoundInMarkup = []
-      private _spoiler: Terms.FoundInMarkup = []
-      private _table: Terms.FoundInMarkup = []
-      private _video: Terms.FoundInMarkup = []
+      private _audio: Term = []
+      private _chart: Term = []
+      private _highlight: Term = []
+      private _image: Term = []
+      private _nsfl: Term = []
+      private _nsfw: Term = []
+      private _sectionLink: Term = []
+      private _spoiler: Term = []
+      private _table: Term = []
+      private _video: Term = []
 
-      get audio(): Terms.FoundInMarkup {
+      get audio(): Term {
         return distinct('audio', ...this._audio)
       }
 
-      get chart(): Terms.FoundInMarkup {
+      get chart(): Term {
         return distinct('chart', ...this._chart)
       }
 
-      get highlight(): Terms.FoundInMarkup {
+      get highlight(): Term {
         return distinct('highlight', ...this._highlight)
       }
 
-      get image(): Terms.FoundInMarkup {
+      get image(): Term {
         return distinct('image', 'img', ...this._image)
       }
 
-      get nsfl(): Terms.FoundInMarkup {
+      get nsfl(): Term {
         return distinct('nsfl', ...this._nsfl)
       }
 
-      get nsfw(): Terms.FoundInMarkup {
+      get nsfw(): Term {
         return distinct('nsfw', ...this._nsfw)
       }
 
-      get sectionLink(): Terms.FoundInMarkup {
+      get sectionLink(): Term {
         return distinct('section', 'topic', ...this._sectionLink)
       }
 
-      get spoiler(): Terms.FoundInMarkup {
+      get spoiler(): Term {
         return distinct('spoiler', ...this._spoiler)
       }
 
-      get table(): Terms.FoundInMarkup {
+      get table(): Term {
         return distinct('table', ...this._table)
       }
 
-      get video(): Terms.FoundInMarkup {
+      get video(): Term {
         return distinct('video', 'vid', ...this._video)
       }
 
-      clone(): Markup {
-        const clone = new Markup()
+      clone(): Terms {
+        const clone = new Terms()
 
         clone._audio = this._audio
         clone._chart = this._chart
@@ -197,7 +176,7 @@ export namespace Config {
         return clone
       }
 
-      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Markup): void {
+      applyUserProvidedSettings(terms: UserProvidedSettings.Parsing.Terms): void {
         if (!terms) {
           return
         }
@@ -234,22 +213,53 @@ export namespace Config {
       }
     }
 
+    export type Term = string[]
+  }
 
-    // Terms.RenderedToOutput
-    export type RenderedToOutput = string
 
-    // Config.Terms.Rendered
-    export class Rendered {
-      footnote: Terms.RenderedToOutput = 'footnote'
-      footnoteReference: Terms.RenderedToOutput = 'footnote reference'
-      sectionReferencedByTableOfContents: Terms.RenderedToOutput = 'topic'
-      tableOfContents: Terms.RenderedToOutput = 'Table of Contents'
-      toggleNsfl: Terms.RenderedToOutput = 'toggle NSFL'
-      toggleNsfw: Terms.RenderedToOutput = 'toggle NSFW'
-      toggleSpoiler: Terms.RenderedToOutput = 'toggle spoiler'
+  export class Rendering {
+    idPrefix = 'up'
+    renderUnsafeContent = false
+    terms = new Rendering.Terms()
 
-      clone(): Rendered {
-        const clone = new Rendered()
+    clone(): Rendering {
+      const clone = new Rendering()
+
+      clone.idPrefix = this.idPrefix
+      clone.renderUnsafeContent = this.renderUnsafeContent
+      clone.terms = this.terms.clone()
+
+      return clone
+    }
+
+    applyUserProvidedSettings(settings: UserProvidedSettings.Rendering): void {
+      if (!settings) {
+        return
+      }
+
+      this.idPrefix =
+        coalesce(settings.idPrefix, this.idPrefix)
+
+      this.renderUnsafeContent =
+        coalesce(settings.renderUnsafeContent, this.renderUnsafeContent)
+
+      this.terms.applyUserProvidedSettings(settings.terms)
+    }
+  }
+
+
+  export namespace Rendering {
+    export class Terms {
+      footnote: Term = 'footnote'
+      footnoteReference: Term = 'footnote reference'
+      sectionReferencedByTableOfContents: Term = 'topic'
+      tableOfContents: Term = 'Table of Contents'
+      toggleNsfl: Term = 'toggle NSFL'
+      toggleNsfw: Term = 'toggle NSFW'
+      toggleSpoiler: Term = 'toggle spoiler'
+
+      clone(): Terms {
+        const clone = new Terms()
 
         clone.footnote = this.footnote
         clone.footnoteReference = this.footnoteReference
@@ -262,7 +272,7 @@ export namespace Config {
         return clone
       }
 
-      applyUserProvidedSettings(terms: UserProvidedSettings.Terms.Rendered): void {
+      applyUserProvidedSettings(terms: UserProvidedSettings.Rendering.Terms): void {
         if (!terms) {
           return
         }
@@ -289,6 +299,8 @@ export namespace Config {
           coalesce(terms.toggleSpoiler, this.toggleSpoiler)
       }
     }
+
+    export type Term = string
   }
 }
 
@@ -308,7 +320,7 @@ export namespace Config {
 //
 // This function takes the markup terms provided by the user, cleans them up, and massages
 // them into the format we use internally.
-function sanitizeVariations(variations: UserProvidedSettings.Terms.FoundInMarkup): Config.Terms.FoundInMarkup {
+function sanitizeVariations(variations: UserProvidedSettings.Parsing.Term): Config.Parsing.Term {
   if (variations == null) {
     return []
   }

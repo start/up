@@ -33,6 +33,7 @@ export namespace UserProvidedSettings {
 
 
   export interface Rendering {
+    idPrefix?: string
     renderUnsafeContent?: boolean
     terms?: Rendering.Terms
   }
