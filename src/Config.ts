@@ -238,7 +238,7 @@ export namespace Config {
     // Terms.RenderedToOutput
     export type RenderedToOutput = string
 
-    // Config.Terms.RenderedToOutput
+    // Config.Terms.Rendered
     export class Rendered {
       footnote: Terms.RenderedToOutput = 'footnote'
       footnoteReference: Terms.RenderedToOutput = 'footnote reference'
