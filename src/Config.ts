@@ -57,6 +57,10 @@ export namespace Config {
     }
 
     applyUserProvidedSettings(settings: UserProvidedSettings.Parsing): void {
+      if (!settings) {
+        return
+      }
+
       this.createSourceMap =
         coalesce(settings.createSourceMap, this.createSourceMap)
 
