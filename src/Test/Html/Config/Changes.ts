@@ -14,11 +14,19 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: UpDocument
-    configChanges: UserProvidedSettings.Rendering
-    conflictingConfigChanges: UserProvidedSettings.Rendering
+    changes: UserProvidedSettings.Rendering
+    conflictingChanges: UserProvidedSettings.Rendering
   }
 ): void {
-  const { document, configChanges, conflictingConfigChanges } = args
+  const { document, changes, conflictingChanges } = args
+
+  const settingsFor =
+    (changes: UserProvidedSettings.Rendering): UserProvidedSettings => ({
+      rendering: changes
+    })
+
+  const changedSettings = settingsFor(changes)
+  const conflictingChangedSettings = settingsFor(conflictingChanges)
 
   const htmlFromDefaultSettings =
     Up.renderDocumentAndTableOfContents(document)
@@ -26,40 +34,40 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   describe("when provided to the default renderDocumentAndTableOfContents method", () => {
     it("does not alter subsequent calls to the default method", () => {
-      // Let's make sure the provided config changes would actually change the HTML
-      expect(Up.renderDocumentAndTableOfContents(document, configChanges)).to.not.equal(htmlFromDefaultSettings)
+      // Let's make sure the changed settings would actually change the HTML
+      expect(Up.renderDocumentAndTableOfContents(document, changedSettings)).to.not.equal(htmlFromDefaultSettings)
 
-      // Now, let's make sure the config changes don't alter subsequent calls
+      // Now, let's make sure the changed settings don't alter subsequent calls
       expect(Up.renderDocumentAndTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
     })
   })
 
 
   const whenProvidingConfigAtCreation =
-    new Up(configChanges).renderDocumentAndTableOfContents(document)
+    new Up(changedSettings).renderDocumentAndTableOfContents(document)
 
 
   describe("when provided to an Up object's renderDocumentAndTableOfContents method", () => {
     it("does not alter the Up object's original settings", () => {
-      const up = new Up(configChanges)
+      const up = new Up(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.renderDocumentAndTableOfContents(document, conflictingConfigChanges)).to.not.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, conflictingChangedSettings)).to.not.equal(whenProvidingConfigAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.renderDocumentAndTableOfContents(document, configChanges)).to.deep.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, changedSettings)).to.deep.equal(whenProvidingConfigAtCreation)
     })
   })
 
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.renderDocumentAndTableOfContents(document, configChanges)
+    Up.renderDocumentAndTableOfContents(document, changedSettings)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().renderDocumentAndTableOfContents(document, configChanges)
+    new Up().renderDocumentAndTableOfContents(document, changedSettings)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingConfigChanges).renderDocumentAndTableOfContents(document, configChanges)
+    new Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, changedSettings)
 
 
   describe('when provided to an Up object at creation', () => {
@@ -85,10 +93,10 @@ describe('The "idPrefix" config setting', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    configChanges: {
+    changes: {
       idPrefix: 'reply 11'
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       idPrefix: 'op'
     }
   })
@@ -102,12 +110,12 @@ describe('The "footnote reference" config term', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    configChanges: {
+    changes: {
       terms: {
         footnoteReference: 'ref'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         footnoteReference: 'fn ref'
       }
@@ -123,12 +131,12 @@ describe('The "footnote" config term', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    configChanges: {
+    changes: {
       terms: {
         footnote: 'fn'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         footnote: 'note'
       }
@@ -144,12 +152,12 @@ describe('The "sectionReferencedByTableOfContents" config setting', () => {
     document: new UpDocument(
       [heading],
       new UpDocument.TableOfContents([heading])),
-    configChanges: {
+    changes: {
       terms: {
         sectionReferencedByTableOfContents: 'heading'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         sectionReferencedByTableOfContents: 'item'
       }
@@ -165,12 +173,12 @@ describe('The "toggleSpoiler" config term', () => {
         new InlineSpoiler([])
       ])
     ]),
-    configChanges: {
+    changes: {
       terms: {
         toggleSpoiler: 'show/hide'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         toggleSpoiler: 'see spoiler?'
       }
@@ -186,12 +194,12 @@ describe('The "toggleNsfw" config term', () => {
         new InlineNsfw([])
       ])
     ]),
-    configChanges: {
+    changes: {
       terms: {
         toggleNsfw: 'see/hide'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         toggleNsfw: 'show nsfw?'
       }
@@ -207,12 +215,12 @@ describe('The "toggleNsfl" config term', () => {
         new InlineNsfl([])
       ])
     ]),
-    configChanges: {
+    changes: {
       terms: {
         toggleNsfl: 'see/hide'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         toggleNsfl: 'show nsfl?'
       }
@@ -228,12 +236,12 @@ describe('The "tableOfContents" config setting', () => {
     document: new UpDocument(
       [heading],
       new UpDocument.TableOfContents([heading])),
-    configChanges: {
+    changes: {
       terms: {
         tableOfContents: 'In This Article'
       }
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       terms: {
         tableOfContents: 'Skip To…'
       }
@@ -249,10 +257,10 @@ describe('The "renderUnsafeContent" config setting', () => {
         new Link([], 'javascript:malicious')
       ])
     ]),
-    configChanges: {
+    changes: {
       renderUnsafeContent: true
     },
-    conflictingConfigChanges: {
+    conflictingChanges: {
       renderUnsafeContent: false
     }
   })
