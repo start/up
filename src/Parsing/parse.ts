@@ -5,7 +5,7 @@ import { INPUT_LINE_BREAK } from './Strings'
 import { Config } from '../Config'
 
 
-export function parse(markup: string, config: Config): UpDocument {
+export function parse(markup: string, config: Config.Parsing): UpDocument {
   const children = getOutlineSyntaxNodes({
     markupLines: markup.split(INPUT_LINE_BREAK),
     sourceLineNumber: 1,

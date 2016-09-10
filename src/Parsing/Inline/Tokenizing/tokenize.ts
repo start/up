@@ -28,7 +28,7 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(markup: string, config: Config): ParseableToken[] {
+export function tokenize(markup: string, config: Config.Parsing): ParseableToken[] {
   return new Tokenizer(markup, config).result
 }
 
@@ -37,7 +37,7 @@ export function tokenize(markup: string, config: Config): ParseableToken[] {
 // 1. Footnotes are treated as normal parentheticals
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
-export function tokenizeForInlineDocument(markup: string, config: Config): ParseableToken[] {
+export function tokenizeForInlineDocument(markup: string, config: Config.Parsing): ParseableToken[] {
   const { result } =
     new Tokenizer(markup, config, { isTokenizingInlineDocument: true })
 
@@ -205,7 +205,7 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(markup: string, private config: Config, options?: { isTokenizingInlineDocument: boolean }) {
+  constructor(markup: string, private config: Config.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
     const trimmedMarkup =
       trimEscapedAndUnescapedOuterWhitespace(markup)
 
@@ -221,16 +221,16 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT,
-          term: this.config.terms.markup.highlight
+          term: this.config.terms.highlight
         }, {
           richConvention: SPOILER,
-          term: this.config.terms.markup.spoiler
+          term: this.config.terms.spoiler
         }, {
           richConvention: NSFW,
-          term: this.config.terms.markup.nsfw
+          term: this.config.terms.nsfw
         }, {
           richConvention: NSFL,
-          term: this.config.terms.markup.nsfl
+          term: this.config.terms.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -331,7 +331,7 @@ class Tokenizer {
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      term: Config.Terms.FoundInMarkup
+      term: Config.Parsing.Term
     }
   ): Convention[] {
     const { richConvention, term } = args
@@ -486,7 +486,7 @@ class Tokenizer {
   //   =================
   private getInternalTopicLinkConventions(): Convention[] {
     const term =
-      this.config.terms.markup.sectionLink
+      this.config.terms.sectionLink
 
     return NORMAL_BRACKETS.map(bracket =>
       new Convention({
@@ -508,7 +508,7 @@ class Tokenizer {
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
       [IMAGE, VIDEO, AUDIO].map(media => {
-        const mediaTerm = media.term(this.config.terms.markup)
+        const mediaTerm = media.term(this.config.terms)
 
         return NORMAL_BRACKETS.map(bracket =>
           new Convention({
@@ -1503,7 +1503,7 @@ class Tokenizer {
 }
 
 
-function labeledBracketStartDelimiter(term: Config.Terms.FoundInMarkup, bracket: Bracket): string {
+function labeledBracketStartDelimiter(term: Config.Parsing.Term, bracket: Bracket): string {
   return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
 

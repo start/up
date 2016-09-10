@@ -23,15 +23,15 @@ const DUMMY_SOURCE_LINE_NUMBER = 1
 
 
 // If `line` would be considered anything but a regular paragraph, it's considered fancy. 
-export function isLineFancyOutlineConvention(markupLine: string, config: Config): boolean {
+export function isLineFancyOutlineConvention(markupLine: string, config: Config.Parsing): boolean {
   const markupLines = [markupLine]
 
   return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(
     parse => parse({
       markupLines,
+      config,
       sourceLineNumber: DUMMY_SOURCE_LINE_NUMBER,
       headingLeveler: DUMMY_HEADING_LEVELER,
-      config: config,
       then: () => { /* Do nothing */ }
     }))
 }

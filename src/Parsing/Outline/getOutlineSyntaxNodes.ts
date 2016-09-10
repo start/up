@@ -27,7 +27,7 @@ export function getOutlineSyntaxNodes(
     markupLines: string[],
     sourceLineNumber: number,
     headingLeveler: HeadingLeveler,
-    config: Config
+    config: Config.Parsing
   }
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, config } = args
@@ -45,9 +45,9 @@ export function getOutlineSyntaxNodes(
     tryToParseCodeBlock,
     tryToParseBlockquote,
     tryToParseTableOrChart,
-    getLabeledBlockParser(terms.markup.spoiler, SpoilerBlock),
-    getLabeledBlockParser(terms.markup.nsfw, NsfwBlock),
-    getLabeledBlockParser(terms.markup.nsfl, NsflBlock),
+    getLabeledBlockParser(terms.spoiler, SpoilerBlock),
+    getLabeledBlockParser(terms.nsfw, NsfwBlock),
+    getLabeledBlockParser(terms.nsfl, NsflBlock),
     tryToParseDescriptionList
   ]
 

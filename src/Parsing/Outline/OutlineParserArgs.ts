@@ -7,6 +7,6 @@ export interface OutlineParserArgs {
   markupLines: string[]
   sourceLineNumber: number
   headingLeveler: HeadingLeveler
-  config: Config
+  config: Config.Parsing
   then: (resultNodes: OutlineSyntaxNode[], countLinesConsumed: number) => void
 }

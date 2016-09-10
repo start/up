@@ -43,7 +43,7 @@ export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
 
 
 export abstract class Renderer {
-  constructor(protected config: Config) { }
+  constructor(protected config: Config.Rendering) { }
 
   abstract document(document: EitherTypeOfUpDocument): string
   abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
