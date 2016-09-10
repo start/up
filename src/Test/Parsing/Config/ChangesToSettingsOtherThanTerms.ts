@@ -47,7 +47,7 @@ function itWorksAsAdvertised(
 
   context('works when enabled', () => {
     specify('when calling the default parse method', () => {
-      expect(Up.parse(markup, changedSettings)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(Up.parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
@@ -55,7 +55,7 @@ function itWorksAsAdvertised(
     })
 
     specify('when calling the parse method on an Up object', () => {
-      expect(new Up().parse(markup, changedSettings)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(new Up().parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when calling the parse method on an Up object that had the setting explictly set to default when the object was created', () => {
@@ -65,18 +65,18 @@ function itWorksAsAdvertised(
 
 
   specify('can be set back to default when calling the parse method on an Up object that had the setting changed when the object was created', () => {
-    expect(new Up(changedSettings).parse(markup, conflictingChangedSettings)).to.deep.equal(documentWhenSettingIsNotChanged)
+    expect(new Up(changedSettings).parse(markup, conflictingChange)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 
   context('does not affect subsequent calls when provided', () => {
     specify('when calling the default parse method', () => {
-      expect(Up.parse(markup, changedSettings)).to.be.not.eql(Up.parse(markup))
+      expect(Up.parse(markup, change)).to.be.not.eql(Up.parse(markup))
     })
 
     specify('when calling the parse method on an Up object', () => {
       const up = new Up()
-      expect(up.parse(markup, changedSettings)).to.be.not.eql(up.parse(markup))
+      expect(up.parse(markup, change)).to.be.not.eql(up.parse(markup))
     })
   })
 }
