@@ -21,21 +21,21 @@ export class Up {
   }
 
   parseAndRender(markup: string, extraSettings: UserProvidedSettings): string {
-    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
     return this.render(document, rendering)
   }
 
   parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
     return this.renderDocumentAndTableOfContents(document, rendering)
   }
 
   parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
-    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const inlineDocument = this.parseInline(markup, parsing)
 
     return this.renderInline(inlineDocument, rendering)
@@ -84,9 +84,11 @@ export class Up {
 }
 
 
-const EMPTY_SETTINGS: UserProvidedSettings = {
-  parsing: null,
-  rendering: null
+function getParsingAndRenderingSettings(settings: UserProvidedSettings): UserProvidedSettings {
+  return settings || {
+    parsing: null,
+    rendering: null
+  }
 }
 
 
