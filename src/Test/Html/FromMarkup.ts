@@ -117,7 +117,82 @@ SPOILER
   })
 
   context('The parseAndRenderDocumentAndTableOfContents method', () => {
-    specify('Can be used with settings', () => {
+    specify('Can be used with parsing settings', () => {
+      const markup = `
+Anyway, let us get to the point.
+
+I enjoy apples
+==============
+
+LOOK AWAY
+  After beating the Elite Four, Blue steals a Red Delicious from Red.`
+
+      const { tableOfContentsHtml, documentHtml } =
+        Up.parseAndRenderDocumentAndTableOfContents(markup, {
+          parsing: {
+            createSourceMap: true,
+            terms: { spoiler: 'LOOK AWAY' }
+          }
+        })
+
+      expect(tableOfContentsHtml).to.equal(
+        '<nav class="up-table-of-contents">'
+        + '<h1>Table of Contents</h1>'
+        + '<ul>'
+        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '</ul>'
+        + '</nav>')
+
+      expect(documentHtml).to.equal(
+        '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
+        + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
+        + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
+        + '<label for="up-spoiler-1">toggle spoiler</label>'
+        + '<input id="up-spoiler-1" role="button" type="checkbox">'
+        + '<div role="alert">'
+        + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
+        + '</div>'
+        + '</div>')
+    })
+
+    specify('Can be used with rendering settings', () => {
+      const markup = `
+Anyway, let us get to the point.
+
+I enjoy apples
+==============
+
+SPOILER
+  After beating the Elite Four, Blue steals a Red Delicious from Red.`
+
+      const { tableOfContentsHtml, documentHtml } =
+        Up.parseAndRenderDocumentAndTableOfContents(markup, {
+          rendering: {
+            terms: { tableOfContents: 'In This Article' }
+          }
+        })
+
+      expect(tableOfContentsHtml).to.equal(
+        '<nav class="up-table-of-contents">'
+        + '<h1>In This Article</h1>'
+        + '<ul>'
+        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '</ul>'
+        + '</nav>')
+
+      expect(documentHtml).to.equal(
+        '<p>Anyway, let us get to the point.</p>'
+        + '<h1 id="up-topic-1">I enjoy apples</h1>'
+        + '<div class="up-spoiler up-revealable">'
+        + '<label for="up-spoiler-1">toggle spoiler</label>'
+        + '<input id="up-spoiler-1" role="button" type="checkbox">'
+        + '<div role="alert">'
+        + '<p>After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
+        + '</div>'
+        + '</div>')
+    })
+
+    specify('Can be used with both parsing and rendering settings together', () => {
       const markup = `
 Anyway, let us get to the point.
 
