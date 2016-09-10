@@ -51,6 +51,9 @@ export namespace Config {
 
       clone.createSourceMap = this.createSourceMap
       clone.ellipsis = this.ellipsis
+      clone.defaultUrlScheme = this.defaultUrlScheme
+      clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
+      clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
       clone.terms = this.terms.clone()
 
       return clone
