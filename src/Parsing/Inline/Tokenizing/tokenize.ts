@@ -1300,7 +1300,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: ELLIPSIS_PATTERN,
       thenBeforeConsumingText: () => {
-        this.bufferedContent += this.settings.ellipsis
+        this.bufferedContent += this.settings.fancyEllipsis
       }
     })
   }

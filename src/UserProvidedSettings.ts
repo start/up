@@ -18,7 +18,7 @@ export namespace UserProvidedSettings {
     defaultUrlScheme?: string
     baseForUrlsStartingWithSlash?: string
     baseForUrlsStartingWithHashMark?: string
-    ellipsis?: string
+    fancyEllipsis?: string
     terms?: Parsing.Terms
   }
 

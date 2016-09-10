@@ -140,7 +140,7 @@ describe('The "defaultUrlScheme" settings setting', () => {
 })
 
 
-describe('The "ellipsis" settings setting', () => {
+describe('The "fancyEllipsis" settings setting', () => {
   itWorksAsAdvertised({
     markup: 'I think so...',
 
@@ -157,11 +157,11 @@ describe('The "ellipsis" settings setting', () => {
     ]),
 
     change: {
-      ellipsis: '⋯'
+      fancyEllipsis: '⋯'
     },
 
     conflictingChange: {
-      ellipsis: '…'
+      fancyEllipsis: '…'
     }
   })
 })

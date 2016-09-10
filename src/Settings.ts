@@ -39,7 +39,7 @@ export class Settings {
 export namespace Settings {
   export class Parsing {
     createSourceMap = false
-    ellipsis = '…'
+    fancyEllipsis = '…'
     terms = new Parsing.Terms()
 
     private defaultUrlScheme = 'https://'
@@ -50,7 +50,7 @@ export namespace Settings {
       const clone = new Parsing()
 
       clone.createSourceMap = this.createSourceMap
-      clone.ellipsis = this.ellipsis
+      clone.fancyEllipsis = this.fancyEllipsis
       clone.defaultUrlScheme = this.defaultUrlScheme
       clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
       clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
@@ -67,8 +67,8 @@ export namespace Settings {
       this.createSourceMap =
         coalesce(settings.createSourceMap, this.createSourceMap)
 
-      this.ellipsis =
-        coalesce(settings.ellipsis, this.ellipsis)
+      this.fancyEllipsis =
+        coalesce(settings.fancyEllipsis, this.fancyEllipsis)
 
       this.defaultUrlScheme =
         coalesce(settings.defaultUrlScheme, this.defaultUrlScheme)

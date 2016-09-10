@@ -4,9 +4,9 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-context('The "ellipsis" settings setting', () => {
+context('The "fancyEllipsis" settings setting', () => {
   const up = new Up({
-    parsing: { ellipsis: '⋯' }
+    parsing: { fancyEllipsis: '⋯' }
   })
 
   it('replaces consecutive periods in the markup', () => {
@@ -24,7 +24,7 @@ context('The "ellipsis" settings setting', () => {
   })
 
   it('can consist of multiple characters', () => {
-    expect(Up.parse('I agree... to an extent.', { ellipsis: '. . .' })).to.deep.equal(
+    expect(Up.parse('I agree... to an extent.', { fancyEllipsis: '. . .' })).to.deep.equal(
       insideDocumentAndParagraph([
         new PlainText('I agree. . . to an extent.')
       ]))
