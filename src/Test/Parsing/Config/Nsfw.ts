@@ -8,14 +8,14 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 
 
-context('The "nsfw" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
+context('The "nsfw" settings term is used by both inline NSFW conventions and NSFW blocks.', () => {
   const up = new Up({
     parsing: {
       terms: { nsfw: 'ruins ending' }
     }
   })
 
-  context('For inline NSFW conventions, the config term', () => {
+  context('For inline NSFW conventions, the settings term', () => {
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -85,7 +85,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
   })
 
 
-  context('For NSFW blocks, the config term', () => {
+  context('For NSFW blocks, the settings term', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:

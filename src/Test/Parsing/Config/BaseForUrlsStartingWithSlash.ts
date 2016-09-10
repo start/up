@@ -22,7 +22,7 @@ const up = new Up({
 })
 
 
-describe('The "baseForUrlsStartingWithSlash" config setting', () => {
+describe('The "baseForUrlsStartingWithSlash" settings setting', () => {
   it('is prefixed to link URLs that start with a slash', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',

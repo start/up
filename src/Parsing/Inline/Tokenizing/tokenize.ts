@@ -4,7 +4,7 @@ import { escapeForRegex, patternStartingWith, solely, everyOptional, either, opt
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { BACKSLASH } from '../../Strings'
-import { Config } from '../../../Config'
+import { Settings } from '../../../Settings'
 import { RichConvention } from './RichConvention'
 import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
@@ -28,8 +28,8 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(markup: string, config: Config.Parsing): ParseableToken[] {
-  return new Tokenizer(markup, config).result
+export function tokenize(markup: string, settings: Settings.Parsing): ParseableToken[] {
+  return new Tokenizer(markup, settings).result
 }
 
 // This function is identical to the `tokenize` function, except:
@@ -37,9 +37,9 @@ export function tokenize(markup: string, config: Config.Parsing): ParseableToken
 // 1. Footnotes are treated as normal parentheticals
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
-export function tokenizeForInlineDocument(markup: string, config: Config.Parsing): ParseableToken[] {
+export function tokenizeForInlineDocument(markup: string, settings: Settings.Parsing): ParseableToken[] {
   const { result } =
-    new Tokenizer(markup, config, { isTokenizingInlineDocument: true })
+    new Tokenizer(markup, settings, { isTokenizingInlineDocument: true })
 
   return result
 }
@@ -205,7 +205,7 @@ class Tokenizer {
   //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(markup: string, private config: Config.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
+  constructor(markup: string, private settings: Settings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
     const trimmedMarkup =
       trimEscapedAndUnescapedOuterWhitespace(markup)
 
@@ -221,16 +221,16 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT,
-          term: this.config.terms.highlight
+          term: this.settings.terms.highlight
         }, {
           richConvention: SPOILER,
-          term: this.config.terms.spoiler
+          term: this.settings.terms.spoiler
         }, {
           richConvention: NSFW,
-          term: this.config.terms.nsfw
+          term: this.settings.terms.nsfw
         }, {
           richConvention: NSFL,
-          term: this.config.terms.nsfl
+          term: this.settings.terms.nsfl
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -331,7 +331,7 @@ class Tokenizer {
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      term: Config.Parsing.Term
+      term: Settings.Parsing.Term
     }
   ): Convention[] {
     const { richConvention, term } = args
@@ -486,7 +486,7 @@ class Tokenizer {
   //   =================
   private getInternalTopicLinkConventions(): Convention[] {
     const term =
-      this.config.terms.sectionLink
+      this.settings.terms.sectionLink
 
     return NORMAL_BRACKETS.map(bracket =>
       new Convention({
@@ -508,7 +508,7 @@ class Tokenizer {
   private getMediaDescriptionConventions(): Convention[] {
     return concat(
       [IMAGE, VIDEO, AUDIO].map(media => {
-        const mediaTerm = media.term(this.config.terms)
+        const mediaTerm = media.term(this.settings.terms)
 
         return NORMAL_BRACKETS.map(bracket =>
           new Convention({
@@ -537,7 +537,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
+        const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
         this.appendNewToken(TokenRole.MediaEndAndUrl, url)
       }
     }))
@@ -651,7 +651,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: () => {
-        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
+        const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
         whenClosing(url)
       }
     })
@@ -698,7 +698,7 @@ class Tokenizer {
       whenClosingItAlsoClosesInnerConventions: true,
 
       whenClosing: (context) => {
-        const url = this.config.applySettingsToUrl(this.flushBufferedContent())
+        const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
           this.backtrackToBeforeContext(context)
@@ -1300,7 +1300,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: ELLIPSIS_PATTERN,
       thenBeforeConsumingText: () => {
-        this.bufferedContent += this.config.ellipsis
+        this.bufferedContent += this.settings.ellipsis
       }
     })
   }
@@ -1503,7 +1503,7 @@ class Tokenizer {
 }
 
 
-function labeledBracketStartDelimiter(term: Config.Parsing.Term, bracket: Bracket): string {
+function labeledBracketStartDelimiter(term: Settings.Parsing.Term, bracket: Bracket): string {
   return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
 

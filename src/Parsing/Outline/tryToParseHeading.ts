@@ -77,14 +77,14 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     //
     // Neither of those should be parsed as headings. We only accept the heading's content if it would
     // would otherwise be parsed as a regular paragraph.
-    && !isLineFancyOutlineConvention(contentMarkup, args.config))
+    && !isLineFancyOutlineConvention(contentMarkup, args.settings))
 
   if (!hasContentAndUnderline) {
     return false
   }
 
   const children =
-    getInlineSyntaxNodes(contentMarkup, args.config)
+    getInlineSyntaxNodes(contentMarkup, args.settings)
 
   const level =
     args.headingLeveler.registerHeadingAndGetLevel(underline, optionalOverline)

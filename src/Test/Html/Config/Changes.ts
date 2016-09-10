@@ -86,7 +86,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "idPrefix" config setting', () => {
+describe('The "idPrefix" settings setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -103,7 +103,7 @@ describe('The "idPrefix" config setting', () => {
 })
 
 
-describe('The "footnote reference" config term', () => {
+describe('The "footnote reference" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -124,7 +124,7 @@ describe('The "footnote reference" config term', () => {
 })
 
 
-describe('The "footnote" config term', () => {
+describe('The "footnote" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -145,7 +145,7 @@ describe('The "footnote" config term', () => {
 })
 
 
-describe('The "sectionReferencedByTableOfContents" config setting', () => {
+describe('The "sectionReferencedByTableOfContents" settings setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
@@ -166,7 +166,7 @@ describe('The "sectionReferencedByTableOfContents" config setting', () => {
 })
 
 
-describe('The "toggleSpoiler" config term', () => {
+describe('The "toggleSpoiler" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -187,7 +187,7 @@ describe('The "toggleSpoiler" config term', () => {
 })
 
 
-describe('The "toggleNsfw" config term', () => {
+describe('The "toggleNsfw" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -208,7 +208,7 @@ describe('The "toggleNsfw" config term', () => {
 })
 
 
-describe('The "toggleNsfl" config term', () => {
+describe('The "toggleNsfl" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -229,7 +229,7 @@ describe('The "toggleNsfl" config term', () => {
 })
 
 
-describe('The "tableOfContents" config setting', () => {
+describe('The "tableOfContents" settings setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
@@ -250,7 +250,7 @@ describe('The "tableOfContents" config setting', () => {
 })
 
 
-describe('The "renderUnsafeContent" config setting', () => {
+describe('The "renderUnsafeContent" settings setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([

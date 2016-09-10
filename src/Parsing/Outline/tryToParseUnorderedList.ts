@@ -53,7 +53,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
           markupLines: linesOfMarkupInCurrentListItem,
           sourceLineNumber: sourceLineNumberForCurrentListItem,
           headingLeveler: args.headingLeveler,
-          config: args.config
+          settings: args.settings
         })))
 
     if (shouldTerminateList) {

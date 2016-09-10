@@ -5,7 +5,7 @@ import { Table } from '../../../SyntaxNodes/Table'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-describe('The "chart" config term', () => {
+describe('The "chart" settings term', () => {
   const up = new Up({
     parsing: {
       terms: { chart: 'data' }

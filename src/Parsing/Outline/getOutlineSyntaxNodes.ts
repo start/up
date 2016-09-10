@@ -18,7 +18,7 @@ import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
-import { Config } from '../../Config'
+import { Settings } from '../../Settings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -27,11 +27,11 @@ export function getOutlineSyntaxNodes(
     markupLines: string[],
     sourceLineNumber: number,
     headingLeveler: HeadingLeveler,
-    config: Config.Parsing
+    settings: Settings.Parsing
   }
 ): OutlineSyntaxNode[] {
-  const { markupLines, headingLeveler, config } = args
-  const { terms } = config
+  const { markupLines, headingLeveler, settings } = args
+  const { terms } = settings
 
   // This includes every outline convention except paragraphs and line blocks.
   //
@@ -74,9 +74,9 @@ export function getOutlineSyntaxNodes(
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
-      config,
+      settings,
       then: (newNodes, countLinesConsumed) => {
-        if (config.createSourceMap) {
+        if (settings.createSourceMap) {
           for (const node of newNodes) {
             node.sourceLineNumber = sourceLineNumber
           }

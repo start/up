@@ -67,7 +67,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
       markupLines: unparsedListItem.markupLines,
       sourceLineNumber: unparsedListItem.sourceLineNumber,
       headingLeveler: args.headingLeveler,
-      config: args.config
+      settings: args.settings
     })
 
     const ordinal = getExplicitOrdinal(unparsedListItem)

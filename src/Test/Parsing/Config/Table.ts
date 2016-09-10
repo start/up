@@ -5,7 +5,7 @@ import { Table } from '../../../SyntaxNodes/Table'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-describe('The "table" config term', () => {
+describe('The "table" settings term', () => {
   const up = new Up({
     parsing: {
       terms: { table: 'data' }

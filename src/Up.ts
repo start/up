@@ -1,6 +1,6 @@
 import { UpDocument } from './SyntaxNodes/UpDocument'
 import { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
-import { Config } from './Config'
+import { Settings } from './Settings'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parse } from './Parsing/parse'
 import { parseInline } from './Parsing/parseInline'
@@ -14,10 +14,10 @@ export interface HtmlForDocumentAndTableOfContents {
 
 
 export class Up {
-  private config: Config
+  private settings: Settings
 
   constructor(settings?: UserProvidedSettings) {
-    this.config = new Config(settings)
+    this.settings = new Settings(settings)
   }
 
   parseAndRender(markup: string, extraSettings: UserProvidedSettings): string {
@@ -70,12 +70,12 @@ export class Up {
     return htmlRenderer.renderInlineDocument(inlineDocument)
   }
 
-  private getParsingConfig(changes?: UserProvidedSettings.Parsing): Config.Parsing {
-    return this.config.withChanges({ parsing: changes }).parsing
+  private getParsingConfig(changes?: UserProvidedSettings.Parsing): Settings.Parsing {
+    return this.settings.withChanges({ parsing: changes }).parsing
   }
 
-  private getRenderingConfig(changes?: UserProvidedSettings.Rendering): Config.Rendering {
-    return this.config.withChanges({ rendering: changes }).rendering
+  private getRenderingConfig(changes?: UserProvidedSettings.Rendering): Settings.Rendering {
+    return this.settings.withChanges({ rendering: changes }).rendering
   }
 
   private getHtmlRenderer(extraRenderingSettings: UserProvidedSettings.Rendering): HtmlRenderer {

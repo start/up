@@ -129,7 +129,7 @@ context("When an otherwise-valid video's URL starts with whitespace, and the fir
 
 
 describe('A video URL starting with a slash', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" config setting is blank)', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" settings setting is blank)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -143,7 +143,7 @@ describe('A video URL starting with a slash', () => {
 
 
 describe('A video URL starting with a hash mark ("#")', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" config setting is blank)', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" settings setting is blank)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'video: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],

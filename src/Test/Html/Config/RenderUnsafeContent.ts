@@ -9,7 +9,7 @@ import { Audio } from '../../../SyntaxNodes/Audio'
 import { Video } from '../../../SyntaxNodes/Video'
 
 
-context('When the "renderUnsafeContent" config setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
+context('When the "renderUnsafeContent" settings setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
   const up = new Up({
     rendering: {
       renderUnsafeContent: true

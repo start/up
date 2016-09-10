@@ -33,7 +33,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
     markupLines: blockquotedLines,
     sourceLineNumber,
     headingLeveler,
-    config: args.config
+    settings: args.settings
   })
 
   args.then(

@@ -1,10 +1,10 @@
 import { TokenRole } from './TokenRole'
-import { Config } from '../../Config'
+import { Settings } from '../../Settings'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
 export interface MediaConvention {
-  term: (terms: Config.Parsing.Terms) => Config.Parsing.Term
+  term: (terms: Settings.Parsing.Terms) => Settings.Parsing.Term
   SyntaxNodeType: MediaSyntaxNodeType
   startAndDescriptionTokenRole: TokenRole
 }

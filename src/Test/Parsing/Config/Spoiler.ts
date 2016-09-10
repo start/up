@@ -8,14 +8,14 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 
-context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
+context('The "spoiler" settings term is used by both inline spoilers and spoiler blocks.', () => {
   const up = new Up({
     parsing: {
       terms: { spoiler: 'ruins ending' }
     }
   })
 
-  context('For inline spoilers, the config term', () => {
+  context('For inline spoilers, the settings term', () => {
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -85,7 +85,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
   })
 
 
-  context('For spoiler blocks, the config term', () => {
+  context('For spoiler blocks, the settings term', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:

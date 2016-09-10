@@ -57,7 +57,7 @@ import { getTableCells } from './getTableCells'
 export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
-  const { config } = args
+  const { settings } = args
 
   const getLabelPattern = (labels: string[]) =>
     solelyAndIgnoringCapitalization(
@@ -71,13 +71,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
   const isTable =
     markupLineConsumer.consume({
-      linePattern: getLabelPattern(config.terms.table),
+      linePattern: getLabelPattern(settings.terms.table),
       thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
   const isChart =
     !isTable && markupLineConsumer.consume({
-      linePattern: getLabelPattern(config.terms.chart),
+      linePattern: getLabelPattern(settings.terms.chart),
       thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
@@ -96,7 +96,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
-        headerCells = getTableCells(line, config).map(toHeaderCell)
+        headerCells = getTableCells(line, settings).map(toHeaderCell)
       }
     })
 
@@ -122,7 +122,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
   // * The label line (with the caption) was followed by 2 or more blank lines  
   const caption =
     captionMarkup
-      ? new Table.Caption(getInlineSyntaxNodes(captionMarkup, config))
+      ? new Table.Caption(getInlineSyntaxNodes(captionMarkup, settings))
       : undefined
 
   const rows: Table.Row[] = []
@@ -140,7 +140,7 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
     markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
-        const cells = getTableCells(line, config)
+        const cells = getTableCells(line, settings)
 
         // In a chart, the first cell of each row is treated as a header for that row.
         const rowHeaderCell =

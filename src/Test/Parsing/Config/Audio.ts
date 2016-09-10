@@ -11,7 +11,7 @@ describe('The term that represents video conventions', () => {
     }
   })
 
-  it('comes from the "audio" config term', () => {
+  it('comes from the "audio" settings term', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(up.parse(markup)).to.deep.equal(

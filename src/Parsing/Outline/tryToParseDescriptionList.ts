@@ -32,7 +32,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     while (!markupLineConsumer.done()) {
       const isSubject = markupLineConsumer.consume({
         linePattern: NON_BLANK_PATTERN,
-        if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.config),
+        if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.settings),
         thenBeforeConsumingLine: line => {
           markupPerTerm.push(line)
         }
@@ -84,7 +84,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     const subjects =
       markupPerTerm.map(subject =>
-        new DescriptionList.Item.Subject(getInlineSyntaxNodes(subject, args.config)))
+        new DescriptionList.Item.Subject(getInlineSyntaxNodes(subject, args.settings)))
 
     const description =
       new DescriptionList.Item.Description(
@@ -92,7 +92,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
           markupLines: descriptionLines,
           sourceLineNumber: sourceLineNumberForDescription,
           headingLeveler: args.headingLeveler,
-          config: args.config
+          settings: args.settings
         }))
 
     listItems.push(new DescriptionList.Item(subjects, description))

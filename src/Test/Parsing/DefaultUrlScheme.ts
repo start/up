@@ -14,7 +14,7 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 
 
 
-describe('The default URL scheme ("https://" unless changed via config setting)', () => {
+describe('The default URL scheme ("https://" unless changed via settings setting)', () => {
   it('is prefixed to schemeless link URLs', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',

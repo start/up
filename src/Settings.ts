@@ -4,17 +4,17 @@ import { UserProvidedSettings } from './UserProvidedSettings'
 import { coalesce, distinct } from './CollectionHelpers'
 
 
-export class Config {
-  parsing = new Config.Parsing()
-  rendering = new Config.Rendering()
+export class Settings {
+  parsing = new Settings.Parsing()
+  rendering = new Settings.Rendering()
 
   constructor(settings?: UserProvidedSettings) {
     this.applyUserProvidedSettings(settings)
   }
 
-  // Returns a new `Config` object with the changes applied.
-  withChanges(changes: UserProvidedSettings): Config {
-    const clone = new Config()
+  // Returns a new `Settings` object with the changes applied.
+  withChanges(changes: UserProvidedSettings): Settings {
+    const clone = new Settings()
 
     clone.parsing = this.parsing.clone()
     clone.rendering = this.rendering.clone()
@@ -36,7 +36,7 @@ export class Config {
 
 
 
-export namespace Config {
+export namespace Settings {
   export class Parsing {
     createSourceMap = false
     ellipsis = '…'
@@ -82,7 +82,7 @@ export namespace Config {
       this.terms.applyUserProvidedSettings(settings.terms)
     }
 
-    // Applies the relevant config settings to `url` and returns the result.
+    // Applies the relevant settings settings to `url` and returns the result.
     //
     // This method assumes that `url` is non-blank.
     applySettingsToUrl(url: string): string {
@@ -327,7 +327,7 @@ export namespace Config {
 //
 // This function takes the markup terms provided by the user, cleans them up, and massages
 // them into the format we use internally.
-function sanitizeVariations(variations: UserProvidedSettings.Parsing.Term): Config.Parsing.Term {
+function sanitizeVariations(variations: UserProvidedSettings.Parsing.Term): Settings.Parsing.Term {
   if (variations == null) {
     return []
   }

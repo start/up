@@ -5,7 +5,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Highlight } from '../../../SyntaxNodes/Highlight'
 
 
-describe('The "highlight" config term', () => {
+describe('The "highlight" settings term', () => {
   const up = new Up({
     parsing: {
       terms: { highlight: 'mark' }

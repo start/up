@@ -234,7 +234,7 @@ export class HtmlRenderer extends Renderer {
   inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
     return this.revealable({
       conventionName: 'spoiler',
-      termForTogglingVisibility: this.config.terms.toggleSpoiler,
+      termForTogglingVisibility: this.settings.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealable: inlineSpoiler,
       tagNameForGenericContainers: 'span'
@@ -244,7 +244,7 @@ export class HtmlRenderer extends Renderer {
   inlineNsfw(inlineNsfw: InlineNsfw): string {
     return this.revealable({
       conventionName: 'nsfw',
-      termForTogglingVisibility: this.config.terms.toggleNsfw,
+      termForTogglingVisibility: this.settings.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealable: inlineNsfw,
       tagNameForGenericContainers: 'span'
@@ -254,7 +254,7 @@ export class HtmlRenderer extends Renderer {
   inlineNsfl(inlineNsfl: InlineNsfl): string {
     return this.revealable({
       conventionName: 'nsfl',
-      termForTogglingVisibility: this.config.terms.toggleNsfl,
+      termForTogglingVisibility: this.settings.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealable: inlineNsfl,
       tagNameForGenericContainers: 'span'
@@ -264,7 +264,7 @@ export class HtmlRenderer extends Renderer {
   spoilerBlock(spoilerBlock: SpoilerBlock): string {
     return this.revealable({
       conventionName: 'spoiler',
-      termForTogglingVisibility: this.config.terms.toggleSpoiler,
+      termForTogglingVisibility: this.settings.terms.toggleSpoiler,
       conventionCount: ++this.spoilerCount,
       revealable: spoilerBlock,
       tagNameForGenericContainers: 'div',
@@ -275,7 +275,7 @@ export class HtmlRenderer extends Renderer {
   nsfwBlock(nsfwBlock: NsfwBlock): string {
     return this.revealable({
       conventionName: 'nsfw',
-      termForTogglingVisibility: this.config.terms.toggleNsfw,
+      termForTogglingVisibility: this.settings.terms.toggleNsfw,
       conventionCount: ++this.nsfwCount,
       revealable: nsfwBlock,
       tagNameForGenericContainers: 'div',
@@ -286,7 +286,7 @@ export class HtmlRenderer extends Renderer {
   nsflBlock(nsflBlock: NsflBlock): string {
     return this.revealable({
       conventionName: 'nsfl',
-      termForTogglingVisibility: this.config.terms.toggleNsfl,
+      termForTogglingVisibility: this.settings.terms.toggleNsfl,
       conventionCount: ++this.nsflCount,
       revealable: nsflBlock,
       tagNameForGenericContainers: 'div',
@@ -377,7 +377,7 @@ export class HtmlRenderer extends Renderer {
 
   private tableOfContentsTitle(): string {
     const title = new Heading([
-      new PlainText(this.config.terms.tableOfContents)], { level: 1 })
+      new PlainText(this.settings.terms.tableOfContents)], { level: 1 })
 
     return title.render(this)
   }
@@ -613,20 +613,20 @@ export class HtmlRenderer extends Renderer {
 
   private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {
     return this.idFor(
-      this.config.terms.sectionReferencedByTableOfContents,
+      this.settings.terms.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
   }
 
   private footnoteId(referenceNumber: number): string {
-    return this.idFor(this.config.terms.footnote, referenceNumber)
+    return this.idFor(this.settings.terms.footnote, referenceNumber)
   }
 
   private footnoteReferenceId(referenceNumber: number): string {
-    return this.idFor(this.config.terms.footnoteReference, referenceNumber)
+    return this.idFor(this.settings.terms.footnoteReference, referenceNumber)
   }
 
   private isUrlAllowed(url: string): boolean {
-    return this.config.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+    return this.settings.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {

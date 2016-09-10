@@ -24,7 +24,7 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
-context('When the "createSourceMap" config setting is not set to true', () => {
+context('When the "createSourceMap" settings setting is not set to true', () => {
   specify('no source maps are produced', () => {
     expect(Up.parse("I enjoy apples.")).to.deep.equal(
       new UpDocument([
@@ -34,7 +34,7 @@ context('When the "createSourceMap" config setting is not set to true', () => {
 })
 
 
-context('When the "createSourceMap" config setting is set to true, outline nodes are given a source line number.', () => {
+context('When the "createSourceMap" settings setting is set to true, outline nodes are given a source line number.', () => {
   const up = new Up({
     parsing: {
       createSourceMap: true

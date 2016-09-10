@@ -35,12 +35,12 @@ import { Heading } from '../SyntaxNodes/Heading'
 import { CodeBlock } from '../SyntaxNodes/CodeBlock'
 import { ThematicBreak } from '../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../SyntaxNodes/SyntaxNode'
-import { Config } from '../Config'
+import { Settings } from '../Settings'
 import { SOME_WHITESPACE } from '../PatternPieces'
 
 
 export abstract class Renderer {
-  constructor(protected config: Config.Rendering) { }
+  constructor(protected settings: Settings.Rendering) { }
 
   abstract renderDocument(document: UpDocument): string
   abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
@@ -94,7 +94,7 @@ export abstract class Renderer {
 
   protected idFor(...parts: any[]): string {
     const rawId =
-      [this.config.idPrefix, ...parts].join(' ')
+      [this.settings.idPrefix, ...parts].join(' ')
 
     return rawId
       .trim()

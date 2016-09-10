@@ -44,7 +44,7 @@ export function getLabeledBlockParser(
       // We add 1 because of the label line.
       sourceLineNumber: args.sourceLineNumber + 1,
       headingLeveler: args.headingLeveler,
-      config: args.config
+      settings: args.settings
     })
 
     args.then([new SyntaxNodeType(children)], markupLineConsumer.countLinesConsumed)

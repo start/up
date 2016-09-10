@@ -11,7 +11,7 @@ describe('The term that represents video conventions', () => {
     }
   })
 
-  it('comes from the "video" config term', () => {
+  it('comes from the "video" settings term', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
     expect(up.parse(markup)).to.deep.equal(

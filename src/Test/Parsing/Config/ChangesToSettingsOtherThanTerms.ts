@@ -24,7 +24,7 @@ function itWorksAsAdvertised(
 ): void {
   const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, change, conflictingChange } = args
 
-  // First, let's make sure the caller is expecting their config changes to make a difference
+  // First, let's make sure the caller is expecting their settings changes to make a difference
   expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
 
   // Next, we'll produce "overall" settings (which cover both parsing and rendering
@@ -82,7 +82,7 @@ function itWorksAsAdvertised(
 }
 
 
-describe('The "createSourceMap" config setting', () => {
+describe('The "createSourceMap" settings setting', () => {
   const headingWithSourceMap =
     new Heading([new PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
@@ -113,7 +113,7 @@ Very important
 })
 
 
-describe('The "defaultUrlScheme" config setting', () => {
+describe('The "defaultUrlScheme" settings setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
@@ -140,7 +140,7 @@ describe('The "defaultUrlScheme" config setting', () => {
 })
 
 
-describe('The "ellipsis" config setting', () => {
+describe('The "ellipsis" settings setting', () => {
   itWorksAsAdvertised({
     markup: 'I think so...',
 
@@ -167,7 +167,7 @@ describe('The "ellipsis" config setting', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithSlash" config setting', () => {
+describe('The "baseForUrlsStartingWithSlash" settings setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
@@ -194,7 +194,7 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithHashMark" config setting', () => {
+describe('The "baseForUrlsStartingWithHashMark" settings setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 

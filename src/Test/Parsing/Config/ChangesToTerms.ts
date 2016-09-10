@@ -221,7 +221,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "audio" config term', () => {
+describe('The "audio" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     markupForTermVariations: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
@@ -246,7 +246,7 @@ describe('The "audio" config term', () => {
 })
 
 
-describe('The "image" config term', () => {
+describe('The "image" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[see: Chrono Cross logo][https://example.com/cc.png]',
     markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
@@ -271,7 +271,7 @@ describe('The "image" config term', () => {
 })
 
 
-describe('The "video" config term', () => {
+describe('The "video" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
@@ -296,7 +296,7 @@ describe('The "video" config term', () => {
 })
 
 
-describe('The "highlight" config term', () => {
+describe('The "highlight" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[paint: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
@@ -321,7 +321,7 @@ describe('The "highlight" config term', () => {
 })
 
 
-describe('The "spoiler" config term', () => {
+describe('The "spoiler" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
@@ -346,7 +346,7 @@ describe('The "spoiler" config term', () => {
 })
 
 
-describe('The "nsfw" config term', () => {
+describe('The "nsfw" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[GETS YOU FIRED: Ash fights Gary]',
     markupForDefaultSettings: '[NSFW: Ash fights Gary]',
@@ -371,7 +371,7 @@ describe('The "nsfw" config term', () => {
 })
 
 
-describe('The "nsfl" config term', () => {
+describe('The "nsfl" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[RUINS LIFE: Ash fights Gary]',
     markupForDefaultSettings: '[NSFL: Ash fights Gary]',
@@ -396,7 +396,7 @@ describe('The "nsfl" config term', () => {
 })
 
 
-describe('The "table" config term', () => {
+describe('The "table" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 Data:
@@ -446,7 +446,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "chart" config term', () => {
+describe('The "chart" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 Data:
@@ -496,7 +496,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "sectionLink" config term', () => {
+describe('The "sectionLink" settings term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 I drink exotic soda
@@ -562,7 +562,7 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 })
 
 
-context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
+context('Settings settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
       parsing: {
