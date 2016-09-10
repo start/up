@@ -27,9 +27,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       ])
 
       const config = {
-        terms: {
-          rendered: { footnote: 'some extra info' }
-        }
+        terms: { footnote: 'some extra info' }
       }
 
       expect(Up.render(document, config)).to.equal(
@@ -55,9 +53,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       ])
 
       const config = {
-        terms: {
-          rendered: { footnoteReference: 'original footnote location' }
-        }
+        terms: { footnoteReference: 'original footnote location' }
       }
 
       expect(Up.render(document, config)).to.equal(
@@ -80,9 +76,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const config = {
-        terms: {
-          rendered: { sectionReferencedByTableOfContents: 'table of contents entry' }
-        }
+        terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
       }
 
       const { tableOfContentsHtml, documentHtml } =
