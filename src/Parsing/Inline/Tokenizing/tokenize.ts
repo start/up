@@ -198,11 +198,11 @@ class Tokenizer {
   //
   // 1. When a rich convention is "linkified", its entire contents are nested within a link, which
   //    itself is nested within the original convention. In that case, the most recent token would
-  //    be a LinkEndAndUrl token. For more information about "linkification", please see the
-  //    `getLinkifyingUrlConventions` method.
+  //    be a `LinkEndAndUrl` token, while the *last* token would be the original rich convention's
+  //    end token. For more information, please see the `getLinkifyingUrlConventions` method.
   //    
-  // 2. When a rich convention (one that can contain other conventions) closes, we move its end token
-  //    before any overlapping end tokens. For more information, please see the `encloseWithin` method.
+  // 2. When a rich convention closes, we move its end token before any superficially overlapping
+  //    end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
   constructor(markup: string, private settings: Settings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
