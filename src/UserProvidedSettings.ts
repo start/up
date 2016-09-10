@@ -1,5 +1,11 @@
-export interface UserProvidedSettings {
+// This is an unpleasant hack. Its purpose is to make both `parsing` and `rendering`
+// settings optional, while still requiring that at least one of the two be provided.
+export type UserProvidedSettings =
+{
   parsing?: UserProvidedSettings.Parsing
+  rendering: UserProvidedSettings.Rendering
+} | {
+  parsing: UserProvidedSettings.Parsing
   rendering?: UserProvidedSettings.Rendering
 }
 

@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
+import { settingsFor } from './Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
@@ -27,7 +28,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 ): void {
   const { markupForDefaultSettings, markupForTermVariations, invalidMarkupForEmptyTerm, invalidMarkupForBlankTerm } = args
 
-  // A quick sanity check! Let's make sure the caller didn't accidentlly provide duplicate markup arguments. 
+  // A quick sanity check! Let's make sure the caller didn't accidentlly provide duplicate
+  // markup arguments. 
   const distinctMarkupArguments = distinct(
     markupForTermVariations,
     markupForDefaultSettings,
@@ -57,19 +59,14 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const equivalentParsingSettingsWithOnlyEmptyAndBlankVariations =
     parsingSettingsFor(args.onlyEmptyAndBlankTermVariations)
 
-  const parsingSettingWithZeroVariations =
+  const parsingSettingsWithZeroVariations =
     parsingSettingsFor(args.zeroTermVariations)
 
   const conflictingParsingSettings =
     parsingSettingsFor(args.conflictingTermVariations)
 
-  // Next, we'll produce "regular" settings, which include parsing and rendering
-  // settings together. Up's constructor accepts these settings. 
-
-  const settingsFor =
-    (changes: UserProvidedSettings.Parsing): UserProvidedSettings => ({
-      rendering: changes
-    })
+  // Next, we'll produce "overall" settings (which cover both parsing and rendering
+  // settings). Up's constructor accepts these settings. 
 
   const changedSettings =
     settingsFor(changedParsingSettings)
@@ -81,7 +78,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     settingsFor(equivalentParsingSettingsWithOnlyEmptyAndBlankVariations)
 
   const settingWithZeroVariations =
-    settingsFor(parsingSettingWithZeroVariations)
+    settingsFor(parsingSettingsWithZeroVariations)
 
   const conflictingSettings =
     settingsFor(conflictingParsingSettings)
@@ -103,14 +100,14 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   describe("when provided to the default parse method", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
-      expect(Up.parse(markupForTermVariations, changedSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
+      expect(Up.parse(markupForTermVariations, changedParsingSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
     })
 
     it("does not replace the default variations", () => {
       expectConventionProperlyParse(Up.parse(markupForDefaultSettings, changedParsingSettings))
       expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
       expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
       expectConventionProperlyParse(Up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
@@ -128,7 +125,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has no effect if there are no variations", () => {
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
     })
   })
 
@@ -144,7 +141,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expectConventionProperlyParse(up.parse(markupForDefaultSettings, changedParsingSettings))
       expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
       expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
       expectConventionProperlyParse(up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
@@ -162,7 +159,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has no effect if there are no variations", () => {
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
     })
   })
 
@@ -174,15 +171,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       up.parse(markupForTermVariations)
 
     it('has the same result as providing the term when calling the default parse method', () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedSettings))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("has the same result as providing the term when calling the Up object's parse method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().parse(markupForTermVariations, changedSettings))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("has the same result as providing the term when calling the Up object's parse method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingSettings).parse(markupForTermVariations, changedSettings))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingSettings).parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
@@ -196,7 +193,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("can be overwritten by providing different custom terms to the parse method", () => {
       expectConventionFailToParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionFailToParse(up.parse(markupForTermVariations, parsingSettingWithZeroVariations))
+      expectConventionFailToParse(up.parse(markupForTermVariations, parsingSettingsWithZeroVariations))
       expectConventionFailToParse(up.parse(markupForTermVariations, conflictingParsingSettings))
     })
 

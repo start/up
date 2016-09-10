@@ -14,19 +14,19 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: UpDocument
-    changedRenderingSetting: UserProvidedSettings.Rendering
-    conflictingRenderingSetting: UserProvidedSettings.Rendering
+    change: UserProvidedSettings.Rendering
+    conflictingChange: UserProvidedSettings.Rendering
   }
 ): void {
-  const { document, changedRenderingSetting, conflictingRenderingSetting } = args
+  const { document, change, conflictingChange } = args
 
   const settingsFor =
     (changes: UserProvidedSettings.Rendering): UserProvidedSettings => ({
       rendering: changes
     })
 
-  const changedSettings = settingsFor(changedRenderingSetting)
-  const conflictingChangedSettings = settingsFor(conflictingRenderingSetting)
+  const changedSettings = settingsFor(change)
+  const conflictingChangedSettings = settingsFor(conflictingChange)
 
   const htmlFromDefaultSettings =
     Up.renderDocumentAndTableOfContents(document)
@@ -35,7 +35,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   describe("when provided to the default renderDocumentAndTableOfContents method", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the changed settings would actually change the HTML
-      expect(Up.renderDocumentAndTableOfContents(document, changedRenderingSetting)).to.not.equal(htmlFromDefaultSettings)
+      expect(Up.renderDocumentAndTableOfContents(document, change)).to.not.equal(htmlFromDefaultSettings)
 
       // Now, let's make sure the changed settings don't alter subsequent calls
       expect(Up.renderDocumentAndTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
@@ -52,22 +52,22 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       const up = new Up(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.renderDocumentAndTableOfContents(document, changedRenderingSetting)).to.not.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingConfigAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.renderDocumentAndTableOfContents(document, changedRenderingSetting)).to.deep.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, change)).to.deep.equal(whenProvidingConfigAtCreation)
     })
   })
 
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.renderDocumentAndTableOfContents(document, changedRenderingSetting)
+    Up.renderDocumentAndTableOfContents(document, change)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().renderDocumentAndTableOfContents(document, changedRenderingSetting)
+    new Up().renderDocumentAndTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, changedRenderingSetting)
+    new Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
 
 
   describe('when provided to an Up object at creation', () => {
@@ -93,10 +93,10 @@ describe('The "idPrefix" config setting', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       idPrefix: 'reply 11'
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       idPrefix: 'op'
     }
   })
@@ -110,12 +110,12 @@ describe('The "footnote reference" config term', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       terms: {
         footnoteReference: 'ref'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         footnoteReference: 'fn ref'
       }
@@ -131,12 +131,12 @@ describe('The "footnote" config term', () => {
         new Footnote([], { referenceNumber: 3 })
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       terms: {
         footnote: 'fn'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         footnote: 'note'
       }
@@ -152,12 +152,12 @@ describe('The "sectionReferencedByTableOfContents" config setting', () => {
     document: new UpDocument(
       [heading],
       new UpDocument.TableOfContents([heading])),
-    changedRenderingSetting: {
+    change: {
       terms: {
         sectionReferencedByTableOfContents: 'heading'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         sectionReferencedByTableOfContents: 'item'
       }
@@ -173,12 +173,12 @@ describe('The "toggleSpoiler" config term', () => {
         new InlineSpoiler([])
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       terms: {
         toggleSpoiler: 'show/hide'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         toggleSpoiler: 'see spoiler?'
       }
@@ -194,12 +194,12 @@ describe('The "toggleNsfw" config term', () => {
         new InlineNsfw([])
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       terms: {
         toggleNsfw: 'see/hide'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         toggleNsfw: 'show nsfw?'
       }
@@ -215,12 +215,12 @@ describe('The "toggleNsfl" config term', () => {
         new InlineNsfl([])
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       terms: {
         toggleNsfl: 'see/hide'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         toggleNsfl: 'show nsfl?'
       }
@@ -236,12 +236,12 @@ describe('The "tableOfContents" config setting', () => {
     document: new UpDocument(
       [heading],
       new UpDocument.TableOfContents([heading])),
-    changedRenderingSetting: {
+    change: {
       terms: {
         tableOfContents: 'In This Article'
       }
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       terms: {
         tableOfContents: 'Skip To…'
       }
@@ -257,10 +257,10 @@ describe('The "renderUnsafeContent" config setting', () => {
         new Link([], 'javascript:malicious')
       ])
     ]),
-    changedRenderingSetting: {
+    change: {
       renderUnsafeContent: true
     },
-    conflictingRenderingSetting: {
+    conflictingChange: {
       renderUnsafeContent: false
     }
   })

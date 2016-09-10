@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import Up from '../../../index'
+import { settingsFor } from './Helpers'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
@@ -17,15 +18,21 @@ function itWorksAsAdvertised(
     markup: string,
     documentWhenChangeIsApplied: UpDocument
     documentWhenSettingIsNotChanged: UpDocument
-    configWithSettingChanged: UserProvidedSettings.Parsing
-    configWithSettingSetToDefault: UserProvidedSettings.Parsing
+    change: UserProvidedSettings.Parsing
+    conflictingChange: UserProvidedSettings.Parsing
   }
 ): void {
-  const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, configWithSettingChanged, configWithSettingSetToDefault } = args
+  const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, change, conflictingChange } = args
 
   // First, let's make sure the caller is expecting their config changes to make a difference
   expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
 
+  // Next, we'll produce "overall" settings (which cover both parsing and rendering
+  // settings). Up's constructor accepts these settings. 
+  const changedSettings = settingsFor(change)
+  const conflictingChangedSettings = settingsFor(conflictingChange)
+
+  // And now we're ready to test!
 
   context('is disabled by default', () => {
     specify('when the default parse method is called', () => {
@@ -40,36 +47,36 @@ function itWorksAsAdvertised(
 
   context('works when enabled', () => {
     specify('when calling the default parse method', () => {
-      expect(Up.parse(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(Up.parse(markup, changedSettings)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when creating an Up object', () => {
-      expect(new Up(configWithSettingChanged).parse(markup)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(new Up(changedSettings).parse(markup)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when calling the parse method on an Up object', () => {
-      expect(new Up().parse(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(new Up().parse(markup, changedSettings)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
     specify('when calling the parse method on an Up object that had the setting explictly set to default when the object was created', () => {
-      expect(new Up(configWithSettingSetToDefault).parse(markup, configWithSettingChanged)).to.deep.equal(documentWhenChangeIsApplied)
+      expect(new Up(conflictingChangedSettings).parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
   })
 
 
   specify('can be set back to default when calling the parse method on an Up object that had the setting changed when the object was created', () => {
-    expect(new Up(configWithSettingChanged).parse(markup, configWithSettingSetToDefault)).to.deep.equal(documentWhenSettingIsNotChanged)
+    expect(new Up(changedSettings).parse(markup, conflictingChangedSettings)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 
   context('does not affect subsequent calls when provided', () => {
     specify('when calling the default parse method', () => {
-      expect(Up.parse(markup, configWithSettingChanged)).to.be.not.eql(Up.parse(markup))
+      expect(Up.parse(markup, changedSettings)).to.be.not.eql(Up.parse(markup))
     })
 
     specify('when calling the parse method on an Up object', () => {
       const up = new Up()
-      expect(up.parse(markup, configWithSettingChanged)).to.be.not.eql(up.parse(markup))
+      expect(up.parse(markup, changedSettings)).to.be.not.eql(up.parse(markup))
     })
   })
 }
@@ -95,11 +102,11 @@ Very important
       [headingWithoutSourceMap],
       new UpDocument.TableOfContents([headingWithoutSourceMap])),
 
-    configWithSettingChanged: {
+    change: {
       createSourceMap: true
     },
 
-    configWithSettingSetToDefault: {
+    conflictingChange: {
       createSourceMap: false
     }
   })
@@ -122,11 +129,11 @@ describe('The "defaultUrlScheme" config setting', () => {
       ])
     ]),
 
-    configWithSettingChanged: {
+    change: {
       defaultUrlScheme: 'my-app://'
     },
 
-    configWithSettingSetToDefault: {
+    conflictingChange: {
       defaultUrlScheme: 'https://'
     }
   })
@@ -149,11 +156,11 @@ describe('The "ellipsis" config setting', () => {
       ])
     ]),
 
-    configWithSettingChanged: {
+    change: {
       ellipsis: '⋯'
     },
 
-    configWithSettingSetToDefault: {
+    conflictingChange: {
       ellipsis: '…'
     }
   })
@@ -176,11 +183,11 @@ describe('The "baseForUrlsStartingWithSlash" config setting', () => {
       ])
     ]),
 
-    configWithSettingChanged: {
+    change: {
       baseForUrlsStartingWithSlash: 'my-app://example.com/see'
     },
 
-    configWithSettingSetToDefault: {
+    conflictingChange: {
       baseForUrlsStartingWithSlash: ''
     }
   })
@@ -203,11 +210,11 @@ describe('The "baseForUrlsStartingWithHashMark" config setting', () => {
       ])
     ]),
 
-    configWithSettingChanged: {
+    change: {
       baseForUrlsStartingWithHashMark: 'my-app://example.com/see'
     },
 
-    configWithSettingSetToDefault: {
+    conflictingChange: {
       baseForUrlsStartingWithHashMark: ''
     }
   })
