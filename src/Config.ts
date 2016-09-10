@@ -16,8 +16,8 @@ export class Config {
   withChanges(changes: UserProvidedSettings): Config {
     const clone = new Config()
 
-    this.parsing = this.parsing.clone()
-    this.rendering = this.rendering.clone()
+    clone.parsing = this.parsing.clone()
+    clone.rendering = this.rendering.clone()
 
     clone.applyUserProvidedSettings(changes)
 
