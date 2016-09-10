@@ -97,36 +97,36 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function parseAndRender(markup: string, extraSettings?: UserProvidedSettings): string {
-    return defaultUp.parseAndRender(markup, extraSettings)
+  export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
+    return defaultUp.parseAndRender(markup, settings)
   }
 
-  export function parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, extraSettings)
+  export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, settings)
   }
 
-  export function parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
-    return defaultUp.parseAndRenderInline(markup, extraSettings)
+  export function parseAndRenderInline(markup: string, settings?: UserProvidedSettings): string {
+    return defaultUp.parseAndRenderInline(markup, settings)
   }
 
-  export function parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
-    return defaultUp.parse(markup, extraParsingSettings)
+  export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): UpDocument {
+    return defaultUp.parse(markup, parsingSettings)
   }
 
-  export function parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
-    return defaultUp.parseInline(markup, extraParsingSettings)
+  export function parseInline(markup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+    return defaultUp.parseInline(markup, parsingSettings)
   }
 
-  export function render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
-    return defaultUp.render(document, extraRenderingSettings)
+  export function render(document: UpDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+    return defaultUp.render(document, renderingSettings)
   }
 
-  export function renderDocumentAndTableOfContents(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
-    return defaultUp.renderDocumentAndTableOfContents(document, extraRenderingSettings)
+  export function renderDocumentAndTableOfContents(document: UpDocument, renderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
+    return defaultUp.renderDocumentAndTableOfContents(document, renderingSettings)
   }
 
-  export function renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
-    return defaultUp.renderInline(inlineDocument, extraRenderingSettings)
+  export function renderInline(inlineDocument: InlineUpDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+    return defaultUp.renderInline(inlineDocument, renderingSettings)
   }
 
   // This should always match the `version` field in `package.json`.
