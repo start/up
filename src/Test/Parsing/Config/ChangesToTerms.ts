@@ -89,7 +89,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const properlyParsedConvention =
     Up.parse(markupForDefaultSettings)
 
-  function expectConventionProperlyParse(document: UpDocument): void {
+  function expectConventiontoProperlyParse(document: UpDocument): void {
     expect(document).to.deep.equal(properlyParsedConvention)
   }
 
@@ -104,11 +104,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("does not replace the default variations", () => {
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, changedParsingSettings))
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, conflictingParsingSettings))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, changedParsingSettings))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
     it("has any empty or blank variations ignored", () => {
@@ -117,15 +117,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expectConventionFailToParse(Up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventionProperlyParse(Up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
     })
 
     it("has no effect if there are no variations", () => {
-      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
+      expectConventiontoProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
     })
   })
 
@@ -134,15 +134,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up()
 
     it("does not alter the Up object's original settings", () => {
-      expectConventionProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
+      expectConventiontoProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, changedParsingSettings))
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, conflictingParsingSettings))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, changedParsingSettings))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
     it("has any blank variations ignored", () => {
@@ -151,15 +151,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expectConventionFailToParse(up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventionProperlyParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
     })
 
     it("has no effect if there are no variations", () => {
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings, parsingSettingsWithZeroVariations))
     })
   })
 
@@ -183,12 +183,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("does not replace the default variations", () => {
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
 
-      expectConventionProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventionProperlyParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventionProperlyParse(new Up(settingWithZeroVariations).parse(markupForDefaultSettings))
-      expectConventionProperlyParse(new Up(conflictingSettings).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up(settingWithZeroVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up(conflictingSettings).parse(markupForDefaultSettings))
     })
 
     it("can be overwritten by providing different custom terms to the parse method", () => {
@@ -203,19 +203,19 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expectConventionFailToParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventionProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
+      expectConventiontoProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
       const up = new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations)
 
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })
 
     it("has no effect if there are no variations", () => {
       const up = new Up(settingWithZeroVariations)
 
-      expectConventionProperlyParse(up.parse(markupForDefaultSettings, settingWithZeroVariations))
+      expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })
   })
 }

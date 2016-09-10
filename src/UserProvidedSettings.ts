@@ -1,17 +1,19 @@
-// This is an unpleasant hack. Its purpose is to make both `parsing` and `rendering`
-// settings optional, while still requiring that at least one of the two be provided.
+// This is an unpleasant hack.
+//
+// Its purpose is to make both `parsing` and `rendering` settings optional, while still
+// requiring that at least one of the two be provided.
 export type UserProvidedSettings =
-{
-  parsing?: UserProvidedSettings.Parsing
-  rendering: UserProvidedSettings.Rendering
-} | {
-  parsing: UserProvidedSettings.Parsing
-  rendering?: UserProvidedSettings.Rendering
-}
+  {
+    parsing?: UserProvidedSettings.Parsing
+    rendering: UserProvidedSettings.Rendering
+  } | {
+    parsing: UserProvidedSettings.Parsing
+    rendering?: UserProvidedSettings.Rendering
+  }
 
 
 export namespace UserProvidedSettings {
-  export interface Parsing {
+  export interface Parsing extends SpecificSettings {
     createSourceMap?: boolean
     defaultUrlScheme?: string
     baseForUrlsStartingWithSlash?: string
@@ -38,7 +40,7 @@ export namespace UserProvidedSettings {
   }
 
 
-  export interface Rendering {
+  export interface Rendering extends SpecificSettings {
     idPrefix?: string
     renderUnsafeContent?: boolean
     terms?: Rendering.Terms
@@ -57,4 +59,24 @@ export namespace UserProvidedSettings {
 
     export type Term = string
   }
+}
+
+
+// This is another hack to work around TypeScript's type system.
+//
+// Both `UserProvidedSettings.Parsing` and `UserProvidedSettings.Rendering` interfaces
+// only have optional fields, so they're satisfied by any object.
+// 
+// We want to prevent users from accidentally passing `UserProvidedSettings` to a method
+// that expects `UserProvidedSettings.Parsing` or `UserProvidedSettings.Rendering`.
+//
+// Our solution is to extend the `SpecificSettings` interface, which is incompatible
+// with `UserProvidedSettings`.
+export interface SpecificSettings {
+  rendering?: DoNotProvide,
+  parsing?: DoNotProvide
+}
+
+export interface DoNotProvide {
+  DO_NOT_PROVIDE(): void
 }
