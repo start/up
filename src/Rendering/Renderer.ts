@@ -39,14 +39,15 @@ import { Config } from '../Config'
 import { SOME_WHITESPACE } from '../PatternPieces'
 
 
-export type EitherTypeOfUpDocument = UpDocument | InlineUpDocument
-
-
 export abstract class Renderer {
   constructor(protected config: Config.Rendering) { }
 
-  abstract document(document: EitherTypeOfUpDocument): string
-  abstract tableOfContents(tableOfContents: UpDocument.TableOfContents): string
+  abstract renderDocument(document: UpDocument): string
+  abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
+  abstract renderTableOfContents(tableOfContents: UpDocument.TableOfContents): string
+
+  // Ideally, the following abstract methods wouldn't be public! But for the purpose of
+  // double dispatch, they need to be exposed to our syntax node classes. 
 
   abstract audio(audio: Audio): string
   abstract bold(bold: Bold): string

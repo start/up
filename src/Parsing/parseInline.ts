@@ -3,7 +3,7 @@ import { getInlineSyntaxNodesForInlineDocument } from './Inline/getInlineSyntaxN
 import { Config } from '../Config'
 
 
-export function parseInline(markup: string, config: Config): InlineUpDocument {
+export function parseInline(markup: string, config: Config.Parsing): InlineUpDocument {
   const children = getInlineSyntaxNodesForInlineDocument(markup, config)
   return new InlineUpDocument(children)
 }

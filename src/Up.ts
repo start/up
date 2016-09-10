@@ -7,9 +7,6 @@ import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
-export type MarkupOrDocument = string | UpDocument
-export type MarkupOrInlineDocument = string | InlineUpDocument
-
 export interface HtmlForDocumentAndTableOfContents {
   documentHtml: string,
   tableOfContentsHtml: string
@@ -23,52 +20,61 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  render(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
-    const htmlRenderer = this.getHtmlRenderer(extraSettings)
+  parseAndRender(markup: string, extraSettings?: UserProvidedSettings): string {
+    const document = this.parse(markup, extraSettings.parsing)
 
-    return htmlRenderer.document(
-      this.getDocument(markupOrDocument, extraSettings))
+    return this.render(document, extraSettings.rendering)
   }
 
-  renderDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    const htmlRenderer = this.getHtmlRenderer(extraSettings)
-    const document = this.getDocument(markupOrDocument, extraSettings)
+  parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    const document = this.parse(markup, extraSettings.parsing)
+
+    return this.renderDocumentAndTableOfContents(document, extraSettings.rendering)
+  }
+
+  parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
+    const inlineDocument = this.parseInline(markup, extraSettings.parsing)
+
+    return this.renderInline(inlineDocument, extraSettings.rendering)
+  }
+
+  parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
+    return parse(markup, this.getParsingConfig(extraParsingSettings))
+  }
+
+  parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+    return parseInline(markup, this.getParsingConfig(extraParsingSettings))
+  }
+
+  render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
+
+    return htmlRenderer.renderDocument(document)
+  }
+
+  renderDocumentAndTableOfContents(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
+    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return {
-      documentHtml: htmlRenderer.document(document),
-      tableOfContentsHtml: htmlRenderer.tableOfContents(document.tableOfContents)
+      documentHtml: htmlRenderer.renderDocument(document),
+      tableOfContentsHtml: htmlRenderer.renderTableOfContents(document.tableOfContents)
     }
   }
 
-  renderInline(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
-    const inlineDocument =
-      typeof markupOrInlineDocument === 'string'
-        ? this.parseInline(markupOrInlineDocument, extraSettings)
-        : markupOrInlineDocument
-
-    return this.getHtmlRenderer(extraSettings).document(inlineDocument)
+  renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+    return this.getHtmlRenderer(extraRenderingSettings).renderInlineDocument(inlineDocument)
   }
 
-  parse(markup: string, extraSettings?: UserProvidedSettings.Parsing): UpDocument {
-    return parse(markup, this.getConfigWithUpdatedParsingSettings(extraSettings))
+  private getParsingConfig(changes?: UserProvidedSettings.Parsing): Config.Parsing {
+    return this.config.withChanges({ parsing: changes }).parsing
   }
 
-  parseInline(markup: string, extraSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
-    return parseInline(markup, this.getConfigWithUpdatedParsingSettings(extraSettings))
+  private getRenderingConfig(changes?: UserProvidedSettings.Rendering): Config.Rendering {
+    return this.config.withChanges({ rendering: changes }).rendering
   }
 
-  private getConfigWithUpdatedParsingSettings(extraSettings?: UserProvidedSettings.Parsing): Config {
-    return this.config.withChanges({ parsing: extraSettings })
-  }
-
-  private getDocument(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): UpDocument {
-    return typeof markupOrDocument === 'string'
-      ? this.parse(markupOrDocument, extraSettings)
-      : markupOrDocument
-  }
-
-  private getHtmlRenderer(extraSettings: UserProvidedSettings) {
-    return new HtmlRenderer(this.config.withChanges(extraSettings))
+  private getHtmlRenderer(extraRenderingSettings: UserProvidedSettings.Rendering): HtmlRenderer {
+    return new HtmlRenderer(this.getRenderingConfig(extraRenderingSettings))
   }
 }
 
@@ -89,24 +95,39 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function render(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.render(markupOrDocument, settings)
+  export function parseAndRender(markup: string, extraSettings?: UserProvidedSettings): string {
+    return defaultUp.parseAndRender(markup, extraSettings)
   }
 
-  export function renderDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    return defaultUp.renderDocumentAndTableOfContents(markupOrDocument, settings)
+  export function parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, extraSettings)
+
   }
 
-  export function renderInline(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.renderInline(markupOrInlineDocument, settings)
+  export function parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
+    return defaultUp.parseAndRenderInline(markup, extraSettings)
+
   }
 
-  export function parse(markup: string, settings?: UserProvidedSettings.Parsing): UpDocument {
-    return defaultUp.parse(markup, settings)
+  export function parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
+    return defaultUp.parse(markup, extraParsingSettings)
+
   }
 
-  export function parseInline(markup: string, settings?: UserProvidedSettings.Parsing): InlineUpDocument {
-    return defaultUp.parseInline(markup, settings)
+  export function parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+    return defaultUp.parseInline(markup, extraParsingSettings)
+  }
+
+  export function render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+        return defaultUp.render(document, extraRenderingSettings)
+  }
+
+  export function renderDocumentAndTableOfContents(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
+        return defaultUp.renderDocumentAndTableOfContents(document, extraRenderingSettings)
+  }
+
+  export function renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+    return defaultUp.renderInline(inlineDocument, extraRenderingSettings)
   }
 
   // This should always match the `version` field in `package.json`.

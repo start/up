@@ -1,5 +1,6 @@
 import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { Renderer, EitherTypeOfUpDocument } from '.././Renderer'
+import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
+import { Renderer } from '.././Renderer'
 import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
@@ -78,12 +79,17 @@ export class HtmlRenderer extends Renderer {
   //    prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
-  document(document: EitherTypeOfUpDocument): string {
+  renderDocument(document: UpDocument): string {
     this.reset()
     return this.renderAll(document.children)
   }
 
-  tableOfContents(tableOfContents: UpDocument.TableOfContents): string {
+  renderInlineDocument(inlineDocument: InlineUpDocument): string {
+    this.reset()
+    return this.renderAll(inlineDocument.children)
+  }
+
+  renderTableOfContents(tableOfContents: UpDocument.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
     return htmlElementWithAlreadyEscapedChildren(
