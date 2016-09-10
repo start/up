@@ -63,7 +63,7 @@ export class Up {
 
   renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
-     
+
     return htmlRenderer.renderInlineDocument(inlineDocument)
   }
 
@@ -103,17 +103,14 @@ export namespace Up {
 
   export function parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
     return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, extraSettings)
-
   }
 
   export function parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
     return defaultUp.parseAndRenderInline(markup, extraSettings)
-
   }
 
   export function parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
     return defaultUp.parse(markup, extraParsingSettings)
-
   }
 
   export function parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
@@ -121,11 +118,11 @@ export namespace Up {
   }
 
   export function render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
-        return defaultUp.render(document, extraRenderingSettings)
+    return defaultUp.render(document, extraRenderingSettings)
   }
 
   export function renderDocumentAndTableOfContents(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
-        return defaultUp.renderDocumentAndTableOfContents(document, extraRenderingSettings)
+    return defaultUp.renderDocumentAndTableOfContents(document, extraRenderingSettings)
   }
 
   export function renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
