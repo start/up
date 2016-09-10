@@ -42,11 +42,11 @@ export class Up {
   }
 
   parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
-    return parse(markup, this.getParsingConfig(extraParsingSettings))
+    return parse(markup, this.getParsingSettings(extraParsingSettings))
   }
 
   parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
-    return parseInline(markup, this.getParsingConfig(extraParsingSettings))
+    return parseInline(markup, this.getParsingSettings(extraParsingSettings))
   }
 
   render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
@@ -70,16 +70,16 @@ export class Up {
     return htmlRenderer.renderInlineDocument(inlineDocument)
   }
 
-  private getParsingConfig(changes?: UserProvidedSettings.Parsing): Settings.Parsing {
+  private getParsingSettings(changes?: UserProvidedSettings.Parsing): Settings.Parsing {
     return this.settings.withChanges({ parsing: changes }).parsing
   }
 
-  private getRenderingConfig(changes?: UserProvidedSettings.Rendering): Settings.Rendering {
+  private getRenderingSettings(changes?: UserProvidedSettings.Rendering): Settings.Rendering {
     return this.settings.withChanges({ rendering: changes }).rendering
   }
 
   private getHtmlRenderer(extraRenderingSettings: UserProvidedSettings.Rendering): HtmlRenderer {
-    return new HtmlRenderer(this.getRenderingConfig(extraRenderingSettings))
+    return new HtmlRenderer(this.getRenderingSettings(extraRenderingSettings))
   }
 }
 

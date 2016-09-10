@@ -43,7 +43,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
 
-  const whenProvidingConfigAtCreation =
+  const whenProvidingSettingsAtCreation =
     new Up(changedSettings).renderDocumentAndTableOfContents(document)
 
 
@@ -52,10 +52,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       const up = new Up(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.renderDocumentAndTableOfContents(document, change)).to.deep.equal(whenProvidingConfigAtCreation)
+      expect(up.renderDocumentAndTableOfContents(document, change)).to.deep.equal(whenProvidingSettingsAtCreation)
     })
   })
 
@@ -72,15 +72,15 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents method', () => {
-      expect(whenProvidingConfigAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
+      expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
     it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method", () => {
-      expect(whenProvidingConfigAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
+      expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
     it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
-      expect(whenProvidingConfigAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
+      expect(whenProvidingSettingsAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })
 }
