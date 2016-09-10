@@ -16,7 +16,9 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 const up = new Up({
-  baseForUrlsStartingWithSlash: 'ftp://example.com'
+  parsing: {
+    baseForUrlsStartingWithSlash: 'ftp://example.com'
+  }
 })
 
 

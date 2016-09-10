@@ -10,8 +10,8 @@ import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 
 context('The "nsfw" config term is used by both inline NSFW conventions and NSFW blocks.', () => {
   const up = new Up({
-    terms: {
-      markup: { nsfw: 'ruins ending' }
+    parsing: {
+      terms: { nsfw: 'ruins ending' }
     }
   })
 
@@ -36,7 +36,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
-            markup: { nsfw: ' \t ruins ending \t ' }
+            nsfw: ' \t ruins ending \t '
           }
         })
 
@@ -52,7 +52,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
-            markup: { nsfw: '*ruins* ending' }
+            nsfw: '*ruins* ending'
           }
         })
 
@@ -68,7 +68,7 @@ context('The "nsfw" config term is used by both inline NSFW conventions and NSFW
       const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
-            markup: { nsfw: ['look away', 'ruins ending'] }
+            nsfw: ['look away', 'ruins ending']
           }
         })
 
@@ -135,7 +135,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfw: ' \t ruins ending \t ' }
+          nsfw: ' \t ruins ending \t '
         }
       })
 
@@ -162,7 +162,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfw: '*ruins* ending' }
+          nsfw: '*ruins* ending'
         }
       })
 
@@ -191,7 +191,7 @@ LOOK AWAY:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfw: ['look away', 'ruins ending'] }
+          nsfw: ['look away', 'ruins ending']
         }
       })
 

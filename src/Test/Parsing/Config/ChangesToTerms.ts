@@ -525,8 +525,8 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 context('Config settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
   specify('an Up object you create', () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           nsfw: 'ruins ending'
         }
       }
@@ -544,9 +544,7 @@ context('Config settings are totally independent. When one setting is changed, t
     const document =
       Up.parse('[SPOILER: Ash fights Gary]', {
         terms: {
-          markup: {
-            nsfw: 'ruins ending'
-          }
+          nsfw: 'ruins ending'
         }
       })
 

@@ -7,8 +7,8 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 describe('The "table" config term', () => {
   const up = new Up({
-    terms: {
-      markup: { table: 'data' }
+    parsing: {
+      terms: { table: 'data' }
     }
   })
 
@@ -67,9 +67,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          table: ' \t data \t '
-        }
+        table: ' \t data \t '
       }
     })
 
@@ -102,9 +100,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          table: '*data*'
-        }
+        table: '*data*'
       }
     })
 
@@ -144,9 +140,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          table: ['data', 'info']
-        }
+        table: ['data', 'info']
       }
     })
 

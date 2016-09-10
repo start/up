@@ -10,8 +10,8 @@ import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 
 context('The "spoiler" config term is used by both inline spoilers and spoiler blocks.', () => {
   const up = new Up({
-    terms: {
-      markup: { spoiler: 'ruins ending' }
+    parsing: {
+      terms: { spoiler: 'ruins ending' }
     }
   })
 
@@ -36,7 +36,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
       const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
-            markup: { spoiler: ' \t ruins ending \t ' }
+            spoiler: ' \t ruins ending \t '
           }
         })
 
@@ -52,7 +52,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
       const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
-            markup: { spoiler: '*ruins* ending' }
+            spoiler: '*ruins* ending'
           }
         })
 
@@ -68,7 +68,7 @@ context('The "spoiler" config term is used by both inline spoilers and spoiler b
       const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
-            markup: { spoiler: ['look away', 'ruins ending'] }
+            spoiler: ['look away', 'ruins ending']
           }
         })
 
@@ -135,7 +135,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { spoiler: ' \t ruins ending \t ' }
+          spoiler: ' \t ruins ending \t '
         }
       })
 
@@ -162,7 +162,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { spoiler: '*ruins* ending' }
+          spoiler: '*ruins* ending'
         }
       })
 
@@ -191,7 +191,7 @@ LOOK AWAY:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { spoiler: ['look away', 'ruins ending'] }
+          spoiler: ['look away', 'ruins ending']
         }
       })
 

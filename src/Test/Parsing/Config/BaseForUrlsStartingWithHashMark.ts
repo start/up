@@ -16,7 +16,9 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 const up = new Up({
-  baseForUrlsStartingWithHashMark: 'https://example.com/page'
+  parsing: {
+    baseForUrlsStartingWithHashMark: 'https://example.com/page'
+  }
 })
 
 

@@ -18,8 +18,8 @@ function itWorksAsAdvertised(
     markup: string,
     documentWhenChangeIsApplied: UpDocument
     documentWhenSettingIsNotChanged: UpDocument
-    configWithSettingChanged: UserProvidedSettings
-    configWithSettingSetToDefault: UserProvidedSettings
+    configWithSettingChanged: UserProvidedSettings.Parsing
+    configWithSettingSetToDefault: UserProvidedSettings.Parsing
   }
 ): void {
   const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, configWithSettingChanged, configWithSettingSetToDefault } = args

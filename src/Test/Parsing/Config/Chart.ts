@@ -7,8 +7,8 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 describe('The "chart" config term', () => {
   const up = new Up({
-    terms: {
-      markup: { chart: 'data' }
+    parsing: {
+      terms: { chart: 'data' }
     }
   })
 
@@ -65,9 +65,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          chart: ' \t data \t '
-        }
+        chart: ' \t data \t '
       }
     })
 
@@ -98,9 +96,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          chart: '*data*'
-        }
+        chart: '*data*'
       }
     })
 
@@ -138,9 +134,7 @@ Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          chart: ['data', 'info']
-        }
+        chart: ['data', 'info']
       }
     })
 

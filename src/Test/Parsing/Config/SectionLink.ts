@@ -87,9 +87,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          sectionLink: ' \t heading \t '
-        }
+        sectionLink: ' \t heading \t '
       }
     })
 
@@ -128,9 +126,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          sectionLink: '*heading*'
-        }
+        sectionLink: '*heading*'
       }
     })
 
@@ -169,9 +165,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
     const document = Up.parse(markup, {
       terms: {
-        markup: {
-          sectionLink: ['heading', 'ref']
-        }
+        sectionLink: ['heading', 'ref']
       }
     })
 

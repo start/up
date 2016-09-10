@@ -10,8 +10,8 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 context('The "nsfl" config term is used by both inline NSFL conventions and NSFL blocks.', () => {
   const up = new Up({
-    terms: {
-      markup: { nsfl: 'ruins ending' }
+    parsing: {
+      terms: { nsfl: 'ruins ending' }
     }
   })
 
@@ -36,7 +36,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
       const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
-            markup: { nsfl: ' \t ruins ending \t ' }
+            nsfl: ' \t ruins ending \t '
           }
         })
 
@@ -52,7 +52,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
       const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
-            markup: { nsfl: '*ruins* ending' }
+            nsfl: '*ruins* ending'
           }
         })
 
@@ -68,7 +68,7 @@ context('The "nsfl" config term is used by both inline NSFL conventions and NSFL
       const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
-            markup: { nsfl: ['look away', 'ruins ending'] }
+            nsfl: ['look away', 'ruins ending']
           }
         })
 
@@ -135,7 +135,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfl: ' \t ruins ending \t ' }
+          nsfl: ' \t ruins ending \t '
         }
       })
 
@@ -162,7 +162,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfl: '*ruins* ending' }
+          nsfl: '*ruins* ending'
         }
       })
 
@@ -191,7 +191,7 @@ LOOK AWAY:
 
       const document = Up.parse(markup, {
         terms: {
-          markup: { nsfl: ['look away', 'ruins ending'] }
+          nsfl: ['look away', 'ruins ending']
         }
       })
 

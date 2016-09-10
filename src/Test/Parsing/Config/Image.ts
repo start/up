@@ -6,8 +6,8 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 describe('The term that represents image conventions', () => {
   const up = new Up({
-    terms: {
-      markup: { image: 'see' }
+    parsing: {
+      terms: { image: 'see' }
     }
   })
 
@@ -32,7 +32,7 @@ describe('The term that represents image conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { image: ' \t see \t' }
+        image: ' \t see \t'
       }
     })
 
@@ -47,7 +47,7 @@ describe('The term that represents image conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { image: '*see*' }
+        image: '*see*'
       }
     })
 
@@ -62,7 +62,7 @@ describe('The term that represents image conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { image: ['view', 'look'] }
+        image: ['view', 'look']
       }
     })
 

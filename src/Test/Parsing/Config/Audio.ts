@@ -6,8 +6,8 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 describe('The term that represents video conventions', () => {
   const up = new Up({
-    terms: {
-      markup: { audio: 'listen' }
+    parsing: {
+      terms: { audio: 'listen' }
     }
   })
 
@@ -32,7 +32,7 @@ describe('The term that represents video conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { audio: ' \t listen \t ' }
+        audio: ' \t listen \t '
       }
     })
 
@@ -47,7 +47,7 @@ describe('The term that represents video conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { audio: '*listen*' }
+        audio: '*listen*'
       }
     })
 
@@ -62,7 +62,7 @@ describe('The term that represents video conventions', () => {
 
     const document = Up.parse(markup, {
       terms: {
-        markup: { audio: ['hear', 'listen'] }
+        audio: ['hear', 'listen']
       }
     })
 

@@ -16,7 +16,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 
 
 const up = new Up({
-  defaultUrlScheme: 'my-app:'
+  parsing: { defaultUrlScheme: 'my-app:' }
 })
 
 

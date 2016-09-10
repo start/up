@@ -6,7 +6,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 context('The "ellipsis" config setting', () => {
   const up = new Up({
-    ellipsis: '⋯'
+    parsing: { ellipsis: '⋯' }
   })
 
   it('replaces consecutive periods in the markup', () => {
