@@ -268,7 +268,30 @@ SPOILER
   })
 
   context('The parseAndRenderInline method', () => {
-    specify('Can be used with settings', () => {
+    specify('Can be used with both parsing and rendering settings', () => {
+      const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
+
+      const html = Up.parseAndRenderInline(markup, {
+        parsing: {
+          terms: { spoiler: 'LOOK AWAY' }
+        },
+        rendering: {
+          idPrefix: 'reply 104'
+        }
+      })
+
+      expect(html).to.equal(
+        'After beating the Elite Four, '
+        + '<span class="up-spoiler up-revealable">'
+        + '<label for="reply-104-spoiler-1">toggle spoiler</label>'
+        + '<input id="reply-104-spoiler-1" role="button" type="checkbox">'
+        + '<span role="alert">'
+        + 'Blue steals a Red Delicious from Red.'
+        + '</span>'
+        + '</span>')
+    })
+
+    specify('Can be used without settings', () => {
       const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
       expect(Up.parseAndRenderInline(markup)).to.equal(
