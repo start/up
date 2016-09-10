@@ -26,11 +26,11 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new FootnoteBlock([footnote])
       ])
 
-      const config = {
+      const settings = {
         terms: { footnote: 'some extra info' }
       }
 
-      expect(Up.render(document, config)).to.equal(
+      expect(Up.render(document, settings)).to.equal(
         '<p>'
         + '<sup class="up-footnote-reference" id="up-footnote-reference-1">'
         + '<a href="#up-some-extra-info-1">1</a>'
@@ -52,11 +52,11 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new FootnoteBlock([footnote])
       ])
 
-      const config = {
+      const settings = {
         terms: { footnoteReference: 'original footnote location' }
       }
 
-      expect(Up.render(document, config)).to.equal(
+      expect(Up.render(document, settings)).to.equal(
         '<p>'
         + '<sup class="up-footnote-reference" id="up-original-footnote-location-1">'
         + '<a href="#up-footnote-1">1</a>'
@@ -75,12 +75,12 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      const config = {
+      const settings = {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
       }
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document, config)
+        Up.renderDocumentAndTableOfContents(document, settings)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -233,12 +233,12 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const document =
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
-      const config = {
+      const settings = {
         idPrefix: 'thread 11 reply 65'
       }
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document, config)
+        Up.renderDocumentAndTableOfContents(document, settings)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
