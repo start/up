@@ -8,10 +8,9 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 
 
-// Elsewhere, we test how these settings work.
+// Elsewhere, we verify that these settings work.
 //
-// Here, we simply make sure the associated config settings are applied as advertised
-// no matter how they are supplied. 
+// Here, we simply make sure they work as advertised no matter how they are supplied. 
 
 function itWorksAsAdvertised(
   args: {

@@ -2,10 +2,15 @@ import { expect } from 'chai'
 import Up from '../../../index'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
+import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { distinct } from '../../../CollectionHelpers'
 
+
+// Elsewhere, we verify that these terms work.
+//
+// Here, we simply make sure they work as advertised no matter how they are supplied.
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
@@ -16,7 +21,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     invalidMarkupForBlankTerm: string
     equivalentTermVariationsPlusEmptyAndBlankVariations: UserProvidedSettings.Parsing.Terms
     onlyEmptyAndBlankTermVariations: UserProvidedSettings.Parsing.Terms
-    noTermVariations: UserProvidedSettings.Parsing.Terms
+    zeroTermVariations: UserProvidedSettings.Parsing.Terms
     conflictingTermVariations: UserProvidedSettings.Parsing.Terms
   }
 ): void {
@@ -31,61 +36,99 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   expect(distinctMarkupArguments).to.have.lengthOf(3)
 
-  // Okay! On with testing.
+  // Okay! We're almost ready to start testing.
   //
-  // First, let's produce actual, usable config settings from the provided term variations.
+  // First, we need to produce actual, usable settings from the provided term variations.
+  //
+  // We'll start by producing parsing settings, which are accepted by the library's
+  // parsing methods.
 
-  const configChangesFor = (changes: UserProvidedSettings.Parsing.Terms) => ({
-    terms: { markup: changes }
-  })
+  const parsingSettingsFor =
+    (changes: UserProvidedSettings.Parsing.Terms): UserProvidedSettings.Parsing => ({
+      terms: changes
+    })
 
-  const configChanges =
-    configChangesFor(args.termVariations)
+  const changedParsingSettings =
+    parsingSettingsFor(args.termVariations)
 
-  const equivalentConfigChangesWithEmptyAndBlankVariations =
-    configChangesFor(args.equivalentTermVariationsPlusEmptyAndBlankVariations)
+  const equivalentParsingSettingsWithEmptyAndBlankVariations =
+    parsingSettingsFor(args.equivalentTermVariationsPlusEmptyAndBlankVariations)
 
-  const configChangesWithOnlyEmptyAndBlankVariations =
-    configChangesFor(args.onlyEmptyAndBlankTermVariations)
+  const equivalentParsingSettingsWithOnlyEmptyAndBlankVariations =
+    parsingSettingsFor(args.onlyEmptyAndBlankTermVariations)
 
-  const configChangesWithNoVariations =
-    configChangesFor(args.noTermVariations)
+  const parsingSettingWithZeroVariations =
+    parsingSettingsFor(args.zeroTermVariations)
 
-  const conflictingConfigChanges =
-    configChangesFor(args.conflictingTermVariations)
+  const conflictingParsingSettings =
+    parsingSettingsFor(args.conflictingTermVariations)
 
-  const whenEverythingIsDefault =
+  // Next, we'll produce "regular" settings, which include parsing and rendering
+  // settings together. Up's constructor accepts these settings. 
+
+  const settingsFor =
+    (changes: UserProvidedSettings.Parsing): UserProvidedSettings => ({
+      rendering: changes
+    })
+
+  const changedSettings =
+    settingsFor(changedParsingSettings)
+
+  const equivalentSettingsWithEmptyAndBlankVariations =
+    settingsFor(equivalentParsingSettingsWithEmptyAndBlankVariations)
+
+  const equivalentSettingsWithOnlyEmptyAndBlankVariations =
+    settingsFor(equivalentParsingSettingsWithOnlyEmptyAndBlankVariations)
+
+  const settingWithZeroVariations =
+    settingsFor(parsingSettingWithZeroVariations)
+
+  const conflictingSettings =
+    settingsFor(conflictingParsingSettings)
+
+  // Phew! Almost done. Let's just save off the result of parsing the convention propertly
+  // before we apply any settings.
+
+  const properlyParsedConvention =
     Up.parse(markupForDefaultSettings)
+
+  function expectConventionProperlyParse(document: UpDocument): void {
+    expect(document).to.deep.equal(properlyParsedConvention)
+  }
+
+  function expectConventionFailToParse(document: UpDocument): void {
+    expect(document).to.not.deep.equal(properlyParsedConvention)
+  }
 
 
   describe("when provided to the default parse method", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
-      expect(Up.parse(markupForTermVariations, configChanges)).to.deep.equal(Up.parse(markupForDefaultSettings))
+      expect(Up.parse(markupForTermVariations, changedSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
     })
 
     it("does not replace the default variations", () => {
-      expect(Up.parse(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.parse(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.parse(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.parse(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(Up.parse(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, changedParsingSettings))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
     it("has any empty or blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(Up.parse(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(Up.parse(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expectConventionFailToParse(Up.parse(invalidMarkupForEmptyTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(Up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(Up.parse(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(Up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(Up.parse(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
     })
 
     it("has no effect if there are no variations", () => {
-      expect(Up.parse(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(Up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
     })
   })
 
@@ -94,88 +137,88 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up()
 
     it("does not alter the Up object's original settings", () => {
-      expect(up.parse(markupForTermVariations, configChanges)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
-      expect(up.parse(markupForDefaultSettings, configChanges)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForDefaultSettings, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForDefaultSettings, conflictingConfigChanges)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, changedParsingSettings))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, conflictingParsingSettings))
     })
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(up.parse(invalidMarkupForEmptyTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(invalidMarkupForBlankTerm, equivalentConfigChangesWithEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
+      expectConventionFailToParse(up.parse(invalidMarkupForEmptyTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(up.parse(markupForTermVariations, equivalentConfigChangesWithEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      expect(up.parse(markupForDefaultSettings, configChangesWithOnlyEmptyAndBlankVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
     })
 
     it("has no effect if there are no variations", () => {
-      expect(up.parse(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, parsingSettingWithZeroVariations))
     })
   })
 
 
   describe('when provided to an Up object at creation', () => {
-    const up = new Up(configChanges)
+    const up = new Up(changedSettings)
 
     const whenProvidingChangesAtCreation =
       up.parse(markupForTermVariations)
 
     it('has the same result as providing the term when calling the default parse method', () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, configChanges))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedSettings))
     })
 
     it("has the same result as providing the term when calling the Up object's parse method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().parse(markupForTermVariations, configChanges))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up().parse(markupForTermVariations, changedSettings))
     })
 
     it("has the same result as providing the term when calling the Up object's parse method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingConfigChanges).parse(markupForTermVariations, configChanges))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up(conflictingSettings).parse(markupForTermVariations, changedSettings))
     })
 
     it("does not replace the default variations", () => {
-      expect(up.parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings))
 
-      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithNoVariations).parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
-      expect(new Up(conflictingConfigChanges).parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventionProperlyParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventionProperlyParse(new Up(settingWithZeroVariations).parse(markupForDefaultSettings))
+      expectConventionProperlyParse(new Up(conflictingSettings).parse(markupForDefaultSettings))
     })
 
     it("can be overwritten by providing different custom terms to the parse method", () => {
-      expect(up.parse(markupForTermVariations, configChangesWithOnlyEmptyAndBlankVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForTermVariations, configChangesWithNoVariations)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(up.parse(markupForTermVariations, conflictingConfigChanges)).to.not.deep.equal(whenEverythingIsDefault)
+      expectConventionFailToParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventionFailToParse(up.parse(markupForTermVariations, parsingSettingWithZeroVariations))
+      expectConventionFailToParse(up.parse(markupForTermVariations, conflictingParsingSettings))
     })
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyTerm)).to.not.deep.equal(whenEverythingIsDefault)
-      expect(new Up(configChangesWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm)).to.not.deep.equal(whenEverythingIsDefault)
+      expectConventionFailToParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyTerm))
+      expectConventionFailToParse(new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expect(new Up(equivalentConfigChangesWithEmptyAndBlankVariations).parse(markupForTermVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(new Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      const up = new Up(configChangesWithOnlyEmptyAndBlankVariations)
+      const up = new Up(equivalentSettingsWithOnlyEmptyAndBlankVariations)
 
-      expect(up.parse(markupForDefaultSettings)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings))
     })
 
     it("has no effect if there are no variations", () => {
-      const up = new Up(configChangesWithNoVariations)
+      const up = new Up(settingWithZeroVariations)
 
-      expect(up.parse(markupForDefaultSettings, configChangesWithNoVariations)).to.deep.equal(whenEverythingIsDefault)
+      expectConventionProperlyParse(up.parse(markupForDefaultSettings, settingWithZeroVariations))
     })
   })
 }
@@ -196,7 +239,7 @@ describe('The "audio" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       audio: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       audio: []
     },
     conflictingTermVariations: {
@@ -221,7 +264,7 @@ describe('The "image" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       image: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       image: []
     },
     conflictingTermVariations: {
@@ -246,7 +289,7 @@ describe('The "video" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       video: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       video: []
     },
     conflictingTermVariations: {
@@ -271,7 +314,7 @@ describe('The "highlight" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       highlight: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       highlight: []
     },
     conflictingTermVariations: {
@@ -296,7 +339,7 @@ describe('The "spoiler" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       spoiler: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       spoiler: []
     },
     conflictingTermVariations: {
@@ -321,7 +364,7 @@ describe('The "nsfw" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       nsfw: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       nsfw: []
     },
     conflictingTermVariations: {
@@ -346,7 +389,7 @@ describe('The "nsfl" config term', () => {
     onlyEmptyAndBlankTermVariations: {
       nsfl: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       nsfl: []
     },
     conflictingTermVariations: {
@@ -396,7 +439,7 @@ Chrono Cross;     1999`,
     onlyEmptyAndBlankTermVariations: {
       table: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       table: []
     },
     conflictingTermVariations: {
@@ -446,7 +489,7 @@ Chrono Cross;     1999`,
     onlyEmptyAndBlankTermVariations: {
       chart: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       chart: []
     },
     conflictingTermVariations: {
@@ -512,7 +555,7 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
     onlyEmptyAndBlankTermVariations: {
       sectionLink: [null, '', ' \t \t ', undefined]
     },
-    noTermVariations: {
+    zeroTermVariations: {
       sectionLink: []
     },
     conflictingTermVariations: {
