@@ -221,7 +221,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "audio" settings term', () => {
+describe('The "audio" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
     markupForTermVariations: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
@@ -246,7 +246,7 @@ describe('The "audio" settings term', () => {
 })
 
 
-describe('The "image" settings term', () => {
+describe('The "image" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[see: Chrono Cross logo][https://example.com/cc.png]',
     markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
@@ -271,7 +271,7 @@ describe('The "image" settings term', () => {
 })
 
 
-describe('The "video" settings term', () => {
+describe('The "video" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
@@ -296,7 +296,7 @@ describe('The "video" settings term', () => {
 })
 
 
-describe('The "highlight" settings term', () => {
+describe('The "highlight" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[paint: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
@@ -321,7 +321,7 @@ describe('The "highlight" settings term', () => {
 })
 
 
-describe('The "spoiler" settings term', () => {
+describe('The "spoiler" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
@@ -346,7 +346,7 @@ describe('The "spoiler" settings term', () => {
 })
 
 
-describe('The "nsfw" settings term', () => {
+describe('The "nsfw" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[GETS YOU FIRED: Ash fights Gary]',
     markupForDefaultSettings: '[NSFW: Ash fights Gary]',
@@ -371,7 +371,7 @@ describe('The "nsfw" settings term', () => {
 })
 
 
-describe('The "nsfl" settings term', () => {
+describe('The "nsfl" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: '[RUINS LIFE: Ash fights Gary]',
     markupForDefaultSettings: '[NSFL: Ash fights Gary]',
@@ -396,7 +396,7 @@ describe('The "nsfl" settings term', () => {
 })
 
 
-describe('The "table" settings term', () => {
+describe('The "table" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 Data:
@@ -446,7 +446,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "chart" settings term', () => {
+describe('The "chart" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 Data:
@@ -496,7 +496,7 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "sectionLink" settings term', () => {
+describe('The "sectionLink" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `
 I drink exotic soda

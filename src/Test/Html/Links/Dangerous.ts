@@ -6,7 +6,7 @@ import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 
 
-context('By default, links with unsafe schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These unsafe URL schemes are:', () => {
+context('By default, links with dangerous schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These dangerous URL schemes are:', () => {
   specify('javascript', () => {
     const document = new UpDocument([
       new Paragraph([
@@ -57,7 +57,7 @@ context('By default, links with unsafe schemes produce no <a> elements. Instead,
 })
 
 
-context('Though by default, links with unsafe schemes produce no HTML, link URLs can contain unsafe schemes:', () => {
+context('Though by default, links with dangerous schemes produce no HTML, link URLs can contain dangerous schemes:', () => {
   specify('javascript', () => {
     const document = new UpDocument([
       new Paragraph([
@@ -108,7 +108,7 @@ context('Though by default, links with unsafe schemes produce no HTML, link URLs
 })
 
 
-context("When determining whether a link's URL is unsafe, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
+context("When determining whether a link's URL is dangerous, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
     const document = new UpDocument([
       new Paragraph([
@@ -159,7 +159,7 @@ context("When determining whether a link's URL is unsafe, the capitalization of 
 })
 
 
-describe('By default, a safe link nested inside an unsafe link', () => {
+describe('By default, a safe link nested inside a dangerous link', () => {
   it('produces an <a> element', () => {
     const document = new UpDocument([
       new Paragraph([
@@ -176,7 +176,7 @@ describe('By default, a safe link nested inside an unsafe link', () => {
 })
 
 
-context("A link's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
+context("A link's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript', () => {
     const document = new UpDocument([
       new Paragraph([

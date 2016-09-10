@@ -6,7 +6,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The main heading within the table of contents', () => {
-  it('uses the settings term for "tableOfContents"', () => {
+  it('uses the term for "tableOfContents"', () => {
     const up = new Up({
       rendering: {
         terms: { tableOfContents: 'In This Article' }

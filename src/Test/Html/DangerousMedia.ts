@@ -4,9 +4,11 @@ import { UpDocument } from '../../SyntaxNodes/UpDocument'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Video } from '../../SyntaxNodes/Video'
+ 
 
+// TODO: The rules for "dangerous" media elements might be too cautious.
 
-context('By default, media with unsafe URLs schemes produce no HTML.', () => {
+context('By default, media with dangerous URLs schemes produce no HTML.', () => {
   context('Images produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
@@ -111,7 +113,7 @@ context('By default, media with unsafe URLs schemes produce no HTML.', () => {
 })
 
 
-context("When determining whether a media's URL is unsafe, the capitalization of the scheme does not matter.", () => {
+context("When determining whether a media's URL is dangerous, the capitalization of the scheme does not matter.", () => {
   context('Images produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
       const document = new UpDocument([
@@ -216,7 +218,7 @@ context("When determining whether a media's URL is unsafe, the capitalization of
 })
 
 
-context("An image's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
+context("An image's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
       new Image('Uh-oh!', 'javascript-app:stuff')
@@ -255,7 +257,7 @@ context("An image's URL scheme can start with an unsafe scheme without being con
 })
 
 
-context("An audio convention's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
+context("An audio convention's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
       new Audio('Uh-oh!', 'javascript-app:stuff')
@@ -302,7 +304,7 @@ context("An audio convention's URL scheme can start with an unsafe scheme withou
 })
 
 
-context("A video's URL scheme can start with an unsafe scheme without being considered unsafe itself. For example:", () => {
+context("A video's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new UpDocument([
       new Video('Uh-oh!', 'javascript-app:stuff')

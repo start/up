@@ -7,7 +7,7 @@ import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
-describe('The "sectionLink" settings term', () => {
+describe('The "sectionLink" term', () => {
   const up = new Up({
     parsing: {
       terms: { sectionLink: 'heading' }

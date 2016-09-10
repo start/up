@@ -8,14 +8,14 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 
-context('The "nsfl" settings term is used by both inline NSFL conventions and NSFL blocks.', () => {
+context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks.', () => {
   const up = new Up({
     parsing: {
       terms: { nsfl: 'ruins ending' }
     }
   })
 
-  context('For inline NSFL conventions, the settings term', () => {
+  context('For inline NSFL conventions, the term', () => {
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -85,7 +85,7 @@ context('The "nsfl" settings term is used by both inline NSFL conventions and NS
   })
 
 
-  context('For NSFL blocks, the settings term', () => {
+  context('For NSFL blocks, the term', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:

@@ -72,7 +72,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
   })
 
 
-  specify('Because unsafe links produce <a> elements, any links nested inside unsafe lnks do not produce <a> elements.', () => {
+  specify('Because dangerous links produce <a> elements, any links nested inside dangerous lnks do not produce <a> elements.', () => {
     const document = new UpDocument([
       new Paragraph([
         new Link([

@@ -103,7 +103,7 @@ describe('The "idPrefix" setting', () => {
 })
 
 
-describe('The "footnote reference" settings term', () => {
+describe('The "footnote reference" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -124,7 +124,7 @@ describe('The "footnote reference" settings term', () => {
 })
 
 
-describe('The "footnote" settings term', () => {
+describe('The "footnote" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -166,7 +166,7 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
 })
 
 
-describe('The "toggleSpoiler" settings term', () => {
+describe('The "toggleSpoiler" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -187,7 +187,7 @@ describe('The "toggleSpoiler" settings term', () => {
 })
 
 
-describe('The "toggleNsfw" settings term', () => {
+describe('The "toggleNsfw" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -208,7 +208,7 @@ describe('The "toggleNsfw" settings term', () => {
 })
 
 
-describe('The "toggleNsfl" settings term', () => {
+describe('The "toggleNsfl" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([

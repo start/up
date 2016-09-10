@@ -11,7 +11,7 @@ describe('The term that represents image conventions', () => {
     }
   })
 
-  it('comes from the "image" settings term', () => {
+  it('comes from the "image" term', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.parse(markup)).to.deep.equal(

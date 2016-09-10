@@ -6,7 +6,7 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The ID of an element referenced by the table of contents', () => {
-  it('uses the settings term for "sectionReferencedByTableOfContents"', () => {
+  it('uses the term for "sectionReferencedByTableOfContents"', () => {
     const up = new Up({
       rendering: {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
