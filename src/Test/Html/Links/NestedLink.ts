@@ -21,7 +21,7 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<p><a href="https://google.com">Google<sup class="up-footnote-reference" id="up-footnote-reference-2">2</sup></a></p>')
   })
 
@@ -35,7 +35,7 @@ context('Inside a link', () => {
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.render(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
 
@@ -51,7 +51,7 @@ context('A link within a table of contents entry does not produce an <a> element
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -78,7 +78,7 @@ context('A link within a table of contents entry does not produce an <a> element
       ], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -108,7 +108,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<p>'
       + '<a href="https://google.com"><em>Google<sup class="up-footnote-reference" id="up-footnote-reference-2">2</sup></em></a>'
       + '</p>')
@@ -126,7 +126,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<p>'
       + '<a href="https://google.com"><em>Google is probably not Bing</em></a>'
       + '</p>')
@@ -146,7 +146,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -177,7 +177,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       ], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -211,7 +211,7 @@ context('When severeal links are nested within each other', () => {
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.render(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })
 
@@ -227,6 +227,6 @@ context('When a link contains 2 or more inner links', () => {
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
+    expect(Up.render(document)).to.equal('<p><a href="https://google.com">Google is probably not Bing</a></p>')
   })
 })

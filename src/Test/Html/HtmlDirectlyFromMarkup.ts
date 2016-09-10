@@ -3,7 +3,7 @@ import Up from '../../index'
 
 
 context("You can produce HTML directly from markup!", () => {
-  specify('If you provide the renderHtml method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
+  specify('If you provide the render method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -21,7 +21,7 @@ LOOK AWAY
       }
     }
 
-    expect(Up.renderHtml(markup, config)).to.equal(
+    expect(Up.render(markup, config)).to.equal(
       '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
       + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
@@ -33,7 +33,7 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the renderHtmlForDocumentAndTableOfContents method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
+  specify('If you provide the renderDocumentAndTableOfContents method with markup, it (internally) calls the parse method for you using configuration you provide', () => {
     const markup = `
 Anyway, let us get to the point.
 
@@ -52,7 +52,7 @@ LOOK AWAY
     }
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(markup, config)
+      Up.renderDocumentAndTableOfContents(markup, config)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -74,10 +74,10 @@ LOOK AWAY
       + '</div>')
   })
 
-  specify('If you provide the renderInlineHtml method with markup, it (internally) calls the parseInline method for you using configuration you provide', () => {
+  specify('If you provide the renderInline method with markup, it (internally) calls the parseInline method for you using configuration you provide', () => {
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
-    const html = Up.renderInlineHtml(markup, {
+    const html = Up.renderInline(markup, {
       idPrefix: 'reply 104',
       terms: {
         markup: { spoiler: 'LOOK AWAY' }

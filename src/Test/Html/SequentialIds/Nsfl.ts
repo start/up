@@ -68,7 +68,7 @@ describe("Inline NSFL conventions and NSFL blocks", () => {
       + '</div>'
       + '</div>'
 
-    expect(Up.renderHtml(node)).to.equal(html)
+    expect(Up.render(node)).to.equal(html)
   })
 })
 
@@ -101,7 +101,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
         ])
       ])
 
-    expect(up.renderHtml(node)).to.equal(up.renderHtml(node))
+    expect(up.render(node)).to.equal(up.render(node))
   })
 })
 
@@ -128,6 +128,6 @@ describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)
         ])
       ])
 
-    expect(up.renderHtml(node)).to.equal(up.renderHtml(node))
+    expect(up.render(node)).to.equal(up.render(node))
   })
 })

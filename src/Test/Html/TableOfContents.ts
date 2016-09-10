@@ -27,7 +27,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       ])
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -54,7 +54,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderHtmlForDocumentAndTableOfContents(document)
+        Up.renderDocumentAndTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -76,7 +76,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderHtmlForDocumentAndTableOfContents(document)
+        Up.renderDocumentAndTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -98,7 +98,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderHtmlForDocumentAndTableOfContents(document)
+        Up.renderDocumentAndTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -120,7 +120,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderHtmlForDocumentAndTableOfContents(document)
+        Up.renderDocumentAndTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -142,7 +142,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
         new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderHtmlForDocumentAndTableOfContents(document)
+        Up.renderDocumentAndTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
@@ -165,7 +165,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         const { tableOfContentsHtml, documentHtml } =
-          Up.renderHtmlForDocumentAndTableOfContents(document)
+          Up.renderDocumentAndTableOfContents(document)
 
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
@@ -187,7 +187,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
           new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
         const { tableOfContentsHtml, documentHtml } =
-          Up.renderHtmlForDocumentAndTableOfContents(document)
+          Up.renderDocumentAndTableOfContents(document)
 
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
@@ -219,7 +219,7 @@ context("The table of contents has no effect on elements that aren't referenced 
       ], new UpDocument.TableOfContents([headingInTableOfContents]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -289,7 +289,7 @@ context('When a table of contents has multiple entries', () => {
     ], tableOfContents)
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -354,7 +354,7 @@ context("Within the table of contents itself", () => {
       ], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -410,7 +410,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -486,7 +486,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -562,7 +562,7 @@ context("Within the table of contents, the IDs of revealable content elements do
       ], new UpDocument.TableOfContents([applesHeading, grapesHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -625,7 +625,7 @@ context("When an item referenced by the table of contents has a source line numb
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -667,7 +667,7 @@ context('When a section link node is associated with an entry', () => {
       ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderHtmlForDocumentAndTableOfContents(document)
+      Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'

@@ -20,7 +20,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<p><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></p>')
   })
 
@@ -29,7 +29,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Audio('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<audio controls loop src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
   })
 
@@ -38,7 +38,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Video('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<video controls loop src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
   })
 
@@ -47,7 +47,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Image('', 'https://example.com/?x&y&z="hi"')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<img alt="" src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="">')
   })
 
@@ -56,7 +56,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Audio('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<audio controls loop src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
   })
 
@@ -65,7 +65,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Video('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<video controls loop src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
   })
 
@@ -74,7 +74,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new Image('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<img alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
   })
 
@@ -100,7 +100,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</dt><dd></dd>'
       + '</dl>'
 
-    expect(up.renderHtml(document)).to.equal(html)
+    expect(up.render(document)).to.equal(html)
   })
 
   specify('id attribute of footntoes in a footnote block', () => {
@@ -125,7 +125,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</dt><dd></dd>'
       + '</dl>'
 
-    expect(up.renderHtml(document)).to.equal(html)
+    expect(up.render(document)).to.equal(html)
   })
 
   specify("href attribute of a footnote reference's link", () => {
@@ -150,7 +150,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</sup>'
       + '</p>'
 
-    expect(up.renderHtml(document)).to.equal(html)
+    expect(up.render(document)).to.equal(html)
   })
 
   specify('id attribute of footnote references', () => {
@@ -175,7 +175,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       + '</sup>'
       + '</p>'
 
-    expect(up.renderHtml(document)).to.equal(html)
+    expect(up.render(document)).to.equal(html)
   })
 
   specify('the id attribute of elements referenced by the table of contents', () => {
@@ -194,7 +194,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       new UpDocument([heading], new UpDocument.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderHtmlForDocumentAndTableOfContents(document)
+      up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -218,7 +218,7 @@ describe("Within a link's href attribute, <, ', and >", () => {
       ])
     ])
 
-    expect(Up.renderHtml(document)).to.equal(
+    expect(Up.render(document)).to.equal(
       '<p><a href="https://example.com/?z=\'<span>\'"></a></p>')
   })
 })

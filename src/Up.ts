@@ -23,14 +23,14 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  renderHtml(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
+  render(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): string {
     const htmlRenderer = this.getHtmlRenderer(extraSettings)
 
     return htmlRenderer.document(
       this.getDocument(markupOrDocument, extraSettings))
   }
 
-  renderHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+  renderDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
     const htmlRenderer = this.getHtmlRenderer(extraSettings)
     const document = this.getDocument(markupOrDocument, extraSettings)
 
@@ -40,7 +40,7 @@ export class Up {
     }
   }
 
-  renderInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
+  renderInline(markupOrInlineDocument: MarkupOrInlineDocument, extraSettings?: UserProvidedSettings): string {
     const inlineDocument =
       typeof markupOrInlineDocument === 'string'
         ? this.parseInline(markupOrInlineDocument, extraSettings)
@@ -89,16 +89,16 @@ export class Up {
 export namespace Up {
   const defaultUp = new Up()
 
-  export function renderHtml(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.renderHtml(markupOrDocument, settings)
+  export function render(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.render(markupOrDocument, settings)
   }
 
-  export function renderHtmlForDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    return defaultUp.renderHtmlForDocumentAndTableOfContents(markupOrDocument, settings)
+  export function renderDocumentAndTableOfContents(markupOrDocument: MarkupOrDocument, settings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
+    return defaultUp.renderDocumentAndTableOfContents(markupOrDocument, settings)
   }
 
-  export function renderInlineHtml(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
-    return defaultUp.renderInlineHtml(markupOrInlineDocument, settings)
+  export function renderInline(markupOrInlineDocument: MarkupOrInlineDocument, settings?: UserProvidedSettings): string {
+    return defaultUp.renderInline(markupOrInlineDocument, settings)
   }
 
   export function parse(markup: string, settings?: UserProvidedSettings.Parsing): UpDocument {

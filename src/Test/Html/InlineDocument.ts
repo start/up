@@ -24,7 +24,7 @@ import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 describe('An empty inline document', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.renderInlineHtml(new InlineUpDocument([]))).to.equal('')
+    expect(Up.renderInline(new InlineUpDocument([]))).to.equal('')
   })
 })
 
@@ -36,7 +36,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Emphasis([new PlainText('Always')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<em>Always</em>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<em>Always</em>')
     })
   })
 
@@ -47,7 +47,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Stress([new PlainText('Ness')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<strong>Ness</strong>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<strong>Ness</strong>')
     })
   })
 
@@ -58,7 +58,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Italic([new PlainText('Ness')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<i>Ness</i>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<i>Ness</i>')
     })
   })
 
@@ -69,7 +69,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Bold([new PlainText('Ness')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<b>Ness</b>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<b>Ness</b>')
     })
   })
 
@@ -80,7 +80,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new InlineCode('then')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<code>then</code>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<code>then</code>')
     })
   })
 
@@ -91,7 +91,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new ExampleInput('esc')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<kbd>esc</kbd>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<kbd>esc</kbd>')
     })
   })
 
@@ -102,7 +102,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new NormalParenthetical([new PlainText('(Koopa Troopa)')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<small class="up-parenthetical">(Koopa Troopa)</small>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical">(Koopa Troopa)</small>')
     })
   })
 
@@ -113,7 +113,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new SquareParenthetical([new PlainText('[Koopa Troopa]')])
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small>')
     })
   })
 
@@ -124,7 +124,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Link([new PlainText('Google')], 'https://google.com')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal('<a href="https://google.com">Google</a>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<a href="https://google.com">Google</a>')
     })
   })
 
@@ -135,7 +135,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Image('haunted house', 'http://example.com/hauntedhouse.svg')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(
+      expect(Up.renderInline(inlineDocument)).to.equal(
         '<img alt="haunted house" src="http://example.com/hauntedhouse.svg" title="haunted house">')
     })
   })
@@ -147,7 +147,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(
+      expect(Up.renderInline(inlineDocument)).to.equal(
         '<audio controls loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
         + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
         + '</audio>')
@@ -161,7 +161,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ])
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(
+      expect(Up.renderInline(inlineDocument)).to.equal(
         '<video controls loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
         + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
         + '</video>')
@@ -178,7 +178,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
       const html =
         '<mark>45.9%</mark>'
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(html)
+      expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
   })
 
@@ -196,7 +196,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         + '<span role="alert">45.9%</span>'
         + '</span>'
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(html)
+      expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
   })
 
@@ -214,7 +214,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         + '<span role="alert">naked Gary</span>'
         + '</span>'
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(html)
+      expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
   })
 
@@ -232,7 +232,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
         + '<span role="alert">rotting Gary</span>'
         + '</span>'
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(html)
+      expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
   })
 
@@ -246,7 +246,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
       const html =
         '<q>45.9%</q>'
 
-      expect(Up.renderInlineHtml(inlineDocument)).to.equal(html)
+      expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
   })
 })
