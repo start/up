@@ -14,10 +14,12 @@ LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
     const config = {
-      createSourceMap: true,
-      terms: {
-        markup: { spoiler: 'LOOK AWAY' },
-        rendered: { tableOfContents: 'In This Article' }
+      parsing: {
+        createSourceMap: true,
+        terms: { spoiler: 'LOOK AWAY' }
+      },
+      rendering: {
+        terms: { tableOfContents: 'In This Article' }
       }
     }
 
@@ -44,10 +46,12 @@ LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
     const config = {
-      createSourceMap: true,
-      terms: {
-        markup: { spoiler: 'LOOK AWAY' },
-        rendered: { tableOfContents: 'In This Article' }
+      parsing: {
+        createSourceMap: true,
+        terms: { spoiler: 'LOOK AWAY' }
+      },
+      rendering: {
+        terms: { tableOfContents: 'In This Article' }
       }
     }
 
