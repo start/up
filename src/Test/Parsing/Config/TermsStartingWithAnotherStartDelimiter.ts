@@ -18,8 +18,8 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
   context("When the custom term for 'spoiler' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           spoiler: '^lookaway^'
         }
       }
@@ -45,8 +45,8 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'nsfw' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           nsfw: '^lookaway^'
         }
       }
@@ -72,8 +72,8 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'nsfl' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           nsfl: '^lookaway^'
         }
       }
@@ -99,8 +99,8 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'audio' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           audio: '^listen^'
         }
       }
@@ -138,8 +138,8 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'image' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           image: '^look^'
         }
       }
@@ -177,8 +177,8 @@ context("When the custom term for an inline convention starts with a caret, the 
 
   context("When the custom term for 'video' starts with a caret", () => {
     const up = new Up({
-      terms: {
-        markup: {
+      parsing: {
+        terms: {
           video: '^watch^'
         }
       }

@@ -21,7 +21,7 @@ LOOK AWAY
       }
     }
 
-    expect(Up.render(markup, config)).to.equal(
+    expect(Up.parseAndRender(markup, config)).to.equal(
       '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
       + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
       + '<div class="up-spoiler up-revealable" data-up-source-line="7">'
@@ -52,7 +52,7 @@ LOOK AWAY
     }
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(markup, config)
+      Up.parseAndRenderDocumentAndTableOfContents(markup, config)
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
@@ -77,10 +77,12 @@ LOOK AWAY
   specify('If you provide the renderInline method with markup, it (internally) calls the parseInline method for you using configuration you provide', () => {
     const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
-    const html = Up.renderInline(markup, {
-      idPrefix: 'reply 104',
-      terms: {
-        markup: { spoiler: 'LOOK AWAY' }
+    const html = Up.parseAndRenderInline(markup, {
+      parsing: {
+        terms: { spoiler: 'LOOK AWAY' }
+      },
+      rendering: {
+        idPrefix: 'reply 104'
       }
     })
 

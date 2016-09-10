@@ -11,13 +11,13 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     markupForDefaultSettings: string
     markupForTermVariations: string
-    termVariations: UserProvidedSettings.Terms.Markup
+    termVariations: UserProvidedSettings.Parsing.Terms
     invalidMarkupForEmptyTerm: string
     invalidMarkupForBlankTerm: string
-    equivalentTermVariationsPlusEmptyAndBlankVariations: UserProvidedSettings.Terms.Markup
-    onlyEmptyAndBlankTermVariations: UserProvidedSettings.Terms.Markup
-    noTermVariations: UserProvidedSettings.Terms.Markup
-    conflictingTermVariations: UserProvidedSettings.Terms.Markup
+    equivalentTermVariationsPlusEmptyAndBlankVariations: UserProvidedSettings.Parsing.Terms
+    onlyEmptyAndBlankTermVariations: UserProvidedSettings.Parsing.Terms
+    noTermVariations: UserProvidedSettings.Parsing.Terms
+    conflictingTermVariations: UserProvidedSettings.Parsing.Terms
   }
 ): void {
   const { markupForDefaultSettings, markupForTermVariations, invalidMarkupForEmptyTerm, invalidMarkupForBlankTerm } = args
@@ -35,7 +35,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   //
   // First, let's produce actual, usable config settings from the provided term variations.
 
-  const configChangesFor = (changes: UserProvidedSettings.Terms.Markup) => ({
+  const configChangesFor = (changes: UserProvidedSettings.Parsing.Terms) => ({
     terms: { markup: changes }
   })
 

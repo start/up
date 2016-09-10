@@ -14,8 +14,8 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: UpDocument
-    configChanges: UserProvidedSettings
-    conflictingConfigChanges: UserProvidedSettings
+    configChanges: UserProvidedSettings.Rendering
+    conflictingConfigChanges: UserProvidedSettings.Rendering
   }
 ): void {
   const { document, configChanges, conflictingConfigChanges } = args
@@ -104,16 +104,12 @@ describe('The "footnote reference" config term', () => {
     ]),
     configChanges: {
       terms: {
-        rendered: {
-          footnoteReference: 'ref'
-        }
+        footnoteReference: 'ref'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          footnoteReference: 'fn ref'
-        }
+        footnoteReference: 'fn ref'
       }
     }
   })
@@ -129,16 +125,12 @@ describe('The "footnote" config term', () => {
     ]),
     configChanges: {
       terms: {
-        rendered: {
-          footnote: 'fn'
-        }
+        footnote: 'fn'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          footnote: 'note'
-        }
+        footnote: 'note'
       }
     }
   })
@@ -154,16 +146,12 @@ describe('The "sectionReferencedByTableOfContents" config setting', () => {
       new UpDocument.TableOfContents([heading])),
     configChanges: {
       terms: {
-        rendered: {
-          sectionReferencedByTableOfContents: 'heading'
-        }
+        sectionReferencedByTableOfContents: 'heading'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          sectionReferencedByTableOfContents: 'item'
-        }
+        sectionReferencedByTableOfContents: 'item'
       }
     }
   })
@@ -179,16 +167,12 @@ describe('The "toggleSpoiler" config term', () => {
     ]),
     configChanges: {
       terms: {
-        rendered: {
-          toggleSpoiler: 'show/hide'
-        }
+        toggleSpoiler: 'show/hide'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          toggleSpoiler: 'see spoiler?'
-        }
+        toggleSpoiler: 'see spoiler?'
       }
     }
   })
@@ -204,16 +188,12 @@ describe('The "toggleNsfw" config term', () => {
     ]),
     configChanges: {
       terms: {
-        rendered: {
-          toggleNsfw: 'see/hide'
-        }
+        toggleNsfw: 'see/hide'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          toggleNsfw: 'show nsfw?'
-        }
+        toggleNsfw: 'show nsfw?'
       }
     }
   })
@@ -229,16 +209,12 @@ describe('The "toggleNsfl" config term', () => {
     ]),
     configChanges: {
       terms: {
-        rendered: {
-          toggleNsfl: 'see/hide'
-        }
+        toggleNsfl: 'see/hide'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          toggleNsfl: 'show nsfl?'
-        }
+        toggleNsfl: 'show nsfl?'
       }
     }
   })
@@ -254,16 +230,12 @@ describe('The "tableOfContents" config setting', () => {
       new UpDocument.TableOfContents([heading])),
     configChanges: {
       terms: {
-        rendered: {
-          tableOfContents: 'In This Article'
-        }
+        tableOfContents: 'In This Article'
       }
     },
     conflictingConfigChanges: {
       terms: {
-        rendered: {
-          tableOfContents: 'Skip To…'
-        }
+        tableOfContents: 'Skip To…'
       }
     }
   })

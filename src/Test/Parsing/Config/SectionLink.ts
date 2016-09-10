@@ -9,8 +9,8 @@ import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 describe('The "sectionLink" config term', () => {
   const up = new Up({
-    terms: {
-      markup: { sectionLink: 'heading' }
+    parsing: {
+      terms: { sectionLink: 'heading' }
     }
   })
 

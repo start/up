@@ -11,7 +11,9 @@ import { Video } from '../../../SyntaxNodes/Video'
 
 context('When the "renderUnsafeContent" config setting is set to true, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
   const up = new Up({
-    renderUnsafeContent: true
+    rendering: {
+      renderUnsafeContent: true
+    }
   })
 
 

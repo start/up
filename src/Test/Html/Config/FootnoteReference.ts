@@ -10,8 +10,8 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 describe("A footnote reference's ID", () => {
   it('uses the provided term for "footnote reference"', () => {
     const up = new Up({
-      terms: {
-        rendered: {
+      rendering: {
+        terms: {
           footnoteReference: 'ref'
         }
       }
@@ -32,8 +32,8 @@ describe("A footnote reference's ID", () => {
 describe("The ID of the footnote reference referencing the footnote", () => {
   it('uses the provided term for "footnote reference"', () => {
     const up = new Up({
-      terms: {
-        rendered: {
+      rendering: {
+        terms: {
           footnoteReference: 'ref'
         }
       }

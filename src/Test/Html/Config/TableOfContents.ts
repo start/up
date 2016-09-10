@@ -8,10 +8,8 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 describe('The main heading within the table of contents', () => {
   it('uses the config term for "tableOfContents"', () => {
     const up = new Up({
-      terms: {
-        rendered: {
-          tableOfContents: 'In This Article'
-        }
+      rendering: {
+        terms: { tableOfContents: 'In This Article' }
       }
     })
 

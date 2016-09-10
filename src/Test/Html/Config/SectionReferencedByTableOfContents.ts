@@ -8,10 +8,8 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 describe('The ID of an element referenced by the table of contents', () => {
   it('uses the config term for "sectionReferencedByTableOfContents"', () => {
     const up = new Up({
-      terms: {
-        rendered: {
-          sectionReferencedByTableOfContents: 'table of contents entry'
-        }
+      rendering: {
+        terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
       }
     })
 

@@ -36,7 +36,9 @@ context('When the "createSourceMap" config setting is not set to true', () => {
 
 context('When the "createSourceMap" config setting is set to true, outline nodes are given a source line number.', () => {
   const up = new Up({
-    createSourceMap: true
+    parsing: {
+      createSourceMap: true
+    }
   })
 
   specify("The source line numbers start at 1.", () => {

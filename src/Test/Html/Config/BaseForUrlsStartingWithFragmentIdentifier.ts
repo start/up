@@ -10,7 +10,9 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   const up = new Up({
-    baseForUrlsStartingWithHashMark: 'https://example.com/page'
+    parsing: {
+      baseForUrlsStartingWithHashMark: 'https://example.com/page'
+    }
   })
 
   it("does not affect a footnote reference's link to its footnote", () => {

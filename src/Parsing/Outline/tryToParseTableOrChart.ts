@@ -71,13 +71,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
 
   const isTable =
     markupLineConsumer.consume({
-      linePattern: getLabelPattern(config.terms.markup.table),
+      linePattern: getLabelPattern(config.terms.table),
       thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
   const isChart =
     !isTable && markupLineConsumer.consume({
-      linePattern: getLabelPattern(config.terms.markup.chart),
+      linePattern: getLabelPattern(config.terms.chart),
       thenBeforeConsumingLine: setRawCaptionMarkup
     })
 
