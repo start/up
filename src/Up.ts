@@ -62,7 +62,9 @@ export class Up {
   }
 
   renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
-    return this.getHtmlRenderer(extraRenderingSettings).renderInlineDocument(inlineDocument)
+    const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
+     
+    return htmlRenderer.renderInlineDocument(inlineDocument)
   }
 
   private getParsingConfig(changes?: UserProvidedSettings.Parsing): Config.Parsing {
