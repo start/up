@@ -41,7 +41,7 @@ context('When the "createSourceMap" setting is enabled, outline nodes are given 
     }
   })
 
-  specify("The source line numbers start at 1.", () => {
+  specify("The source line numbers start at 1", () => {
     expect(up.parse('Hi!')).to.deep.equal(
       new UpDocument([
         new Paragraph([new PlainText("Hi!")], { sourceLineNumber: 1 })
