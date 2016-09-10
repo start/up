@@ -3,8 +3,8 @@ import Up from '../../index'
 
 
 context("You can render HTML directly from markup.", () => {
-  context('The parseAndRender method:', () => {
-    specify('Can be used with parsing settings', () => {
+  context('The parseAndRender method', () => {
+    specify('can be used with parsing settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -33,7 +33,7 @@ LOOK AWAY
         + '</div>')
     })
 
-    specify('Can be used with rendering settings', () => {
+    specify('can be used with rendering settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -61,7 +61,7 @@ SPOILER
         + '</div>')
     })
 
-    specify('Can be used with parsing and rendering settings together', () => {
+    specify('can be used with parsing and rendering settings together', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -93,7 +93,7 @@ LOOK AWAY
         + '</div>')
     })
 
-    specify('Can be used without settings', () => {
+    specify('can be used without settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -117,7 +117,7 @@ SPOILER
   })
 
   context('The parseAndRenderDocumentAndTableOfContents method', () => {
-    specify('Can be used with parsing settings', () => {
+    specify('can be used with parsing settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -155,7 +155,7 @@ LOOK AWAY
         + '</div>')
     })
 
-    specify('Can be used with rendering settings', () => {
+    specify('can be used with rendering settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -192,7 +192,7 @@ SPOILER
         + '</div>')
     })
 
-    specify('Can be used with both parsing and rendering settings together', () => {
+    specify('can be used with both parsing and rendering settings together', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -233,7 +233,7 @@ LOOK AWAY
         + '</div>')
     })
 
-    specify('Can be used witout settings', () => {
+    specify('can be used witout settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
@@ -248,7 +248,7 @@ SPOILER
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>In This Article</h1>'
+        + '<h1>Table of Contents</h1>'
         + '<ul>'
         + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
@@ -268,7 +268,7 @@ SPOILER
   })
 
   context('The parseAndRenderInline method', () => {
-    specify('Can be used with parsing settings', () => {
+    specify('can be used with parsing settings', () => {
       const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
       const html = Up.parseAndRenderInline(markup, {
@@ -288,7 +288,7 @@ SPOILER
         + '</span>')
     })
 
-    specify('Can be used with rendering settings', () => {
+    specify('can be used with rendering settings', () => {
       const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
 
       const html = Up.parseAndRenderInline(markup, {
@@ -308,7 +308,7 @@ SPOILER
         + '</span>')
     })
 
-    specify('Can be used with both parsing and rendering settings together', () => {
+    specify('can be used with both parsing and rendering settings together', () => {
       const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
 
       const html = Up.parseAndRenderInline(markup, {
@@ -331,14 +331,14 @@ SPOILER
         + '</span>')
     })
 
-    specify('Can be used without settings', () => {
-      const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
+    specify('can be used without settings', () => {
+      const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
 
       expect(Up.parseAndRenderInline(markup)).to.equal(
         'After beating the Elite Four, '
         + '<span class="up-spoiler up-revealable">'
-        + '<label for="reply-104-spoiler-1">toggle spoiler</label>'
-        + '<input id="reply-104-spoiler-1" role="button" type="checkbox">'
+        + '<label for="up-spoiler-1">toggle spoiler</label>'
+        + '<input id="up-spoiler-1" role="button" type="checkbox">'
         + '<span role="alert">'
         + 'Blue steals a Red Delicious from Red.'
         + '</span>'

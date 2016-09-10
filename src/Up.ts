@@ -20,22 +20,25 @@ export class Up {
     this.config = new Config(settings)
   }
 
-  parseAndRender(markup: string, extraSettings?: UserProvidedSettings): string {
-    const document = this.parse(markup, extraSettings.parsing)
+  parseAndRender(markup: string, extraSettings: UserProvidedSettings): string {
+    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const document = this.parse(markup, parsing)
 
-    return this.render(document, extraSettings.rendering)
+    return this.render(document, rendering)
   }
 
   parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): HtmlForDocumentAndTableOfContents {
-    const document = this.parse(markup, extraSettings.parsing)
+    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const document = this.parse(markup, parsing)
 
-    return this.renderDocumentAndTableOfContents(document, extraSettings.rendering)
+    return this.renderDocumentAndTableOfContents(document, rendering)
   }
 
   parseAndRenderInline(markup: string, extraSettings?: UserProvidedSettings): string {
-    const inlineDocument = this.parseInline(markup, extraSettings.parsing)
+    const { parsing, rendering } = extraSettings || EMPTY_SETTINGS
+    const inlineDocument = this.parseInline(markup, parsing)
 
-    return this.renderInline(inlineDocument, extraSettings.rendering)
+    return this.renderInline(inlineDocument, rendering)
   }
 
   parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
@@ -78,6 +81,12 @@ export class Up {
   private getHtmlRenderer(extraRenderingSettings: UserProvidedSettings.Rendering): HtmlRenderer {
     return new HtmlRenderer(this.getRenderingConfig(extraRenderingSettings))
   }
+}
+
+
+const EMPTY_SETTINGS: UserProvidedSettings = {
+  parsing: null,
+  rendering: null
 }
 
 
