@@ -226,14 +226,14 @@ export namespace Settings {
 
   export class Rendering {
     idPrefix = 'up'
-    renderUnsafeContent = false
+    renderDangerousContent = false
     terms = new Rendering.Terms()
 
     clone(): Rendering {
       const clone = new Rendering()
 
       clone.idPrefix = this.idPrefix
-      clone.renderUnsafeContent = this.renderUnsafeContent
+      clone.renderDangerousContent = this.renderDangerousContent
       clone.terms = this.terms.clone()
 
       return clone
@@ -247,8 +247,8 @@ export namespace Settings {
       this.idPrefix =
         coalesce(settings.idPrefix, this.idPrefix)
 
-      this.renderUnsafeContent =
-        coalesce(settings.renderUnsafeContent, this.renderUnsafeContent)
+      this.renderDangerousContent =
+        coalesce(settings.renderDangerousContent, this.renderDangerousContent)
 
       this.terms.applyUserProvidedSettings(settings.terms)
     }

@@ -42,7 +42,7 @@ export namespace UserProvidedSettings {
 
   export interface Rendering extends SpecificSettings {
     idPrefix?: string
-    renderUnsafeContent?: boolean
+    renderDangerousContent?: boolean
     terms?: Rendering.Terms
   }
 

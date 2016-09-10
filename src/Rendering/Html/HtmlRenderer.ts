@@ -626,7 +626,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private isUrlAllowed(url: string): boolean {
-    return this.settings.renderUnsafeContent || !UNSAFE_URL_SCHEME.test(url)
+    return this.settings.renderDangerousContent || !UNSAFE_URL_SCHEME.test(url)
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {

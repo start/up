@@ -250,7 +250,7 @@ describe('The "tableOfContents" settings setting', () => {
 })
 
 
-describe('The "renderUnsafeContent" settings setting', () => {
+describe('The "renderDangerousContent" settings setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -258,10 +258,10 @@ describe('The "renderUnsafeContent" settings setting', () => {
       ])
     ]),
     change: {
-      renderUnsafeContent: true
+      renderDangerousContent: true
     },
     conflictingChange: {
-      renderUnsafeContent: false
+      renderDangerousContent: false
     }
   })
 })
