@@ -20,7 +20,7 @@ const up = new Up({
 })
 
 
-describe('The "defaultUrlScheme" settings setting', () => {
+describe('The "defaultUrlScheme" setting', () => {
   it('is prefixed to schemeless link URLs', () => {
     const markup = '[Chrono Cross](wiki/Chrono_Chross)'
 

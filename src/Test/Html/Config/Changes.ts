@@ -86,7 +86,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "idPrefix" settings setting', () => {
+describe('The "idPrefix" setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([
@@ -145,7 +145,7 @@ describe('The "footnote" settings term', () => {
 })
 
 
-describe('The "sectionReferencedByTableOfContents" settings setting', () => {
+describe('The "sectionReferencedByTableOfContents" setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
@@ -229,7 +229,7 @@ describe('The "toggleNsfl" settings term', () => {
 })
 
 
-describe('The "tableOfContents" settings setting', () => {
+describe('The "tableOfContents" setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
@@ -250,7 +250,7 @@ describe('The "tableOfContents" settings setting', () => {
 })
 
 
-describe('The "renderDangerousContent" settings setting', () => {
+describe('The "renderDangerousContent" setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new UpDocument([
       new Paragraph([

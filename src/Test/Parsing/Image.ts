@@ -129,7 +129,7 @@ context("When an otherwise-valid image convention's URL starts with whitespace, 
 
 
 describe('An image URL with no URL scheme', () => {
-  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' settings setting)", () => {
+  it("is prefixed with the default URL scheme ('https://' unless changed via the 'defaultUrlScheme' setting)", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -143,7 +143,7 @@ describe('An image URL with no URL scheme', () => {
 
 
 describe('An image URL starting with a slash', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" settings setting is blank)', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithSlash" setting is blank)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
@@ -157,7 +157,7 @@ describe('An image URL starting with a slash', () => {
 
 
 describe('An image URL starting with a hash mark ("#")', () => {
-  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" settings setting is blank)', () => {
+  it('has no added prefix by default (because the default "baseForUrlsStartingWithFragmentIdentifier" setting is blank)', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],

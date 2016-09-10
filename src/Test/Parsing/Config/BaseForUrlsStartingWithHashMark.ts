@@ -22,7 +22,7 @@ const up = new Up({
 })
 
 
-describe('The "baseForUrlsStartingWithFragmentIdentifier" settings setting', () => {
+describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   it('is prefixed to link URLs that start with a hash mark ("#")', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',

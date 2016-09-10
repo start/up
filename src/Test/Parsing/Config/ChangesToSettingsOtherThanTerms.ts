@@ -82,7 +82,7 @@ function itWorksAsAdvertised(
 }
 
 
-describe('The "createSourceMap" settings setting', () => {
+describe('The "createSourceMap" setting', () => {
   const headingWithSourceMap =
     new Heading([new PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
@@ -113,7 +113,7 @@ Very important
 })
 
 
-describe('The "defaultUrlScheme" settings setting', () => {
+describe('The "defaultUrlScheme" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
@@ -140,7 +140,7 @@ describe('The "defaultUrlScheme" settings setting', () => {
 })
 
 
-describe('The "fancyEllipsis" settings setting', () => {
+describe('The "fancyEllipsis" setting', () => {
   itWorksAsAdvertised({
     markup: 'I think so...',
 
@@ -167,7 +167,7 @@ describe('The "fancyEllipsis" settings setting', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithSlash" settings setting', () => {
+describe('The "baseForUrlsStartingWithSlash" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
@@ -194,7 +194,7 @@ describe('The "baseForUrlsStartingWithSlash" settings setting', () => {
 })
 
 
-describe('The "baseForUrlsStartingWithHashMark" settings setting', () => {
+describe('The "baseForUrlsStartingWithHashMark" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 

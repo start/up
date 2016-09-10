@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
-context('The "fancyEllipsis" settings setting', () => {
+context('The "fancyEllipsis" setting', () => {
   const up = new Up({
     parsing: { fancyEllipsis: '⋯' }
   })
