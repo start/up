@@ -886,7 +886,7 @@ SPOILER:
           ])
         ]))
     })
-    
+
     specify("NSFW blocks", () => {
       const markup = `
 NSFW:
@@ -940,7 +940,7 @@ NSFW:
           ])
         ]))
     })
-    
+
     specify("NSFL blocks", () => {
       const markup = `
 NSFL:
@@ -1059,28 +1059,29 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 })
 
 
-describe("Within an outline convention, a blockquoted footnote that follows a non-blockquoted footnote", () => {
-  it('has a reference number greater than that of the preceding footnote (inside the same outline convention), but it produces footnote block that appears before the footnote block of the preceding footnote', () => {
+describe("Within an outline convention, a footnote within an (inner) revealable outline convention which follows a footnote before the (inner) revealable outline convention", () => {
+  it("has a reference number greater than that of the preceding footnote, but it produces footnote block that appears before the preceding footnote's block", () => {
     const markup = `
-* I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+* I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
 
-* > I don't eat (^Or touch.) pumpkins.
+* SPOILER:
+    I don't eat (^ Or touch.) pumpkins.
 
 ------------------------
 
-I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
+I wear glasses (^ It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnoteInUnorderedList = new Footnote([
       new PlainText("Well, I do, but I pretend not to.")
     ], { referenceNumber: 1 })
 
-    const footnoteInBlockquote = new Footnote([
+    const footnoteInSpoilerBlock = new Footnote([
       new PlainText("Or touch.")
     ], { referenceNumber: 2 })
 
-    const footnoteInParagraph = new Footnote([
+    const footnoteAfterUnorderedList = new Footnote([
       new PlainText("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 3 })
 
@@ -1098,13 +1099,13 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
             ])
           ]),
           new UnorderedList.Item([
-            new Blockquote([
+            new SpoilerBlock([
               new Paragraph([
                 new PlainText("I don't eat"),
-                footnoteInBlockquote,
+                footnoteInSpoilerBlock,
                 new PlainText(" pumpkins.")
               ]),
-              new FootnoteBlock([footnoteInBlockquote])
+              new FootnoteBlock([footnoteInSpoilerBlock])
             ])
           ])
         ]),
@@ -1112,89 +1113,10 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new ThematicBreak(),
         new Paragraph([
           new PlainText("I wear glasses"),
-          footnoteInParagraph,
+          footnoteAfterUnorderedList,
           new PlainText(" even while working out."),
         ]),
-        new FootnoteBlock([footnoteInParagraph])
-      ]))
-  })
-})
-
-
-describe("Within an outline convention, a blockquoted nested footnote that follows a non-blockquoted nested footnote", () => {
-  it('has a reference number lower than that of the preceding nested footnote (inside the same outline convention) because it gets referenced in an earlier footnote block', () => {
-    const markup = `
-* I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
-
-  It's too expensive.
-
-* > I don't eat (^Or touch. [^Or smell.]) pumpkins.
-
-------------------------
-
-I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
-
-    const nestedFootnoteInUnorderedList = new Footnote([
-      new PlainText("On Mondays.")
-    ], { referenceNumber: 4 })
-
-    const footnoteInUnorderedList = new Footnote([
-      new PlainText("Well, I do, but I pretend"),
-      nestedFootnoteInUnorderedList,
-      new PlainText(' not to.')
-    ], { referenceNumber: 1 })
-
-    const nestedFootnoteInBlockquote = new Footnote([
-      new PlainText("Or smell.")
-    ], { referenceNumber: 3 })
-
-    const footnoteInBlockquote = new Footnote([
-      new PlainText("Or touch."),
-      nestedFootnoteInBlockquote
-    ], { referenceNumber: 2 })
-
-    const footnoteInParagraph = new Footnote([
-      new PlainText("It's actually been a dream of mine ever since I was young.")
-    ], { referenceNumber: 5 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnoteInUnorderedList,
-              new PlainText(" Never have.")
-            ]),
-            new Paragraph([
-              new PlainText("It's too expensive.")
-            ])
-          ]),
-          new UnorderedList.Item([
-            new Blockquote([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnoteInBlockquote,
-                new PlainText(" pumpkins.")
-              ]),
-              new FootnoteBlock([
-                footnoteInBlockquote,
-                nestedFootnoteInBlockquote
-              ])
-            ])
-          ])
-        ]),
-        new FootnoteBlock([
-          footnoteInUnorderedList,
-          nestedFootnoteInUnorderedList
-        ]),
-        new ThematicBreak(),
-        new Paragraph([
-          new PlainText("I wear glasses"),
-          footnoteInParagraph,
-          new PlainText(" even while working out.")
-        ]),
-        new FootnoteBlock([footnoteInParagraph])
+        new FootnoteBlock([footnoteAfterUnorderedList])
       ]))
   })
 })
@@ -1338,6 +1260,82 @@ I don't eat (^Or touch.) pumpkins.`
         new FootnoteBlock([
           footnoteInSecondParagraph
         ])
+      ]))
+  })
+})
+
+
+describe("Within an outline convention, a nested footnote within an (inner) revealable outline convention which follows a nested footnote before the (inner) revealable outline convention", () => {
+  it('has a reference number lower than that of the preceding nested footnote because it gets referenced in an earlier footnote block', () => {
+    const markup = `
+> I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
+>
+>  It's too expensive.
+>
+> NSFL:
+>   I don't eat (^Or touch. [^Or smell.]) pumpkins.
+
+------------------------
+
+I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
+
+    const nestedFootnoteInBlockquote = new Footnote([
+      new PlainText("On Mondays.")
+    ], { referenceNumber: 4 })
+
+    const footnoteInBlockquote = new Footnote([
+      new PlainText("Well, I do, but I pretend"),
+      nestedFootnoteInBlockquote,
+      new PlainText(' not to.')
+    ], { referenceNumber: 1 })
+
+    const nestedFootnoteInNsflBlock = new Footnote([
+      new PlainText("Or smell.")
+    ], { referenceNumber: 3 })
+
+    const footnoteInNsflBlock = new Footnote([
+      new PlainText("Or touch."),
+      nestedFootnoteInNsflBlock
+    ], { referenceNumber: 2 })
+
+    const footnoteAfterBlockquote = new Footnote([
+      new PlainText("It's actually been a dream of mine ever since I was young.")
+    ], { referenceNumber: 5 })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new Blockquote([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            footnoteInBlockquote,
+            new PlainText(" Never have.")
+          ]),
+          new Paragraph([
+            new PlainText("It's too expensive.")
+          ]),
+          new NsflBlock([
+            new Paragraph([
+              new PlainText("I don't eat"),
+              footnoteInNsflBlock,
+              new PlainText(" pumpkins.")
+            ]),
+            new FootnoteBlock([
+              footnoteInNsflBlock,
+              nestedFootnoteInNsflBlock
+            ])
+          ])
+        ]),
+        new FootnoteBlock([
+          footnoteInBlockquote,
+          nestedFootnoteInBlockquote
+        ]),
+        new ThematicBreak(),
+        new Paragraph([
+          new PlainText("I wear glasses"),
+          footnoteAfterBlockquote,
+          new PlainText(" even while working out.")
+        ]),
+        new FootnoteBlock([footnoteAfterBlockquote])
       ]))
   })
 })
