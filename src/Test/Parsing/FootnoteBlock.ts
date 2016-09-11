@@ -296,6 +296,76 @@ Anyway, none of that matters.`
         ]))
     })
 
+    specify('Description lists', () => {
+      const markup = `
+Bulbasaur
+  A strange seed was planted on its back at birth. (^What happens to the creature if the seed is never planted?) The plant sprouts and grows with this Pokémon.
+
+Confuse Ray
+Lick
+Night Shade (^This probably wasn't a reference to the family of plants.)
+  Ghost type moves.
+  
+Gary
+  A young man with a great sense of smell. (^Or maybe Ash simply smelled really good.)
+  
+Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText("What happens to the creature if the seed is never planted?")
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText("This probably wasn't a reference to the family of plants.")
+        ], { referenceNumber: 2 }),
+        new Footnote([
+          new PlainText("Or maybe Ash simply smelled really good.")
+        ], { referenceNumber: 3 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A strange seed was planted on its back at birth.'),
+                footnotes[0],
+                new PlainText(' The plant sprouts and grows with this Pokémon.')
+              ])
+            ])),
+
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+              new DescriptionList.Item.Subject([new PlainText('Lick')]),
+              new DescriptionList.Item.Subject([
+                new PlainText('Night Shade'),
+                footnotes[1]
+              ])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Ghost type moves.')
+              ])
+            ])),
+
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Gary')])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A young man with a great sense of smell.'),
+                footnotes[2]
+              ])
+            ]))
+          ]),
+
+          new FootnoteBlock(footnotes),
+
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
 
     context('Tables and charts:', () => {
       specify('Their header rows', () => {
@@ -856,74 +926,6 @@ NSFL:
           new FootnoteBlock(footnotes)
 
         ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in description list subjects and definitions', () => {
-  it('produce a footnote block that appears after the entire description list', () => {
-    const markup = `
-Bulbasaur
-  A strange seed was planted on its back at birth. (^What happens to the creature if the seed is never planted?) The plant sprouts and grows with this Pokémon.
-
-Confuse Ray
-Lick
-Night Shade (^This probably wasn't a reference to the family of plants.)
-  Ghost type moves.
-  
-Gary
-  A young man with a great sense of smell. (^Or maybe Ash simply smelled really good.)`
-
-    const footnotes = [
-      new Footnote([
-        new PlainText("What happens to the creature if the seed is never planted?")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("This probably wasn't a reference to the family of plants.")
-      ], { referenceNumber: 2 }),
-      new Footnote([
-        new PlainText("Or maybe Ash simply smelled really good.")
-      ], { referenceNumber: 3 })
-    ]
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A strange seed was planted on its back at birth.'),
-              footnotes[0],
-              new PlainText(' The plant sprouts and grows with this Pokémon.')
-            ])
-          ])),
-
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Subject([new PlainText('Lick')]),
-            new DescriptionList.Item.Subject([
-              new PlainText('Night Shade'),
-              footnotes[1]
-            ])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Ghost type moves.')
-            ])
-          ])),
-
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Gary')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A young man with a great sense of smell.'),
-              footnotes[2]
-            ])
-          ]))
-        ]),
-
-        new FootnoteBlock(footnotes)
       ]))
   })
 })
