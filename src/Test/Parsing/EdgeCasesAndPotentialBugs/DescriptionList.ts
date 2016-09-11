@@ -53,6 +53,40 @@ context('The terms for revealable outline conventions', () => {
 })
 
 
+context('The terms for tables and charts', () => {
+  it('can be the subjects in a description list if they are escaped', () => {
+    const markup = `
+\\Table
+  A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.
+
+\\Chart
+  In Up, a chart is simply a table with a second, vertical header.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Table')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
+            ])
+          ])),
+
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Chart')])
+          ],
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('In Up, a chart is simply a table with a second, vertical header.')
+              ])
+            ]))
+        ])
+      ]))
+  })
+})
+
+
 context('A block of would-be subjects in a description list terminates the list if:', () => {
   specify("A blank line separates any of the would-be subjects", () => {
     const markup = `
