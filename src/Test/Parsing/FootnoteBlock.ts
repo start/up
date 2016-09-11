@@ -886,6 +886,114 @@ SPOILER:
           ])
         ]))
     })
+    
+    specify("NSFW blocks", () => {
+      const markup = `
+NSFW:
+
+  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+ 
+    It's too expensive.
+ 
+  * I don't eat (^Or touch.) pumpkins.
+  
+  Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText("Well, I do, but I pretend not to.")
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText("Or touch.")
+        ], { referenceNumber: 2 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new NsfwBlock([
+
+            new UnorderedList([
+              new UnorderedList.Item([
+                new Paragraph([
+                  new PlainText("I don't eat cereal."),
+                  footnotes[0],
+                  new PlainText(" Never have."),
+                ]),
+                new Paragraph([
+                  new PlainText("It's too expensive.")
+                ])
+              ]),
+              new UnorderedList.Item([
+                new Paragraph([
+                  new PlainText("I don't eat"),
+                  footnotes[1],
+                  new PlainText(" pumpkins.")
+                ])
+              ])
+            ]),
+
+            new FootnoteBlock(footnotes),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ])
+        ]))
+    })
+    
+    specify("NSFL blocks", () => {
+      const markup = `
+NSFL:
+
+  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+ 
+    It's too expensive.
+ 
+  * I don't eat (^Or touch.) pumpkins.
+  
+  Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText("Well, I do, but I pretend not to.")
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText("Or touch.")
+        ], { referenceNumber: 2 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new NsflBlock([
+
+            new UnorderedList([
+              new UnorderedList.Item([
+                new Paragraph([
+                  new PlainText("I don't eat cereal."),
+                  footnotes[0],
+                  new PlainText(" Never have."),
+                ]),
+                new Paragraph([
+                  new PlainText("It's too expensive.")
+                ])
+              ]),
+              new UnorderedList.Item([
+                new Paragraph([
+                  new PlainText("I don't eat"),
+                  footnotes[1],
+                  new PlainText(" pumpkins.")
+                ])
+              ])
+            ]),
+
+            new FootnoteBlock(footnotes),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ])
+        ]))
+    })
   })
 })
 
@@ -911,116 +1019,6 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
     expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new Blockquote([
-
-          new UnorderedList([
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
-                footnotes[0],
-                new PlainText(" Never have.")
-              ]),
-              new Paragraph([
-                new PlainText("It's too expensive.")
-              ])
-            ]),
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnotes[1],
-                new PlainText(" pumpkins.")
-              ])
-            ])
-
-          ]),
-
-          new FootnoteBlock(footnotes)
-
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFW block', () => {
-  it("produce footnote blocks inside the NSFW block after all the appropriate outline conventions", () => {
-    const markup = `
-NSFW:
-
-  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
- 
-    It's too expensive.
- 
-  * I don't eat (^Or touch.) pumpkins.`
-
-    const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
-      ], { referenceNumber: 2 })
-    ]
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new NsfwBlock([
-
-          new UnorderedList([
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
-                footnotes[0],
-                new PlainText(" Never have."),
-              ]),
-              new Paragraph([
-                new PlainText("It's too expensive.")
-              ])
-            ]),
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnotes[1],
-                new PlainText(" pumpkins.")
-              ])
-            ])
-
-          ]),
-
-          new FootnoteBlock(footnotes)
-
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFL block', () => {
-  it("produce footnote blocks inside the NSFL block after all the appropriate outline conventions", () => {
-    const markup = `
-NSFL:
-
-  * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
- 
-    It's too expensive.
- 
-  * I don't eat (^Or touch.) pumpkins.`
-
-    const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
-      ], { referenceNumber: 2 })
-    ]
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new NsflBlock([
 
           new UnorderedList([
 
