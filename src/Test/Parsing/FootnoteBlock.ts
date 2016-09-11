@@ -19,155 +19,54 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
-context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention.', () => {
-  context('Specifically:', () => {
-    context('Paragraphs:', () => {
-      specify("With one footnote", () => {
-        const markup = `
-I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
-        
-Anyway, none of that matters.`
-
-        const footnote = new Footnote([
-          new PlainText('Well, I do, but I pretend not to.')
-        ], { referenceNumber: 1 })
-
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnote,
-              new PlainText(" Never have.")
-            ]),
-            new FootnoteBlock([footnote]),
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
-
-      specify("With multiple footnotes", () => {
-        const markup = `
-I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
-
-Anyway, none of that matters.`
-
-        const footnotes = [
-          new Footnote([
-            new PlainText('Well, I do, but I pretend not to.')
-          ], { referenceNumber: 1 }),
-          new Footnote([
-            new PlainText('Except for Mondays.')
-          ], { referenceNumber: 2 })
-        ]
-
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnotes[0],
-              new PlainText(" Never have."),
-              footnotes[1]
-            ]),
-            new FootnoteBlock(footnotes),
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
-    })
-
-
-    context('Headings:', () => {
-      specify("With one footnote", () => {
-        const markup = `
-I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
-================
-        
-Anyway, none of that matters.`
-
-        const footnote = new Footnote([
-          new PlainText('Well, I do, but I pretend not to.')
-        ], { referenceNumber: 1 })
-
-        const heading = new Heading([
-          new PlainText("I don't eat cereal."),
-          footnote,
-          new PlainText(" Never have.")
-        ], { level: 1, ordinalInTableOfContents: 1 })
-
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            heading,
-            new FootnoteBlock([footnote]),
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ], new UpDocument.TableOfContents([heading])))
-      })
-
-      specify("With multiple footnotes", () => {
-        const markup = `
-I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
-================
-
-Anyway, none of that matters.`
-
-        const footnotes = [
-          new Footnote([
-            new PlainText('Well, I do, but I pretend not to.')
-          ], { referenceNumber: 1 }),
-          new Footnote([
-            new PlainText('Except for Mondays.')
-          ], { referenceNumber: 2 })
-        ]
-
-        const heading = new Heading([
-          new PlainText("I don't eat cereal."),
-          footnotes[0],
-          new PlainText(" Never have."),
-          footnotes[1]
-        ], { level: 1, ordinalInTableOfContents: 1 })
-
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            heading,
-            new FootnoteBlock(footnotes),
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ], new UpDocument.TableOfContents([heading])))
-      })
-    })
-
-
-    specify('Line blocks', () => {
+context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention. Specifically:', () => {
+  context('Paragraphs:', () => {
+    specify("With one footnote", () => {
       const markup = `
-Roses are red (^This is not my line.)
-Violets are blue (^Neither is this line. I think my mom made it up.)
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+        
+Anyway, none of that matters.`
+
+      const footnote = new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            footnote,
+            new PlainText(" Never have.")
+          ]),
+          new FootnoteBlock([footnote]),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
+
+    specify("With multiple footnotes", () => {
+      const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 
 Anyway, none of that matters.`
 
       const footnotes = [
         new Footnote([
-          new PlainText('This is not my line.')
+          new PlainText('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Footnote([
-          new PlainText('Neither is this line. I think my mom made it up.')
+          new PlainText('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
         new UpDocument([
-          new LineBlock([
-            new LineBlock.Line([
-              new PlainText("Roses are red"),
-              footnotes[0],
-            ]),
-            new LineBlock.Line([
-              new PlainText("Violets are blue"),
-              footnotes[1]
-            ])
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            footnotes[0],
+            new PlainText(" Never have."),
+            footnotes[1]
           ]),
           new FootnoteBlock(footnotes),
           new Paragraph([
@@ -175,9 +74,109 @@ Anyway, none of that matters.`
           ])
         ]))
     })
+  })
 
-    specify('Unordered lists', () => {
+
+  context('Headings:', () => {
+    specify("With one footnote", () => {
       const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+================
+        
+Anyway, none of that matters.`
+
+      const footnote = new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 })
+
+      const heading = new Heading([
+        new PlainText("I don't eat cereal."),
+        footnote,
+        new PlainText(" Never have.")
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          heading,
+          new FootnoteBlock([footnote]),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ], new UpDocument.TableOfContents([heading])))
+    })
+
+    specify("With multiple footnotes", () => {
+      const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+================
+
+Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText('Well, I do, but I pretend not to.')
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText('Except for Mondays.')
+        ], { referenceNumber: 2 })
+      ]
+
+      const heading = new Heading([
+        new PlainText("I don't eat cereal."),
+        footnotes[0],
+        new PlainText(" Never have."),
+        footnotes[1]
+      ], { level: 1, ordinalInTableOfContents: 1 })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          heading,
+          new FootnoteBlock(footnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ], new UpDocument.TableOfContents([heading])))
+    })
+  })
+
+
+  specify('Line blocks', () => {
+    const markup = `
+Roses are red (^This is not my line.)
+Violets are blue (^Neither is this line. I think my mom made it up.)
+
+Anyway, none of that matters.`
+
+    const footnotes = [
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 2 })
+    ]
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new LineBlock([
+          new LineBlock.Line([
+            new PlainText("Roses are red"),
+            footnotes[0],
+          ]),
+          new LineBlock.Line([
+            new PlainText("Violets are blue"),
+            footnotes[1]
+          ])
+        ]),
+        new FootnoteBlock(footnotes),
+        new Paragraph([
+          new PlainText('Anyway, none of that matters.')
+        ])
+      ]))
+  })
+
+  specify('Unordered lists', () => {
+    const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -189,68 +188,68 @@ Anyway, none of that matters.`
 
 Anyway, none of that matters.`
 
-      const footnotes = [
-        new Footnote([
-          new PlainText("Well, I do, but I pretend not to.")
-        ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText("Or touch.")
-        ], { referenceNumber: 2 }),
-        new Footnote([
-          new PlainText('This is not my line.')
-        ], { referenceNumber: 3 }),
-        new Footnote([
-          new PlainText('Neither is this line. I think my mom made it up.')
-        ], { referenceNumber: 4 })
-      ]
+    const footnotes = [
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText("Or touch.")
+      ], { referenceNumber: 2 }),
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
-          new UnorderedList([
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new UnorderedList([
 
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
-                footnotes[0],
-                new PlainText(" Never have.")
-              ]),
-              new Paragraph([
-                new PlainText("It's too expensive.")
-              ])
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
+              footnotes[0],
+              new PlainText(" Never have.")
             ]),
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnotes[1],
-                new PlainText(" pumpkins.")
-              ])
-            ]),
-
-            new UnorderedList.Item([
-              new LineBlock([
-                new LineBlock.Line([
-                  new PlainText("Roses are red"),
-                  footnotes[2]
-                ]),
-                new LineBlock.Line([
-                  new PlainText("Violets are blue"),
-                  footnotes[3]
-                ])
-              ]),
+            new Paragraph([
+              new PlainText("It's too expensive.")
             ])
           ]),
 
-          new FootnoteBlock(footnotes),
+          new UnorderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat"),
+              footnotes[1],
+              new PlainText(" pumpkins.")
+            ])
+          ]),
 
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
+          new UnorderedList.Item([
+            new LineBlock([
+              new LineBlock.Line([
+                new PlainText("Roses are red"),
+                footnotes[2]
+              ]),
+              new LineBlock.Line([
+                new PlainText("Violets are blue"),
+                footnotes[3]
+              ])
+            ]),
           ])
-        ]))
-    })
+        ]),
 
-    specify('Ordered lists', () => {
-      const markup = `
+        new FootnoteBlock(footnotes),
+
+        new Paragraph([
+          new PlainText('Anyway, none of that matters.')
+        ])
+      ]))
+  })
+
+  specify('Ordered lists', () => {
+    const markup = `
 1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -259,45 +258,45 @@ Anyway, none of that matters.`
 
 Anyway, none of that matters.`
 
-      const footnotes = [
-        new Footnote([
-          new PlainText("Well, I do, but I pretend not to.")
-        ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText("Or touch.")
-        ], { referenceNumber: 2 })
-      ]
+    const footnotes = [
+      new Footnote([
+        new PlainText("Well, I do, but I pretend not to.")
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText("Or touch.")
+      ], { referenceNumber: 2 })
+    ]
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
-          new OrderedList([
-            new OrderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
-                footnotes[0],
-                new PlainText(" Never have.")
-              ]),
-              new Paragraph([
-                new PlainText("It's too expensive.")
-              ])
-            ], { ordinal: 1 }),
-            new OrderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnotes[1],
-                new PlainText(" pumpkins.")
-              ])
-            ], { ordinal: 2 })
-          ]),
-          new FootnoteBlock(footnotes),
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
-          ])
-        ]))
-    })
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new OrderedList([
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
+              footnotes[0],
+              new PlainText(" Never have.")
+            ]),
+            new Paragraph([
+              new PlainText("It's too expensive.")
+            ])
+          ], { ordinal: 1 }),
+          new OrderedList.Item([
+            new Paragraph([
+              new PlainText("I don't eat"),
+              footnotes[1],
+              new PlainText(" pumpkins.")
+            ])
+          ], { ordinal: 2 })
+        ]),
+        new FootnoteBlock(footnotes),
+        new Paragraph([
+          new PlainText('Anyway, none of that matters.')
+        ])
+      ]))
+  })
 
-    specify('Blockquotes', () => {
-      const markup = `
+  specify('Blockquotes', () => {
+    const markup = `
 > I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 >
 > Roses are red (^This is not my line.)
@@ -305,50 +304,50 @@ Anyway, none of that matters.`
 
 Anyway, none of that matters.`
 
-      const footnotes = [
-        new Footnote([
-          new PlainText('Well, I do, but I pretend not to.')
-        ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText('Except for Mondays.')
-        ], { referenceNumber: 2 }),
-        new Footnote([
-          new PlainText('This is not my line.')
-        ], { referenceNumber: 3 }),
-        new Footnote([
-          new PlainText('Neither is this line. I think my mom made it up.')
-        ], { referenceNumber: 4 })
-      ]
+    const footnotes = [
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Except for Mondays.')
+      ], { referenceNumber: 2 }),
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
-          new Blockquote([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnotes[0],
-              new PlainText(" Never have."),
-              footnotes[1]
-            ]),
-            new LineBlock([
-              new LineBlock.Line([
-                new PlainText("Roses are red"),
-                footnotes[2],
-              ]),
-              new LineBlock.Line([
-                new PlainText("Violets are blue"),
-                footnotes[3]
-              ])
-            ]),
-          ]),
-          new FootnoteBlock(footnotes),
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new Blockquote([
           new Paragraph([
-            new PlainText('Anyway, none of that matters.')
-          ])
-        ]))
-    })
+            new PlainText("I don't eat cereal."),
+            footnotes[0],
+            new PlainText(" Never have."),
+            footnotes[1]
+          ]),
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are red"),
+              footnotes[2],
+            ]),
+            new LineBlock.Line([
+              new PlainText("Violets are blue"),
+              footnotes[3]
+            ])
+          ]),
+        ]),
+        new FootnoteBlock(footnotes),
+        new Paragraph([
+          new PlainText('Anyway, none of that matters.')
+        ])
+      ]))
+  })
 
-    specify('Description lists', () => {
-      const markup = `
+  specify('Description lists', () => {
+    const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. (^What happens to the creature if the seed is never planted?) The plant sprouts and grows with this Pokémon.
 
@@ -362,65 +361,65 @@ Gary
   
 Anyway, none of that matters.`
 
-      const footnotes = [
-        new Footnote([
-          new PlainText("What happens to the creature if the seed is never planted?")
-        ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText("This probably wasn't a reference to the family of plants.")
-        ], { referenceNumber: 2 }),
-        new Footnote([
-          new PlainText("Or maybe Ash simply smelled really good.")
-        ], { referenceNumber: 3 })
-      ]
+    const footnotes = [
+      new Footnote([
+        new PlainText("What happens to the creature if the seed is never planted?")
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText("This probably wasn't a reference to the family of plants.")
+      ], { referenceNumber: 2 }),
+      new Footnote([
+        new PlainText("Or maybe Ash simply smelled really good.")
+      ], { referenceNumber: 3 })
+    ]
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-            ], new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A strange seed was planted on its back at birth.'),
-                footnotes[0],
-                new PlainText(' The plant sprouts and grows with this Pokémon.')
-              ])
-            ])),
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth.'),
+              footnotes[0],
+              new PlainText(' The plant sprouts and grows with this Pokémon.')
+            ])
+          ])),
 
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-              new DescriptionList.Item.Subject([new PlainText('Lick')]),
-              new DescriptionList.Item.Subject([
-                new PlainText('Night Shade'),
-                footnotes[1]
-              ])
-            ], new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Ghost type moves.')
-              ])
-            ])),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new PlainText('Lick')]),
+            new DescriptionList.Item.Subject([
+              new PlainText('Night Shade'),
+              footnotes[1]
+            ])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('Ghost type moves.')
+            ])
+          ])),
 
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Gary')])
-            ], new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A young man with a great sense of smell.'),
-                footnotes[2]
-              ])
-            ]))
-          ]),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Gary')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A young man with a great sense of smell.'),
+              footnotes[2]
+            ])
+          ]))
+        ]),
 
-          new FootnoteBlock(footnotes),
+        new FootnoteBlock(footnotes),
 
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
-          ])
-        ]))
-    })
+        new Paragraph([
+          new PlainText('Anyway, none of that matters.')
+        ])
+      ]))
+  })
 
-    context('Tables and charts:', () => {
-      specify('Their header rows', () => {
-        const markup = `
+  context('Tables and charts:', () => {
+    specify('Their header rows', () => {
+      const markup = `
 Table:
 
 Game [^ Video game];  Release Date [^ Only the year]
@@ -430,41 +429,41 @@ Final Fantasy II;     1988
 
 Anyway, none of that matters.`
 
-        const gameFootnote = new Footnote([
-          new PlainText('Video game')
-        ], { referenceNumber: 1 })
+      const gameFootnote = new Footnote([
+        new PlainText('Video game')
+      ], { referenceNumber: 1 })
 
-        const releaseDateFootnote = new Footnote([
-          new PlainText('Only the year')
-        ], { referenceNumber: 2 })
+      const releaseDateFootnote = new Footnote([
+        new PlainText('Only the year')
+      ], { referenceNumber: 2 })
 
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Table(
-              new Table.Header([
-                new Table.Header.Cell([new PlainText('Game'), gameFootnote]),
-                new Table.Header.Cell([new PlainText('Release Date'), releaseDateFootnote])
-              ]), [
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
-                  new Table.Row.Cell([new PlainText('1987')])
-                ]),
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy II')]),
-                  new Table.Row.Cell([new PlainText('1988')])
-                ])
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game'), gameFootnote]),
+              new Table.Header.Cell([new PlainText('Release Date'), releaseDateFootnote])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                new Table.Row.Cell([new PlainText('1987')])
               ]),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+                new Table.Row.Cell([new PlainText('1988')])
+              ])
+            ]),
 
-            new FootnoteBlock([gameFootnote, releaseDateFootnote]),
+          new FootnoteBlock([gameFootnote, releaseDateFootnote]),
 
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
 
-      specify("Their content rows", () => {
-        const markup = `
+    specify("Their content rows", () => {
+      const markup = `
 Table:
 
 Game [^ Video game];  Release Date [^ Only the year]
@@ -474,54 +473,54 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
 
 Anyway, none of that matters.`
 
-        const headerGameFootnote = new Footnote([
-          new PlainText('Video game')
-        ], { referenceNumber: 1 })
+      const headerGameFootnote = new Footnote([
+        new PlainText('Video game')
+      ], { referenceNumber: 1 })
 
-        const headerReleaseDateFootnote = new Footnote([
-          new PlainText('Only the year')
-        ], { referenceNumber: 2 })
+      const headerReleaseDateFootnote = new Footnote([
+        new PlainText('Only the year')
+      ], { referenceNumber: 2 })
 
-        const rowGameFootnote = new Footnote([
-          new PlainText('Japan uses the numeral 2')
-        ], { referenceNumber: 3 })
+      const rowGameFootnote = new Footnote([
+        new PlainText('Japan uses the numeral 2')
+      ], { referenceNumber: 3 })
 
-        const rowReleaseDateFootnote = new Footnote([
-          new PlainText('Almost 1989')
-        ], { referenceNumber: 4 })
+      const rowReleaseDateFootnote = new Footnote([
+        new PlainText('Almost 1989')
+      ], { referenceNumber: 4 })
 
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Table(
-              new Table.Header([
-                new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
-                new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
-              ]), [
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
-                  new Table.Row.Cell([new PlainText('1987')])
-                ]),
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
-                  new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
-                ])
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
+              new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                new Table.Row.Cell([new PlainText('1987')])
               ]),
-
-            new FootnoteBlock([
-              headerGameFootnote,
-              headerReleaseDateFootnote,
-              rowGameFootnote,
-              rowReleaseDateFootnote
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
+                new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
+              ])
             ]),
 
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
+          new FootnoteBlock([
+            headerGameFootnote,
+            headerReleaseDateFootnote,
+            rowGameFootnote,
+            rowReleaseDateFootnote
+          ]),
 
-      specify("Their captions", () => {
-        const markup = `
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
+
+    specify("Their captions", () => {
+      const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s [^ An old series!]
 
 Game [^Video game];                             Release Date [^ Only the year]
@@ -531,70 +530,70 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
 
 Anyway, none of that matters.`
 
-        const captionGameNameFootnote = new Footnote([
-          new PlainText('ファイナルファンタジ in Japan')
-        ], { referenceNumber: 1 })
+      const captionGameNameFootnote = new Footnote([
+        new PlainText('ファイナルファンタジ in Japan')
+      ], { referenceNumber: 1 })
 
-        const captionDecadeFootnote = new Footnote([
-          new PlainText('An old series!')
-        ], { referenceNumber: 2 })
+      const captionDecadeFootnote = new Footnote([
+        new PlainText('An old series!')
+      ], { referenceNumber: 2 })
 
-        const headerGameFootnote = new Footnote([
-          new PlainText('Video game')
-        ], { referenceNumber: 3 })
+      const headerGameFootnote = new Footnote([
+        new PlainText('Video game')
+      ], { referenceNumber: 3 })
 
-        const headerReleaseDateFootnote = new Footnote([
-          new PlainText('Only the year')
-        ], { referenceNumber: 4 })
+      const headerReleaseDateFootnote = new Footnote([
+        new PlainText('Only the year')
+      ], { referenceNumber: 4 })
 
-        const rowGameFootnote = new Footnote([
-          new PlainText('Japan uses the numeral 2')
-        ], { referenceNumber: 5 })
+      const rowGameFootnote = new Footnote([
+        new PlainText('Japan uses the numeral 2')
+      ], { referenceNumber: 5 })
 
-        const rowReleaseDateFootnote = new Footnote([
-          new PlainText('Almost 1989')
-        ], { referenceNumber: 6 })
+      const rowReleaseDateFootnote = new Footnote([
+        new PlainText('Almost 1989')
+      ], { referenceNumber: 6 })
 
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Table(
-              new Table.Header([
-                new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
-                new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
-              ]), [
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
-                  new Table.Row.Cell([new PlainText('1987')])
-                ]),
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
-                  new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
-                ])
-              ],
-              new Table.Caption([
-                new PlainText('Final Fantasy'),
-                captionGameNameFootnote,
-                new PlainText(' in the 1980s'),
-                captionDecadeFootnote
-              ])),
-
-            new FootnoteBlock([
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
+              new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                new Table.Row.Cell([new PlainText('1987')])
+              ]),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
+                new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
+              ])
+            ],
+            new Table.Caption([
+              new PlainText('Final Fantasy'),
               captionGameNameFootnote,
-              captionDecadeFootnote,
-              headerGameFootnote,
-              headerReleaseDateFootnote,
-              rowGameFootnote,
-              rowReleaseDateFootnote
-            ]),
+              new PlainText(' in the 1980s'),
+              captionDecadeFootnote
+            ])),
 
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
+          new FootnoteBlock([
+            captionGameNameFootnote,
+            captionDecadeFootnote,
+            headerGameFootnote,
+            headerReleaseDateFootnote,
+            rowGameFootnote,
+            rowReleaseDateFootnote
+          ]),
 
-      specify("Their content row header cells (for charts only)", () => {
-        const markup = `
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
+
+    specify("Their content row header cells (for charts only)", () => {
+      const markup = `
 Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
                                                       Release Date [^ Only the year]
@@ -604,60 +603,118 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]
 
 Anyway, none of that matters.`
 
-        const captionFootnote = new Footnote([
-          new PlainText('ファイナルファンタジ in Japan')
-        ], { referenceNumber: 1 })
+      const captionFootnote = new Footnote([
+        new PlainText('ファイナルファンタジ in Japan')
+      ], { referenceNumber: 1 })
 
-        const headerFootnote = new Footnote([
-          new PlainText('Only the year')
-        ], { referenceNumber: 2 })
+      const headerFootnote = new Footnote([
+        new PlainText('Only the year')
+      ], { referenceNumber: 2 })
 
-        const firstRowFootnote = new Footnote([
-          new PlainText('Same year as Mega Man')
-        ], { referenceNumber: 3 })
+      const firstRowFootnote = new Footnote([
+        new PlainText('Same year as Mega Man')
+      ], { referenceNumber: 3 })
 
-        const secondRowHeaderCellFootnote = new Footnote([
-          new PlainText('Japan uses the numeral 2')
-        ], { referenceNumber: 4 })
+      const secondRowHeaderCellFootnote = new Footnote([
+        new PlainText('Japan uses the numeral 2')
+      ], { referenceNumber: 4 })
 
-        const secondRowFootnote = new Footnote([
-          new PlainText('Almost 1989')
-        ], { referenceNumber: 5 })
+      const secondRowFootnote = new Footnote([
+        new PlainText('Almost 1989')
+      ], { referenceNumber: 5 })
 
-        expect(Up.parse(markup)).to.deep.equal(
-          new UpDocument([
-            new Table(
-              new Table.Header([
-                new Table.Header.Cell([]),
-                new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
-              ]), [
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('1987'), firstRowFootnote])
-                ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-                new Table.Row([
-                  new Table.Row.Cell([new PlainText('1988'), secondRowFootnote])
-                ], new Table.Header.Cell([new PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
-              ],
-              new Table.Caption([
-                new PlainText('Final Fantasy'),
-                captionFootnote,
-                new PlainText(' in the 1980s')
-              ])),
-
-            new FootnoteBlock([
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Table(
+            new Table.Header([
+              new Table.Header.Cell([]),
+              new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
+            ]), [
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('1987'), firstRowFootnote])
+              ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+              new Table.Row([
+                new Table.Row.Cell([new PlainText('1988'), secondRowFootnote])
+              ], new Table.Header.Cell([new PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
+            ],
+            new Table.Caption([
+              new PlainText('Final Fantasy'),
               captionFootnote,
-              headerFootnote,
-              firstRowFootnote,
-              secondRowHeaderCellFootnote,
-              secondRowFootnote
-            ]),
+              new PlainText(' in the 1980s')
+            ])),
 
-            new Paragraph([
-              new PlainText('Anyway, none of that matters.')
-            ])
-          ]))
-      })
+          new FootnoteBlock([
+            captionFootnote,
+            headerFootnote,
+            firstRowFootnote,
+            secondRowHeaderCellFootnote,
+            secondRowFootnote
+          ]),
+
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
     })
+  })
+})
+
+
+context('To prevent footnotes from "leaking" out of revealable outline conventions, footnote blocks are kept hidden-away inside them. Revealable outline conventions are basically treated as mini-documents.', () => {
+  specify('Spoiler blocks', () => {
+    const markup = `
+SPOILER
+  I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+ 
+  Roses are red (^This is not my line.)
+  Violets are blue (^Neither is this line. I think my mom made it up.)
+
+  Anyway, none of that matters.`
+
+    const paragraphFootnotes = [
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Except for Mondays.')
+      ], { referenceNumber: 2 })
+    ]
+    
+    const lineBlockFootnotes = [
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new SpoilerBlock([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            paragraphFootnotes[0],
+            new PlainText(" Never have."),
+            paragraphFootnotes[1]
+          ]),
+          new FootnoteBlock(paragraphFootnotes),
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are red"),
+              lineBlockFootnotes[0],
+            ]),
+            new LineBlock.Line([
+              new PlainText("Violets are blue"),
+              lineBlockFootnotes[1]
+            ])
+          ]),
+          new FootnoteBlock(lineBlockFootnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ]),
+        ]),
+      ]))
   })
 })
 
@@ -709,32 +766,6 @@ describe('Footnotes nested inside 2 or more outline conventions nested inside a 
 
           new FootnoteBlock(footnotes)
 
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in a spoiler block', () => {
-  it('produce footnote blocks within the spoiler block', () => {
-    const markup = `
-SPOILER:
-
-  This ruins the movie. [^ And this is a fun fact.]`
-
-    const footnote =
-      new Footnote([
-        new PlainText("And this is a fun fact.")
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            footnote,
-          ]),
-          new FootnoteBlock([footnote])
         ])
       ]))
   })
