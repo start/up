@@ -713,8 +713,8 @@ SPOILER:
             new FootnoteBlock(lineBlockFootnotes),
             new Paragraph([
               new PlainText('Anyway, none of that matters.')
-            ]),
-          ]),
+            ])
+          ])
         ]))
     })
 

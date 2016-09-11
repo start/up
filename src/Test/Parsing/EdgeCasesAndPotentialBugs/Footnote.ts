@@ -5,11 +5,12 @@ import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { Blockquote } from '../../../SyntaxNodes/Blockquote'
+import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
+import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 
 
 describe('Before a footnote, an escaped space followed by several non-escaped spaces', () => {
@@ -106,26 +107,61 @@ describe('A footnote produced by square brackets that contains nested square bra
 })
 
 
-describe('Inside an outline convention, blockquoted footnote references', () => {
-  it('produce footnote blocks directly after each appropriate convention within the blockquote', () => {
+describe('Within an outline convention, footnotes within a revealable outline convention', () => {
+  it('produce footnote blocks directly after each appropriate convention within the revealable outline convention', () => {
     const markup = `
-* > I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
+* SPOILER:
+    I don't eat cereal. [^ Well, I do, but I pretend not to.] Never have. [^ Except for Mondays.]
 
-    const footnote = new Footnote([
-      new PlainText("Well, I do, but I pretend not to."),
-    ], { referenceNumber: 1 })
+    Roses are red [^ This is not my line.]
+    Violets are blue [^ Neither is this line. I think my mom made it up.]
+    
+    Anyway, none of that matters.`
+
+    const paragraphFootnotes = [
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Except for Mondays.')
+      ], { referenceNumber: 2 })
+    ]
+
+    const lineBlockFootnotes = [
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new UnorderedList([
           new UnorderedList.Item([
-            new Blockquote([
+            new SpoilerBlock([
               new Paragraph([
                 new PlainText("I don't eat cereal."),
-                footnote,
+                paragraphFootnotes[0],
                 new PlainText(" Never have."),
+                paragraphFootnotes[1]
               ]),
-              new FootnoteBlock([footnote])
+              new FootnoteBlock(paragraphFootnotes),
+              new LineBlock([
+                new LineBlock.Line([
+                  new PlainText("Roses are red"),
+                  lineBlockFootnotes[0],
+                ]),
+                new LineBlock.Line([
+                  new PlainText("Violets are blue"),
+                  lineBlockFootnotes[1]
+                ])
+              ]),
+              new FootnoteBlock(lineBlockFootnotes),
+              new Paragraph([
+                new PlainText('Anyway, none of that matters.')
+              ])
             ])
           ])
         ])
