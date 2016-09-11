@@ -217,7 +217,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
 })
 
 
-describe('A footnote reference at the beginning of a paragraph', () => {
+describe('A footnote at the beginning of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
 
