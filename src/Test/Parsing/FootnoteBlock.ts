@@ -242,11 +242,276 @@ Anyway, none of that matters.`
           ]),
 
           new FootnoteBlock(footnotes),
-          
+
           new Paragraph([
             new PlainText('Anyway, none of that matters.')
           ])
         ]))
+    })
+
+    specify('Ordered lists', () => {
+      const markup = `
+1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+
+  It's too expensive.
+
+2) I don't eat (^Or touch.) pumpkins.
+
+Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText("Well, I do, but I pretend not to.")
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText("Or touch.")
+        ], { referenceNumber: 2 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new OrderedList([
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
+                footnotes[0],
+                new PlainText(" Never have.")
+              ]),
+              new Paragraph([
+                new PlainText("It's too expensive.")
+              ])
+            ], { ordinal: 1 }),
+            new OrderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
+                footnotes[1],
+                new PlainText(" pumpkins.")
+              ])
+            ], { ordinal: 2 })
+          ]),
+          new FootnoteBlock(footnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
+
+
+    context('Tables and charts:', () => {
+      specify('Their header rows', () => {
+        const markup = `
+Table:
+
+Game [^ Video game];  Release Date [^ Only the year]
+
+Final Fantasy;        1987
+Final Fantasy II;     1988`
+
+        const gameFootnote = new Footnote([
+          new PlainText('Video game')
+        ], { referenceNumber: 1 })
+
+        const releaseDateFootnote = new Footnote([
+          new PlainText('Only the year')
+        ], { referenceNumber: 2 })
+
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Table(
+              new Table.Header([
+                new Table.Header.Cell([new PlainText('Game'), gameFootnote]),
+                new Table.Header.Cell([new PlainText('Release Date'), releaseDateFootnote])
+              ]), [
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                  new Table.Row.Cell([new PlainText('1987')])
+                ]),
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy II')]),
+                  new Table.Row.Cell([new PlainText('1988')])
+                ])
+              ]),
+
+            new FootnoteBlock([gameFootnote, releaseDateFootnote])
+          ]))
+      })
+
+      specify("Their content rows", () => {
+        const markup = `
+Table:
+
+Game [^ Video game];  Release Date [^ Only the year]
+
+Final Fantasy;                                  1987
+Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
+
+        const headerGameFootnote = new Footnote([
+          new PlainText('Video game')
+        ], { referenceNumber: 1 })
+
+        const headerReleaseDateFootnote = new Footnote([
+          new PlainText('Only the year')
+        ], { referenceNumber: 2 })
+
+        const rowGameFootnote = new Footnote([
+          new PlainText('Japan uses the numeral 2')
+        ], { referenceNumber: 3 })
+
+        const rowReleaseDateFootnote = new Footnote([
+          new PlainText('Almost 1989')
+        ], { referenceNumber: 4 })
+
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Table(
+              new Table.Header([
+                new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
+                new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
+              ]), [
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                  new Table.Row.Cell([new PlainText('1987')])
+                ]),
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
+                  new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
+                ])
+              ]),
+
+            new FootnoteBlock([
+              headerGameFootnote,
+              headerReleaseDateFootnote,
+              rowGameFootnote,
+              rowReleaseDateFootnote
+            ])
+          ]))
+      })
+
+      specify("Their captions", () => {
+        const markup = `
+Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s [^ An old series!]
+
+Game [^Video game];                             Release Date [^ Only the year]
+
+Final Fantasy;                                  1987
+Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
+
+        const captionGameNameFootnote = new Footnote([
+          new PlainText('ファイナルファンタジ in Japan')
+        ], { referenceNumber: 1 })
+
+        const captionDecadeFootnote = new Footnote([
+          new PlainText('An old series!')
+        ], { referenceNumber: 2 })
+
+        const headerGameFootnote = new Footnote([
+          new PlainText('Video game')
+        ], { referenceNumber: 3 })
+
+        const headerReleaseDateFootnote = new Footnote([
+          new PlainText('Only the year')
+        ], { referenceNumber: 4 })
+
+        const rowGameFootnote = new Footnote([
+          new PlainText('Japan uses the numeral 2')
+        ], { referenceNumber: 5 })
+
+        const rowReleaseDateFootnote = new Footnote([
+          new PlainText('Almost 1989')
+        ], { referenceNumber: 6 })
+
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Table(
+              new Table.Header([
+                new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
+                new Table.Header.Cell([new PlainText('Release Date'), headerReleaseDateFootnote])
+              ]), [
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy')]),
+                  new Table.Row.Cell([new PlainText('1987')])
+                ]),
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('Final Fantasy II'), rowGameFootnote]),
+                  new Table.Row.Cell([new PlainText('1988'), rowReleaseDateFootnote])
+                ])
+              ],
+              new Table.Caption([
+                new PlainText('Final Fantasy'),
+                captionGameNameFootnote,
+                new PlainText(' in the 1980s'),
+                captionDecadeFootnote
+              ])),
+
+            new FootnoteBlock([
+              captionGameNameFootnote,
+              captionDecadeFootnote,
+              headerGameFootnote,
+              headerReleaseDateFootnote,
+              rowGameFootnote,
+              rowReleaseDateFootnote
+            ])
+          ]))
+      })
+
+      specify("Their content row header cells (for charts only)", () => {
+        const markup = `
+Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
+
+                                                      Release Date [^ Only the year]
+
+Final Fantasy;                                        1987 [^ Same year as Mega Man]
+Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
+
+        const captionFootnote = new Footnote([
+          new PlainText('ファイナルファンタジ in Japan')
+        ], { referenceNumber: 1 })
+
+        const headerFootnote = new Footnote([
+          new PlainText('Only the year')
+        ], { referenceNumber: 2 })
+
+        const firstRowFootnote = new Footnote([
+          new PlainText('Same year as Mega Man')
+        ], { referenceNumber: 3 })
+
+        const secondRowHeaderCellFootnote = new Footnote([
+          new PlainText('Japan uses the numeral 2')
+        ], { referenceNumber: 4 })
+
+        const secondRowFootnote = new Footnote([
+          new PlainText('Almost 1989')
+        ], { referenceNumber: 5 })
+
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Table(
+              new Table.Header([
+                new Table.Header.Cell([]),
+                new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
+              ]), [
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('1987'), firstRowFootnote])
+                ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
+                new Table.Row([
+                  new Table.Row.Cell([new PlainText('1988'), secondRowFootnote])
+                ], new Table.Header.Cell([new PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
+              ],
+              new Table.Caption([
+                new PlainText('Final Fantasy'),
+                captionFootnote,
+                new PlainText(' in the 1980s')
+              ])),
+
+            new FootnoteBlock([
+              captionFootnote,
+              headerFootnote,
+              firstRowFootnote,
+              secondRowHeaderCellFootnote,
+              secondRowFootnote
+            ])
+          ]))
+      })
     })
   })
 })
@@ -567,248 +832,6 @@ NSFL:
           new FootnoteBlock(footnotes)
 
         ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in a table header', () => {
-  specify('are placed into a footnote block after the table', () => {
-    const markup = `
-Table:
-
-Game;               Release Date [^ Only the year]
-
-Final Fantasy;      1987
-Final Fantasy II;   1988`
-
-    const footnote = new Footnote([
-      new PlainText('Only the year')
-    ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date'), footnote])
-          ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy')]),
-              new Table.Row.Cell([new PlainText('1987')])
-            ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
-              new Table.Row.Cell([new PlainText('1988')])
-            ])
-          ]),
-
-        new FootnoteBlock([footnote])
-      ]))
-  })
-})
-
-
-describe('Footnotes in a table row', () => {
-  specify("are placed into a footnote block after the table (after any footnotes in the table's header)", () => {
-    const markup = `
-Table:
-
-Game;               Release Date [^ Only the year]
-
-Final Fantasy;      1987
-Final Fantasy II;   1988 [^ Almost 1989]`
-
-    const headerFootnote = new Footnote([
-      new PlainText('Only the year')
-    ], { referenceNumber: 1 })
-
-    const rowFootnote = new Footnote([
-      new PlainText('Almost 1989')
-    ], { referenceNumber: 2 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
-          ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy')]),
-              new Table.Row.Cell([new PlainText('1987')])
-            ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
-              new Table.Row.Cell([new PlainText('1988'), rowFootnote])
-            ])
-          ]),
-
-        new FootnoteBlock([
-          headerFootnote,
-          rowFootnote
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in a table caption', () => {
-  specify("are placed into a footnote block after the table (before any footnotes in the table's header and rows)", () => {
-    const markup = `
-Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
-
-Game;               Release Date [^ Only the year]
-
-Final Fantasy;      1987
-Final Fantasy II;   1988 [^ Almost 1989]`
-
-    const captionFootnote = new Footnote([
-      new PlainText('ファイナルファンタジ in Japan')
-    ], { referenceNumber: 1 })
-
-    const headerFootnote = new Footnote([
-      new PlainText('Only the year')
-    ], { referenceNumber: 2 })
-
-    const rowFootnote = new Footnote([
-      new PlainText('Almost 1989')
-    ], { referenceNumber: 3 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
-          ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy')]),
-              new Table.Row.Cell([new PlainText('1987')])
-            ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
-              new Table.Row.Cell([new PlainText('1988'), rowFootnote])
-            ])
-          ],
-          new Table.Caption([
-            new PlainText('Final Fantasy'),
-            captionFootnote,
-            new PlainText(' in the 1980s')
-          ])),
-
-        new FootnoteBlock([
-          captionFootnote,
-          headerFootnote,
-          rowFootnote
-        ])
-      ]))
-  })
-})
-
-
-describe("Footnotes in a chart's row header cell", () => {
-  specify("are placed into a footnote block after the table (before footnotes in the same row and after footnotes in previous rows)", () => {
-    const markup = `
-Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
-
-                                                      Release Date [^ Only the year]
-
-Final Fantasy;                                        1987 [^ Same year as Mega Man]
-Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
-
-    const captionFootnote = new Footnote([
-      new PlainText('ファイナルファンタジ in Japan')
-    ], { referenceNumber: 1 })
-
-    const headerFootnote = new Footnote([
-      new PlainText('Only the year')
-    ], { referenceNumber: 2 })
-
-    const firstRowFootnote = new Footnote([
-      new PlainText('Same year as Mega Man')
-    ], { referenceNumber: 3 })
-
-    const secondRowHeaderCellFootnote = new Footnote([
-      new PlainText('Japan uses the numeral 2')
-    ], { referenceNumber: 4 })
-
-    const secondRowFootnote = new Footnote([
-      new PlainText('Almost 1989')
-    ], { referenceNumber: 5 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date'), headerFootnote])
-          ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1987'), firstRowFootnote])
-            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1988'), secondRowFootnote])
-            ], new Table.Header.Cell([new PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
-          ],
-          new Table.Caption([
-            new PlainText('Final Fantasy'),
-            captionFootnote,
-            new PlainText(' in the 1980s')
-          ])),
-
-        new FootnoteBlock([
-          captionFootnote,
-          headerFootnote,
-          firstRowFootnote,
-          secondRowHeaderCellFootnote,
-          secondRowFootnote
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in ordered list items', () => {
-  it('produce a footnote block that appears after the entire list', () => {
-    const markup = `
-1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
-
-  It's too expensive.
-
-2) I don't eat (^Or touch.) pumpkins.`
-
-    const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
-      ], { referenceNumber: 2 })
-    ]
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new OrderedList([
-          new OrderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnotes[0],
-              new PlainText(" Never have.")
-            ]),
-            new Paragraph([
-              new PlainText("It's too expensive.")
-            ])
-          ], { ordinal: 1 }),
-          new OrderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat"),
-              footnotes[1],
-              new PlainText(" pumpkins.")
-            ])
-          ], { ordinal: 2 })
-        ]),
-        new FootnoteBlock(footnotes)
       ]))
   })
 })
