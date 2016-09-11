@@ -663,7 +663,7 @@ Anyway, none of that matters.`
 context('To prevent footnotes from "leaking" out of revealable outline conventions, footnote blocks are kept hidden-away inside them. Revealable outline conventions are basically treated as mini-documents.', () => {
   specify('Spoiler blocks', () => {
     const markup = `
-SPOILER
+SPOILER:
   I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
  
   Roses are red (^This is not my line.)
@@ -692,6 +692,118 @@ SPOILER
     expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
         new SpoilerBlock([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            paragraphFootnotes[0],
+            new PlainText(" Never have."),
+            paragraphFootnotes[1]
+          ]),
+          new FootnoteBlock(paragraphFootnotes),
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are red"),
+              lineBlockFootnotes[0],
+            ]),
+            new LineBlock.Line([
+              new PlainText("Violets are blue"),
+              lineBlockFootnotes[1]
+            ])
+          ]),
+          new FootnoteBlock(lineBlockFootnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ]),
+        ]),
+      ]))
+  })
+
+  specify('NSFW blocks', () => {
+    const markup = `
+NSFW:
+  I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+ 
+  Roses are red (^This is not my line.)
+  Violets are blue (^Neither is this line. I think my mom made it up.)
+
+  Anyway, none of that matters.`
+
+    const paragraphFootnotes = [
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Except for Mondays.')
+      ], { referenceNumber: 2 })
+    ]
+    
+    const lineBlockFootnotes = [
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new NsfwBlock([
+          new Paragraph([
+            new PlainText("I don't eat cereal."),
+            paragraphFootnotes[0],
+            new PlainText(" Never have."),
+            paragraphFootnotes[1]
+          ]),
+          new FootnoteBlock(paragraphFootnotes),
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are red"),
+              lineBlockFootnotes[0],
+            ]),
+            new LineBlock.Line([
+              new PlainText("Violets are blue"),
+              lineBlockFootnotes[1]
+            ])
+          ]),
+          new FootnoteBlock(lineBlockFootnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ]),
+        ]),
+      ]))
+  })
+
+  specify('NSFL blocks', () => {
+    const markup = `
+NSFL:
+  I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+ 
+  Roses are red (^This is not my line.)
+  Violets are blue (^Neither is this line. I think my mom made it up.)
+
+  Anyway, none of that matters.`
+
+    const paragraphFootnotes = [
+      new Footnote([
+        new PlainText('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Footnote([
+        new PlainText('Except for Mondays.')
+      ], { referenceNumber: 2 })
+    ]
+    
+    const lineBlockFootnotes = [
+      new Footnote([
+        new PlainText('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Footnote([
+        new PlainText('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new NsflBlock([
           new Paragraph([
             new PlainText("I don't eat cereal."),
             paragraphFootnotes[0],
@@ -827,32 +939,6 @@ SPOILER:
 })
 
 
-describe('Footnotes in a NSFW block', () => {
-  it('produce footnote blocks within the NSFW block', () => {
-    const markup = `
-NSFW:
-
-  This ruins the movie. [^ And this is a fun fact.]`
-
-    const footnote =
-      new Footnote([
-        new PlainText("And this is a fun fact.")
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            footnote,
-          ]),
-          new FootnoteBlock([footnote])
-        ])
-      ]))
-  })
-})
-
-
 describe('Footnotes nested inside 2 or more outline conventions nested inside a NSFW block', () => {
   it("produce footnote blocks inside the NSFW block after all the appropriate outline conventions", () => {
     const markup = `
@@ -902,32 +988,6 @@ NSFW:
 
           new FootnoteBlock(footnotes)
 
-        ])
-      ]))
-  })
-})
-
-
-describe('Footnotes in a NSFL block', () => {
-  it('produce footnote blocks within the NSFL block', () => {
-    const markup = `
-NSFL:
-
-  This ruins the movie. [^ And this is a fun fact.]`
-
-    const footnote =
-      new Footnote([
-        new PlainText("And this is a fun fact.")
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new NsflBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            footnote,
-          ]),
-          new FootnoteBlock([footnote])
         ])
       ]))
   })
