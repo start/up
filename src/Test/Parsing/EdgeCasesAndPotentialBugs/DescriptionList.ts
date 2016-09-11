@@ -7,6 +7,52 @@ import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 
 
+context('The terms for revealable outline conventions', () => {
+  it('can be the subjects in a description list if they are escaped', () => {
+    const markup = `
+\\Spoiler
+  Something that could ruin your favorite movie.
+
+\\NSFW
+  Something that could get you fired.
+  
+\\NSFL
+  Something that could ruin your life.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new UpDocument([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Spoiler')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('Something that could ruin your favorite movie.')
+            ])
+          ])),
+
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('NSFW')])
+          ],
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Something that could get you fired.')
+              ])
+            ])),
+
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('NSFL')])
+          ],
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Something that could ruin your life.')
+              ])
+            ]))
+        ])
+      ]))
+  })
+})
+
+
 context('A block of would-be subjects in a description list terminates the list if:', () => {
   specify("A blank line separates any of the would-be subjects", () => {
     const markup = `

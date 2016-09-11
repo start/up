@@ -126,8 +126,7 @@ Night Shade
   Ghost type moves.
   
 Gary
-  A young man with a great sense of smell.
-`
+  A young man with a great sense of smell.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new UpDocument([
