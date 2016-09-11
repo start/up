@@ -9,14 +9,12 @@ import { Footnote } from '../SyntaxNodes/Footnote'
 import { Heading } from '../SyntaxNodes/Heading'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
+import { RevealableOutlineSyntaxNode } from '../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
 import { OrderedList } from '../SyntaxNodes/OrderedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
 import { Paragraph } from '../SyntaxNodes/Paragraph'
 import { UnorderedList } from '../SyntaxNodes/UnorderedList'
-import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../SyntaxNodes/NsflBlock'
 import { Table } from '../SyntaxNodes/Table'
 
 
@@ -39,22 +37,20 @@ import { Table } from '../SyntaxNodes/Table'
 //    inside a description list, it's placed into a block after the description list, because the description
 //    list is the outermost, top-level outline convention.
 //
-// 2. Rule 1 applies to all outline conventions except:
+// 2. Rule 1 applies to all outline conventions except the "revealables":
 //
-//     * Blockquotes
-//       -----------
+//    1. Spoiler blocks
+//    2. NSFW blocks
+//    3. NSFL blocks.
 //
-//      Blockquotes are considered mini-documents! Therefore, footnotes inside a blockquote are placed into a
-//      footnote block inside the blockquote, and rule 1 is applied to all top-level outline conventions
-//      within the blockquote. In other words, a footnote inside a paragraph inside an ordered list inside a
-//      blockquote is placed into a footnote block after the ordered list, but still inside the blockquote,
-//      because the ordered list is the outermost, top-level convention within the blockquote.
+//    To prevent revealable outline conventions from "leaking" their footnotes, we keep any footnotes blocks
+//    hidden inside.
 //
-//     * Spoiler blocks, NSFW blocks, and NSFL blocks
-//       --------------------------------------------
+//    Rule 1 is applied to any nested outline conventions.
 //
-//      These conventions shouldn't "leak" any of their content, so they have the same footnote block rules
-//      as blockquotes.
+//    For example, a footnote inside a paragraph inside an ordered list inside a spoiler block is placed into
+//    a footnote block after the ordered list, but still inside the spoiler block, because the ordered list
+//    is the outermost, top-level convention within the spoiler block.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //
@@ -117,11 +113,8 @@ class FootnoteBlockInserter {
       return this.getBlocklessFootnotesFromInlineContainers(node.lines)
     }
 
-    if ((node instanceof Blockquote) || (node instanceof SpoilerBlock) || (node instanceof NsfwBlock) || (node instanceof NsflBlock)) {
-      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
-
-      // We've just handled all the footnotes within the outline convention. None of them are blockless!
-      return []
+    if (node instanceof Blockquote) {
+      return this.getBlocklessFootnotesFromOutlineNodes(node.children)
     }
 
     if ((node instanceof UnorderedList) || (node instanceof OrderedList)) {
@@ -134,6 +127,13 @@ class FootnoteBlockInserter {
 
     if (node instanceof Table) {
       return this.getBlocklessFootnotesFromTable(node)
+    }
+
+    if (node instanceof RevealableOutlineSyntaxNode) {
+      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
+
+      // We've just produced blocks for any footnotes within the revealable outline convention.
+      return []
     }
 
     return []
