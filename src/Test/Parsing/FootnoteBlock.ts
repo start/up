@@ -186,7 +186,7 @@ Anyway, none of that matters.`
 
 * Roses are red (^This is not my line.)
   Violets are blue (^Neither is this line. I think my mom made it up.)
-  
+
 Anyway, none of that matters.`
 
       const footnotes = [
@@ -305,7 +305,9 @@ Table:
 Game [^ Video game];  Release Date [^ Only the year]
 
 Final Fantasy;        1987
-Final Fantasy II;     1988`
+Final Fantasy II;     1988
+
+Anyway, none of that matters.`
 
         const gameFootnote = new Footnote([
           new PlainText('Video game')
@@ -332,7 +334,11 @@ Final Fantasy II;     1988`
                 ])
               ]),
 
-            new FootnoteBlock([gameFootnote, releaseDateFootnote])
+            new FootnoteBlock([gameFootnote, releaseDateFootnote]),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
           ]))
       })
 
@@ -343,7 +349,9 @@ Table:
 Game [^ Video game];  Release Date [^ Only the year]
 
 Final Fantasy;                                  1987
-Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
+Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
+
+Anyway, none of that matters.`
 
         const headerGameFootnote = new Footnote([
           new PlainText('Video game')
@@ -383,6 +391,10 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
               headerReleaseDateFootnote,
               rowGameFootnote,
               rowReleaseDateFootnote
+            ]),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
             ])
           ]))
       })
@@ -394,7 +406,9 @@ Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s [^
 Game [^Video game];                             Release Date [^ Only the year]
 
 Final Fantasy;                                  1987
-Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
+Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
+
+Anyway, none of that matters.`
 
         const captionGameNameFootnote = new Footnote([
           new PlainText('ファイナルファンタジ in Japan')
@@ -450,6 +464,10 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]`
               headerReleaseDateFootnote,
               rowGameFootnote,
               rowReleaseDateFootnote
+            ]),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
             ])
           ]))
       })
@@ -461,7 +479,9 @@ Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
                                                       Release Date [^ Only the year]
 
 Final Fantasy;                                        1987 [^ Same year as Mega Man]
-Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
+Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]
+
+Anyway, none of that matters.`
 
         const captionFootnote = new Footnote([
           new PlainText('ファイナルファンタジ in Japan')
@@ -509,6 +529,10 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]`
               firstRowFootnote,
               secondRowHeaderCellFootnote,
               secondRowFootnote
+            ]),
+
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
             ])
           ]))
       })
