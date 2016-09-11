@@ -21,8 +21,8 @@ import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention.', () => {
   context('Specifically:', () => {
-    context('Paragraphs', () => {
-      specify("with one footnote", () => {
+    context('Paragraphs:', () => {
+      specify("With one footnote", () => {
         const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         
@@ -46,7 +46,7 @@ Anyway, none of that matters.`
           ]))
       })
 
-      specify("with multiple footnotes", () => {
+      specify("With multiple footnotes", () => {
         const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 
@@ -78,8 +78,8 @@ Anyway, none of that matters.`
     })
 
 
-    context('Headings', () => {
-      specify("with one footnote", () => {
+    context('Headings:', () => {
+      specify("With one footnote", () => {
         const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ================
@@ -106,7 +106,7 @@ Anyway, none of that matters.`
           ], new UpDocument.TableOfContents([heading])))
       })
 
-      specify("with multiple footnotes", () => {
+      specify("With multiple footnotes", () => {
         const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 ================
@@ -288,6 +288,57 @@ Anyway, none of that matters.`
                 new PlainText(" pumpkins.")
               ])
             ], { ordinal: 2 })
+          ]),
+          new FootnoteBlock(footnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
+
+    specify('Blockquotes', () => {
+      const markup = `
+> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+>
+> Roses are red (^This is not my line.)
+> Violets are blue (^Neither is this line. I think my mom made it up.)
+
+Anyway, none of that matters.`
+
+      const footnotes = [
+        new Footnote([
+          new PlainText('Well, I do, but I pretend not to.')
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText('Except for Mondays.')
+        ], { referenceNumber: 2 }),
+        new Footnote([
+          new PlainText('This is not my line.')
+        ], { referenceNumber: 3 }),
+        new Footnote([
+          new PlainText('Neither is this line. I think my mom made it up.')
+        ], { referenceNumber: 4 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new Blockquote([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
+              footnotes[0],
+              new PlainText(" Never have."),
+              footnotes[1]
+            ]),
+            new LineBlock([
+              new LineBlock.Line([
+                new PlainText("Roses are red"),
+                footnotes[2],
+              ]),
+              new LineBlock.Line([
+                new PlainText("Violets are blue"),
+                footnotes[3]
+              ])
+            ]),
           ]),
           new FootnoteBlock(footnotes),
           new Paragraph([
@@ -607,30 +658,6 @@ Anyway, none of that matters.`
           ]))
       })
     })
-  })
-})
-
-
-describe('Footnotes in a blockquote', () => {
-  it('produce a footnote block that appears after the blockquote', () => {
-    const markup = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
-
-    const footnote =
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Blockquote([
-          new Paragraph([
-            new PlainText("I don't eat cereal."),
-            footnote,
-            new PlainText(" Never have.")
-          ]),
-          new FootnoteBlock([footnote])
-        ])
-      ]))
   })
 })
 
