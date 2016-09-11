@@ -176,7 +176,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify('Ordered lists', () => {
+    specify('Unordered lists', () => {
       const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
