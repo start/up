@@ -998,60 +998,7 @@ NSFL:
 })
 
 
-describe('Footnotes nested inside 2 or more outline conventions nested inside a blockquote', () => {
-  it("produce footnote blocks inside the blockquote after all the appropriate outline conventions", () => {
-    const markup = `
-> * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
->
->   It's too expensive.
->
-> * I don't eat (^Or touch.) pumpkins.`
-
-    const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
-      ], { referenceNumber: 2 })
-    ]
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Blockquote([
-
-          new UnorderedList([
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
-                footnotes[0],
-                new PlainText(" Never have.")
-              ]),
-              new Paragraph([
-                new PlainText("It's too expensive.")
-              ])
-            ]),
-
-            new UnorderedList.Item([
-              new Paragraph([
-                new PlainText("I don't eat"),
-                footnotes[1],
-                new PlainText(" pumpkins.")
-              ])
-            ])
-
-          ]),
-
-          new FootnoteBlock(footnotes)
-
-        ])
-      ]))
-  })
-})
-
-
-describe("In a document, footnotes' reference numbers", () => {
+describe("Footnotes' reference numbers", () => {
   it('do not reset between outline conventions.', () => {
     const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
