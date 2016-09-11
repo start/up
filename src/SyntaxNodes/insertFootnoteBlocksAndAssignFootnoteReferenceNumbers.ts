@@ -132,10 +132,11 @@ class FootnoteBlockInserter {
     if (node instanceof RevealableOutlineSyntaxNode) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
-      // We've just produced blocks for any footnotes within the revealable outline convention.
-      return []
+      // We've just produced blocks for all footnotes within this revealable outline convention, so there
+      // aren't any blockless footnotes to return!
     }
 
+    // The rest of our outline conventions cannot contain footnotes.  
     return []
   }
 

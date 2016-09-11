@@ -19,50 +19,63 @@ import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
-describe('A footnote in a paragph', () => {
-  it("produces a footnote block node after the paragraph", () => {
-    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
+context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention.', () => {
+  context('Specifically:', () => {
+    context('Paragraphs', () => {
+      specify("with one footnote", () => {
+        const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
+        
+Anyway, none of that matters.`
 
-    const footnote = new Footnote([
-      new PlainText('Well, I do, but I pretend not to.')
-    ], { referenceNumber: 1 })
+        const footnote = new Footnote([
+          new PlainText('Well, I do, but I pretend not to.')
+        ], { referenceNumber: 1 })
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
-          footnote,
-          new PlainText(" Never have.")
-        ]),
-        new FootnoteBlock([footnote])
-      ]))
-  })
-})
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
+              footnote,
+              new PlainText(" Never have.")
+            ]),
+            new FootnoteBlock([footnote]),
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ]))
+      })
 
+      specify("with multiple footnotes", () => {
+        const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
 
-describe('A paragraph with two footnotes', () => {
-  it("produces a single footnote block node after the paragraph for both footnotes", () => {
-    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)"
+Anyway, none of that matters.`
 
-    const footnotes = [
-      new Footnote([
-        new PlainText('Well, I do, but I pretend not to.')
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText('Except for Mondays.')
-      ], { referenceNumber: 2 })
-    ]
+        const footnotes = [
+          new Footnote([
+            new PlainText('Well, I do, but I pretend not to.')
+          ], { referenceNumber: 1 }),
+          new Footnote([
+            new PlainText('Except for Mondays.')
+          ], { referenceNumber: 2 })
+        ]
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
-          footnotes[0],
-          new PlainText(" Never have."),
-          footnotes[1]
-        ]),
-        new FootnoteBlock(footnotes)
-      ]))
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            new Paragraph([
+              new PlainText("I don't eat cereal."),
+              footnotes[0],
+              new PlainText(" Never have."),
+              footnotes[1]
+            ]),
+            new FootnoteBlock(footnotes),
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ]))
+      })
+    })
   })
 })
 
@@ -199,7 +212,7 @@ describe('Footnotes in unordered list items', () => {
 
 
 describe('Footnotes in a blockquote', () => {
-  it('produce footnote blocks within the blockquote', () => {
+  it('produce a footnote block that appears after the blockquote', () => {
     const markup = "> I don't eat cereal. (^Well, I do, but I pretend not to.) Never have."
 
     const footnote =
