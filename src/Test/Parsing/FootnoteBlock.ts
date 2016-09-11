@@ -139,46 +139,45 @@ Anyway, none of that matters.`
           ], new UpDocument.TableOfContents([heading])))
       })
     })
-  })
-})
 
 
-describe('Footnotes in a line block', () => {
-  it('produce a footnote block after the line block', () => {
-    const markup = `
+    specify('Line blocks', () => {
+      const markup = `
 Roses are red (^This is not my line.)
-Violets are blue (^Neither is this line. I think my mom made it up.)`
+Violets are blue (^Neither is this line. I think my mom made it up.)
 
-    const footnotes = [
-      new Footnote([
-        new PlainText('This is not my line.')
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText('Neither is this line. I think my mom made it up.')
-      ], { referenceNumber: 2 })
-    ]
+Anyway, none of that matters.`
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText("Roses are red"),
-            footnotes[0],
+      const footnotes = [
+        new Footnote([
+          new PlainText('This is not my line.')
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText('Neither is this line. I think my mom made it up.')
+        ], { referenceNumber: 2 })
+      ]
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Roses are red"),
+              footnotes[0],
+            ]),
+            new LineBlock.Line([
+              new PlainText("Violets are blue"),
+              footnotes[1]
+            ])
           ]),
-          new LineBlock.Line([
-            new PlainText("Violets are blue"),
-            footnotes[1]
+          new FootnoteBlock(footnotes),
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
           ])
-        ]),
-        new FootnoteBlock(footnotes)
-      ]))
-  })
-})
+        ]))
+    })
 
-
-describe('Footnotes in unordered list items', () => {
-  it('produce a footnote block that appears after the entire list', () => {
-    const markup = `
+    specify('Ordered lists', () => {
+      const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
   It's too expensive.
@@ -186,62 +185,69 @@ describe('Footnotes in unordered list items', () => {
 * I don't eat (^Or touch.) pumpkins.
 
 * Roses are red (^This is not my line.)
-  Violets are blue (^Neither is this line. I think my mom made it up.)`
+  Violets are blue (^Neither is this line. I think my mom made it up.)
+  
+Anyway, none of that matters.`
 
-    const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
-      ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
-      ], { referenceNumber: 2 }),
-      new Footnote([
-        new PlainText('This is not my line.')
-      ], { referenceNumber: 3 }),
-      new Footnote([
-        new PlainText('Neither is this line. I think my mom made it up.')
-      ], { referenceNumber: 4 })
-    ]
+      const footnotes = [
+        new Footnote([
+          new PlainText("Well, I do, but I pretend not to.")
+        ], { referenceNumber: 1 }),
+        new Footnote([
+          new PlainText("Or touch.")
+        ], { referenceNumber: 2 }),
+        new Footnote([
+          new PlainText('This is not my line.')
+        ], { referenceNumber: 3 }),
+        new Footnote([
+          new PlainText('Neither is this line. I think my mom made it up.')
+        ], { referenceNumber: 4 })
+      ]
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        new UnorderedList([
+      expect(Up.parse(markup)).to.deep.equal(
+        new UpDocument([
+          new UnorderedList([
 
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
-              footnotes[0],
-              new PlainText(" Never have.")
-            ]),
-            new Paragraph([
-              new PlainText("It's too expensive.")
-            ])
-          ]),
-
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat"),
-              footnotes[1],
-              new PlainText(" pumpkins.")
-            ])
-          ]),
-
-          new UnorderedList.Item([
-            new LineBlock([
-              new LineBlock.Line([
-                new PlainText("Roses are red"),
-                footnotes[2]
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat cereal."),
+                footnotes[0],
+                new PlainText(" Never have.")
               ]),
-              new LineBlock.Line([
-                new PlainText("Violets are blue"),
-                footnotes[3]
+              new Paragraph([
+                new PlainText("It's too expensive.")
               ])
             ]),
-          ])
-        ]),
 
-        new FootnoteBlock(footnotes)
-      ]))
+            new UnorderedList.Item([
+              new Paragraph([
+                new PlainText("I don't eat"),
+                footnotes[1],
+                new PlainText(" pumpkins.")
+              ])
+            ]),
+
+            new UnorderedList.Item([
+              new LineBlock([
+                new LineBlock.Line([
+                  new PlainText("Roses are red"),
+                  footnotes[2]
+                ]),
+                new LineBlock.Line([
+                  new PlainText("Violets are blue"),
+                  footnotes[3]
+                ])
+              ]),
+            ])
+          ]),
+
+          new FootnoteBlock(footnotes),
+          
+          new Paragraph([
+            new PlainText('Anyway, none of that matters.')
+          ])
+        ]))
+    })
   })
 })
 
