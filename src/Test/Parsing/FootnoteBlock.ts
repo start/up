@@ -76,34 +76,69 @@ Anyway, none of that matters.`
           ]))
       })
     })
-  })
-})
 
 
-describe('Footnotes in a heading', () => {
-  it('produce a footnote block after the heading', () => {
-    const markup = `
+    context('Headings', () => {
+      specify("with one footnote", () => {
+        const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
---------------------------------------------------------------------`
+================
+        
+Anyway, none of that matters.`
 
-    const footnote = new Footnote([
-      new PlainText('Well, I do, but I pretend not to.')
-    ], { referenceNumber: 1 })
+        const footnote = new Footnote([
+          new PlainText('Well, I do, but I pretend not to.')
+        ], { referenceNumber: 1 })
 
-    const heading =
-      new Heading([
-        new PlainText("I don't eat cereal."),
-        footnote,
-        new PlainText(" Never have.")
-      ], { level: 1, ordinalInTableOfContents: 1 })
+        const heading = new Heading([
+          new PlainText("I don't eat cereal."),
+          footnote,
+          new PlainText(" Never have.")
+        ], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
-        heading,
-        new FootnoteBlock([
-          footnote
-        ])
-      ], new UpDocument.TableOfContents([heading])))
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            heading,
+            new FootnoteBlock([footnote]),
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ], new UpDocument.TableOfContents([heading])))
+      })
+
+      specify("with multiple footnotes", () => {
+        const markup = `
+I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
+================
+
+Anyway, none of that matters.`
+
+        const footnotes = [
+          new Footnote([
+            new PlainText('Well, I do, but I pretend not to.')
+          ], { referenceNumber: 1 }),
+          new Footnote([
+            new PlainText('Except for Mondays.')
+          ], { referenceNumber: 2 })
+        ]
+
+        const heading = new Heading([
+          new PlainText("I don't eat cereal."),
+          footnotes[0],
+          new PlainText(" Never have."),
+          footnotes[1]
+        ], { level: 1, ordinalInTableOfContents: 1 })
+
+        expect(Up.parse(markup)).to.deep.equal(
+          new UpDocument([
+            heading,
+            new FootnoteBlock(footnotes),
+            new Paragraph([
+              new PlainText('Anyway, none of that matters.')
+            ])
+          ], new UpDocument.TableOfContents([heading])))
+      })
+    })
   })
 })
 
