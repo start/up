@@ -6,11 +6,11 @@ const Up = require('./dist/index')
 
 context("The Up library's methods can be invoked two ways:", () => {
   specify('By treating the module as a namespace', () => {
-    expect(Up.parseAndRender('It actually worked?')).to.be.eql('<p>It actually worked?</p>')
+    expect(Up.parseAndRender('It actually worked?')).to.equal('<p>It actually worked?</p>')
   })
 
   specify('By treating the module as a class', () => {
-    expect(new Up().parseAndRender('That seems *very* unlikely.')).to.be.eql('<p>That seems <em>very</em> unlikely.</p>')
+    expect(new Up().parseAndRender('That seems *very* unlikely.')).to.equal('<p>That seems <em>very</em> unlikely.</p>')
   })
 })
 
