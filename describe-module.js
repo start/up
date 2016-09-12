@@ -79,7 +79,7 @@ context('Several classes are available as members of the Up library:', () => {
 function specifyEachClassShouldBeExported(classNames) {
   for (const className of classNames) {
     specify(className, () => {
-      expect(typeof Up[className]).to.be.eql('function')
+      expect(typeof Up[className]).to.equal('function')
     })
   }
 }
