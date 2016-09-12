@@ -4,9 +4,13 @@ const expect = require('chai').expect
 const Up = require('./dist/index')
 
 
-describe('The Up library', () => {
-  it('is returned when its module is required', () => {
+context("The Up library's methods can be invoked two ways:", () => {
+  specify('By treating the module as a namespace', () => {
     expect(Up.parseAndRender('It actually worked?')).to.be.eql('<p>It actually worked?</p>')
+  })
+
+  specify('By treating the module as a class', () => {
+    expect(new Up().parseAndRender('That seems *very* unlikely.')).to.be.eql('<p>That seems <em>very</em> unlikely.</p>')
   })
 })
 

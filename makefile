@@ -38,9 +38,6 @@ compile: clean
 # Compile!
 	$(local_modules_dir)/tsc
 
-# Copy over our module. It's written in JavaScript to allow us to use `module.exports`.
-	cp $(src_dir)/index.js $(compiled_dir)
-
 # Copy all JavaScript files and TypeScript type declaration files to `dist_dir`.
 #
 # We include a trailing slash after `compiled_dir` to ensure only its contents are copied (instead of itself).
@@ -56,7 +53,7 @@ test: compile
 	$(local_mocha) $(mocha_args_for_behavioral_tests)
 
 # Run all export unit tests. These tests have timed out on Travis CI before, so we specify a larger timeout.
-	$(local_mocha) ./describe-exports-of-js-module.js --timeout 3000
+	$(local_mocha) ./describe-module.js --timeout 3000
 
 
 .PHONY: coverage
