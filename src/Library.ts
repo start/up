@@ -44,9 +44,7 @@ import { RichInlineSyntaxNode } from './SyntaxNodes/RichInlineSyntaxNode'
 import { RichOutlineSyntaxNode } from './SyntaxNodes/RichOutlineSyntaxNode'
 
 
-export type Library = typeof Up & SyntaxNodes
-
-export interface SyntaxNodes {
+export type Library = typeof Up & {
   Document: typeof Document
   InlineDocument: typeof InlineDocument
   Audio: typeof Audio
