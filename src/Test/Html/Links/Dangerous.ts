@@ -2,13 +2,13 @@ import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 
 
 context('By default, links with dangerous schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These dangerous URL schemes are:', () => {
   specify('javascript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -20,7 +20,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
   })
 
   specify('data', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -32,7 +32,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
   })
 
   specify('file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -44,7 +44,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
   })
 
   specify('vbscript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -59,7 +59,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
 
 context('Though by default, links with dangerous schemes produce no HTML, link URLs can contain dangerous schemes:', () => {
   specify('javascript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -71,7 +71,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
   })
 
   specify('data', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -83,7 +83,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
   })
 
   specify('file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -95,7 +95,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
   })
 
   specify('vbscript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -110,7 +110,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
 
 context("When determining whether a link's URL is dangerous, the capitalization of the scheme does not matter. Links do not produce <a> elements if their URL scheme is any capitalization of:", () => {
   specify('javascript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -122,7 +122,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
   })
 
   specify('data', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -134,7 +134,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
   })
 
   specify('file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -146,7 +146,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
   })
 
   specify('vbscript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -161,7 +161,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
 
 describe('By default, a safe link nested inside a dangerous link', () => {
   it('produces an <a> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new Link([
@@ -178,7 +178,7 @@ describe('By default, a safe link nested inside a dangerous link', () => {
 
 context("A link's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -191,7 +191,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
   })
 
   specify('data', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -204,7 +204,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
   })
 
   specify('file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')
@@ -217,7 +217,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
   })
 
   specify('vbscript', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new PlainText('Click me!')

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Bold } from'../../../SyntaxNodes/Bold'
@@ -42,7 +42,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Bold([
@@ -59,7 +59,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Emphasis', () => {
@@ -83,7 +83,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Emphasis([
@@ -100,7 +100,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Footnotes', () => {
@@ -130,7 +130,7 @@ I love all sorts of fancy stuff.`
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits.'),
           footnote
@@ -144,7 +144,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Highlight', () => {
@@ -168,7 +168,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Highlight([
@@ -185,7 +185,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Inline NSFL', () => {
@@ -209,7 +209,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new InlineNsfl([
@@ -226,7 +226,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Inline NSFW', () => {
@@ -250,7 +250,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new InlineNsfw([
@@ -267,7 +267,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Inline spoilers', () => {
@@ -291,7 +291,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new InlineSpoiler([
@@ -308,7 +308,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Italic', () => {
@@ -332,7 +332,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Italic([
@@ -349,7 +349,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Links', () => {
@@ -373,7 +373,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Link([
@@ -390,7 +390,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Parnetheses', () => {
@@ -414,7 +414,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new NormalParenthetical([
@@ -431,7 +431,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Square brackets', () => {
@@ -455,7 +455,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new SquareParenthetical([
@@ -472,7 +472,7 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   specify('Stress', () => {
@@ -496,7 +496,7 @@ I love all sorts of fancy stuff.`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('I have plenty of good traits. '),
           new Stress([
@@ -513,6 +513,6 @@ I love all sorts of fancy stuff.`
         new Paragraph([
           new PlainText('I love all sorts of fancy stuff.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 })

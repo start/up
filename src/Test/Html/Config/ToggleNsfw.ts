@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
@@ -14,7 +14,7 @@ describe("The text in an inline NSFW convention's label", () => {
       }
     })
 
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineNsfw([])
       ])
@@ -42,7 +42,7 @@ describe("The text in a NSFW block's label", () => {
       }
     })
 
-    const document = new UpDocument([
+    const document = new Document([
       new NsfwBlock([])
     ])
 

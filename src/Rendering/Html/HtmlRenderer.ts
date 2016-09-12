@@ -1,5 +1,5 @@
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
-import { InlineUpDocument } from '../../SyntaxNodes/InlineUpDocument'
+import { Document } from '../../SyntaxNodes/Document'
+import { InlineDocument } from '../../SyntaxNodes/InlineDocument'
 import { Renderer } from '.././Renderer'
 import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
@@ -79,17 +79,17 @@ export class HtmlRenderer extends Renderer {
   //    prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
-  renderDocument(document: UpDocument): string {
+  renderDocument(document: Document): string {
     this.reset()
     return this.renderAll(document.children)
   }
 
-  renderInlineDocument(inlineDocument: InlineUpDocument): string {
+  renderInlineDocument(inlineDocument: InlineDocument): string {
     this.reset()
     return this.renderAll(inlineDocument.children)
   }
 
-  renderTableOfContents(tableOfContents: UpDocument.TableOfContents): string {
+  renderTableOfContents(tableOfContents: Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -382,7 +382,7 @@ export class HtmlRenderer extends Renderer {
     return title.render(this)
   }
 
-  private tableOfContentsEntries(entries: UpDocument.TableOfContents.Entry[]): string {
+  private tableOfContentsEntries(entries: Document.TableOfContents.Entry[]): string {
     if (!entries.length) {
       return ''
     }
@@ -396,12 +396,12 @@ export class HtmlRenderer extends Renderer {
     return new UnorderedList(listItems).render(this)
   }
 
-  private tableOfContentsEntry(entry: UpDocument.TableOfContents.Entry): OutlineSyntaxNode {
+  private tableOfContentsEntry(entry: Document.TableOfContents.Entry): OutlineSyntaxNode {
     // Right now, only headings can be table of contents entries, which simplifies this method.
     return new Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level + 1 })
   }
 
-  private linkToActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): Link {
+  private linkToActualEntryInDocument(entry: Document.TableOfContents.Entry): Link {
     return new Link(
       entry.representationOfContentWithinTableOfContents(),
       internalUrl(this.idOfActualEntryInDocument(entry)))
@@ -611,7 +611,7 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
-  private idOfActualEntryInDocument(entry: UpDocument.TableOfContents.Entry): string {
+  private idOfActualEntryInDocument(entry: Document.TableOfContents.Entry): string {
     return this.idFor(
       this.settings.terms.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)

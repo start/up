@@ -1,13 +1,13 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { concat } from '../../CollectionHelpers'
 
 
-export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): UpDocument {
-  return new UpDocument([
+export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): Document {
+  return new Document([
     new Paragraph(nodes)
   ])
 }
@@ -17,7 +17,7 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
     content: string
     partsBetweenContentAndUrl?: string[]
     url: string
-    toProduce: UpDocument
+    toProduce: Document
   }
 ): void {
   expectEveryPermutationOfBrackets({
@@ -37,7 +37,7 @@ export function expectEveryPermutationOfBrackets(
   args: {
     precededBy?: string
     bracketedSegments: BracketedSegment[]
-    toProduce: UpDocument
+    toProduce: Document
   }
 ): void {
   const { toProduce } = args

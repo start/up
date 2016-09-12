@@ -1,8 +1,8 @@
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { SyntaxNode } from './SyntaxNode'
 
 
 export interface OutlineSyntaxNode extends SyntaxNode {
   sourceLineNumber: number
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[]
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[]
 }

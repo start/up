@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
@@ -28,7 +28,7 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -39,7 +39,7 @@ Not quite true. For example, see [section: I drink soda--exclusively].`
             new SectionLink('I drink soda–exclusively', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Em dashes', () => {
@@ -61,7 +61,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -72,7 +72,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
             new SectionLink('I drink soda—exclusively', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Plus-minus signs', () => {
@@ -94,7 +94,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -105,7 +105,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
             new SectionLink('I drink 9 cans of soda ±2', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Plus-minus signs', () => {
@@ -127,7 +127,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -138,7 +138,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
             new SectionLink('I drink 9 cans of soda… hourly', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 })
@@ -164,7 +164,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -175,7 +175,7 @@ Not quite true. For example, see [section: I drink soda---exclusively].`
           new SectionLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('The entry uses the typographical convention but the section link uses the corresponding fancy character itself', () => {
@@ -197,7 +197,7 @@ Not quite true. For example, see [section: I drink soda—exclusively].`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -208,6 +208,6 @@ Not quite true. For example, see [section: I drink soda—exclusively].`
           new SectionLink('I drink soda—exclusively', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })

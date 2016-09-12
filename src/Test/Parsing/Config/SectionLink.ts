@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
@@ -33,7 +33,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -44,7 +44,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
           new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   it('is case-insensitive', () => {
@@ -98,7 +98,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -109,7 +109,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
           new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   it('ignores inline conventions and regular expression rules', () => {
@@ -137,7 +137,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -148,7 +148,7 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
           new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
   it('can have multiple variations', () => {
@@ -176,7 +176,7 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
       new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText("Actually, I only drink milk. But I'm still great, as "),
@@ -189,6 +189,6 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
           new SectionLink('exotic', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+      ], new Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 })

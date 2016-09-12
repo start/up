@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
@@ -57,7 +57,7 @@ Not quite true. For example, see [section: emphasis].`
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         stressAndEmphasisHeading,
         new Paragraph([
           new PlainText('Luckily for us, Up supports that!')
@@ -72,7 +72,7 @@ Not quite true. For example, see [section: emphasis].`
           new SectionLink('emphasis', emphasisSubHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+      ], new Document.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })
 
   specify("Inline conventions are not evaluated within the snippet", () => {
@@ -107,7 +107,7 @@ Not quite true. For example, see [section: *emphasis*].`
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         mainEmphasisHeading,
         new Paragraph([
           new PlainText('Luckily for us, Up supports that!')
@@ -122,7 +122,7 @@ Not quite true. For example, see [section: *emphasis*].`
           new SectionLink('*emphasis*', emphasisSubHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+      ], new Document.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })
 
 
@@ -151,7 +151,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -165,7 +165,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Bold', () => {
@@ -192,7 +192,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -206,7 +206,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Example input', () => {
@@ -234,7 +234,7 @@ Well, maybe I'm not so helpful.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a helpful guy. For more information, see "),
             new SectionLink('mac menu', greatnessHeading),
@@ -248,7 +248,7 @@ Well, maybe I'm not so helpful.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so helpful.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Highlight', () => {
@@ -275,7 +275,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -289,7 +289,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Images', () => {
@@ -316,7 +316,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -330,7 +330,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Example input', () => {
@@ -358,7 +358,7 @@ Well, maybe I'm not so helpful.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a helpful guy. For more information, see "),
             new SectionLink("SQL's delete", greatnessHeading),
@@ -372,7 +372,7 @@ Well, maybe I'm not so helpful.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so helpful.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Footnotes', () => {
@@ -405,7 +405,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('fantastic transcript', greatnessHeading),
@@ -420,7 +420,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline NSFL conventions', () => {
@@ -447,7 +447,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -461,7 +461,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline NSFW conventions', () => {
@@ -488,7 +488,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -502,7 +502,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline spoilers', () => {
@@ -529,7 +529,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -543,7 +543,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Italics', () => {
@@ -570,7 +570,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -584,7 +584,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Links', () => {
@@ -613,7 +613,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -627,7 +627,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Normal parentheticals', () => {
@@ -657,7 +657,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('full (and exciting and amazing and', greatnessHeading),
@@ -671,7 +671,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Another reference to a table of contents entry', () => {
@@ -706,7 +706,7 @@ Uhhh...`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -724,7 +724,7 @@ Uhhh...`
           new Paragraph([
             new PlainText('Uhhh…')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
     })
 
     specify('Square parentheticals', () => {
@@ -754,7 +754,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('full [and exciting and amazing and', greatnessHeading),
@@ -768,7 +768,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Stress', () => {
@@ -795,7 +795,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -809,7 +809,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Video', () => {
@@ -836,7 +836,7 @@ Well, maybe I'm not so great.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('the full transcript', greatnessHeading),
@@ -850,7 +850,7 @@ Well, maybe I'm not so great.`
           new Paragraph([
             new PlainText("Well, maybe I'm not so great.")
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
   })
 })

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
@@ -17,7 +17,7 @@ describe('An unordered list with a single item', () => {
 -----------`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak(),
         new UnorderedList([
           new UnorderedList.Item([
@@ -43,7 +43,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -87,7 +87,7 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([
@@ -129,7 +129,7 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([
@@ -168,7 +168,7 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new CodeBlock('const x = 0')
@@ -188,7 +188,7 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new CodeBlock('const x = 0\n\n\n\nconst y = 0')

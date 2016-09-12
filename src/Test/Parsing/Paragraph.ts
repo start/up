@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -88,7 +88,7 @@ Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
         new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
@@ -101,7 +101,7 @@ Pokemon Moon has a Mew under a truck.
 
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
         new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
@@ -113,7 +113,7 @@ Pokemon Moon has a Mew under a truck.
  \t \t 
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
         new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
@@ -126,7 +126,7 @@ Pokemon Moon has a Mew under a truck.
 \t \t 
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Pokemon Moon has a Mew under a truck.')]),
         new Paragraph([new PlainText('Pokemon Sun is a truck.')]),
       ]))
@@ -141,7 +141,7 @@ You'll never believe this fake evidence!
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("You'll never believe this fake evidence!")
         ]),
@@ -160,7 +160,7 @@ describe('A paragraph directly following a line consisting solely of media conve
 You'll never believe this fake evidence!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
         new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
@@ -180,7 +180,7 @@ You'll never believe this fake evidence!
 [audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm]`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
         new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),

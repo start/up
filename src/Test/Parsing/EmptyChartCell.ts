@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Table } from '../../SyntaxNodes/Table'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 
@@ -18,7 +18,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -55,7 +55,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -92,7 +92,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -132,7 +132,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -172,7 +172,7 @@ Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -219,7 +219,7 @@ Command & Conquer;  Westwood Studios;      \t ;             August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -266,7 +266,7 @@ Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),

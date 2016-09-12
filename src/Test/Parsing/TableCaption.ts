@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Table } from '../../SyntaxNodes/Table'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -18,7 +18,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -52,7 +52,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -87,7 +87,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -124,7 +124,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -152,7 +152,7 @@ Table: Games in the Chrono series
 Game;           Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -174,7 +174,7 @@ Table the proposal.
 
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Table the proposal.')]),
         new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),
       ]))

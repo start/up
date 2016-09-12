@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -18,7 +18,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -41,7 +41,7 @@ sPoiLeR:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -62,7 +62,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -83,7 +83,7 @@ SPOILER
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -105,7 +105,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -129,7 +129,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -150,7 +150,7 @@ SPOILER:  \t  \t
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -171,7 +171,7 @@ SPOILER  \t  \t
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -198,7 +198,7 @@ SPOILER:
     Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new SpoilerBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -223,7 +223,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new SpoilerBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -250,7 +250,7 @@ SPOILER:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new SpoilerBlock([
             new CodeBlock(
               `function nthFibonacci(n: number): number {
@@ -271,7 +271,7 @@ SPOILER:
 That was my favorite episode.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -292,7 +292,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a '),
@@ -317,7 +317,7 @@ SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -332,7 +332,7 @@ SPOILER:
 \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -347,7 +347,7 @@ SPOILER:
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -367,7 +367,7 @@ SPOILER:
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('Well…')

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -16,7 +16,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   })
 
   it("does not affect a footnote reference's link to its footnote", () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Footnote([], { referenceNumber: 3 })
       ])
@@ -27,7 +27,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   })
 
   it("does not affect a footnote's link back to its reference", () => {
-    const document = new UpDocument([
+    const document = new Document([
       new FootnoteBlock([
         new Footnote([
           new PlainText("Arwings"),

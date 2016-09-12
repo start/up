@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
@@ -20,7 +20,7 @@ context('The terms for revealable outline conventions', () => {
   Something that could ruin your life.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Spoiler')])
@@ -63,7 +63,7 @@ context('The terms for tables and charts', () => {
   In Up, a chart is simply a table with a second, vertical header.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Table')])
@@ -102,7 +102,7 @@ Night Shade
   Ghost type moves.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
@@ -154,7 +154,7 @@ Night Shade
   Ghost type moves.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])

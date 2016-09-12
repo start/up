@@ -1,14 +1,14 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { concat } from '../CollectionHelpers'
 
 
 export abstract class OutlineSyntaxNodeContainer {
   constructor(public children: OutlineSyntaxNode[]) { }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
-    return UpDocument.TableOfContents.getEntries(this.children)
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
+    return Document.TableOfContents.getEntries(this.children)
   }
 
   inlineDescendants(): InlineSyntaxNode[] {

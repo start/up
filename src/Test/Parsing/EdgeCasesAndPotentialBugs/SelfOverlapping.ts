@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from'../../../Up'
 import { insideDocumentAndParagraph } from'.././Helpers'
-import { UpDocument } from'../../../SyntaxNodes/UpDocument'
+import { Document } from'../../../SyntaxNodes/Document'
 import { Paragraph } from'../../../SyntaxNodes/Paragraph'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { Emphasis } from'../../../SyntaxNodes/Emphasis'
@@ -104,7 +104,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
       ], { referenceNumber: 1 })
 
       expect(Up.parse('This [^ does (^ not] make) much sense.')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText('This'),
             outerFootnote,

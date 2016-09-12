@@ -1,4 +1,4 @@
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
@@ -8,9 +8,9 @@ import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } f
 export class SectionLink implements InlineSyntaxNode {
   constructor(
     public sectionTitleSnippet: string,
-    public entry?: UpDocument.TableOfContents.Entry) { }
+    public entry?: Document.TableOfContents.Entry) { }
 
-  referenceMostAppropriateTableOfContentsEntry(tableOfContents: UpDocument.TableOfContents): void {
+  referenceMostAppropriateTableOfContentsEntry(tableOfContents: Document.TableOfContents): void {
     // We'll use `sectionTitleSnippet` to try to match this section link with the most appropriate
     // item referenced by the table of contents.
     //
@@ -82,7 +82,7 @@ export class SectionLink implements InlineSyntaxNode {
     return renderer.sectionLink(this)
   }
 
-  private canMatch(entry: UpDocument.TableOfContents.Entry): boolean {
+  private canMatch(entry: Document.TableOfContents.Entry): boolean {
     // Right now, we have only one rule: We will not match an entry if it contains this syntax node.
     return (entry.inlineDescendants().indexOf(this) === -1)
   }

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -36,7 +36,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
         { text: 'https://example.com/fight.webm' },
         { text: 'http://example.com/final-battle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Video('you fight Gary', 'https://example.com/fight.webm')
         ], 'http://example.com/final-battle')
@@ -52,7 +52,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.webm' },
           { text: ' \t \t http://example.com/final battle' }
         ],
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Link([
             new Video('you fight Gary', 'https://example.com/fight.webm')
           ], 'http://example.com/final battle')
@@ -67,7 +67,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
           { text: 'https://example.com/fight.webm' },
           { text: 'http://example.com/final battle' }
         ],
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Link([
             new Video('you fight Gary', 'https://example.com/fight.webm')
           ], 'http://example.com/final battle')
@@ -83,7 +83,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
         { text: 'https://example.com/fight.webm' },
         { text: ' \t \t example.com/final battle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Video('you fight Gary', 'https://example.com/fight.webm')
         ], 'https://example.com/final battle')
@@ -149,7 +149,7 @@ describe('A video directly followed by a footnote', () => {
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
           new Video('you fight Gary', 'https://example.com/fight.webm'),

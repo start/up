@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Table } from '../../../SyntaxNodes/Table'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
@@ -17,7 +17,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game [;')]),
@@ -44,7 +44,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game :\\')]),
@@ -74,7 +74,7 @@ Chrono Trigger [\\;;  1995
 Chrono Cross;         1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -101,7 +101,7 @@ Chrono Trigger :\\\\;   1995
 Chrono Cross;           1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -129,7 +129,7 @@ Table: my favorite outline convention.
 
 I almost didn't include them; however, I realized tables are too useful to leave out.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Table: my favorite outline convention.')]),
         new Paragraph([new PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
       ]))
@@ -148,7 +148,7 @@ Game;           Release Date
 I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -178,7 +178,7 @@ Underline
 ****`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Underline')]),
@@ -215,7 +215,7 @@ Chrono Trigger;       1995
 Chrono Cross;         1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game`s Title')]),
@@ -242,7 +242,7 @@ Square\`s Chrono Trigger;     1990\`s
 Square\`s Chrono Cross;       1990\`s`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game')]),
@@ -272,7 +272,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('{: Game')]),
@@ -299,7 +299,7 @@ Game;                 Release Date
 Chrono Cross;         1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game')]),

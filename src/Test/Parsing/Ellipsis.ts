@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
@@ -59,14 +59,14 @@ context('Consecutive periods normally produce an ellipsis.', () => {
 
     specify('Media URLs', () => {
       expect(Up.parse('[video: ghosts eating luggage] (http://example.com/polter...geists.webm)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Video('ghosts eating luggage', 'http://example.com/polter...geists.webm')
         ]))
     })
 
     specify('Linkified media URLs', () => {
       expect(Up.parse('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final...battle)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Link([
             new Image('you fight Gary', 'https://example.com/fight.svg')
           ], 'http://example.com/final...battle')
@@ -98,7 +98,7 @@ return distinct('highlight', ...this._highlight)
 \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `return distinct('highlight', ...this._highlight)`)
         ]))

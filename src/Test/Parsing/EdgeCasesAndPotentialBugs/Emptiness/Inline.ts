@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../../Up'
 import { insideDocumentAndParagraph } from '../../Helpers'
-import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../../SyntaxNodes/PlainText'
 import { Link } from '../../../../SyntaxNodes/Link'
@@ -796,7 +796,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^ Ash fights Gary]()')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText('()')
@@ -886,7 +886,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^ Ash fights Gary](\t \t \t)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText('(\t \t \t)')

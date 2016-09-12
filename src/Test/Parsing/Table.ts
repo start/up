@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { Table } from '../../SyntaxNodes/Table'
@@ -17,7 +17,7 @@ Chrono Trigger;1995
 Chrono Cross;1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -50,7 +50,7 @@ Chrono Trigger;1995
 Chrono Cross;1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -87,7 +87,7 @@ Table:
  \t Chrono Cross\t ;\t 1999 \t `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -130,7 +130,7 @@ Chrono Cross;1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -174,7 +174,7 @@ Chrono Cross;1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -219,7 +219,7 @@ Chrono Cross;1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -262,7 +262,7 @@ Chrono Trigger
 Chrono Cross`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')])
@@ -289,7 +289,7 @@ Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -340,7 +340,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -381,7 +381,7 @@ Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -414,7 +414,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -455,7 +455,7 @@ Final Fantasy\\; Final Fantasy II;  Square
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -485,7 +485,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -515,7 +515,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -542,7 +542,7 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -572,7 +572,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('[: Game')]),
@@ -599,7 +599,7 @@ Game;                 Release Date
 Chrono Cross;         1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -626,7 +626,7 @@ Table
 Game;           Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),

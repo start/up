@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { Video } from '../../../SyntaxNodes/Video'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 
 
 describe('The term that represents video conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
@@ -37,7 +37,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
@@ -52,7 +52,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))
   })
@@ -67,7 +67,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Nevada caucus footage', 'https://example.com/video.webm'),
         new Video('Nevada caucus footage', 'https://example.com/video.webm')
       ]))

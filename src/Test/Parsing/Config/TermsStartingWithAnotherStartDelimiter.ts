@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
@@ -108,7 +108,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.parse('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Audio('Ash fights Gary', 'https://example.com/audio.ogg')
         ]))
     })
@@ -128,7 +128,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^listen^: I guess this means "listen up"?]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ]))
@@ -147,7 +147,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.parse('[^look^: Ash fights Gary](example.com/image.svg)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Image('Ash fights Gary', 'https://example.com/image.svg')
         ]))
     })
@@ -167,7 +167,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^look^: I guess this means "look up"?]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ]))
@@ -186,7 +186,7 @@ context("When the custom term for an inline convention starts with a caret, the 
 
     specify('audio conventions can be produced using the term', () => {
       expect(up.parse('[^watch^: Ash fights Gary](example.com/video.webm)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Video('Ash fights Gary', 'https://example.com/video.webm')
         ]))
     })
@@ -206,7 +206,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^watch^: I guess this means "watch up"?]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ]))

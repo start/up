@@ -1,4 +1,4 @@
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
@@ -6,7 +6,7 @@ import { getSearchableText } from './getSearchableText'
 import { Renderer } from '../Rendering/Renderer'
 
 
-export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, UpDocument.TableOfContents.Entry {
+export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, Document.TableOfContents.Entry {
   public level: number
   public ordinalInTableOfContents: number = undefined
   public sourceLineNumber: number = undefined
@@ -26,7 +26,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     this.sourceLineNumber = options.sourceLineNumber
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

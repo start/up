@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { Link } from '../../../SyntaxNodes/Link'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
@@ -129,7 +129,7 @@ describe("Unmatched opening parentheses in a link's URL", () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),

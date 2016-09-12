@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
@@ -11,7 +11,7 @@ import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 describe("Inline NSFW conventions and NSFW blocks", () => {
   it("have sequential IDs", () => {
     const node =
-      new UpDocument([
+      new Document([
         new NsfwBlock([
           new Paragraph([
             new PlainText('The main character defeats the bad guy.')
@@ -78,7 +78,7 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
     const up = new Up()
 
     const node =
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, '),
           new InlineNsfw([
@@ -112,7 +112,7 @@ describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)
     const up = new Up()
 
     const node =
-      new UpDocument([
+      new Document([
         new NsfwBlock([
           new Paragraph([
             new PlainText('After you beat the Elite Four, you have to face your rival.')

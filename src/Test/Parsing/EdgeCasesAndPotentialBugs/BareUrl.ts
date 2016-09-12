@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Link } from '../../../SyntaxNodes/Link'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
@@ -64,7 +64,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),
@@ -92,7 +92,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),
@@ -122,7 +122,7 @@ describe("Unmatched opening parentheses in a bare URL closed by another conventi
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),
@@ -175,7 +175,7 @@ describe('A bare URL followed by a space then a footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new Link([
             new PlainText('google.com')

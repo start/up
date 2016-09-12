@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -19,7 +19,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Links produce <a> elements even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new Link([
             new PlainText('Click me!')
@@ -32,7 +32,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new Link([
             new PlainText('Click me!')
@@ -45,7 +45,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new Link([
             new PlainText('Click me!')
@@ -58,7 +58,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new Link([
             new PlainText('Click me!')
@@ -73,7 +73,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
 
   specify('Because dangerous links produce <a> elements, any links nested inside dangerous lnks do not produce <a> elements.', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([
           new Link([
@@ -90,7 +90,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -99,7 +99,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'data:malicious')
       ])
 
@@ -108,7 +108,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'file:malicious')
       ])
 
@@ -117,7 +117,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -129,7 +129,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Audio conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -140,7 +140,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'data:malicious')
       ])
 
@@ -151,7 +151,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'file:malicious')
       ])
 
@@ -162,7 +162,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -176,7 +176,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Video conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -187,7 +187,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'data:malicious')
       ])
 
@@ -198,7 +198,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'file:malicious')
       ])
 
@@ -209,7 +209,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'vbscript:malicious')
       ])
 

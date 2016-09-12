@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
 
 
@@ -16,7 +16,7 @@ export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSynta
     }
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

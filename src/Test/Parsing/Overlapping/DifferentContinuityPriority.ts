@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from'../../../Up'
 import { insideDocumentAndParagraph } from'.././Helpers'
-import { UpDocument } from'../../../SyntaxNodes/UpDocument'
+import { Document } from'../../../SyntaxNodes/Document'
 import { Paragraph } from'../../../SyntaxNodes/Paragraph'
 import { Link } from'../../../SyntaxNodes/Link'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
@@ -415,7 +415,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineSpoiler([
             new PlainText('Gary loses to Ash'),
@@ -441,7 +441,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Eventually, I will think of one'),
           footnote,
@@ -511,7 +511,7 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineNsfw([
             new PlainText('Gary loses to Ash')
@@ -537,7 +537,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Eventually, I will think of one'),
           footnote,
@@ -606,7 +606,7 @@ describe('An inline NSFL convention that overlaps a footnote', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineNsfl([
             new PlainText('Gary loses to Ash'),
@@ -632,7 +632,7 @@ describe('A footnote that overlaps an inline NSFL convention', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Eventually, I will think of one'),
           footnote,

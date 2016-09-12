@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { Image } from '../../../SyntaxNodes/Image'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 
 
 describe('The term that represents image conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -37,7 +37,7 @@ describe('The term that represents image conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -52,7 +52,7 @@ describe('The term that represents image conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
   })
@@ -67,7 +67,7 @@ describe('The term that represents image conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'https://example.com/cc.png'),
         new Image('Chrono Cross logo', 'https://example.com/cc.png')
       ]))
@@ -78,21 +78,21 @@ describe('The term that represents image conventions', () => {
 context('Image descriptions are evaluated for typographical conventions:', () => {
   specify('En dashes', () => {
     expect(Up.parse('[image: ghosts--eating luggage] (http://example.com/poltergeists.svg)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('ghosts–eating luggage', 'http://example.com/poltergeists.svg')
       ]))
   })
 
   specify('Em dashes', () => {
     expect(Up.parse('[image: ghosts---eating luggage] (http://example.com/poltergeists.svg)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('ghosts—eating luggage', 'http://example.com/poltergeists.svg')
       ]))
   })
 
   specify('Plus-minus signs', () => {
     expect(Up.parse('[image: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.svg)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.svg')
       ]))
   })

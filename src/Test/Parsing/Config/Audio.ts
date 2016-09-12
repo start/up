@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { Audio } from '../../../SyntaxNodes/Audio'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 
 
 describe('The term that represents video conventions', () => {
@@ -15,7 +15,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -37,7 +37,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -52,7 +52,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))
   })
@@ -67,7 +67,7 @@ describe('The term that represents video conventions', () => {
     })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg'),
         new Audio('chanting at Nevada caucus', 'https://example.com/audio.ogg')
       ]))

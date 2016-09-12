@@ -33,20 +33,20 @@ import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Table } from '../../SyntaxNodes/Table'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Video } from '../../SyntaxNodes/Video'
 
 
 describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.render(new UpDocument([]))).to.equal('')
+    expect(Up.render(new Document([]))).to.equal('')
   })
 })
 
 
 describe('A paragraph node', () => {
   it('produces a <p> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([new PlainText('Nimble navigator')])
     ])
 
@@ -57,7 +57,7 @@ describe('A paragraph node', () => {
 
 describe('An unordered list node', () => {
   it('produces an <ul> element containing an <li> element for each list item', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new UnorderedList([
         new UnorderedList.Item([
           new Paragraph([
@@ -83,7 +83,7 @@ describe('An unordered list node', () => {
 
 describe('An ordered list node', () => {
   it('produces an <ol> element containing an <li> element for each list item', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new OrderedList([
         new OrderedList.Item([
           new Paragraph([
@@ -109,7 +109,7 @@ describe('An ordered list node', () => {
 
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new OrderedList([
         new OrderedList.Item([
           new Paragraph([
@@ -135,7 +135,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new OrderedList([
         new OrderedList.Item([
           new Paragraph([
@@ -161,7 +161,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> element is given the "reversed" attribute', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new OrderedList([
         new OrderedList.Item([
           new Paragraph([
@@ -187,7 +187,7 @@ describe('When an ordered list node is in descending order', () => {
 
 describe('A description list', () => {
   it('produces a <dl> element containing a <dt> element for each subject, and a <dd> element for each description', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new DescriptionList([
         new DescriptionList.Item([
           new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
@@ -221,7 +221,7 @@ describe('A description list', () => {
 
 describe('A table', () => {
   it('produces a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Game')]),
@@ -252,7 +252,7 @@ describe('A table', () => {
 
 context('When a table has rows with cells with numeric values', () => {
   specify('the <td> element produced for those cells have the "up-numeric" class', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Game')]),
@@ -283,7 +283,7 @@ context('When a table has rows with cells with numeric values', () => {
 
 describe('A table without a caption or any rows', () => {
   it('produces a <table> element that does not contain a <caption> element or any <tr> outside of its <thead>', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Game')]),
@@ -301,7 +301,7 @@ describe('A table without a caption or any rows', () => {
 
 context('When a table header has cells spanning multiple columns', () => {
   specify('the <th> element for those header cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Game')], 5),
@@ -319,7 +319,7 @@ context('When a table header has cells spanning multiple columns', () => {
 
 context('When a table has rows with cells spanning multiple columns', () => {
   specify('the <td> elements for those row cells have a "colspan" attribute whose value is the number of columns spanned', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
@@ -351,7 +351,7 @@ context('When a table has rows with cells spanning multiple columns', () => {
 
 context('When a table cell has a numeric value and spans multiple columns', () => {
   specify('the <td> element produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([new PlainText('Game')]),
@@ -382,7 +382,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
   specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([]),
@@ -411,7 +411,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
   })
 
   specify('When a row header cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Table(
         new Table.Header([
           new Table.Header.Cell([]),
@@ -442,7 +442,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
 
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new LineBlock([
         new LineBlock.Line([
           new PlainText('Hollow')
@@ -464,7 +464,7 @@ describe('A line block node', () => {
 
 describe('A code block node', () => {
   it('produces a <pre> element containing a <code> element containing the code', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new CodeBlock('color = Color.Green')
     ])
 
@@ -475,7 +475,7 @@ describe('A code block node', () => {
 
 describe('A blockquote node', () => {
   it('produces a <blockquote> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Blockquote([
         new Paragraph([
           new PlainText('Centipede')
@@ -490,7 +490,7 @@ describe('A blockquote node', () => {
 
 describe('A level 1 heading node', () => {
   it('produces an <h1> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Bulbasaur')], { level: 1 })
     ])
 
@@ -501,7 +501,7 @@ describe('A level 1 heading node', () => {
 
 describe('A level 2 heading node', () => {
   it('produces an <h2> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Ivysaur')], { level: 2 })
     ])
 
@@ -512,7 +512,7 @@ describe('A level 2 heading node', () => {
 
 describe('A level 3 heading node', () => {
   it('produces an <h3> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Venusaur')], { level: 3 })
     ])
 
@@ -523,7 +523,7 @@ describe('A level 3 heading node', () => {
 
 describe('A level 4 heading node', () => {
   it('produces an <h4>', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Charmander')], { level: 4 })
     ])
 
@@ -534,7 +534,7 @@ describe('A level 4 heading node', () => {
 
 describe('A level 5 heading node', () => {
   it('produces an <h5> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Charmeleon')], { level: 5 })
     ])
 
@@ -545,7 +545,7 @@ describe('A level 5 heading node', () => {
 
 describe('A level 6 heading node', () => {
   it('produces an <h6> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Charizard')], { level: 6 })
     ])
 
@@ -556,7 +556,7 @@ describe('A level 6 heading node', () => {
 
 describe('A level 7 heading node', () => {
   it('produces an <h6> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Squirtle')], { level: 7 })
     ])
 
@@ -567,7 +567,7 @@ describe('A level 7 heading node', () => {
 
 describe('A level 8 heading node', () => {
   it('produces an <h6> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Wartortle')], { level: 8 })
     ])
 
@@ -578,7 +578,7 @@ describe('A level 8 heading node', () => {
 
 describe('A level 9 heading node', () => {
   it('produces an <h6> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Heading([new PlainText('Blastoise')], { level: 9 })
     ])
 
@@ -589,7 +589,7 @@ describe('A level 9 heading node', () => {
 
 describe('A thematic break node', () => {
   it('produces an <hr> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new ThematicBreak()
     ])
 
@@ -600,7 +600,7 @@ describe('A thematic break node', () => {
 
 describe('An emphasis node', () => {
   it('produces an <em> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Emphasis([new PlainText('Always')])
       ])
@@ -613,7 +613,7 @@ describe('An emphasis node', () => {
 
 describe('A stress node', () => {
   it('produces a <strong> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Stress([new PlainText('Ness')])
       ])
@@ -626,7 +626,7 @@ describe('A stress node', () => {
 
 describe('An italic node', () => {
   it('produces an <i> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Italic([new PlainText('Ness')])
       ])
@@ -639,7 +639,7 @@ describe('An italic node', () => {
 
 describe('A bold node', () => {
   it('produces a <b> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Bold([new PlainText('Ness')])
       ])
@@ -652,7 +652,7 @@ describe('A bold node', () => {
 
 describe('An inline code node', () => {
   it('produces a <code> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineCode('then')
       ])
@@ -665,7 +665,7 @@ describe('An inline code node', () => {
 
 describe('An example input node', () => {
   it('produces a <kbd> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new ExampleInput('esc')
       ])
@@ -678,7 +678,7 @@ describe('An example input node', () => {
 
 describe('A normal parenthetical node', () => {
   it('produces a <small class="up-parenthetical"> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new NormalParenthetical([new PlainText('(Koopa Troopa)')])
       ])
@@ -691,7 +691,7 @@ describe('A normal parenthetical node', () => {
 
 describe('A square parenthetical node', () => {
   it('produces a <small class="up-parenthetical up-square-brackets"> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new SquareParenthetical([new PlainText('[Koopa Troopa]')])
       ])
@@ -704,7 +704,7 @@ describe('A square parenthetical node', () => {
 
 describe('A link node', () => {
   it('produces an <a> element with its href attribute set to its URL', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Link([new PlainText('Google')], 'https://google.com')
       ])
@@ -717,7 +717,7 @@ describe('A link node', () => {
 
 describe('A section link node that is not associated with a table of contents entry', () => {
   it("produces an <i> element containing the unmatched snippet", () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new SectionLink('When I became ruler of the world')
       ])
@@ -735,10 +735,10 @@ describe('A section link node that is associated with a table of contents entry'
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new UpDocument([
+      new Document([
         new Paragraph([new SectionLink('howdy', heading)]),
         heading,
-      ], new UpDocument.TableOfContents([heading]))
+      ], new Document.TableOfContents([heading]))
 
     expect(Up.render(document)).to.equal(
       '<p><a href="#up-topic-1">Howdy there</a></p>'
@@ -749,7 +749,7 @@ describe('A section link node that is associated with a table of contents entry'
 
 describe('A footnote node', () => {
   it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Footnote([], { referenceNumber: 3 })
       ])
@@ -767,7 +767,7 @@ describe('A footnote node', () => {
 
 describe('A footnote block node', () => {
   it('produces a <dl class="up-footnotes">', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new FootnoteBlock([])
     ])
 
@@ -778,7 +778,7 @@ describe('A footnote block node', () => {
 
 describe("Each footnote in a footnote block", () => {
   it("produce a <dt> element with an ID indicating its reference number, containing a link that contains the reference number and points to the reference; and a <dd> element containing the footnote contents", () => {
-    const document = new UpDocument([
+    const document = new Document([
       new FootnoteBlock([
         new Footnote([
           new PlainText("Arwings"),
@@ -802,7 +802,7 @@ describe("Each footnote in a footnote block", () => {
 
 describe('An image node', () => {
   it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Image('haunted house', 'http://example.com/hauntedhouse.svg')
     ])
 
@@ -814,7 +814,7 @@ describe('An image node', () => {
 
 describe('An audio node', () => {
   it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
     ])
 
@@ -828,7 +828,7 @@ describe('An audio node', () => {
 
 describe('A video node', () => {
   it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     ])
 
@@ -842,7 +842,7 @@ describe('A video node', () => {
 
 describe('A highlight node', () => {
   it('produces a <mark> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new Highlight([new PlainText('45.9%')])
       ])
@@ -860,7 +860,7 @@ describe('A highlight node', () => {
 
 describe('An inline quote node', () => {
   it('produces a <q> element', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineQuote([new PlainText('45.9%')])
       ])
@@ -878,7 +878,7 @@ describe('An inline quote node', () => {
 
 describe('An inline spoiler node', () => {
   it('produces an outer <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineSpoiler([new PlainText('45.9%')])
       ])
@@ -900,7 +900,7 @@ describe('An inline spoiler node', () => {
 
 describe('An inline NSFW node', () => {
   it('produces an outer <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFW contents', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineNsfw([new PlainText('naked Gary')])
       ])
@@ -922,7 +922,7 @@ describe('An inline NSFW node', () => {
 
 describe('An inline NSFL node', () => {
   it('produces an outer <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFL contents', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Paragraph([
         new InlineNsfl([new PlainText('rotting Gary')])
       ])
@@ -944,7 +944,7 @@ describe('An inline NSFL node', () => {
 
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new SpoilerBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
@@ -968,7 +968,7 @@ describe('A spoiler block node', () => {
 
 describe('A NSFW block node', () => {
   it('produces the same HTML as an inline NSFW node, but with <div role="alert">s instead of <span role="alert">s', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new NsfwBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')
@@ -992,7 +992,7 @@ describe('A NSFW block node', () => {
 
 describe('A NSFL block node', () => {
   it('produces the same HTML as an inline NSFL node, but with <div role="alert">s instead of <span role="alert">s', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new NsflBlock([
         new Paragraph([
           new PlainText('John Carmack is a decent programmer.')

@@ -14,8 +14,8 @@ describe('The Up library', () => {
 context('Several classes are available as members of the Up library:', () => {
   context('Both document classes', () => {
     specifyEachClassShouldBeExported([
-      'UpDocument',
-      'InlineUpDocument'
+      'Document',
+      'InlineDocument'
     ])
   })
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
@@ -24,7 +24,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], { referenceNumber: 2 })
 
       expect(Up.parse("I'm normal. (^Really.) [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -54,7 +54,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], { referenceNumber: 2 })
 
       expect(Up.parse("I'm normal. (^Really.) [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -84,7 +84,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], { referenceNumber: 2 })
 
       expect(Up.parse("I'm normal. (^Really.) [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.]")).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm normal."),
             footnoteOutsideHiddenConvention,
@@ -113,7 +113,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], { referenceNumber: 1 })
 
     expect(Up.parse("Beating the game isn't a quick process. (^After you beat the Elite Four, [SPOILER: You have to beat your rival.])")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Beating the game isn't a quick process."),
           footnote
@@ -142,7 +142,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], { referenceNumber: 1 })
 
     expect(Up.parse("(NSFW: I'm normal. [^ I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineNsfw([
             new PlainText("I'm normal."),
@@ -166,7 +166,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], { referenceNumber: 1 })
 
       expect(Up.parse("(NSFW: [SPOILER: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new InlineNsfw([
               new InlineSpoiler([
@@ -191,7 +191,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], { referenceNumber: 1 })
 
     expect(Up.parse("(NSFL: [NSFW: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineNsfl([
             new InlineNsfw([
@@ -215,7 +215,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     ], { referenceNumber: 1 })
 
     expect(Up.parse("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineSpoiler([
             new InlineNsfl([

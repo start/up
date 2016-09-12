@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 
@@ -17,7 +17,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+      new Document([heading], new Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)

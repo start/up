@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../../Up'
 import { expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
-import { UpDocument } from '../../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../../SyntaxNodes/Paragraph'
 import { Link } from '../../../../SyntaxNodes/Link'
 import { PlainText } from '../../../../SyntaxNodes/PlainText'
@@ -22,7 +22,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       content: '^the phone was dead',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'tel:555-555-5555',
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -42,7 +42,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^Advance Wars',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -55,7 +55,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -77,7 +77,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^email) (mailto:)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -95,7 +95,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^local files) (file:///)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -118,7 +118,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^the phone was dead',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'tel:5555555555',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -131,7 +131,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^email) (\\mailto:daniel@wants.email)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -156,7 +156,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       content: '^the phone was dead',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '/wiki/dead-phone',
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -171,7 +171,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the phone was dead) (/r9k/ was talking about it)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -189,7 +189,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^slash) (/)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -212,7 +212,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^the phone was dead',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '/5555555555',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -225,7 +225,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^slash) (\\/r9k/)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -250,7 +250,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       content: '^the phone was dead',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: '#wiki/dead-phone',
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -270,7 +270,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^the phone was dead',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '#15',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -283,7 +283,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the game was dead) (#starcraft2 was never trending)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -301,7 +301,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^hash mark) (#)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -319,7 +319,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^hash mark) (\\#starcraft2)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -344,7 +344,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       content: '^Chrono Trigger',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'chrono-trigger.wiki',
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -364,7 +364,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^Advance Wars',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/wiki/Advance_Wars_(game)',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -382,7 +382,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^Advance Wars!',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: 'advancewars.wikia.com/',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -395,7 +395,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^that place] (4chan.org-terrifying)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -418,7 +418,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^Good luck!',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -432,7 +432,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], { referenceNumber: 1 })
 
         expect(Up.parse('[^username] (john.e.smith5)')).to.deep.equal(
-          new UpDocument([
+          new Document([
             new Paragraph([
               footnote,
               new PlainText(' '),
@@ -450,7 +450,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         ], { referenceNumber: 1 })
 
         expect(Up.parse('[^username] (john.e.smith-kline)')).to.deep.equal(
-          new UpDocument([
+          new Document([
             new Paragraph([
               footnote,
               new PlainText(' '),
@@ -469,7 +469,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^top-level domain] (.co.uk)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -487,7 +487,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^Ash is not his own father] (um..uh)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -505,7 +505,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -528,7 +528,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
         content: '^Good luck!',
         partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
         url: '88.8888.cn',
-        toProduce: new UpDocument([
+        toProduce: new Document([
           new Paragraph([footnote]),
           new FootnoteBlock([footnote])
         ])
@@ -541,7 +541,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^yeah] (ign.com had some hilarious forums)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -559,7 +559,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^yeah] (\\ign.com)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             footnote,
             new PlainText(' '),
@@ -579,7 +579,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     ], { referenceNumber: 1 })
 
     expect(Up.parse('(^the phone was dead) (really)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote,
           new PlainText(' '),
@@ -600,7 +600,7 @@ describe('If there is nothing but whitspace between a footnote and a bracketed U
     ], { referenceNumber: 1 })
 
     expect(Up.parse('[^something terrible]  \\  (https://example.com)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote,
           new PlainText('    '),
@@ -630,7 +630,7 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
       content: '^the phone was dead',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],
       url: 'example.com/search=phone\\ was\\ dead',
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])

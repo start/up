@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../PatternPieces'
 import { anyCharMatching } from '../PatternHelpers'
 import { concat } from '../CollectionHelpers'
@@ -23,7 +23,7 @@ export class Table implements OutlineSyntaxNode {
     }
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

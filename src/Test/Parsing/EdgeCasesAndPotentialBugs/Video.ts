@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Video } from '../../../SyntaxNodes/Video'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -18,7 +18,7 @@ describe('A paragraph directly followed by a video on its own line', () => {
 Do not pour the spiders into your sister's cereal.
 [video: spiders crawling out of mouth][http://example.com/spiders.webm]`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
@@ -66,14 +66,14 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
 context('Unmatched opening parentheses in a video description have no affect on', () => {
   specify('parentheses surounding the URL', () => {
     expect(Up.parse('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.parse('([video: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new NormalParenthetical([
             new PlainText('('),
@@ -95,7 +95,7 @@ describe("Unmatched opening parentheses in a video URL", () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),

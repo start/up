@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../SyntaxNodes/LineBlock'
 import { PlainText } from '../../SyntaxNodes/PlainText'
@@ -56,7 +56,7 @@ context("Backslashes don't disable line breaks:", () => {
 Hello, world!\\
 Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Hello, world!')
@@ -74,7 +74,7 @@ Hello, world!\\
 
 Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, world!')
         ]),

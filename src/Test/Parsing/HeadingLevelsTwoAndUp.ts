@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Heading } from '../../SyntaxNodes/Heading'
 import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
@@ -24,9 +24,9 @@ Goodbye, world!
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         headings,
-        new UpDocument.TableOfContents(headings)
+        new Document.TableOfContents(headings)
       ))
   })
 })
@@ -51,9 +51,9 @@ Goodbye again, world!
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         headings,
-        new UpDocument.TableOfContents(headings)
+        new Document.TableOfContents(headings)
       ))
   })
 })
@@ -75,9 +75,9 @@ Goodbye, world!
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         headings,
-        new UpDocument.TableOfContents(headings)
+        new Document.TableOfContents(headings)
       ))
   })
 
@@ -96,9 +96,9 @@ Goodbye, world!
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         headings,
-        new UpDocument.TableOfContents(headings)
+        new Document.TableOfContents(headings)
       ))
   })
 })
@@ -148,9 +148,9 @@ Warlocked
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         headings,
-        new UpDocument.TableOfContents(headings)))
+        new Document.TableOfContents(headings)))
   })
 })
 
@@ -177,7 +177,7 @@ Goodbye, world!
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         helloHeading,
         goodbyeHeading,
         new UnorderedList([
@@ -185,7 +185,7 @@ Goodbye, world!
             keysHeading
           ])
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -216,7 +216,7 @@ Goodbye, world!
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         helloHeading,
         goodbyeHeading,
         new OrderedList([
@@ -224,7 +224,7 @@ Goodbye, world!
             keysHeading
           ])
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -256,7 +256,7 @@ Awkward
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         helloHeading,
         goodbyeHeading,
         new DescriptionList([
@@ -266,7 +266,7 @@ Awkward
               keysHeading
             ]))
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -297,13 +297,13 @@ Goodbye, world!
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         helloHeading,
         goodbyeHeading,
         new Blockquote([
           keysHeading
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -334,7 +334,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           helloHeading,
           goodbyeHeading,
@@ -344,7 +344,7 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
             ])
           ])
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -375,7 +375,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           helloHeading,
           goodbyeHeading,
@@ -383,7 +383,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
             keysHeading
           ])
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -415,7 +415,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
       new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           helloHeading,
           goodbyeHeading,
@@ -423,7 +423,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
         new Blockquote([
           keysHeading
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading

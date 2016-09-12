@@ -10,7 +10,7 @@ import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 import { Link } from '../../SyntaxNodes/Link'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 
 
 
@@ -31,7 +31,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     const markup = '[image: Chrono Cross logo](prod-web-2/cc-logo.png)'
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'https://prod-web-2/cc-logo.png')
       ]))
   })
@@ -40,7 +40,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     const markup = '[audio: Chrono Cross ending theme](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('Chrono Cross ending theme', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
@@ -49,7 +49,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     const markup = '[video: Chrono Cross ending cinematic](prod-web-2/radical dreamers.mp3)'
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Chrono Cross ending cinematic', 'https://prod-web-2/radical dreamers.mp3')
       ]))
   })
@@ -78,7 +78,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
@@ -95,7 +95,7 @@ ruins ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -140,7 +140,7 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -167,7 +167,7 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
@@ -196,7 +196,7 @@ LOOK AWAY:
       })
 
       expect(document).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
             new Paragraph([
               new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')

@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Image } from '../../../SyntaxNodes/Image'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -18,7 +18,7 @@ describe('A paragraph directly followed by an image on its own line', () => {
 Do not pour the spiders into your sister's cereal.
 [image: sister arraigned on charges][http://example.com/court.jpg]`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
@@ -66,14 +66,14 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
 context('Unmatched opening parentheses in an image description have no affect on', () => {
   specify('parentheses surounding the URL', () => {
     expect(Up.parse('[image: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.parse('([image: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new NormalParenthetical([
             new PlainText('('),
@@ -95,7 +95,7 @@ describe("Unmatched opening parentheses in an image URL", () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),

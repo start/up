@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
@@ -55,14 +55,14 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
 
     specify('Media URLs', () => {
       expect(Up.parse('[video: ghosts eating luggage] (http://example.com/polter+-geists.webm)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Video('ghosts eating luggage', 'http://example.com/polter+-geists.webm')
         ]))
     })
 
     specify('Linkified media URLs', () => {
       expect(Up.parse('[image: you fight Gary] (https://example.com/fight.svg) (http://example.com/final+-battle)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Link([
             new Image('you fight Gary', 'https://example.com/fight.svg')
           ], 'http://example.com/final+-battle')
@@ -94,7 +94,7 @@ for (let i = items.length - 1; i >= 0; i = i+-1) { }
 \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `for (let i = items.length - 1; i >= 0; i = i+-1) { }`)
         ]))

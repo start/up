@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -22,7 +22,7 @@ describe('Before a footnote, an escaped space followed by several non-escaped sp
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal. "),
           footnote
@@ -42,7 +42,7 @@ describe('A footnote reference at the end of a paragraph', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote
@@ -70,7 +70,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),
@@ -97,7 +97,7 @@ describe('A footnote produced by square brackets that contains nested square bra
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote
         ]),
@@ -137,7 +137,7 @@ describe('Within an outline convention, footnotes within a revealable outline co
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new SpoilerBlock([
@@ -199,7 +199,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
           firstFootnote,
@@ -226,7 +226,7 @@ describe('A footnote at the beginning of a paragraph', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           footnote,
           new PlainText(" I'm a normal breakfast eater, just like you.")

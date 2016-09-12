@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
@@ -11,7 +11,7 @@ import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 describe("Inline spoilers and spoiler blocks", () => {
   it("have sequential IDs", () => {
     const node =
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('The main character defeats the bad guy.')
@@ -78,7 +78,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     const up = new Up()
 
     const node =
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, '),
           new InlineSpoiler([
@@ -112,7 +112,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     const up = new Up()
 
     const node =
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new Paragraph([
             new PlainText('After you beat the Elite Four, you have to face your rival.')

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -17,9 +17,9 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 })
 
@@ -34,9 +34,9 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 
   it('may be as short as 3 characters long', () => {
@@ -48,9 +48,9 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 })
 
@@ -67,10 +67,10 @@ Goodbye, world!
       new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Hello, world!')]),
         heading,
-      ], new UpDocument.TableOfContents([heading])))
+      ], new Document.TableOfContents([heading])))
   })
 
   it('can contain inline conventions', () => {
@@ -85,9 +85,9 @@ Goodbye, world!
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 
   it('can have an optional overline consisting of the same characters as its underline', () => {
@@ -100,9 +100,9 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])
+        new Document.TableOfContents([heading])
       ))
   })
 })
@@ -119,9 +119,9 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 
   it('can have its characters arranged differently than in the underline', () => {
@@ -134,8 +134,8 @@ Hello, world!
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument(
+      new Document(
         [heading],
-        new UpDocument.TableOfContents([heading])))
+        new Document.TableOfContents([heading])))
   })
 })

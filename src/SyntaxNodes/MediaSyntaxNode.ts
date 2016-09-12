@@ -1,6 +1,6 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
 
 
@@ -27,7 +27,7 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
     return this.description
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

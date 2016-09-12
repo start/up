@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
@@ -10,7 +10,7 @@ import { OrderedList } from '../../SyntaxNodes/OrderedList'
 import { SectionLink } from '../../SyntaxNodes/SectionLink'
 
 
-context("The `UpDocument.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
+context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
   specify("Footnotes assigned their reference numbers (mutating them) and placed in footnote blocks (mutating any outline nodes the blocks are placed inside)", () => {
     const documentChildren = [
       new Paragraph([
@@ -26,7 +26,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       ])
     ]
 
-    const document = UpDocument.create(documentChildren)
+    const document = Document.create(documentChildren)
 
     const cerealFootnote =
       new Footnote([new PlainText('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
@@ -35,7 +35,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           cerealFootnote,
@@ -71,7 +71,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       ])
     ]
 
-    const document = UpDocument.create(documentChildren)
+    const document = Document.create(documentChildren)
 
     const enjoyHeading =
       new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
@@ -83,7 +83,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         enjoyHeading,
         new OrderedList([
           new OrderedList.Item([
@@ -95,7 +95,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
             new Paragraph([new PlainText("Very delicious.")])
           ])
         ])
-      ], new UpDocument.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
+      ], new Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
 
   specify("Referemces to table of contents entries associated with the appropriate entries", () => {
@@ -112,7 +112,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       ])
     ]
 
-    const document = UpDocument.create(documentChildren)
+    const document = Document.create(documentChildren)
 
     const sodaHeading =
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
@@ -121,7 +121,7 @@ context("The `UpDocument.create` is automatically used during the normal parsing
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -132,6 +132,6 @@ context("The `UpDocument.create` is automatically used during the normal parsing
           new SectionLink('soda', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })

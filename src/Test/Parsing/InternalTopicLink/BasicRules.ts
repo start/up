@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
@@ -31,7 +31,7 @@ Not quite true. For example, see [section: soda].`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(documentUsingSquareBracketsAndSectionTerm).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -42,7 +42,7 @@ Not quite true. For example, see [section: soda].`
           new SectionLink('soda', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('You can use "section:" with parentheses', () => {
@@ -113,7 +113,7 @@ Not quite true. For example, see [section: I drink soda].`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -124,7 +124,7 @@ Not quite true. For example, see [section: I drink soda].`
             new SectionLink('I drink soda', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('After the section link', () => {
@@ -148,7 +148,7 @@ Not quite true.`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I'm a great guy. For more information, skip to "),
             new SectionLink('I never lie', neverLieHeading),
@@ -162,7 +162,7 @@ Not quite true.`
           new Paragraph([
             new PlainText('Not quite true.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Before another exactly matching entry', () => {
@@ -194,7 +194,7 @@ That's what I tell 'em.`
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           firstSodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -212,7 +212,7 @@ That's what I tell 'em.`
           new Paragraph([
             new PlainText("That's what I tell 'em.")
           ])
-        ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
+        ], new Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
 
     specify('Before an entry that merely contains the snippet', () => {
@@ -244,7 +244,7 @@ Oops.`
         new Heading([new PlainText('I lied when I said I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           firstSodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -262,7 +262,7 @@ Oops.`
           new Paragraph([
             new PlainText("Oops.")
           ])
-        ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
+        ], new Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
 
     specify('After an entry that merely contains the snippet', () => {
@@ -294,7 +294,7 @@ That's what I tell 'em.`
         new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           firstSodaHeading,
           new Paragraph([
             new PlainText('I only drink milk.')
@@ -312,7 +312,7 @@ That's what I tell 'em.`
           new Paragraph([
             new PlainText("That's what I tell 'em.")
           ])
-        ], new UpDocument.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
+        ], new Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
   })
 
@@ -337,7 +337,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
         new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -348,7 +348,7 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
             new SectionLink('exotic', sodaHeading),
             new PlainText('.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+        ], new Document.TableOfContents([sodaHeading, interestingHeading])))
     })
 
     specify('After the section link', () => {
@@ -372,7 +372,7 @@ I love all sorts of fancy stuff.`
         new Heading([new PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText('I have plenty of good traits. See '),
             new SectionLink('interesting', interestingHeading),
@@ -386,7 +386,7 @@ I love all sorts of fancy stuff.`
           new Paragraph([
             new PlainText('I love all sorts of fancy stuff.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, interestingHeading])))
+        ], new Document.TableOfContents([sodaHeading, interestingHeading])))
     })
   })
 })
@@ -432,7 +432,7 @@ And you'll believe it.`
       new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 4 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         firstSodaHeading,
         new Paragraph([
           new PlainText('I only drink milk.')
@@ -457,7 +457,7 @@ And you'll believe it.`
         new Paragraph([
           new PlainText("And you'll believe it.")
         ])
-      ], new UpDocument.TableOfContents([
+      ], new Document.TableOfContents([
         firstSodaHeading,
         neverLieHeading,
         secondSodaHeading,
@@ -488,7 +488,7 @@ Not quite true.
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -511,7 +511,7 @@ Not quite true.
               ])
             ], { ordinal: 2 })
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 
@@ -536,7 +536,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
       new Heading([new PlainText('I am honest')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('There are plenty of important facts about me. For my favorite, skip to '),
           new SectionLink('honest', honestHeading),
@@ -556,7 +556,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
             ])
           ], { ordinal: 2 })
         ]),
-      ], new UpDocument.TableOfContents([sodaHeading, honestHeading])))
+      ], new Document.TableOfContents([sodaHeading, honestHeading])))
   })
 })
 
@@ -583,7 +583,7 @@ Not quite true.`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I'm a great guy. For more information, skip to "),
           new SectionLink('I became a world leader'),
@@ -597,7 +597,7 @@ Not quite true.`
         new Paragraph([
           new PlainText('Not quite true.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })
 
@@ -622,7 +622,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -633,7 +633,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
           new SectionLink('I drink soda', sodaHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })
 
@@ -660,7 +660,7 @@ The zombies could arrive at any moment.`
       new Heading([new PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I'm a concerned kind of guy. For more information, skip to "),
           new SectionLink('prepare', prepareHeading),
@@ -674,7 +674,7 @@ The zombies could arrive at any moment.`
         new Paragraph([
           new PlainText('The zombies could arrive at any moment.')
         ])
-      ], new UpDocument.TableOfContents([surviveHeading, prepareHeading])))
+      ], new Document.TableOfContents([surviveHeading, prepareHeading])))
   })
 
   specify('If there is a space between words in a snippet, there must be a space between those words in the entry itself', () => {
@@ -698,7 +698,7 @@ That's what the internet told me.`
       new Heading([new PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
           new SectionLink('prep are', surviveHeading),
@@ -712,7 +712,7 @@ That's what the internet told me.`
         new Paragraph([
           new PlainText("That's what the internet told me.")
         ])
-      ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
+      ], new Document.TableOfContents([prepareHeading, surviveHeading])))
   })
 
   specify('However, any outer whitespace around the snippet is trimmed away and ignored.', () => {
@@ -736,7 +736,7 @@ That's what the internet told me.`
       new Heading([new PlainText('Those who prep are superdramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I'm a helpful guy. For more information, skip to "),
           new SectionLink('drama', surviveHeading),
@@ -750,7 +750,7 @@ That's what the internet told me.`
         new Paragraph([
           new PlainText("That's what the internet told me.")
         ])
-      ], new UpDocument.TableOfContents([prepareHeading, surviveHeading])))
+      ], new Document.TableOfContents([prepareHeading, surviveHeading])))
   })
 })
 
@@ -785,7 +785,7 @@ Not quite true. For example, see [section: emphasis].`
       new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         stressAndEmphasisHeading,
         new Paragraph([
           new PlainText('Luckily for us, Up supports that!')
@@ -800,7 +800,7 @@ Not quite true. For example, see [section: emphasis].`
           new SectionLink('emphasis', emphasisSubHeading),
           new PlainText('.')
         ])
-      ], new UpDocument.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+      ], new Document.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })
 })
 
@@ -809,7 +809,7 @@ context('The snippet belonging to a section link can contain the same type of br
   context('When the section link is enclosed by square brackets:', () => {
     specify('The snippet can contain matching square brackets', () => {
       expect(Up.parse('[section: I [really] love apples]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I [really] love apples')
           ])
@@ -818,7 +818,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain matching nested square brackets', () => {
       expect(Up.parse('[section: I [really [truly [honestly]]] love apples]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I [really [truly [honestly]]] love apples')
           ])
@@ -827,7 +827,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain an escaped unmatched closing square bracket', () => {
       expect(Up.parse('[section: I love :\\] apples]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I love :] apples')
           ])
@@ -836,7 +836,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain an escaped unmatched opening square bracket', () => {
       expect(Up.parse('[section: I miss :\\[ apples]')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I miss :[ apples')
           ])
@@ -848,7 +848,7 @@ context('The snippet belonging to a section link can contain the same type of br
   context('When the section link is enclosed by parentheses:', () => {
     specify('The snippet can contain matching parentheses', () => {
       expect(Up.parse('(section: I (really) love apples)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I (really) love apples')
           ])
@@ -857,7 +857,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain matching nested parentheses', () => {
       expect(Up.parse('(section: I (really (truly (honestly))) love apples)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I (really (truly (honestly))) love apples')
           ])
@@ -866,7 +866,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain an escaped unmatched closing parenthesis', () => {
       expect(Up.parse('(section: I love :\\) apples)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I love :) apples')
           ])
@@ -875,7 +875,7 @@ context('The snippet belonging to a section link can contain the same type of br
 
     specify('The snippet can contain an escaped unmatched opening parenthesis', () => {
       expect(Up.parse('(section: I miss :\\( apples)')).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new SectionLink('I miss :( apples')
           ])

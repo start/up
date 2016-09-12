@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
@@ -32,7 +32,7 @@ Anyway, none of that matters.`
       ], { referenceNumber: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I don't eat cereal."),
             footnote,
@@ -61,7 +61,7 @@ Anyway, none of that matters.`
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Paragraph([
             new PlainText("I don't eat cereal."),
             footnotes[0],
@@ -96,13 +96,13 @@ Anyway, none of that matters.`
       ], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           heading,
           new FootnoteBlock([footnote]),
           new Paragraph([
             new PlainText('Anyway, none of that matters.')
           ])
-        ], new UpDocument.TableOfContents([heading])))
+        ], new Document.TableOfContents([heading])))
     })
 
     specify("With multiple footnotes", () => {
@@ -129,13 +129,13 @@ Anyway, none of that matters.`
       ], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           heading,
           new FootnoteBlock(footnotes),
           new Paragraph([
             new PlainText('Anyway, none of that matters.')
           ])
-        ], new UpDocument.TableOfContents([heading])))
+        ], new Document.TableOfContents([heading])))
     })
   })
 
@@ -157,7 +157,7 @@ Anyway, none of that matters.`
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText("Roses are red"),
@@ -204,7 +204,7 @@ Anyway, none of that matters.`
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
 
           new UnorderedList.Item([
@@ -268,7 +268,7 @@ Anyway, none of that matters.`
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -320,7 +320,7 @@ Anyway, none of that matters.`
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           new Paragraph([
             new PlainText("I don't eat cereal."),
@@ -374,7 +374,7 @@ Anyway, none of that matters.`
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
@@ -438,7 +438,7 @@ Anyway, none of that matters.`
       ], { referenceNumber: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game'), gameFootnote]),
@@ -490,7 +490,7 @@ Anyway, none of that matters.`
       ], { referenceNumber: 4 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
@@ -555,7 +555,7 @@ Anyway, none of that matters.`
       ], { referenceNumber: 6 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([new PlainText('Game'), headerGameFootnote]),
@@ -624,7 +624,7 @@ Anyway, none of that matters.`
       ], { referenceNumber: 5 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -691,7 +691,7 @@ SPOILER:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new SpoilerBlock([
             new Paragraph([
               new PlainText("I don't eat cereal."),
@@ -747,7 +747,7 @@ NSFW:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsfwBlock([
             new Paragraph([
               new PlainText("I don't eat cereal."),
@@ -803,7 +803,7 @@ NSFL:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
             new Paragraph([
               new PlainText("I don't eat cereal."),
@@ -855,7 +855,7 @@ SPOILER:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new SpoilerBlock([
 
             new UnorderedList([
@@ -909,7 +909,7 @@ NSFW:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsfwBlock([
 
             new UnorderedList([
@@ -963,7 +963,7 @@ NSFL:
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new NsflBlock([
 
             new UnorderedList([
@@ -1026,7 +1026,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       ], { referenceNumber: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([
@@ -1086,7 +1086,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
     ], { referenceNumber: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new UnorderedList([
           new UnorderedList.Item([
             new Paragraph([
@@ -1145,7 +1145,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
           firstFootnote,
@@ -1194,7 +1194,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
           firstFootnote,
@@ -1240,7 +1240,7 @@ I don't eat (^Or touch.) pumpkins.`
     ], { referenceNumber: 4 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,
@@ -1303,7 +1303,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
     ], { referenceNumber: 5 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           new Paragraph([
             new PlainText("I don't eat cereal."),

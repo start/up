@@ -1,11 +1,11 @@
-import { UpDocument } from '../SyntaxNodes/UpDocument'
+import { Document } from '../SyntaxNodes/Document'
 import { HeadingLeveler } from './Outline/HeadingLeveler'
 import { getOutlineSyntaxNodes } from './Outline/getOutlineSyntaxNodes'
 import { INPUT_LINE_BREAK } from './Strings'
 import { Settings } from '../Settings'
 
 
-export function parse(markup: string, settings: Settings.Parsing): UpDocument {
+export function parse(markup: string, settings: Settings.Parsing): Document {
   const children = getOutlineSyntaxNodes({
     markupLines: markup.split(INPUT_LINE_BREAK),
     sourceLineNumber: 1,
@@ -13,5 +13,5 @@ export function parse(markup: string, settings: Settings.Parsing): UpDocument {
     settings
   })
 
-  return UpDocument.create(children)
+  return Document.create(children)
 }

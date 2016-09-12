@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 
@@ -11,7 +11,7 @@ describe('A line starting with an escaped character in a line block', () => {
 \\Roses are red
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -28,7 +28,7 @@ Violets are blue`
 Roses are red
 \\Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -51,7 +51,7 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -82,7 +82,7 @@ Violets are blue\\
 Lyrics have lines
 And addresses do, too`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red'),
@@ -110,7 +110,7 @@ Roses are red
 \\ \t
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red'),
@@ -129,7 +129,7 @@ Roses are red
  \\   \\  \\\t  \t   
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red'),
@@ -152,7 +152,7 @@ Roses are red
 Skeltals are white`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')

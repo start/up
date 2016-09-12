@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
@@ -17,7 +17,7 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('My pies never turn out quite right.')
         ]),
@@ -36,7 +36,7 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -63,7 +63,7 @@ const pie = 3.5
 My pies never turn out quite right.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock('const pie = 3.5'),
         new Paragraph([
           new PlainText('My pies never turn out quite right.')
@@ -79,14 +79,14 @@ context('A code block with containing zero lines of code produces an empty code 
 \`\`\`
 \`\`\``
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
     expect(Up.parse('```')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock(''),
       ]))
   })
@@ -111,7 +111,7 @@ function factorial(n: number): number {
 document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Check out the code below!')
         ]),
@@ -135,7 +135,7 @@ context("For a streak of backticks to serve as a code block's fence, it must be 
 
 That's what the robot wrote!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineQuote([new PlainText('```')])
         ]),
@@ -150,7 +150,7 @@ That's what the robot wrote!`
 \`\`\`
 "\`\`\`"`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock('"```"'),
       ]))
   })

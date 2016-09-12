@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
@@ -15,7 +15,7 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock('const pie = 3.5'),
       ]))
   })
@@ -31,7 +31,7 @@ describe('A code block', () => {
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
@@ -45,7 +45,7 @@ const lineBreak = "\\n"
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock('const lineBreak = "\\n"'),
       ]))
   })
@@ -62,7 +62,7 @@ const lineBreak = "\\n"
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
@@ -88,7 +88,7 @@ function factorial(n: number): number {
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `\`\`\`
 function factorial(n: number): number {
@@ -115,7 +115,7 @@ function factorial(n: number): number {
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
@@ -141,7 +141,7 @@ function factorial(n: number): number {
 \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
@@ -171,7 +171,7 @@ It's easy!
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new CodeBlock(
             `Wrap code in streaks of backticks! 
 
@@ -203,7 +203,7 @@ const pie = 3.5
 Do you?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('I enjoy baking.')]),
         new CodeBlock('const pie = 3.5'),
         new Paragraph([new PlainText('Do you?')])
@@ -221,7 +221,7 @@ const pie = 3.5
 Do you?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('I enjoy baking.')]),
         new CodeBlock('const pie = 3.5'),
         new Paragraph([new PlainText('Do you?')])
@@ -246,7 +246,7 @@ function factorial(n: number): number {
 document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Check out the code below!')
         ]),
@@ -277,7 +277,7 @@ SPOILER:
 I hope you were able to find a solution without cheating.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new SpoilerBlock([
           new CodeBlock(
             `function nthFibonacci(n: number): number {

@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
@@ -72,7 +72,7 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Eventually, I will think of one'),
           footnote,
@@ -104,7 +104,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new InlineNsfl([
             new Link([

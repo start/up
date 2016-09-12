@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Blockquote } from '../../../SyntaxNodes/Blockquote'
 import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 import { Heading } from '../../../SyntaxNodes/Heading'
@@ -41,7 +41,7 @@ Not quite true.
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -60,7 +60,7 @@ Not quite true.
             new PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
 
@@ -90,7 +90,7 @@ Minor reason
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -124,7 +124,7 @@ Minor reason
               ])
             ]))
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Descriptions', () => {
@@ -152,7 +152,7 @@ Minor reason
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -183,7 +183,7 @@ Minor reason
               ])
             ]))
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 
@@ -212,7 +212,7 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -236,7 +236,7 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
             new PlainText("I've been alive for hundreds of years. I'm bound to have lied at some point"),
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('NSFL blocks', () => {
@@ -263,7 +263,7 @@ NSFL:
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -282,7 +282,7 @@ NSFL:
             new PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('NSFW blocks', () => {
@@ -309,7 +309,7 @@ NSFW:
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -328,7 +328,7 @@ NSFW:
             new PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify("Ordered lists", () => {
@@ -353,7 +353,7 @@ Not quite true.
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -376,7 +376,7 @@ Not quite true.
             ])
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('Spoiler blocks', () => {
@@ -403,7 +403,7 @@ SPOILER:
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -422,7 +422,7 @@ SPOILER:
             new PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
 
@@ -451,7 +451,7 @@ I get hungry;     Very valid`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -477,7 +477,7 @@ I get hungry;     Very valid`
                 new PlainText(')')
               ])
             ]))
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Header cells', () => {
@@ -504,7 +504,7 @@ I get hungry;                     Very valid`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -532,7 +532,7 @@ I get hungry;                     Very valid`
             ], new Table.Caption([
               new PlainText('Reasons I lie')
             ]))
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Row cells', () => {
@@ -559,7 +559,7 @@ I get hungry (see [section: soda]);     Very valid`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -589,7 +589,7 @@ I get hungry (see [section: soda]);     Very valid`
             ], new Table.Caption([
               new PlainText('Reasons I lie')
             ]))
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Row header cells', () => {
@@ -618,7 +618,7 @@ I get hungry (see [section: soda]);       Very valid`
         new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -653,7 +653,7 @@ I get hungry (see [section: soda]);       Very valid`
             ], new Table.Caption([
               new PlainText('Reasons I lie')
             ]))
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 
@@ -680,7 +680,7 @@ Not quite true.
       new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         sodaHeading,
         new Paragraph([
           new PlainText('Actually, I only drink milk.')
@@ -703,7 +703,7 @@ Not quite true.
             ])
           ])
         ])
-      ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
 
@@ -730,7 +730,7 @@ Not quite true.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -739,7 +739,7 @@ Not quite true.`
           new Paragraph([
             new PlainText('Not quite true.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('When a subsquent heading contains the snippet (and a previous one does not)', () => {
@@ -772,7 +772,7 @@ I never drink soda.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           drinkSodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -785,7 +785,7 @@ I never drink soda.`
           new Paragraph([
             new PlainText('I never drink soda.')
           ])
-        ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
+        ], new Document.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
     })
 
     specify('When a subsquent heading perfectly matches the snippet', () => {
@@ -819,7 +819,7 @@ My least favorite drink.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           drinkSodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -832,7 +832,7 @@ My least favorite drink.`
           new Paragraph([
             new PlainText('My least favorite drink.')
           ])
-        ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, sodaHeading])))
+        ], new Document.TableOfContents([drinkSodaHeading, neverLieHeading, sodaHeading])))
     })
 
     specify('When no other heading matches the snippet', () => {
@@ -857,7 +857,7 @@ Not quite true.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           sodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -866,7 +866,7 @@ Not quite true.`
           new Paragraph([
             new PlainText('Not quite true.')
           ])
-        ], new UpDocument.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('When a subsquent heading perfectly matches the snippet, but the snippet is the only convention in its own heading', () => {
@@ -898,7 +898,7 @@ I never drink soda.`
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           drinkSodaHeading,
           new Paragraph([
             new PlainText('Actually, I only drink milk.')
@@ -911,7 +911,7 @@ I never drink soda.`
           new Paragraph([
             new PlainText('I never drink soda.')
           ])
-        ], new UpDocument.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
+        ], new Document.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
     })
   })
 })

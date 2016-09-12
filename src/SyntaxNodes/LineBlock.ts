@@ -1,7 +1,7 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
 
@@ -15,7 +15,7 @@ export class LineBlock implements OutlineSyntaxNode {
     }
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

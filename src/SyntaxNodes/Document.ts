@@ -7,25 +7,25 @@ import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertF
 import { concat } from '../CollectionHelpers'
 
 
-export class UpDocument extends OutlineSyntaxNodeContainer {
-  // Returns an `UpDocument` object with:
+export class Document extends OutlineSyntaxNodeContainer {
+  // Returns an `Document` object with:
   //
   // 1. Footnotes extracted into footnote blocks
   // 2. A table of contents produced from `children`
   // 3. Section links associated with the apprioriate table of contents entries
   //
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
-  static create(children: OutlineSyntaxNode[]): UpDocument {
-    // Unfortunately, this process of producing a ready-to-use UpDocument has become a tad scattered.
+  static create(children: OutlineSyntaxNode[]): Document {
+    // Unfortunately, this process of producing a ready-to-use Document has become a tad scattered.
     // It needs to be revisited.
 
     // First, let's create our table of contents. It's up to each outline syntax node whether to allow
     // its descendants to be referenced by the table of contents. Some don't (e.g. blockquotes).
     const tableOfContents =
-      UpDocument.TableOfContents.createAndAssociateEntriesWithTheirReferences(children)
+      Document.TableOfContents.createAndAssociateEntriesWithTheirReferences(children)
 
     // Alright! We now have everything we need to produce our document!
-    const document = new UpDocument(children, tableOfContents)
+    const document = new Document(children, tableOfContents)
 
     // Finally, if there are any footnotes, they still need their reference numbers, and they still
     // need to be extracted into blocks. Let's do it.
@@ -35,13 +35,13 @@ export class UpDocument extends OutlineSyntaxNodeContainer {
     return document
   }
 
-  constructor(children: OutlineSyntaxNode[], public tableOfContents = new UpDocument.TableOfContents()) {
+  constructor(children: OutlineSyntaxNode[], public tableOfContents = new Document.TableOfContents()) {
     super(children)
   }
 }
 
 
-export namespace UpDocument {
+export namespace Document {
   export class TableOfContents {
     // Returns a `TableOfContents` object with entries from `documentChildren`.
     //
@@ -85,7 +85,7 @@ export namespace UpDocument {
 
 
   export namespace TableOfContents {
-    // UpDocument.TableOfContents.Entry
+    // Document.TableOfContents.Entry
     export interface Entry {
       // The (1-based!) ordinal in the table of contents
       ordinalInTableOfContents: number

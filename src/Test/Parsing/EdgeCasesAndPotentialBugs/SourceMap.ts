@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Blockquote } from '../../../SyntaxNodes/Blockquote'
@@ -18,7 +18,7 @@ describe('When a blockquote starts with a blank line', () => {
 >
 > Well, aside from you.`
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Blockquote([
           new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 3 }),
           new Paragraph([new PlainText("Well, aside from you.")], { sourceLineNumber: 5 })
@@ -34,7 +34,7 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
       '[image: haunted house](example.com/hauntedhouse.svg)(example.com/gallery) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house](example.com/hauntedhouse.webm)'
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Link([
           new Image('haunted house', 'https://example.com/hauntedhouse.svg'),
         ], 'https://example.com/gallery', { sourceLineNumber: 1 }),

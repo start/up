@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Link } from '../../SyntaxNodes/Link'
 import { PlainText } from '../../SyntaxNodes/PlainText'
@@ -379,7 +379,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,

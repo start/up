@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
@@ -17,7 +17,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 -----------`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new OrderedList([
             new OrderedList.Item([
@@ -37,7 +37,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 -----------`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new OrderedList([
             new OrderedList.Item([
@@ -63,9 +63,9 @@ describe('An ordered list with a single item can be sandwched by identical thema
         new Heading([new PlainText('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument(
+        new Document(
           [heading],
-          new UpDocument.TableOfContents([heading])
+          new Document.TableOfContents([heading])
         ))
     })
   })
@@ -83,7 +83,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 # Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -125,7 +125,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 # Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -163,7 +163,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #. Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -185,7 +185,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #) Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -207,7 +207,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 #) Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -228,7 +228,7 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
 context("When an ordered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
   specify('An integer followed by a closing parenthesis', () => {
     expect(Up.parse('1) 1783. Not a good year for Great Britain.')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -241,7 +241,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign', () => {
     expect(Up.parse('# 1783. Not a good year for Great Britain.')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -254,7 +254,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign followed by a period', () => {
     expect(Up.parse('#. 1783. Not a good year for Great Britain.')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -267,7 +267,7 @@ context("When an ordered list has just one item, that item can start with an int
 
   specify('A number sign followed by a closing parenthesis', () => {
     expect(Up.parse('#) 1783. Not a good year for Great Britain.')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -306,7 +306,7 @@ I enjoy apples
       new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         enjoyHeading,
         new OrderedList([
           new OrderedList.Item([
@@ -318,6 +318,6 @@ I enjoy apples
             new Paragraph([new PlainText("Very delicious.")])
           ], { ordinal: 2 })
         ])
-      ], new UpDocument.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
+      ], new Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
 })

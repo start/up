@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Table } from '../../SyntaxNodes/Table'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 
@@ -18,7 +18,7 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')], 1),
@@ -56,7 +56,7 @@ Game;               Publisher;;                       Release Date
 Terranigma;         Nintendo;             Enix;       October 20, 1995`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -85,7 +85,7 @@ Game;               Director;;;                                             Rele
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -118,7 +118,7 @@ Command & Conquer;  Westwood Studios;;                      August 31, 1995
 Starcraft;          Blizzard;;                              March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -166,7 +166,7 @@ Command & Conquer;  Westwood Studios;;;                                     Augu
 Starcraft;          Blizzard;;;                                             March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -213,7 +213,7 @@ Game;               Publisher;;
 Terranigma;         Nintendo;             Enix`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -240,7 +240,7 @@ Game;               Director;;;
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -271,7 +271,7 @@ Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;;`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -314,7 +314,7 @@ Command & Conquer;  Westwood Studios;;;
 Starcraft;          Blizzard;;;`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -356,7 +356,7 @@ Game;               Publisher;; \t \t
 Terranigma;         Nintendo;             Enix`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -386,7 +386,7 @@ Command & Conquer;  Westwood Studios;;
 Starcraft;          Blizzard;; \t \t`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -428,7 +428,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([], 2),
@@ -467,7 +467,7 @@ Jogged on track;          Deadlifts;          Walked on track;            March 
 Swam laps;                Sprints on track;   Treaded water;              March 14, 2018`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([], 3),
@@ -510,7 +510,7 @@ Jogged on track;          Deadlifts;                March 12, 2018
 Swam laps;                Sprints on track;         March 14, 2018`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
@@ -555,7 +555,7 @@ Jogged on track;          Deadlifts;            Walked on track;            Marc
 Swam laps;                Sprints on track;     Treaded water;              March 14, 2018`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Aerobic Exercise')]),
@@ -601,7 +601,7 @@ Game;               Director;         ;;                                    Rele
 Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   March 11, 1995`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),
@@ -635,7 +635,7 @@ Command & Conquer;  Westwood Studios;                       ;;              Augu
 Starcraft;          Blizzard;                               ;;                March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([new PlainText('Game')]),

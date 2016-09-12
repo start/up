@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { settingsFor } from './Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -16,8 +16,8 @@ import { UserProvidedSettings } from '../../../UserProvidedSettings'
 function itWorksAsAdvertised(
   args: {
     markup: string,
-    documentWhenChangeIsApplied: UpDocument
-    documentWhenSettingIsNotChanged: UpDocument
+    documentWhenChangeIsApplied: Document
+    documentWhenSettingIsNotChanged: Document
     change: UserProvidedSettings.Parsing
     conflictingChange: UserProvidedSettings.Parsing
   }
@@ -94,13 +94,13 @@ describe('The "createSourceMap" setting', () => {
 Very important
 ==============`,
 
-    documentWhenChangeIsApplied: new UpDocument(
+    documentWhenChangeIsApplied: new Document(
       [headingWithSourceMap],
-      new UpDocument.TableOfContents([headingWithSourceMap])),
+      new Document.TableOfContents([headingWithSourceMap])),
 
-    documentWhenSettingIsNotChanged: new UpDocument(
+    documentWhenSettingIsNotChanged: new Document(
       [headingWithoutSourceMap],
-      new UpDocument.TableOfContents([headingWithoutSourceMap])),
+      new Document.TableOfContents([headingWithoutSourceMap])),
 
     change: {
       createSourceMap: true
@@ -117,13 +117,13 @@ describe('The "defaultUrlScheme" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
-    documentWhenChangeIsApplied: new UpDocument([
+    documentWhenChangeIsApplied: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], 'my-app://example.com/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new UpDocument([
+    documentWhenSettingIsNotChanged: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], 'https://example.com/users')
       ])
@@ -144,13 +144,13 @@ describe('The "fancyEllipsis" setting', () => {
   itWorksAsAdvertised({
     markup: 'I think so...',
 
-    documentWhenChangeIsApplied: new UpDocument([
+    documentWhenChangeIsApplied: new Document([
       new Paragraph([
         new PlainText('I think so⋯')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new UpDocument([
+    documentWhenSettingIsNotChanged: new Document([
       new Paragraph([
         new PlainText('I think so…')
       ])
@@ -171,13 +171,13 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
-    documentWhenChangeIsApplied: new UpDocument([
+    documentWhenChangeIsApplied: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], 'my-app://example.com/see/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new UpDocument([
+    documentWhenSettingIsNotChanged: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], '/users')
       ])
@@ -198,13 +198,13 @@ describe('The "baseForUrlsStartingWithHashMark" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 
-    documentWhenChangeIsApplied: new UpDocument([
+    documentWhenChangeIsApplied: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], 'my-app://example.com/see#users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new UpDocument([
+    documentWhenSettingIsNotChanged: new Document([
       new Paragraph([
         new Link([new PlainText('See users')], '#users')
       ])

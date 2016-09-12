@@ -2,7 +2,7 @@ import { concat } from '../CollectionHelpers'
 import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
 import { DescriptionList } from '../SyntaxNodes/DescriptionList'
-import { UpDocument } from '../SyntaxNodes/UpDocument'
+import { Document } from '../SyntaxNodes/Document'
 import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
@@ -70,7 +70,7 @@ import { Table } from '../SyntaxNodes/Table'
 //
 // Oh, one last thing! We'll use the term "blockless footnote" to describe a Footnote that hasn't yet been
 // placed in a footnote block.
-export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document: UpDocument): void {
+export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document: Document): void {
   new FootnoteBlockInserter(document)
 }
 
@@ -78,7 +78,7 @@ export function insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document: 
 class FootnoteBlockInserter {
   private currentFootnoteReferenceNumber = 1
 
-  constructor(document: UpDocument) {
+  constructor(document: Document) {
     this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(document)
   }
 

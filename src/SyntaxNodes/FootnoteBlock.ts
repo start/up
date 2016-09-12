@@ -1,7 +1,7 @@
 import { Footnote } from './Footnote'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { getInlineDescendants } from './getInlineDescendants'
 import { Renderer } from '../Rendering/Renderer'
 
@@ -14,7 +14,7 @@ export class FootnoteBlock implements OutlineSyntaxNode {
     return undefined
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
@@ -16,7 +16,7 @@ Hello, world!
 Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, world!')
         ]),
@@ -40,7 +40,7 @@ Hello, world!
 Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, world!')
         ]),
@@ -65,7 +65,7 @@ describe('A document that starts with 3 or more empty or blank lines', () => {
 Hello, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, world!')
         ])
@@ -86,7 +86,7 @@ Hello, world!
 \t
 `
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello, world!')
         ])
@@ -100,7 +100,7 @@ describe('A line consisting solely of any combination of # = - + ~ * ^ @ : _', (
     const markup = '#=-+~*@:+**###=~=~=~--~~~~'
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak()
       ]))
   })
@@ -114,7 +114,7 @@ describe('A thematic break streak', () => {
 60.4%`
 
     expect(Up.parse(markup)).to.eql(
-      new UpDocument([
+      new Document([
         new ThematicBreak(),
         new Paragraph([
           new PlainText('60.4%')
@@ -124,7 +124,7 @@ describe('A thematic break streak', () => {
 
   it('can be as short as 3 characters', () => {
     expect(Up.parse('=-~')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak()
       ]))
   })
@@ -143,7 +143,7 @@ Hello.
 
 Goodbye.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Hello.')
         ]),
@@ -163,7 +163,7 @@ describe('Consecutive thematic break streaks', () => {
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 =============================================`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak()
       ]))
   })
@@ -179,7 +179,7 @@ context('Outline conventions are evaluated before inline conventions. Therefore,
 And that's my story.`
 
       expect(Up.parse(markup)).to.eql(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
@@ -194,7 +194,7 @@ And that's my story.`
 And that's my story.`
 
       expect(Up.parse(markup)).to.eql(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
@@ -212,7 +212,7 @@ And that's my story.`
 And that's my story.`
 
       expect(Up.parse(markup)).to.eql(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
@@ -227,7 +227,7 @@ And that's my story.`
 And that's my story.`
 
       expect(Up.parse(markup)).to.eql(
-        new UpDocument([
+        new Document([
           new ThematicBreak(),
           new Paragraph([
             new PlainText("And that's my story.")
@@ -249,7 +249,7 @@ context('When thematic break streaks are separated from each other by only blank
 --------`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak()
       ]))
   })
@@ -269,7 +269,7 @@ context('When thematic break streaks are separated from each other by only blank
 --------`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new ThematicBreak()
       ]))
   })

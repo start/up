@@ -1,5 +1,5 @@
-import { UpDocument } from './SyntaxNodes/UpDocument'
-import { InlineUpDocument } from './SyntaxNodes/InlineUpDocument'
+import { Document } from './SyntaxNodes/Document'
+import { InlineDocument } from './SyntaxNodes/InlineDocument'
 import { Settings } from './Settings'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parse } from './Parsing/parse'
@@ -41,21 +41,21 @@ export class Up {
     return this.renderInline(inlineDocument, rendering)
   }
 
-  parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): UpDocument {
+  parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): Document {
     return parse(markup, this.getParsingSettings(extraParsingSettings))
   }
 
-  parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+  parseInline(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
     return parseInline(markup, this.getParsingSettings(extraParsingSettings))
   }
 
-  render(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+  render(document: Document, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return htmlRenderer.renderDocument(document)
   }
 
-  renderDocumentAndTableOfContents(document: UpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
+  renderDocumentAndTableOfContents(document: Document, extraRenderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return {
@@ -64,7 +64,7 @@ export class Up {
     }
   }
 
-  renderInline(inlineDocument: InlineUpDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+  renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return htmlRenderer.renderInlineDocument(inlineDocument)
@@ -120,23 +120,23 @@ export namespace Up {
     return defaultUp.parseAndRenderInline(markup, settings)
   }
 
-  export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): UpDocument {
+  export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): Document {
     return defaultUp.parse(markup, parsingSettings)
   }
 
-  export function parseInline(markup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineUpDocument {
+  export function parseInline(markup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
     return defaultUp.parseInline(markup, parsingSettings)
   }
 
-  export function render(document: UpDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+  export function render(document: Document, renderingSettings?: UserProvidedSettings.Rendering): string {
     return defaultUp.render(document, renderingSettings)
   }
 
-  export function renderDocumentAndTableOfContents(document: UpDocument, renderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
+  export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: UserProvidedSettings.Rendering): HtmlForDocumentAndTableOfContents {
     return defaultUp.renderDocumentAndTableOfContents(document, renderingSettings)
   }
 
-  export function renderInline(inlineDocument: InlineUpDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+  export function renderInline(inlineDocument: InlineDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
     return defaultUp.renderInline(inlineDocument, renderingSettings)
   }
 

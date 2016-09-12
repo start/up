@@ -1,9 +1,9 @@
-import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
+import { InlineDocument } from '../SyntaxNodes/InlineDocument'
 import { getInlineSyntaxNodesForInlineDocument } from './Inline/getInlineSyntaxNodes'
 import { Settings } from '../Settings'
 
 
-export function parseInline(markup: string, settings: Settings.Parsing): InlineUpDocument {
+export function parseInline(markup: string, settings: Settings.Parsing): InlineDocument {
   const children = getInlineSyntaxNodesForInlineDocument(markup, settings)
-  return new InlineUpDocument(children)
+  return new InlineDocument(children)
 }

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
@@ -21,7 +21,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -47,7 +47,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -73,7 +73,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
-        new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+        new Document([heading], new Document.TableOfContents([heading]))
 
       const settings = {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
@@ -98,7 +98,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
   context('This applies to the "idPrefix" configuration setting, which is prefixed to every ID:', () => {
     specify('The ID of the checkboxes for inline spoilers', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new InlineSpoiler([new PlainText('45.9%')])
         ])
@@ -117,7 +117,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of the checkboxes for inline NSFW conventions', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new InlineNsfw([new PlainText('45.9%')])
         ])
@@ -136,7 +136,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of the checkboxes for inline NSFL conventions', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([
           new InlineNsfl([new PlainText('45.9%')])
         ])
@@ -155,7 +155,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of the checkboxes for spoiler blocks', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new SpoilerBlock([
           new Paragraph([new PlainText('45.9%')])
         ])
@@ -172,7 +172,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of the checkboxes for NSFW blocks', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new NsfwBlock([
           new Paragraph([new PlainText('45.9%')])
         ])
@@ -189,7 +189,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     })
 
     specify('The ID of the checkboxes for NSFL blocks', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new NsflBlock([
           new Paragraph([new PlainText('45.9%')])
         ])
@@ -209,7 +209,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-      const document = new UpDocument([
+      const document = new Document([
         new Paragraph([footnote]),
         new FootnoteBlock([footnote])
       ])
@@ -231,7 +231,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
-        new UpDocument([heading], new UpDocument.TableOfContents([heading]))
+        new Document([heading], new Document.TableOfContents([heading]))
 
       const settings = {
         idPrefix: 'thread 11 reply 65'

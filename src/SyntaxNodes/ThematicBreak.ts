@@ -1,6 +1,6 @@
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { UpDocument } from './UpDocument'
+import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
 
 
@@ -13,7 +13,7 @@ export class ThematicBreak implements OutlineSyntaxNode {
     }
   }
 
-  descendantsToIncludeInTableOfContents(): UpDocument.TableOfContents.Entry[] {
+  descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
     return []
   }
 

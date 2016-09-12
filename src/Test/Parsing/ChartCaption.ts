@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Table } from '../../SyntaxNodes/Table'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
@@ -17,7 +17,7 @@ Chart: \`AND\` operator logic
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -54,7 +54,7 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -88,7 +88,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -112,7 +112,7 @@ Chart: Games in the Chrono series
         Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -134,7 +134,7 @@ Chart the numbers.
 
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Chart the numbers.')]),
         new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),
       ]))

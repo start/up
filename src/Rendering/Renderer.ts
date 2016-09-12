@@ -1,5 +1,5 @@
-import { UpDocument } from '../SyntaxNodes/UpDocument'
-import { InlineUpDocument } from '../SyntaxNodes/InlineUpDocument'
+import { Document } from '../SyntaxNodes/Document'
+import { InlineDocument } from '../SyntaxNodes/InlineDocument'
 import { Link } from '../SyntaxNodes/Link'
 import { Image } from '../SyntaxNodes/Image'
 import { Audio } from '../SyntaxNodes/Audio'
@@ -42,9 +42,9 @@ import { SOME_WHITESPACE } from '../PatternPieces'
 export abstract class Renderer {
   constructor(protected settings: Settings.Rendering) { }
 
-  abstract renderDocument(document: UpDocument): string
-  abstract renderInlineDocument(inlineDocument: InlineUpDocument): string
-  abstract renderTableOfContents(tableOfContents: UpDocument.TableOfContents): string
+  abstract renderDocument(document: Document): string
+  abstract renderInlineDocument(inlineDocument: InlineDocument): string
+  abstract renderTableOfContents(tableOfContents: Document.TableOfContents): string
 
   // Ideally, the following abstract methods wouldn't be public! But for the purpose of
   // double dispatch, they need to be exposed to our syntax node classes. 

@@ -12,7 +12,7 @@ import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 import { Link } from '../../../SyntaxNodes/Link'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 
 
 const up = new Up({
@@ -39,7 +39,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     const markup = '[image: Chrono Cross logo](/cc-logo.png)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Image('Chrono Cross logo', 'ftp://example.com/cc-logo.png')
       ]))
   })
@@ -48,7 +48,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     const markup = '[audio: Chrono Cross ending theme](/radical dreamers.mp3)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Audio('Chrono Cross ending theme', 'ftp://example.com/radical dreamers.mp3')
       ]))
   })
@@ -57,7 +57,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     const markup = '[video: Chrono Cross ending cinematic][/radical dreamers.webm]'
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Video('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
       ]))
   })
@@ -125,7 +125,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,
@@ -223,7 +223,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,

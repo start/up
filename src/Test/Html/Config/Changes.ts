@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Heading } from '../../../SyntaxNodes/Heading'
 import { Footnote } from '../../../SyntaxNodes/Footnote'
@@ -13,7 +13,7 @@ import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    document: UpDocument
+    document: Document
     change: UserProvidedSettings.Rendering
     conflictingChange: UserProvidedSettings.Rendering
   }
@@ -88,7 +88,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 describe('The "idPrefix" setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new Footnote([], { referenceNumber: 3 })
       ])
@@ -105,7 +105,7 @@ describe('The "idPrefix" setting', () => {
 
 describe('The "footnote reference" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new Footnote([], { referenceNumber: 3 })
       ])
@@ -126,7 +126,7 @@ describe('The "footnote reference" term', () => {
 
 describe('The "footnote" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new Footnote([], { referenceNumber: 3 })
       ])
@@ -149,9 +149,9 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument(
+    document: new Document(
       [heading],
-      new UpDocument.TableOfContents([heading])),
+      new Document.TableOfContents([heading])),
     change: {
       terms: {
         sectionReferencedByTableOfContents: 'heading'
@@ -168,7 +168,7 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
 
 describe('The "toggleSpoiler" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new InlineSpoiler([])
       ])
@@ -189,7 +189,7 @@ describe('The "toggleSpoiler" term', () => {
 
 describe('The "toggleNsfw" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new InlineNsfw([])
       ])
@@ -210,7 +210,7 @@ describe('The "toggleNsfw" term', () => {
 
 describe('The "toggleNsfl" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new InlineNsfl([])
       ])
@@ -233,9 +233,9 @@ describe('The "tableOfContents" setting', () => {
   const heading = new Heading([], { level: 1 })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument(
+    document: new Document(
       [heading],
-      new UpDocument.TableOfContents([heading])),
+      new Document.TableOfContents([heading])),
     change: {
       terms: {
         tableOfContents: 'In This Article'
@@ -252,7 +252,7 @@ describe('The "tableOfContents" setting', () => {
 
 describe('The "renderDangerousContent" setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new UpDocument([
+    document: new Document([
       new Paragraph([
         new Link([], 'javascript:malicious')
       ])

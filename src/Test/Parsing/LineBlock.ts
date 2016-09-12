@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -21,7 +21,7 @@ Roses are red
 Violets are blue`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -45,7 +45,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -80,7 +80,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -118,7 +118,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -153,7 +153,7 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -185,7 +185,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -227,7 +227,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -271,7 +271,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -315,7 +315,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -355,7 +355,7 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('1234 Spooky Street')
@@ -393,7 +393,7 @@ Roses are red  \t  \t
 Violets are blue  \t  `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -411,7 +411,7 @@ Roses are red\\ \t
 Violets are blue\\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -429,7 +429,7 @@ Roses are red   \\ \t  \\
 Violets are blue\t  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red')
@@ -447,7 +447,7 @@ Roses are red\\\\\\\t    \\  \\ \t  \\
 Violets are blue\\\\\\\\\\  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([
             new PlainText('Roses are red\\')

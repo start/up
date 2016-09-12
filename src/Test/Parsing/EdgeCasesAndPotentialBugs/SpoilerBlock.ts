@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
@@ -22,7 +22,7 @@ Spoiler:
 No!
 Roses don't glow!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new LineBlock([
           new LineBlock.Line([new PlainText('Spoiler:')]),
           new LineBlock.Line([new PlainText('No!')]),
@@ -37,7 +37,7 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Spoiler:')
         ]),
@@ -54,7 +54,7 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Spoiler:')
         ]),
@@ -73,7 +73,7 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('Spoiler:')
         ]),

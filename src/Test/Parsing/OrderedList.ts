@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -16,7 +16,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
 # Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -41,7 +41,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 #. Goodbye, Lavender Town!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -66,7 +66,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
 #) Goodbye, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -91,7 +91,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 2. Goodbye, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -116,7 +116,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 2) Goodbye, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -137,7 +137,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 describe('A single line bulleted by an integer followed by a period', () => {
   it('does not produce an ordered list', () => {
     expect(Up.parse('1783. Not a good year for Great Britain.')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText('1783. Not a good year for Great Britain.')
         ])
@@ -149,7 +149,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 describe('A single line bulleted by a number sign', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     expect(Up.parse('# Hello, world!')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -165,7 +165,7 @@ describe('A single line bulleted by a number sign', () => {
 describe('A single line bulleted by a number sign followed by a period', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     expect(Up.parse('#. Hello, Lavender Town!')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -181,7 +181,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 describe('A single line bulleted by a number sign followed by a closing parenthesis', () => {
   it('produces an ordered list node containing ordered list item nodes', () => {
     expect(Up.parse('#) Hello, Celadon City!')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -197,7 +197,7 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
 describe('A single line bulleted by an integer followed by a closing parenthesis', () => {
   it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
     expect(Up.parse('1) Hello, Celadon City!')).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -220,7 +220,7 @@ describe('The 5 different bullet types', () => {
 # Hello, Camphrier Town!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -260,7 +260,7 @@ describe('An ordered list', () => {
 # Goodbye, World *1-2*!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -291,7 +291,7 @@ describe('An ordered list', () => {
 Hello, World 1-2!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new Paragraph([
@@ -324,7 +324,7 @@ describe('An indented line immediately following an ordered list item line', () 
       new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             heading
@@ -340,7 +340,7 @@ describe('An indented line immediately following an ordered list item line', () 
             ])
           ])
         ])
-      ], new UpDocument.TableOfContents([heading])))
+      ], new Document.TableOfContents([heading])))
   })
 })
 
@@ -365,7 +365,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
       new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             helloHeading,
@@ -380,7 +380,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
             goodbyeHeading
           ])
         ])
-      ], new UpDocument.TableOfContents([helloHeading, goodbyeHeading])))
+      ], new Document.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
@@ -426,7 +426,7 @@ describe('An ordered list item containing multiple indented lines', () => {
       new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             helloHeading,
@@ -450,7 +450,7 @@ describe('An ordered list item containing multiple indented lines', () => {
             goodbyeHeading
           ])
         ])
-      ], new UpDocument.TableOfContents([helloHeading, goodbyeHeading])))
+      ], new Document.TableOfContents([helloHeading, goodbyeHeading])))
   })
 })
 
@@ -463,7 +463,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
   Violets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new OrderedList([
             new OrderedList.Item([
               new LineBlock([
@@ -485,7 +485,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
 \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new OrderedList([
             new OrderedList.Item([
               new LineBlock([
@@ -507,7 +507,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
  \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new OrderedList([
             new OrderedList.Item([
               new LineBlock([
@@ -539,7 +539,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
   I used to live there.`
 
     expect(Up.parse(withMixedIndentation)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new OrderedList([
           new OrderedList.Item([
             new LineBlock([

@@ -3,7 +3,7 @@ import { Up } from '../../../Up'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { settingsFor } from './Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { distinct } from '../../../CollectionHelpers'
@@ -89,11 +89,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const properlyParsedConvention =
     Up.parse(markupForDefaultSettings)
 
-  function expectConventiontoProperlyParse(document: UpDocument): void {
+  function expectConventiontoProperlyParse(document: Document): void {
     expect(document).to.deep.equal(properlyParsedConvention)
   }
 
-  function expectConventionFailToParse(document: UpDocument): void {
+  function expectConventionFailToParse(document: Document): void {
     expect(document).to.not.deep.equal(properlyParsedConvention)
   }
 

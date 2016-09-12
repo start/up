@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -20,7 +20,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(footnoteProducedByParentheses)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,
@@ -52,7 +52,7 @@ describe('A word followed by several spaces followed by a footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote
@@ -74,7 +74,7 @@ describe('A footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,
@@ -94,7 +94,7 @@ describe('A footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new Stress([
             new PlainText("I don't eat cereal."),
@@ -116,7 +116,7 @@ describe('A footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new Stress([
             new Emphasis([
@@ -148,7 +148,7 @@ describe('A footnote', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("Me? I'm totally normal."),
           outerFootnote,
@@ -170,7 +170,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
     ], { referenceNumber: 1 })
 
     expect(Up.parse("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("I don't eat cereal."),
           footnote,

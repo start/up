@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Video } from '../../SyntaxNodes/Video'
@@ -11,7 +11,7 @@ import { Video } from '../../SyntaxNodes/Video'
 context('By default, media with dangerous URLs schemes produce no HTML.', () => {
   context('Images produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -19,7 +19,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'data:malicious')
       ])
 
@@ -27,7 +27,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'file:malicious')
       ])
 
@@ -35,7 +35,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -45,7 +45,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 
   context('Audio conventions produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -53,7 +53,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'data:malicious')
       ])
 
@@ -61,7 +61,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'file:malicious')
       ])
 
@@ -69,7 +69,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -79,7 +79,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 
   context('Videos produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'javascript:malicious')
       ])
 
@@ -87,7 +87,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'data:malicious')
       ])
 
@@ -95,7 +95,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'file:malicious')
       ])
 
@@ -103,7 +103,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'vbscript:malicious')
       ])
 
@@ -116,7 +116,7 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 context("When determining whether a media's URL is dangerous, the capitalization of the scheme does not matter.", () => {
   context('Images produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'jaVascriPt:malicious')
       ])
 
@@ -124,7 +124,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'DatA:malicious')
       ])
 
@@ -132,7 +132,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'fiLE:malicious')
       ])
 
@@ -140,7 +140,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Image('Uh-oh!', 'vBscRipt:malicious')
       ])
 
@@ -150,7 +150,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
   context('Audio conventions produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'JavascriPT:malicious')
       ])
 
@@ -158,7 +158,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'DAta:malicious')
       ])
 
@@ -166,7 +166,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'fILe:malicious')
       ])
 
@@ -174,7 +174,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Audio('Uh-oh!', 'vbScrIPt:malicious')
       ])
 
@@ -184,7 +184,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
   context('Videos produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'jAvAscript:malicious')
       ])
 
@@ -192,7 +192,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('data', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'dATa:malicious')
       ])
 
@@ -200,7 +200,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('file', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'FiLe:malicious')
       ])
 
@@ -208,7 +208,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
     })
 
     specify('vbscript', () => {
-      const document = new UpDocument([
+      const document = new Document([
         new Video('Uh-oh!', 'VbscripT:malicious')
       ])
 
@@ -220,7 +220,7 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
 context("An image's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Image('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -229,7 +229,7 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('data-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Image('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -238,7 +238,7 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('file-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Image('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -247,7 +247,7 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('vbscript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Image('Uh-oh!', 'vbscript-app:stuff')
     ])
 
@@ -259,7 +259,7 @@ context("An image's URL scheme can start with a dangerous scheme without being c
 
 context("An audio convention's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Audio('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -270,7 +270,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('data-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Audio('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -281,7 +281,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('file-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Audio('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -292,7 +292,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('vbscript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Audio('Uh-oh!', 'vbscript-app:stuff')
     ])
 
@@ -306,7 +306,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
 
 context("A video's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Video('Uh-oh!', 'javascript-app:stuff')
     ])
 
@@ -317,7 +317,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('data-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Video('Uh-oh!', 'data-app:stuff')
     ])
 
@@ -328,7 +328,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('file-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Video('Uh-oh!', 'file-app:stuff')
     ])
 
@@ -339,7 +339,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('vbscript-app', () => {
-    const document = new UpDocument([
+    const document = new Document([
       new Video('Uh-oh!', 'vbscript-app:stuff')
     ])
 

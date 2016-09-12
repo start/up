@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../Up'
-import { UpDocument } from '../../SyntaxNodes/UpDocument'
+import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -17,7 +17,7 @@ Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Charmander')])
@@ -42,7 +42,7 @@ Torchic
   The first three starter Fire Pokemon`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Charmander')]),
@@ -67,7 +67,7 @@ Ash "Little Marco" Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
@@ -94,7 +94,7 @@ Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
@@ -129,7 +129,7 @@ Gary
   A young man with a great sense of smell.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
@@ -171,7 +171,7 @@ Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
@@ -202,7 +202,7 @@ Poem
   Violets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
@@ -230,7 +230,7 @@ Poem
 \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
@@ -258,7 +258,7 @@ Poem
  \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
@@ -298,7 +298,7 @@ Address
  \tI used to live there.`
 
   expect(Up.parse(markup)).to.deep.equal(
-    new UpDocument([
+    new Document([
       new DescriptionList([
         new DescriptionList.Item([
           new DescriptionList.Item.Subject([
@@ -359,7 +359,7 @@ Lee Chang-ho
   An above average go player
 `
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
@@ -421,7 +421,7 @@ Lee Chang-ho
   An above average go player
 `
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([

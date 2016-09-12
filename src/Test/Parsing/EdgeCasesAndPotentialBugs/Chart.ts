@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { Table } from '../../../SyntaxNodes/Table'
 import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
@@ -17,7 +17,7 @@ Chrono Trigger;      1995
 Chrono Cross;        1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -42,7 +42,7 @@ Chrono Trigger;       1995
 Chrono Cross;         1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -70,7 +70,7 @@ Chrono Trigger [\\;; 1995
 Chrono Cross;        1999 [\\;`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -95,7 +95,7 @@ Chrono Trigger :\\\\; 1995
 Chrono Cross;         1999 :\\\\`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -121,7 +121,7 @@ Chart: my favorite outline convention.
 
 I almost didn't include them; however, I realized charts are too useful to leave out.`
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([new PlainText('Chart: my favorite outline convention.')]),
         new Paragraph([new PlainText("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
       ]))
@@ -140,7 +140,7 @@ Chart: Good games on the Sega Genesis
 I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -170,7 +170,7 @@ Chart: Most common underlines for top-level headings (from most to least common)
 ****`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Table(
           new Table.Header([
             new Table.Header.Cell([]),
@@ -205,7 +205,7 @@ Chrono Trigger;     Super NES;              1995
 Chrono Cross;       Playstation;            1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -233,7 +233,7 @@ Chrono Trigger;     Nintendo\`s Super NES;    1990\`s
 Chrono Cross;       Sony\`s Playstation;      1990\`s`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -261,7 +261,7 @@ Square\`s Chrono Trigger;     Super NES;        1990\`s
 Square\s Chrono Cross;        Playstation;      1990\`s`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -292,7 +292,7 @@ Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -320,7 +320,7 @@ Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     {: Playstation;     1999 :}`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),
@@ -348,7 +348,7 @@ Chart:
 Chrono Cross;         Playstation;         1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new UpDocument([
+        new Document([
           new Table(
             new Table.Header([
               new Table.Header.Cell([]),

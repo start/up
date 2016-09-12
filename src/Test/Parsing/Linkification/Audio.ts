@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Up } from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
-import { UpDocument } from '../../../SyntaxNodes/UpDocument'
+import { Document } from '../../../SyntaxNodes/Document'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Link } from '../../../SyntaxNodes/Link'
@@ -36,7 +36,7 @@ describe('Any audio convention (with its URL) followed immediately by a (second)
         { text: 'https://example.com/fight.ogg' },
         { text: 'http://example.com/finalbattle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'http://example.com/finalbattle')
@@ -54,7 +54,7 @@ context("As long as there is no whitespace between the audio's URL and the linki
         { text: 'https://example.com/fight.ogg' },
         { text: ' \t \t example.com/final battle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/final battle')
@@ -69,7 +69,7 @@ context("As long as there is no whitespace between the audio's URL and the linki
         { text: 'https://example.com/fight.ogg' },
         { text: 'http://example.com/final battle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'http://example.com/final battle')
@@ -84,7 +84,7 @@ context("As long as there is no whitespace between the audio's URL and the linki
         { text: 'https://example.com/fight.ogg' },
         { text: ' \t \t example.com/final battle' }
       ],
-      toProduce: new UpDocument([
+      toProduce: new Document([
         new Link([
           new Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/final battle')
@@ -150,7 +150,7 @@ describe('An audio convention directly followed by a footnote', () => {
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new UpDocument([
+      new Document([
         new Paragraph([
           new PlainText("After you beat the Elite Four, "),
           new Audio('you fight Gary', 'https://example.com/fight.ogg'),

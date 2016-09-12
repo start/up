@@ -2,8 +2,8 @@
 
 module.exports = require('./Up').Up
 
-module.exports.UpDocument = require('./SyntaxNodes/UpDocument').UpDocument
-module.exports.InlineUpDocument = require('./SyntaxNodes/InlineUpDocument').InlineUpDocument
+module.exports.Document = require('./SyntaxNodes/Document').Document
+module.exports.InlineDocument = require('./SyntaxNodes/InlineDocument').InlineDocument
 
 module.exports.Audio = require('./SyntaxNodes/Audio').Audio
 module.exports.Bold = require('./SyntaxNodes/Bold').Bold
