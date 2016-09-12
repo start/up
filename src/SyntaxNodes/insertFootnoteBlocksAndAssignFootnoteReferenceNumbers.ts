@@ -1,19 +1,16 @@
 import { concat } from '../CollectionHelpers'
 import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
 import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
-import { Blockquote } from '../SyntaxNodes/Blockquote'
 import { DescriptionList } from '../SyntaxNodes/DescriptionList'
 import { UpDocument } from '../SyntaxNodes/UpDocument'
 import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { Footnote } from '../SyntaxNodes/Footnote'
-import { Heading } from '../SyntaxNodes/Heading'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
 import { RevealableOutlineSyntaxNode } from '../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
 import { OrderedList } from '../SyntaxNodes/OrderedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { Paragraph } from '../SyntaxNodes/Paragraph'
 import { UnorderedList } from '../SyntaxNodes/UnorderedList'
 import { Table } from '../SyntaxNodes/Table'
 
@@ -37,16 +34,15 @@ import { Table } from '../SyntaxNodes/Table'
 //    inside a description list, it's placed into a block after the description list, because the description
 //    list is the outermost, top-level outline convention.
 //
-// 2. Rule 1 applies to all outline conventions except the "revealables":
+// 2. Rule 1 applies to all outline conventions except for the "revealables":
 //
 //    1. Spoiler blocks
 //    2. NSFW blocks
-//    3. NSFL blocks.
+//    3. NSFL blocks
 //
-//    To prevent revealable outline conventions from "leaking" their footnotes, we keep any footnotes blocks
-//    hidden inside.
-//
-//    Rule 1 is applied to any nested outline conventions.
+//    To prevent footnotes from "leaking" out of revealable outline conventions, footnote blocks are kept
+//    hidden-away inside them. Therefore, for the purpose of producing footnote blocks, revealable outline
+//    conventions are essentially treated like mini-documents.
 //
 //    For example, a footnote inside a paragraph inside an ordered list inside a spoiler block is placed into
 //    a footnote block after the ordered list, but still inside the spoiler block, because the ordered list
@@ -105,20 +101,28 @@ class FootnoteBlockInserter {
 
   // TODO: Consider moving this process to the individual outline syntax node classes.
   handleOutlineNodeAndGetBlocklessFootnotes(node: OutlineSyntaxNode): Footnote[] {
-    if ((node instanceof Paragraph) || (node instanceof Heading)) {
+    if (node instanceof InlineSyntaxNodeContainer) {
       return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
-    if (node instanceof LineBlock) {
-      return this.getBlocklessFootnotesFromInlineContainers(node.lines)
+    if (node instanceof RevealableOutlineSyntaxNode) {
+      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
+
+      // We've just produced footnote blocks for all footnotes within this revealable outline convention, so
+      // there aren't any blockless footnotes to return.
+      return []
     }
 
-    if (node instanceof Blockquote) {
+    if (node instanceof OutlineSyntaxNodeContainer) {
       return this.getBlocklessFootnotesFromOutlineNodes(node.children)
     }
 
     if ((node instanceof UnorderedList) || (node instanceof OrderedList)) {
       return this.getBlocklessFootnotesFromOutlineContainers(node.items)
+    }
+
+    if (node instanceof LineBlock) {
+      return this.getBlocklessFootnotesFromInlineContainers(node.lines)
     }
 
     if (node instanceof DescriptionList) {
@@ -127,13 +131,6 @@ class FootnoteBlockInserter {
 
     if (node instanceof Table) {
       return this.getBlocklessFootnotesFromTable(node)
-    }
-
-    if (node instanceof RevealableOutlineSyntaxNode) {
-      this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
-
-      // We've just produced blocks for all footnotes within this revealable outline convention, so there
-      // aren't any blockless footnotes to return!
     }
 
     // The rest of our outline conventions cannot contain footnotes.  
