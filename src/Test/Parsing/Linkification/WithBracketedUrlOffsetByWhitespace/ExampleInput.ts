@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up from '../../../../index'
+import { Up } from '../../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../../Helpers'
 import { Link } from '../../../../SyntaxNodes/Link'
 import { PlainText } from '../../../../SyntaxNodes/PlainText'

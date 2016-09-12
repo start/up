@@ -1,5 +1,6 @@
 local_modules_dir = ./node_modules/.bin
 
+src_dir = src
 compiled_dir = compiled
 dist_dir = dist
 
@@ -36,6 +37,9 @@ compile: clean
 
 # Compile!
 	$(local_modules_dir)/tsc
+
+# Copy over our module. It's written in JavaScript to allow us to use `module.exports`.
+	cp $(src_dir)/index.js $(compiled_dir)
 
 # Copy all JavaScript files and TypeScript type declaration files to `dist_dir`.
 #

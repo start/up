@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up from '../../index'
+import { Up } from '../../Up'
 
 
 context("You can render HTML directly from markup.", () => {

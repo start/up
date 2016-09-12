@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up from '../../../index'
+import { Up } from '../../../Up'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { UpDocument } from '../../../SyntaxNodes/UpDocument'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'

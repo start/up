@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up from '../../../index'
+import { Up } from '../../../Up'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { settingsFor } from './Helpers'
