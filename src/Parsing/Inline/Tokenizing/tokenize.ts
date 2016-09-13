@@ -35,8 +35,8 @@ export function tokenize(inlineMarkup: string, settings: Settings.Parsing): Pars
 // This function is identical to the `tokenize` function, except:
 //
 // 1. Footnotes are treated as normal parentheticals
-// 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
-//    as a parenthetical of the appropriate bracket type.
+// 2. Internal topic links are ignored. The markup is instead parsed as a parenthetical of the appropriate
+//    bracket type.
 export function tokenizeForInlineDocument(inlineMarkup: string, settings: Settings.Parsing): ParseableToken[] {
   const { result } =
     new Tokenizer(inlineMarkup, settings, { isTokenizingInlineDocument: true })

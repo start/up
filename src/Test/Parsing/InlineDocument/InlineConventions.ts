@@ -319,7 +319,7 @@ context('Except for footnotes and internal topic links, every inline convention 
   })
 
 
-  context('The convention for referencing table of contents entries is totally ignored. The markup is instead treated as a parenthetical of the appropriate bracket type.', () => {
+  context('Internal topic links are totally ignored. The markup is instead parsed as a parenthetical of the appropriate bracket type.', () => {
     specify('An otherwise-valid reference indicated by square brackets produces a square parenthetical node', () => {
       expect(Up.parseInline('My favorite section of the textbook [Section: Why Math Is Great] was damaged by water.')).to.deep.equal(
         new InlineDocument([
