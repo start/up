@@ -22,7 +22,7 @@ const DUMMY_HEADING_LEVELER = new HeadingLeveler()
 const DUMMY_SOURCE_LINE_NUMBER = 1
 
 
-// If `line` would be considered anything but a regular paragraph, it's considered fancy. 
+// If `markupLine` would be considered anything but a regular paragraph, it's considered fancy. 
 export function isLineFancyOutlineConvention(markupLine: string, settings: Settings.Parsing): boolean {
   const markupLines = [markupLine]
 
