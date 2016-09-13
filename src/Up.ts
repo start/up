@@ -14,7 +14,7 @@ export class Up {
     this.settings = new Settings(settings)
   }
 
-  // Converts Up markup into HTML, then returns the result.
+  // Converts Up markup into HTML and returns the result.
   parseAndRender(markup: string, extraSettings: UserProvidedSettings): string {
     const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const document = this.parse(markup, parsing)
@@ -22,7 +22,7 @@ export class Up {
     return this.render(document, rendering)
   }
 
-  // This method converts Up markup into two pieces of HTML:
+  // This method converts Up markup into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
@@ -33,7 +33,7 @@ export class Up {
     return this.renderDocumentAndTableOfContents(document, rendering)
   }
 
-  // Converts inline Up markup into inline HTML, then returns the result.
+  // Converts inline Up markup into inline HTML and returns the result.
   parseAndRenderInline(inlineMarkup: string, extraSettings?: UserProvidedSettings): string {
     const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const inlineDocument = this.parseInline(inlineMarkup, parsing)
@@ -58,7 +58,7 @@ export class Up {
     return htmlRenderer.renderDocument(document)
   }
 
-  // This method converts a syntax tree into two pieces of HTML:
+  // This method converts a syntax tree into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
@@ -71,7 +71,7 @@ export class Up {
     }
   }
 
-  // Converts an inline syntax tree into inline HTML, then results the result.
+  // Converts an inline syntax tree into inline HTML and returns the result.
   renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
@@ -116,12 +116,12 @@ function getParsingAndRenderingSettings(settings: UserProvidedSettings): UserPro
 export namespace Up {
   const defaultUp = new Up()
 
-  // Converts Up markup into HTML, then returns the result.
+  // Converts Up markup into HTML and returns the result.
   export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
     return defaultUp.parseAndRender(markup, settings)
   }
 
-  // This method converts Up markup into two pieces of HTML:
+  // This method converts Up markup into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
@@ -129,7 +129,7 @@ export namespace Up {
     return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, settings)
   }
 
-  // Converts inline Up markup into inline HTML, then returns the result.
+  // Converts inline Up markup into inline HTML and returns the result.
   export function parseAndRenderInline(inlineMarkup: string, settings?: UserProvidedSettings): string {
     return defaultUp.parseAndRenderInline(inlineMarkup, settings)
   }
@@ -149,7 +149,7 @@ export namespace Up {
     return defaultUp.render(document, renderingSettings)
   }
 
-  // This method converts a syntax tree into two pieces of HTML:
+  // This method converts a syntax tree into two pieces of HTML, both of which are returned:
   //
   // 1. A table of contents
   // 2. The document itself
@@ -157,7 +157,7 @@ export namespace Up {
     return defaultUp.renderDocumentAndTableOfContents(document, renderingSettings)
   }
 
-  // Converts an inline syntax tree into inline HTML, then results the result.
+  // Converts an inline syntax tree into inline HTML and returns the result.
   export function renderInline(inlineDocument: InlineDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
     return defaultUp.renderInline(inlineDocument, renderingSettings)
   }
