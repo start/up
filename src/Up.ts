@@ -171,5 +171,3 @@ export interface RenderedDocumentAndTableOfContents {
   documentHtml: string,
   tableOfContentsHtml: string
 }
-
-
