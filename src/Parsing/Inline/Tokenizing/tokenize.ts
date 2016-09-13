@@ -28,8 +28,8 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(markup: string, settings: Settings.Parsing): ParseableToken[] {
-  return new Tokenizer(markup, settings).result
+export function tokenize(inlineMarkup: string, settings: Settings.Parsing): ParseableToken[] {
+  return new Tokenizer(inlineMarkup, settings).result
 }
 
 // This function is identical to the `tokenize` function, except:
@@ -37,9 +37,9 @@ export function tokenize(markup: string, settings: Settings.Parsing): ParseableT
 // 1. Footnotes are treated as normal parentheticals
 // 2. The convention for referencing table of contents entries is ignored. The markup is instead treated
 //    as a parenthetical of the appropriate bracket type.
-export function tokenizeForInlineDocument(markup: string, settings: Settings.Parsing): ParseableToken[] {
+export function tokenizeForInlineDocument(inlineMarkup: string, settings: Settings.Parsing): ParseableToken[] {
   const { result } =
-    new Tokenizer(markup, settings, { isTokenizingInlineDocument: true })
+    new Tokenizer(inlineMarkup, settings, { isTokenizingInlineDocument: true })
 
   return result
 }
@@ -205,9 +205,9 @@ class Tokenizer {
   //    end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(markup: string, private settings: Settings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
+  constructor(inlineMarkup: string, private settings: Settings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
     const trimmedMarkup =
-      trimEscapedAndUnescapedOuterWhitespace(markup)
+      trimEscapedAndUnescapedOuterWhitespace(inlineMarkup)
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
     this.configureConventions(options && options.isTokenizingInlineDocument)

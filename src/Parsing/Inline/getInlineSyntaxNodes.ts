@@ -4,10 +4,10 @@ import { parse } from './parse'
 import { Settings } from '../../Settings'
 
 
-export function getInlineSyntaxNodes(markup: string, settings: Settings.Parsing): InlineSyntaxNode[] {
-  return parse(tokenize(markup, settings))
+export function getInlineSyntaxNodes(inlineMarkup: string, settings: Settings.Parsing): InlineSyntaxNode[] {
+  return parse(tokenize(inlineMarkup, settings))
 }
 
-export function getInlineSyntaxNodesForInlineDocument(markup: string, settings: Settings.Parsing): InlineSyntaxNode[] {
-  return parse(tokenizeForInlineDocument(markup, settings))
+export function getInlineSyntaxNodesForInlineDocument(inlineMarkup: string, settings: Settings.Parsing): InlineSyntaxNode[] {
+  return parse(tokenizeForInlineDocument(inlineMarkup, settings))
 }
