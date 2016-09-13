@@ -21,7 +21,7 @@ import { Stress } from'../../../SyntaxNodes/Stress'
 import { Video } from'../../../SyntaxNodes/Video'
 
 
-context('Except for footnots, every inline convention is supported in inline documents.', () => {
+context('Except for footnotes and internal topic links, every inline convention is supported in inline documents.', () => {
   context('Supported conventions:', () => {
     specify('Audio', () => {
       expect(Up.parseInline('Listen to this: [audio: cricket meowing] (example.com/meow.ogg)')).to.deep.equal(
