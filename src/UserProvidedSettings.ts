@@ -1,7 +1,5 @@
-// This is an unpleasant hack.
-//
-// Its purpose is to make both `parsing` and `rendering` settings optional, while still
-// requiring that at least one of the two be provided.
+// The purpose of this unpleasant hack is to make both `parsing` and `rendering`
+// settings optional, while still requiring that at least one of the two be provided.
 export type UserProvidedSettings =
   {
     parsing?: UserProvidedSettings.Parsing
@@ -65,7 +63,8 @@ export namespace UserProvidedSettings {
 // This is another hack to work around TypeScript's type system.
 //
 // Both `UserProvidedSettings.Parsing` and `UserProvidedSettings.Rendering` interfaces
-// only have optional fields, so they're satisfied by any object.
+// only have optional fields. This unfortunately means they're satisfied by every type,
+// including the `UserProvidedSettings` interface!
 // 
 // We want to prevent users from accidentally passing `UserProvidedSettings` to a method
 // that expects `UserProvidedSettings.Parsing` or `UserProvidedSettings.Rendering`.
