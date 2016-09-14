@@ -392,6 +392,7 @@ This is not reasonable.
     const markup = lotsOfSpaces + `
 This is not reasonable.
 
+
 ${lotsOfSpaces}However, we have to go with it.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -425,6 +426,7 @@ However, we have to go with it.`
   specify('At the start of a thematic break streak that is not the first convention within a document', () => {
     const markup = lotsOfSpaces + `
 This is not reasonable.
+
 
 ${lotsOfSpaces}-~-~-~-~-~-`
 
