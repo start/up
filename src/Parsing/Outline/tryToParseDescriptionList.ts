@@ -10,14 +10,15 @@ import { getIndentedBlock } from './getIndentedBlock'
 
 // Description lists are collections of subjects and descriptions.
 //
-// Subjects are left-aligned; descriptions are indented and directly follow the corresponding
-// subjects. Descriptions can contain any outline convention, including other description lists!
+// Subjects are left-aligned; descriptions are indented and follow the corresponding subjects
+// (preceded by an optional leading blank line). Descriptions can contain any outline convention,
+// including other description lists.
 //  
 // Multiple subjects can be associated with a single description. Each collection of subjects
 // and their corresponding description comprise a single description list item.
 //     
 // Description list items don't need to be separated by blank lines, but when they are, 2 or more
-// blank lines terminates the whole description list, not just the list item. 
+// trailing blank lines terminates the whole description list, not just the list item. 
 //
 // TODO: Better handle edge-case of lines consisting solely of escaped whitespace.
 export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
@@ -26,15 +27,15 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   let countLinesConsumed = 0
 
   while (!markupLineConsumer.done()) {
-    let markupPerTerm: string[] = []
+    let markupPerSubject: string[] = []
 
-    // First, we collect every subject for the next description.
+    // First, let's collect the subjects described by the upcoming description.
     while (!markupLineConsumer.done()) {
       const isSubject = markupLineConsumer.consume({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.settings),
         thenBeforeConsumingLine: line => {
-          markupPerTerm.push(line)
+          markupPerSubject.push(line)
         }
       })
 
@@ -43,14 +44,19 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       }
     }
 
-    if (!markupPerTerm.length) {
+    if (!markupPerSubject.length) {
       break
     }
 
-    const descriptionLines: string[] = []
+    // Alright! We have our subjects! Next up is the subjects' description.
+    //
+    // First, let's skip the optional leading blank line.
+    markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
 
     const sourceLineNumberForDescription =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+
+    const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
     const hasDescription = markupLineConsumer.consume({
@@ -79,11 +85,11 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
       }
     })
 
-    // Alright, we have our description! Let's update our length parsed accordingly.
+    // Alright, we have our description! Let's update our number of lines consumed.
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const subjects =
-      markupPerTerm.map(subject =>
+      markupPerSubject.map(subject =>
         new DescriptionList.Item.Subject(getInlineSyntaxNodes(subject, args.settings)))
 
     const description =
