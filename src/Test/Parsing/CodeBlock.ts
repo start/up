@@ -194,19 +194,16 @@ It's easy!`)
 context('Any leading or trailing whitespace is ignored when matching code block fences.', () => {
   specify('Whitespace around the opening fence is ignored', () => {
     const markup = `
-I enjoy baking.
-
  \t \`\`\` \t 
 const pie = 3.5
 \`\`\`
 
-Do you?`
+Do your pies ever turn out wrong?`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Document([
-        new Paragraph([new PlainText('I enjoy baking.')]),
         new CodeBlock('const pie = 3.5'),
-        new Paragraph([new PlainText('Do you?')])
+        new Paragraph([new PlainText('Do your pies ever turn out wrong?')])
       ]))
   })
 

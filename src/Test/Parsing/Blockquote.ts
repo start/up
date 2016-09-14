@@ -370,6 +370,7 @@ context('Within a given blockquote', () => {
 >
 > Goodbye, world!
 >
+>
 >\tUmmm... I said goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
