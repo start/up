@@ -4,6 +4,7 @@ import { Document } from '../../../SyntaxNodes/Document'
 import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../../SyntaxNodes/Paragraph'
 import { LineBlock } from '../../../SyntaxNodes/LineBlock'
+import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 
 
@@ -138,13 +139,15 @@ Night Shade
   })
 
 
-  specify("A blank line separates the would-be subjects from the would-be description", () => {
-    const markup = `
+  context('Multiple blank lines separate the would-be subjects from the would-be description:', () => {
+    specify("2 blank lines", () => {
+      const markup = `
 Bulbasaur
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
 
 Charmanders're red
 Squirtles are blue
+
 
 \tIsn't that a good poem?
 
@@ -153,43 +156,102 @@ Lick
 Night Shade
   Ghost type moves.`
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
-            ])
-          ]))
-        ]),
-
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText("Charmanders're red")
-          ]),
-          new LineBlock.Line([
-            new PlainText("Squirtles are blue")
-          ]),
-        ]),
-
-        new Paragraph([
-          new PlainText("Isn't that a good poem?")
-        ]),
-
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Subject([new PlainText('Lick')]),
-            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
-          ],
-            new DescriptionList.Item.Description([
+      expect(Up.parse(markup)).to.deep.equal(
+        new Document([
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+            ], new DescriptionList.Item.Description([
               new Paragraph([
-                new PlainText('Ghost type moves.')
+                new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
               ])
             ]))
-        ])
-      ]))
+          ]),
+
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Charmanders're red")
+            ]),
+            new LineBlock.Line([
+              new PlainText("Squirtles are blue")
+            ]),
+          ]),
+
+          new Paragraph([
+            new PlainText("Isn't that a good poem?")
+          ]),
+
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+              new DescriptionList.Item.Subject([new PlainText('Lick')]),
+              new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+            ],
+              new DescriptionList.Item.Description([
+                new Paragraph([
+                  new PlainText('Ghost type moves.')
+                ])
+              ]))
+          ])
+        ]))
+    })
+
+    specify("3 or more blank lines", () => {
+      const markup = `
+Bulbasaur
+  A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+
+Charmanders're red
+Squirtles are blue
+
+
+
+\tIsn't that a good poem?
+
+Confuse Ray
+Lick
+Night Shade
+  Ghost type moves.`
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Document([
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+            ], new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+              ])
+            ]))
+          ]),
+
+          new LineBlock([
+            new LineBlock.Line([
+              new PlainText("Charmanders're red")
+            ]),
+            new LineBlock.Line([
+              new PlainText("Squirtles are blue")
+            ]),
+          ]),
+
+          new ThematicBreak(),
+          new Paragraph([
+            new PlainText("Isn't that a good poem?")
+          ]),
+
+          new DescriptionList([
+            new DescriptionList.Item([
+              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
+              new DescriptionList.Item.Subject([new PlainText('Lick')]),
+              new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+            ],
+              new DescriptionList.Item.Description([
+                new Paragraph([
+                  new PlainText('Ghost type moves.')
+                ])
+              ]))
+          ])
+        ]))
+    })
   })
 })
