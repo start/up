@@ -54,8 +54,8 @@ export type Library = typeof Up & {
   DescriptionList: typeof DescriptionList
   Emphasis: typeof Emphasis
   ExampleInput: typeof ExampleInput
-  FootnoteBlock: typeof FootnoteBlock
   Footnote: typeof Footnote
+  FootnoteBlock: typeof FootnoteBlock
   Heading: typeof Heading
   Highlight: typeof Highlight
   Image: typeof Image
