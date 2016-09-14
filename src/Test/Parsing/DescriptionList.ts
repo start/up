@@ -466,3 +466,112 @@ Lee Chang-ho
       ]))
   })
 })
+
+
+context('In a description list, descriptions may have an optional leading blank line. This is true for:', () => {
+  specify('The first description', () => {
+    const markup = `
+Bulbasaur
+
+  A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
+
+Charmander
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Document([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+            ])
+          ])),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Charmander')])
+          ],
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              ])
+            ]))
+        ])
+      ]))
+  })
+
+  specify('The last description', () => {
+    const markup = `
+Charmander
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
+  
+Bulbasaur
+
+  A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Document([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+          ],
+            new DescriptionList.Item.Description([
+              new Paragraph([
+                new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              ])
+            ])),
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+
+  specify('The the only description', () => {
+    const markup = `
+Charmander
+
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Document([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Charmander')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+
+  specify('A description with multiple subjects', () => {
+    const markup = `
+Charmander
+Charmeleon
+Charizard
+
+  Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Document([
+        new DescriptionList([
+          new DescriptionList.Item([
+            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new PlainText('Charmeleon')]),
+            new DescriptionList.Item.Subject([new PlainText('Charizard')])
+          ], new DescriptionList.Item.Description([
+            new Paragraph([
+              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            ])
+          ]))
+        ])
+      ]))
+  })
+})
