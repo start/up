@@ -3,8 +3,6 @@ import * as Up from '../../index'
 import { concat } from '../../CollectionHelpers'
 
 
-// Please see: https://github.com/Microsoft/TypeScript/issues/4325
-
 export function insideDocumentAndParagraph(nodes: Up.InlineSyntaxNode[]): Up.Document {
   return new Up.Document([
     new Up.Paragraph(nodes)
