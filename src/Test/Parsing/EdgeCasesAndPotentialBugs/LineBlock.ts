@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 describe('A line starting with an escaped character in a line block', () => {

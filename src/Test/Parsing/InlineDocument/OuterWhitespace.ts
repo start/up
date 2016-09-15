@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 context("In inline documents, all outer whitespace is considered meaningless, even when it's escaped. This includes:", () => {

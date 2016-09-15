@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {

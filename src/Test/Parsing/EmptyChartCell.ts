@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 describe('Just like a table, a chart row ending with an unescaped semicolon', () => {

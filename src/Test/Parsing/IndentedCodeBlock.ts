@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context('A code block preserves all indentation when it is', () => {

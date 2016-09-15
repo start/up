@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
 
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
  
 
 // TODO: The rules for "dangerous" media elements might be too cautious.

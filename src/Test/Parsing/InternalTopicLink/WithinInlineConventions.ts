@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 context('Section links can be within any rich inline convention:', () => {

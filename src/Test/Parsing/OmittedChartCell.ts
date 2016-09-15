@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context('Just like a table, when a chart row has fewer cells than the header or than other rows', () => {

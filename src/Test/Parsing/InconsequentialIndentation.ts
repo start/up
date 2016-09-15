@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context("In a table's label line, when the term for 'table' is followed by a colon,", () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {

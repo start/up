@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :", () => {

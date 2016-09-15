@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 describe('Before a footnote, an escaped space followed by several non-escaped spaces', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {

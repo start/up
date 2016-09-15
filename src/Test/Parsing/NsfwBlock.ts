@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 describe('A line consisting solely of "NSFW:", followed by an indented block of text,', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 import { concat } from '../../CollectionHelpers'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Document } from '../../SyntaxNodes/Document'

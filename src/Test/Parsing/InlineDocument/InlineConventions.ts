@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 context('Except for footnotes and internal topic links, every inline convention is supported in inline documents.', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 describe('A line consisting solely of "Table:", followed by any number of rows of semicolon-delimited row values,', () => {

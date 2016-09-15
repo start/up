@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../index')
+import * as Up from '../../index'
 
 
 context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {

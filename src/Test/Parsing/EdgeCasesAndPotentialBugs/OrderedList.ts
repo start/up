@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 describe('An ordered list with a single item can be sandwched by identical thematic break streaks without producing a heading.', () => {

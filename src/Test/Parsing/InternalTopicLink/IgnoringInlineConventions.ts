@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Up = require('../../../index')
+import * as Up from '../../../index'
 
 
 context("A section link's snippet ignores inline conventions. It only cares about matching literal text.", () => {
