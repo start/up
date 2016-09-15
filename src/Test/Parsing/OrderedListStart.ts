@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 
 describe('An ordered list that does not start with a numeral bullet', () => {
@@ -68,7 +67,7 @@ describe('An ordered list starting ordinal', () => {
 
 function listStart(orderedListMarkup: string): number {
   const list =
-    Up.parse(orderedListMarkup).children[0] as OrderedList
+    Up.parse(orderedListMarkup).children[0] as Up.OrderedList
 
   return list.start()
 }

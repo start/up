@@ -1,13 +1,11 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
 import { concat } from '../../CollectionHelpers'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { Document } from '../../SyntaxNodes/Document'
 
 
 // Please see: https://github.com/Microsoft/TypeScript/issues/4325
 
-export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): Document {
+export function insideDocumentAndParagraph(nodes: Up.InlineSyntaxNode[]): Up.Document {
   return new Up.Document([
     new Up.Paragraph(nodes)
   ])
@@ -18,7 +16,7 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
     content: string
     partsBetweenContentAndUrl?: string[]
     url: string
-    toProduce: Document
+    toProduce: Up.Document
   }
 ): void {
   expectEveryPermutationOfBrackets({
@@ -38,7 +36,7 @@ export function expectEveryPermutationOfBrackets(
   args: {
     precededBy?: string
     bracketedSegments: BracketedSegment[]
-    toProduce: Document
+    toProduce: Up.Document
   }
 ): void {
   const { toProduce } = args

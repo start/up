@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 
 describe('An ordered list with non-numeral bullets', () => {
@@ -140,14 +139,14 @@ context('When the starting ordinal is negative', () => {
 })
 
 
-function expectListOrderToBe(order: OrderedList.Order, orderedListMarkup: string): void {
+function expectListOrderToBe(order: Up.OrderedList.Order, orderedListMarkup: string): void {
   expect(listOrder(orderedListMarkup)).to.equal(order)
 }
 
 
-function listOrder(orderedListMarkup: string): OrderedList.Order {
+function listOrder(orderedListMarkup: string): Up.OrderedList.Order {
   const list =
-    Up.parse(orderedListMarkup).children[0] as OrderedList
+    Up.parse(orderedListMarkup).children[0] as Up.OrderedList
 
   return list.order()
 }
