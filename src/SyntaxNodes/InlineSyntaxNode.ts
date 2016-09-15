@@ -8,6 +8,6 @@ export interface InlineSyntaxNode extends SyntaxNode {
 
   // Represents the searchable text of the syntax node. In contrast to `textAppearingInline`,
   // footnotes and images should have searchable text (footnotes have content, and images have
-  // descriptions).
+  // a description).
   searchableText(): string
 }
