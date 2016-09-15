@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
+import { Table } from '../../SyntaxNodes/Table'
 
 
 context('When the "createSourceMap" setting is not enabled', () => {

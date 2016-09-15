@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+import Up = require('../../index')
 
 
 context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
@@ -17,7 +18,8 @@ context("The `Document.create` is automatically used during the normal parsing p
       ])
     ]
 
-    const document = Document.create(documentChildren)
+    const document =
+      Up.Document.create(documentChildren)
 
     const cerealFootnote =
       new Up.Footnote([new Up.PlainText('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
@@ -62,7 +64,8 @@ context("The `Document.create` is automatically used during the normal parsing p
       ])
     ]
 
-    const document = Document.create(documentChildren)
+    const document =
+      Up.Document.create(documentChildren)
 
     const enjoyHeading =
       new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
@@ -103,7 +106,8 @@ context("The `Document.create` is automatically used during the normal parsing p
       ])
     ]
 
-    const document = Document.create(documentChildren)
+    const document =
+      Up.Document.create(documentChildren)
 
     const sodaHeading =
       new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })

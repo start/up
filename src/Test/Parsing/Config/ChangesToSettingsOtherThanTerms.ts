@@ -4,6 +4,7 @@ import { settingsFor } from './Helpers'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { Document } from '../../../SyntaxNodes/Document'
 
+
 // Elsewhere, we verify that these settings work.
 //
 // Here, we simply make sure they work as advertised no matter how they are supplied. 

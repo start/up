@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
+import { Document } from'../../../SyntaxNodes/Document'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
