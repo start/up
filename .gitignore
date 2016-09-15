@@ -11,7 +11,7 @@ coverage
 lint-warnings.txt
 
 # Folder appearance options for macOS
-.DS_Store
+*.DS_Store
 
 # Logs
 logs
