@@ -1,14 +1,8 @@
 local_modules_dir = ./node_modules/.bin
-
-src_dir = src
-compiled_dir = compiled
-dist_dir = dist
-
-all_our_build_dirs = $(compiled_dir) $(dist_dir)
-
-mocha_args = --recursive ./compiled/Test
+all_our_build_dirs = compiled dist
 
 local_mocha = $(local_modules_dir)/mocha
+mocha_args = --recursive ./compiled/Test
 
 
 .PHONY: all
@@ -32,13 +26,13 @@ compile: clean
 # Compile!
 	$(local_modules_dir)/tsc
 
-# Copy all JavaScript files and TypeScript type declaration files to `dist_dir`.
+# Copy all JavaScript files and TypeScript type declaration files to `dist`.
 #
-# We include a trailing slash after `compiled_dir` to ensure only its contents are copied (instead of itself).
-	rsync -am --include='*.js' --include='*.d.ts' --include='*/' --exclude='*' $(compiled_dir)/ $(dist_dir)
+# We include a trailing slash after `compiled` to ensure only its contents are copied (instead of itself).
+	rsync -am --include='*.js' --include='*.d.ts' --include='*/' --exclude='*' compiled/ dist
 
 # We don't need to distribute any tests.
-	rm -rf $(dist_dir)/Test
+	rm -rf dist/Test
 
 
 .PHONY: test
