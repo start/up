@@ -69,7 +69,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('href attribute of backlinks in footnote blocks', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnoteReference: 'look "up" & read & remember'
@@ -94,7 +94,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('id attribute of footntoes in a footnote block', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnote: 'look "down" & read & learn'
@@ -119,7 +119,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("href attribute of a footnote reference's link", () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnote: 'look "down" & read & learn'
@@ -144,7 +144,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('id attribute of footnote references', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnoteReference: 'look "up" & read & remember'
@@ -169,7 +169,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('the id attribute of elements referenced by the table of contents', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           sectionReferencedByTableOfContents: 'look "away" & smile & forget'

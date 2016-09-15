@@ -4,7 +4,7 @@ import * as Up from '../../../index'
 
 describe("A footnote reference's ID", () => {
   it('uses the provided term for "footnote reference"', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnoteReference: 'ref'
@@ -26,7 +26,7 @@ describe("A footnote reference's ID", () => {
 
 describe("The ID of the footnote reference referencing the footnote", () => {
   it('uses the provided term for "footnote reference"', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: {
           footnoteReference: 'ref'

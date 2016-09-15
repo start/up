@@ -3,7 +3,7 @@ import * as Up from '../../../index'
 
 
 describe('The "chart" term', () => {
-  const up = new Up({
+  const up = new Up.Converter({
     parsing: {
       terms: { chart: 'data' }
     }

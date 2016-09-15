@@ -69,7 +69,7 @@ describe("Inline NSFL conventions and NSFL blocks", () => {
 
 describe("The ID of an inline NSFL convention's checkbox (on both the checkbox and the label)", () => {
   it("is reset each time a new Up.Document is written", () => {
-    const up = new Up()
+    const up = new Up.Converter()
 
     const node =
       new Up.Document([
@@ -103,7 +103,7 @@ describe("The ID of an inline NSFL convention's checkbox (on both the checkbox a
 
 describe("The ID of a NSFL block's checkbox (on both the checkbox and the label)", () => {
   it("is reset each time a new Up.Document is written", () => {
-    const up = new Up()
+    const up = new Up.Converter()
 
     const node =
       new Up.Document([

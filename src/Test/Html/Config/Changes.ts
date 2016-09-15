@@ -1,20 +1,18 @@
 import { expect } from 'chai'
 import * as Up from '../../../index'
-import { UserProvidedSettings } from '../../../UserProvidedSettings'
-import { Document } from'../../../SyntaxNodes/Document'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
-    document: Document
-    change: UserProvidedSettings.Rendering
-    conflictingChange: UserProvidedSettings.Rendering
+    document: Up.Document
+    change: Up.UserProvidedSettings.Rendering
+    conflictingChange: Up.UserProvidedSettings.Rendering
   }
 ): void {
   const { document, change, conflictingChange } = args
 
   const settingsFor =
-    (changes: UserProvidedSettings.Rendering): UserProvidedSettings => ({
+    (changes: Up.UserProvidedSettings.Rendering): Up.UserProvidedSettings => ({
       rendering: changes
     })
 
@@ -37,12 +35,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   const whenProvidingSettingsAtCreation =
-    new Up(changedSettings).renderDocumentAndTableOfContents(document)
+    new Up.Converter(changedSettings).renderDocumentAndTableOfContents(document)
 
 
-  describe("when provided to an Up object's renderDocumentAndTableOfContents method", () => {
+  describe("when provided to a Converter object's renderDocumentAndTableOfContents method", () => {
     it("does not alter the Up object's original settings", () => {
-      const up = new Up(changedSettings)
+      const up = new Up.Converter(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
       expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
@@ -57,13 +55,13 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.renderDocumentAndTableOfContents(document, change)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up().renderDocumentAndTableOfContents(document, change)
+    new Up.Converter().renderDocumentAndTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
+    new Up.Converter(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
 
 
-  describe('when provided to an Up object at creation', () => {
+  describe('when provided to a Converter object at creation', () => {
     it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents method', () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })

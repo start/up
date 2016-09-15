@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../index'
-import { Table } from'../../SyntaxNodes/Table'
 
 // Both tables and charts are represented by instances of the `Table` class. Likewise, both
 // table row cells and chart row cells are represented by instances of `Table.Row.Cell`.
@@ -41,7 +40,7 @@ Dummy Header Cell
 ${cellMarkup};`
 
   const table =
-    Up.parse(markup).children[0] as Table
+    Up.parse(markup).children[0] as Up.Table
 
   return table.rows[0].cells[0].isNumeric()
 }

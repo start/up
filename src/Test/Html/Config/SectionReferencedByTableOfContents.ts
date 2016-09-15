@@ -4,7 +4,7 @@ import * as Up from '../../../index'
 
 describe('The ID of an element referenced by the table of contents', () => {
   it('uses the term for "sectionReferencedByTableOfContents"', () => {
-    const up = new Up({
+    const up = new Up.Converter({
       rendering: {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
       }

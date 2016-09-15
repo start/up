@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks.', () => {
-  const up = new Up({
+  const up = new Up.Converter({
     parsing: {
       terms: { nsfl: 'ruins ending' }
     }

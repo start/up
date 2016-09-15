@@ -1,94 +1,121 @@
-import { Up } from './Up'
+import { Converter, RenderedDocumentAndTableOfContents } from './Converter'
+import { UserProvidedSettings } from './UserProvidedSettings'
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
-import { Audio } from './SyntaxNodes/Audio'
-import { Bold } from './SyntaxNodes/Bold'
-import { Blockquote } from './SyntaxNodes/Blockquote'
-import { CodeBlock } from './SyntaxNodes/CodeBlock'
-import { DescriptionList } from './SyntaxNodes/DescriptionList'
-import { Emphasis } from './SyntaxNodes/Emphasis'
-import { ExampleInput } from './SyntaxNodes/ExampleInput'
-import { FootnoteBlock } from './SyntaxNodes/FootnoteBlock'
-import { Footnote } from './SyntaxNodes/Footnote'
-import { Heading } from './SyntaxNodes/Heading'
-import { Highlight } from './SyntaxNodes/Highlight'
-import { Image } from './SyntaxNodes/Image'
-import { InlineCode } from './SyntaxNodes/InlineCode'
-import { InlineNsfl } from './SyntaxNodes/InlineNsfl'
-import { InlineNsfw } from './SyntaxNodes/InlineNsfw'
-import { InlineSpoiler } from './SyntaxNodes/InlineSpoiler'
-import { InlineQuote } from './SyntaxNodes/InlineQuote'
-import { Italic } from './SyntaxNodes/Italic'
-import { LineBlock } from './SyntaxNodes/LineBlock'
-import { Link } from './SyntaxNodes/Link'
-import { NsflBlock } from './SyntaxNodes/NsflBlock'
-import { NsfwBlock } from './SyntaxNodes/NsfwBlock'
-import { OrderedList } from './SyntaxNodes/OrderedList'
-import { Paragraph } from './SyntaxNodes/Paragraph'
-import { NormalParenthetical } from './SyntaxNodes/NormalParenthetical'
-import { PlainText } from './SyntaxNodes/PlainText'
-import { SectionLink } from './SyntaxNodes/SectionLink'
-import { SpoilerBlock } from './SyntaxNodes/SpoilerBlock'
-import { SquareParenthetical } from './SyntaxNodes/SquareParenthetical'
-import { Stress } from './SyntaxNodes/Stress'
-import { Table } from './SyntaxNodes/Table'
-import { ThematicBreak } from './SyntaxNodes/ThematicBreak'
-import { UnorderedList } from './SyntaxNodes/UnorderedList'
-import { Video } from './SyntaxNodes/Video'
-import { InlineSyntaxNodeContainer } from './SyntaxNodes/InlineSyntaxNodeContainer'
-import { MediaSyntaxNode } from './SyntaxNodes/MediaSyntaxNode'
-import { OutlineSyntaxNodeContainer } from './SyntaxNodes/OutlineSyntaxNodeContainer'
-import { RevealableInlineSyntaxNode } from './SyntaxNodes/RevealableInlineSyntaxNode'
-import { RevealableOutlineSyntaxNode } from './SyntaxNodes/RevealableOutlineSyntaxNode'
-import { RichInlineSyntaxNode } from './SyntaxNodes/RichInlineSyntaxNode'
-import { RichOutlineSyntaxNode } from './SyntaxNodes/RichOutlineSyntaxNode'
-import { Library } from './Library'
 
 
-const library = Up as Library
+// These functions allow developers to use Up without having to create any instances of
+// the `Converter` class.
+//
+// Though it's never necessary to create instances of `Converter`, it's sometimes more
+// convenient.
+//
+// For example, let's say you're parsing an article and its comments. For each comment,
+// you want to specify a unique ID prefix; for both the article and its comments, you
+// want to use custom Japanese terms. 
+//
+// By creating an instance of `Converter`, you can specify those custom Japanese terms
+// just once (in the constructor). Then, when parsing each comment, you only need
+// to provide a unique ID prefix.
+const up = new Converter()
 
-library.Document = Document
-library.InlineDocument = InlineDocument
-library.Audio = Audio
-library.Bold = Bold
-library.Blockquote = Blockquote
-library.CodeBlock = CodeBlock
-library.DescriptionList = DescriptionList
-library.Emphasis = Emphasis
-library.ExampleInput = ExampleInput
-library.Footnote = Footnote
-library.FootnoteBlock = FootnoteBlock
-library.Heading = Heading
-library.Highlight = Highlight
-library.Image = Image
-library.InlineCode = InlineCode
-library.InlineNsfl = InlineNsfl
-library.InlineNsfw = InlineNsfw
-library.InlineSpoiler = InlineSpoiler
-library.InlineQuote = InlineQuote
-library.Italic = Italic
-library.LineBlock = LineBlock
-library.Link = Link
-library.NsflBlock = NsflBlock
-library.NsfwBlock = NsfwBlock
-library.OrderedList = OrderedList
-library.Paragraph = Paragraph
-library.NormalParenthetical = NormalParenthetical
-library.PlainText = PlainText
-library.SectionLink = SectionLink
-library.SpoilerBlock = SpoilerBlock
-library.SquareParenthetical = SquareParenthetical
-library.Stress = Stress
-library.Table = Table
-library.ThematicBreak = ThematicBreak
-library.UnorderedList = UnorderedList
-library.Video = Video
-library.InlineSyntaxNodeContainer = InlineSyntaxNodeContainer
-library.MediaSyntaxNode = MediaSyntaxNode
-library.OutlineSyntaxNodeContainer = OutlineSyntaxNodeContainer
-library.RevealableInlineSyntaxNode = RevealableInlineSyntaxNode
-library.RevealableOutlineSyntaxNode = RevealableOutlineSyntaxNode
-library.RichInlineSyntaxNode = RichInlineSyntaxNode
-library.RichOutlineSyntaxNode = RichOutlineSyntaxNode
+// Converts Up markup into HTML and returns the result.
+export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
+  return up.parseAndRender(markup, settings)
+}
 
-export = library
+// This method converts Up markup into two pieces of HTML, both of which are returned:
+//
+// 1. A table of contents
+// 2. The document itself
+export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: UserProvidedSettings): RenderedDocumentAndTableOfContents {
+  return up.parseAndRenderDocumentAndTableOfContents(markup, settings)
+}
+
+// Converts inline Up markup into inline HTML and returns the result.
+export function parseAndRenderInline(inlineMarkup: string, settings?: UserProvidedSettings): string {
+  return up.parseAndRenderInline(inlineMarkup, settings)
+}
+
+// Parses Up markup and returns the resulting syntax tree.
+export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): Document {
+  return up.parse(markup, parsingSettings)
+}
+
+// Parses inline Up markup and returns the resulting inline syntax tree.
+export function parseInline(inlineMarkup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
+  return up.parseInline(inlineMarkup, parsingSettings)
+}
+
+// Converts a syntax tree into HTML, then returns the result.
+export function render(document: Document, renderingSettings?: UserProvidedSettings.Rendering): string {
+  return up.render(document, renderingSettings)
+}
+
+// This method converts a syntax tree into two pieces of HTML, both of which are returned:
+//
+// 1. A table of contents
+// 2. The document itself
+export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: UserProvidedSettings.Rendering): RenderedDocumentAndTableOfContents {
+  return up.renderDocumentAndTableOfContents(document, renderingSettings)
+}
+
+// Converts an inline syntax tree into inline HTML and returns the result.
+export function renderInline(inlineDocument: InlineDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+  return up.renderInline(inlineDocument, renderingSettings)
+}
+
+export { Converter } from './Converter'
+export { UserProvidedSettings } from './UserProvidedSettings'
+
+export { Document } from './SyntaxNodes/Document'
+export { InlineDocument } from './SyntaxNodes/InlineDocument'
+
+export { Audio } from './SyntaxNodes/Audio'
+export { Bold } from './SyntaxNodes/Bold'
+export { Blockquote } from './SyntaxNodes/Blockquote'
+export { CodeBlock } from './SyntaxNodes/CodeBlock'
+export { DescriptionList } from './SyntaxNodes/DescriptionList'
+export { Emphasis } from './SyntaxNodes/Emphasis'
+export { ExampleInput } from './SyntaxNodes/ExampleInput'
+export { FootnoteBlock } from './SyntaxNodes/FootnoteBlock'
+export { Footnote } from './SyntaxNodes/Footnote'
+export { Heading } from './SyntaxNodes/Heading'
+export { Highlight } from './SyntaxNodes/Highlight'
+export { Image } from './SyntaxNodes/Image'
+export { InlineCode } from './SyntaxNodes/InlineCode'
+export { InlineNsfl } from './SyntaxNodes/InlineNsfl'
+export { InlineNsfw } from './SyntaxNodes/InlineNsfw'
+export { InlineSpoiler } from './SyntaxNodes/InlineSpoiler'
+export { InlineQuote } from './SyntaxNodes/InlineQuote'
+export { Italic } from './SyntaxNodes/Italic'
+export { LineBlock } from './SyntaxNodes/LineBlock'
+export { Link } from './SyntaxNodes/Link'
+export { NsflBlock } from './SyntaxNodes/NsflBlock'
+export { NsfwBlock } from './SyntaxNodes/NsfwBlock'
+export { OrderedList } from './SyntaxNodes/OrderedList'
+export { Paragraph } from './SyntaxNodes/Paragraph'
+export { NormalParenthetical } from './SyntaxNodes/NormalParenthetical'
+export { PlainText } from './SyntaxNodes/PlainText'
+export { SectionLink } from './SyntaxNodes/SectionLink'
+export { SpoilerBlock } from './SyntaxNodes/SpoilerBlock'
+export { SquareParenthetical } from './SyntaxNodes/SquareParenthetical'
+export { Stress } from './SyntaxNodes/Stress'
+export { Table } from './SyntaxNodes/Table'
+export { ThematicBreak } from './SyntaxNodes/ThematicBreak'
+export { UnorderedList } from './SyntaxNodes/UnorderedList'
+export { Video } from './SyntaxNodes/Video'
+
+export { InlineSyntaxNodeContainer } from './SyntaxNodes/InlineSyntaxNodeContainer'
+export { MediaSyntaxNode } from './SyntaxNodes/MediaSyntaxNode'
+export { OutlineSyntaxNodeContainer } from './SyntaxNodes/OutlineSyntaxNodeContainer'
+export { RevealableInlineSyntaxNode } from './SyntaxNodes/RevealableInlineSyntaxNode'
+export { RevealableOutlineSyntaxNode } from './SyntaxNodes/RevealableOutlineSyntaxNode'
+export { RichInlineSyntaxNode } from './SyntaxNodes/RichInlineSyntaxNode'
+export { RichOutlineSyntaxNode } from './SyntaxNodes/RichOutlineSyntaxNode'
+
+export { InlineSyntaxNode } from './SyntaxNodes/InlineSyntaxNode'
+export { OutlineSyntaxNode } from './SyntaxNodes/OutlineSyntaxNode'
+
+// This should always match the `version` field in `package.json`.
+export const VERSION = '20.1.0'

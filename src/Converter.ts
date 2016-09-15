@@ -7,7 +7,7 @@ import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
-export class Up {
+export class Converter {
   private settings: Settings
 
   constructor(settings?: UserProvidedSettings) {
@@ -92,82 +92,15 @@ export class Up {
 }
 
 
+export interface RenderedDocumentAndTableOfContents {
+  documentHtml: string,
+  tableOfContentsHtml: string
+}
+
+
 function getParsingAndRenderingSettings(settings: UserProvidedSettings): UserProvidedSettings {
   return settings || {
     parsing: null,
     rendering: null
   }
-}
-
-
-// This namespace allows developers to use Up without having to create any instances
-// of the Up class.
-//
-// Though it's never necessary to create instances of the Up class, it's sometimes more
-// convenient.
-//
-// For example, let's say you're parsing an article and its comments. For each comment,
-// you want to specify a unique ID prefix; for both the article and its comments, you
-// want to use custom Japanese terms. 
-//
-// By creating an instance of the Up class, you can specify those custom Japanese terms
-// just once (in the constructor). Then, when parsing each comment, you only need to
-// provide a unique ID prefix.
-export namespace Up {
-  const defaultUp = new Up()
-
-  // Converts Up markup into HTML and returns the result.
-  export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
-    return defaultUp.parseAndRender(markup, settings)
-  }
-
-  // This method converts Up markup into two pieces of HTML, both of which are returned:
-  //
-  // 1. A table of contents
-  // 2. The document itself
-  export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: UserProvidedSettings): RenderedDocumentAndTableOfContents {
-    return defaultUp.parseAndRenderDocumentAndTableOfContents(markup, settings)
-  }
-
-  // Converts inline Up markup into inline HTML and returns the result.
-  export function parseAndRenderInline(inlineMarkup: string, settings?: UserProvidedSettings): string {
-    return defaultUp.parseAndRenderInline(inlineMarkup, settings)
-  }
-
-  // Parses Up markup and returns the resulting syntax tree.
-  export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): Document {
-    return defaultUp.parse(markup, parsingSettings)
-  }
-
-  // Parses inline Up markup and returns the resulting inline syntax tree.
-  export function parseInline(inlineMarkup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
-    return defaultUp.parseInline(inlineMarkup, parsingSettings)
-  }
-
-  // Converts a syntax tree into HTML, then returns the result.
-  export function render(document: Document, renderingSettings?: UserProvidedSettings.Rendering): string {
-    return defaultUp.render(document, renderingSettings)
-  }
-
-  // This method converts a syntax tree into two pieces of HTML, both of which are returned:
-  //
-  // 1. A table of contents
-  // 2. The document itself
-  export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: UserProvidedSettings.Rendering): RenderedDocumentAndTableOfContents {
-    return defaultUp.renderDocumentAndTableOfContents(document, renderingSettings)
-  }
-
-  // Converts an inline syntax tree into inline HTML and returns the result.
-  export function renderInline(inlineDocument: InlineDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
-    return defaultUp.renderInline(inlineDocument, renderingSettings)
-  }
-
-  // This should always match the `version` field in `package.json`.
-  export const VERSION = '20.1.0'
-}
-
-
-export interface RenderedDocumentAndTableOfContents {
-  documentHtml: string,
-  tableOfContentsHtml: string
 }
