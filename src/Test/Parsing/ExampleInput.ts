@@ -1,9 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
 describe('Text surrounded by curly brackets', () => {

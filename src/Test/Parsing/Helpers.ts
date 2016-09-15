@@ -1,10 +1,11 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { concat } from '../../CollectionHelpers'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { Document } from '../../SyntaxNodes/Document'
 
+
+// Please see: https://github.com/Microsoft/TypeScript/issues/4325
 
 export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): Document {
   return new Up.Document([

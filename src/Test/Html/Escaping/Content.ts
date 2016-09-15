@@ -1,33 +1,12 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Blockquote } from '../../../SyntaxNodes/Blockquote'
-import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
-import { InlineCode } from '../../../SyntaxNodes/InlineCode'
-import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { Stress } from '../../../SyntaxNodes/Stress'
-import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
-import { Video } from '../../../SyntaxNodes/Video'
-import { Audio } from '../../../SyntaxNodes/Audio'
 
 
 describe('Within a plain text node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const document = new Document([
-      new Paragraph([
-        new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -38,9 +17,9 @@ describe('Within a plain text node, all instances of < and &', () => {
 
 describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
-    const document = new Document([
-      new Paragraph([
-        new PlainText('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.PlainText('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
@@ -51,8 +30,8 @@ describe('Within a plain text node, >, \', and "', () => {
 
 describe('Within a code block node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const document = new Document([
-      new CodeBlock('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.CodeBlock('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
     ])
 
     expect(Up.render(document)).to.equal('<pre><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></pre>')
@@ -62,8 +41,8 @@ describe('Within a code block node, all instances of < and &', () => {
 
 describe('Within a code block node, >, \', and "', () => {
   it('are preserved', () => {
-    const document = new Document([
-      new CodeBlock('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+    const document = new Up.Document([
+      new Up.CodeBlock('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
     ])
 
     expect(Up.render(document)).to.equal('<pre><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></pre>')
@@ -73,9 +52,9 @@ describe('Within a code block node, >, \', and "', () => {
 
 describe('Within an inline code node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const document = new Document([
-      new Paragraph([
-        new InlineCode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineCode('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -86,9 +65,9 @@ describe('Within an inline code node, all instances of < and &', () => {
 
 describe('Within an inline code node, >, \', and "', () => {
   it('are preserved', () => {
-    const document = new Document([
-      new Paragraph([
-        new InlineCode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineCode('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
@@ -99,9 +78,9 @@ describe('Within an inline code node, >, \', and "', () => {
 
 describe('Within an example input node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
-    const document = new Document([
-      new Paragraph([
-        new ExampleInput('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.ExampleInput('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -112,9 +91,9 @@ describe('Within an example input node, all instances of < and &', () => {
 
 describe('Within an example input node, >, \', and "', () => {
   it('are preserved', () => {
-    const document = new Document([
-      new Paragraph([
-        new ExampleInput('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.ExampleInput('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
@@ -131,9 +110,9 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -159,9 +138,9 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -187,9 +166,9 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -215,8 +194,8 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
       }
     })
 
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -239,8 +218,8 @@ describe("Within a NSFW block's label, all instances of < and &", () => {
       }
     })
 
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -263,8 +242,8 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
       }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -281,12 +260,12 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
 
 describe('Inside a plain text node itself nested within several inline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
-    const document = new Document([
-      new Paragraph([
-        new Emphasis([
-          new Stress([
-            new InlineQuote([
-              new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Emphasis([
+          new Up.Stress([
+            new Up.InlineQuote([
+              new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])
         ])
@@ -300,12 +279,12 @@ describe('Inside a plain text node itself nested within several inline nodes, al
 
 describe('Inside a plain text node itself nested within several outline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
-    const document = new Document([
-      new Blockquote([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+    const document = new Up.Document([
+      new Up.Blockquote([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])
         ])
@@ -319,8 +298,8 @@ describe('Inside a plain text node itself nested within several outline nodes, a
 
 describe("Within a video's fallback link content, all instances of < and &", () => {
   it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
-    const document = new Document([
-      new Video('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    const document = new Up.Document([
+      new Up.Video('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -331,8 +310,8 @@ describe("Within a video's fallback link content, all instances of < and &", () 
 
 describe("Within an audio convention's fallback link content, all instances of < and &", () => {
   it("are escaped (but they're not escaped in the audio element's title attribute)", () => {
-    const document = new Document([
-      new Audio('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
+    const document = new Up.Document([
+      new Up.Audio('4 & 5 < 10, and 6 & 7 < 10. Coincidence?', '')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -344,12 +323,12 @@ describe("Within an audio convention's fallback link content, all instances of <
 context('Within a table of contents entry, all instances of < and & are escaped:', () => {
   specify('In the table of contents itself', () => {
     const heading =
-      new Heading([
-        new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      new Up.Heading([
+        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -368,17 +347,17 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 
   specify('In a section link referencing that table of contents entry', () => {
     const heading =
-      new Heading([
-        new PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      new Up.Heading([
+        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([
-          new SectionLink('coincidence', heading)
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.SectionLink('coincidence', heading)
         ]),
         heading
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -401,9 +380,9 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 context('Within a section link that was never actually associated with an entry', () => {
   specify('all instances of all instances of < and & are escaped', () => {
     const document =
-      new Document([
-        new Paragraph([
-          new SectionLink('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.SectionLink('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
         ])
       ])
 

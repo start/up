@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { Highlight } from '../../SyntaxNodes/Highlight'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 
 context('Bracketed text starting with "highlight:" is put inside a highlight node. The brackets can be:', () => {

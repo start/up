@@ -1,22 +1,14 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Link } from '../../../SyntaxNodes/Link'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Heading } from '../../../SyntaxNodes/Heading'
 
 
 context('Inside a link', () => {
   specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new PlainText('Google'),
-          new Footnote([new PlainText('A really old search engine.')], { referenceNumber: 2 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.PlainText('Google'),
+          new Up.Footnote([new Up.PlainText('A really old search engine.')], { referenceNumber: 2 })
         ], 'https://google.com')
       ])
     ])
@@ -26,11 +18,11 @@ context('Inside a link', () => {
   })
 
   specify("a nested link does not produce another <a> element. The nested link's contents are included directly inside the outer link", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new PlainText('Google is probably not '),
-          new Link([new PlainText('Bing')], 'https://bing.com')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.PlainText('Google is probably not '),
+          new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
         ], 'https://google.com')
       ])
     ])
@@ -43,12 +35,12 @@ context('Inside a link', () => {
 context('A link within a table of contents entry does not produce an <a> element:', () => {
   specify('in the table of contents itself', () => {
     const heading =
-      new Heading([
-        new Link([new PlainText('I enjoy apples')], 'https://google.com')
+      new Up.Heading([
+        new Up.Link([new Up.PlainText('I enjoy apples')], 'https://google.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -67,15 +59,15 @@ context('A link within a table of contents entry does not produce an <a> element
 
   specify('in a reference to that table of contents entry', () => {
     const heading =
-      new Heading([
-        new Link([new PlainText('I enjoy apples')], 'https://google.com')
+      new Up.Heading([
+        new Up.Link([new Up.PlainText('I enjoy apples')], 'https://google.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('apples', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('apples', heading)]),
         heading
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -97,12 +89,12 @@ context('A link within a table of contents entry does not produce an <a> element
 
 context("When a link is nested deeply within another link, it doesn't produce an <a> element. This is true for:", () => {
   specify("A footnote nested deeply within a link", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new Emphasis([
-            new PlainText('Google'),
-            new Footnote([new PlainText('A really old search engine.')], { referenceNumber: 2 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.Emphasis([
+            new Up.PlainText('Google'),
+            new Up.Footnote([new Up.PlainText('A really old search engine.')], { referenceNumber: 2 })
           ])
         ], 'https://google.com')
       ])
@@ -115,12 +107,12 @@ context("When a link is nested deeply within another link, it doesn't produce an
   })
 
   specify("A link nested deeply within another a link", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new Emphasis([
-            new PlainText('Google is probably not '),
-            new Link([new PlainText('Bing')], 'https://bing.com')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.Emphasis([
+            new Up.PlainText('Google is probably not '),
+            new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
           ])
         ], 'https://google.com')
       ])
@@ -134,16 +126,16 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
   specify('a link nested within another link within a table of contents entry', () => {
     const heading =
-      new Heading([
-        new Link([
-          new Emphasis([
-            new Link([new PlainText('I enjoy apples')], 'https://bing.com')
+      new Up.Heading([
+        new Up.Link([
+          new Up.Emphasis([
+            new Up.Link([new Up.PlainText('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -162,19 +154,19 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
   specify('a link nested within another link within a table of contents entry... as presented by a reference to that entry', () => {
     const heading =
-      new Heading([
-        new Link([
-          new Emphasis([
-            new Link([new PlainText('I enjoy apples')], 'https://bing.com')
+      new Up.Heading([
+        new Up.Link([
+          new Up.Emphasis([
+            new Up.Link([new Up.PlainText('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('apples', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('apples', heading)]),
         heading
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -196,14 +188,14 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
 context('When severeal links are nested within each other', () => {
   specify('only the outermost link produces an <a> element', () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new Link([
-            new Link([
-              new Link([
-                new PlainText('Google is probably not '),
-                new Link([new PlainText('Bing')], 'https://bing.com')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.Link([
+            new Up.Link([
+              new Up.Link([
+                new Up.PlainText('Google is probably not '),
+                new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
               ], 'https://ddg.gg')
             ], 'https://google.co.uk')
           ], 'https://altavista.com')
@@ -218,11 +210,11 @@ context('When severeal links are nested within each other', () => {
 
 context('When a link contains 2 or more inner links', () => {
   specify("neither inner link produces an <a> element", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new Link([new PlainText('Google is probably not ')], 'https://google.co.nz'),
-          new Link([new PlainText('Bing')], 'https://bing.com')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.Link([new Up.PlainText('Google is probably not ')], 'https://google.co.nz'),
+          new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
         ], 'https://google.com')
       ])
     ])

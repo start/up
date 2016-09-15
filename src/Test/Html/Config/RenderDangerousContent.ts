@@ -1,12 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Link } from '../../../SyntaxNodes/Link'
-import { Image } from '../../../SyntaxNodes/Image'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Video } from '../../../SyntaxNodes/Video'
 
 
 context('When the "renderDangerousContent" setting is enabled, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
@@ -19,10 +12,10 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Links produce <a> elements even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Paragraph([
-          new Link([
-            new PlainText('Click me!')
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.Link([
+            new Up.PlainText('Click me!')
           ], 'javascript:malicious')
         ])
       ])
@@ -32,10 +25,10 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Paragraph([
-          new Link([
-            new PlainText('Click me!')
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.Link([
+            new Up.PlainText('Click me!')
           ], 'data:malicious')
         ])
       ])
@@ -45,10 +38,10 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Paragraph([
-          new Link([
-            new PlainText('Click me!')
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.Link([
+            new Up.PlainText('Click me!')
           ], 'file:malicious')
         ])
       ])
@@ -58,10 +51,10 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Paragraph([
-          new Link([
-            new PlainText('Click me!')
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.Link([
+            new Up.PlainText('Click me!')
           ], 'vbscript:malicious')
         ])
       ])
@@ -73,11 +66,11 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
 
   specify('Because dangerous links produce <a> elements, any links nested inside dangerous lnks do not produce <a> elements.', () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([
-          new Link([
-            new PlainText('Click me!')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([
+          new Up.Link([
+            new Up.PlainText('Click me!')
           ], 'https://google.com')
         ], 'javascript:malicious')
       ])
@@ -90,8 +83,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Images produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -99,8 +92,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -108,8 +101,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -117,8 +110,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -129,8 +122,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Audio conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -140,8 +133,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -151,8 +144,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -162,8 +155,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -176,8 +169,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
 
   context('Video conventions produce HTML even if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -187,8 +180,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'data:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -198,8 +191,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'file:malicious')
       ])
 
       expect(up.render(document)).to.equal(
@@ -209,8 +202,8 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(up.render(document)).to.equal(

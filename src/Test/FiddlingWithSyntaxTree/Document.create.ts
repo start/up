@@ -1,13 +1,4 @@
 import { expect } from 'chai'
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { SectionLink } from '../../SyntaxNodes/SectionLink'
 
 
 context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
@@ -60,11 +51,11 @@ context("The `Document.create` is automatically used during the normal parsing p
     const documentChildren = [
       new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1 }),
       new Up.OrderedList([
-        new OrderedList.Item([
+        new Up.OrderedList.Item([
           new Up.Heading([new Up.PlainText("They're cheap")], { level: 2 }),
           new Up.Paragraph([new Up.PlainText("Very cheap.")])
         ]),
-        new OrderedList.Item([
+        new Up.OrderedList.Item([
           new Up.Heading([new Up.PlainText("They're delicious")], { level: 2 }),
           new Up.Paragraph([new Up.PlainText("Very delicious.")])
         ])
@@ -86,16 +77,16 @@ context("The `Document.create` is automatically used during the normal parsing p
       new Up.Document([
         enjoyHeading,
         new Up.OrderedList([
-          new OrderedList.Item([
+          new Up.OrderedList.Item([
             cheapHeading,
             new Up.Paragraph([new Up.PlainText("Very cheap.")])
           ]),
-          new OrderedList.Item([
+          new Up.OrderedList.Item([
             deliciousHeading,
             new Up.Paragraph([new Up.PlainText("Very delicious.")])
           ])
         ])
-      ], new Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
+      ], new Up.Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
 
   specify("Referemces to table of contents entries associated with the appropriate entries", () => {
@@ -132,6 +123,6 @@ context("The `Document.create` is automatically used during the normal parsing p
           new Up.SectionLink('soda', sodaHeading),
           new Up.PlainText('.')
         ])
-      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })

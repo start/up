@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 
 
 describe('A line starting with an escaped character in a line block', () => {
@@ -11,13 +8,13 @@ describe('A line starting with an escaped character in a line block', () => {
 \\Roses are red
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -28,13 +25,13 @@ Violets are blue`
 Roses are red
 \\Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -51,22 +48,22 @@ Violets are blue
 Lyrics have lines
 And addresses do, too`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
-          new LineBlock.Line([
-            new PlainText('#~#~#~#~#~#~#~#~#')
+          new Up.LineBlock.Line([
+            new Up.PlainText('#~#~#~#~#~#~#~#~#')
           ]),
-          new LineBlock.Line([
-            new PlainText('Lyrics have lines')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Lyrics have lines')
           ]),
-          new LineBlock.Line([
-            new PlainText('And addresses do, too')
+          new Up.LineBlock.Line([
+            new Up.PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -82,19 +79,19 @@ Violets are blue\\
 Lyrics have lines
 And addresses do, too`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red'),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red'),
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue'),
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue'),
           ]),
-          new LineBlock.Line([
-            new PlainText('Lyrics have lines')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Lyrics have lines')
           ]),
-          new LineBlock.Line([
-            new PlainText('And addresses do, too')
+          new Up.LineBlock.Line([
+            new Up.PlainText('And addresses do, too')
           ]),
         ])
       ]))
@@ -110,13 +107,13 @@ Roses are red
 \\ \t
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red'),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red'),
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue'),
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue'),
           ])
         ])
       ]))
@@ -129,13 +126,13 @@ Roses are red
  \\   \\  \\\t  \t   
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red'),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red'),
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue'),
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue'),
           ])
         ])
       ]))
@@ -152,13 +149,13 @@ Roses are red
 Skeltals are white`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ])
         ])
       ]))

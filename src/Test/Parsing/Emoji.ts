@@ -1,8 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Link } from '../../SyntaxNodes/Link'
 
 
 context('Emojis are always treated like any other other character. This includes when the emoji is within', () => {

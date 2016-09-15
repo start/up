@@ -1,28 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Bold } from'../../../SyntaxNodes/Bold'
-import { Emphasis } from'../../../SyntaxNodes/Emphasis'
-import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { Image } from '../../../SyntaxNodes/Image'
-import { InlineCode } from '../../../SyntaxNodes/InlineCode'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { Italic } from '../../../SyntaxNodes/Italic'
-import { Link } from '../../../SyntaxNodes/Link'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { PlainText } from'../../../SyntaxNodes/PlainText'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { Stress } from'../../../SyntaxNodes/Stress'
-import { Video } from'../../../SyntaxNodes/Video'
 
 
 context("A section link's snippet ignores inline conventions. It only cares about matching literal text.", () => {
@@ -46,33 +23,33 @@ I always stay on topic
 Not quite true. For example, see [section: emphasis].`
 
     const stressAndEmphasisHeading =
-      new Heading([new PlainText('Stress and emphasis are commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Stress and emphasis are commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
 
     const emphasisSubHeading =
-      new Heading([
-        new Emphasis([new PlainText('Emphasis')]),
+      new Up.Heading([
+        new Up.Emphasis([new Up.PlainText('Emphasis')]),
       ], { level: 2, ordinalInTableOfContents: 2 })
 
     const stayOnTopicHeading =
-      new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         stressAndEmphasisHeading,
-        new Paragraph([
-          new PlainText('Luckily for us, Up supports that!')
+        new Up.Paragraph([
+          new Up.PlainText('Luckily for us, Up supports that!')
         ]),
         emphasisSubHeading,
-        new Paragraph([
-          new PlainText('I love apples.')
+        new Up.Paragraph([
+          new Up.PlainText('I love apples.')
         ]),
         stayOnTopicHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new SectionLink('emphasis', emphasisSubHeading),
-          new PlainText('.')
+        new Up.Paragraph([
+          new Up.PlainText('Not quite true. For example, see '),
+          new Up.SectionLink('emphasis', emphasisSubHeading),
+          new Up.PlainText('.')
         ])
-      ], new Document.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+      ], new Up.Document.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })
 
   specify("Inline conventions are not evaluated within the snippet", () => {
@@ -95,34 +72,34 @@ I always stay on topic
 Not quite true. For example, see [section: *emphasis*].`
 
     const mainEmphasisHeading =
-      new Heading([new PlainText('Emphasis is commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Emphasis is commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
 
     const emphasisSubHeading =
-      new Heading([
-        new InlineCode('*Emphasis*'),
-        new PlainText(' in Up explained')
+      new Up.Heading([
+        new Up.InlineCode('*Emphasis*'),
+        new Up.PlainText(' in Up explained')
       ], { level: 2, ordinalInTableOfContents: 2 })
 
     const stayOnTopicHeading =
-      new Heading([new PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         mainEmphasisHeading,
-        new Paragraph([
-          new PlainText('Luckily for us, Up supports that!')
+        new Up.Paragraph([
+          new Up.PlainText('Luckily for us, Up supports that!')
         ]),
         emphasisSubHeading,
-        new Paragraph([
-          new PlainText('I love apples.')
+        new Up.Paragraph([
+          new Up.PlainText('I love apples.')
         ]),
         stayOnTopicHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new SectionLink('*emphasis*', emphasisSubHeading),
-          new PlainText('.')
+        new Up.Paragraph([
+          new Up.PlainText('Not quite true. For example, see '),
+          new Up.SectionLink('*emphasis*', emphasisSubHeading),
+          new Up.PlainText('.')
         ])
-      ], new Document.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
+      ], new Up.Document.TableOfContents([mainEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })
 
 
@@ -142,30 +119,30 @@ I am great. Listen to the [audio: full transcript of my greatness] (example.com/
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Listen to the "),
-          new Audio('full transcript of my greatness', 'https://example.com/transcript')
+        new Up.Heading([
+          new Up.PlainText("I am great. Listen to the "),
+          new Up.Audio('full transcript of my greatness', 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Bold', () => {
@@ -183,30 +160,30 @@ I am great. Read the __full transcript of my greatness__
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new Bold([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.Bold([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Example input', () => {
@@ -224,31 +201,31 @@ Why you must explore the { About This Mac } menu item
 Well, maybe I'm not so helpful.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText('Why you must explore the '),
-          new ExampleInput('About This Mac'),
-          new PlainText(' menu item')
+        new Up.Heading([
+          new Up.PlainText('Why you must explore the '),
+          new Up.ExampleInput('About This Mac'),
+          new Up.PlainText(' menu item')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a helpful guy. For more information, see "),
-            new SectionLink('mac menu', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a helpful guy. For more information, see "),
+            new Up.SectionLink('mac menu', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so helpful.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so helpful.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Highlight', () => {
@@ -266,30 +243,30 @@ I am great. Read the [highlight: full transcript of my greatness]
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new Highlight([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.Highlight([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Images', () => {
@@ -307,30 +284,30 @@ I am great. See the [image: full transcript of my greatness] (example.com/transc
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. See the "),
-          new Image('full transcript of my greatness', 'https://example.com/transcript')
+        new Up.Heading([
+          new Up.PlainText("I am great. See the "),
+          new Up.Image('full transcript of my greatness', 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Example input', () => {
@@ -348,31 +325,31 @@ Why you should love SQL's \`DELETE FROM\` statement
 Well, maybe I'm not so helpful.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("Why you should love SQL's "),
-          new InlineCode("DELETE FROM"),
-          new PlainText(' statement')
+        new Up.Heading([
+          new Up.PlainText("Why you should love SQL's "),
+          new Up.InlineCode("DELETE FROM"),
+          new Up.PlainText(' statement')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a helpful guy. For more information, see "),
-            new SectionLink("SQL's delete", greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a helpful guy. For more information, see "),
+            new Up.SectionLink("SQL's delete", greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so helpful.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so helpful.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Footnotes', () => {
@@ -390,37 +367,37 @@ I am great. Read the full [^ exciting and amazing and wonderful and fantastic] t
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const footnote =
-        new Footnote([
-          new PlainText('exciting and amazing and wonderful and fantastic')
+        new Up.Footnote([
+          new Up.PlainText('exciting and amazing and wonderful and fantastic')
         ], { referenceNumber: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the full"),
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the full"),
           footnote,
-          new PlainText(" transcript of my greatness")
+          new Up.PlainText(" transcript of my greatness")
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('fantastic transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('fantastic transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new FootnoteBlock([footnote]),
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.FootnoteBlock([footnote]),
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline NSFL conventions', () => {
@@ -438,30 +415,30 @@ I am great. Read the [NSFL: full transcript of my greatness]
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new InlineNsfl([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.InlineNsfl([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline NSFW conventions', () => {
@@ -479,30 +456,30 @@ I am great. Read the [NSFW: full transcript of my greatness]
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new InlineNsfw([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.InlineNsfw([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Inline spoilers', () => {
@@ -520,30 +497,30 @@ I am great. Read the [SPOILER: full transcript of my greatness]
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new InlineSpoiler([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.InlineSpoiler([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Italics', () => {
@@ -561,30 +538,30 @@ I am great. Read the _full transcript of my greatness_
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new Italic([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.Italic([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Links', () => {
@@ -602,32 +579,32 @@ I am great. Read the [full transcript of my greatness] (example.com/transcript)
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new Link([
-            new PlainText("full transcript of my greatness")
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.Link([
+            new Up.PlainText("full transcript of my greatness")
           ], 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Normal parentheticals', () => {
@@ -645,33 +622,33 @@ I am great. Read the full (and exciting and amazing and wonderful and fantastic)
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the full "),
-          new NormalParenthetical([
-            new PlainText("(and exciting and amazing and wonderful and fantastic)")
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the full "),
+          new Up.NormalParenthetical([
+            new Up.PlainText("(and exciting and amazing and wonderful and fantastic)")
           ]),
-          new PlainText(" transcript of my greatness")
+          new Up.PlainText(" transcript of my greatness")
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('full (and exciting and amazing and', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('full (and exciting and amazing and', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Another reference to a table of contents entry', () => {
@@ -694,37 +671,37 @@ Full transcript of my greatness
 Uhhh...`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const transcriptHeading =
-        new Heading([new PlainText('Full transcript of my greatness')], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.PlainText('Full transcript of my greatness')], { level: 2, ordinalInTableOfContents: 3 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new SectionLink("full transcript of my greatness", transcriptHeading)
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.SectionLink("full transcript of my greatness", transcriptHeading)
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ]),
           transcriptHeading,
-          new Paragraph([
-            new PlainText('Uhhh…')
+          new Up.Paragraph([
+            new Up.PlainText('Uhhh…')
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
     })
 
     specify('Square parentheticals', () => {
@@ -742,33 +719,33 @@ I am great. Read the full [and exciting and amazing and wonderful and fantastic]
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the full "),
-          new SquareParenthetical([
-            new PlainText("[and exciting and amazing and wonderful and fantastic]")
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the full "),
+          new Up.SquareParenthetical([
+            new Up.PlainText("[and exciting and amazing and wonderful and fantastic]")
           ]),
-          new PlainText(" transcript of my greatness")
+          new Up.PlainText(" transcript of my greatness")
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('full [and exciting and amazing and', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('full [and exciting and amazing and', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Stress', () => {
@@ -786,30 +763,30 @@ I am great. Read the **full transcript of my greatness**
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Read the "),
-          new Stress([new PlainText("full transcript of my greatness")])
+        new Up.Heading([
+          new Up.PlainText("I am great. Read the "),
+          new Up.Stress([new Up.PlainText("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
     specify('Video', () => {
@@ -827,30 +804,30 @@ I am great. Watch the [video: full transcript of my greatness] (example.com/tran
 Well, maybe I'm not so great.`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const greatnessHeading =
-        new Heading([
-          new PlainText("I am great. Watch the "),
-          new Video('full transcript of my greatness', 'https://example.com/transcript')
+        new Up.Heading([
+          new Up.PlainText("I am great. Watch the "),
+          new Up.Video('full transcript of my greatness', 'https://example.com/transcript')
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I'm a great guy. For more information, skip to "),
-            new SectionLink('the full transcript', greatnessHeading),
-            new PlainText('.')
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('the full transcript', greatnessHeading),
+            new Up.PlainText('.')
           ]),
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           greatnessHeading,
-          new Paragraph([
-            new PlainText("Well, maybe I'm not so great.")
+          new Up.Paragraph([
+            new Up.PlainText("Well, maybe I'm not so great.")
           ])
-        ], new Document.TableOfContents([sodaHeading, greatnessHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
   })
 })

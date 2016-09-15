@@ -1,8 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by backticks', () => {

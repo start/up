@@ -1,15 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Video } from '../../../SyntaxNodes/Video'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { Link } from '../../../SyntaxNodes/Link'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
 describe('A paragraph directly followed by a video on its own line', () => {
@@ -18,11 +9,11 @@ describe('A paragraph directly followed by a video on its own line', () => {
 Do not pour the spiders into your sister's cereal.
 [video: spiders crawling out of mouth][http://example.com/spiders.webm]`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("Do not pour the spiders into your sister's cereal.")
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("Do not pour the spiders into your sister's cereal.")
         ]),
-        new Video('spiders crawling out of mouth', 'http://example.com/spiders.webm'),
+        new Up.Video('spiders crawling out of mouth', 'http://example.com/spiders.webm'),
       ]))
   })
 })
@@ -32,15 +23,15 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce a video node', () => {
     expect(Up.parse('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I like [video: ghosts}'),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com/ghosts.webm')
+        new Up.PlainText('I like [video: ghosts}'),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com/ghosts.webm')
           ], 'http://example.com/ghosts.webm'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -50,13 +41,13 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce a video node', () => {
     expect(Up.parse('I like [video: ghosts][http://example.com/ghosts.webm).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I like '),
-        new SquareParenthetical([
-          new PlainText('[video: ghosts]')
+        new Up.PlainText('I like '),
+        new Up.SquareParenthetical([
+          new Up.PlainText('[video: ghosts]')
         ]),
-        new PlainText('['),
-        new Link([
-          new PlainText('example.com/ghosts.webm).')
+        new Up.PlainText('['),
+        new Up.Link([
+          new Up.PlainText('example.com/ghosts.webm).')
         ], 'http://example.com/ghosts.webm).'),
       ]))
   })
@@ -66,19 +57,19 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
 context('Unmatched opening parentheses in a video description have no affect on', () => {
   specify('parentheses surounding the URL', () => {
     expect(Up.parse('[video: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
-      new Document([
-        new Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+      new Up.Document([
+        new Up.Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
       ]))
   })
 
   specify('parentheses that follow the convention', () => {
     expect(Up.parse('([video: sad :( sad :( sounds][http://example.com/sad.ogg])')).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new NormalParenthetical([
-            new PlainText('('),
-            new Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new PlainText(')'),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.NormalParenthetical([
+            new Up.PlainText('('),
+            new Up.Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+            new Up.PlainText(')'),
           ])
         ])
       ]))
@@ -90,16 +81,16 @@ describe("Unmatched opening parentheses in a video URL", () => {
   it('do not affect any markup that follows the link', () => {
     const markup = '(^[video: West Virginia exit polling][https://example.com/a(normal(url])'
 
-    const footnote = new Footnote([
-      new Video('West Virginia exit polling', 'https://example.com/a(normal(url'),
+    const footnote = new Up.Footnote([
+      new Up.Video('West Virginia exit polling', 'https://example.com/a(normal(url'),
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
+      new Up.Document([
+        new Up.Paragraph([
           footnote
         ]),
-        new FootnoteBlock([
+        new Up.FootnoteBlock([
           footnote
         ])
       ]))

@@ -1,12 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 

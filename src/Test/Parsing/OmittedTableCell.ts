@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Table } from '../../SyntaxNodes/Table'
-import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context('When a table row has fewer cells than the header or than other rows', () => {
@@ -18,32 +15,32 @@ Command & Conquer
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Developer')]),
-            new Table.Header.Cell([new PlainText('Platform')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('Square')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Square')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Terranigma')]),
-              new Table.Row.Cell([new PlainText('Quintet')]),
-              new Table.Row.Cell([new PlainText('Super Nintendo')]),
-              new Table.Row.Cell([new PlainText('October 20, 1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Command & Conquer')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Starcraft')]),
-              new Table.Row.Cell([new PlainText('Blizzard')]),
-              new Table.Row.Cell([new PlainText('PC')]),
-              new Table.Row.Cell([new PlainText('March 31, 1998')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')]),
+              new Up.Table.Row.Cell([new Up.PlainText('PC')]),
+              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
             ])
           ])
       ]))
@@ -62,21 +59,21 @@ Final Fantasy;      1987;               This game has some interesting bugs.
 Chrono Cross;       1999;               Though not a proper sequel, it's my favorite game.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy')]),
-              new Table.Row.Cell([new PlainText('1987')]),
-              new Table.Row.Cell([new PlainText('This game has some interesting bugs.')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+              new Up.Table.Row.Cell([new Up.PlainText('This game has some interesting bugs.')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')]),
-              new Table.Row.Cell([new PlainText("Though not a proper sequel, it's my favorite game.")])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+              new Up.Table.Row.Cell([new Up.PlainText("Though not a proper sequel, it's my favorite game.")])
             ])
           ])
       ]))

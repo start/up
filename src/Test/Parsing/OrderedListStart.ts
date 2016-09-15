@@ -3,12 +3,6 @@ import Up = require('../../index')
 import { OrderedList } from '../../SyntaxNodes/OrderedList'
 
 
-function listStart(textForOrderedList: string): number {
-  const list = Up.parse(textForOrderedList).children[0] as OrderedList
-  return list.start()
-}
-
-
 describe('An ordered list that does not start with a numeral bullet', () => {
   it('does not have an explicit starting ordinal', () => {
     const markup = `
@@ -37,7 +31,7 @@ describe('An ordered list that starts with a numeral bullet', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.deep.equal(10)
+    expect(listStart(markup)).to.equal(10)
   })
 })
 
@@ -49,7 +43,7 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.deep.equal(9999)
+    expect(listStart(markup)).to.equal(9999)
   })
 
   it('can be zero', () => {
@@ -58,7 +52,7 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.deep.equal(0)
+    expect(listStart(markup)).to.equal(0)
   })
 
   it('can be negative', () => {
@@ -67,6 +61,14 @@ describe('An ordered list starting ordinal', () => {
 #. Goodbye, world!
 #) Goodbye, world!`
 
-    expect(listStart(markup)).to.deep.equal(-5)
+    expect(listStart(markup)).to.equal(-5)
   })
 })
+
+
+function listStart(orderedListMarkup: string): number {
+  const list =
+    Up.parse(orderedListMarkup).children[0] as OrderedList
+
+  return list.start()
+}

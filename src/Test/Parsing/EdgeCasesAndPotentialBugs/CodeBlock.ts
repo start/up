@@ -1,11 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('A code block', () => {
@@ -17,11 +11,11 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('My pies never turn out quite right.')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('My pies never turn out quite right.')
         ]),
-        new CodeBlock('const pie = 3.5')
+        new Up.CodeBlock('const pie = 3.5')
       ]))
   })
 
@@ -36,22 +30,22 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('My pies just never')
+          new Up.LineBlock.Line([
+            new Up.PlainText('My pies just never')
           ]),
-          new LineBlock.Line([
-            new PlainText('Turn out quite right')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Turn out quite right')
           ])
         ]),
-        new CodeBlock('const pie = 3.5')
+        new Up.CodeBlock('const pie = 3.5')
       ]))
   })
 
@@ -63,10 +57,10 @@ const pie = 3.5
 My pies never turn out quite right.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock('const pie = 3.5'),
-        new Paragraph([
-          new PlainText('My pies never turn out quite right.')
+      new Up.Document([
+        new Up.CodeBlock('const pie = 3.5'),
+        new Up.Paragraph([
+          new Up.PlainText('My pies never turn out quite right.')
         ])
       ]))
   })
@@ -79,15 +73,15 @@ context('A code block with containing zero lines of code produces an empty code 
 \`\`\`
 \`\`\``
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock(''),
+      new Up.Document([
+        new Up.CodeBlock(''),
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
     expect(Up.parse('```')).to.deep.equal(
-      new Document([
-        new CodeBlock(''),
+      new Up.Document([
+        new Up.CodeBlock(''),
       ]))
   })
 })
@@ -111,18 +105,18 @@ function factorial(n: number): number {
 document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Check out the code below!')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Check out the code below!')
         ]),
-        new CodeBlock(
+        new Up.CodeBlock(
           `function factorial(n: number): number {
   return (
     n <= 1
       ? 1
       : n * factorial(n - 1))
 }`),
-        new CodeBlock("document.write('The factorial of 5 is: ' + factorial(5))")
+        new Up.CodeBlock("document.write('The factorial of 5 is: ' + factorial(5))")
       ]))
   })
 })
@@ -135,12 +129,12 @@ context("For a streak of backticks to serve as a code block's fence, it must be 
 
 That's what the robot wrote!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new InlineQuote([new PlainText('```')])
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.InlineQuote([new Up.PlainText('```')])
         ]),
-        new Paragraph([
-          new PlainText("That's what the robot wrote!")
+        new Up.Paragraph([
+          new Up.PlainText("That's what the robot wrote!")
         ])
       ]))
   })
@@ -150,8 +144,8 @@ That's what the robot wrote!`
 \`\`\`
 "\`\`\`"`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock('"```"'),
+      new Up.Document([
+        new Up.CodeBlock('"```"'),
       ]))
   })
 })

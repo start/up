@@ -1,18 +1,13 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 context("A NSFL block's label line does not produce a NSFL block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.parse('NSFL:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('NSFL:')
+        new Up.PlainText('NSFL:')
       ]))
   })
 
@@ -22,11 +17,11 @@ NSFL:
 No!
 Avoid that initialism!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([new PlainText('NSFL:')]),
-          new LineBlock.Line([new PlainText('No!')]),
-          new LineBlock.Line([new PlainText("Avoid that initialism!")]),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('NSFL:')]),
+          new Up.LineBlock.Line([new Up.PlainText('No!')]),
+          new Up.LineBlock.Line([new Up.PlainText("Avoid that initialism!")]),
         ])
       ]))
   })
@@ -37,12 +32,12 @@ NSFL:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFL:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFL:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -54,12 +49,12 @@ NSFL:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFL:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFL:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -73,13 +68,13 @@ NSFL:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFL:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFL:')
         ]),
-        new ThematicBreak(),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.ThematicBreak(),
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })

@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Table } from '../../SyntaxNodes/Table'
-import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
@@ -17,15 +14,15 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Director')], 3)
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Director')], 3)
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
-              new Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
-              new Table.Row.Cell([new Up.PlainText('Akihiko Matsui')])
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Akihiko Matsui')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')]))
           ])
       ]))
   })
@@ -44,31 +41,31 @@ Starcraft;          Blizzard;;;                                             Marc
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Table.Header.Cell([new Up.PlainText('Marketer')]),
-            new Table.Header.Cell([new Up.PlainText('Release Date')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Marketer')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Square')], 3),
-              new Table.Row.Cell([new Up.PlainText('March 11, 1995')])
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Table.Row.Cell([new Up.PlainText('October 20, 1995')])
-            ], new Table.Header.Cell([new Up.PlainText('Terranigma')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Westwood Studios')], 3),
-              new Table.Row.Cell([new Up.PlainText('August 31, 1995')])
-            ], new Table.Header.Cell([new Up.PlainText('Command & Conquer')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Blizzard')], 3),
-              new Table.Row.Cell([new Up.PlainText('March 31, 1998')])
-            ], new Table.Header.Cell([new Up.PlainText('Starcraft')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Square')], 3),
+              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
+              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Terranigma')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 3),
+              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Command & Conquer')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 3),
+              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Starcraft')]))
           ])
       ]))
   })
@@ -88,29 +85,29 @@ Friday;;                                Printer had ink`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Most Common Word')]),
-            new Table.Header.Cell([new Up.PlainText('Magical Happenings')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Most Common Word')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Magical Happenings')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Pikachu evolved')])
-            ], new Table.Header.Cell([new Up.PlainText('Monday')], 2)),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Break room destroyed by Psionic Storm')])
-            ], new Table.Header.Cell([new Up.PlainText('Tuesday')], 2)),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Break room repaired by CSV')])
-            ], new Table.Header.Cell([new Up.PlainText('Wednesday')], 2)),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Really')]),
-              new Table.Row.Cell([new Up.PlainText('Todd finished his work')])
-            ], new Table.Header.Cell([new Up.PlainText('Thursday')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('Printer had ink')])
-            ], new Table.Header.Cell([new Up.PlainText('Friday')], 2)),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Pikachu evolved')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Monday')], 2)),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Break room destroyed by Psionic Storm')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Tuesday')], 2)),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Break room repaired by CSV')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Wednesday')], 2)),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Really')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Todd finished his work')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Thursday')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Printer had ink')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Friday')], 2)),
           ],
-          new Table.Caption([
+          new Up.Table.Caption([
             new Up.PlainText('Summary of last work week')
           ]))
       ]))

@@ -1,17 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 context('Words within HTML IDs are delimited by hyphens.', () => {
@@ -73,7 +61,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
-        new Up.Document([heading], new Document.TableOfContents([heading]))
+        new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const settings = {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
@@ -228,10 +216,10 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The ID of elements referenced by the table of contents', () => {
       const heading =
-        new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const document =
-        new Document([heading], new Document.TableOfContents([heading]))
+        new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const settings = {
         idPrefix: 'thread 11 reply 65'

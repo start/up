@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The main heading within the table of contents', () => {
@@ -14,10 +11,10 @@ describe('The main heading within the table of contents', () => {
     })
 
     const heading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)

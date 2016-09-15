@@ -1,10 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Italic } from '../../SyntaxNodes/Italic'
-import { Bold } from '../../SyntaxNodes/Bold'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by 2 underscores', () => {

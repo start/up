@@ -1,18 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
-import { Image } from '../../../SyntaxNodes/Image'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Video } from '../../../SyntaxNodes/Video'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { Link } from '../../../SyntaxNodes/Link'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Document } from '../../../SyntaxNodes/Document'
 
 
 const up = new Up({
@@ -28,8 +16,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       content: 'this site',
       url: '#some-page',
       toProduce: insideDocumentAndParagraph([
-        new Link([
-          new PlainText('this site')
+        new Up.Link([
+          new Up.PlainText('this site')
         ], '#some-page')
       ])
     })
@@ -39,8 +27,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     const markup = '[image: Chrono Cross logo](#cc-logo.png)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Image('Chrono Cross logo', 'https://example.com/page#cc-logo.png')
+      new Up.Document([
+        new Up.Image('Chrono Cross logo', 'https://example.com/page#cc-logo.png')
       ]))
   })
 
@@ -48,8 +36,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     const markup = '[audio: Chrono Cross ending theme](#radical dreamers.mp3)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Audio('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
+      new Up.Document([
+        new Up.Audio('Chrono Cross ending theme', 'https://example.com/page#radical dreamers.mp3')
       ]))
   })
 
@@ -57,8 +45,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     const markup = '[video: Chrono Cross ending cinematic][#radical dreamers.webm]'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Video('Chrono Cross ending cinematic', 'https://example.com/page#radical dreamers.webm')
+      new Up.Document([
+        new Up.Video('Chrono Cross ending cinematic', 'https://example.com/page#radical dreamers.webm')
       ]))
   })
 
@@ -67,10 +55,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -81,10 +69,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -95,10 +83,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfl([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -107,20 +95,20 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   it("is prefixed to linkified footnote URLs that start with a hash mark", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)[#cereals/lucky-charms?show=nutrition] Never have."
 
-    const footnote = new Footnote([
-      new Link([
-        new PlainText('Well, I eat one.')
+    const footnote = new Up.Footnote([
+      new Up.Link([
+        new Up.PlainText('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote,
-          new PlainText(" Never have."),
+          new Up.PlainText(" Never have."),
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 
@@ -129,9 +117,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -141,9 +129,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -153,9 +141,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -165,8 +153,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'https://example.com/page#wiki/Chrono_Chross')
       ]))
   })
@@ -176,10 +164,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -190,10 +178,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -204,10 +192,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfl([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -216,20 +204,20 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   it("is prefixed to linkified footnote URLs that start with a hash mark when the footnote part and the URL are separated by whitespace", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.) [#cereals/lucky-charms?show=nutrition] Never have."
 
-    const footnote = new Footnote([
-      new Link([
-        new PlainText('Well, I eat one.')
+    const footnote = new Up.Footnote([
+      new Up.Link([
+        new Up.PlainText('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote,
-          new PlainText(" Never have."),
+          new Up.PlainText(" Never have."),
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 
@@ -238,9 +226,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -250,9 +238,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -262,9 +250,9 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
       ]))
   })
@@ -274,8 +262,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'https://localhost/#wiki/Chrono_Chross')
       ]))
   })
@@ -285,8 +273,8 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'my-app:localhost/wiki/Chrono_Chross')
       ]))
   })

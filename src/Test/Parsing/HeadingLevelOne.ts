@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Heading } from '../../SyntaxNodes/Heading'
 
 
 describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :", () => {
@@ -19,7 +14,7 @@ Hello, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 })
 
@@ -36,7 +31,7 @@ Hello, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 
   it('may be as short as 3 characters long', () => {
@@ -50,7 +45,7 @@ Hello, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 })
 
@@ -70,7 +65,7 @@ Goodbye, world!
       new Up.Document([
         new Up.Paragraph([new Up.PlainText('Hello, world!')]),
         heading,
-      ], new Document.TableOfContents([heading])))
+      ], new Up.Document.TableOfContents([heading])))
   })
 
   it('can contain inline conventions', () => {
@@ -87,7 +82,7 @@ Goodbye, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 
   it('can have an optional overline consisting of the same characters as its underline', () => {
@@ -102,7 +97,7 @@ Hello, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])
+        new Up.Document.TableOfContents([heading])
       ))
   })
 })
@@ -121,7 +116,7 @@ Hello, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 
   it('can have its characters arranged differently than in the underline', () => {
@@ -136,6 +131,6 @@ Hello, world!
     expect(Up.parse(markup)).to.eql(
       new Up.Document(
         [heading],
-        new Document.TableOfContents([heading])))
+        new Up.Document.TableOfContents([heading])))
   })
 })

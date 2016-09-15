@@ -1,9 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Italic } from '../../SyntaxNodes/Italic'
-import { Bold } from '../../SyntaxNodes/Bold'
 
 
 // These test descriptions are a mess. Turn back now.
@@ -279,9 +276,9 @@ describe('Two inflection start delimiters, both consisting of 2 underscores,', (
     expect(Up.parse('__He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
-          new PlainText('He has won '),
-          new Bold([
-            new PlainText('six in a row!')
+          new Up.PlainText('He has won '),
+          new Up.Bold([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -293,12 +290,12 @@ context('Triply italicized text can be closed together by', () => {
   specify('3 underscores', () => {
     expect(Up.parse('_He has _won _six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Italic([
-          new PlainText('He has '),
-          new Italic([
-            new PlainText('won '),
-            new Italic([
-              new PlainText('six in a row!')
+        new Up.Italic([
+          new Up.PlainText('He has '),
+          new Up.Italic([
+            new Up.PlainText('won '),
+            new Up.Italic([
+              new Up.PlainText('six in a row!')
             ])
           ])
         ])
@@ -308,12 +305,12 @@ context('Triply italicized text can be closed together by', () => {
   specify('4 or more underscores', () => {
     expect(Up.parse('_He has _won _six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Italic([
-          new PlainText('He has '),
-          new Italic([
-            new PlainText('won '),
-            new Italic([
-              new PlainText('six in a row!')
+        new Up.Italic([
+          new Up.PlainText('He has '),
+          new Up.Italic([
+            new Up.PlainText('won '),
+            new Up.Italic([
+              new Up.PlainText('six in a row!')
             ])
           ])
         ])
@@ -326,17 +323,17 @@ describe('Quadruple underscores followed by 4 separate single closing underscore
   it('produces 4 nested italic nodes', () => {
     expect(Up.parse('____Warning:_ never_ feed_ this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Italic([
-          new Italic([
-            new Italic([
-              new Italic([
-                new PlainText('Warning:'),
+        new Up.Italic([
+          new Up.Italic([
+            new Up.Italic([
+              new Up.Italic([
+                new Up.PlainText('Warning:'),
               ]),
-              new PlainText(' never')
+              new Up.PlainText(' never')
             ]),
-            new PlainText(' feed')
+            new Up.PlainText(' feed')
           ]),
-          new PlainText(' this tarantula')
+          new Up.PlainText(' this tarantula')
         ])
       ]))
   })

@@ -1,30 +1,17 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Link } from '../../../SyntaxNodes/Link'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { Highlight } from '../../../SyntaxNodes/Highlight'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
-import { ExampleInput } from '../../../SyntaxNodes/ExampleInput'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe('An example input convention followed by a parenthesized/bracketd URL', () => {
   it('produces an example input node within a link pointing to the URL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new Link([
-          new ExampleInput('My Cart')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Link([
+          new Up.ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
-        new PlainText(' and scroll down.')
+        new Up.PlainText(' and scroll down.')
       ]))
   })
 })
@@ -38,8 +25,8 @@ context('Any example input convention followed immediately by a (second) parenth
         { text: 'https://example.com/my-cart' }
       ],
       toProduce: insideDocumentAndParagraph([
-        new Link([
-          new ExampleInput('My Cart')
+        new Up.Link([
+          new Up.ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
       ])
     })
@@ -55,8 +42,8 @@ context("As long as there is no whitespace between the example input and the lin
         text: ' \t \t https://example.com/my-cart'
       }],
       toProduce: insideDocumentAndParagraph([
-        new Link([
-          new ExampleInput('My Cart')
+        new Up.Link([
+          new Up.ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
       ])
     })
@@ -69,8 +56,8 @@ context("As long as there is no whitespace between the example input and the lin
         text: 'https://example.com/my cart'
       }],
       toProduce: insideDocumentAndParagraph([
-        new Link([
-          new ExampleInput('My Cart')
+        new Up.Link([
+          new Up.ExampleInput('My Cart')
         ], 'https://example.com/my cart'),
       ])
     })
@@ -83,8 +70,8 @@ context("As long as there is no whitespace between the example input and the lin
         text: ' \t \t example.com/my cart'
       }],
       toProduce: insideDocumentAndParagraph([
-        new Link([
-          new ExampleInput('My Cart')
+        new Up.Link([
+          new Up.ExampleInput('My Cart')
         ], 'https://example.com/my cart'),
       ])
     })
@@ -96,57 +83,57 @@ context('An example input convention is not linkified when it is directly follow
   specify('Inline spoilers', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new ExampleInput('My Cart'),
-        new InlineSpoiler([
-          new PlainText('and then buy me stuff')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.ExampleInput('My Cart'),
+        new Up.InlineSpoiler([
+          new Up.PlainText('and then buy me stuff')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Inline NSFW', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new ExampleInput('My Cart'),
-        new InlineNsfw([
-          new PlainText('and then buy me stuff')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.ExampleInput('My Cart'),
+        new Up.InlineNsfw([
+          new Up.PlainText('and then buy me stuff')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Inline NSFL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new ExampleInput('My Cart'),
-        new InlineNsfl([
-          new PlainText('and then buy me stuff')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.ExampleInput('My Cart'),
+        new Up.InlineNsfl([
+          new Up.PlainText('and then buy me stuff')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Highlights', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new ExampleInput('My Cart'),
-        new Highlight([
-          new PlainText('and then buy me stuff')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.ExampleInput('My Cart'),
+        new Up.Highlight([
+          new Up.PlainText('and then buy me stuff')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Section links', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('To view your shopping cart, press '),
-        new ExampleInput('My Cart'),
-        new SectionLink('shopping cart')
+        new Up.PlainText('To view your shopping cart, press '),
+        new Up.ExampleInput('My Cart'),
+        new Up.SectionLink('shopping cart')
       ]))
   })
 
@@ -154,20 +141,20 @@ context('An example input convention is not linkified when it is directly follow
     const markup = "To view your shopping cart, press { My Cart }[^Then buy me stuff!]."
 
     const footnotes = [
-      new Footnote([
-        new PlainText('Then buy me stuff!')
+      new Up.Footnote([
+        new Up.PlainText('Then buy me stuff!')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("To view your shopping cart, press "),
-          new ExampleInput('My Cart'),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("To view your shopping cart, press "),
+          new Up.ExampleInput('My Cart'),
           footnotes[0],
-          new PlainText('.')
+          new Up.PlainText('.')
         ]),
-        new FootnoteBlock(footnotes)
+        new Up.FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -177,9 +164,9 @@ describe('An otherwise-valid linkified example input convention with its linkify
   it('is not linkified', () => {
     expect(Up.parse('{ Call }(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new ExampleInput('Call'),
-        new NormalParenthetical([
-          new PlainText('(tel:5555555555)')
+        new Up.ExampleInput('Call'),
+        new Up.NormalParenthetical([
+          new Up.PlainText('(tel:5555555555)')
         ]),
       ]))
   })
@@ -190,8 +177,8 @@ context("When an otherwise-valid linkified example input convention's URL starts
   specify('the example input convention is not linkified', () => {
     expect(Up.parse('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new ExampleInput('Call'),
-        new PlainText('( \t tel:5555555555)')
+        new Up.ExampleInput('Call'),
+        new Up.PlainText('( \t tel:5555555555)')
       ]))
   })
 })

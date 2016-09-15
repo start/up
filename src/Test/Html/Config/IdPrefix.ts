@@ -1,25 +1,12 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -32,9 +19,9 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -47,9 +34,9 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -62,9 +49,9 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -77,9 +64,9 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -96,13 +83,13 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
 describe("A footnote's ID (as well as the ID of the footnote reference pointing to it)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const document =
-      new Document([
-        new FootnoteBlock([
-          new Footnote([
-            new PlainText("Arwings")
+      new Up.Document([
+        new Up.FootnoteBlock([
+          new Up.Footnote([
+            new Up.PlainText("Arwings")
           ], { referenceNumber: 2 }),
-          new Footnote([
-            new PlainText("Killer Bees")
+          new Up.Footnote([
+            new Up.PlainText("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -122,13 +109,13 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     })
 
     const document =
-      new Document([
-        new FootnoteBlock([
-          new Footnote([
-            new PlainText("Arwings")
+      new Up.Document([
+        new Up.FootnoteBlock([
+          new Up.Footnote([
+            new Up.PlainText("Arwings")
           ], { referenceNumber: 2 }),
-          new Footnote([
-            new PlainText("Killer Bees")
+          new Up.Footnote([
+            new Up.PlainText("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -148,13 +135,13 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     })
 
     const document =
-      new Document([
-        new FootnoteBlock([
-          new Footnote([
-            new PlainText("Arwings")
+      new Up.Document([
+        new Up.FootnoteBlock([
+          new Up.Footnote([
+            new Up.PlainText("Arwings")
           ], { referenceNumber: 2 }),
-          new Footnote([
-            new PlainText("Killer Bees")
+          new Up.Footnote([
+            new Up.PlainText("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -174,13 +161,13 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     })
 
     const document =
-      new Document([
-        new FootnoteBlock([
-          new Footnote([
-            new PlainText("Arwings")
+      new Up.Document([
+        new Up.FootnoteBlock([
+          new Up.Footnote([
+            new Up.PlainText("Arwings")
           ], { referenceNumber: 2 }),
-          new Footnote([
-            new PlainText("Killer Bees")
+          new Up.Footnote([
+            new Up.PlainText("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -200,13 +187,13 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
     })
 
     const document =
-      new Document([
-        new FootnoteBlock([
-          new Footnote([
-            new PlainText("Arwings")
+      new Up.Document([
+        new Up.FootnoteBlock([
+          new Up.Footnote([
+            new Up.PlainText("Arwings")
           ], { referenceNumber: 2 }),
-          new Footnote([
-            new PlainText("Killer Bees")
+          new Up.Footnote([
+            new Up.PlainText("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -224,9 +211,9 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -248,9 +235,9 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -271,9 +258,9 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -294,9 +281,9 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -318,9 +305,9 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineSpoiler([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineSpoiler([])
       ])
     ])
 
@@ -340,9 +327,9 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
 describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -364,9 +351,9 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -387,9 +374,9 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -410,9 +397,9 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -434,9 +421,9 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfw([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfw([])
       ])
     ])
 
@@ -456,9 +443,9 @@ describe("The ID of an inline NSFW conventions's checkbox (on both the checkbox 
 
 describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -480,9 +467,9 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -503,9 +490,9 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -526,9 +513,9 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -550,9 +537,9 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -574,8 +561,8 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -594,8 +581,8 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -613,8 +600,8 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -632,8 +619,8 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -651,8 +638,8 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new SpoilerBlock([])
+    const document = new Up.Document([
+      new Up.SpoilerBlock([])
     ])
 
     const html =
@@ -669,8 +656,8 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 
 describe("The ID of an NSFW block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -689,8 +676,8 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -708,8 +695,8 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -727,8 +714,8 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -746,8 +733,8 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new NsfwBlock([])
+    const document = new Up.Document([
+      new Up.NsfwBlock([])
     ])
 
     const html =
@@ -764,8 +751,8 @@ describe("The ID of an NSFW block's checkbox (on both the checkbox and the label
 
 describe("The ID of an NSFL block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -784,8 +771,8 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -803,8 +790,8 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: '' }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -822,8 +809,8 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: ' \t' }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -841,8 +828,8 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =
@@ -859,10 +846,10 @@ describe("The ID of an NSFL block's checkbox (on both the checkbox and the label
 
 describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -885,10 +872,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -910,10 +897,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: '' }
     })
 
-    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -935,10 +922,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: ' \t' }
     })
 
-    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -960,10 +947,10 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const heading = new Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -984,15 +971,15 @@ describe("The ID of an element referenced by the table of contents", () => {
 
 describe("The URL of a section link (which is the ID of the actual entry in the document)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const heading = new Heading([
-      new PlainText('Howdy there')
+    const heading = new Up.Heading([
+      new Up.PlainText('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('howdy', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
         heading,
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       Up.renderDocumentAndTableOfContents(document)
@@ -1015,15 +1002,15 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const heading = new Heading([
-      new PlainText('Howdy there')
+    const heading = new Up.Heading([
+      new Up.PlainText('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('howdy', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
         heading,
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -1046,15 +1033,15 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       rendering: { idPrefix: '' }
     })
 
-    const heading = new Heading([
-      new PlainText('Howdy there')
+    const heading = new Up.Heading([
+      new Up.PlainText('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('howdy', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
         heading,
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -1077,15 +1064,15 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       rendering: { idPrefix: ' \t' }
     })
 
-    const heading = new Heading([
-      new PlainText('Howdy there')
+    const heading = new Up.Heading([
+      new Up.PlainText('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('howdy', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
         heading,
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -1108,15 +1095,15 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const heading = new Heading([
-      new PlainText('Howdy there')
+    const heading = new Up.Heading([
+      new Up.PlainText('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([
-        new Paragraph([new SectionLink('howdy', heading)]),
+      new Up.Document([
+        new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
         heading,
-      ], new Document.TableOfContents([heading]))
+      ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)

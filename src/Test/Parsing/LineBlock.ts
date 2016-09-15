@@ -1,17 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Image } from '../../SyntaxNodes/Image'
-import { Video } from '../../SyntaxNodes/Video'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
 
 
 describe('Consecutive non-blank lines', () => {
@@ -21,13 +9,13 @@ Roses are red
 Violets are blue`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -45,22 +33,22 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are '),
-            new Stress([
-              new PlainText('blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are '),
+            new Up.Stress([
+              new Up.PlainText('blue')
             ])
           ]),
-          new LineBlock.Line([
-            new PlainText('Lyrics have lines')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Lyrics have lines')
           ]),
-          new LineBlock.Line([
-            new PlainText('And addresses do, too')
+          new Up.LineBlock.Line([
+            new Up.PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -80,27 +68,27 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -118,27 +106,27 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -153,22 +141,22 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
-        new ThematicBreak(),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Lyrics have lines')
+        new Up.ThematicBreak(),
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Lyrics have lines')
           ]),
-          new LineBlock.Line([
-            new PlainText('And addresses do, too')
+          new Up.LineBlock.Line([
+            new Up.PlainText('And addresses do, too')
           ]),
         ]),
       ]))
@@ -185,32 +173,32 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new Blockquote([
-          new Paragraph([
-            new PlainText('posting your address on the internet in the current year')
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('posting your address on the internet in the current year')
           ])
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -227,34 +215,34 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new OrderedList([
-          new OrderedList.Item([
-            new Paragraph([
-              new PlainText('Never post your address unless you subsequently post poetry.')
+        new Up.OrderedList([
+          new Up.OrderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Never post your address unless you subsequently post poetry.')
             ])
           ], { ordinal: 1 })
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -271,34 +259,34 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Never post your address unless you subsequently post poetry.')
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Never post your address unless you subsequently post poetry.')
             ])
           ])
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -315,30 +303,30 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -355,30 +343,30 @@ If you stay here
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('1234 Spooky Street')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('1234 Spooky Street')
           ]),
-          new LineBlock.Line([
-            new PlainText('Pepe, PA 17101')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Pepe, PA 17101')
           ])
         ]),
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ])
         ])
       ]))
@@ -393,13 +381,13 @@ Roses are red  \t  \t
 Violets are blue  \t  `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -411,13 +399,13 @@ Roses are red\\ \t
 Violets are blue\\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -429,13 +417,13 @@ Roses are red   \\ \t  \\
 Violets are blue\t  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ]),
         ]),
       ]))
@@ -447,13 +435,13 @@ Roses are red\\\\\\\t    \\  \\ \t  \\
 Violets are blue\\\\\\\\\\  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red\\')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red\\')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue\\\\')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue\\\\')
           ]),
         ]),
       ]))

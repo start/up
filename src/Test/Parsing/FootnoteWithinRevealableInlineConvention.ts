@@ -1,13 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 context("When a footnote is inside a revealable inline convention, the footnote's body in its footnote block is placed inside that same hidden revealable convention.", () => {

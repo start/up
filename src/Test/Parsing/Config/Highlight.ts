@@ -1,8 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Highlight } from '../../../SyntaxNodes/Highlight'
 
 
 describe('The "highlight" term', () => {
@@ -15,8 +13,8 @@ describe('The "highlight" term', () => {
   it('is used to indicate highlighted text', () => {
     expect(up.parse('[mark: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Highlight([
-          new PlainText('Ash fights Gary')
+        new Up.Highlight([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -33,8 +31,8 @@ describe('The "highlight" term', () => {
 
     expect(Up.parse(markup, { terms: { highlight: ' \t mark \t ' } })).to.deep.equal(
       insideDocumentAndParagraph([
-        new Highlight([
-          new PlainText('Ash fights Gary')
+        new Up.Highlight([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -44,8 +42,8 @@ describe('The "highlight" term', () => {
 
     expect(Up.parse(markup, { terms: { highlight: '*mark*' } })).to.deep.equal(
       insideDocumentAndParagraph([
-        new Highlight([
-          new PlainText('Ash fights Gary')
+        new Up.Highlight([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -55,11 +53,11 @@ describe('The "highlight" term', () => {
 
     expect(Up.parse(markup, { terms: { highlight: ['mark', 'paint'] } })).to.deep.equal(
       insideDocumentAndParagraph([
-        new Highlight([
-          new PlainText('Ash fights Gary')
+        new Up.Highlight([
+          new Up.PlainText('Ash fights Gary')
         ]),
-        new Highlight([
-          new PlainText('Ash fights Gary')
+        new Up.Highlight([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })

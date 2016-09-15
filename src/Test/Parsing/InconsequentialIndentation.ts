@@ -1,19 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { Table } from '../../SyntaxNodes/Table'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 
 
 context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {
@@ -25,12 +11,12 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
@@ -47,12 +33,12 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
@@ -70,17 +56,17 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('No, really. Goodbye.')
             ])
@@ -98,17 +84,17 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('No, really. Goodbye.')
             ])
@@ -128,12 +114,12 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
@@ -150,12 +136,12 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
@@ -173,17 +159,17 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('No, really. Goodbye.')
             ])
@@ -201,17 +187,17 @@ context('Ordered list item bullets can have a single leading space. This include
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.PlainText('No, really. Goodbye.')
             ])
@@ -232,10 +218,10 @@ Charmeleon
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
-          ], new DescriptionList.Item.Description([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
+          ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
               new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
@@ -253,10 +239,10 @@ Charmander
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
-          ], new DescriptionList.Item.Description([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
+          ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
               new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
@@ -275,13 +261,13 @@ Charizard
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')]),
-            new DescriptionList.Item.Subject([new Up.PlainText('Charizard')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charizard')])
+          ], new Up.DescriptionList.Item.Description([
+            new Up.Paragraph([
+              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -299,19 +285,19 @@ Skeltals are white
  You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -328,19 +314,19 @@ Roses are red
 You're in for a fright`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Skeltals are white')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Skeltals are white')
           ]),
-          new LineBlock.Line([
-            new PlainText('If you stay here')
+          new Up.LineBlock.Line([
+            new Up.PlainText('If you stay here')
           ]),
-          new LineBlock.Line([
-            new PlainText("You're in for a fright")
+          new Up.LineBlock.Line([
+            new Up.PlainText("You're in for a fright")
           ]),
         ])
       ]))
@@ -361,8 +347,8 @@ context("Indentation does not matter for a code block's fences, though it does m
           \`\`\`\`\`\`\`\`\`\`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock(
+      new Up.Document([
+        new Up.CodeBlock(
           `  function factorial(n: number): number {
     return (
       n <= 1
@@ -382,12 +368,12 @@ context('For some outline conventions, all extra indentation is ignored:', () =>
   \t\t\t\t Aren't you this way?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I'm just a normal guy who eats only when it's raining outside.")
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I'm just a normal guy who eats only when it's raining outside.")
         ]),
-        new Paragraph([
-          new PlainText("Aren't you this way?")
+        new Up.Paragraph([
+          new Up.PlainText("Aren't you this way?")
         ])
       ]))
   })
@@ -401,16 +387,16 @@ Hello, world!
  \t ~~~~~~~~~~~~~~~`
 
     const worldHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const coreHeading =
-      new Heading([new PlainText('Hello, core!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Hello, core!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         worldHeading,
         coreHeading,
-      ], new Document.TableOfContents([worldHeading, coreHeading])))
+      ], new Up.Document.TableOfContents([worldHeading, coreHeading])))
   })
 
   specify('Spoiler blocks', () => {
@@ -422,13 +408,13 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText("I like shorts! They're comfy and easy to wear!")
+      new Up.Document([
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
           ]),
-          new Paragraph([
-            new PlainText("I like blankets, too.")
+          new Up.Paragraph([
+            new Up.PlainText("I like blankets, too.")
           ])
         ])
       ]))
@@ -443,13 +429,13 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText("I like shorts! They're comfy and easy to wear!")
+      new Up.Document([
+        new Up.NsfwBlock([
+          new Up.Paragraph([
+            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
           ]),
-          new Paragraph([
-            new PlainText("I like blankets, too.")
+          new Up.Paragraph([
+            new Up.PlainText("I like blankets, too.")
           ])
         ])
       ]))
@@ -464,13 +450,13 @@ Hello, world!
 \t I like blankets, too.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new NsflBlock([
-          new Paragraph([
-            new PlainText("I like shorts! They're comfy and easy to wear!")
+      new Up.Document([
+        new Up.NsflBlock([
+          new Up.Paragraph([
+            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
           ]),
-          new Paragraph([
-            new PlainText("I like blankets, too.")
+          new Up.Paragraph([
+            new Up.PlainText("I like blankets, too.")
           ])
         ])
       ]))
@@ -488,27 +474,27 @@ Hello, world!
  \t  Chrono Cross; 1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy')]),
-              new Table.Row.Cell([new PlainText('1987')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1987')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Final Fantasy II')]),
-              new Table.Row.Cell([new PlainText('1988')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1988')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ]),
           ])
       ]))
@@ -523,23 +509,23 @@ Hello, world!
   0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('1')]),
-            new Table.Header.Cell([new PlainText('0')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('true')]),
-              new Table.Row.Cell([new PlainText('false')]),
-            ], new Table.Header.Cell([new PlainText('1')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('false')]),
-              new Table.Row.Cell([new PlainText('false')])
-            ], new Table.Header.Cell([new PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ],
-          new Table.Caption([new PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
       ]))
   })
 
@@ -551,13 +537,13 @@ Hello, world!
 > I like blankets, too.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new Paragraph([
-              new PlainText("I like shorts! They're comfy and easy to wear!")
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
             ]),
-            new Paragraph([
-              new PlainText("I like blankets, too.")
+            new Up.Paragraph([
+              new Up.PlainText("I like blankets, too.")
             ])
           ])
         ]))
@@ -570,13 +556,13 @@ Hello, world!
 \t \t > I like blankets, too.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new Paragraph([
-              new PlainText("I like shorts! They're comfy and easy to wear!")
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
             ]),
-            new Paragraph([
-              new PlainText("I like blankets, too.")
+            new Up.Paragraph([
+              new Up.PlainText("I like blankets, too.")
             ])
           ])
         ]))
@@ -590,14 +576,14 @@ Hello, world!
 > I like poems! They're comfy and easy to write!`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new LineBlock([
-              new LineBlock.Line([new PlainText('Roses are red')]),
-              new LineBlock.Line([new PlainText('Violets are blue')])
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.LineBlock([
+              new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
+              new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
             ]),
-            new Paragraph([
-              new PlainText("I like poems! They're comfy and easy to write!")
+            new Up.Paragraph([
+              new Up.PlainText("I like poems! They're comfy and easy to write!")
             ])
           ])
         ]))
@@ -610,13 +596,13 @@ Hello, world!
 >\t I like blankets, too.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new Paragraph([
-              new PlainText("I like shorts! They're comfy and easy to wear!")
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
             ]),
-            new Paragraph([
-              new PlainText("I like blankets, too.")
+            new Up.Paragraph([
+              new Up.PlainText("I like blankets, too.")
             ])
           ])
         ]))
@@ -633,14 +619,14 @@ context("Within list items, extra indentation for outline conventions is ignored
  \t\t How are we today?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new OrderedList([
-          new OrderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Lavender Town!')
+      new Up.Document([
+        new Up.OrderedList([
+          new Up.OrderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Lavender Town!')
             ]),
-            new Paragraph([
-              new PlainText('How are we today?')
+            new Up.Paragraph([
+              new Up.PlainText('How are we today?')
             ])
           ], { ordinal: 1 })
         ])
@@ -654,14 +640,14 @@ context("Within list items, extra indentation for outline conventions is ignored
  \t\t Now.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Buy milk.')
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Buy milk.')
             ]),
-            new Paragraph([
-              new PlainText('Now.')
+            new Up.Paragraph([
+              new Up.PlainText('Now.')
             ])
           ])
         ])
@@ -676,16 +662,16 @@ Charmander
 \t Does not evolve into Kadabra.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+      new Up.Document([
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+          ], new Up.DescriptionList.Item.Description([
+            new Up.Paragraph([
+              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ]),
-            new Paragraph([
-              new PlainText('Does not evolve into Kadabra.')
+            new Up.Paragraph([
+              new Up.PlainText('Does not evolve into Kadabra.')
             ])
           ]))
         ])

@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Table } from '../../../SyntaxNodes/Table'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe("A table header cell", () => {
@@ -17,19 +12,19 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game [;')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game [;')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ])
       ]))
@@ -44,19 +39,19 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game :\\')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game :\\')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ])
       ]))
@@ -74,19 +69,19 @@ Chrono Trigger [\\;;  1995
 Chrono Cross;         1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger [;')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger [;')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ])
       ]))
@@ -101,19 +96,19 @@ Chrono Trigger :\\\\;   1995
 Chrono Cross;           1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger :\\')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger :\\')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ])
       ]))
@@ -129,9 +124,9 @@ Table: my favorite outline convention.
 
 I almost didn't include them; however, I realized tables are too useful to leave out.`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('Table: my favorite outline convention.')]),
-        new Paragraph([new PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('Table: my favorite outline convention.')]),
+        new Up.Paragraph([new Up.PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
       ]))
   })
 })
@@ -148,18 +143,18 @@ Game;           Release Date
 I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]),
           [],
-          new Table.Caption([
-            new PlainText('Good games on the Sega Genesis')
+          new Up.Table.Caption([
+            new Up.PlainText('Good games on the Sega Genesis')
           ])),
-        new Paragraph([
-          new PlainText("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
+        new Up.Paragraph([
+          new Up.PlainText("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
         ])
       ]))
   })
@@ -178,25 +173,25 @@ Underline
 ****`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Underline')]),
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Underline')]),
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('====')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('====')]),
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('####')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('####')]),
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('****')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('****')]),
             ])
           ],
-          new Table.Caption([
-            new PlainText('Most common underlines for top-level headings '),
-            new NormalParenthetical([
-              new PlainText('(from most to least common)')
+          new Up.Table.Caption([
+            new Up.PlainText('Most common underlines for top-level headings '),
+            new Up.NormalParenthetical([
+              new Up.PlainText('(from most to least common)')
             ])
           ]))
       ]))
@@ -215,19 +210,19 @@ Chrono Trigger;       1995
 Chrono Cross;         1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game`s Title')]),
-              new Table.Header.Cell([new PlainText('Game`s Release Date')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('Game`s Title')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Game`s Release Date')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1995')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1995')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1999')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1999')])
               ])
             ])
         ]))
@@ -242,19 +237,19 @@ Square\`s Chrono Trigger;     1990\`s
 Square\`s Chrono Cross;       1990\`s`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Release Decade')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Release Decade')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Square`s Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1990`s')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Square`s Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1990`s')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Square`s Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1990`s')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Square`s Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1990`s')])
               ])
             ])
         ]))
@@ -272,19 +267,19 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('{: Game')]),
-              new Table.Header.Cell([new PlainText('Release Date :}')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('{: Game')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Release Date :}')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1995')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1995')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1999')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1999')])
               ])
             ])
         ]))
@@ -299,19 +294,19 @@ Game;                 Release Date
 Chrono Cross;         1999`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Release Date')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('{: Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1995 :}')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('{: Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1995 :}')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1999')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1999')])
               ])
             ])
         ]))

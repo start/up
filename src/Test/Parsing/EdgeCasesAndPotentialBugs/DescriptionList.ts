@@ -1,11 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
-import { DescriptionList } from '../../../SyntaxNodes/DescriptionList'
 
 
 context('The terms for revealable outline conventions', () => {
@@ -21,31 +15,31 @@ context('The terms for revealable outline conventions', () => {
   Something that could ruin your life.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Spoiler')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Something that could ruin your favorite movie.')
+      new Up.Document([
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Spoiler')])
+          ], new Up.DescriptionList.Item.Description([
+            new Up.Paragraph([
+              new Up.PlainText('Something that could ruin your favorite movie.')
             ])
           ])),
 
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('NSFW')])
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('NSFW')])
           ],
-            new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Something that could get you fired.')
+            new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('Something that could get you fired.')
               ])
             ])),
 
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('NSFL')])
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('NSFL')])
           ],
-            new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Something that could ruin your life.')
+            new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('Something that could ruin your life.')
               ])
             ]))
         ])
@@ -64,22 +58,22 @@ context('The terms for tables and charts', () => {
   In Up, a chart is simply a table with a second, vertical header.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Table')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
+      new Up.Document([
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Table')])
+          ], new Up.DescriptionList.Item.Description([
+            new Up.Paragraph([
+              new Up.PlainText('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
             ])
           ])),
 
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Chart')])
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Chart')])
           ],
-            new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('In Up, a chart is simply a table with a second, vertical header.')
+            new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('In Up, a chart is simply a table with a second, vertical header.')
               ])
             ]))
         ])
@@ -103,35 +97,35 @@ Night Shade
   Ghost type moves.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-          ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+      new Up.Document([
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+          ], new Up.DescriptionList.Item.Description([
+            new Up.Paragraph([
+              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ]))
         ]),
 
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText("Charmanders're red")
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText("Charmanders're red")
           ]),
-          new LineBlock.Line([
-            new PlainText("Squirtles are blue")
+          new Up.LineBlock.Line([
+            new Up.PlainText("Squirtles are blue")
           ]),
         ]),
 
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Subject([new PlainText('Lick')]),
-            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
           ],
-            new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Ghost type moves.')
+            new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('Ghost type moves.')
               ])
             ]))
         ])
@@ -157,39 +151,39 @@ Night Shade
   Ghost type moves.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-            ], new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+        new Up.Document([
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            ], new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
               ])
             ]))
           ]),
 
-          new LineBlock([
-            new LineBlock.Line([
-              new PlainText("Charmanders're red")
+          new Up.LineBlock([
+            new Up.LineBlock.Line([
+              new Up.PlainText("Charmanders're red")
             ]),
-            new LineBlock.Line([
-              new PlainText("Squirtles are blue")
+            new Up.LineBlock.Line([
+              new Up.PlainText("Squirtles are blue")
             ]),
           ]),
 
-          new Paragraph([
-            new PlainText("Isn't that a good poem?")
+          new Up.Paragraph([
+            new Up.PlainText("Isn't that a good poem?")
           ]),
 
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-              new DescriptionList.Item.Subject([new PlainText('Lick')]),
-              new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
             ],
-              new DescriptionList.Item.Description([
-                new Paragraph([
-                  new PlainText('Ghost type moves.')
+              new Up.DescriptionList.Item.Description([
+                new Up.Paragraph([
+                  new Up.PlainText('Ghost type moves.')
                 ])
               ]))
           ])
@@ -214,40 +208,40 @@ Night Shade
   Ghost type moves.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
-            ], new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+        new Up.Document([
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            ], new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
               ])
             ]))
           ]),
 
-          new LineBlock([
-            new LineBlock.Line([
-              new PlainText("Charmanders're red")
+          new Up.LineBlock([
+            new Up.LineBlock.Line([
+              new Up.PlainText("Charmanders're red")
             ]),
-            new LineBlock.Line([
-              new PlainText("Squirtles are blue")
+            new Up.LineBlock.Line([
+              new Up.PlainText("Squirtles are blue")
             ]),
           ]),
 
-          new ThematicBreak(),
-          new Paragraph([
-            new PlainText("Isn't that a good poem?")
+          new Up.ThematicBreak(),
+          new Up.Paragraph([
+            new Up.PlainText("Isn't that a good poem?")
           ]),
 
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-              new DescriptionList.Item.Subject([new PlainText('Lick')]),
-              new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
             ],
-              new DescriptionList.Item.Description([
-                new Paragraph([
-                  new PlainText('Ghost type moves.')
+              new Up.DescriptionList.Item.Description([
+                new Up.Paragraph([
+                  new Up.PlainText('Ghost type moves.')
                 ])
               ]))
           ])

@@ -3,10 +3,8 @@ import Up = require('../../../index')
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
 import { insideDocumentAndParagraph } from '../Helpers'
 import { settingsFor } from './Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
 import { distinct } from '../../../CollectionHelpers'
+import { Document } from '../../../SyntaxNodes/Document'
 
 
 // Elsewhere, we verify that these terms work.
@@ -574,8 +572,8 @@ context('Settings settings are totally independent. When one setting is changed,
 
     expect(up.parse('[SPOILER: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('Ash fights Gary')
+        new Up.InlineSpoiler([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })
@@ -590,8 +588,8 @@ context('Settings settings are totally independent. When one setting is changed,
 
     expect(document).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('Ash fights Gary')
+        new Up.InlineSpoiler([
+          new Up.PlainText('Ash fights Gary')
         ])
       ]))
   })

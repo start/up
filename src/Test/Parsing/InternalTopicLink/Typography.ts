@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
 
 
 describe('The snippet from a section link', () => {
@@ -22,24 +17,24 @@ I never lie
 Not quite true. For example, see [section: I drink soda--exclusively].`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda–exclusively')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda–exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           neverLieHeading,
-          new Paragraph([
-            new PlainText('Not quite true. For example, see '),
-            new SectionLink('I drink soda–exclusively', sodaHeading),
-            new PlainText('.')
+          new Up.Paragraph([
+            new Up.PlainText('Not quite true. For example, see '),
+            new Up.SectionLink('I drink soda–exclusively', sodaHeading),
+            new Up.PlainText('.')
           ])
-        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Em dashes', () => {
@@ -55,24 +50,24 @@ I never lie
 Not quite true. For example, see [section: I drink soda---exclusively].`
 
       const sodaHeading =
-        new Heading([new PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           neverLieHeading,
-          new Paragraph([
-            new PlainText('Not quite true. For example, see '),
-            new SectionLink('I drink soda—exclusively', sodaHeading),
-            new PlainText('.')
+          new Up.Paragraph([
+            new Up.PlainText('Not quite true. For example, see '),
+            new Up.SectionLink('I drink soda—exclusively', sodaHeading),
+            new Up.PlainText('.')
           ])
-        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Plus-minus signs', () => {
@@ -88,24 +83,24 @@ I never lie
 Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
 
       const sodaHeading =
-        new Heading([new PlainText('Daily, I drink 9 cans of soda ±2')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('Daily, I drink 9 cans of soda ±2')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           neverLieHeading,
-          new Paragraph([
-            new PlainText('Not quite true. For example, see '),
-            new SectionLink('I drink 9 cans of soda ±2', sodaHeading),
-            new PlainText('.')
+          new Up.Paragraph([
+            new Up.PlainText('Not quite true. For example, see '),
+            new Up.SectionLink('I drink 9 cans of soda ±2', sodaHeading),
+            new Up.PlainText('.')
           ])
-        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
     specify('Plus-minus signs', () => {
@@ -121,24 +116,24 @@ I never lie
 Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
 
       const sodaHeading =
-        new Heading([new PlainText('Daily, I drink 9 cans of soda… hourly')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.PlainText('Daily, I drink 9 cans of soda… hourly')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           sodaHeading,
-          new Paragraph([
-            new PlainText('Actually, I only drink milk.')
+          new Up.Paragraph([
+            new Up.PlainText('Actually, I only drink milk.')
           ]),
           neverLieHeading,
-          new Paragraph([
-            new PlainText('Not quite true. For example, see '),
-            new SectionLink('I drink 9 cans of soda… hourly', sodaHeading),
-            new PlainText('.')
+          new Up.Paragraph([
+            new Up.PlainText('Not quite true. For example, see '),
+            new Up.SectionLink('I drink 9 cans of soda… hourly', sodaHeading),
+            new Up.PlainText('.')
           ])
-        ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 })
@@ -158,24 +153,24 @@ I never lie
 Not quite true. For example, see [section: I drink soda---exclusively].`
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
+        new Up.Paragraph([
+          new Up.PlainText('Actually, I only drink milk.')
         ]),
         neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new SectionLink('I drink soda—exclusively', sodaHeading),
-          new PlainText('.')
+        new Up.Paragraph([
+          new Up.PlainText('Not quite true. For example, see '),
+          new Up.SectionLink('I drink soda—exclusively', sodaHeading),
+          new Up.PlainText('.')
         ])
-      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
   specify('The entry uses the typographical convention but the section link uses the corresponding fancy character itself', () => {
@@ -191,23 +186,23 @@ I never lie
 Not quite true. For example, see [section: I drink soda—exclusively].`
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I drink soda—exclusively')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
+        new Up.Paragraph([
+          new Up.PlainText('Actually, I only drink milk.')
         ]),
         neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new SectionLink('I drink soda—exclusively', sodaHeading),
-          new PlainText('.')
+        new Up.Paragraph([
+          new Up.PlainText('Not quite true. For example, see '),
+          new Up.SectionLink('I drink soda—exclusively', sodaHeading),
+          new Up.PlainText('.')
         ])
-      ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 })

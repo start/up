@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { Link } from '../../SyntaxNodes/Link'
 
 
 context('Bracketed (square bracketed or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
@@ -219,15 +214,15 @@ describe('An audio description (enclosed in square brackets)', () => {
 describe('An audio URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('(audio: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
-      new Document([
-        new Audio('ghosts eating luggage', 'http://example.com/?state=[NE]')
+      new Up.Document([
+        new Up.Audio('ghosts eating luggage', 'http://example.com/?state=[NE]')
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('(audio: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.deep.equal(
-      new Document([
-        new Audio('ghosts eating luggage', 'http://example.com/?[state=[NE]]')
+      new Up.Document([
+        new Up.Audio('ghosts eating luggage', 'http://example.com/?[state=[NE]]')
       ]))
   })
 })
@@ -236,15 +231,15 @@ describe('An audio URL (enclosed in square brackets)', () => {
 describe('An audio URL (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('[audio: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
-      new Document([
-        new Audio('ghosts eating luggage', 'http://example.com/?state=(NE)')
+      new Up.Document([
+        new Up.Audio('ghosts eating luggage', 'http://example.com/?state=(NE)')
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
     expect(Up.parse('[audio: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.deep.equal(
-      new Document([
-        new Audio('ghosts eating luggage', 'http://example.com/?(state=(NE))')
+      new Up.Document([
+        new Up.Audio('ghosts eating luggage', 'http://example.com/?(state=(NE))')
       ]))
   })
 })
@@ -253,22 +248,22 @@ describe('An audio URL (enclosed in parentheses)', () => {
 context('Audio descriptions are evaluated for typographical conventions:', () => {
   specify('En dashes', () => {
     expect(Up.parse('[audio: ghosts--eating luggage] (http://example.com/poltergeists.webm)')).to.deep.equal(
-      new Document([
-        new Audio('ghosts–eating luggage', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghosts–eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
   specify('Em dashes', () => {
     expect(Up.parse('[audio: ghosts---eating luggage] (http://example.com/poltergeists.webm)')).to.deep.equal(
-      new Document([
-        new Audio('ghosts—eating luggage', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghosts—eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
   specify('Plus-minus signs', () => {
     expect(Up.parse('[audio: ghosts eating luggage 10 pieces of luggage +-9] (http://example.com/poltergeists.webm)')).to.deep.equal(
-      new Document([
-        new Audio('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghosts eating luggage 10 pieces of luggage ±9', 'http://example.com/poltergeists.webm')
       ]))
   })
 })

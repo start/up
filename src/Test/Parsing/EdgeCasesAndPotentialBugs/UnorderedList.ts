@@ -1,12 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { CodeBlock } from '../../../SyntaxNodes/CodeBlock'
 
 
 describe('An unordered list with a single item', () => {
@@ -17,16 +10,16 @@ describe('An unordered list with a single item', () => {
 -----------`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new ThematicBreak(),
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Mittens')
+      new Up.Document([
+        new Up.ThematicBreak(),
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Mittens')
             ])
           ])
         ]),
-        new ThematicBreak()
+        new Up.ThematicBreak()
       ]))
   })
 })
@@ -43,33 +36,33 @@ Lyrics have lines
 And addresses do, too`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Roses are red')
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Roses are red')
           ]),
-          new LineBlock.Line([
-            new PlainText('Violets are blue')
+          new Up.LineBlock.Line([
+            new Up.PlainText('Violets are blue')
           ])
         ]),
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Kansas')
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Kansas')
             ])
           ]),
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Nebraska')
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Nebraska')
             ])
           ])
         ]),
-        new LineBlock([
-          new LineBlock.Line([
-            new PlainText('Lyrics have lines')
+        new Up.LineBlock([
+          new Up.LineBlock.Line([
+            new Up.PlainText('Lyrics have lines')
           ]),
-          new LineBlock.Line([
-            new PlainText('And addresses do, too')
+          new Up.LineBlock.Line([
+            new Up.PlainText('And addresses do, too')
           ])
         ])
       ]))
@@ -87,28 +80,28 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Iowa')
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Iowa')
             ])
           ]),
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('New Hampshire')
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('New Hampshire')
             ])
           ])
         ]),
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Clinton')
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Clinton')
             ])
           ]),
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Sanders')
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Sanders')
             ])
           ])
         ])
@@ -129,29 +122,29 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 - Sanders`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Iowa')
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Iowa')
             ])
           ]),
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('New Hampshire')
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('New Hampshire')
             ])
           ])
         ]),
-        new ThematicBreak(),
-        new UnorderedList([
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Clinton')
+        new Up.ThematicBreak(),
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Clinton')
             ])
           ]),
-          new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Sanders')
+          new Up.UnorderedList.Item([
+            new Up.Paragraph([
+              new Up.PlainText('Sanders')
             ])
           ])
         ])
@@ -168,10 +161,10 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new CodeBlock('const x = 0')
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.CodeBlock('const x = 0')
           ])
         ])
       ]))
@@ -188,10 +181,10 @@ describe('A code block in a list item', () => {
   \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new CodeBlock('const x = 0\n\n\n\nconst y = 0')
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.CodeBlock('const x = 0\n\n\n\nconst y = 0')
           ])
         ])
       ]))

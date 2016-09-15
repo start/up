@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Image } from '../../SyntaxNodes/Image'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 
 describe('Square bracketed text starting with "NSFW:"', () => {

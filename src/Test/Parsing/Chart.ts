@@ -1,11 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { Table } from '../../SyntaxNodes/Table'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
-import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context('A chart is simply a table with a second, vertical header. Its syntax is almost exactly the same, except it uses the term "chart" instead of "table".', () => {
@@ -20,21 +14,21 @@ Chart: AND operator logic
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('1')]),
-            new Table.Header.Cell([new Up.PlainText('0')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('true')]),
-              new Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Table.Header.Cell([new Up.PlainText('1')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('false')]),
-              new Table.Row.Cell([new Up.PlainText('false')])
-            ], new Table.Header.Cell([new Up.PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ],
-          new Table.Caption([new Up.PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
       ]))
   })
 })
@@ -52,21 +46,21 @@ Chart:
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('1')]),
-            new Table.Header.Cell([new Up.PlainText('0')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
 
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('true')]),
-              new Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
 
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('false')]),
-              new Table.Row.Cell([new Up.PlainText('false')])
-            ], new Table.Header.Cell([new Up.PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ])
       ]))
   })
@@ -82,21 +76,21 @@ Chart
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('1')]),
-            new Table.Header.Cell([new Up.PlainText('0')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
 
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('true')]),
-              new Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
 
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('false')]),
-              new Table.Row.Cell([new Up.PlainText('false')])
-            ], new Table.Header.Cell([new Up.PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ])
       ]))
   })
@@ -118,22 +112,22 @@ Chrono Cross;     1999`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Release Date')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -152,22 +146,22 @@ Chart:
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Release Date')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -185,21 +179,21 @@ Chart: AND operator logic
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('1')]),
-            new Table.Header.Cell([new Up.PlainText('0')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('true')]),
-              new Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Table.Header.Cell([new Up.PlainText('1')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('false')]),
-              new Table.Row.Cell([new Up.PlainText('false')])
-            ], new Table.Header.Cell([new Up.PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ],
-          new Table.Caption([new Up.PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
       ]))
   })
 })
@@ -222,25 +216,25 @@ I don't like video games; in fact, I never have.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new Up.PlainText('Release Date')])
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ]),
         new Up.Paragraph([
-          new PlainText("I don't like video games; in fact, I never have.")
+          new Up.PlainText("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -260,27 +254,27 @@ Chrono Cross;     1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1987')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1988')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ]),
-        new Paragraph([
-          new PlainText("I don't like video games; in fact, I never have.")
+        new Up.Paragraph([
+          new Up.PlainText("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -301,28 +295,28 @@ Chrono Cross;     1999
 I don't like video games; in fact, I never have.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1987')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1988')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ]),
-        new ThematicBreak(),
-        new Paragraph([
-          new PlainText("I don't like video games; in fact, I never have.")
+        new Up.ThematicBreak(),
+        new Up.Paragraph([
+          new Up.PlainText("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -343,25 +337,25 @@ Thursday
 Friday`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Magical Happenings')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Magical Happenings')])
           ]), [
-            new Table.Row(
-              [], new Table.Header.Cell([new PlainText('Monday')])),
-            new Table.Row(
-              [], new Table.Header.Cell([new PlainText('Tuesday')])),
-            new Table.Row(
-              [], new Table.Header.Cell([new PlainText('Wednesday')])),
-            new Table.Row(
-              [], new Table.Header.Cell([new PlainText('Thursday')])),
-            new Table.Row(
-              [], new Table.Header.Cell([new PlainText('Friday')]))
+            new Up.Table.Row(
+              [], new Up.Table.Header.Cell([new Up.PlainText('Monday')])),
+            new Up.Table.Row(
+              [], new Up.Table.Header.Cell([new Up.PlainText('Tuesday')])),
+            new Up.Table.Row(
+              [], new Up.Table.Header.Cell([new Up.PlainText('Wednesday')])),
+            new Up.Table.Row(
+              [], new Up.Table.Header.Cell([new Up.PlainText('Thursday')])),
+            new Up.Table.Row(
+              [], new Up.Table.Header.Cell([new Up.PlainText('Friday')]))
           ],
-          new Table.Caption([
-            new PlainText('Magical happenings this past work week')
+          new Up.Table.Caption([
+            new Up.PlainText('Magical happenings this past work week')
           ]))
       ]))
   })
@@ -379,34 +373,34 @@ Command & Conquer;  Westwood Studios;     PC;               August 31, 1995
 Starcraft;          Blizzard;             PC;               March 31, 1998`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Developer')]),
-            new Table.Header.Cell([new PlainText('Platform')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Square')]),
-              new Table.Row.Cell([new PlainText('Super Nintendo')]),
-              new Table.Row.Cell([new PlainText('March 11, 1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Quintet')]),
-              new Table.Row.Cell([new PlainText('Super Nintendo')]),
-              new Table.Row.Cell([new PlainText('October 20, 1995')])
-            ], new Table.Header.Cell([new PlainText('Terranigma')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Westwood Studios')]),
-              new Table.Row.Cell([new PlainText('PC')]),
-              new Table.Row.Cell([new PlainText('August 31, 1995')])
-            ], new Table.Header.Cell([new PlainText('Command & Conquer')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Blizzard')]),
-              new Table.Row.Cell([new PlainText('PC')]),
-              new Table.Row.Cell([new PlainText('March 31, 1998')])
-            ], new Table.Header.Cell([new PlainText('Starcraft')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Square')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
+              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Terranigma')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')]),
+              new Up.Table.Row.Cell([new Up.PlainText('PC')]),
+              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Command & Conquer')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')]),
+              new Up.Table.Row.Cell([new Up.PlainText('PC')]),
+              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Starcraft')]))
           ])
       ]))
   })
@@ -426,29 +420,29 @@ Chrono Trigger;     1995
 Chrono Cross;       1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([
-              new PlainText('Release Date '),
-              new NormalParenthetical([
-                new PlainText('(year only)')
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([
+              new Up.PlainText('Release Date '),
+              new Up.NormalParenthetical([
+                new Up.PlainText('(year only)')
               ])
             ])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1987')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1988')]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -463,18 +457,18 @@ Final Fantasy;      Square
 Super Mario Kart;   Nintendo`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Publisher; Developer')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Publisher; Developer')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Square')])
-            ], new Table.Header.Cell([new PlainText('Final Fantasy')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Nintendo')])
-            ], new Table.Header.Cell([new PlainText('Super Mario Kart')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Square')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Super Mario Kart')]))
           ])
       ]))
   })
@@ -494,34 +488,34 @@ Chrono Trigger;         1995
 Chrono Cross;           1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1987')]),
-            ], new Table.Header.Cell([
-              new PlainText('Final Fantasy '),
-              new NormalParenthetical([
-                new PlainText('(I)')
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+            ], new Up.Table.Header.Cell([
+              new Up.PlainText('Final Fantasy '),
+              new Up.NormalParenthetical([
+                new Up.PlainText('(I)')
               ])
             ])),
-            new Table.Row([
-              new Table.Row.Cell([
-                new PlainText('1988 '),
-                new NormalParenthetical([
-                  new PlainText('(almost 1989)')
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([
+                new Up.PlainText('1988 '),
+                new Up.NormalParenthetical([
+                  new Up.PlainText('(almost 1989)')
                 ])
               ]),
-            ], new Table.Header.Cell([new PlainText('Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -536,18 +530,18 @@ Final Fantasy\\; Final Fantasy II;  Square [\\; Soft
 Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Publisher')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Publisher')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Square [; Soft')])
-            ], new Table.Header.Cell([new PlainText('Final Fantasy; Final Fantasy II')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Nintendo')])
-            ], new Table.Header.Cell([new PlainText('Super Mario Kart; Mario Kart 64')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Square [; Soft')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy; Final Fantasy II')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Super Mario Kart; Mario Kart 64')]))
           ])
       ]))
   })
@@ -564,23 +558,23 @@ Chart:  \t  \t  \t
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('1')]),
-            new Table.Header.Cell([new PlainText('0')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
 
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('true')]),
-              new Table.Row.Cell([new PlainText('false')]),
-            ], new Table.Header.Cell([new PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
 
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('false')]),
-              new Table.Row.Cell([new PlainText('false')])
-            ], new Table.Header.Cell([new PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ])
       ]))
   })
@@ -594,23 +588,23 @@ Chart:  \t  \t  \t
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('1')]),
-            new Table.Header.Cell([new PlainText('0')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('1')]),
+            new Up.Table.Header.Cell([new Up.PlainText('0')])
           ]), [
 
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('true')]),
-              new Table.Row.Cell([new PlainText('false')]),
-            ], new Table.Header.Cell([new PlainText('1')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('true')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
 
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('false')]),
-              new Table.Row.Cell([new PlainText('false')])
-            ], new Table.Header.Cell([new PlainText('0')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              new Up.Table.Row.Cell([new Up.PlainText('false')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
           ])
       ]))
   })
@@ -627,21 +621,21 @@ Chrono Trigger;   Super Nintendo;       1995
 Chrono Cross;     Playstation;          1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('[: Platform')]),
-            new Table.Header.Cell([new PlainText('Release Date :]')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('[: Platform')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date :]')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Super Nintendo')]),
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Playstation')]),
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Playstation')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -655,21 +649,21 @@ Chrono Trigger;   Super Nintendo;     1995
 Chrono Cross;     [: Playstation;     1999 :]`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Platform')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Super Nintendo')]),
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('[: Playstation')]),
-              new Table.Row.Cell([new PlainText('1999 :]')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('[: Playstation')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999 :]')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -683,21 +677,21 @@ Chart:
 Chrono Cross;         Playstation;         1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Platform')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Super :] Nintendo')]),
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('[: Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Playstation')]),
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Super :] Nintendo')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('[: Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Playstation')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -711,11 +705,11 @@ Chart
 	      Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]),
           [])
       ]))

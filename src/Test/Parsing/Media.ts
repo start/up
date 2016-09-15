@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Link } from '../../SyntaxNodes/Link'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Image } from '../../SyntaxNodes/Image'
-import { Video } from '../../SyntaxNodes/Video'
 
 
 context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {
@@ -13,10 +8,10 @@ context('If a line consists solely of media conventions, those media conventions
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -25,10 +20,10 @@ context('If a line consists solely of media conventions, those media conventions
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -37,10 +32,10 @@ context('If a line consists solely of media conventions, those media conventions
       ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t '
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      new Up.Document([
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ]))
   })
 
@@ -51,11 +46,11 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [[audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm)] (hauntedhouse.com)  \t '
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Link([
-            new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Up.Document([
+          new Up.Link([
+            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com')
         ]))
     })
@@ -65,11 +60,11 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [audio: ghostly howling] [http://example.com/ghosts.ogg] \t ([image: haunted house] [http://example.com/hauntedhouse.svg] \t [video: ghosts eating luggage] [http://example.com/poltergeists.webm]) (hauntedhouse.com)  \t '
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-          new Link([
-            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+        new Up.Document([
+          new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
+          new Up.Link([
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+            new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://hauntedhouse.com')
         ]))
     })
@@ -79,15 +74,15 @@ context('If a line consists solely of media conventions, those media conventions
         ' \t [audio: ghostly howling] (http://example.com/ghosts.ogg) (ghosts.com) \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) (poltergeists.com) \t '
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Link([
-            new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
+        new Up.Document([
+          new Up.Link([
+            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg')
           ], 'https://ghosts.com'),
-          new Link([
-            new Image('haunted house', 'http://example.com/hauntedhouse.svg')
+          new Up.Link([
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
           ], 'https://hauntedhouse.com'),
-          new Link([
-            new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+          new Up.Link([
+            new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
           ], 'https://poltergeists.com')
         ]))
     })

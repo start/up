@@ -1,23 +1,17 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { Stress } from '../../../SyntaxNodes/Stress'
-import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
 
 
 describe('Emphasized text containing an unmatched opening delimiter requiring backtracking', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.parse('Hello, *my (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, '),
-        new Emphasis([
-          new PlainText('my (^world')
+        new Up.PlainText('Hello, '),
+        new Up.Emphasis([
+          new Up.PlainText('my (^world')
         ]),
-        new PlainText('!!')
+        new Up.PlainText('!!')
       ]))
   })
 })
@@ -27,16 +21,16 @@ describe('A convention overlapping emphasis (containing an unmatched opening del
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.parse('[Hello, *my] (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[Hello, '),
-          new Emphasis([
-            new PlainText('my]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[Hello, '),
+          new Up.Emphasis([
+            new Up.PlainText('my]')
           ]),
         ]),
-        new Emphasis([
-          new PlainText(' (^world')
+        new Up.Emphasis([
+          new Up.PlainText(' (^world')
         ]),
-        new PlainText('!!')
+        new Up.PlainText('!!')
       ]))
   })
 })
@@ -46,21 +40,21 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.parse('[Hello, **my] (^lovely* world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[Hello, '),
-          new Emphasis([
-            new Emphasis([
-              new PlainText('my]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[Hello, '),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText('my]')
             ])
           ]),
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(' (^lovely')
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(' (^lovely')
           ]),
-          new PlainText(' world')
+          new Up.PlainText(' world')
         ]),
-        new PlainText('!!')
+        new Up.PlainText('!!')
       ]))
   })
 })
@@ -70,21 +64,21 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text', () => {
     expect(Up.parse('[Hello, **my] lovely* (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[Hello, '),
-          new Emphasis([
-            new Emphasis([
-              new PlainText('my]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[Hello, '),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText('my]')
             ])
           ]),
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(' lovely')
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(' lovely')
           ]),
-          new PlainText(' (^world')
+          new Up.PlainText(' (^world')
         ]),
-        new PlainText('!!')
+        new Up.PlainText('!!')
       ]))
   })
 })
@@ -94,14 +88,14 @@ describe('Double emphasis (with the inner emphasis enclosing an unmatched openin
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.parse('Hello, **my (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, '),
-        new Emphasis([
-          new Emphasis([
-            new PlainText('my (^lovely')
+        new Up.PlainText('Hello, '),
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText('my (^lovely')
           ]),
-          new PlainText(' world')
+          new Up.PlainText(' world')
         ]),
-        new PlainText('!!*')
+        new Up.PlainText('!!*')
       ]))
   })
 })
@@ -111,21 +105,21 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.parse('[Hello, **my] (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[Hello, '),
-          new Emphasis([
-            new Emphasis([
-              new PlainText('my]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[Hello, '),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText('my]')
             ])
           ]),
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(' (^lovely')
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(' (^lovely')
           ]),
-          new PlainText(' world')
+          new Up.PlainText(' world')
         ]),
-        new PlainText('!!*')
+        new Up.PlainText('!!*')
       ]))
   })
 })
@@ -135,21 +129,21 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.parse('[Hello, **my] lovely* (^world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[Hello, '),
-          new Emphasis([
-            new Emphasis([
-              new PlainText('my]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[Hello, '),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText('my]')
             ])
           ]),
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(' lovely')
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(' lovely')
           ]),
-          new PlainText(' (^world')
+          new Up.PlainText(' (^world')
         ]),
-        new PlainText('!!*')
+        new Up.PlainText('!!*')
       ]))
   })
 })
@@ -159,25 +153,25 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I '),
-        new Stress([
-          new PlainText('love '),
-          new NormalParenthetical([
-            new PlainText('(quickly [^ '),
-            new InlineQuote([
-              new PlainText('eating')
+        new Up.PlainText('I '),
+        new Up.Stress([
+          new Up.PlainText('love '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('(quickly [^ '),
+            new Up.InlineQuote([
+              new Up.PlainText('eating')
             ])
           ])
         ]),
-        new NormalParenthetical([
-          new InlineQuote([
-            new PlainText(' pepperoni)')
+        new Up.NormalParenthetical([
+          new Up.InlineQuote([
+            new Up.PlainText(' pepperoni)')
           ])
         ]),
-        new InlineQuote([
-          new PlainText(' pizza')
+        new Up.InlineQuote([
+          new Up.PlainText(' pizza')
         ]),
-        new PlainText(' all the time.')
+        new Up.PlainText(' all the time.')
       ]))
   })
 })
@@ -187,25 +181,25 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I '),
-        new Stress([
-          new PlainText('love '),
-          new NormalParenthetical([
-            new PlainText('(quickly '),
-            new InlineQuote([
-              new PlainText('eating')
+        new Up.PlainText('I '),
+        new Up.Stress([
+          new Up.PlainText('love '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('(quickly '),
+            new Up.InlineQuote([
+              new Up.PlainText('eating')
             ])
           ])
         ]),
-        new NormalParenthetical([
-          new InlineQuote([
-            new PlainText(' [^ pepperoni)')
+        new Up.NormalParenthetical([
+          new Up.InlineQuote([
+            new Up.PlainText(' [^ pepperoni)')
           ])
         ]),
-        new InlineQuote([
-          new PlainText(' pizza')
+        new Up.InlineQuote([
+          new Up.PlainText(' pizza')
         ]),
-        new PlainText(' all the time.')
+        new Up.PlainText(' all the time.')
       ]))
   })
 })
@@ -215,7 +209,7 @@ describe('Several unmatched footnote start delimiters in the same paragraph, wit
   it('are all preserved as plain text, along with all their leading whitespace', () => {
     expect(Up.parse("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
+        new Up.PlainText("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
       ]))
   })
 })

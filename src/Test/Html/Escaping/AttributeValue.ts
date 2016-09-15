@@ -1,22 +1,12 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { Link } from '../../../SyntaxNodes/Link'
-import { Video } from '../../../SyntaxNodes/Video'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Image } from '../../../SyntaxNodes/Image'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
   specify("src attribute of links", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([], 'https://example.com/?x&y&z="hi"')
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([], 'https://example.com/?x&y&z="hi"')
       ])
     ])
 
@@ -25,8 +15,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of audio elements (and of their fallback links)", () => {
-    const document = new Document([
-      new Audio('', 'https://example.com/?x&y&z="hi"')
+    const document = new Up.Document([
+      new Up.Audio('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -34,8 +24,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
-    const document = new Document([
-      new Video('', 'https://example.com/?x&y&z="hi"')
+    const document = new Up.Document([
+      new Up.Video('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -43,8 +33,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("src attribute of images", () => {
-    const document = new Document([
-      new Image('', 'https://example.com/?x&y&z="hi"')
+    const document = new Up.Document([
+      new Up.Image('', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -52,8 +42,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("title attribute of audio elements", () => {
-    const document = new Document([
-      new Audio('John said, "1 and 2 > 0. I can\'t believe it."', '')
+    const document = new Up.Document([
+      new Up.Audio('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -61,8 +51,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("title attribute of videos", () => {
-    const document = new Document([
-      new Video('John said, "1 and 2 > 0. I can\'t believe it."', '')
+    const document = new Up.Document([
+      new Up.Video('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -70,8 +60,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("alt and title attributes of images", () => {
-    const document = new Document([
-      new Image('John said, "1 and 2 > 0. I can\'t believe it."', '')
+    const document = new Up.Document([
+      new Up.Image('John said, "1 and 2 > 0. I can\'t believe it."', '')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -87,9 +77,9 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const document = new Document([
-      new FootnoteBlock([
-        new Footnote([], { referenceNumber: 2 })
+    const document = new Up.Document([
+      new Up.FootnoteBlock([
+        new Up.Footnote([], { referenceNumber: 2 })
       ])
     ])
 
@@ -112,9 +102,9 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const document = new Document([
-      new FootnoteBlock([
-        new Footnote([], { referenceNumber: 2 })
+    const document = new Up.Document([
+      new Up.FootnoteBlock([
+        new Up.Footnote([], { referenceNumber: 2 })
       ])
     ])
 
@@ -137,9 +127,9 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -162,9 +152,9 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
@@ -188,10 +178,10 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const heading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
-      new Document([heading], new Document.TableOfContents([heading]))
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
       up.renderDocumentAndTableOfContents(document)
@@ -212,9 +202,9 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
 describe("Within a link's href attribute, <, ', and >", () => {
   it("are not escaped", () => {
-    const document = new Document([
-      new Paragraph([
-        new Link([], "https://example.com/?z='<span>'")
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([], "https://example.com/?z='<span>'")
       ])
     ])
 

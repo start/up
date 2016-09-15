@@ -1,85 +1,69 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Link } from '../../../SyntaxNodes/Link'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { Image } from '../../../SyntaxNodes/Image'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { Video } from '../../../SyntaxNodes/Video'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { InlineQuote } from '../../../SyntaxNodes/InlineQuote'
-import { SectionLink } from '../../../SyntaxNodes/SectionLink'
-import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
   specify('Spoilers', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('NSFW', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('NSFL', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfl([
-          new Link([
-            new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.PlainText('you fight Gary')
           ], 'https://example.com/finalbattle')
         ]),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
@@ -87,85 +71,85 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
     const markup = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
 
     const footnote =
-      new Footnote([
-        new Link([
-          new PlainText('Well, I do, but I pretend not to.')
+      new Up.Footnote([
+        new Up.Link([
+          new Up.PlainText('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal"),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal"),
           footnote,
-          new PlainText(' '),
-          new NormalParenthetical([
-            new PlainText('('),
-            new Link([
-              new PlainText('example.com/cereal-problems')
+          new Up.PlainText(' '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('('),
+            new Up.Link([
+              new Up.PlainText('example.com/cereal-problems')
             ], 'https://example.com/cereal-problems'),
-            new PlainText(')'),
+            new Up.PlainText(')'),
           ]),
-          new PlainText(" and I never have."),
+          new Up.PlainText(" and I never have."),
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 
   specify('Audio', () => {
     expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary] (example.com/fight.ogg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Link([
-          new Audio('you fight Gary', 'https://example.com/fight.ogg')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Link([
+          new Up.Audio('you fight Gary', 'https://example.com/fight.ogg')
         ], 'https://example.com/finalbattle'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Images', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary] (example.com/fight.svg) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Link([
-          new Image('you fight Gary', 'https://example.com/fight.svg')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Link([
+          new Up.Image('you fight Gary', 'https://example.com/fight.svg')
         ], 'https://example.com/finalbattle'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Videos', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary] (example.com/fight.webm) (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Link([
-          new Video('you fight Gary', 'https://example.com/fight.webm')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Link([
+          new Up.Video('you fight Gary', 'https://example.com/fight.webm')
         ], 'https://example.com/finalbattle'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -175,90 +159,90 @@ context('The following conventions cannot be linkified:', () => {
   specify('Links', () => {
     expect(Up.parse('After you beat the Elite Four, [you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Link([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Link([
+          new Up.PlainText('you fight Gary')
         ], 'https://example.com/finalbattle'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Section links', () => {
     expect(Up.parse('After you beat the Elite Four, you are not done. See [topic: rival fights] (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, you are not done. See '),
-        new SectionLink('rival fights'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText('After you beat the Elite Four, you are not done. See '),
+        new Up.SectionLink('rival fights'),
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Inline quotes', () => {
     expect(Up.parse('After you beat the Elite Four, you "win" (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, you '),
-        new InlineQuote([
-          new PlainText('win')
+        new Up.PlainText('After you beat the Elite Four, you '),
+        new Up.InlineQuote([
+          new Up.PlainText('win')
         ]),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('example.com')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('example.com')
           ], 'https://example.com'),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Inline code', () => {
     expect(Up.parse("I look forward to `--strictNullChecks` and `--noUnusedParameters` (https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript).")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I look forward to '),
-        new InlineCode('--strictNullChecks'),
-        new PlainText(' and '),
-        new InlineCode('--noUnusedParameters'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
+        new Up.PlainText('I look forward to '),
+        new Up.InlineCode('--strictNullChecks'),
+        new Up.PlainText(' and '),
+        new Up.InlineCode('--noUnusedParameters'),
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
           ], "https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript"),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Bare URLs', () => {
     expect(Up.parse('https://goo.gl/7y3XBV (https://www.nintendo.co.uk)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('goo.gl/7y3XBV')
+        new Up.Link([
+          new Up.PlainText('goo.gl/7y3XBV')
         ], 'https://goo.gl/7y3XBV'),
-        new PlainText(' '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('www.nintendo.co.uk')
+        new Up.PlainText(' '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('www.nintendo.co.uk')
           ], 'https://www.nintendo.co.uk'),
-          new PlainText(')')
+          new Up.PlainText(')')
         ])
       ]))
   })
@@ -266,13 +250,13 @@ context('The following conventions cannot be linkified:', () => {
   specify('Regular text (e.g. a word)', () => {
     expect(Up.parse('The Mini-NES comes out November eleventh (http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('The Mini-NES comes out November eleventh '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Link([
-            new PlainText('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')
+        new Up.PlainText('The Mini-NES comes out November eleventh '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Link([
+            new Up.PlainText('ign.com/articles/2016/07/14/nintendo-announces-new-nes-console')
           ], 'http://ign.com/articles/2016/07/14/nintendo-announces-new-nes-console'),
-          new PlainText(')')
+          new Up.PlainText(')')
         ])
       ]))
   })

@@ -1,12 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 
 
 describe("The first heading with an underline comprised of different characters than the top-level heading's underline", () => {
@@ -26,7 +19,7 @@ Goodbye, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         headings,
-        new Document.TableOfContents(headings)
+        new Up.Document.TableOfContents(headings)
       ))
   })
 })
@@ -53,7 +46,7 @@ Goodbye again, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         headings,
-        new Document.TableOfContents(headings)
+        new Up.Document.TableOfContents(headings)
       ))
   })
 })
@@ -77,7 +70,7 @@ Goodbye, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         headings,
-        new Document.TableOfContents(headings)
+        new Up.Document.TableOfContents(headings)
       ))
   })
 
@@ -98,7 +91,7 @@ Goodbye, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         headings,
-        new Document.TableOfContents(headings)
+        new Up.Document.TableOfContents(headings)
       ))
   })
 })
@@ -150,7 +143,7 @@ Warlocked
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         headings,
-        new Document.TableOfContents(headings)))
+        new Up.Document.TableOfContents(headings)))
   })
 })
 
@@ -181,11 +174,11 @@ Goodbye, world!
         helloHeading,
         goodbyeHeading,
         new Up.UnorderedList([
-          new UnorderedList.Item([
+          new Up.UnorderedList.Item([
             keysHeading
           ])
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -220,11 +213,11 @@ Goodbye, world!
         helloHeading,
         goodbyeHeading,
         new Up.OrderedList([
-          new OrderedList.Item([
+          new Up.OrderedList.Item([
             keysHeading
           ])
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -260,13 +253,13 @@ Awkward
         helloHeading,
         goodbyeHeading,
         new Up.DescriptionList([
-          new DescriptionList.Item(
-            [new DescriptionList.Item.Subject([new Up.PlainText('Awkward')])],
-            new DescriptionList.Item.Description([
+          new Up.DescriptionList.Item(
+            [new Up.DescriptionList.Item.Subject([new Up.PlainText('Awkward')])],
+            new Up.DescriptionList.Item.Description([
               keysHeading
             ]))
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -288,22 +281,22 @@ Goodbye, world!
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new Blockquote([
+        new Up.Blockquote([
           keysHeading
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -325,26 +318,26 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 >   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
+      new Up.Document([
+        new Up.Blockquote([
           helloHeading,
           goodbyeHeading,
-          new UnorderedList([
-            new UnorderedList.Item([
+          new Up.UnorderedList([
+            new Up.UnorderedList.Item([
               keysHeading
             ])
           ])
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -366,24 +359,24 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
+      new Up.Document([
+        new Up.Blockquote([
           helloHeading,
           goodbyeHeading,
-          new Blockquote([
+          new Up.Blockquote([
             keysHeading
           ])
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading
@@ -406,24 +399,24 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
+      new Up.Document([
+        new Up.Blockquote([
           helloHeading,
           goodbyeHeading,
         ]),
-        new Blockquote([
+        new Up.Blockquote([
           keysHeading
         ])
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         helloHeading,
         goodbyeHeading,
         keysHeading

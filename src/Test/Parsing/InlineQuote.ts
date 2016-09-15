@@ -1,9 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by doublequote characters', () => {
@@ -198,11 +195,11 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
   specify('There can be more doublequotes on the ending side', () => {
     expect(Up.parse('Yeah, check the """"car""""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah, check the '),
-        new InlineQuote([
-          new PlainText('car')
+        new Up.PlainText('Yeah, check the '),
+        new Up.InlineQuote([
+          new Up.PlainText('car')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
@@ -210,15 +207,15 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
   specify('This inline quote can contain nested inline quotes', () => {
     expect(Up.parse('Yeah, check the """"new "office" building"""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah, check the '),
-        new InlineQuote([
-          new PlainText('new '),
-          new InlineQuote([
-            new PlainText('office')
+        new Up.PlainText('Yeah, check the '),
+        new Up.InlineQuote([
+          new Up.PlainText('new '),
+          new Up.InlineQuote([
+            new Up.PlainText('office')
           ]),
-          new PlainText(' building')
+          new Up.PlainText(' building')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })

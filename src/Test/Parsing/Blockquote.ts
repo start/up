@@ -1,13 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 
 
 describe('Consecutive lines starting with "> "', () => {
@@ -84,10 +76,10 @@ context("Within a blockquote", () => {
         new Up.Document([
           new Up.Blockquote([
             new Up.DescriptionList([
-              new DescriptionList.Item([
-                new DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+              new Up.DescriptionList.Item([
+                new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
               ],
-                new DescriptionList.Item.Description([
+                new Up.DescriptionList.Item.Description([
                   new Up.Paragraph([
                     new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
@@ -109,10 +101,10 @@ context("Within a blockquote", () => {
         new Up.Document([
           new Up.Blockquote([
             new Up.DescriptionList([
-              new DescriptionList.Item([
-                new DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+              new Up.DescriptionList.Item([
+                new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
               ],
-                new DescriptionList.Item.Description([
+                new Up.DescriptionList.Item.Description([
                   new Up.Paragraph([
                     new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
@@ -164,7 +156,7 @@ describe('A blockquote', () => {
         new Up.Blockquote([
           heading
         ])
-      ], new Document.TableOfContents([heading])))
+      ], new Up.Document.TableOfContents([heading])))
   })
 
   it('can contain nested blockquotes', () => {
@@ -312,12 +304,12 @@ describe('A single line blockquote', () => {
         new Up.Blockquote([
           new Up.Blockquote([
             new Up.Blockquote([
-              new Paragraph([
-                new PlainText('Hello, '),
-                new Emphasis([
-                  new PlainText('world')
+              new Up.Paragraph([
+                new Up.PlainText('Hello, '),
+                new Up.Emphasis([
+                  new Up.PlainText('world')
                 ]),
-                new PlainText('!!')
+                new Up.PlainText('!!')
               ])
             ])
           ])
@@ -330,12 +322,12 @@ describe('A single line blockquote', () => {
 describe('Multiple blockquote delimiters, each without their trailing space, followed by a final blockquote delimiter with its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
     expect(Up.parse(`>>> Hello, world!`)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Blockquote([
-            new Blockquote([
-              new Paragraph([
-                new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Blockquote([
+            new Up.Blockquote([
+              new Up.Paragraph([
+                new Up.PlainText('Hello, world!')
               ])
             ])
           ])
@@ -348,12 +340,12 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
 describe('Multiple blockquote delimiters, each with their trailing space, followed by a final blockquote delimiter without its trailing space,', () => {
   it('produce nested blockquote nodes, one for each delimiter', () => {
     expect(Up.parse(`> > >Hello, world!`)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Blockquote([
-            new Blockquote([
-              new Paragraph([
-                new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Blockquote([
+            new Up.Blockquote([
+              new Up.Paragraph([
+                new Up.PlainText('Hello, world!')
               ])
             ])
           ])
@@ -374,16 +366,16 @@ context('Within a given blockquote', () => {
 >\tUmmm... I said goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, world!')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, world!')
           ]),
-          new Paragraph([
-            new PlainText('Ummm… I said goodbye.')
+          new Up.Paragraph([
+            new Up.PlainText('Ummm… I said goodbye.')
           ])
         ])
       ]))

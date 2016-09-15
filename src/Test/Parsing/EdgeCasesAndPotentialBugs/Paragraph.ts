@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 context('Normally, consecutive non-blank lines produce a line block. However, if all but one of the lines consist solely of escaped whitespace, a paragraph is produced instead. This includes when:', () => {
@@ -14,7 +13,7 @@ You'll never believe this fake evidence!
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText("You'll never believe this fake evidence!")
+        new Up.PlainText("You'll never believe this fake evidence!")
       ]))
   })
 
@@ -27,7 +26,7 @@ You'll never believe this fake evidence!`
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText("You'll never believe this fake evidence!")
+        new Up.PlainText("You'll never believe this fake evidence!")
       ]))
   })
 
@@ -43,7 +42,7 @@ You'll never believe this fake evidence!
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText("You'll never believe this fake evidence!")
+        new Up.PlainText("You'll never believe this fake evidence!")
       ]))
   })
 })

@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
 
 
 context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks.', () => {
@@ -19,8 +14,8 @@ context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfw([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfw([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -42,8 +37,8 @@ context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfw([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfw([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -58,8 +53,8 @@ context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfw([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfw([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -74,11 +69,11 @@ context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfw([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfw([
+            new Up.PlainText('Ash fights Gary')
           ]),
-          new InlineNsfw([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfw([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -95,13 +90,13 @@ ruins ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -140,13 +135,13 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -167,13 +162,13 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -196,14 +191,14 @@ LOOK AWAY:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsfwBlock([
-              new Paragraph([
-                new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.NsfwBlock([
+              new Up.Paragraph([
+                new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

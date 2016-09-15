@@ -1,22 +1,17 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 
 
 describe('Square bracketed text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -26,11 +21,11 @@ describe('Parenthesized text starting with "SPOILER:"', () => {
   it('is put inside an inline spoiler node', () => {
     expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -47,28 +42,28 @@ describe('An inline spoiler convention', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight *Gary*].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight '),
-          new Emphasis([
-            new PlainText('Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight '),
+          new Up.Emphasis([
+            new Up.PlainText('Gary')
           ]),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   it('can be nested within another spoiler convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight '),
-          new InlineSpoiler([
-            new PlainText('Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight '),
+          new Up.InlineSpoiler([
+            new Up.PlainText('Gary')
           ]),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -78,15 +73,15 @@ describe('An inline spoiler produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight '),
-          new SquareParenthetical([
-            new PlainText('[and beat]')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight '),
+          new Up.SquareParenthetical([
+            new Up.PlainText('[and beat]')
           ]),
-          new PlainText(' Gary')
+          new Up.PlainText(' Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -96,15 +91,15 @@ describe('An inline spoiler produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight '),
-          new NormalParenthetical([
-            new PlainText('(and beat)')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('(and beat)')
           ]),
-          new PlainText(' Gary')
+          new Up.PlainText(' Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -114,22 +109,22 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
   it('is optional', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   it('is ignored', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: \t  \t you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineSpoiler([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })

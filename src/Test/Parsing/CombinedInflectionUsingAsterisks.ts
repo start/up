@@ -1,9 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { Stress } from '../../SyntaxNodes/Stress'
 
 
 // These test descriptions are a mess. Turn back now.
@@ -278,10 +275,10 @@ describe('Two inflection start delimiters, both consisting of 2 asterisks,', () 
   it('can be closed by 3 asterisks, stressing the inner text and emphasizing the outer text', () => {
     expect(Up.parse('**He has won **six in a row!***')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Stress([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Stress([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -293,12 +290,12 @@ context('Triply emphasized text can be closed together by', () => {
   specify('3 asterisks', () => {
     expect(Up.parse('*He has *won *six in a row!***')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has '),
-          new Emphasis([
-            new PlainText('won '),
-            new Emphasis([
-              new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has '),
+          new Up.Emphasis([
+            new Up.PlainText('won '),
+            new Up.Emphasis([
+              new Up.PlainText('six in a row!')
             ])
           ])
         ])
@@ -308,12 +305,12 @@ context('Triply emphasized text can be closed together by', () => {
   specify('4 or more asterisks', () => {
     expect(Up.parse('*He has *won *six in a row!*****')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has '),
-          new Emphasis([
-            new PlainText('won '),
-            new Emphasis([
-              new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has '),
+          new Up.Emphasis([
+            new Up.PlainText('won '),
+            new Up.Emphasis([
+              new Up.PlainText('six in a row!')
             ])
           ])
         ])
@@ -326,17 +323,17 @@ describe('Quadruple asterisks followed by 4 separate single closing asterisks', 
   it('produces 4 nested emphasis nodes', () => {
     expect(Up.parse('****Warning:* never* feed* this tarantula*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new Emphasis([
-            new Emphasis([
-              new Emphasis([
-                new PlainText('Warning:'),
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.Emphasis([
+                new Up.PlainText('Warning:'),
               ]),
-              new PlainText(' never')
+              new Up.PlainText(' never')
             ]),
-            new PlainText(' feed')
+            new Up.PlainText(' feed')
           ]),
-          new PlainText(' this tarantula')
+          new Up.PlainText(' this tarantula')
         ])
       ]))
   })

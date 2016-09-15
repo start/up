@@ -1,16 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
-import { Image } from '../../SyntaxNodes/Image'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Video } from '../../SyntaxNodes/Video'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
-import { Link } from '../../SyntaxNodes/Link'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Document } from '../../SyntaxNodes/Document'
 
 
 

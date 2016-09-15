@@ -1,9 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
 
 
 describe("The text in an inline NSFL convention's label", () => {
@@ -14,9 +10,9 @@ describe("The text in an inline NSFL convention's label", () => {
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new InlineNsfl([])
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineNsfl([])
       ])
     ])
 
@@ -42,8 +38,8 @@ describe("The text in a NSFL block's label", () => {
       }
     })
 
-    const document = new Document([
-      new NsflBlock([])
+    const document = new Up.Document([
+      new Up.NsflBlock([])
     ])
 
     const html =

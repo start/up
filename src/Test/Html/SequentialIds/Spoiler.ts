@@ -1,36 +1,30 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe("Inline spoilers and spoiler blocks", () => {
   it("have sequential IDs", () => {
     const node =
-      new Document([
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText('The main character defeats the bad guy.')
+      new Up.Document([
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText('The main character defeats the bad guy.')
           ]),
-          new SpoilerBlock([
-            new Paragraph([
-              new PlainText('The hero was unambiguously '),
-              new InlineSpoiler([
-                new PlainText('good '),
-                new InlineSpoiler([
-                  new PlainText('and righteous.')
+          new Up.SpoilerBlock([
+            new Up.Paragraph([
+              new Up.PlainText('The hero was unambiguously '),
+              new Up.InlineSpoiler([
+                new Up.PlainText('good '),
+                new Up.InlineSpoiler([
+                  new Up.PlainText('and righteous.')
                 ])
               ])
             ])
           ])
         ]),
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText('Everyone lived happily ever after, except for the bad men.')
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText('Everyone lived happily ever after, except for the bad men.')
           ])
         ])
       ])
@@ -74,30 +68,30 @@ describe("Inline spoilers and spoiler blocks", () => {
 
 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it("is reset each time a new Up.Document is written", () => {
     const up = new Up()
 
     const node =
-      new Document([
-        new Paragraph([
-          new PlainText('Hello, '),
-          new InlineSpoiler([
-            new PlainText('Red')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Hello, '),
+          new Up.InlineSpoiler([
+            new Up.PlainText('Red')
           ]),
-          new PlainText('. We meet for the '),
-          new InlineSpoiler([
-            new Emphasis([
-              new PlainText('eighth')
+          new Up.PlainText('. We meet for the '),
+          new Up.InlineSpoiler([
+            new Up.Emphasis([
+              new Up.PlainText('eighth')
             ])
           ]),
-          new PlainText(' time.')
+          new Up.PlainText(' time.')
         ]),
-        new Paragraph([
-          new PlainText('Hello, '),
-          new InlineSpoiler([
-            new PlainText('Blue')
+        new Up.Paragraph([
+          new Up.PlainText('Hello, '),
+          new Up.InlineSpoiler([
+            new Up.PlainText('Blue')
           ]),
-          new PlainText('.'),
+          new Up.PlainText('.'),
         ])
       ])
 
@@ -108,22 +102,22 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it("is reset each time a new Up.Document is written", () => {
     const up = new Up()
 
     const node =
-      new Document([
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText('After you beat the Elite Four, you have to face your rival.')
+      new Up.Document([
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText('After you beat the Elite Four, you have to face your rival.')
           ])
         ]),
-        new Paragraph([
-          new PlainText("But the game isn't over yet!")
+        new Up.Paragraph([
+          new Up.PlainText("But the game isn't over yet!")
         ]),
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])
         ])
       ])

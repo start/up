@@ -1,18 +1,13 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 context("A NSFW block's label line does not produce a NSFW block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.parse('NSFW:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('NSFW:')
+        new Up.PlainText('NSFW:')
       ]))
   })
 
@@ -22,11 +17,11 @@ NSFW:
 No!
 Avoid that initialism!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([new PlainText('NSFW:')]),
-          new LineBlock.Line([new PlainText('No!')]),
-          new LineBlock.Line([new PlainText("Avoid that initialism!")]),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('NSFW:')]),
+          new Up.LineBlock.Line([new Up.PlainText('No!')]),
+          new Up.LineBlock.Line([new Up.PlainText("Avoid that initialism!")]),
         ])
       ]))
   })
@@ -37,12 +32,12 @@ NSFW:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFW:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFW:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -54,12 +49,12 @@ NSFW:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFW:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFW:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -73,13 +68,13 @@ NSFW:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('NSFW:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('NSFW:')
         ]),
-        new ThematicBreak(),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.ThematicBreak(),
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })

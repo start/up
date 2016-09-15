@@ -1,36 +1,30 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { NsfwBlock } from '../../../SyntaxNodes/NsfwBlock'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 
 
 describe("Inline NSFW conventions and NSFW blocks", () => {
   it("have sequential IDs", () => {
     const node =
-      new Document([
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText('The main character defeats the bad guy.')
+      new Up.Document([
+        new Up.NsfwBlock([
+          new Up.Paragraph([
+            new Up.PlainText('The main character defeats the bad guy.')
           ]),
-          new NsfwBlock([
-            new Paragraph([
-              new PlainText('The hero was unambiguously '),
-              new InlineNsfw([
-                new PlainText('good '),
-                new InlineNsfw([
-                  new PlainText('and righteous.')
+          new Up.NsfwBlock([
+            new Up.Paragraph([
+              new Up.PlainText('The hero was unambiguously '),
+              new Up.InlineNsfw([
+                new Up.PlainText('good '),
+                new Up.InlineNsfw([
+                  new Up.PlainText('and righteous.')
                 ])
               ])
             ])
           ])
         ]),
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText('Everyone lived happily ever after, except for the bad men.')
+        new Up.NsfwBlock([
+          new Up.Paragraph([
+            new Up.PlainText('Everyone lived happily ever after, except for the bad men.')
           ])
         ])
       ])
@@ -74,30 +68,30 @@ describe("Inline NSFW conventions and NSFW blocks", () => {
 
 
 describe("The ID of an inline NSFW convention's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it("is reset each time a new Up.Document is written", () => {
     const up = new Up()
 
     const node =
-      new Document([
-        new Paragraph([
-          new PlainText('Hello, '),
-          new InlineNsfw([
-            new PlainText('Red')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Hello, '),
+          new Up.InlineNsfw([
+            new Up.PlainText('Red')
           ]),
-          new PlainText('. We meet for the '),
-          new InlineNsfw([
-            new Emphasis([
-              new PlainText('eighth')
+          new Up.PlainText('. We meet for the '),
+          new Up.InlineNsfw([
+            new Up.Emphasis([
+              new Up.PlainText('eighth')
             ])
           ]),
-          new PlainText(' time.')
+          new Up.PlainText(' time.')
         ]),
-        new Paragraph([
-          new PlainText('Hello, '),
-          new InlineNsfw([
-            new PlainText('Blue')
+        new Up.Paragraph([
+          new Up.PlainText('Hello, '),
+          new Up.InlineNsfw([
+            new Up.PlainText('Blue')
           ]),
-          new PlainText('.'),
+          new Up.PlainText('.'),
         ])
       ])
 
@@ -108,22 +102,22 @@ describe("The ID of an inline NSFW convention's checkbox (on both the checkbox a
 
 
 describe("The ID of a NSFW block's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new document is written", () => {
+  it("is reset each time a new Up.Document is written", () => {
     const up = new Up()
 
     const node =
-      new Document([
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText('After you beat the Elite Four, you have to face your rival.')
+      new Up.Document([
+        new Up.NsfwBlock([
+          new Up.Paragraph([
+            new Up.PlainText('After you beat the Elite Four, you have to face your rival.')
           ])
         ]),
-        new Paragraph([
-          new PlainText("But the game isn't over yet!")
+        new Up.Paragraph([
+          new Up.PlainText("But the game isn't over yet!")
         ]),
-        new NsfwBlock([
-          new Paragraph([
-            new PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
+        new Up.NsfwBlock([
+          new Up.Paragraph([
+            new Up.PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])
         ])
       ])

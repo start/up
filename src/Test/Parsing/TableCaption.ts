@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Table } from '../../SyntaxNodes/Table'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context("In a table's label line, when the term for 'table' is followed by a colon,", () => {
@@ -18,23 +13,23 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ],
-          new Table.Caption([
-            new PlainText('Games in the Chrono series')
+          new Up.Table.Caption([
+            new Up.PlainText('Games in the Chrono series')
           ]))
       ]))
   })
@@ -52,27 +47,27 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ],
-          new Table.Caption([
-            new PlainText('Games in the '),
-            new Emphasis([
-              new PlainText('Chrono')
+          new Up.Table.Caption([
+            new Up.PlainText('Games in the '),
+            new Up.Emphasis([
+              new Up.PlainText('Chrono')
             ]),
-            new PlainText(' series'),
+            new Up.PlainText(' series'),
           ]))
       ]))
   })
@@ -87,27 +82,27 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ],
-          new Table.Caption([
-            new PlainText('Games in the '),
-            new Emphasis([
-              new PlainText('Chrono')
+          new Up.Table.Caption([
+            new Up.PlainText('Games in the '),
+            new Up.Emphasis([
+              new Up.PlainText('Chrono')
             ]),
-            new PlainText(' series'),
+            new Up.PlainText(' series'),
           ]))
       ]))
   })
@@ -124,23 +119,23 @@ Chrono Trigger; 1995
 Chrono Cross;   1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-              new Table.Row.Cell([new PlainText('1995')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Cross')]),
-              new Table.Row.Cell([new PlainText('1999')])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
             ])
           ],
-          new Table.Caption([
-            new PlainText('Games in the Chrono series')
+          new Up.Table.Caption([
+            new Up.PlainText('Games in the Chrono series')
           ]))
       ]))
   })
@@ -152,15 +147,15 @@ Table: Games in the Chrono series
 Game;           Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]),
           [],
-          new Table.Caption([
-            new PlainText('Games in the Chrono series')
+          new Up.Table.Caption([
+            new Up.PlainText('Games in the Chrono series')
           ]))
       ]))
   })
@@ -174,9 +169,9 @@ Table the proposal.
 
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('Table the proposal.')]),
-        new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('Table the proposal.')]),
+        new Up.Paragraph([new Up.PlainText("Do it now; I'm tired of waiting.")]),
       ]))
   })
 })

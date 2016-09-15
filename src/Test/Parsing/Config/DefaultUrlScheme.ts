@@ -1,18 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Image } from '../../../SyntaxNodes/Image'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { Video } from '../../../SyntaxNodes/Video'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { Link } from '../../../SyntaxNodes/Link'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Document } from '../../../SyntaxNodes/Document'
 
 
 const up = new Up({
@@ -26,8 +14,8 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'my-app:wiki/Chrono_Chross')
       ]))
   })
@@ -36,8 +24,8 @@ describe('The "defaultUrlScheme" setting', () => {
     const markup = '[image: Chrono Cross logo](cc-logo.png)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Image('Chrono Cross logo', 'my-app:cc-logo.png')
+      new Up.Document([
+        new Up.Image('Chrono Cross logo', 'my-app:cc-logo.png')
       ]))
   })
 
@@ -45,8 +33,8 @@ describe('The "defaultUrlScheme" setting', () => {
     const markup = '[audio: Chrono Cross ending theme](radical dreamers.mp3)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Audio('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
+      new Up.Document([
+        new Up.Audio('Chrono Cross ending theme', 'my-app:radical dreamers.mp3')
       ]))
   })
 
@@ -54,8 +42,8 @@ describe('The "defaultUrlScheme" setting', () => {
     const markup = '[video: Chrono Cross ending cinematic](radical dreamers.webm)'
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Video('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
+      new Up.Document([
+        new Up.Video('Chrono Cross ending cinematic', 'my-app:radical dreamers.webm')
       ]))
   })
 
@@ -64,10 +52,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -78,10 +66,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -92,10 +80,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfl([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
         ])
       ]))
@@ -104,20 +92,20 @@ describe('The "defaultUrlScheme" setting', () => {
   it("is prefixed to schemeless linkified footnote URLs", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
 
-    const footnote = new Footnote([
-      new Link([
-        new PlainText('Well, I eat one.')
+    const footnote = new Up.Footnote([
+      new Up.Link([
+        new Up.PlainText('Well, I eat one.')
       ], 'my-app:cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote,
-          new PlainText(" Never have."),
+          new Up.PlainText(" Never have."),
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 
@@ -126,9 +114,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -138,9 +126,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -150,9 +138,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki/Blue_Sky')
       ]))
   })
@@ -162,8 +150,8 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'my-app:example.wiki/Chrono_Chross')
       ]))
   })
@@ -173,10 +161,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -187,10 +175,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -201,10 +189,10 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new InlineNsfl([
-          new Link([
-            new PlainText('Blue Sky meth')
+        new Up.PlainText('Walter White produces '),
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.PlainText('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')
         ])
       ]))
@@ -213,20 +201,20 @@ describe('The "defaultUrlScheme" setting', () => {
   it("is prefixed to schemeless linkified footnote URLs when the footnote part and the URL are separated by whitespace", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.) [cereals.com/lucky-charms?show=nutrition] Never have."
 
-    const footnote = new Footnote([
-      new Link([
-        new PlainText('Well, I eat one.')
+    const footnote = new Up.Footnote([
+      new Up.Link([
+        new Up.PlainText('Well, I eat one.')
       ], 'my-app:cereals.com/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote,
-          new PlainText(" Never have."),
+          new Up.PlainText(" Never have."),
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 
@@ -235,9 +223,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })
@@ -247,9 +235,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })
@@ -259,9 +247,9 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Walter White produces '),
-        new Link([
-          new Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
+        new Up.PlainText('Walter White produces '),
+        new Up.Link([
+          new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'my-app:wiki.com/Blue_Sky')
       ]))
   })
@@ -271,8 +259,8 @@ describe('The "defaultUrlScheme" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Chrono Cross')
+        new Up.Link([
+          new Up.PlainText('Chrono Cross')
         ], 'their-app:localhost/wiki/Chrono_Chross')
       ]))
   })

@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
-import { Image } from '../../SyntaxNodes/Image'
-import { Link } from '../../SyntaxNodes/Link'
-import { Document } from '../../SyntaxNodes/Document'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { PlainText } from '../../SyntaxNodes/PlainText'
 
 
 context('Bracketed (square bracketed or parenthesized) text starting with "image:" immediately followed by another instance of bracketed text', () => {
@@ -222,8 +217,8 @@ describe('An image description (enclosed by parentheses)', () => {
 
   it('can contain nested matching parentheses', () => {
     expect(Up.parse('(image: (ghosts (eating)) ((luggage)))[http://example.com/?state=NE]')).to.deep.equal(
-      new Document([
-        new Image('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE'),
+      new Up.Document([
+        new Up.Image('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE'),
       ]))
   })
 })
@@ -232,15 +227,15 @@ describe('An image description (enclosed by parentheses)', () => {
 describe('An image URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('(image: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
-      new Document([
-        new Image('ghosts eating luggage', 'http://example.com/?state=[NE]'),
+      new Up.Document([
+        new Up.Image('ghosts eating luggage', 'http://example.com/?state=[NE]'),
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('(image: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.deep.equal(
-      new Document([
-        new Image('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
+      new Up.Document([
+        new Up.Image('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
       ]))
   })
 })
@@ -249,15 +244,15 @@ describe('An image URL (enclosed in square brackets)', () => {
 describe('An image URL (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('[image: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
-      new Document([
-        new Image('ghosts eating luggage', 'http://example.com/?state=(NE)'),
+      new Up.Document([
+        new Up.Image('ghosts eating luggage', 'http://example.com/?state=(NE)'),
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
     expect(Up.parse('[image: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.deep.equal(
-      new Document([
-        new Image('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
+      new Up.Document([
+        new Up.Image('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
       ]))
   })
 })

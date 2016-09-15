@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Table } from '../../../SyntaxNodes/Table'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('The "chart" term', () => {
@@ -21,18 +18,18 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -70,18 +67,18 @@ Chrono Cross;     1999`
     })
 
     expect(document).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -101,18 +98,18 @@ Chrono Cross;     1999`
     })
 
     expect(document).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })
@@ -139,30 +136,30 @@ Chrono Cross;     1999`
     })
 
     expect(document).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ]),
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([]),
+            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')])
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')])
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ])
       ]))
   })

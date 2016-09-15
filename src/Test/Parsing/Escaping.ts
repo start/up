@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { Document } from '../../SyntaxNodes/Document'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
 
 
 describe('A backslash', () => {
@@ -58,10 +53,10 @@ Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new LineBlock.Line([
+          new Up.LineBlock.Line([
             new Up.PlainText('Hello, world!')
           ]),
-          new LineBlock.Line([
+          new Up.LineBlock.Line([
             new Up.PlainText('Goodbye, world!')
           ])
         ])

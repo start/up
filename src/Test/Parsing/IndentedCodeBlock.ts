@@ -1,15 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
 
 
 context('A code block preserves all indentation when it is', () => {
@@ -232,7 +222,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.OrderedList([
-            new OrderedList.Item([
+            new Up.OrderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -253,7 +243,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.OrderedList([
-            new OrderedList.Item([
+            new Up.OrderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -274,7 +264,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.OrderedList([
-            new OrderedList.Item([
+            new Up.OrderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -298,7 +288,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.UnorderedList([
-            new UnorderedList.Item([
+            new Up.UnorderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -319,7 +309,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.UnorderedList([
-            new UnorderedList.Item([
+            new Up.UnorderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -340,7 +330,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.UnorderedList([
-            new UnorderedList.Item([
+            new Up.UnorderedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -365,12 +355,12 @@ Lesson 1
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([
                 new Up.PlainText('Lesson 1')
               ])
             ],
-              new DescriptionList.Item.Description([
+              new Up.DescriptionList.Item.Description([
                 new Up.CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
@@ -392,13 +382,13 @@ Lesson 1
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([
                 new Up.PlainText('Lesson 1')
               ])
             ],
-              new DescriptionList.Item.Description([
-                new CodeBlock(
+              new Up.DescriptionList.Item.Description([
+                new Up.CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -417,15 +407,15 @@ Lesson 1
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([
-                new PlainText('Lesson 1')
+        new Up.Document([
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([
+                new Up.PlainText('Lesson 1')
               ])
             ],
-              new DescriptionList.Item.Description([
-                new CodeBlock(
+              new Up.DescriptionList.Item.Description([
+                new Up.CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -446,9 +436,9 @@ Lesson 1
 > \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new CodeBlock(
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -469,9 +459,9 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >\`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new CodeBlock(
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.CodeBlock(
             `\tif (x < 0) {
 \t\treturn false
 \t}`),
@@ -488,9 +478,9 @@ context('When a code block is nested within a blockquote that has no spaces afte
 >\`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new CodeBlock(
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.CodeBlock(
             `if (x < 0) {
  return false
 }`),

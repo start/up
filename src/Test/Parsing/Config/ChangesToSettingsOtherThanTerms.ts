@@ -1,13 +1,8 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { settingsFor } from './Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { Heading } from '../../../SyntaxNodes/Heading'
-import { Link } from '../../../SyntaxNodes/Link'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 import { UserProvidedSettings } from '../../../UserProvidedSettings'
-
+import { Document } from '../../../SyntaxNodes/Document'
 
 // Elsewhere, we verify that these settings work.
 //
@@ -84,23 +79,23 @@ function itWorksAsAdvertised(
 
 describe('The "createSourceMap" setting', () => {
   const headingWithSourceMap =
-    new Heading([new PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+    new Up.Heading([new Up.PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
   const headingWithoutSourceMap =
-    new Heading([new PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1 })
+    new Up.Heading([new Up.PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1 })
 
   itWorksAsAdvertised({
     markup: `
 Very important
 ==============`,
 
-    documentWhenChangeIsApplied: new Document(
+    documentWhenChangeIsApplied: new Up.Document(
       [headingWithSourceMap],
-      new Document.TableOfContents([headingWithSourceMap])),
+      new Up.Document.TableOfContents([headingWithSourceMap])),
 
-    documentWhenSettingIsNotChanged: new Document(
+    documentWhenSettingIsNotChanged: new Up.Document(
       [headingWithoutSourceMap],
-      new Document.TableOfContents([headingWithoutSourceMap])),
+      new Up.Document.TableOfContents([headingWithoutSourceMap])),
 
     change: {
       createSourceMap: true
@@ -117,15 +112,15 @@ describe('The "defaultUrlScheme" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (example.com/users)',
 
-    documentWhenChangeIsApplied: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], 'my-app://example.com/users')
+    documentWhenChangeIsApplied: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], 'https://example.com/users')
+    documentWhenSettingIsNotChanged: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], 'https://example.com/users')
       ])
     ]),
 
@@ -144,15 +139,15 @@ describe('The "fancyEllipsis" setting', () => {
   itWorksAsAdvertised({
     markup: 'I think so...',
 
-    documentWhenChangeIsApplied: new Document([
-      new Paragraph([
-        new PlainText('I think so⋯')
+    documentWhenChangeIsApplied: new Up.Document([
+      new Up.Paragraph([
+        new Up.PlainText('I think so⋯')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new Document([
-      new Paragraph([
-        new PlainText('I think so…')
+    documentWhenSettingIsNotChanged: new Up.Document([
+      new Up.Paragraph([
+        new Up.PlainText('I think so…')
       ])
     ]),
 
@@ -171,15 +166,15 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (/users)',
 
-    documentWhenChangeIsApplied: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], 'my-app://example.com/see/users')
+    documentWhenChangeIsApplied: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/see/users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], '/users')
+    documentWhenSettingIsNotChanged: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], '/users')
       ])
     ]),
 
@@ -198,15 +193,15 @@ describe('The "baseForUrlsStartingWithHashMark" setting', () => {
   itWorksAsAdvertised({
     markup: '[See users] (#users)',
 
-    documentWhenChangeIsApplied: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], 'my-app://example.com/see#users')
+    documentWhenChangeIsApplied: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/see#users')
       ])
     ]),
 
-    documentWhenSettingIsNotChanged: new Document([
-      new Paragraph([
-        new Link([new PlainText('See users')], '#users')
+    documentWhenSettingIsNotChanged: new Up.Document([
+      new Up.Paragraph([
+        new Up.Link([new Up.PlainText('See users')], '#users')
       ])
     ]),
 

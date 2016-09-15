@@ -1,30 +1,19 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Link } from '../../../SyntaxNodes/Link'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { Audio } from '../../../SyntaxNodes/Audio'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe('An inline NSFW convention followed immediately by a parenthesized/bracketd URL', () => {
   it('produces an inline NSFW node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle naked Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new Link([
-            new PlainText('you wrestle naked Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('you wrestle naked Gary')
           ], 'http://example.com/finalbattle')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -36,9 +25,9 @@ describe('Any NSFW convention followed immediately by a parenthesized/bracketed 
       content: 'NSFW: you wrestle naked Gary',
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsfw([
-          new Link([
-            new PlainText('you wrestle naked Gary')
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('you wrestle naked Gary')
           ], 'http://example.com/finalbattle')
         ]),
       ])
@@ -51,14 +40,14 @@ describe('An inline NSFW convention directly followed by another NSFW convention
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new PlainText('you wrestle naked Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.PlainText('you wrestle naked Gary')
         ]),
-        new InlineNsfw([
-          new PlainText('and win')
+        new Up.InlineNsfw([
+          new Up.PlainText('and win')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -68,14 +57,14 @@ describe('An inline NSFW convention directly followed by an inline spoiler conve
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle naked Gary][SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new PlainText('you wrestle naked Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.PlainText('you wrestle naked Gary')
         ]),
-        new InlineSpoiler([
-          new PlainText('and win')
+        new Up.InlineSpoiler([
+          new Up.PlainText('and win')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -85,14 +74,14 @@ describe('An inline NSFW convention directly followed by an inline NSFL conventi
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle naked Gary][NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new PlainText('you wrestle naked Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.PlainText('you wrestle naked Gary')
         ]),
-        new InlineNsfl([
-          new PlainText('and win')
+        new Up.InlineNsfl([
+          new Up.PlainText('and win')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -102,11 +91,11 @@ describe('An inline NSFW convention directly followed by a media convention', ()
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle naked Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new InlineNsfw([
-          new PlainText('you wrestle naked Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.InlineNsfw([
+          new Up.PlainText('you wrestle naked Gary')
         ]),
-        new Audio('final battle theme', 'https://example.com/songs/123.ogg'),
+        new Up.Audio('final battle theme', 'https://example.com/songs/123.ogg'),
       ]))
   })
 })
@@ -117,21 +106,21 @@ describe('An inline NSFW convention directly followed by a footnote', () => {
     const markup = "After you beat the Elite Four, [NSFW: you wrestle naked Gary](^Or whatever you name him.)"
 
     const footnotes = [
-      new Footnote([
-        new PlainText('Or whatever you name him.')
+      new Up.Footnote([
+        new Up.PlainText('Or whatever you name him.')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("After you beat the Elite Four, "),
-          new InlineNsfw([
-            new PlainText('you wrestle naked Gary')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("After you beat the Elite Four, "),
+          new Up.InlineNsfw([
+            new Up.PlainText('you wrestle naked Gary')
           ]),
           footnotes[0],
         ]),
-        new FootnoteBlock(footnotes)
+        new Up.FootnoteBlock(footnotes)
       ]))
   })
 })
@@ -141,11 +130,11 @@ describe('An otherwise-valid linkified NSFW convention with its URL escaped', ()
   it('is not linkified', () => {
     expect(Up.parse('[NSFW: he called her](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineNsfw([
-          new PlainText('he called her')
+        new Up.InlineNsfw([
+          new Up.PlainText('he called her')
         ]),
-        new NormalParenthetical([
-          new PlainText('(tel:5555555555)')
+        new Up.NormalParenthetical([
+          new Up.PlainText('(tel:5555555555)')
         ]),
       ]))
   })
@@ -156,10 +145,10 @@ context("When an otherwise-valid linkified NSFW convention's URL starts with whi
   specify('the NSFW convention is not linkified', () => {
     expect(Up.parse('[NSFW: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineNsfw([
-          new PlainText('he called her')
+        new Up.InlineNsfw([
+          new Up.PlainText('he called her')
         ]),
-        new PlainText('( \t tel:5555555555)')
+        new Up.PlainText('( \t tel:5555555555)')
       ]))
   })
 })
@@ -171,9 +160,9 @@ context("If there's no whitespace between an inline NSFW conventions and its bra
       content: 'NSFW: you fight Gary',
       url: ' \t \thttp://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new InlineNsfw([
-          new Link([
-            new PlainText('you fight Gary')
+        new Up.InlineNsfw([
+          new Up.Link([
+            new Up.PlainText('you fight Gary')
           ], 'http://example.com/finalbattle')
         ]),
       ])

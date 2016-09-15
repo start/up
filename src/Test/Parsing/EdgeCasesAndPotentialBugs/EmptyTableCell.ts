@@ -1,8 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Table } from '../../../SyntaxNodes/Table'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
 
 
 describe('A table header consisting only of a semicolon', () => {
@@ -16,16 +13,16 @@ Chrono Trigger
 Starcraft`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-              new Table.Header.Cell([])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+              new Up.Table.Header.Cell([])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Starcraft')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
             ])
           ])
       ]))
@@ -45,19 +42,19 @@ Chrono Trigger
 Starcraft`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
-          new Table.Header([
-            new Table.Header.Cell([new PlainText('Game')])
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.PlainText('Game')])
           ]), [
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Chrono Trigger')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
             ]),
-            new Table.Row([
-              new Table.Row.Cell([])
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([])
             ]),
-            new Table.Row([
-              new Table.Row.Cell([new PlainText('Starcraft')]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
             ])
           ])
       ]))

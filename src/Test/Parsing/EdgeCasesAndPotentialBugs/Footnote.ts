@@ -1,33 +1,22 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
-import { SpoilerBlock } from '../../../SyntaxNodes/SpoilerBlock'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
-import { UnorderedList } from '../../../SyntaxNodes/UnorderedList'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
 
 
 describe('Before a footnote, an escaped space followed by several non-escaped spaces', () => {
   it('produces a footnote node following a single space', () => {
     const markup = "I don't eat cereal.\\           (^Well, I do, but I pretend not to.)"
 
-    const footnote = new Footnote([
-      new PlainText('Well, I do, but I pretend not to.')
+    const footnote = new Up.Footnote([
+      new Up.PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal. "),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal. "),
           footnote
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 })
@@ -37,17 +26,17 @@ describe('A footnote reference at the end of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)"
 
-    const footnote = new Footnote([
-      new PlainText('Well, I do, but I pretend not to.')
+    const footnote = new Up.Footnote([
+      new Up.PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 })
@@ -57,24 +46,24 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
   it('produces a footnote containing the nested parenthesized text', () => {
     const markup = "(^I'm normal. (I don't eat cereal. (Well, I do, but I pretend not to.)) See?)"
 
-    const footnote = new Footnote([
-      new PlainText("I'm normal. "),
-      new NormalParenthetical([
-        new PlainText("(I don't eat cereal. "),
-        new NormalParenthetical([
-          new PlainText("(Well, I do, but I pretend not to.)"),
+    const footnote = new Up.Footnote([
+      new Up.PlainText("I'm normal. "),
+      new Up.NormalParenthetical([
+        new Up.PlainText("(I don't eat cereal. "),
+        new Up.NormalParenthetical([
+          new Up.PlainText("(Well, I do, but I pretend not to.)"),
         ]),
-        new PlainText(')')
+        new Up.PlainText(')')
       ]),
-      new PlainText(' See?')
+      new Up.PlainText(' See?')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
+      new Up.Document([
+        new Up.Paragraph([
           footnote
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 })
@@ -84,24 +73,24 @@ describe('A footnote produced by square brackets that contains nested square bra
   it('produces a footnote containing the nested square bracketed text', () => {
     const markup = "[^I'm normal. [I don't eat cereal. [Well, I do, but I pretend not to.]] See?]"
 
-    const footnote = new Footnote([
-      new PlainText("I'm normal. "),
-      new SquareParenthetical([
-        new PlainText("[I don't eat cereal. "),
-        new SquareParenthetical([
-          new PlainText("[Well, I do, but I pretend not to.]"),
+    const footnote = new Up.Footnote([
+      new Up.PlainText("I'm normal. "),
+      new Up.SquareParenthetical([
+        new Up.PlainText("[I don't eat cereal. "),
+        new Up.SquareParenthetical([
+          new Up.PlainText("[Well, I do, but I pretend not to.]"),
         ]),
-        new PlainText(']')
+        new Up.PlainText(']')
       ]),
-      new PlainText(' See?')
+      new Up.PlainText(' See?')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
+      new Up.Document([
+        new Up.Paragraph([
           footnote
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 })
@@ -119,48 +108,48 @@ describe('Within an outline convention, footnotes within a revealable outline co
     Anyway, none of that matters.`
 
     const paragraphFootnotes = [
-      new Footnote([
-        new PlainText('Well, I do, but I pretend not to.')
+      new Up.Footnote([
+        new Up.PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText('Except for Mondays.')
+      new Up.Footnote([
+        new Up.PlainText('Except for Mondays.')
       ], { referenceNumber: 2 })
     ]
 
     const lineBlockFootnotes = [
-      new Footnote([
-        new PlainText('This is not my line.')
+      new Up.Footnote([
+        new Up.PlainText('This is not my line.')
       ], { referenceNumber: 3 }),
-      new Footnote([
-        new PlainText('Neither is this line. I think my mom made it up.')
+      new Up.Footnote([
+        new Up.PlainText('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 4 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
-          new UnorderedList.Item([
-            new SpoilerBlock([
-              new Paragraph([
-                new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.UnorderedList([
+          new Up.UnorderedList.Item([
+            new Up.SpoilerBlock([
+              new Up.Paragraph([
+                new Up.PlainText("I don't eat cereal."),
                 paragraphFootnotes[0],
-                new PlainText(" Never have."),
+                new Up.PlainText(" Never have."),
                 paragraphFootnotes[1]
               ]),
-              new FootnoteBlock(paragraphFootnotes),
-              new LineBlock([
-                new LineBlock.Line([
-                  new PlainText("Roses are red"),
+              new Up.FootnoteBlock(paragraphFootnotes),
+              new Up.LineBlock([
+                new Up.LineBlock.Line([
+                  new Up.PlainText("Roses are red"),
                   lineBlockFootnotes[0],
                 ]),
-                new LineBlock.Line([
-                  new PlainText("Violets are blue"),
+                new Up.LineBlock.Line([
+                  new Up.PlainText("Violets are blue"),
                   lineBlockFootnotes[1]
                 ])
               ]),
-              new FootnoteBlock(lineBlockFootnotes),
-              new Paragraph([
-                new PlainText('Anyway, none of that matters.')
+              new Up.FootnoteBlock(lineBlockFootnotes),
+              new Up.Paragraph([
+                new Up.PlainText('Anyway, none of that matters.')
               ])
             ])
           ])
@@ -175,38 +164,38 @@ describe('A footnote with inner footnotes followed by another footnote with inne
     const markup =
       "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably. (^No.))"
 
-    const footnoteInsideFirstFootnote = new Footnote([
-      new PlainText('Well, I '),
-      new Emphasis([
-        new PlainText('do')
+    const footnoteInsideFirstFootnote = new Up.Footnote([
+      new Up.PlainText('Well, I '),
+      new Up.Emphasis([
+        new Up.PlainText('do')
       ]),
-      new PlainText(', but I pretend not to.'),
+      new Up.PlainText(', but I pretend not to.'),
     ], { referenceNumber: 3 })
 
-    const firstFootnote = new Footnote([
-      new PlainText("That said, I don't eat cereal."),
+    const firstFootnote = new Up.Footnote([
+      new Up.PlainText("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new PlainText(" Never have."),
+      new Up.PlainText(" Never have."),
     ], { referenceNumber: 1 })
 
-    const footnoteInsideSecondFootnote = new Footnote([
-      new PlainText("No."),
+    const footnoteInsideSecondFootnote = new Up.Footnote([
+      new Up.PlainText("No."),
     ], { referenceNumber: 4 })
 
-    const secondFootnote = new Footnote([
-      new PlainText("Probably."),
+    const secondFootnote = new Up.Footnote([
+      new Up.PlainText("Probably."),
       footnoteInsideSecondFootnote
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("Me? I'm totally normal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("Me? I'm totally normal."),
           firstFootnote,
-          new PlainText(" Really."),
+          new Up.PlainText(" Really."),
           secondFootnote,
         ]),
-        new FootnoteBlock([
+        new Up.FootnoteBlock([
           firstFootnote,
           secondFootnote,
           footnoteInsideFirstFootnote,
@@ -221,17 +210,17 @@ describe('A footnote at the beginning of a paragraph', () => {
   it('produces the expected syntax nodes', () => {
     const markup = "(^I would never eat cereal.) I'm a normal breakfast eater, just like you."
 
-    const footnote = new Footnote([
-      new PlainText('I would never eat cereal.')
+    const footnote = new Up.Footnote([
+      new Up.PlainText('I would never eat cereal.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
+      new Up.Document([
+        new Up.Paragraph([
           footnote,
-          new PlainText(" I'm a normal breakfast eater, just like you.")
+          new Up.PlainText(" I'm a normal breakfast eater, just like you.")
         ]),
-        new FootnoteBlock([footnote])
+        new Up.FootnoteBlock([footnote])
       ]))
   })
 })

@@ -1,17 +1,13 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { Document } from '../../../SyntaxNodes/Document'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InlineCode } from '../../../SyntaxNodes/InlineCode'
 
 
 describe('A backslash that is the first character in a paragraph', () => {
   it('correctly escapes the next character', () => {
     expect(Up.parse('\\*So many* Tuesdays')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('*So many* Tuesdays')
+        new Up.PlainText('*So many* Tuesdays')
       ]))
   })
 })
@@ -24,10 +20,10 @@ describe("A backslash that is the first character in a line block's first line",
 Violets are blue`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([new PlainText('Roses are red')]),
-          new LineBlock.Line([new PlainText('Violets are blue')])
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
+          new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
         ])
       ]))
   })
@@ -41,10 +37,10 @@ Roses are red
 \\Violets are blue`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([new PlainText('Roses are red')]),
-          new LineBlock.Line([new PlainText('Violets are blue')])
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
+          new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
         ])
       ]))
   })
@@ -55,7 +51,7 @@ describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
     expect(Up.parse('\\\\\\\\')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('\\\\')
+        new Up.PlainText('\\\\')
       ]))
   })
 })
@@ -65,8 +61,8 @@ describe('An escaped character', () => {
   it('can immediately follow inline code', () => {
     expect(Up.parse('`pennsylvania()`\\ avenue')).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineCode('pennsylvania()'),
-        new PlainText(' avenue')
+        new Up.InlineCode('pennsylvania()'),
+        new Up.PlainText(' avenue')
       ]))
   })
 })

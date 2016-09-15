@@ -1,11 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { NsflBlock } from '../../../SyntaxNodes/NsflBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
 
 
 context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks.', () => {
@@ -19,8 +14,8 @@ context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfl([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfl([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -42,8 +37,8 @@ context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfl([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfl([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -58,8 +53,8 @@ context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfl([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfl([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -74,11 +69,11 @@ context('The "nsfl" term is used by both inline NSFL conventions and NSFL blocks
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new InlineNsfl([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfl([
+            new Up.PlainText('Ash fights Gary')
           ]),
-          new InlineNsfl([
-            new PlainText('Ash fights Gary')
+          new Up.InlineNsfl([
+            new Up.PlainText('Ash fights Gary')
           ])
         ]))
     })
@@ -95,13 +90,13 @@ ruins ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -140,13 +135,13 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -167,13 +162,13 @@ RUINS ending:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Paragraph([
-              new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Paragraph([
+              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -196,14 +191,14 @@ LOOK AWAY:
       })
 
       expect(document).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new Paragraph([
-              new PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.Paragraph([
+              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new NsflBlock([
-              new Paragraph([
-                new PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.NsflBlock([
+              new Up.Paragraph([
+                new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

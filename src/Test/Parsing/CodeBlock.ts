@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
 
 
 describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {

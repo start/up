@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Table } from '../../SyntaxNodes/Table'
 
 
 // Both tables and charts are represented by instances of the `Table` class. Likewise, both

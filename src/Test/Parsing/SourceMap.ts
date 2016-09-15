@@ -1,34 +1,12 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { Table } from '../../SyntaxNodes/Table'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Image } from '../../SyntaxNodes/Image'
-import { Video } from '../../SyntaxNodes/Video'
-import { Link } from '../../SyntaxNodes/Link'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 
 
 context('When the "createSourceMap" setting is not enabled', () => {
   specify('no source maps are produced', () => {
     expect(Up.parse("I enjoy apples.")).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('I enjoy apples.')], { sourceLineNumber: undefined }),
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('I enjoy apples.')], { sourceLineNumber: undefined }),
       ]))
   })
 })
@@ -43,8 +21,8 @@ context('When the "createSourceMap" setting is enabled, outline nodes are given 
 
   specify("The source line numbers start at 1", () => {
     expect(up.parse('Hi!')).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText("Hi!")], { sourceLineNumber: 1 })
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText("Hi!")], { sourceLineNumber: 1 })
       ]))
   })
 
@@ -55,8 +33,8 @@ context('When the "createSourceMap" setting is enabled, outline nodes are given 
 I actually start on the second line.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([new PlainText("I actually start on the second line.")], { sourceLineNumber: 2 })
+        new Up.Document([
+          new Up.Paragraph([new Up.PlainText("I actually start on the second line.")], { sourceLineNumber: 2 })
         ]))
     })
 
@@ -66,8 +44,8 @@ I actually start on the second line.`
 I actually start on the third line.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([new PlainText("I actually start on the third line.")], { sourceLineNumber: 3 })
+        new Up.Document([
+          new Up.Paragraph([new Up.PlainText("I actually start on the third line.")], { sourceLineNumber: 3 })
         ]))
     })
 
@@ -81,8 +59,8 @@ I actually start on the third line.`
 I actually start on the seventh line.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([new PlainText("I actually start on the seventh line.")], { sourceLineNumber: 7 })
+        new Up.Document([
+          new Up.Paragraph([new Up.PlainText("I actually start on the seventh line.")], { sourceLineNumber: 7 })
         ]))
     })
   })
@@ -96,12 +74,12 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+          new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document(
+          new Up.Document(
             [heading],
-            new Document.TableOfContents([heading])))
+            new Up.Document.TableOfContents([heading])))
       })
 
       specify('With an overline', () => {
@@ -111,12 +89,12 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+          new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document(
+          new Up.Document(
             [heading],
-            new Document.TableOfContents([heading])))
+            new Up.Document.TableOfContents([heading])))
       })
     })
 
@@ -130,23 +108,23 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Release Date')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1995')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1995')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1999')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1999')])
               ])
             ],
-            new Table.Caption([
-              new PlainText('Games in the Chrono series')
+            new Up.Table.Caption([
+              new Up.PlainText('Games in the Chrono series')
             ]), { sourceLineNumber: 2 })
         ]))
     })
@@ -160,25 +138,25 @@ Chart: \`AND\` operator logic
 0;      false;  false`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([]),
-              new Table.Header.Cell([new PlainText('1')]),
-              new Table.Header.Cell([new PlainText('0')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([]),
+              new Up.Table.Header.Cell([new Up.PlainText('1')]),
+              new Up.Table.Header.Cell([new Up.PlainText('0')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('true')]),
-                new Table.Row.Cell([new PlainText('false')]),
-              ], new Table.Header.Cell([new PlainText('1')])),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('false')]),
-                new Table.Row.Cell([new PlainText('false')])
-              ], new Table.Header.Cell([new PlainText('0')]))
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('true')]),
+                new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('false')]),
+                new Up.Table.Row.Cell([new Up.PlainText('false')])
+              ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
             ],
-            new Table.Caption([
-              new InlineCode('AND'),
-              new PlainText(' operator logic')
+            new Up.Table.Caption([
+              new Up.InlineCode('AND'),
+              new Up.PlainText(' operator logic')
             ]), { sourceLineNumber: 2 })
         ]))
     })
@@ -190,13 +168,13 @@ Chart: \`AND\` operator logic
 2. They're delicious`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new OrderedList([
-            new OrderedList.Item([
-              new Paragraph([new PlainText("They're cheap")], { sourceLineNumber: 2 })
+        new Up.Document([
+          new Up.OrderedList([
+            new Up.OrderedList.Item([
+              new Up.Paragraph([new Up.PlainText("They're cheap")], { sourceLineNumber: 2 })
             ], { ordinal: 1 }),
-            new OrderedList.Item([
-              new Paragraph([new PlainText("They're delicious")], { sourceLineNumber: 4 })
+            new Up.OrderedList.Item([
+              new Up.Paragraph([new Up.PlainText("They're delicious")], { sourceLineNumber: 4 })
             ], { ordinal: 2 })
           ], { sourceLineNumber: 2 })
         ]))
@@ -209,13 +187,13 @@ Chart: \`AND\` operator logic
 * They're delicious`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new UnorderedList([
-            new UnorderedList.Item([
-              new Paragraph([new PlainText("They're cheap")], { sourceLineNumber: 2 })
+        new Up.Document([
+          new Up.UnorderedList([
+            new Up.UnorderedList.Item([
+              new Up.Paragraph([new Up.PlainText("They're cheap")], { sourceLineNumber: 2 })
             ]),
-            new UnorderedList.Item([
-              new Paragraph([new PlainText("They're delicious")], { sourceLineNumber: 4 })
+            new Up.UnorderedList.Item([
+              new Up.Paragraph([new Up.PlainText("They're delicious")], { sourceLineNumber: 4 })
             ])
           ], { sourceLineNumber: 2 })
         ]))
@@ -231,20 +209,20 @@ Peaches
   They're also delicious.`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Apples')])
+        new Up.Document([
+          new Up.DescriptionList([
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Apples')])
             ],
-              new DescriptionList.Item.Description([
-                new Paragraph([new PlainText("They're delicious.")], { sourceLineNumber: 3 })
+              new Up.DescriptionList.Item.Description([
+                new Up.Paragraph([new Up.PlainText("They're delicious.")], { sourceLineNumber: 3 })
               ])),
-            new DescriptionList.Item([
-              new DescriptionList.Item.Subject([new PlainText('Bananas')]),
-              new DescriptionList.Item.Subject([new PlainText('Peaches')])
+            new Up.DescriptionList.Item([
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Bananas')]),
+              new Up.DescriptionList.Item.Subject([new Up.PlainText('Peaches')])
             ],
-              new DescriptionList.Item.Description([
-                new Paragraph([new PlainText("They're also delicious.")], { sourceLineNumber: 7 })
+              new Up.DescriptionList.Item.Description([
+                new Up.Paragraph([new Up.PlainText("They're also delicious.")], { sourceLineNumber: 7 })
               ]))
           ], { sourceLineNumber: 2 })
         ]))
@@ -256,13 +234,13 @@ Roses are read
 Apples are blue`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new LineBlock([
-            new LineBlock.Line([
-              new PlainText("Roses are read")
+        new Up.Document([
+          new Up.LineBlock([
+            new Up.LineBlock.Line([
+              new Up.PlainText("Roses are read")
             ]),
-            new LineBlock.Line([
-              new PlainText("Apples are blue")
+            new Up.LineBlock.Line([
+              new Up.PlainText("Apples are blue")
             ])
           ], { sourceLineNumber: 2 })
         ]))
@@ -274,9 +252,9 @@ SPOILER:
   Who doesn't?`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new SpoilerBlock([
-            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 3 })
+        new Up.Document([
+          new Up.SpoilerBlock([
+            new Up.Paragraph([new Up.PlainText("Who doesn't?")], { sourceLineNumber: 3 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -288,9 +266,9 @@ NSFW:
   Who doesn't?`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 4 })
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.Paragraph([new Up.PlainText("Who doesn't?")], { sourceLineNumber: 4 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -303,9 +281,9 @@ NSFL:
   Who doesn't?`
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 5 })
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.Paragraph([new Up.PlainText("Who doesn't?")], { sourceLineNumber: 5 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -314,9 +292,9 @@ NSFL:
       const markup = `
 > Who doesn't?`
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new Paragraph([new PlainText("Who doesn't?")], { sourceLineNumber: 2 })
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.Paragraph([new Up.PlainText("Who doesn't?")], { sourceLineNumber: 2 })
           ], { sourceLineNumber: 2 })
         ]))
     })
@@ -326,8 +304,8 @@ NSFL:
         const markup = `~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-`
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document([
-            new ThematicBreak({ sourceLineNumber: 1 }),
+          new Up.Document([
+            new Up.ThematicBreak({ sourceLineNumber: 1 }),
           ]))
       })
 
@@ -340,10 +318,10 @@ The end.
 No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document([
-            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new ThematicBreak({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 6 })
+          new Up.Document([
+            new Up.Paragraph([new Up.PlainText("The end.")], { sourceLineNumber: 2 }),
+            new Up.ThematicBreak({ sourceLineNumber: 3 }),
+            new Up.Paragraph([new Up.PlainText("No, really. That was it.")], { sourceLineNumber: 6 })
           ]))
       })
 
@@ -361,10 +339,10 @@ The end.
 No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document([
-            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new ThematicBreak({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 11 })
+          new Up.Document([
+            new Up.Paragraph([new Up.PlainText("The end.")], { sourceLineNumber: 2 }),
+            new Up.ThematicBreak({ sourceLineNumber: 3 }),
+            new Up.Paragraph([new Up.PlainText("No, really. That was it.")], { sourceLineNumber: 11 })
           ]))
       })
 
@@ -386,10 +364,10 @@ The end.
 No, really. That was it.`
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document([
-            new Paragraph([new PlainText("The end.")], { sourceLineNumber: 2 }),
-            new ThematicBreak({ sourceLineNumber: 3 }),
-            new Paragraph([new PlainText("No, really. That was it.")], { sourceLineNumber: 15 })
+          new Up.Document([
+            new Up.Paragraph([new Up.PlainText("The end.")], { sourceLineNumber: 2 }),
+            new Up.ThematicBreak({ sourceLineNumber: 3 }),
+            new Up.Paragraph([new Up.PlainText("No, really. That was it.")], { sourceLineNumber: 15 })
           ]))
       })
     })
@@ -401,8 +379,8 @@ const reason = "They are cheap and delicious."
 \`\`\``
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 }),
+        new Up.Document([
+          new Up.CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 }),
         ]))
     })
 
@@ -417,19 +395,19 @@ Chrono Cross;     1999`
       const NO_CAPTION: Table.Caption = undefined
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([new PlainText('Game')]),
-              new Table.Header.Cell([new PlainText('Release Date')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
+              new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Trigger')]),
-                new Table.Row.Cell([new PlainText('1995')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1995')])
               ]),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('Chrono Cross')]),
-                new Table.Row.Cell([new PlainText('1999')])
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.PlainText('1999')])
               ])
             ], NO_CAPTION, { sourceLineNumber: 2 })
         ]))
@@ -446,21 +424,21 @@ Chart:
       const NO_CAPTION: Table.Caption = undefined
 
       expect(up.parse(markup)).to.deep.equal(
-        new Document([
-          new Table(
-            new Table.Header([
-              new Table.Header.Cell([]),
-              new Table.Header.Cell([new PlainText('1')]),
-              new Table.Header.Cell([new PlainText('0')])
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([]),
+              new Up.Table.Header.Cell([new Up.PlainText('1')]),
+              new Up.Table.Header.Cell([new Up.PlainText('0')])
             ]), [
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('true')]),
-                new Table.Row.Cell([new PlainText('false')]),
-              ], new Table.Header.Cell([new PlainText('1')])),
-              new Table.Row([
-                new Table.Row.Cell([new PlainText('false')]),
-                new Table.Row.Cell([new PlainText('false')])
-              ], new Table.Header.Cell([new PlainText('0')]))
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('true')]),
+                new Up.Table.Row.Cell([new Up.PlainText('false')]),
+              ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.PlainText('false')]),
+                new Up.Table.Row.Cell([new Up.PlainText('false')])
+              ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
             ], NO_CAPTION, { sourceLineNumber: 2 })
         ]))
     })
@@ -469,22 +447,22 @@ Chart:
     context('Media nodes are given a source line number if they were "outlined":', () => {
       specify('Audio nodes', () => {
         expect(up.parse('[audio: haunted house] (example.com/hauntedhouse.ogg)')).to.deep.equal(
-          new Document([
-            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 })
+          new Up.Document([
+            new Up.Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Images', () => {
         expect(up.parse('[image: haunted house] (example.com/hauntedhouse.svg)')).to.deep.equal(
-          new Document([
-            new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 })
+          new Up.Document([
+            new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 })
           ]))
       })
 
       specify('Videos', () => {
         expect(up.parse('[video: haunted house] (example.com/hauntedhouse.webm)')).to.deep.equal(
-          new Document([
-            new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
+          new Up.Document([
+            new Up.Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
           ]))
       })
     })
@@ -493,9 +471,9 @@ Chart:
     describe('A link containing an "outlined" media node', () => {
       it('is given a source line number (but the media node it contains is not)', () => {
         expect(up.parse('[image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)')).to.deep.equal(
-          new Document([
-            new Link([
-              new Image('haunted house', 'https://example.com/hauntedhouse.svg')
+          new Up.Document([
+            new Up.Link([
+              new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg')
             ], 'https://example.com/gallery', { sourceLineNumber: 1 })
           ]))
       })
@@ -508,10 +486,10 @@ Chart:
           '[image: haunted house](example.com/hauntedhouse.svg) [audio: haunted house](example.com/hauntedhouse.ogg) [video: haunted house] (example.com/hauntedhouse.webm)'
 
         expect(up.parse(markup)).to.deep.equal(
-          new Document([
-            new Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 }),
-            new Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
-            new Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
+          new Up.Document([
+            new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg', { sourceLineNumber: 1 }),
+            new Up.Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
+            new Up.Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })
           ]))
       })
     })
@@ -526,19 +504,19 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
 I do eat apples, though.`
 
-    const footnote = new Footnote([
-      new PlainText('Well, I do, but I pretend not to.')
+    const footnote = new Up.Footnote([
+      new Up.PlainText('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           footnote,
-          new PlainText(" Never have."),
+          new Up.PlainText(" Never have."),
         ], { sourceLineNumber: 2 }),
-        new FootnoteBlock([footnote]),
-        new Paragraph([new PlainText('I do eat apples, though.')], { sourceLineNumber: 4 })
+        new Up.FootnoteBlock([footnote]),
+        new Up.Paragraph([new Up.PlainText('I do eat apples, though.')], { sourceLineNumber: 4 })
       ]))
   })
 })
@@ -569,27 +547,27 @@ The best apple
 Pink lady.`
 
     const enjoyApplesHeading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
     const bestFruitHeading =
-      new Heading([new PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 12 })
+      new Up.Heading([new Up.PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 12 })
 
     const bestAppleHeading =
-      new Heading([new PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 18 })
+      new Up.Heading([new Up.PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 18 })
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
-      new Document([
+      new Up.Document([
         enjoyApplesHeading,
-        new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
-        new LineBlock([
-          new LineBlock.Line([new PlainText('Roses are red')]),
-          new LineBlock.Line([new PlainText('Apples are blue')])
+        new Up.Paragraph([new Up.PlainText("Don't you?")], { sourceLineNumber: 6 }),
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
+          new Up.LineBlock.Line([new Up.PlainText('Apples are blue')])
         ], { sourceLineNumber: 8 }),
         bestFruitHeading,
-        new Paragraph([new PlainText('Apples.')], { sourceLineNumber: 15 }),
+        new Up.Paragraph([new Up.PlainText('Apples.')], { sourceLineNumber: 15 }),
         bestAppleHeading,
-        new Paragraph([new PlainText('Pink lady.')], { sourceLineNumber: 21 })
-      ], new Document.TableOfContents([
+        new Up.Paragraph([new Up.PlainText('Pink lady.')], { sourceLineNumber: 21 })
+      ], new Up.Document.TableOfContents([
         enjoyApplesHeading,
         bestFruitHeading,
         bestAppleHeading])))
@@ -618,37 +596,37 @@ Pink lady
 
 
     const enjoyApplesHeading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
     const bestFruitHeading =
-      new Heading([new PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 9 })
+      new Up.Heading([new Up.PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 9 })
 
     const bestAppleHeading =
-      new Heading([new PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 16 })
+      new Up.Heading([new Up.PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 16 })
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
-      new Document([
+      new Up.Document([
         enjoyApplesHeading,
-        new Paragraph([new PlainText("Don't you?")], { sourceLineNumber: 6 }),
-        new DescriptionList([
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Apple')])
-          ], new DescriptionList.Item.Description([
+        new Up.Paragraph([new Up.PlainText("Don't you?")], { sourceLineNumber: 6 }),
+        new Up.DescriptionList([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Apple')])
+          ], new Up.DescriptionList.Item.Description([
             bestFruitHeading,
-            new SpoilerBlock([
-              new Paragraph([new PlainText('Really.')], { sourceLineNumber: 13 })
+            new Up.SpoilerBlock([
+              new Up.Paragraph([new Up.PlainText('Really.')], { sourceLineNumber: 13 })
             ], { sourceLineNumber: 12 })
           ])),
-          new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Pink lady')])
-          ], new DescriptionList.Item.Description([
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.PlainText('Pink lady')])
+          ], new Up.DescriptionList.Item.Description([
             bestAppleHeading,
-            new Blockquote([
-              new Paragraph([new PlainText('Really.')], { sourceLineNumber: 19 })
+            new Up.Blockquote([
+              new Up.Paragraph([new Up.PlainText('Really.')], { sourceLineNumber: 19 })
             ], { sourceLineNumber: 19 })
           ]))
         ], { sourceLineNumber: 8 })
-      ], new Document.TableOfContents([
+      ], new Up.Document.TableOfContents([
         enjoyApplesHeading,
         bestFruitHeading,
         bestAppleHeading

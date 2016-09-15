@@ -1,15 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { Document } from '../../SyntaxNodes/Document'
-import { Image } from '../../SyntaxNodes/Image'
-import { Video } from '../../SyntaxNodes/Video'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Link } from '../../SyntaxNodes/Link'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 
 context('2 consecutive hyphens normally produce an en dash.', () => {

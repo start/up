@@ -1,18 +1,13 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../../SyntaxNodes/LineBlock'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.parse('SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('SPOILER:')
+        new Up.PlainText('SPOILER:')
       ]))
   })
 
@@ -22,11 +17,11 @@ Spoiler:
 No!
 Roses don't glow!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
-          new LineBlock.Line([new PlainText('Spoiler:')]),
-          new LineBlock.Line([new PlainText('No!')]),
-          new LineBlock.Line([new PlainText("Roses don't glow!")]),
+      new Up.Document([
+        new Up.LineBlock([
+          new Up.LineBlock.Line([new Up.PlainText('Spoiler:')]),
+          new Up.LineBlock.Line([new Up.PlainText('No!')]),
+          new Up.LineBlock.Line([new Up.PlainText("Roses don't glow!")]),
         ])
       ]))
   })
@@ -37,12 +32,12 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Spoiler:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Spoiler:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -54,12 +49,12 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Spoiler:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Spoiler:')
         ]),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })
@@ -73,13 +68,13 @@ Spoiler:
 
 No!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Spoiler:')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Spoiler:')
         ]),
-        new ThematicBreak(),
-        new Paragraph([
-          new PlainText('No!')
+        new Up.ThematicBreak(),
+        new Up.Paragraph([
+          new Up.PlainText('No!')
         ])
       ]))
   })

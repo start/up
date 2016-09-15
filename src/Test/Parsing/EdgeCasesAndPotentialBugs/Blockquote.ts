@@ -1,31 +1,26 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Blockquote } from '../../../SyntaxNodes/Blockquote'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { ThematicBreak } from '../../../SyntaxNodes/ThematicBreak'
 
 
 describe('A single blank blockquoted line', () => {
   it('does not require any trailing whitespace after the blockquote delimiter', () => {
     expect(Up.parse('>')).to.deep.equal(
-      new Document([
-        new Blockquote([])
+      new Up.Document([
+        new Up.Blockquote([])
       ]))
   })
 
   it('may have a trailing space after the blockquote delimiter', () => {
     expect(Up.parse('> ')).to.deep.equal(
-      new Document([
-        new Blockquote([])
+      new Up.Document([
+        new Up.Blockquote([])
       ]))
   })
 
   it('may have a trailing tab after the blockquote delimiter', () => {
     expect(Up.parse('>\t')).to.deep.equal(
-      new Document([
-        new Blockquote([])
+      new Up.Document([
+        new Up.Blockquote([])
       ]))
   })
 })
@@ -39,14 +34,14 @@ describe('A single line blockquote', () => {
 ---------------`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new ThematicBreak(),
-        new Blockquote([
-          new Paragraph([
-            new PlainText('I choose you!')
+      new Up.Document([
+        new Up.ThematicBreak(),
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('I choose you!')
           ])
         ]),
-        new ThematicBreak()
+        new Up.ThematicBreak()
       ]))
   })
 })

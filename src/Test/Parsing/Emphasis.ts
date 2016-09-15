@@ -1,10 +1,6 @@
 import { expect } from 'chai'
 import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
-import { PlainText } from '../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
 
 
 describe('Text surrounded by single asterisks', () => {

@@ -1,9 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../index')
-import { Document } from '../../SyntaxNodes/Document'
-import { Image } from '../../SyntaxNodes/Image'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Video } from '../../SyntaxNodes/Video'
  
 
 // TODO: The rules for "dangerous" media elements might be too cautious.
@@ -307,7 +303,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
 context("A video's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
     const document = new Up.Document([
-      new Video('Uh-oh!', 'javascript-app:stuff')
+      new Up.Video('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -317,8 +313,8 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('data-app', () => {
-    const document = new Document([
-      new Video('Uh-oh!', 'data-app:stuff')
+    const document = new Up.Document([
+      new Up.Video('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -328,8 +324,8 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('file-app', () => {
-    const document = new Document([
-      new Video('Uh-oh!', 'file-app:stuff')
+    const document = new Up.Document([
+      new Up.Video('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -339,8 +335,8 @@ context("A video's URL scheme can start with a dangerous scheme without being co
   })
 
   specify('vbscript-app', () => {
-    const document = new Document([
-      new Video('Uh-oh!', 'vbscript-app:stuff')
+    const document = new Up.Document([
+      new Up.Video('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(

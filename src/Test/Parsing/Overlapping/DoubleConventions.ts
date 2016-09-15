@@ -1,40 +1,31 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Emphasis } from '../../../SyntaxNodes/Emphasis'
-import { Stress } from '../../../SyntaxNodes/Stress'
-import { InlineSpoiler } from '../../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../../SyntaxNodes/InlineNsfl'
-import { Link } from '../../../SyntaxNodes/Link'
-import { NormalParenthetical } from '../../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../../SyntaxNodes/SquareParenthetical'
 
 
 describe('Overlapped stressed, parenthesized, and inserted text', () => {
   it("split the normal parenthetical node once and the square parenthetical node twice", () => {
     expect(Up.parse('I **love (covertly [drinking** whole) milk] all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I '),
-        new Stress([
-          new PlainText('love '),
-          new NormalParenthetical([
-            new PlainText('(covertly '),
-            new SquareParenthetical([
-              new PlainText('[drinking')
+        new Up.PlainText('I '),
+        new Up.Stress([
+          new Up.PlainText('love '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('(covertly '),
+            new Up.SquareParenthetical([
+              new Up.PlainText('[drinking')
             ])
           ])
         ]),
-        new NormalParenthetical([
-          new SquareParenthetical([
-            new PlainText(' whole)')
+        new Up.NormalParenthetical([
+          new Up.SquareParenthetical([
+            new Up.PlainText(' whole)')
           ])
         ]),
-        new SquareParenthetical([
-          new PlainText(' milk]')
+        new Up.SquareParenthetical([
+          new Up.PlainText(' milk]')
         ]),
-        new PlainText(' all the time.')
+        new Up.PlainText(' all the time.')
       ]))
   })
 })
@@ -44,19 +35,19 @@ describe('Overlapped doubly emphasized text (closing at the same time) and paren
   it('split the normal parenthetical node', () => {
     expect(Up.parse("*I know. *Well, I don't (really.** Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I know. '),
-          new Emphasis([
-            new PlainText("Well, I don't "),
-            new NormalParenthetical([
-              new PlainText('(really.')
+        new Up.Emphasis([
+          new Up.PlainText('I know. '),
+          new Up.Emphasis([
+            new Up.PlainText("Well, I don't "),
+            new Up.NormalParenthetical([
+              new Up.PlainText('(really.')
             ])
           ]),
         ]),
-        new NormalParenthetical([
-          new PlainText(' Ha!)')
+        new Up.NormalParenthetical([
+          new Up.PlainText(' Ha!)')
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -66,19 +57,19 @@ describe('Nested spoilers (closing at the same time) overlapping emphasis', () =
   it('split the emphasis node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('I know. '),
-          new InlineSpoiler([
-            new PlainText("Well, I don't "),
-            new Emphasis([
-              new PlainText('really.')
+        new Up.InlineSpoiler([
+          new Up.PlainText('I know. '),
+          new Up.InlineSpoiler([
+            new Up.PlainText("Well, I don't "),
+            new Up.Emphasis([
+              new Up.PlainText('really.')
             ])
           ]),
         ]),
-        new Emphasis([
-          new PlainText(' Good!')
+        new Up.Emphasis([
+          new Up.PlainText(' Good!')
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -88,18 +79,18 @@ describe('Emphasis overlapping nested spoilers (opening at the same time)', () =
   it('split the emphasis node', () => {
     expect(Up.parse("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText("I suspect "),
+        new Up.Emphasis([
+          new Up.PlainText("I suspect "),
         ]),
-        new InlineSpoiler([
-          new InlineSpoiler([
-            new Emphasis([
-              new PlainText('you')
+        new Up.InlineSpoiler([
+          new Up.InlineSpoiler([
+            new Up.Emphasis([
+              new Up.PlainText('you')
             ]),
-            new PlainText(' fight Gary.')
+            new Up.PlainText(' fight Gary.')
           ])
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -109,19 +100,19 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
   it('split the link node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineSpoiler([
-          new PlainText('I know. '),
-          new InlineSpoiler([
-            new PlainText("Well, I don't "),
-            new Link([
-              new PlainText('really.')
+        new Up.InlineSpoiler([
+          new Up.PlainText('I know. '),
+          new Up.InlineSpoiler([
+            new Up.PlainText("Well, I don't "),
+            new Up.Link([
+              new Up.PlainText('really.')
             ], 'https://example.com/really-good')
           ]),
         ]),
-        new Link([
-          new PlainText(' Good!')
+        new Up.Link([
+          new Up.PlainText(' Good!')
         ], 'https://example.com/really-good'),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -131,18 +122,18 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
   it('splits the link node', () => {
     expect(Up.parse("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText("I suspect "),
+        new Up.Link([
+          new Up.PlainText("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new InlineSpoiler([
-          new InlineSpoiler([
-            new Link([
-              new PlainText('you')
+        new Up.InlineSpoiler([
+          new Up.InlineSpoiler([
+            new Up.Link([
+              new Up.PlainText('you')
             ], 'https://example.com/crime-suspects'),
-            new PlainText(' fight Gary.')
+            new Up.PlainText(' fight Gary.')
           ])
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -152,18 +143,18 @@ describe('A link overlapping an inline NSFL convention containing an inline NSFW
   it('splits the link node', () => {
     expect(Up.parse("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText("I suspect "),
+        new Up.Link([
+          new Up.PlainText("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new InlineNsfl([
-          new InlineNsfw([
-            new Link([
-              new PlainText('naked you')
+        new Up.InlineNsfl([
+          new Up.InlineNsfw([
+            new Up.Link([
+              new Up.PlainText('naked you')
             ], 'https://example.com/crime-suspects'),
-            new PlainText(' wrestles a rotting Gary.')
+            new Up.PlainText(' wrestles a rotting Gary.')
           ])
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -173,19 +164,19 @@ describe('An inline NSFW convention nested within an inline NSFL convention (clo
   it('splits the link node', () => {
     expect(Up.parse("[NSFL: I know. [NSFW: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new InlineNsfl([
-          new PlainText('I know. '),
-          new InlineNsfw([
-            new PlainText("Well, I don't "),
-            new Link([
-              new PlainText('really.')
+        new Up.InlineNsfl([
+          new Up.PlainText('I know. '),
+          new Up.InlineNsfw([
+            new Up.PlainText("Well, I don't "),
+            new Up.Link([
+              new Up.PlainText('really.')
             ], 'https://example.com/really-good')
           ]),
         ]),
-        new Link([
-          new PlainText(' Good!')
+        new Up.Link([
+          new Up.PlainText(' Good!')
         ], 'https://example.com/really-good'),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -195,22 +186,22 @@ describe('Overlapped doubly emphasized text (closing at the different times) and
   it('split the stress node, with 1 part inside both emphasis nodes), 1 part only enclosing up to the end of the outer emphasis, and 1 part following both emphasis nodes', () => {
     expect(Up.parse("*I know. *Well, I don't (really.* So there.* Ha!) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('I know. '),
-          new Emphasis([
-            new PlainText("Well, I don't "),
-            new NormalParenthetical([
-              new PlainText('(really.')
+        new Up.Emphasis([
+          new Up.PlainText('I know. '),
+          new Up.Emphasis([
+            new Up.PlainText("Well, I don't "),
+            new Up.NormalParenthetical([
+              new Up.PlainText('(really.')
             ])
           ]),
-          new NormalParenthetical([
-            new PlainText(' So there.')
+          new Up.NormalParenthetical([
+            new Up.PlainText(' So there.')
           ])
         ]),
-        new NormalParenthetical([
-          new PlainText(' Ha!)')
+        new Up.NormalParenthetical([
+          new Up.PlainText(' Ha!)')
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -220,21 +211,21 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at t
   it('split the emphasis nodes', () => {
     expect(Up.parse("(I need to sleep. **So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new NormalParenthetical([
-          new PlainText("(I need to sleep. "),
-          new Emphasis([
-            new Emphasis([
-              new PlainText("So)"),
+        new Up.NormalParenthetical([
+          new Up.PlainText("(I need to sleep. "),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText("So)"),
             ])
           ])
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(" what?"),
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(" what?"),
           ]),
-          new PlainText(" It's early.")
+          new Up.PlainText(" It's early.")
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -244,22 +235,22 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at d
   it('split the emphasis nodes', () => {
     expect(Up.parse("(I need to sleep. *Uhhh... *So) what?* It's early.* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new NormalParenthetical([
-          new PlainText("(I need to sleep. "),
-          new Emphasis([
-            new PlainText("Uhhh… "),
-            new Emphasis([
-              new PlainText("So)")
+        new Up.NormalParenthetical([
+          new Up.PlainText("(I need to sleep. "),
+          new Up.Emphasis([
+            new Up.PlainText("Uhhh… "),
+            new Up.Emphasis([
+              new Up.PlainText("So)")
             ])
           ])
         ]),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(" what?"),
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(" what?"),
           ]),
-          new PlainText(" It's early.")
+          new Up.PlainText(" It's early.")
         ]),
-        new PlainText(' Hi!')
+        new Up.PlainText(' Hi!')
       ]))
   })
 })
@@ -269,23 +260,23 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
   it('are both split by the link', () => {
     expect(Up.parse("In Texas, (*I never eat [cereal*) outside](example.com/sun-flakes). Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('In Texas, '),
-        new NormalParenthetical([
-          new PlainText('('),
-          new Emphasis([
-            new PlainText('I never eat ')
+        new Up.PlainText('In Texas, '),
+        new Up.NormalParenthetical([
+          new Up.PlainText('('),
+          new Up.Emphasis([
+            new Up.PlainText('I never eat ')
           ]),
         ]),
-        new Link([
-          new NormalParenthetical([
-            new Emphasis([
-              new PlainText('cereal')
+        new Up.Link([
+          new Up.NormalParenthetical([
+            new Up.Emphasis([
+              new Up.PlainText('cereal')
             ]),
-            new PlainText(')'),
+            new Up.PlainText(')'),
           ]),
-          new PlainText(' outside')
+          new Up.PlainText(' outside')
         ], 'https://example.com/sun-flakes'),
-        new PlainText('. Hi!')
+        new Up.PlainText('. Hi!')
       ]))
   })
 })
@@ -295,23 +286,23 @@ describe('A link that overlaps both an emphasis convention and some parenthesize
   it('splits the parenthesized text and emphasis conventions', () => {
     expect(Up.parse("In [Texas, (*I](example.com/texas-hurricans) never eat cereal*) outside.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('In '),
-        new Link([
-          new PlainText('Texas, '),
-          new NormalParenthetical([
-            new PlainText('('),
-            new Emphasis([
-              new PlainText('I'),
+        new Up.PlainText('In '),
+        new Up.Link([
+          new Up.PlainText('Texas, '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('('),
+            new Up.Emphasis([
+              new Up.PlainText('I'),
             ]),
           ]),
         ], 'https://example.com/texas-hurricans'),
-        new NormalParenthetical([
-          new Emphasis([
-            new PlainText(' never eat cereal')
+        new Up.NormalParenthetical([
+          new Up.Emphasis([
+            new Up.PlainText(' never eat cereal')
           ]),
-          new PlainText(')'),
+          new Up.PlainText(')'),
         ]),
-        new PlainText(' outside.')
+        new Up.PlainText(' outside.')
       ]))
   })
 })
@@ -321,22 +312,22 @@ describe('A link that overlaps nested emphasis conventions', () => {
   it('splits both emphasis conventions', () => {
     expect(Up.parse("In [Texas, **I](example.com/texas-hurricans) never* eat cereal* outside.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('In '),
-        new Link([
-          new PlainText('Texas, '),
-          new Emphasis([
-            new Emphasis([
-              new PlainText('I'),
+        new Up.PlainText('In '),
+        new Up.Link([
+          new Up.PlainText('Texas, '),
+          new Up.Emphasis([
+            new Up.Emphasis([
+              new Up.PlainText('I'),
             ])
           ])
         ], 'https://example.com/texas-hurricans'),
-        new Emphasis([
-          new Emphasis([
-            new PlainText(' never')
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.PlainText(' never')
           ]),
-          new PlainText(' eat cereal')
+          new Up.PlainText(' eat cereal')
         ]),
-        new PlainText(' outside.')
+        new Up.PlainText(' outside.')
       ]))
   })
 })
@@ -346,25 +337,25 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
   it('splits both the emphasis convention and the already-split stress convention', () => {
     expect(Up.parse("Hello [Gary, *my **very](example.com/rhyme) dear* friend**.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello '),
-        new Link([
-          new PlainText('Gary, '),
-          new Emphasis([
-            new PlainText('my '),
-            new Stress([
-              new PlainText('very'),
+        new Up.PlainText('Hello '),
+        new Up.Link([
+          new Up.PlainText('Gary, '),
+          new Up.Emphasis([
+            new Up.PlainText('my '),
+            new Up.Stress([
+              new Up.PlainText('very'),
             ])
           ])
         ], 'https://example.com/rhyme'),
-        new Emphasis([
-          new Stress([
-            new PlainText(' dear')
+        new Up.Emphasis([
+          new Up.Stress([
+            new Up.PlainText(' dear')
           ]),
         ]),
-        new Stress([
-          new PlainText(' friend')
+        new Up.Stress([
+          new Up.PlainText(' friend')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -374,33 +365,33 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
   it('splits both emphasis conventions and the already-split stress convention', () => {
     expect(Up.parse("Hello [Gary, *my *own **very](example.com/rhyme) dear* and kind* friend**.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello '),
-        new Link([
-          new PlainText('Gary, '),
-          new Emphasis([
-            new PlainText('my '),
-            new Emphasis([
-              new PlainText('own '),
-              new Stress([
-                new PlainText('very'),
+        new Up.PlainText('Hello '),
+        new Up.Link([
+          new Up.PlainText('Gary, '),
+          new Up.Emphasis([
+            new Up.PlainText('my '),
+            new Up.Emphasis([
+              new Up.PlainText('own '),
+              new Up.Stress([
+                new Up.PlainText('very'),
               ]),
             ]),
           ])
         ], 'https://example.com/rhyme'),
-        new Emphasis([
-          new Emphasis([
-            new Stress([
-              new PlainText(' dear'),
+        new Up.Emphasis([
+          new Up.Emphasis([
+            new Up.Stress([
+              new Up.PlainText(' dear'),
             ]),
           ]),
-          new Stress([
-            new PlainText(' and kind')
+          new Up.Stress([
+            new Up.PlainText(' and kind')
           ]),
         ]),
-        new Stress([
-          new PlainText(' friend')
+        new Up.Stress([
+          new Up.PlainText(' friend')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -410,19 +401,19 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
   it('splits the emphasis node then the link node', () => {
     expect(Up.parse("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('In Texas, '),
-        new InlineSpoiler([
-          new Emphasis([
-            new PlainText('I never eat '),
+        new Up.PlainText('In Texas, '),
+        new Up.InlineSpoiler([
+          new Up.Emphasis([
+            new Up.PlainText('I never eat '),
           ]),
-          new Link([
-            new Emphasis([
-              new PlainText('cereal')
+          new Up.Link([
+            new Up.Emphasis([
+              new Up.PlainText('cereal')
             ]),
           ], 'https://example.com/sun-flakes'),
         ]),
-        new Link([
-          new PlainText(' outside')
+        new Up.Link([
+          new Up.PlainText(' outside')
         ], 'https://example.com/sun-flakes')
       ]))
   })
@@ -433,19 +424,19 @@ describe('Emphasis overlapping a linkified NSFL convention', () => {
   it('splits the emphasis node, not the NSF: or link nodes', () => {
     expect(Up.parse('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I do '),
-        new Emphasis([
-          new PlainText('not ')
+        new Up.PlainText('I do '),
+        new Up.Emphasis([
+          new Up.PlainText('not ')
         ]),
-        new InlineNsfl([
-          new Link([
-            new Emphasis([
-              new PlainText('care')
+        new Up.InlineNsfl([
+          new Up.Link([
+            new Up.Emphasis([
+              new Up.PlainText('care')
             ]),
-            new PlainText(' at'),
+            new Up.PlainText(' at'),
           ], 'https://en.wikipedia.org/wiki/Carrot'),
         ]),
-        new PlainText(' all.')
+        new Up.PlainText(' all.')
       ]))
   })
 })
@@ -455,19 +446,19 @@ describe('A linkified spoiler overlapping emphasized text', () => {
   it('splits the emphasis node, not the spoiler or link nodes', () => {
     expect(Up.parse('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('This '),
-        new InlineSpoiler([
-          new Link([
-            new PlainText('trash '),
-            new Emphasis([
-              new PlainText('can')
+        new Up.PlainText('This '),
+        new Up.InlineSpoiler([
+          new Up.Link([
+            new Up.PlainText('trash '),
+            new Up.Emphasis([
+              new Up.PlainText('can')
             ]),
           ], 'https://en.wikipedia.org/wiki/Waste_container'),
         ]),
-        new Emphasis([
-          new PlainText(' not')
+        new Up.Emphasis([
+          new Up.PlainText(' not')
         ]),
-        new PlainText(' stay here.')
+        new Up.PlainText(' stay here.')
       ]))
   })
 })
@@ -477,23 +468,23 @@ describe('An inline spoiler overlapping an emphasis convention split in two (by 
   it('splits the emphasis node again', () => {
     expect(Up.parse('This [SPOILER: old (trash *can)(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('This '),
-        new InlineSpoiler([
-          new PlainText('old '),
-          new Link([
-            new PlainText('trash '),
-            new Emphasis([
-              new PlainText('can')
+        new Up.PlainText('This '),
+        new Up.InlineSpoiler([
+          new Up.PlainText('old '),
+          new Up.Link([
+            new Up.PlainText('trash '),
+            new Up.Emphasis([
+              new Up.PlainText('can')
             ]),
           ], 'https://en.wikipedia.org/wiki/Waste_container'),
-          new Emphasis([
-            new PlainText(' certainly')
+          new Up.Emphasis([
+            new Up.PlainText(' certainly')
           ]),
         ]),
-        new Emphasis([
-          new PlainText(' not')
+        new Up.Emphasis([
+          new Up.PlainText(' not')
         ]),
-        new PlainText(' stay here.')
+        new Up.PlainText(' stay here.')
       ]))
   })
 })

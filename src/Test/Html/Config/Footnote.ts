@@ -1,10 +1,5 @@
 import { expect } from 'chai'
 import Up = require('../../../index')
-import { Document } from '../../../SyntaxNodes/Document'
-import { Paragraph } from '../../../SyntaxNodes/Paragraph'
-import { PlainText } from '../../../SyntaxNodes/PlainText'
-import { Footnote } from '../../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../../SyntaxNodes/FootnoteBlock'
 
 
 describe("A footnote's ID", () => {
@@ -17,13 +12,13 @@ describe("A footnote's ID", () => {
       }
     })
 
-    const node = new Document([
-      new FootnoteBlock([
-        new Footnote([
-          new PlainText("Arwings"),
+    const node = new Up.Document([
+      new Up.FootnoteBlock([
+        new Up.Footnote([
+          new Up.PlainText("Arwings"),
         ], { referenceNumber: 2 }),
-        new Footnote([
-          new PlainText("Killer Bees"),
+        new Up.Footnote([
+          new Up.PlainText("Killer Bees"),
         ], { referenceNumber: 3 }),
       ])
     ])
@@ -49,9 +44,9 @@ describe("The ID of the footnote referenced by a footnote reference", () => {
       }
     })
 
-    const document = new Document([
-      new Paragraph([
-        new Footnote([], { referenceNumber: 3 })
+    const document = new Up.Document([
+      new Up.Paragraph([
+        new Up.Footnote([], { referenceNumber: 3 })
       ])
     ])
 
