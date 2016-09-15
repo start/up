@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from'../../../Up'
+import { Up } from'../../../index'
 import { InlineDocument } from'../../../SyntaxNodes/InlineDocument'
 import { PlainText } from'../../../SyntaxNodes/PlainText'
 import { Audio } from '../../../SyntaxNodes/Audio'

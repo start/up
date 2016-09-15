@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
 import { Image } from '../../SyntaxNodes/Image'
 import { Link } from '../../SyntaxNodes/Link'
@@ -12,9 +12,9 @@ context('Bracketed (square bracketed or parenthesized) text starting with "image
   it('produces an image node with the first bracketed text treated as the description and the second treated as the image URL', () => {
     expect(Up.parse('I would never stay here. [image: haunted house](http://example.com/hauntedhouse.svg) Would you?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('I would never stay here. '),
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new PlainText(' Would you?')
+        new Up.PlainText('I would never stay here. '),
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.PlainText(' Would you?')
       ]))
   })
 })
@@ -23,8 +23,8 @@ context('Bracketed (square bracketed or parenthesized) text starting with "image
 context('An image that is the only convention on its line is not placed inside a paragraph node.', () => {
   specify('Instead, it gets placed directly inside the node that would have contained paragraph', () => {
     expect(Up.parse('[image: haunted house](http://example.com/hauntedhouse.svg)')).to.deep.equal(
-      new Document([
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg')
+      new Up.Document([
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
       ]))
   })
 
@@ -32,8 +32,8 @@ context('An image that is the only convention on its line is not placed inside a
   context('This also applies when that image', () => {
     specify('is surrounded by whitespace', () => {
       expect(Up.parse(' \t [image: haunted house](http://example.com/hauntedhouse.svg) \t ')).to.deep.equal(
-        new Document([
-          new Image('haunted house', 'http://example.com/hauntedhouse.svg')
+        new Up.Document([
+          new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
         ]))
     })
 
@@ -42,9 +42,9 @@ context('An image that is the only convention on its line is not placed inside a
         ' \t [image: haunted house] (http://example.com/hauntedhouse.svg) (hauntedhouse.com) \t '
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Link([
-            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Document([
+          new Up.Link([
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
           ], 'https://hauntedhouse.com'),
         ]))
     })
@@ -54,9 +54,9 @@ context('An image that is the only convention on its line is not placed inside a
         ' \t ([image: haunted house] [http://example.com/hauntedhouse.svg]) (hauntedhouse.com) \t '
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Link([
-            new Image('haunted house', 'http://example.com/hauntedhouse.svg'),
+        new Up.Document([
+          new Up.Link([
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
           ], 'https://hauntedhouse.com'),
         ]))
     })
@@ -69,8 +69,8 @@ describe("The brackets enclosing an image convention's description and URL", () 
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       url: 'http://example.com/ghosts.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/ghosts.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
@@ -82,8 +82,8 @@ describe('The term "img"', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',
       url: 'http://example.com/ghosts.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/ghosts.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/ghosts.svg')
       ])
     })
   })
@@ -96,8 +96,8 @@ context("When an image has whitespace before its bracketed URL, there are no add
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: 'http://example.com/ghost meeting.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/ghost meeting.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
   })
@@ -107,8 +107,8 @@ context("When an image has whitespace before its bracketed URL, there are no add
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: ' \t http://example.com/ghost meeting.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/ghost meeting.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/ghost meeting.svg')
       ])
     })
   })
@@ -119,10 +119,10 @@ context("When an otherwise-valid image convention's URL starts with whitespace, 
   specify('it does not produce an image node', () => {
     expect(Up.parse('[image: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new SquareParenthetical([
-          new PlainText('[image: scary]')
+        new Up.SquareParenthetical([
+          new Up.PlainText('[image: scary]')
         ]),
-        new PlainText('( \t tel:5555555555)')
+        new Up.PlainText('( \t tel:5555555555)')
       ]))
   })
 })
@@ -134,8 +134,8 @@ describe('An image URL with no URL scheme', () => {
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: 'example.com/ghosts.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'https://example.com/ghosts.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'https://example.com/ghosts.svg')
       ])
     })
   })
@@ -148,8 +148,8 @@ describe('An image URL starting with a slash', () => {
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: '/howling.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', '/howling.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', '/howling.svg')
       ])
     })
   })
@@ -162,8 +162,8 @@ describe('An image URL starting with a hash mark ("#")', () => {
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: '#howling.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', '#howling.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', '#howling.svg')
       ])
     })
   })
@@ -176,8 +176,8 @@ describe("An image convention's URL", () => {
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: 'http://example.com/scary ghosts.svg',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/scary ghosts.svg')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/scary ghosts.svg')
       ])
     })
   })
@@ -187,8 +187,8 @@ describe("An image convention's URL", () => {
       content: 'image: ghostly howling',
       partsBetweenContentAndUrl: [' ', '\t', '  \t '],
       url: 'http://example.com/ghosts',
-      toProduce: new Document([
-        new Image('ghostly howling', 'http://example.com/ghosts')
+      toProduce: new Up.Document([
+        new Up.Image('ghostly howling', 'http://example.com/ghosts')
       ])
     })
   })
@@ -198,15 +198,15 @@ describe("An image convention's URL", () => {
 describe('An image description (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('[image: haunted [house]](http://example.com/?state=NE)')).to.deep.equal(
-      new Document([
-        new Image('haunted [house]', 'http://example.com/?state=NE'),
+      new Up.Document([
+        new Up.Image('haunted [house]', 'http://example.com/?state=NE'),
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('[image: [haunted [house]]](http://example.com/?state=NE)')).to.deep.equal(
-      new Document([
-        new Image('[haunted [house]]', 'http://example.com/?state=NE'),
+      new Up.Document([
+        new Up.Image('[haunted [house]]', 'http://example.com/?state=NE'),
       ]))
   })
 })
@@ -215,8 +215,8 @@ describe('An image description (enclosed in square brackets)', () => {
 describe('An image description (enclosed by parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('(image: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
-      new Document([
-        new Image('ghosts eating (luggage)', 'http://example.com/?state=NE'),
+      new Up.Document([
+        new Up.Image('ghosts eating (luggage)', 'http://example.com/?state=NE'),
       ]))
   })
 

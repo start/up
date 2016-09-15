@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
@@ -7,8 +7,8 @@ import { concat } from '../../CollectionHelpers'
 
 
 export function insideDocumentAndParagraph(nodes: InlineSyntaxNode[]): Document {
-  return new Document([
-    new Paragraph(nodes)
+  return new Up.Document([
+    new Up.Paragraph(nodes)
   ])
 }
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { Bold } from '../../SyntaxNodes/Bold'
@@ -39,15 +39,15 @@ import { Video } from '../../SyntaxNodes/Video'
 
 describe('An empty document', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.render(new Document([]))).to.equal('')
+    expect(Up.render(new Up.Document([]))).to.equal('')
   })
 })
 
 
 describe('A paragraph node', () => {
   it('produces a <p> element', () => {
-    const document = new Document([
-      new Paragraph([new PlainText('Nimble navigator')])
+    const document = new Up.Document([
+      new Up.Paragraph([new Up.PlainText('Nimble navigator')])
     ])
 
     expect(Up.render(document)).to.equal('<p>Nimble navigator</p>')
@@ -57,16 +57,16 @@ describe('A paragraph node', () => {
 
 describe('An unordered list node', () => {
   it('produces an <ul> element containing an <li> element for each list item', () => {
-    const document = new Document([
-      new UnorderedList([
+    const document = new Up.Document([
+      new Up.UnorderedList([
         new UnorderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ])
         ]),
         new UnorderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ])
         ])
       ])
@@ -83,16 +83,16 @@ describe('An unordered list node', () => {
 
 describe('An ordered list node', () => {
   it('produces an <ol> element containing an <li> element for each list item', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ])
         ]),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ])
         ])
       ])
@@ -109,16 +109,16 @@ describe('An ordered list node', () => {
 
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ])
         ]),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ])
         ], { ordinal: 5 })
       ])
@@ -135,16 +135,16 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ])
         ], { ordinal: 3 }),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ])
         ])
       ])
@@ -161,16 +161,16 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> element is given the "reversed" attribute', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ])
         ], { ordinal: 0 }),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ])
         ], { ordinal: -1 })
       ])
@@ -187,21 +187,21 @@ describe('When an ordered list node is in descending order', () => {
 
 describe('A description list', () => {
   it('produces a <dl> element containing a <dt> element for each subject, and a <dd> element for each description', () => {
-    const document = new Document([
-      new DescriptionList([
+    const document = new Up.Document([
+      new Up.DescriptionList([
         new DescriptionList.Item([
-          new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+          new DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
         ], new DescriptionList.Item.Description([
-          new Paragraph([
-            new PlainText('A grass type Pokemon')
+          new Up.Paragraph([
+            new Up.PlainText('A grass type Pokemon')
           ])
         ])),
         new DescriptionList.Item([
-          new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-          new DescriptionList.Item.Subject([new PlainText('Lick')]),
+          new DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
         ], new DescriptionList.Item.Description([
-          new Paragraph([
-            new PlainText('Ghost type moves')
+          new Up.Paragraph([
+            new Up.PlainText('Ghost type moves')
           ])
         ]))
       ])
@@ -221,22 +221,22 @@ describe('A description list', () => {
 
 describe('A table', () => {
   it('produces a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
-    const document = new Document([
-      new Table(
+    const document = new Up.Document([
+      new Up.Table(
         new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Developer')])
+          new Table.Header.Cell([new Up.PlainText('Game')]),
+          new Table.Header.Cell([new Up.PlainText('Developer')])
         ]), [
           new Table.Row([
-            new Table.Row.Cell([new PlainText('Final Fantasy')]),
-            new Table.Row.Cell([new PlainText('Square')])
+            new Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new Up.PlainText('Square')])
           ]),
           new Table.Row([
-            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-            new Table.Row.Cell([new PlainText('Nintendo')])
+            new Table.Row.Cell([new Up.PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new Up.PlainText('Nintendo')])
           ])
         ],
-        new Table.Caption([new PlainText('Influential Games')]))
+        new Table.Caption([new Up.PlainText('Influential Games')]))
     ])
 
     expect(Up.render(document)).to.equal(

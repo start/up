@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { InlineDocument } from '../../SyntaxNodes/InlineDocument'
 
 import { Link } from '../../SyntaxNodes/Link'
@@ -24,7 +24,7 @@ import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 
 describe('An empty inline document', () => {
   it('does not produce any HTML on its own', () => {
-    expect(Up.renderInline(new InlineDocument([]))).to.equal('')
+    expect(Up.renderInline(new Up.InlineDocument([]))).to.equal('')
   })
 })
 
@@ -32,8 +32,8 @@ describe('An empty inline document', () => {
 context('In an inline document, every inline syntax node produces the same HTML as it would in a regular document. However, the HTML is not wrapped in a container element (e.g. <p>)', () => {
   describe('An emphasis node', () => {
     it('produces an <em> element', () => {
-      const inlineDocument = new InlineDocument([
-        new Emphasis([new PlainText('Always')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Emphasis([new Up.PlainText('Always')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<em>Always</em>')
@@ -43,8 +43,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A stress node', () => {
     it('produces a <strong> element', () => {
-      const inlineDocument = new InlineDocument([
-        new Stress([new PlainText('Ness')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Stress([new Up.PlainText('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<strong>Ness</strong>')
@@ -54,8 +54,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An italic node', () => {
     it('produces an <i> element', () => {
-      const inlineDocument = new InlineDocument([
-        new Italic([new PlainText('Ness')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Italic([new Up.PlainText('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<i>Ness</i>')
@@ -65,8 +65,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A bold node', () => {
     it('produces a <b> element', () => {
-      const inlineDocument = new InlineDocument([
-        new Bold([new PlainText('Ness')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Bold([new Up.PlainText('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<b>Ness</b>')
@@ -76,8 +76,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An inline code node', () => {
     it('produces a <code> element', () => {
-      const inlineDocument = new InlineDocument([
-        new InlineCode('then')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.InlineCode('then')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<code>then</code>')
@@ -87,8 +87,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An example input node', () => {
     it('produces a <kbd> element', () => {
-      const inlineDocument = new InlineDocument([
-        new ExampleInput('esc')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.ExampleInput('esc')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<kbd>esc</kbd>')
@@ -98,8 +98,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A normal parenthetical node', () => {
     it('produces a <small class="up-parenthetical"> element', () => {
-      const inlineDocument = new InlineDocument([
-        new NormalParenthetical([new PlainText('(Koopa Troopa)')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.NormalParenthetical([new Up.PlainText('(Koopa Troopa)')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical">(Koopa Troopa)</small>')
@@ -109,8 +109,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A square parenthetical node', () => {
     it('produces a <small class="up-parenthetical up-square-brackets"> element', () => {
-      const inlineDocument = new InlineDocument([
-        new SquareParenthetical([new PlainText('[Koopa Troopa]')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.SquareParenthetical([new Up.PlainText('[Koopa Troopa]')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small>')
@@ -120,8 +120,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A link node', () => {
     it('produces an <a> element with its href attribute set to its URL', () => {
-      const inlineDocument = new InlineDocument([
-        new Link([new PlainText('Google')], 'https://google.com')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Link([new Up.PlainText('Google')], 'https://google.com')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<a href="https://google.com">Google</a>')
@@ -131,8 +131,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An image node', () => {
     it('produces <img> with its "src" attribute set to its URL and its "alt" and "title" attributes set to its description', () => {
-      const inlineDocument = new InlineDocument([
-        new Image('haunted house', 'http://example.com/hauntedhouse.svg')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal(
@@ -143,8 +143,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An audio node', () => {
     it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
-      const inlineDocument = new InlineDocument([
-        new Audio('ghostly howling', 'http://example.com/ghosts.ogg')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal(
@@ -157,8 +157,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A video node', () => {
     it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
-      const inlineDocument = new InlineDocument([
-        new Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal(
@@ -171,8 +171,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('A highlight node', () => {
     it('produces a <mark> element', () => {
-      const inlineDocument = new InlineDocument([
-        new Highlight([new PlainText('45.9%')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.Highlight([new Up.PlainText('45.9%')])
       ])
 
       const html =
@@ -185,8 +185,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An inline spoiler node', () => {
     it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span role="alert"> element containing the spoiler contents', () => {
-      const inlineDocument = new InlineDocument([
-        new InlineSpoiler([new PlainText('45.9%')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.InlineSpoiler([new Up.PlainText('45.9%')])
       ])
 
       const html =
@@ -203,8 +203,8 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An inline NSFW node', () => {
     it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span role="alert"> element containing the NSFW contents', () => {
-      const inlineDocument = new InlineDocument([
-        new InlineNsfw([new PlainText('naked Gary')])
+      const inlineDocument = new Up.InlineDocument([
+        new Up.InlineNsfw([new Up.PlainText('naked Gary')])
       ])
 
       const html =
@@ -221,7 +221,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
   describe('An inline NSFL node', () => {
     it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span role="alert"> element containing the NSFL contents', () => {
-      const inlineDocument = new InlineDocument([
+      const inlineDocument = new Up.InlineDocument([
         new InlineNsfl([new PlainText('rotting Gary')])
       ])
 

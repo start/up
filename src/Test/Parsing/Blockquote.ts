@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
@@ -18,13 +18,13 @@ describe('Consecutive lines starting with "> "', () => {
 > Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, world!')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -40,13 +40,13 @@ describe("Blockquote delimeters", () => {
 >Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, world!')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -62,13 +62,13 @@ context("Within a blockquote", () => {
 > Goodbye, world!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, world!')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -81,15 +81,15 @@ context("Within a blockquote", () => {
 >   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new DescriptionList([
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.DescriptionList([
               new DescriptionList.Item([
-                new DescriptionList.Item.Subject([new PlainText('Charmander')])
+                new DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
               ],
                 new DescriptionList.Item.Description([
-                  new Paragraph([
-                    new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                  new Up.Paragraph([
+                    new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -106,15 +106,15 @@ context("Within a blockquote", () => {
 >\tObviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Blockquote([
-            new DescriptionList([
+        new Up.Document([
+          new Up.Blockquote([
+            new Up.DescriptionList([
               new DescriptionList.Item([
-                new DescriptionList.Item.Subject([new PlainText('Charmander')])
+                new DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
               ],
                 new DescriptionList.Item.Description([
-                  new Paragraph([
-                    new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                  new Up.Paragraph([
+                    new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -133,17 +133,17 @@ describe('A blockquote', () => {
 > Goodbye, *world*!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, '),
-            new Emphasis([
-              new PlainText('world')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, '),
+            new Up.Emphasis([
+              new Up.PlainText('world')
             ]),
-            new PlainText('!')
+            new Up.PlainText('!')
           ])
         ])
       ]))
@@ -155,13 +155,13 @@ describe('A blockquote', () => {
 > ===========`
 
     const heading =
-      new Heading([
-        new PlainText('Hello, world!')
+      new Up.Heading([
+        new Up.PlainText('Hello, world!')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
+      new Up.Document([
+        new Up.Blockquote([
           heading
         ])
       ], new Document.TableOfContents([heading])))
@@ -174,14 +174,14 @@ describe('A blockquote', () => {
 > > Hello, mantle!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Blockquote([
-            new Paragraph([
-              new PlainText('Hello, mantle!')
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText('Hello, mantle!')
             ])
           ])
         ])
@@ -202,22 +202,22 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
 > This is awkward...`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new Paragraph([
-            new PlainText('Goodbye, world!')
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, world!')
           ])
         ]),
 
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Welp, I tried to leave earlier.')
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Welp, I tried to leave earlier.')
           ]),
-          new Paragraph([
-            new PlainText('This is awkward…')
+          new Up.Paragraph([
+            new Up.PlainText('This is awkward…')
           ])
         ])
       ]))
@@ -237,23 +237,23 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
 > > This is awkward...`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Blockquote([
-            new Paragraph([
-              new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText('Hello, world!')
             ]),
-            new Paragraph([
-              new PlainText('Goodbye, world!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, world!')
             ])
           ]),
 
-          new Blockquote([
-            new Paragraph([
-              new PlainText('Welp, I tried to leave earlier.')
+          new Up.Blockquote([
+            new Up.Paragraph([
+              new Up.PlainText('Welp, I tried to leave earlier.')
             ]),
-            new Paragraph([
-              new PlainText('This is awkward…')
+            new Up.Paragraph([
+              new Up.PlainText('This is awkward…')
             ])
           ])
         ])
@@ -272,18 +272,18 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 > Goodbye, *world*!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, world!')
           ]),
-          new ThematicBreak(),
-          new Paragraph([
-            new PlainText('Goodbye, '),
-            new Emphasis([
-              new PlainText('world')
+          new Up.ThematicBreak(),
+          new Up.Paragraph([
+            new Up.PlainText('Goodbye, '),
+            new Up.Emphasis([
+              new Up.PlainText('world')
             ]),
-            new PlainText('!')
+            new Up.PlainText('!')
           ])
         ])
       ]))
@@ -294,10 +294,10 @@ describe('Within a blockquote, 3 or more blank lines', () => {
 describe('A single blockquote delimiter without its trailing space', () => {
   it('produces a blockquote note', () => {
     expect(Up.parse('>Hello, taxes!')).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Paragraph([
-            new PlainText('Hello, taxes!')
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Paragraph([
+            new Up.PlainText('Hello, taxes!')
           ])
         ])
       ]))
@@ -308,10 +308,10 @@ describe('A single blockquote delimiter without its trailing space', () => {
 describe('A single line blockquote', () => {
   it('can contain nested blockquotes', () => {
     expect(Up.parse('> > > Hello, *world*!!')).to.deep.equal(
-      new Document([
-        new Blockquote([
-          new Blockquote([
-            new Blockquote([
+      new Up.Document([
+        new Up.Blockquote([
+          new Up.Blockquote([
+            new Up.Blockquote([
               new Paragraph([
                 new PlainText('Hello, '),
                 new Emphasis([

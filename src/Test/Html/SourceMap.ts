@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Link } from '../../SyntaxNodes/Link'
@@ -23,24 +23,24 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
   specify('Paragraphs', () => {
-    const document = new Document([
-      new Paragraph([new PlainText('Nimble navigator')], { sourceLineNumber: 5 })
+    const document = new Up.Document([
+      new Up.Paragraph([new Up.PlainText('Nimble navigator')], { sourceLineNumber: 5 })
     ])
 
     expect(Up.render(document)).to.equal('<p data-up-source-line="5">Nimble navigator</p>')
   })
 
   specify('Unordered list', () => {
-    const document = new Document([
-      new UnorderedList([
+    const document = new Up.Document([
+      new Up.UnorderedList([
         new UnorderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ], { sourceLineNumber: 3 })
         ]),
         new UnorderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ], { sourceLineNumber: 4 })
         ])
       ], { sourceLineNumber: 3 })
@@ -54,16 +54,16 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Ordered lists without start ordinals', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ], { sourceLineNumber: 1 })
         ]),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ], { sourceLineNumber: 3 })
         ])
       ], { sourceLineNumber: 1 })
@@ -77,16 +77,16 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Ordered lists with start ordinals', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 3 }),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ], { sourceLineNumber: 3 })
         ])
       ], { sourceLineNumber: 1 })
@@ -100,16 +100,16 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Reversed ordered lists with start ordinals', () => {
-    const document = new Document([
-      new OrderedList([
+    const document = new Up.Document([
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Tropical')
+          new Up.Paragraph([
+            new Up.PlainText('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 2 }),
         new OrderedList.Item([
-          new Paragraph([
-            new PlainText('Territories')
+          new Up.Paragraph([
+            new Up.PlainText('Territories')
           ], { sourceLineNumber: 2 })
         ], { ordinal: 1 })
       ], { sourceLineNumber: 1 })
@@ -123,21 +123,21 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Description lists', () => {
-    const document = new Document([
-      new DescriptionList([
+    const document = new Up.Document([
+      new Up.DescriptionList([
         new DescriptionList.Item([
-          new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+          new DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
         ], new DescriptionList.Item.Description([
-          new Paragraph([
-            new PlainText('A grass type Pokemon')
+          new Up.Paragraph([
+            new Up.PlainText('A grass type Pokemon')
           ], { sourceLineNumber: 3 })
         ])),
         new DescriptionList.Item([
-          new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-          new DescriptionList.Item.Subject([new PlainText('Lick')]),
+          new DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+          new DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
         ], new DescriptionList.Item.Description([
-          new Paragraph([
-            new PlainText('Ghost type moves')
+          new Up.Paragraph([
+            new Up.PlainText('Ghost type moves')
           ], { sourceLineNumber: 6 })
         ]))
       ], { sourceLineNumber: 2 })
@@ -154,23 +154,23 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Tables', () => {
-    const document = new Document([
-      new Table(
+    const document = new Up.Document([
+      new Up.Table(
         new Table.Header([
-          new Table.Header.Cell([new PlainText('Game')]),
-          new Table.Header.Cell([new PlainText('Developer')])
+          new Table.Header.Cell([new Up.PlainText('Game')]),
+          new Table.Header.Cell([new Up.PlainText('Developer')])
         ]), [
           new Table.Row([
-            new Table.Row.Cell([new PlainText('Final Fantasy')]),
-            new Table.Row.Cell([new PlainText('Square')])
+            new Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
+            new Table.Row.Cell([new Up.PlainText('Square')])
           ]),
           new Table.Row([
-            new Table.Row.Cell([new PlainText('Super Mario Kart')]),
-            new Table.Row.Cell([new PlainText('Nintendo')])
+            new Table.Row.Cell([new Up.PlainText('Super Mario Kart')]),
+            new Table.Row.Cell([new Up.PlainText('Nintendo')])
           ])
         ],
         new Table.Caption([
-          new PlainText('Influential Games')
+          new Up.PlainText('Influential Games')
         ]), { sourceLineNumber: 1 })
     ])
 
@@ -184,24 +184,24 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Charts', () => {
-    const document = new Document([
-      new Table(
+    const document = new Up.Document([
+      new Up.Table(
         new Table.Header([
           new Table.Header.Cell([]),
-          new Table.Header.Cell([new PlainText('1')]),
-          new Table.Header.Cell([new PlainText('0')])
+          new Table.Header.Cell([new Up.PlainText('1')]),
+          new Table.Header.Cell([new Up.PlainText('0')])
         ]), [
           new Table.Row([
-            new Table.Row.Cell([new PlainText('true')]),
-            new Table.Row.Cell([new PlainText('false')]),
-          ], new Table.Header.Cell([new PlainText('1')])),
+            new Table.Row.Cell([new Up.PlainText('true')]),
+            new Table.Row.Cell([new Up.PlainText('false')]),
+          ], new Table.Header.Cell([new Up.PlainText('1')])),
           new Table.Row([
-            new Table.Row.Cell([new PlainText('false')]),
-            new Table.Row.Cell([new PlainText('false')])
-          ], new Table.Header.Cell([new PlainText('0')]))
+            new Table.Row.Cell([new Up.PlainText('false')]),
+            new Table.Row.Cell([new Up.PlainText('false')])
+          ], new Table.Header.Cell([new Up.PlainText('0')]))
         ],
         new Table.Caption([
-          new PlainText('AND operator logic')
+          new Up.PlainText('AND operator logic')
         ]), { sourceLineNumber: 3 })
     ])
 
@@ -215,13 +215,13 @@ context('When an outline syntax node has a source line number, its outermost ele
   })
 
   specify('Line blocks', () => {
-    const document = new Document([
-      new LineBlock([
+    const document = new Up.Document([
+      new Up.LineBlock([
         new LineBlock.Line([
-          new PlainText('Hollow')
+          new Up.PlainText('Hollow')
         ]),
         new LineBlock.Line([
-          new PlainText('Fangs')
+          new Up.PlainText('Fangs')
         ])
       ], { sourceLineNumber: 4 })
     ])

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Stress } from '../../SyntaxNodes/Stress'
@@ -14,10 +14,10 @@ Hello, world!
 #=-+~*@:+**###=~=~=~--~~~~`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })
@@ -31,10 +31,10 @@ Hello, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })
@@ -45,10 +45,10 @@ Hello, world!
 ###`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })
@@ -64,11 +64,11 @@ Goodbye, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('Hello, world!')]),
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('Hello, world!')]),
         heading,
       ], new Document.TableOfContents([heading])))
   })
@@ -79,13 +79,13 @@ Goodbye, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Heading([
-        new Stress([new PlainText('Hello')]),
-        new PlainText(', world!'),
+      new Up.Heading([
+        new Up.Stress([new Up.PlainText('Hello')]),
+        new Up.PlainText(', world!'),
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })
@@ -97,10 +97,10 @@ Hello, world!
 #=-+~*@:`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])
       ))
@@ -116,10 +116,10 @@ Hello, world!
 ----------`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })
@@ -131,10 +131,10 @@ Hello, world!
 --==~~~~~==--`
 
     const heading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.eql(
-      new Document(
+      new Up.Document(
         [heading],
         new Document.TableOfContents([heading])))
   })

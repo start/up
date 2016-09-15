@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../../Up'
+import Up = require('../../../index')
 import { insideDocumentAndParagraph } from '../Helpers'
 import { Emphasis } from '../../../SyntaxNodes/Emphasis'
 import { PlainText } from '../../../SyntaxNodes/PlainText'

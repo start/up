@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -17,14 +17,14 @@ Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Paragraph([
+                new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
             ]))
         ])
@@ -42,16 +42,16 @@ Torchic
   The first three starter Fire Pokemon`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new PlainText('Cyndaquil')]),
-            new DescriptionList.Item.Subject([new PlainText('Torchic')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Cyndaquil')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Torchic')])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('The first three starter Fire Pokemon')
+              new Up.Paragraph([
+                new Up.PlainText('The first three starter Fire Pokemon')
               ])
             ]))
         ])
@@ -67,18 +67,18 @@ Ash "Little Marco" Ketchum
   A famous Pokemon Trainer from Pallet Town.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
-              new PlainText('Ash '),
-              new InlineQuote([new PlainText('Little Marco')]),
-              new PlainText(' Ketchum')
+              new Up.PlainText('Ash '),
+              new Up.InlineQuote([new Up.PlainText('Little Marco')]),
+              new Up.PlainText(' Ketchum')
             ])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A famous Pokemon Trainer from Pallet Town.')
+              new Up.Paragraph([
+                new Up.PlainText('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ])
@@ -94,18 +94,18 @@ Ash Ketchum
   A famous Pokemon Trainer *probably* from Pallet Town`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
-              new PlainText('Ash Ketchum')
+              new Up.PlainText('Ash Ketchum')
             ])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A famous Pokemon Trainer '),
-                new Emphasis([new PlainText('probably')]),
-                new PlainText(' from Pallet Town')
+              new Up.Paragraph([
+                new Up.PlainText('A famous Pokemon Trainer '),
+                new Up.Emphasis([new Up.PlainText('probably')]),
+                new Up.PlainText(' from Pallet Town')
               ])
             ]))
         ])
@@ -129,33 +129,33 @@ Gary
   A young man with a great sense of smell.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Bulbasaur')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
           ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+            new Up.Paragraph([
+              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Confuse Ray')]),
-            new DescriptionList.Item.Subject([new PlainText('Lick')]),
-            new DescriptionList.Item.Subject([new PlainText('Night Shade')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('Ghost type moves.')
+              new Up.Paragraph([
+                new Up.PlainText('Ghost type moves.')
               ])
             ])),
 
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Gary')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Gary')])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A young man with a great sense of smell.')
+              new Up.Paragraph([
+                new Up.PlainText('A young man with a great sense of smell.')
               ])
             ]))
         ])
@@ -171,21 +171,21 @@ Ash Ketchum
   A famous Pokemon Trainer from Pallet Town.
 The secret to eternal youth is to join a cartoon.`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
             new DescriptionList.Item.Subject([
-              new PlainText('Ash Ketchum')
+              new Up.PlainText('Ash Ketchum')
             ])
           ],
             new DescriptionList.Item.Description([
-              new Paragraph([
-                new PlainText('A famous Pokemon Trainer from Pallet Town.')
+              new Up.Paragraph([
+                new Up.PlainText('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ]),
-        new Paragraph([
-          new PlainText('The secret to eternal youth is to join a cartoon.')
+        new Up.Paragraph([
+          new Up.PlainText('The secret to eternal youth is to join a cartoon.')
         ])
       ]))
   })
@@ -202,20 +202,20 @@ Poem
   Violets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
+        new Up.Document([
+          new Up.DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
-                new PlainText('Poem')
+                new Up.PlainText('Poem')
               ])
             ],
               new DescriptionList.Item.Description([
-                new LineBlock([
+                new Up.LineBlock([
                   new LineBlock.Line([
-                    new PlainText('Roses are red'),
+                    new Up.PlainText('Roses are red'),
                   ]),
                   new LineBlock.Line([
-                    new PlainText('Violets are blue')
+                    new Up.PlainText('Violets are blue')
                   ])
                 ])
               ]))
@@ -230,20 +230,20 @@ Poem
 \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
+        new Up.Document([
+          new Up.DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
-                new PlainText('Poem')
+                new Up.PlainText('Poem')
               ])
             ],
               new DescriptionList.Item.Description([
-                new LineBlock([
+                new Up.LineBlock([
                   new LineBlock.Line([
-                    new PlainText('Roses are red'),
+                    new Up.PlainText('Roses are red'),
                   ]),
                   new LineBlock.Line([
-                    new PlainText('Violets are blue')
+                    new Up.PlainText('Violets are blue')
                   ])
                 ])
               ]))
@@ -258,11 +258,11 @@ Poem
  \tViolets are blue`
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
+        new Up.Document([
+          new Up.DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
-                new PlainText('Poem')
+                new Up.PlainText('Poem')
               ])
             ],
               new DescriptionList.Item.Description([

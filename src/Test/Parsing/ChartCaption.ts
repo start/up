@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { Table } from '../../SyntaxNodes/Table'
@@ -17,28 +17,28 @@ Chart: \`AND\` operator logic
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
+      new Up.Document([
+        new Up.Table(
           new Table.Header([
             new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('1')]),
-            new Table.Header.Cell([new PlainText('0')])
+            new Table.Header.Cell([new Up.PlainText('1')]),
+            new Table.Header.Cell([new Up.PlainText('0')])
           ]), [
 
             new Table.Row([
-              new Table.Row.Cell([new PlainText('true')]),
-              new Table.Row.Cell([new PlainText('false')]),
-            ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row.Cell([new Up.PlainText('true')]),
+              new Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Table.Header.Cell([new Up.PlainText('1')])),
 
             new Table.Row([
-              new Table.Row.Cell([new PlainText('false')]),
-              new Table.Row.Cell([new PlainText('false')])
-            ], new Table.Header.Cell([new PlainText('0')])),
+              new Table.Row.Cell([new Up.PlainText('false')]),
+              new Table.Row.Cell([new Up.PlainText('false')])
+            ], new Table.Header.Cell([new Up.PlainText('0')])),
           ],
 
           new Table.Caption([
-            new InlineCode('AND'),
-            new PlainText(' operator logic')
+            new Up.InlineCode('AND'),
+            new Up.PlainText(' operator logic')
           ]))
       ]))
   })
@@ -54,25 +54,25 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 0;      false;  false`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
+      new Up.Document([
+        new Up.Table(
           new Table.Header([
             new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('1')]),
-            new Table.Header.Cell([new PlainText('0')])
+            new Table.Header.Cell([new Up.PlainText('1')]),
+            new Table.Header.Cell([new Up.PlainText('0')])
           ]), [
             new Table.Row([
-              new Table.Row.Cell([new PlainText('true')]),
-              new Table.Row.Cell([new PlainText('false')]),
-            ], new Table.Header.Cell([new PlainText('1')])),
+              new Table.Row.Cell([new Up.PlainText('true')]),
+              new Table.Row.Cell([new Up.PlainText('false')]),
+            ], new Table.Header.Cell([new Up.PlainText('1')])),
             new Table.Row([
-              new Table.Row.Cell([new PlainText('false')]),
-              new Table.Row.Cell([new PlainText('false')])
-            ], new Table.Header.Cell([new PlainText('0')])),
+              new Table.Row.Cell([new Up.PlainText('false')]),
+              new Table.Row.Cell([new Up.PlainText('false')])
+            ], new Table.Header.Cell([new Up.PlainText('0')])),
           ],
           new Table.Caption([
-            new InlineCode('AND'),
-            new PlainText(' operator logic')
+            new Up.InlineCode('AND'),
+            new Up.PlainText(' operator logic')
           ]))
       ]))
   })
@@ -88,20 +88,20 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
+      new Up.Document([
+        new Up.Table(
           new Table.Header([
             new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+            new Table.Header.Cell([new Up.PlainText('Release Date')])
           ]), [
             new Table.Row([
-              new Table.Row.Cell([new PlainText('1995')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Trigger')])),
+              new Table.Row.Cell([new Up.PlainText('1995')]),
+            ], new Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
             new Table.Row([
-              new Table.Row.Cell([new PlainText('1999')]),
-            ], new Table.Header.Cell([new PlainText('Chrono Cross')]))
+              new Table.Row.Cell([new Up.PlainText('1999')]),
+            ], new Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
           ],
-          new Table.Caption([new PlainText('Games in the Chrono series')]))
+          new Table.Caption([new Up.PlainText('Games in the Chrono series')]))
       ]))
   })
 
@@ -112,15 +112,15 @@ Chart: Games in the Chrono series
         Release Date`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Table(
+      new Up.Document([
+        new Up.Table(
           new Table.Header([
             new Table.Header.Cell([]),
-            new Table.Header.Cell([new PlainText('Release Date')])
+            new Table.Header.Cell([new Up.PlainText('Release Date')])
           ]),
           [],
           new Table.Caption([
-            new PlainText('Games in the Chrono series')
+            new Up.PlainText('Games in the Chrono series')
           ]))
       ]))
   })
@@ -134,9 +134,9 @@ Chart the numbers.
 
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('Chart the numbers.')]),
-        new Paragraph([new PlainText("Do it now; I'm tired of waiting.")]),
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('Chart the numbers.')]),
+        new Up.Paragraph([new Up.PlainText("Do it now; I'm tired of waiting.")]),
       ]))
   })
 })

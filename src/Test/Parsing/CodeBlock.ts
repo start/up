@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -15,8 +15,8 @@ const pie = 3.5
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock('const pie = 3.5'),
+      new Up.Document([
+        new Up.CodeBlock('const pie = 3.5'),
       ]))
   })
 })
@@ -31,8 +31,8 @@ describe('A code block', () => {
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock(
+      new Up.Document([
+        new Up.CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
       ]))
@@ -45,8 +45,8 @@ const lineBreak = "\\n"
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock('const lineBreak = "\\n"'),
+      new Up.Document([
+        new Up.CodeBlock('const lineBreak = "\\n"'),
       ]))
   })
 
@@ -62,11 +62,11 @@ const lineBreak = "\\n"
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock(
+      new Up.Document([
+        new Up.CodeBlock(
           `// Escaping backticks in typescript...
 // Such a pain!`),
-        new CodeBlock(
+        new Up.CodeBlock(
           `// Escaping backticks in typescript...
 // Wait. Have I already said this?`),
       ]))
@@ -88,8 +88,8 @@ function factorial(n: number): number {
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new CodeBlock(
+        new Up.Document([
+          new Up.CodeBlock(
             `\`\`\`
 function factorial(n: number): number {
   return (
@@ -115,8 +115,8 @@ function factorial(n: number): number {
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new CodeBlock(
+        new Up.Document([
+          new Up.CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
   return (
@@ -141,8 +141,8 @@ function factorial(n: number): number {
 \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new CodeBlock(
+        new Up.Document([
+          new Up.CodeBlock(
             `\`\`\`\`\`\`
 function factorial(n: number): number {
   return (
@@ -171,8 +171,8 @@ It's easy!
 \`\`\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new CodeBlock(
+        new Up.Document([
+          new Up.CodeBlock(
             `Wrap code in streaks of backticks! 
 
 \`\`\`
@@ -201,9 +201,9 @@ const pie = 3.5
 Do your pies ever turn out wrong?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock('const pie = 3.5'),
-        new Paragraph([new PlainText('Do your pies ever turn out wrong?')])
+      new Up.Document([
+        new Up.CodeBlock('const pie = 3.5'),
+        new Up.Paragraph([new Up.PlainText('Do your pies ever turn out wrong?')])
       ]))
   })
 
@@ -218,10 +218,10 @@ const pie = 3.5
 Do you?`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([new PlainText('I enjoy baking.')]),
-        new CodeBlock('const pie = 3.5'),
-        new Paragraph([new PlainText('Do you?')])
+      new Up.Document([
+        new Up.Paragraph([new Up.PlainText('I enjoy baking.')]),
+        new Up.CodeBlock('const pie = 3.5'),
+        new Up.Paragraph([new Up.PlainText('Do you?')])
       ]))
   })
 })
@@ -243,11 +243,11 @@ function factorial(n: number): number {
 document.write('The factorial of 5 is: ' + factorial(5))`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Check out the code below!')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Check out the code below!')
         ]),
-        new CodeBlock(
+        new Up.CodeBlock(
           `function factorial(n: number): number {
   return (
     n <= 1
@@ -274,9 +274,9 @@ SPOILER:
 I hope you were able to find a solution without cheating.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new SpoilerBlock([
-          new CodeBlock(
+      new Up.Document([
+        new Up.SpoilerBlock([
+          new Up.CodeBlock(
             `function nthFibonacci(n: number): number {
   return (
     n <= 2
@@ -284,8 +284,8 @@ I hope you were able to find a solution without cheating.`
       : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
         ]),
-        new Paragraph([
-          new PlainText('I hope you were able to find a solution without cheating.')
+        new Up.Paragraph([
+          new Up.PlainText('I hope you were able to find a solution without cheating.')
         ])
       ]))
   })

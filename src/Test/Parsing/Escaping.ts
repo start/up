@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
 import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -12,39 +12,39 @@ describe('A backslash', () => {
   it('disables any special behavior of the character that follows, preserving the other character as plain text', () => {
     expect(Up.parse('Hello, \\*world\\*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, *world*!')
+        new Up.PlainText('Hello, *world*!')
       ]))
   })
 
   it("has no effect if the following character didn't have any special behavior to begin with", () => {
     expect(Up.parse('Hello, \\world!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, world!')
+        new Up.PlainText('Hello, world!')
       ]))
   })
 
   it('can disable the special behavior of another backslash', () => {
     expect(Up.parse('Hello, \\\\*world*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, \\'),
-        new Emphasis([
-          new PlainText('world')
+        new Up.PlainText('Hello, \\'),
+        new Up.Emphasis([
+          new Up.PlainText('world')
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 
   it('causes only the following character to be treated as plain text', () => {
     expect(Up.parse('Hello, \\\\, meet \\\\!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, \\, meet \\!')
+        new Up.PlainText('Hello, \\, meet \\!')
       ]))
   })
 
   it('is ignored if it is the final character of the markup', () => {
     expect(Up.parse('Hello, Bob.\\')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, Bob.')
+        new Up.PlainText('Hello, Bob.')
       ]))
   })
 })
@@ -56,13 +56,13 @@ context("Backslashes don't disable line breaks:", () => {
 Hello, world!\\
 Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
+      new Up.Document([
+        new Up.LineBlock([
           new LineBlock.Line([
-            new PlainText('Hello, world!')
+            new Up.PlainText('Hello, world!')
           ]),
           new LineBlock.Line([
-            new PlainText('Goodbye, world!')
+            new Up.PlainText('Goodbye, world!')
           ])
         ])
       ]))
@@ -74,12 +74,12 @@ Hello, world!\\
 
 Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText('Hello, world!')
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText('Hello, world!')
         ]),
-        new Paragraph([
-          new PlainText('Goodbye, world!')
+        new Up.Paragraph([
+          new Up.PlainText('Goodbye, world!')
         ])
       ]))
   })

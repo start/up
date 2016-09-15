@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { PlainText } from '../../SyntaxNodes/PlainText'
@@ -22,8 +22,8 @@ context('A code block preserves all indentation when it is', () => {
 \`\`\``
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new CodeBlock(
+      new Up.Document([
+        new Up.CodeBlock(
           `  if (x < 0) {
 \t\treturn false
   }`),
@@ -42,9 +42,9 @@ SPOILER:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new SpoilerBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.SpoilerBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -62,9 +62,9 @@ SPOILER:
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new SpoilerBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.SpoilerBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -82,9 +82,9 @@ SPOILER:
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new SpoilerBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.SpoilerBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -105,9 +105,9 @@ NSFW:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -125,9 +125,9 @@ NSFW:
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -145,9 +145,9 @@ NSFW:
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsfwBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsfwBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -168,9 +168,9 @@ NSFL:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -188,9 +188,9 @@ NSFL:
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -208,9 +208,9 @@ NSFL:
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new NsflBlock([
-            new CodeBlock(
+        new Up.Document([
+          new Up.NsflBlock([
+            new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
   }`),
@@ -230,10 +230,10 @@ NSFL:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new OrderedList([
+        new Up.Document([
+          new Up.OrderedList([
             new OrderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -251,10 +251,10 @@ NSFL:
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new OrderedList([
+        new Up.Document([
+          new Up.OrderedList([
             new OrderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -272,10 +272,10 @@ NSFL:
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new OrderedList([
+        new Up.Document([
+          new Up.OrderedList([
             new OrderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -296,10 +296,10 @@ NSFL:
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new UnorderedList([
+        new Up.Document([
+          new Up.UnorderedList([
             new UnorderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -317,10 +317,10 @@ NSFL:
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new UnorderedList([
+        new Up.Document([
+          new Up.UnorderedList([
             new UnorderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -338,10 +338,10 @@ NSFL:
  \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new UnorderedList([
+        new Up.Document([
+          new Up.UnorderedList([
             new UnorderedList.Item([
-              new CodeBlock(
+              new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
   }`),
@@ -363,15 +363,15 @@ Lesson 1
   \`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
+        new Up.Document([
+          new Up.DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
-                new PlainText('Lesson 1')
+                new Up.PlainText('Lesson 1')
               ])
             ],
               new DescriptionList.Item.Description([
-                new CodeBlock(
+                new Up.CodeBlock(
                   `  if (x < 0) {
 \t\treturn false
   }`)
@@ -390,11 +390,11 @@ Lesson 1
 \t\`\`\``
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new DescriptionList([
+        new Up.Document([
+          new Up.DescriptionList([
             new DescriptionList.Item([
               new DescriptionList.Item.Subject([
-                new PlainText('Lesson 1')
+                new Up.PlainText('Lesson 1')
               ])
             ],
               new DescriptionList.Item.Description([

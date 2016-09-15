@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -27,20 +27,20 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         
 Anyway, none of that matters.`
 
-      const footnote = new Footnote([
-        new PlainText('Well, I do, but I pretend not to.')
+      const footnote = new Up.Footnote([
+        new Up.PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I don't eat cereal."),
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I don't eat cereal."),
             footnote,
-            new PlainText(" Never have.")
+            new Up.PlainText(" Never have.")
           ]),
-          new FootnoteBlock([footnote]),
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
+          new Up.FootnoteBlock([footnote]),
+          new Up.Paragraph([
+            new Up.PlainText('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -52,25 +52,25 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except fo
 Anyway, none of that matters.`
 
       const footnotes = [
-        new Footnote([
-          new PlainText('Well, I do, but I pretend not to.')
+        new Up.Footnote([
+          new Up.PlainText('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText('Except for Mondays.')
+        new Up.Footnote([
+          new Up.PlainText('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
-          new Paragraph([
-            new PlainText("I don't eat cereal."),
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.PlainText("I don't eat cereal."),
             footnotes[0],
-            new PlainText(" Never have."),
+            new Up.PlainText(" Never have."),
             footnotes[1]
           ]),
-          new FootnoteBlock(footnotes),
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
+          new Up.FootnoteBlock(footnotes),
+          new Up.Paragraph([
+            new Up.PlainText('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -85,22 +85,22 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
         
 Anyway, none of that matters.`
 
-      const footnote = new Footnote([
-        new PlainText('Well, I do, but I pretend not to.')
+      const footnote = new Up.Footnote([
+        new Up.PlainText('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
-      const heading = new Heading([
-        new PlainText("I don't eat cereal."),
+      const heading = new Up.Heading([
+        new Up.PlainText("I don't eat cereal."),
         footnote,
-        new PlainText(" Never have.")
+        new Up.PlainText(" Never have.")
       ], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           heading,
-          new FootnoteBlock([footnote]),
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
+          new Up.FootnoteBlock([footnote]),
+          new Up.Paragraph([
+            new Up.PlainText('Anyway, none of that matters.')
           ])
         ], new Document.TableOfContents([heading])))
     })
@@ -113,27 +113,27 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except fo
 Anyway, none of that matters.`
 
       const footnotes = [
-        new Footnote([
-          new PlainText('Well, I do, but I pretend not to.')
+        new Up.Footnote([
+          new Up.PlainText('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
-        new Footnote([
-          new PlainText('Except for Mondays.')
+        new Up.Footnote([
+          new Up.PlainText('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
-      const heading = new Heading([
-        new PlainText("I don't eat cereal."),
+      const heading = new Up.Heading([
+        new Up.PlainText("I don't eat cereal."),
         footnotes[0],
-        new PlainText(" Never have."),
+        new Up.PlainText(" Never have."),
         footnotes[1]
       ], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
-        new Document([
+        new Up.Document([
           heading,
-          new FootnoteBlock(footnotes),
-          new Paragraph([
-            new PlainText('Anyway, none of that matters.')
+          new Up.FootnoteBlock(footnotes),
+          new Up.Paragraph([
+            new Up.PlainText('Anyway, none of that matters.')
           ])
         ], new Document.TableOfContents([heading])))
     })
@@ -148,29 +148,29 @@ Violets are blue (^Neither is this line. I think my mom made it up.)
 Anyway, none of that matters.`
 
     const footnotes = [
-      new Footnote([
-        new PlainText('This is not my line.')
+      new Up.Footnote([
+        new Up.PlainText('This is not my line.')
       ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText('Neither is this line. I think my mom made it up.')
+      new Up.Footnote([
+        new Up.PlainText('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new LineBlock([
+      new Up.Document([
+        new Up.LineBlock([
           new LineBlock.Line([
-            new PlainText("Roses are red"),
+            new Up.PlainText("Roses are red"),
             footnotes[0],
           ]),
           new LineBlock.Line([
-            new PlainText("Violets are blue"),
+            new Up.PlainText("Violets are blue"),
             footnotes[1]
           ])
         ]),
-        new FootnoteBlock(footnotes),
-        new Paragraph([
-          new PlainText('Anyway, none of that matters.')
+        new Up.FootnoteBlock(footnotes),
+        new Up.Paragraph([
+          new Up.PlainText('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -189,61 +189,61 @@ Anyway, none of that matters.`
 Anyway, none of that matters.`
 
     const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
+      new Up.Footnote([
+        new Up.PlainText("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
+      new Up.Footnote([
+        new Up.PlainText("Or touch.")
       ], { referenceNumber: 2 }),
-      new Footnote([
-        new PlainText('This is not my line.')
+      new Up.Footnote([
+        new Up.PlainText('This is not my line.')
       ], { referenceNumber: 3 }),
-      new Footnote([
-        new PlainText('Neither is this line. I think my mom made it up.')
+      new Up.Footnote([
+        new Up.PlainText('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 4 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
 
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat cereal."),
+            new Up.Paragraph([
+              new Up.PlainText("I don't eat cereal."),
               footnotes[0],
-              new PlainText(" Never have.")
+              new Up.PlainText(" Never have.")
             ]),
-            new Paragraph([
-              new PlainText("It's too expensive.")
+            new Up.Paragraph([
+              new Up.PlainText("It's too expensive.")
             ])
           ]),
 
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText("I don't eat"),
+            new Up.Paragraph([
+              new Up.PlainText("I don't eat"),
               footnotes[1],
-              new PlainText(" pumpkins.")
+              new Up.PlainText(" pumpkins.")
             ])
           ]),
 
           new UnorderedList.Item([
-            new LineBlock([
+            new Up.LineBlock([
               new LineBlock.Line([
-                new PlainText("Roses are red"),
+                new Up.PlainText("Roses are red"),
                 footnotes[2]
               ]),
               new LineBlock.Line([
-                new PlainText("Violets are blue"),
+                new Up.PlainText("Violets are blue"),
                 footnotes[3]
               ])
             ]),
           ])
         ]),
 
-        new FootnoteBlock(footnotes),
+        new Up.FootnoteBlock(footnotes),
 
-        new Paragraph([
-          new PlainText('Anyway, none of that matters.')
+        new Up.Paragraph([
+          new Up.PlainText('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -259,19 +259,19 @@ Anyway, none of that matters.`
 Anyway, none of that matters.`
 
     const footnotes = [
-      new Footnote([
-        new PlainText("Well, I do, but I pretend not to.")
+      new Up.Footnote([
+        new Up.PlainText("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 }),
-      new Footnote([
-        new PlainText("Or touch.")
+      new Up.Footnote([
+        new Up.PlainText("Or touch.")
       ], { referenceNumber: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new OrderedList([
+      new Up.Document([
+        new Up.OrderedList([
           new OrderedList.Item([
-            new Paragraph([
+            new Up.Paragraph([
               new PlainText("I don't eat cereal."),
               footnotes[0],
               new PlainText(" Never have.")

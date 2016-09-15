@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
@@ -10,9 +10,9 @@ describe('Text surrounded by curly brackets', () => {
   it('is put into an example input node', () => {
     expect(Up.parse('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Press '),
-        new ExampleInput('esc'),
-        new PlainText(' to quit.'),
+        new Up.PlainText('Press '),
+        new Up.ExampleInput('esc'),
+        new Up.PlainText(' to quit.'),
       ]))
   })
 })
@@ -22,18 +22,18 @@ describe('Example input', () => {
   it('is not evaluated for other (non-typographical) conventions', () => {
     expect(Up.parse("Select the {Start Game(s)} menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Select the '),
-        new ExampleInput('Start Game(s)'),
-        new PlainText(' menu item.')
+        new Up.PlainText('Select the '),
+        new Up.ExampleInput('Start Game(s)'),
+        new Up.PlainText(' menu item.')
       ]))
   })
 
   it('has any outer whitespace trimmed away', () => {
     expect(Up.parse("Select the {  \t Start Game(s) \t  } menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Select the '),
-        new ExampleInput('Start Game(s)'),
-        new PlainText(' menu item.')
+        new Up.PlainText('Select the '),
+        new Up.ExampleInput('Start Game(s)'),
+        new Up.PlainText(' menu item.')
       ]))
   })
 
@@ -42,18 +42,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Press {\\}} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Press '),
-          new ExampleInput('}'),
-          new PlainText(' to view paths.')
+          new Up.PlainText('Press '),
+          new Up.ExampleInput('}'),
+          new Up.PlainText(' to view paths.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Press { \\} } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Press '),
-          new ExampleInput('}'),
-          new PlainText(' to view paths.')
+          new Up.PlainText('Press '),
+          new Up.ExampleInput('}'),
+          new Up.PlainText(' to view paths.')
         ]))
     })
   })
@@ -63,18 +63,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Press {\\{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Press '),
-          new ExampleInput('{'),
-          new PlainText(' to view paths.')
+          new Up.PlainText('Press '),
+          new Up.ExampleInput('{'),
+          new Up.PlainText(' to view paths.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Press { \\{ } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Press '),
-          new ExampleInput('{'),
-          new PlainText(' to view paths.')
+          new Up.PlainText('Press '),
+          new Up.ExampleInput('{'),
+          new Up.PlainText(' to view paths.')
         ]))
     })
   })
@@ -84,18 +84,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Select the {Start Game{s}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('Start Game{s}'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('Start Game{s}'),
+          new Up.PlainText(' menu item.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Select the { Start Game{s} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('Start Game{s}'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('Start Game{s}'),
+          new Up.PlainText(' menu item.')
         ]))
     })
   })
@@ -105,18 +105,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Select the {{Start Game{s}}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('{Start Game{s}}'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('{Start Game{s}}'),
+          new Up.PlainText(' menu item.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Select the { {Start Game{s}} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('{Start Game{s}}'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('{Start Game{s}}'),
+          new Up.PlainText(' menu item.')
         ]))
     })
   })
@@ -125,10 +125,10 @@ describe('Example input', () => {
   it('can be directly followed by another input instruction', () => {
     expect(Up.parse("Press {ctrl}{q} to quit.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Press '),
-        new ExampleInput('ctrl'),
-        new ExampleInput('q'),
-        new PlainText(' to quit.')
+        new Up.PlainText('Press '),
+        new Up.ExampleInput('ctrl'),
+        new Up.ExampleInput('q'),
+        new Up.PlainText(' to quit.')
       ]))
   })
 
@@ -137,27 +137,27 @@ describe('Example input', () => {
     specify('En dashes', () => {
       expect(Up.parse("Select the { Start Game -- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('Start Game – Single Player'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('Start Game – Single Player'),
+          new Up.PlainText(' menu item.')
         ]))
     })
 
     specify('Em dashes', () => {
       expect(Up.parse("Select the { Start Game --- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Select the '),
-          new ExampleInput('Start Game — Single Player'),
-          new PlainText(' menu item.')
+          new Up.PlainText('Select the '),
+          new Up.ExampleInput('Start Game — Single Player'),
+          new Up.PlainText(' menu item.')
         ]))
     })
 
     specify('Plus-minus signs', () => {
       expect(Up.parse("Click the {+-5 minutes} button.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Click the '),
-          new ExampleInput('±5 minutes'),
-          new PlainText(' button.')
+          new Up.PlainText('Click the '),
+          new Up.ExampleInput('±5 minutes'),
+          new Up.PlainText(' button.')
         ]))
     })
   })
@@ -168,18 +168,18 @@ describe('An unmatched curly bracket', () => {
   it('is preserved as plain text', () => {
     expect(Up.parse('Yeah... :{ I hate pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah… :{ I hate pizza.')
+        new Up.PlainText('Yeah… :{ I hate pizza.')
       ]))
   })
 
   it('does not interfere with subsequent inline conventions', () => {
     expect(Up.parse('Yeah... :{ I *hate* pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Yeah… :{ I '),
-        new Emphasis([
-          new PlainText('hate'),
+        new Up.PlainText('Yeah… :{ I '),
+        new Up.Emphasis([
+          new Up.PlainText('hate'),
         ]),
-        new PlainText(' pizza.'),
+        new Up.PlainText(' pizza.'),
       ]))
   })
 })

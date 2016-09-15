@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -23,16 +23,16 @@ context('Ordered list item bullets can have a single leading space. This include
 * Goodbye, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ])
         ])
@@ -45,16 +45,16 @@ context('Ordered list item bullets can have a single leading space. This include
  - Hello, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ])
         ])
@@ -68,21 +68,21 @@ context('Ordered list item bullets can have a single leading space. This include
 - No, really. Goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('No, really. Goodbye.')
+            new Up.Paragraph([
+              new Up.PlainText('No, really. Goodbye.')
             ])
           ])
         ])
@@ -96,21 +96,21 @@ context('Ordered list item bullets can have a single leading space. This include
  - No, really. Goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('No, really. Goodbye.')
+            new Up.Paragraph([
+              new Up.PlainText('No, really. Goodbye.')
             ])
           ])
         ])
@@ -126,16 +126,16 @@ context('Ordered list item bullets can have a single leading space. This include
 * Goodbye, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ])
         ])
@@ -148,16 +148,16 @@ context('Ordered list item bullets can have a single leading space. This include
  - Hello, Celadon City!`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ])
         ])
@@ -171,21 +171,21 @@ context('Ordered list item bullets can have a single leading space. This include
 - No, really. Goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('No, really. Goodbye.')
+            new Up.Paragraph([
+              new Up.PlainText('No, really. Goodbye.')
             ])
           ])
         ])
@@ -199,21 +199,21 @@ context('Ordered list item bullets can have a single leading space. This include
  - No, really. Goodbye.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new UnorderedList([
+      new Up.Document([
+        new Up.UnorderedList([
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Hello, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Hello, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('Goodbye, Celadon City!')
+            new Up.Paragraph([
+              new Up.PlainText('Goodbye, Celadon City!')
             ])
           ]),
           new UnorderedList.Item([
-            new Paragraph([
-              new PlainText('No, really. Goodbye.')
+            new Up.Paragraph([
+              new Up.PlainText('No, really. Goodbye.')
             ])
           ])
         ])
@@ -230,14 +230,14 @@ Charmeleon
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new PlainText('Charmeleon')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
           ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            new Up.Paragraph([
+              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -251,14 +251,14 @@ Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new PlainText('Charmeleon')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
           ], new DescriptionList.Item.Description([
-            new Paragraph([
-              new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+            new Up.Paragraph([
+              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -273,12 +273,12 @@ Charizard
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.`
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
-        new DescriptionList([
+      new Up.Document([
+        new Up.DescriptionList([
           new DescriptionList.Item([
-            new DescriptionList.Item.Subject([new PlainText('Charmander')]),
-            new DescriptionList.Item.Subject([new PlainText('Charmeleon')]),
-            new DescriptionList.Item.Subject([new PlainText('Charizard')])
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')]),
+            new DescriptionList.Item.Subject([new Up.PlainText('Charizard')])
           ], new DescriptionList.Item.Description([
             new Paragraph([
               new PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')

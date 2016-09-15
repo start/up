@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -14,13 +14,13 @@ describe('Text surrounded by 3 asterisks', () => {
   it('is emphasized and stressed', () => {
     expect(Up.parse('Xamarin is now ***free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Xamarin is now '),
-        new Stress([
-          new Emphasis([
-            new PlainText('free'),
+        new Up.PlainText('Xamarin is now '),
+        new Up.Stress([
+          new Up.Emphasis([
+            new Up.PlainText('free'),
           ])
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 })
@@ -30,54 +30,54 @@ describe('Text that is emphasized/stressed at the same time', () => {
   it('can be surrounded by more than 3 asterisks', () => {
     expect(Up.parse('Koopas! ******Mario is on his way!****** Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Koopas! '),
-        new Stress([
-          new Emphasis([
-            new PlainText('Mario is on his way!'),
+        new Up.PlainText('Koopas! '),
+        new Up.Stress([
+          new Up.Emphasis([
+            new Up.PlainText('Mario is on his way!'),
           ])
         ]),
-        new PlainText(' Grab your shells!')
+        new Up.PlainText(' Grab your shells!')
       ]))
   })
 
   it('can be surrounded by an uneven number of asterisks, as long as there are at least 3', () => {
     expect(Up.parse('Koopas! ******Mario is on his way!********* Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Koopas! '),
-        new Stress([
-          new Emphasis([
-            new PlainText('Mario is on his way!'),
+        new Up.PlainText('Koopas! '),
+        new Up.Stress([
+          new Up.Emphasis([
+            new Up.PlainText('Mario is on his way!'),
           ])
         ]),
-        new PlainText(' Grab your shells!')
+        new Up.PlainText(' Grab your shells!')
       ]))
   })
 
   it('can have its emphasis convention closed first (and thus opened second), with the remaining text being stressed', () => {
     expect(Up.parse('Hello, ***my* world**!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, '),
-        new Stress([
-          new Emphasis([
-            new PlainText('my'),
+        new Up.PlainText('Hello, '),
+        new Up.Stress([
+          new Up.Emphasis([
+            new Up.PlainText('my'),
           ]),
-          new PlainText(' world')
+          new Up.PlainText(' world')
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 
   it('can have its emphasis convention closed first (and thus opened second), with the remaining text being emphasized', () => {
     expect(Up.parse('Hello, ***my** world*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Hello, '),
-        new Emphasis([
-          new Stress([
-            new PlainText('my'),
+        new Up.PlainText('Hello, '),
+        new Up.Emphasis([
+          new Up.Stress([
+            new Up.PlainText('my'),
           ]),
-          new PlainText(' world')
+          new Up.PlainText(' world')
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 })
@@ -87,14 +87,14 @@ context("You can emphasize/stress text at the same time when you're already with
   specify('an emphasis convention', () => {
     expect(Up.parse('*Please ***stop eating the cardboard*** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('Please '),
-          new Stress([
-            new Emphasis([
-              new PlainText('stop eating the cardboard'),
+        new Up.Emphasis([
+          new Up.PlainText('Please '),
+          new Up.Stress([
+            new Up.Emphasis([
+              new Up.PlainText('stop eating the cardboard'),
             ])
           ]),
-          new PlainText(' immediately')
+          new Up.PlainText(' immediately')
         ])
       ]))
   })
@@ -102,14 +102,14 @@ context("You can emphasize/stress text at the same time when you're already with
   specify('a stress convention', () => {
     expect(Up.parse('**Please ***stop eating the cardboard*** immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Stress([
-          new PlainText('Please '),
-          new Stress([
-            new Emphasis([
-              new PlainText('stop eating the cardboard'),
+        new Up.Stress([
+          new Up.PlainText('Please '),
+          new Up.Stress([
+            new Up.Emphasis([
+              new Up.PlainText('stop eating the cardboard'),
             ])
           ]),
-          new PlainText(' immediately')
+          new Up.PlainText(' immediately')
         ])
       ]))
   })
@@ -120,14 +120,14 @@ context('An inflection start delimiter consisting of 3 asterisks with its emphas
   it('can have its stress conventionclosed with 3 asterisks', () => {
     expect(Up.parse('Well, ***Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Well, '),
-        new Stress([
-          new Emphasis([
-            new PlainText('Xamarin')
+        new Up.PlainText('Well, '),
+        new Up.Stress([
+          new Up.Emphasis([
+            new Up.PlainText('Xamarin')
           ]),
-          new PlainText(' is now free')
+          new Up.PlainText(' is now free')
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 })
@@ -137,14 +137,14 @@ describe('An inflection start delimiter consisting of 3 asterisks with its stres
   it('can have its emphasis convention closed with 3 asterisks', () => {
     expect(Up.parse('Well, ***Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Well, '),
-        new Emphasis([
-          new Stress([
-            new PlainText('Xamarin')
+        new Up.PlainText('Well, '),
+        new Up.Emphasis([
+          new Up.Stress([
+            new Up.PlainText('Xamarin')
           ]),
-          new PlainText(' is now free')
+          new Up.PlainText(' is now free')
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 })
@@ -154,28 +154,28 @@ context('Text that is stressed then emphasized can have both conventions closed 
   specify('3 asterisks', () => {
     expect(Up.parse('Xamarin is **now *free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Xamarin is '),
-        new Stress([
-          new PlainText('now '),
-          new Emphasis([
-            new PlainText('free')
+        new Up.PlainText('Xamarin is '),
+        new Up.Stress([
+          new Up.PlainText('now '),
+          new Up.Emphasis([
+            new Up.PlainText('free')
           ])
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 
   specify('4 or more asterisks', () => {
     expect(Up.parse('Xamarin is **now *free****!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('Xamarin is '),
-        new Stress([
-          new PlainText('now '),
-          new Emphasis([
-            new PlainText('free')
+        new Up.PlainText('Xamarin is '),
+        new Up.Stress([
+          new Up.PlainText('now '),
+          new Up.Emphasis([
+            new Up.PlainText('free')
           ])
         ]),
-        new PlainText('!')
+        new Up.PlainText('!')
       ]))
   })
 })
@@ -185,10 +185,10 @@ context('Text that is emphasized then stressed can have both conventions closed 
   specify('3 asterisks', () => {
     expect(Up.parse('*He has won **six in a row!***')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Stress([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Stress([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -197,10 +197,10 @@ context('Text that is emphasized then stressed can have both conventions closed 
   specify('4 or more asterisks', () => {
     expect(Up.parse('*He has won **six in a row!*****')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Stress([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Stress([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -212,10 +212,10 @@ context('Doubly emphasized text can be closed together by', () => {
   specify('2 asterisks', () => {
     expect(Up.parse('*He has won *six in a row!**')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Emphasis([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Emphasis([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -224,10 +224,10 @@ context('Doubly emphasized text can be closed together by', () => {
   specify('3 asterisks', () => {
     expect(Up.parse('*He has won *six in a row!***')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Emphasis([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Emphasis([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -236,10 +236,10 @@ context('Doubly emphasized text can be closed together by', () => {
   specify('4 or more asterisks', () => {
     expect(Up.parse('*He has won *six in a row!*****')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Emphasis([
-          new PlainText('He has won '),
-          new Emphasis([
-            new PlainText('six in a row!')
+        new Up.Emphasis([
+          new Up.PlainText('He has won '),
+          new Up.Emphasis([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -251,10 +251,10 @@ context('Doubly stressed text can be closed together by', () => {
   specify('4 asterisks', () => {
     expect(Up.parse('**He has won **six in a row!****')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Stress([
-          new PlainText('He has won '),
-          new Stress([
-            new PlainText('six in a row!')
+        new Up.Stress([
+          new Up.PlainText('He has won '),
+          new Up.Stress([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))
@@ -263,10 +263,10 @@ context('Doubly stressed text can be closed together by', () => {
   specify('5 or more asterisks', () => {
     expect(Up.parse('**He has won **six in a row!*****')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Stress([
-          new PlainText('He has won '),
-          new Stress([
-            new PlainText('six in a row!')
+        new Up.Stress([
+          new Up.PlainText('He has won '),
+          new Up.Stress([
+            new Up.PlainText('six in a row!')
           ])
         ])
       ]))

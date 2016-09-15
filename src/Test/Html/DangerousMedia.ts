@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
@@ -11,32 +11,32 @@ import { Video } from '../../SyntaxNodes/Video'
 context('By default, media with dangerous URLs schemes produce no HTML.', () => {
   context('Images produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -45,32 +45,32 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 
   context('Audio conventions produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -79,32 +79,32 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 
   context('Videos produce no HTML if their scheme is:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'javascript:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'javascript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'data:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'data:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'file:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'file:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'vbscript:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'vbscript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -116,32 +116,32 @@ context('By default, media with dangerous URLs schemes produce no HTML.', () => 
 context("When determining whether a media's URL is dangerous, the capitalization of the scheme does not matter.", () => {
   context('Images produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'jaVascriPt:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'jaVascriPt:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'DatA:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'DatA:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'fiLE:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'fiLE:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Image('Uh-oh!', 'vBscRipt:malicious')
+      const document = new Up.Document([
+        new Up.Image('Uh-oh!', 'vBscRipt:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -150,32 +150,32 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
   context('Audio conventions produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'JavascriPT:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'JavascriPT:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'DAta:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'DAta:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'fILe:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'fILe:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Audio('Uh-oh!', 'vbScrIPt:malicious')
+      const document = new Up.Document([
+        new Up.Audio('Uh-oh!', 'vbScrIPt:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -184,32 +184,32 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
   context('Videos produce no HTML if their URL scheme is any capitalization of:', () => {
     specify('javascript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'jAvAscript:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'jAvAscript:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('data', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'dATa:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'dATa:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('file', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'FiLe:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'FiLe:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
     })
 
     specify('vbscript', () => {
-      const document = new Document([
-        new Video('Uh-oh!', 'VbscripT:malicious')
+      const document = new Up.Document([
+        new Up.Video('Uh-oh!', 'VbscripT:malicious')
       ])
 
       expect(Up.render(document)).to.equal('')
@@ -220,8 +220,8 @@ context("When determining whether a media's URL is dangerous, the capitalization
 
 context("An image's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new Document([
-      new Image('Uh-oh!', 'javascript-app:stuff')
+    const document = new Up.Document([
+      new Up.Image('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -229,8 +229,8 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('data-app', () => {
-    const document = new Document([
-      new Image('Uh-oh!', 'data-app:stuff')
+    const document = new Up.Document([
+      new Up.Image('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -238,8 +238,8 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('file-app', () => {
-    const document = new Document([
-      new Image('Uh-oh!', 'file-app:stuff')
+    const document = new Up.Document([
+      new Up.Image('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -247,8 +247,8 @@ context("An image's URL scheme can start with a dangerous scheme without being c
   })
 
   specify('vbscript-app', () => {
-    const document = new Document([
-      new Image('Uh-oh!', 'vbscript-app:stuff')
+    const document = new Up.Document([
+      new Up.Image('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -259,8 +259,8 @@ context("An image's URL scheme can start with a dangerous scheme without being c
 
 context("An audio convention's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new Document([
-      new Audio('Uh-oh!', 'javascript-app:stuff')
+    const document = new Up.Document([
+      new Up.Audio('Uh-oh!', 'javascript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -270,8 +270,8 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('data-app', () => {
-    const document = new Document([
-      new Audio('Uh-oh!', 'data-app:stuff')
+    const document = new Up.Document([
+      new Up.Audio('Uh-oh!', 'data-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -281,8 +281,8 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('file-app', () => {
-    const document = new Document([
-      new Audio('Uh-oh!', 'file-app:stuff')
+    const document = new Up.Document([
+      new Up.Audio('Uh-oh!', 'file-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -292,8 +292,8 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
   })
 
   specify('vbscript-app', () => {
-    const document = new Document([
-      new Audio('Uh-oh!', 'vbscript-app:stuff')
+    const document = new Up.Document([
+      new Up.Audio('Uh-oh!', 'vbscript-app:stuff')
     ])
 
     expect(Up.render(document)).to.equal(
@@ -306,7 +306,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
 
 context("A video's URL scheme can start with a dangerous scheme without being considered dangerous itself. For example:", () => {
   specify('javascript-app', () => {
-    const document = new Document([
+    const document = new Up.Document([
       new Video('Uh-oh!', 'javascript-app:stuff')
     ])
 

@@ -13,15 +13,15 @@ import { SectionLink } from '../../SyntaxNodes/SectionLink'
 context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
   specify("Footnotes assigned their reference numbers (mutating them) and placed in footnote blocks (mutating any outline nodes the blocks are placed inside)", () => {
     const documentChildren = [
-      new Paragraph([
-        new PlainText("I don't eat cereal."),
-        new Footnote([new PlainText('Well, I do, but I pretend not to.')]),
-        new PlainText(" Never have.")
+      new Up.Paragraph([
+        new Up.PlainText("I don't eat cereal."),
+        new Up.Footnote([new Up.PlainText('Well, I do, but I pretend not to.')]),
+        new Up.PlainText(" Never have.")
       ]),
-      new SpoilerBlock([
-        new Paragraph([
-          new PlainText("This ruins the movie."),
-          new Footnote([new PlainText("And this is a fun fact.")])
+      new Up.SpoilerBlock([
+        new Up.Paragraph([
+          new Up.PlainText("This ruins the movie."),
+          new Up.Footnote([new Up.PlainText("And this is a fun fact.")])
         ])
       ])
     ]
@@ -29,27 +29,27 @@ context("The `Document.create` is automatically used during the normal parsing p
     const document = Document.create(documentChildren)
 
     const cerealFootnote =
-      new Footnote([new PlainText('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
+      new Up.Footnote([new Up.PlainText('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
 
     const movieFootnote =
-      new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
+      new Up.Footnote([new Up.PlainText("And this is a fun fact.")], { referenceNumber: 2 })
 
     expect(document).to.deep.equal(
-      new Document([
-        new Paragraph([
-          new PlainText("I don't eat cereal."),
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.PlainText("I don't eat cereal."),
           cerealFootnote,
-          new PlainText(" Never have.")
+          new Up.PlainText(" Never have.")
         ]),
-        new FootnoteBlock([
+        new Up.FootnoteBlock([
           cerealFootnote,
         ]),
-        new SpoilerBlock([
-          new Paragraph([
-            new PlainText("This ruins the movie."),
-            new Footnote([new PlainText("And this is a fun fact.")], { referenceNumber: 2 })
+        new Up.SpoilerBlock([
+          new Up.Paragraph([
+            new Up.PlainText("This ruins the movie."),
+            new Up.Footnote([new Up.PlainText("And this is a fun fact.")], { referenceNumber: 2 })
           ]),
-          new FootnoteBlock([
+          new Up.FootnoteBlock([
             movieFootnote,
           ])
         ])
@@ -58,15 +58,15 @@ context("The `Document.create` is automatically used during the normal parsing p
 
   specify("A table of contents", () => {
     const documentChildren = [
-      new Heading([new PlainText('I enjoy apples')], { level: 1 }),
-      new OrderedList([
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1 }),
+      new Up.OrderedList([
         new OrderedList.Item([
-          new Heading([new PlainText("They're cheap")], { level: 2 }),
-          new Paragraph([new PlainText("Very cheap.")])
+          new Up.Heading([new Up.PlainText("They're cheap")], { level: 2 }),
+          new Up.Paragraph([new Up.PlainText("Very cheap.")])
         ]),
         new OrderedList.Item([
-          new Heading([new PlainText("They're delicious")], { level: 2 }),
-          new Paragraph([new PlainText("Very delicious.")])
+          new Up.Heading([new Up.PlainText("They're delicious")], { level: 2 }),
+          new Up.Paragraph([new Up.PlainText("Very delicious.")])
         ])
       ])
     ]
@@ -74,25 +74,25 @@ context("The `Document.create` is automatically used during the normal parsing p
     const document = Document.create(documentChildren)
 
     const enjoyHeading =
-      new Heading([new PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const cheapHeading =
-      new Heading([new PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
     const deliciousHeading =
-      new Heading([new PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(document).to.deep.equal(
-      new Document([
+      new Up.Document([
         enjoyHeading,
-        new OrderedList([
+        new Up.OrderedList([
           new OrderedList.Item([
             cheapHeading,
-            new Paragraph([new PlainText("Very cheap.")])
+            new Up.Paragraph([new Up.PlainText("Very cheap.")])
           ]),
           new OrderedList.Item([
             deliciousHeading,
-            new Paragraph([new PlainText("Very delicious.")])
+            new Up.Paragraph([new Up.PlainText("Very delicious.")])
           ])
         ])
       ], new Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
@@ -100,37 +100,37 @@ context("The `Document.create` is automatically used during the normal parsing p
 
   specify("Referemces to table of contents entries associated with the appropriate entries", () => {
     const documentChildren = [
-      new Heading([new PlainText('I drink soda')], { level: 1 }),
-      new Paragraph([
-        new PlainText('Actually, I only drink milk.')
+      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1 }),
+      new Up.Paragraph([
+        new Up.PlainText('Actually, I only drink milk.')
       ]),
-      new Heading([new PlainText('I never lie')], { level: 1 }),
-      new Paragraph([
-        new PlainText('Not quite true. For example, see '),
-        new SectionLink('soda'),
-        new PlainText('.')
+      new Up.Heading([new Up.PlainText('I never lie')], { level: 1 }),
+      new Up.Paragraph([
+        new Up.PlainText('Not quite true. For example, see '),
+        new Up.SectionLink('soda'),
+        new Up.PlainText('.')
       ])
     ]
 
     const document = Document.create(documentChildren)
 
     const sodaHeading =
-      new Heading([new PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Heading([new PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(document).to.deep.equal(
-      new Document([
+      new Up.Document([
         sodaHeading,
-        new Paragraph([
-          new PlainText('Actually, I only drink milk.')
+        new Up.Paragraph([
+          new Up.PlainText('Actually, I only drink milk.')
         ]),
         neverLieHeading,
-        new Paragraph([
-          new PlainText('Not quite true. For example, see '),
-          new SectionLink('soda', sodaHeading),
-          new PlainText('.')
+        new Up.Paragraph([
+          new Up.PlainText('Not quite true. For example, see '),
+          new Up.SectionLink('soda', sodaHeading),
+          new Up.PlainText('.')
         ])
       ], new Document.TableOfContents([sodaHeading, neverLieHeading])))
   })

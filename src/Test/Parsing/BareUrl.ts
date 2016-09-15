@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
 import { Document } from '../../SyntaxNodes/Document'
 import { Paragraph } from '../../SyntaxNodes/Paragraph'
@@ -25,9 +25,9 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify('Start with "https://', () => {
       expect(Up.parse('Check out https://archive.org')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Check out '),
-          new Link([
-            new PlainText('archive.org')
+          new Up.PlainText('Check out '),
+          new Up.Link([
+            new Up.PlainText('archive.org')
           ], 'https://archive.org')
         ]))
     })
@@ -35,9 +35,9 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify('Start with "http://', () => {
       expect(Up.parse('Check out https://archive.org')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('Check out '),
-          new Link([
-            new PlainText('archive.org')
+          new Up.PlainText('Check out '),
+          new Up.Link([
+            new Up.PlainText('archive.org')
           ], 'https://archive.org')
         ]))
     })
@@ -48,14 +48,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify("It consists solely of 'http://'", () => {
       expect(Up.parse('http://')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('http://')
+          new Up.PlainText('http://')
         ]))
     })
 
     specify("It consists solely of 'https://'", () => {
       expect(Up.parse('https://')).to.deep.equal(
         insideDocumentAndParagraph([
-          new PlainText('https://')
+          new Up.PlainText('https://')
         ]))
     })
 
@@ -64,14 +64,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
       specify("Commas", () => {
         expect(Up.parse('http://, now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
-            new PlainText('http://, now that is my favorite URL scheme!')
+            new Up.PlainText('http://, now that is my favorite URL scheme!')
           ]))
       })
 
       specify("Periods", () => {
         expect(Up.parse('http://. Now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
-            new PlainText('http://. Now that is my favorite URL scheme!')
+            new Up.PlainText('http://. Now that is my favorite URL scheme!')
           ]))
       })
 
@@ -80,14 +80,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
         specify("comprising a typographical convention", () => {
           expect(Up.parse('http://---now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
-              new PlainText('http://—now that is my favorite URL scheme!')
+              new Up.PlainText('http://—now that is my favorite URL scheme!')
             ]))
         })
 
         specify("not comprising a typographical convention", () => {
           expect(Up.parse('http://-now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
-              new PlainText('http://-now that is my favorite URL scheme!')
+              new Up.PlainText('http://-now that is my favorite URL scheme!')
             ]))
         })
       })
@@ -98,14 +98,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
   specify("It has a scheme other than 'https://' or 'http://", () => {
     expect(Up.parse('ftp://google.com')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('ftp://google.com')
+        new Up.PlainText('ftp://google.com')
       ]))
   })
 
   specify("It doesn't have both forward slashes", () => {
     expect(Up.parse('In the homepage field, you can use either http:/mailto:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('In the homepage field, you can use either http:/mailto:')
+        new Up.PlainText('In the homepage field, you can use either http:/mailto:')
       ]))
   })
 })
@@ -115,20 +115,20 @@ context('Bare URLs are always terminated by whitespace:', () => {
   specify('Spaces', () => {
     expect(Up.parse('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org')
+        new Up.Link([
+          new Up.PlainText('archive.org')
         ], 'https://archive.org'),
-        new PlainText(' is exciting')
+        new Up.PlainText(' is exciting')
       ]))
   })
 
   specify('Tabs', () => {
     expect(Up.parse('https://archive.org\tis exciting')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org')
+        new Up.Link([
+          new Up.PlainText('archive.org')
         ], 'https://archive.org'),
-        new PlainText('\tis exciting')
+        new Up.PlainText('\tis exciting')
       ]))
   })
 })
@@ -138,8 +138,8 @@ describe('A bare URL', () => {
   it('can have multiple subdomains', () => {
     expect(Up.parse('https://this.is.a.very.real.url.co.uk')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('this.is.a.very.real.url.co.uk')
+        new Up.Link([
+          new Up.PlainText('this.is.a.very.real.url.co.uk')
         ], 'https://this.is.a.very.real.url.co.uk')
       ]))
   })
@@ -147,8 +147,8 @@ describe('A bare URL', () => {
   it('can contain consecutive periods in its path', () => {
     expect(Up.parse('https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
+        new Up.Link([
+          new Up.PlainText('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
         ], 'https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')
       ]))
   })
@@ -156,18 +156,18 @@ describe('A bare URL', () => {
   it('can have a path consisting only of a forward slash', () => {
     expect(Up.parse('https://google.com/ is a neat site.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('google.com/')
+        new Up.Link([
+          new Up.PlainText('google.com/')
         ], 'https://google.com/'),
-        new PlainText(' is a neat site.')
+        new Up.PlainText(' is a neat site.')
       ]))
   })
 
   it('can contain escaped spaces', () => {
     expect(Up.parse('https://archive.org/fake\\ url')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org/fake url')
+        new Up.Link([
+          new Up.PlainText('archive.org/fake url')
         ], 'https://archive.org/fake url')
       ]))
   })
@@ -175,8 +175,8 @@ describe('A bare URL', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('https://archive.org/fake(url)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org/fake(url)')
+        new Up.Link([
+          new Up.PlainText('archive.org/fake(url)')
         ], 'https://archive.org/fake(url)')
       ]))
   })
@@ -184,8 +184,8 @@ describe('A bare URL', () => {
   it('can contain any number of nested matching parentheses', () => {
     expect(Up.parse('https://archive.org/a(fake(url))is(((very)))fun')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org/a(fake(url))is(((very)))fun')
+        new Up.Link([
+          new Up.PlainText('archive.org/a(fake(url))is(((very)))fun')
         ], 'https://archive.org/a(fake(url))is(((very)))fun')
       ]))
   })
@@ -193,8 +193,8 @@ describe('A bare URL', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('https://archive.org/fake[url]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org/fake[url]')
+        new Up.Link([
+          new Up.PlainText('archive.org/fake[url]')
         ], 'https://archive.org/fake[url]')
       ]))
   })
@@ -202,8 +202,8 @@ describe('A bare URL', () => {
   it('can contain any number of nested matching square brackets', () => {
     expect(Up.parse('https://archive.org/a[fake[url]]is[[[very]]]fun')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
+        new Up.Link([
+          new Up.PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
         ], 'https://archive.org/a[fake[url]]is[[[very]]]fun')
       ]))
   })
@@ -211,12 +211,12 @@ describe('A bare URL', () => {
   it("can be inside a link", () => {
     expect(Up.parse('[Visit https://inner.example.com/fake right now!](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Link([
-          new PlainText('Visit '),
-          new Link([
-            new PlainText('inner.example.com/fake')
+        new Up.Link([
+          new Up.PlainText('Visit '),
+          new Up.Link([
+            new Up.PlainText('inner.example.com/fake')
           ], 'https://inner.example.com/fake'),
-          new PlainText(' right now!')
+          new Up.PlainText(' right now!')
         ], 'https://outer.example.com/real')
       ]))
   })

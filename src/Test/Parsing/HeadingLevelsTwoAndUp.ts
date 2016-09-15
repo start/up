@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { Document } from '../../SyntaxNodes/Document'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Heading } from '../../SyntaxNodes/Heading'
@@ -19,12 +19,12 @@ Goodbye, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         headings,
         new Document.TableOfContents(headings)
       ))
@@ -45,13 +45,13 @@ Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 }),
-      new Heading([new PlainText('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 }),
+      new Up.Heading([new Up.PlainText('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         headings,
         new Document.TableOfContents(headings)
       ))
@@ -70,12 +70,12 @@ Goodbye, world!
 ===============`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         headings,
         new Document.TableOfContents(headings)
       ))
@@ -91,12 +91,12 @@ Goodbye, world!
 #~~~~~~~~~~~#`
 
     const headings = [
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         headings,
         new Document.TableOfContents(headings)
       ))
@@ -138,17 +138,17 @@ Warlocked
 ---------`
 
     const headings = [
-      new Heading([new PlainText('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Heading([new PlainText('Video Games')], { level: 2, ordinalInTableOfContents: 2 }),
-      new Heading([new PlainText('Handheld Video Games')], { level: 3, ordinalInTableOfContents: 3 }),
-      new Heading([new PlainText('Game Boy Games')], { level: 4, ordinalInTableOfContents: 4 }),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games')], { level: 5, ordinalInTableOfContents: 5 }),
-      new Heading([new PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6, ordinalInTableOfContents: 6 }),
-      new Heading([new PlainText('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
+      new Up.Heading([new Up.PlainText('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.PlainText('Video Games')], { level: 2, ordinalInTableOfContents: 2 }),
+      new Up.Heading([new Up.PlainText('Handheld Video Games')], { level: 3, ordinalInTableOfContents: 3 }),
+      new Up.Heading([new Up.PlainText('Game Boy Games')], { level: 4, ordinalInTableOfContents: 4 }),
+      new Up.Heading([new Up.PlainText('Real-Time Strategy Game Boy Games')], { level: 5, ordinalInTableOfContents: 5 }),
+      new Up.Heading([new Up.PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6, ordinalInTableOfContents: 6 }),
+      new Up.Heading([new Up.PlainText('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document(
+      new Up.Document(
         headings,
         new Document.TableOfContents(headings)))
   })
@@ -168,19 +168,19 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new UnorderedList([
+        new Up.UnorderedList([
           new UnorderedList.Item([
             keysHeading
           ])
@@ -207,19 +207,19 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new OrderedList([
+        new Up.OrderedList([
           new OrderedList.Item([
             keysHeading
           ])
@@ -247,21 +247,21 @@ Awkward
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Heading([new PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Heading([new PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Heading([new PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
-      new Document([
+      new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new DescriptionList([
+        new Up.DescriptionList([
           new DescriptionList.Item(
-            [new DescriptionList.Item.Subject([new PlainText('Awkward')])],
+            [new DescriptionList.Item.Subject([new Up.PlainText('Awkward')])],
             new DescriptionList.Item.Description([
               keysHeading
             ]))

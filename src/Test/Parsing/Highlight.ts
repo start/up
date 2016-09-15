@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Up } from '../../Up'
+import Up = require('../../index')
 import { insideDocumentAndParagraph } from './Helpers'
 import { PlainText } from '../../SyntaxNodes/PlainText'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
@@ -12,22 +12,22 @@ context('Bracketed text starting with "highlight:" is put inside a highlight nod
  specify('Square brackets', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   specify('Parentheses', () => {
     expect(Up.parse('After you beat the Elite Four, (highlight: you fight Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -44,28 +44,28 @@ describe('A highlight convention', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight *Gary*].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight '),
-          new Emphasis([
-            new PlainText('Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight '),
+          new Up.Emphasis([
+            new Up.PlainText('Gary')
           ]),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   it('can be nested within another highlight convention', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight [highlight: Gary]].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight '),
-          new Highlight([
-            new PlainText('Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight '),
+          new Up.Highlight([
+            new Up.PlainText('Gary')
           ]),
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -75,15 +75,15 @@ describe('A highlight produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight [and beat] Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight '),
-          new SquareParenthetical([
-            new PlainText('[and beat]')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight '),
+          new Up.SquareParenthetical([
+            new Up.PlainText('[and beat]')
           ]),
-          new PlainText(' Gary')
+          new Up.PlainText(' Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -93,15 +93,15 @@ describe('A highlight produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.parse('After you beat the Elite Four, (highlight: you fight (and beat) Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight '),
-          new NormalParenthetical([
-            new PlainText('(and beat)')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight '),
+          new Up.NormalParenthetical([
+            new Up.PlainText('(and beat)')
           ]),
-          new PlainText(' Gary')
+          new Up.PlainText(' Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
@@ -111,22 +111,22 @@ describe('Any whitespace between "highlight:" and the start of the highlighted c
   it('is optional', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight:you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 
   it('is ignored', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: \t  \t you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new PlainText('After you beat the Elite Four, '),
-        new Highlight([
-          new PlainText('you fight Gary')
+        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.PlainText('you fight Gary')
         ]),
-        new PlainText('.')
+        new Up.PlainText('.')
       ]))
   })
 })
