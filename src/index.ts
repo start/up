@@ -118,4 +118,4 @@ export { InlineSyntaxNode } from './SyntaxNodes/InlineSyntaxNode'
 export { OutlineSyntaxNode } from './SyntaxNodes/OutlineSyntaxNode'
 
 // This should always match the `version` field in `package.json`.
-export const VERSION = '20.1.0'
+export const VERSION = '21.0.0'
