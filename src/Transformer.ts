@@ -7,7 +7,7 @@ import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
-export class Converter {
+export class Transformer {
   private settings: Settings
 
   constructor(settings?: UserProvidedSettings) {

@@ -35,12 +35,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   const whenProvidingSettingsAtCreation =
-    new Up.Converter(changedSettings).renderDocumentAndTableOfContents(document)
+    new Up.Transformer(changedSettings).renderDocumentAndTableOfContents(document)
 
 
-  describe("when provided to a Converter object's renderDocumentAndTableOfContents method", () => {
+  describe("when provided to a Transformer object's renderDocumentAndTableOfContents method", () => {
     it("does not alter the Up object's original settings", () => {
-      const up = new Up.Converter(changedSettings)
+      const up = new Up.Transformer(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
       expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
@@ -55,13 +55,13 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.renderDocumentAndTableOfContents(document, change)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up.Converter().renderDocumentAndTableOfContents(document, change)
+    new Up.Transformer().renderDocumentAndTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up.Converter(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
+    new Up.Transformer(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
 
 
-  describe('when provided to a Converter object at creation', () => {
+  describe('when provided to a Transformer object at creation', () => {
     it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents method', () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })

@@ -11,7 +11,7 @@ export function insideDocumentAndParagraph(nodes: Up.InlineSyntaxNode[]): Up.Doc
 
 export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   args: {
-    content: string
+  content: string
     partsBetweenContentAndUrl?: string[]
     url: string
     toProduce: Up.Document

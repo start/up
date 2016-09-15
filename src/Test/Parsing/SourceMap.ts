@@ -14,7 +14,7 @@ context('When the "createSourceMap" setting is not enabled', () => {
 
 
 context('When the "createSourceMap" setting is enabled, outline nodes are given a source line number.', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       createSourceMap: true
     }

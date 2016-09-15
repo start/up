@@ -3,7 +3,7 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-const up = new Up.Converter({
+const up = new Up.Transformer({
   parsing: {
     baseForUrlsStartingWithHashMark: 'https://example.com/page'
   }

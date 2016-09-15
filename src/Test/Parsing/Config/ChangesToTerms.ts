@@ -126,8 +126,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
 
-  describe("when provided to a Converter object's parse method", () => {
-    const up = new Up.Converter()
+  describe("when provided to a Transformer object's parse method", () => {
+    const up = new Up.Transformer()
 
     it("does not alter the Up object's original settings", () => {
       expectConventiontoProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
@@ -160,8 +160,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
 
-  describe('when provided to a Converter object at creation', () => {
-    const up = new Up.Converter(changedSettings)
+  describe('when provided to a Transformer object at creation', () => {
+    const up = new Up.Transformer(changedSettings)
 
     const whenProvidingChangesAtCreation =
       up.parse(markupForTermVariations)
@@ -171,20 +171,20 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     })
 
     it("has the same result as providing the term when calling the Up object's parse method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Converter().parse(markupForTermVariations, changedParsingSettings))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer().parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("has the same result as providing the term when calling the Up object's parse method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Converter(conflictingSettings).parse(markupForTermVariations, changedParsingSettings))
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer(conflictingSettings).parse(markupForTermVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
 
-      expectConventiontoProperlyParse(new Up.Converter(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Converter(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Converter(settingWithZeroVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Converter(conflictingSettings).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Transformer(settingWithZeroVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Transformer(conflictingSettings).parse(markupForDefaultSettings))
     })
 
     it("can be overwritten by providing different custom terms to the parse method", () => {
@@ -195,21 +195,21 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expectConventionFailToParse(new Up.Converter(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyTerm))
-      expectConventionFailToParse(new Up.Converter(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm))
+      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyTerm))
+      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventiontoProperlyParse(new Up.Converter(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
+      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      const up = new Up.Converter(equivalentSettingsWithOnlyEmptyAndBlankVariations)
+      const up = new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations)
 
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })
 
     it("has no effect if there are no variations", () => {
-      const up = new Up.Converter(settingWithZeroVariations)
+      const up = new Up.Transformer(settingWithZeroVariations)
 
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })
@@ -559,8 +559,8 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
 
 context('Settings settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
-  specify('a Converter object you create', () => {
-    const up = new Up.Converter({
+  specify('a Transformer object you create', () => {
+    const up = new Up.Transformer({
       parsing: {
         terms: {
           nsfw: 'ruins ending'

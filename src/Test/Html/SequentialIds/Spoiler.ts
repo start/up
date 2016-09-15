@@ -69,7 +69,7 @@ describe("Inline spoilers and spoiler blocks", () => {
 
 describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
   it("is reset each time a new Up.Document is written", () => {
-    const up = new Up.Converter()
+    const up = new Up.Transformer()
 
     const node =
       new Up.Document([
@@ -103,7 +103,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("is reset each time a new Up.Document is written", () => {
-    const up = new Up.Converter()
+    const up = new Up.Transformer()
 
     const node =
       new Up.Document([

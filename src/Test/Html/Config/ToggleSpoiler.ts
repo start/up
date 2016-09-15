@@ -4,7 +4,7 @@ import * as Up from '../../../index'
 
 describe("The text in an inline spoiler's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleSpoiler: 'show/hide' }
       }
@@ -32,7 +32,7 @@ describe("The text in an inline spoiler's label", () => {
 
 describe("The text in a spoiler block's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleSpoiler: 'show/hide' }
       }

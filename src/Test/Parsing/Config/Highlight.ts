@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('The "highlight" term', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       terms: { highlight: 'mark' }
     }

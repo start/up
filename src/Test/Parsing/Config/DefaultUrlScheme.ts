@@ -3,7 +3,7 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-const up = new Up.Converter({
+const up = new Up.Transformer({
   parsing: { defaultUrlScheme: 'my-app:' }
 })
 

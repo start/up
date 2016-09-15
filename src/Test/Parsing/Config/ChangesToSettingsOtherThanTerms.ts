@@ -33,8 +33,8 @@ function itWorksAsAdvertised(
       expect(Up.parse(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
 
-    specify('when the parse method is called on a Converter object', () => {
-      expect(new Up.Converter().parse(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
+    specify('when the parse method is called on a Transformer object', () => {
+      expect(new Up.Transformer().parse(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
   })
 
@@ -44,22 +44,22 @@ function itWorksAsAdvertised(
       expect(Up.parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when creating a Converter object', () => {
-      expect(new Up.Converter(changedSettings).parse(markup)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when creating a Transformer object', () => {
+      expect(new Up.Transformer(changedSettings).parse(markup)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the parse method on a Converter object', () => {
-      expect(new Up.Converter().parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when calling the parse method on a Transformer object', () => {
+      expect(new Up.Transformer().parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
-    specify('when calling the parse method on a Converter object that had the setting explictly set to default when the object was created', () => {
-      expect(new Up.Converter(conflictingChangedSettings).parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
+    specify('when calling the parse method on a Transformer object that had the setting explictly set to default when the object was created', () => {
+      expect(new Up.Transformer(conflictingChangedSettings).parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
   })
 
 
-  specify('can be set back to default when calling the parse method on a Converter object that had the setting changed when the object was created', () => {
-    expect(new Up.Converter(changedSettings).parse(markup, conflictingChange)).to.deep.equal(documentWhenSettingIsNotChanged)
+  specify('can be set back to default when calling the parse method on a Transformer object that had the setting changed when the object was created', () => {
+    expect(new Up.Transformer(changedSettings).parse(markup, conflictingChange)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 
@@ -68,8 +68,8 @@ function itWorksAsAdvertised(
       expect(Up.parse(markup, change)).to.be.not.eql(Up.parse(markup))
     })
 
-    specify('when calling the parse method on a Converter object', () => {
-      const up = new Up.Converter()
+    specify('when calling the parse method on a Transformer object', () => {
+      const up = new Up.Transformer()
       expect(up.parse(markup, change)).to.be.not.eql(up.parse(markup))
     })
   })

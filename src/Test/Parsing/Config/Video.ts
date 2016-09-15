@@ -3,7 +3,7 @@ import * as Up from '../../../index'
 
 
 describe('The term that represents video conventions', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       terms: { video: 'watch' }
     }

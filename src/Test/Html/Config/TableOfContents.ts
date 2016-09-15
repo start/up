@@ -4,7 +4,7 @@ import * as Up from '../../../index'
 
 describe('The main heading within the table of contents', () => {
   it('uses the term for "tableOfContents"', () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { tableOfContents: 'In This Article' }
       }

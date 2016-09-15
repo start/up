@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('The "fancyEllipsis" setting', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: { fancyEllipsis: '⋯' }
   })
 

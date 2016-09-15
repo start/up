@@ -4,7 +4,7 @@ import * as Up from '../../../index'
 
 
 describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       baseForUrlsStartingWithHashMark: 'https://example.com/page'
     }

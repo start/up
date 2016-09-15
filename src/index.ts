@@ -1,23 +1,23 @@
-import { Converter, RenderedDocumentAndTableOfContents } from './Converter'
+import { Transformer, RenderedDocumentAndTableOfContents } from './Transformer'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
 
 
 // These functions allow developers to use Up without having to create any instances of
-// the `Converter` class.
+// the `Transformer` class.
 //
-// Though it's never necessary to create instances of `Converter`, it's sometimes more
+// Though it's never necessary to create instances of `Transformer`, it's sometimes more
 // convenient.
 //
 // For example, let's say you're parsing an article and its comments. For each comment,
 // you want to specify a unique ID prefix; for both the article and its comments, you
 // want to use custom Japanese terms. 
 //
-// By creating an instance of `Converter`, you can specify those custom Japanese terms
+// By creating an instance of `Transformer`, you can specify those custom Japanese terms
 // just once (in the constructor). Then, when parsing each comment, you only need
 // to provide a unique ID prefix.
-const up = new Converter()
+const up = new Transformer()
 
 // Converts Up markup into HTML and returns the result.
 export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
@@ -65,7 +65,7 @@ export function renderInline(inlineDocument: InlineDocument, renderingSettings?:
   return up.renderInline(inlineDocument, renderingSettings)
 }
 
-export { Converter } from './Converter'
+export { Transformer } from './Transformer'
 export { UserProvidedSettings } from './UserProvidedSettings'
 
 export { Document } from './SyntaxNodes/Document'

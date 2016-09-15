@@ -104,7 +104,7 @@ describe('Within an example input node, >, \', and "', () => {
 
 describe("Within an inline spoiler's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleSpoiler: '<_< & show & hide' }
       }
@@ -132,7 +132,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
 
 describe("Within an inline NSFW convention's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleNsfw: '<_< & show & hide' }
       }
@@ -160,7 +160,7 @@ describe("Within an inline NSFW convention's label, all instances of < and &", (
 
 describe("Within an inline NSFL convention's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleNsfl: '<_< & show & hide' }
       }
@@ -188,7 +188,7 @@ describe("Within an inline NSFL convention's label, all instances of < and &", (
 
 describe("Within a spoiler block's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleSpoiler: '<_< & show & hide' }
       }
@@ -212,7 +212,7 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
 
 describe("Within a NSFW block's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleNsfw: '<_< & show & hide' }
       }
@@ -236,7 +236,7 @@ describe("Within a NSFW block's label, all instances of < and &", () => {
 
 describe("Within a NSFL block's label, all instances of < and &", () => {
   it("are escaped", () => {
-    const up = new Up.Converter({
+    const up = new Up.Transformer({
       rendering: {
         terms: { toggleNsfl: '<_< & show & hide' }
       }

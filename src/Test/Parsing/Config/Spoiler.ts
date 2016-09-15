@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('The "spoiler" term is used by both inline spoilers and spoiler blocks.', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       terms: { spoiler: 'ruins ending' }
     }

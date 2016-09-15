@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('The "nsfw" term is used by both inline NSFW conventions and NSFW blocks.', () => {
-  const up = new Up.Converter({
+  const up = new Up.Transformer({
     parsing: {
       terms: { nsfw: 'ruins ending' }
     }
