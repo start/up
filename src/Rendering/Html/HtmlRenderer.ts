@@ -371,8 +371,8 @@ export class HtmlRenderer extends Renderer {
     return this.playableMediaElement(video, 'video')
   }
 
-  plainText(plainText: Text): string {
-    return escapeHtmlContent(plainText.text)
+  text(text: Text): string {
+    return escapeHtmlContent(text.text)
   }
 
   private tableOfContentsTitle(): string {

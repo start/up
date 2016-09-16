@@ -18,7 +18,7 @@ export class Text implements InlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.plainText(this)
+    return renderer.text(this)
   }
 
   protected TEXT(): void { }

@@ -75,7 +75,7 @@ export abstract class Renderer {
   abstract thematicBreak(thematicBreak: ThematicBreak): string
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
-  abstract plainText(plainText: Text): string
+  abstract text(text: Text): string
   abstract sectionLink(sectionLink: SectionLink): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
