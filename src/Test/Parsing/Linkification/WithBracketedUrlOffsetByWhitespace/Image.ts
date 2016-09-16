@@ -55,13 +55,13 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: something terrible](https://example.com/image.png) (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('something terrible', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('stackoverflow.com')
+              new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new Up.PlainText(' is nice)')
+            new Up.Text(' is nice)')
           ]),
         ]))
     })
@@ -70,9 +70,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: email sending] (https://example.com/image.png) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('email sending', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:)')
+            new Up.Text('(mailto:)')
           ]),
         ]))
     })
@@ -81,9 +81,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: local files rustling](https://example.com/image.png) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('local files rustling', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(file:///)')
+            new Up.Text('(file:///)')
           ]),
         ]))
     })
@@ -112,9 +112,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: email sending] (https://example.com/image.png) (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('email sending', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:daniel@wants.email)')
+            new Up.Text('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -147,9 +147,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: something terrible](https://example.com/image.png) (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('something terrible', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/ created it)')
+            new Up.Text('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -158,9 +158,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: slash] (https://example.com/image.png) (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('slash', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/)')
+            new Up.Text('(/)')
           ]),
         ]))
     })
@@ -189,9 +189,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: robots](https://example.com/image.png) (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('robots', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/)')
+            new Up.Text('(/r9k/)')
           ]),
         ]))
     })
@@ -244,9 +244,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: hash marking](https://example.com/image.png) (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('hash marking', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#)')
+            new Up.Text('(#)')
           ]),
         ]))
     })
@@ -255,9 +255,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: something terrible] (https://example.com/image.png) (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('something terrible', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2 was never trending)')
+            new Up.Text('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -266,9 +266,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: hash marking](https://example.com/image.png) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('hash marking', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2)')
+            new Up.Text('(#starcraft2)')
           ]),
         ]))
     })
@@ -341,9 +341,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: 4chan] (https://example.com/image.png) (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('4chan', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org-terrifying)')
+            new Up.Text('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -373,9 +373,9 @@ context('A linkified image convention can have whitespace between its image URL 
         expect(Up.parse('[image: usernaming](https://example.com/image.png) (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Image('usernaming', 'https://example.com/image.png'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith5)')
+              new Up.Text('(john.e.smith5)')
             ]),
           ]))
       })
@@ -384,9 +384,9 @@ context('A linkified image convention can have whitespace between its image URL 
         expect(Up.parse('[image: usernaming] (https://example.com/image.png) (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Image('usernaming', 'https://example.com/image.png'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith-kline)')
+              new Up.Text('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -396,9 +396,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: being British](https://example.com/image.png) (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('being British', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(.co.uk)')
+            new Up.Text('(.co.uk)')
           ]),
         ]))
     })
@@ -407,9 +407,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: Ash claiming to be his own father] (https://example.com/image.png) (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('Ash claiming to be his own father', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(um…uh)')
+            new Up.Text('(um…uh)')
           ]),
         ]))
     })
@@ -418,9 +418,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: debilitating sadness](https://example.com/image.png) (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('debilitating sadness', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org…/r9k/)')
+            new Up.Text('(4chan.org…/r9k/)')
           ]),
         ]))
     })
@@ -449,9 +449,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: yeah] (https://example.com/image.png) (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('yeah', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com had some hilarious forums)')
+            new Up.Text('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -460,9 +460,9 @@ context('A linkified image convention can have whitespace between its image URL 
       expect(Up.parse('[image: yeah](https://example.com/image.png) (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('yeah', 'https://example.com/image.png'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com)')
+            new Up.Text('(ign.com)')
           ]),
         ]))
     })
@@ -473,9 +473,9 @@ context('A linkified image convention can have whitespace between its image URL 
     expect(Up.parse('[image: something terrible] (https://example.com/image.png) (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Image('something terrible', 'https://example.com/image.png'),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.NormalParenthetical([
-          new Up.PlainText('(really)')
+          new Up.Text('(really)')
         ]),
       ]))
   })
@@ -487,13 +487,13 @@ describe("If there is whitespace between an otherwise-valid linkified image conv
     expect(Up.parse('[image: something terrible](https://example.com/image.png)  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Image('something terrible', 'https://example.com/image.png'),
-        new Up.PlainText('    '),
+        new Up.Text('    '),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com')
+            new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })

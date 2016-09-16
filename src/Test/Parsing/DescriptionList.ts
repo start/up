@@ -12,11 +12,11 @@ Charmander
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
             ]))
         ])
@@ -37,13 +37,13 @@ Torchic
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Cyndaquil')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Torchic')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Cyndaquil')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Torchic')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('The first three starter Fire Pokemon')
+                new Up.Text('The first three starter Fire Pokemon')
               ])
             ]))
         ])
@@ -63,14 +63,14 @@ Ash "Little Marco" Ketchum
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Ash '),
-              new Up.InlineQuote([new Up.PlainText('Little Marco')]),
-              new Up.PlainText(' Ketchum')
+              new Up.Text('Ash '),
+              new Up.InlineQuote([new Up.Text('Little Marco')]),
+              new Up.Text(' Ketchum')
             ])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A famous Pokemon Trainer from Pallet Town.')
+                new Up.Text('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ])
@@ -90,14 +90,14 @@ Ash Ketchum
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Ash Ketchum')
+              new Up.Text('Ash Ketchum')
             ])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A famous Pokemon Trainer '),
-                new Up.Emphasis([new Up.PlainText('probably')]),
-                new Up.PlainText(' from Pallet Town')
+                new Up.Text('A famous Pokemon Trainer '),
+                new Up.Emphasis([new Up.Text('probably')]),
+                new Up.Text(' from Pallet Town')
               ])
             ]))
         ])
@@ -124,30 +124,30 @@ Gary
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+              new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Night Shade')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Ghost type moves.')
+                new Up.Text('Ghost type moves.')
               ])
             ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Gary')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Gary')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A young man with a great sense of smell.')
+                new Up.Text('A young man with a great sense of smell.')
               ])
             ]))
         ])
@@ -167,17 +167,17 @@ The secret to eternal youth is to join a cartoon.`
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Ash Ketchum')
+              new Up.Text('Ash Ketchum')
             ])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A famous Pokemon Trainer from Pallet Town.')
+                new Up.Text('A famous Pokemon Trainer from Pallet Town.')
               ])
             ]))
         ]),
         new Up.Paragraph([
-          new Up.PlainText('The secret to eternal youth is to join a cartoon.')
+          new Up.Text('The secret to eternal youth is to join a cartoon.')
         ])
       ]))
   })
@@ -198,16 +198,16 @@ Poem
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Poem')
+                new Up.Text('Poem')
               ])
             ],
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Roses are red'),
+                    new Up.Text('Roses are red'),
                   ]),
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Violets are blue')
+                    new Up.Text('Violets are blue')
                   ])
                 ])
               ]))
@@ -226,16 +226,16 @@ Poem
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Poem')
+                new Up.Text('Poem')
               ])
             ],
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Roses are red'),
+                    new Up.Text('Roses are red'),
                   ]),
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Violets are blue')
+                    new Up.Text('Violets are blue')
                   ])
                 ])
               ]))
@@ -254,16 +254,16 @@ Poem
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Poem')
+                new Up.Text('Poem')
               ])
             ],
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Roses are red'),
+                    new Up.Text('Roses are red'),
                   ]),
                   new Up.LineBlock.Line([
-                    new Up.PlainText('Violets are blue')
+                    new Up.Text('Violets are blue')
                   ])
                 ])
               ]))
@@ -294,41 +294,41 @@ Address
       new Up.DescriptionList([
         new Up.DescriptionList.Item([
           new Up.DescriptionList.Item.Subject([
-            new Up.PlainText('Poem')
+            new Up.Text('Poem')
           ])
         ],
           new Up.DescriptionList.Item.Description([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('Roses are red')
+                new Up.Text('Roses are red')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Violets are blue')
+                new Up.Text('Violets are blue')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I really like this one.')
+              new Up.Text('I really like this one.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I think it's my favorite.")
+              new Up.Text("I think it's my favorite.")
             ])
           ])),
         new Up.DescriptionList.Item([
           new Up.DescriptionList.Item.Subject([
-            new Up.PlainText('Address')
+            new Up.Text('Address')
           ])
         ],
           new Up.DescriptionList.Item.Description([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('1234 Spooky Street')
+                new Up.Text('1234 Spooky Street')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Pepe, PA 17101')
+                new Up.Text('Pepe, PA 17101')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I used to live there.')
+              new Up.Text('I used to live there.')
             ])
           ]))
       ])
@@ -355,40 +355,40 @@ Lee Chang-ho
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('League of Legends')
+              new Up.Text('League of Legends')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A multiplayer online battle arena game')
+              new Up.Text('A multiplayer online battle arena game')
             ])
           ])),
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('StarCraft 2')
+              new Up.Text('StarCraft 2')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A real-time strategy game')
+              new Up.Text('A real-time strategy game')
             ])
           ]))
         ]),
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Magnus Carlsen')
+              new Up.Text('Magnus Carlsen')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('An above average chess player')
+              new Up.Text('An above average chess player')
             ])
           ])),
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Lee Chang-ho')
+              new Up.Text('Lee Chang-ho')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('An above average go player')
+              new Up.Text('An above average go player')
             ])
           ]))
         ])
@@ -417,20 +417,20 @@ Lee Chang-ho
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('League of Legends')
+              new Up.Text('League of Legends')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A multiplayer online battle arena game')
+              new Up.Text('A multiplayer online battle arena game')
             ])
           ])),
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('StarCraft 2')
+              new Up.Text('StarCraft 2')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A real-time strategy game')
+              new Up.Text('A real-time strategy game')
             ])
           ]))
         ]),
@@ -438,20 +438,20 @@ Lee Chang-ho
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Magnus Carlsen')
+              new Up.Text('Magnus Carlsen')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('An above average chess player')
+              new Up.Text('An above average chess player')
             ])
           ])),
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Lee Chang-ho')
+              new Up.Text('Lee Chang-ho')
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('An above average go player')
+              new Up.Text('An above average go player')
             ])
           ]))
         ])
@@ -474,18 +474,18 @@ Charmander
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+              new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ])),
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
             ]))
         ])
@@ -505,18 +505,18 @@ Bulbasaur
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
               ])
             ])),
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+              new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ]))
         ])
@@ -533,10 +533,10 @@ Charmander
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -555,12 +555,12 @@ Charizard
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charizard')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmeleon')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charizard')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])

@@ -17,7 +17,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       url: '#some-page',
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('this site')
+          new Up.Text('this site')
         ], '#some-page')
       ])
     })
@@ -55,10 +55,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineSpoiler([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -69,10 +69,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineNsfw([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -83,10 +83,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -97,16 +97,16 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('Well, I eat one.')
+        new Up.Text('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -117,7 +117,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -129,7 +129,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -141,7 +141,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -154,7 +154,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://example.com/page#wiki/Chrono_Chross')
       ]))
   })
@@ -164,10 +164,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineSpoiler([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -178,10 +178,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineNsfw([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -192,10 +192,10 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
         ])
       ]))
@@ -206,16 +206,16 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('Well, I eat one.')
+        new Up.Text('Well, I eat one.')
       ], 'https://example.com/page#cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -226,7 +226,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -238,7 +238,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -250,7 +250,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
         ], 'https://example.com/page#wiki/Blue_Sky')
@@ -263,7 +263,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://localhost/#wiki/Chrono_Chross')
       ]))
   })
@@ -274,7 +274,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'my-app:localhost/wiki/Chrono_Chross')
       ]))
   })

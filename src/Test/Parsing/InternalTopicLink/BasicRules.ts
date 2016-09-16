@@ -19,22 +19,22 @@ Not quite true. For example, see [section: soda].`
 
   specify('You can use "section:" with square brackets', () => {
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(documentUsingSquareBracketsAndSectionTerm).to.deep.equal(
       new Up.Document([
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         neverLieHeading,
         new Up.Paragraph([
-          new Up.PlainText('Not quite true. For example, see '),
+          new Up.Text('Not quite true. For example, see '),
           new Up.SectionLink('soda', sodaHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
@@ -101,22 +101,22 @@ I never lie
 Not quite true. For example, see [section: I drink soda].`
 
       const sodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           sodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true. For example, see '),
+            new Up.Text('Not quite true. For example, see '),
             new Up.SectionLink('I drink soda', sodaHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
@@ -136,25 +136,25 @@ I never lie
 Not quite true.`
 
       const sodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText("I'm a great guy. For more information, skip to "),
+            new Up.Text("I'm a great guy. For more information, skip to "),
             new Up.SectionLink('I never lie', neverLieHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ]),
           sodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true.')
+            new Up.Text('Not quite true.')
           ])
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
@@ -179,32 +179,32 @@ I drink soda
 That's what I tell 'em.`
 
       const firstSodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       const secondSodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           firstSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true. For example, see '),
+            new Up.Text('Not quite true. For example, see '),
             new Up.SectionLink('I drink soda', firstSodaHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Anyway…')
+            new Up.Text('Anyway…')
           ]),
           secondSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText("That's what I tell 'em.")
+            new Up.Text("That's what I tell 'em.")
           ])
         ], new Up.Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
@@ -229,32 +229,32 @@ I lied when I said I drink soda
 Oops.`
 
       const firstSodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       const secondSodaHeading =
-        new Up.Heading([new Up.PlainText('I lied when I said I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text('I lied when I said I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           firstSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true. For example, see '),
+            new Up.Text('Not quite true. For example, see '),
             new Up.SectionLink('I drink soda', firstSodaHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Anyway…')
+            new Up.Text('Anyway…')
           ]),
           secondSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText("Oops.")
+            new Up.Text("Oops.")
           ])
         ], new Up.Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
@@ -279,32 +279,32 @@ I drink soda
 That's what I tell 'em.`
 
       const firstSodaHeading =
-        new Up.Heading([new Up.PlainText("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       const secondSodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 3 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           firstSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('I only drink milk.')
+            new Up.Text('I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true. For example, see '),
+            new Up.Text('Not quite true. For example, see '),
             new Up.SectionLink('I drink soda', secondSodaHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Anyway…')
+            new Up.Text('Anyway…')
           ]),
           secondSodaHeading,
           new Up.Paragraph([
-            new Up.PlainText("That's what I tell 'em.")
+            new Up.Text("That's what I tell 'em.")
           ])
         ], new Up.Document.TableOfContents([firstSodaHeading, neverLieHeading, secondSodaHeading])))
     })
@@ -325,22 +325,22 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [section: exotic].`
 
       const sodaHeading =
-        new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const interestingHeading =
-        new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           sodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           interestingHeading,
           new Up.Paragraph([
-            new Up.PlainText('I love all sorts of fancy stuff. For example, see '),
+            new Up.Text('I love all sorts of fancy stuff. For example, see '),
             new Up.SectionLink('exotic', sodaHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
     })
@@ -360,25 +360,25 @@ I am interesting
 I love all sorts of fancy stuff.`
 
       const sodaHeading =
-        new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const interestingHeading =
-        new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText('I have plenty of good traits. See '),
+            new Up.Text('I have plenty of good traits. See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ]),
           sodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           interestingHeading,
           new Up.Paragraph([
-            new Up.PlainText('I love all sorts of fancy stuff.')
+            new Up.Text('I love all sorts of fancy stuff.')
           ])
         ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
     })
@@ -414,42 +414,42 @@ I drink soda
 And you'll believe it.`
 
     const firstSodaHeading =
-      new Up.Heading([new Up.PlainText("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text("If I ever say I drink soda, I'm lying")], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     const secondSodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 2, ordinalInTableOfContents: 3 })
 
     const thirdSodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 4 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 4 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         firstSodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('I only drink milk.')
+          new Up.Text('I only drink milk.')
         ]),
         neverLieHeading,
         new Up.Paragraph([
-          new Up.PlainText('Not quite true. For example, see '),
+          new Up.Text('Not quite true. For example, see '),
           new Up.SectionLink('I drink soda', secondSodaHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('Anyway…')
+          new Up.Text('Anyway…')
         ]),
         secondSodaHeading,
         new Up.Paragraph([
-          new Up.PlainText("That's what I tell 'em.")
+          new Up.Text("That's what I tell 'em.")
         ]),
         new Up.Paragraph([
-          new Up.PlainText('In fact, sometimes, things bear repeating.')
+          new Up.Text('In fact, sometimes, things bear repeating.')
         ]),
         thirdSodaHeading,
         new Up.Paragraph([
-          new Up.PlainText("And you'll believe it.")
+          new Up.Text("And you'll believe it.")
         ])
       ], new Up.Document.TableOfContents([
         firstSodaHeading,
@@ -476,32 +476,32 @@ Not quite true.
 2. Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
       const sodaHeading =
-        new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
       const neverLieHeading =
-        new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           sodaHeading,
           new Up.Paragraph([
-            new Up.PlainText('Actually, I only drink milk.')
+            new Up.Text('Actually, I only drink milk.')
           ]),
           neverLieHeading,
           new Up.Paragraph([
-            new Up.PlainText('Not quite true.')
+            new Up.Text('Not quite true.')
           ]),
           new Up.OrderedList([
             new Up.OrderedList.Item([
               new Up.Paragraph([
-                new Up.PlainText('First, see '),
+                new Up.Text('First, see '),
                 new Up.SectionLink('soda', sodaHeading),
-                new Up.PlainText('.')
+                new Up.Text('.')
               ])
             ], { ordinal: 1 }),
             new Up.OrderedList.Item([
               new Up.Paragraph([
-                new Up.PlainText("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
+                new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
               ])
             ], { ordinal: 2 })
           ])
@@ -524,29 +524,29 @@ There are plenty of important facts about me. For my favorite, skip to [section:
    Not quite true.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const honestHeading =
-      new Up.Heading([new Up.PlainText('I am honest')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am honest')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('There are plenty of important facts about me. For my favorite, skip to '),
+          new Up.Text('There are plenty of important facts about me. For my favorite, skip to '),
           new Up.SectionLink('honest', honestHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         new Up.OrderedList([
           new Up.OrderedList.Item([
             sodaHeading,
             new Up.Paragraph([
-              new Up.PlainText('Actually, I only drink milk.')
+              new Up.Text('Actually, I only drink milk.')
             ])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             honestHeading,
             new Up.Paragraph([
-              new Up.PlainText('Not quite true.')
+              new Up.Text('Not quite true.')
             ])
           ], { ordinal: 2 })
         ]),
@@ -571,25 +571,25 @@ I never lie
 Not quite true.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I'm a great guy. For more information, skip to "),
+          new Up.Text("I'm a great guy. For more information, skip to "),
           new Up.SectionLink('I became a world leader'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         neverLieHeading,
         new Up.Paragraph([
-          new Up.PlainText('Not quite true.')
+          new Up.Text('Not quite true.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
@@ -610,22 +610,22 @@ I never lie
 Not quite true. For example, see [sEcTIoN: I drink soda].`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const neverLieHeading =
-      new Up.Heading([new Up.PlainText('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         neverLieHeading,
         new Up.Paragraph([
-          new Up.PlainText('Not quite true. For example, see '),
+          new Up.Text('Not quite true. For example, see '),
           new Up.SectionLink('I drink soda', sodaHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
@@ -648,25 +648,25 @@ Please prepare
 The zombies could arrive at any moment.`
 
     const surviveHeading =
-      new Up.Heading([new Up.PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 1 })
 
     const prepareHeading =
-      new Up.Heading([new Up.PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Please prepare')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I'm a concerned kind of guy. For more information, skip to "),
+          new Up.Text("I'm a concerned kind of guy. For more information, skip to "),
           new Up.SectionLink('prepare', prepareHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         surviveHeading,
         new Up.Paragraph([
-          new Up.PlainText("That's what the internet told me.")
+          new Up.Text("That's what the internet told me.")
         ]),
         prepareHeading,
         new Up.Paragraph([
-          new Up.PlainText('The zombies could arrive at any moment.')
+          new Up.Text('The zombies could arrive at any moment.')
         ])
       ], new Up.Document.TableOfContents([surviveHeading, prepareHeading])))
   })
@@ -686,25 +686,25 @@ Those who prep are more likely to survive
 That's what the internet told me.`
 
     const prepareHeading =
-      new Up.Heading([new Up.PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
 
     const surviveHeading =
-      new Up.Heading([new Up.PlainText('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Those who prep are more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I'm a helpful guy. For more information, skip to "),
+          new Up.Text("I'm a helpful guy. For more information, skip to "),
           new Up.SectionLink('prep are', surviveHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         prepareHeading,
         new Up.Paragraph([
-          new Up.PlainText('The zombies could arrive at any moment.')
+          new Up.Text('The zombies could arrive at any moment.')
         ]),
         surviveHeading,
         new Up.Paragraph([
-          new Up.PlainText("That's what the internet told me.")
+          new Up.Text("That's what the internet told me.")
         ])
       ], new Up.Document.TableOfContents([prepareHeading, surviveHeading])))
   })
@@ -724,25 +724,25 @@ Those who prep are superdramaticallly more likely to survive
 That's what the internet told me.`
 
     const prepareHeading =
-      new Up.Heading([new Up.PlainText('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Please prepare')], { level: 1, ordinalInTableOfContents: 1 })
 
     const surviveHeading =
-      new Up.Heading([new Up.PlainText('Those who prep are superdramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Those who prep are superdramaticallly more likely to survive')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I'm a helpful guy. For more information, skip to "),
+          new Up.Text("I'm a helpful guy. For more information, skip to "),
           new Up.SectionLink('drama', surviveHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         prepareHeading,
         new Up.Paragraph([
-          new Up.PlainText('The zombies could arrive at any moment.')
+          new Up.Text('The zombies could arrive at any moment.')
         ]),
         surviveHeading,
         new Up.Paragraph([
-          new Up.PlainText("That's what the internet told me.")
+          new Up.Text("That's what the internet told me.")
         ])
       ], new Up.Document.TableOfContents([prepareHeading, surviveHeading])))
   })
@@ -770,29 +770,29 @@ I always stay on topic
 Not quite true. For example, see [section: emphasis].`
 
     const stressAndEmphasisHeading =
-      new Up.Heading([new Up.PlainText('Stress and emphasis are commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Stress and emphasis are commonly used in writing')], { level: 1, ordinalInTableOfContents: 1 })
 
     const emphasisSubHeading =
-      new Up.Heading([new Up.PlainText('Emphasis')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Emphasis')], { level: 2, ordinalInTableOfContents: 2 })
 
     const stayOnTopicHeading =
-      new Up.Heading([new Up.PlainText('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('I always stay on topic')], { level: 1, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         stressAndEmphasisHeading,
         new Up.Paragraph([
-          new Up.PlainText('Luckily for us, Up supports that!')
+          new Up.Text('Luckily for us, Up supports that!')
         ]),
         emphasisSubHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love apples.')
+          new Up.Text('I love apples.')
         ]),
         stayOnTopicHeading,
         new Up.Paragraph([
-          new Up.PlainText('Not quite true. For example, see '),
+          new Up.Text('Not quite true. For example, see '),
           new Up.SectionLink('emphasis', emphasisSubHeading),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ])
       ], new Up.Document.TableOfContents([stressAndEmphasisHeading, emphasisSubHeading, stayOnTopicHeading])))
   })

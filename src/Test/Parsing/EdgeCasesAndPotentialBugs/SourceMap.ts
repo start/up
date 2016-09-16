@@ -12,8 +12,8 @@ describe('When a blockquote starts with a blank line', () => {
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
       new Up.Document([
         new Up.Blockquote([
-          new Up.Paragraph([new Up.PlainText("Who doesn't?")], { sourceLineNumber: 3 }),
-          new Up.Paragraph([new Up.PlainText("Well, aside from you.")], { sourceLineNumber: 5 })
+          new Up.Paragraph([new Up.Text("Who doesn't?")], { sourceLineNumber: 3 }),
+          new Up.Paragraph([new Up.Text("Well, aside from you.")], { sourceLineNumber: 5 })
         ], { sourceLineNumber: 2 })
       ]))
   })

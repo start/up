@@ -14,10 +14,10 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -37,10 +37,10 @@ nSFw:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -58,10 +58,10 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -79,10 +79,10 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -101,10 +101,10 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -125,10 +125,10 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -146,10 +146,10 @@ NSFW:  \t  \t
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -167,10 +167,10 @@ NSFW  \t  \t
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -194,11 +194,11 @@ NSFW:
         new Up.Document([
           new Up.NsfwBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.NsfwBlock([
               new Up.Paragraph([
-                new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+                new Up.Text('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])
@@ -219,11 +219,11 @@ NSFW:
         new Up.Document([
           new Up.NsfwBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.ThematicBreak(),
             new Up.Paragraph([
-              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+              new Up.Text('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -267,11 +267,11 @@ That was my favorite episode.`
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ]),
         new Up.Paragraph([
-          new Up.PlainText('That was my favorite episode.')
+          new Up.Text('That was my favorite episode.')
         ])
       ]))
   })
@@ -288,14 +288,14 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a '),
+            new Up.Text('With a '),
             new Up.Emphasis([
-              new Up.PlainText('very')
+              new Up.Text('very')
             ]),
-            new Up.PlainText(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+            new Up.Text(' sad song playing in the background, Ash said goodbye to Pikachu.'),
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))
@@ -313,7 +313,7 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -328,7 +328,7 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -343,7 +343,7 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
         ])
       ]))
@@ -363,13 +363,13 @@ NSFW:
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText('Well…')
+            new Up.Text('Well…')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
           ])
         ])
       ]))

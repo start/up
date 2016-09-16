@@ -15,16 +15,16 @@ Chrono Cross;     1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game [;')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game [;')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ])
       ]))
@@ -42,16 +42,16 @@ Chrono Cross;     1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game :\\')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game :\\')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ])
       ]))
@@ -72,16 +72,16 @@ Chrono Cross;         1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger [;')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger [;')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ])
       ]))
@@ -99,16 +99,16 @@ Chrono Cross;           1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger :\\')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger :\\')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ])
       ]))
@@ -125,8 +125,8 @@ Table: my favorite outline convention.
 I almost didn't include them; however, I realized tables are too useful to leave out.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Table: my favorite outline convention.')]),
-        new Up.Paragraph([new Up.PlainText("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
+        new Up.Paragraph([new Up.Text('Table: my favorite outline convention.')]),
+        new Up.Paragraph([new Up.Text("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
       ]))
   })
 })
@@ -146,15 +146,15 @@ I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]),
           [],
           new Up.Table.Caption([
-            new Up.PlainText('Good games on the Sega Genesis')
+            new Up.Text('Good games on the Sega Genesis')
           ])),
         new Up.Paragraph([
-          new Up.PlainText("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
+          new Up.Text("I'm not biased; instead, I simply recognize Nintendo is completely flawless.")
         ])
       ]))
   })
@@ -176,22 +176,22 @@ Underline
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Underline')]),
+            new Up.Table.Header.Cell([new Up.Text('Underline')]),
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('====')]),
+              new Up.Table.Row.Cell([new Up.Text('====')]),
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('####')]),
+              new Up.Table.Row.Cell([new Up.Text('####')]),
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('****')]),
+              new Up.Table.Row.Cell([new Up.Text('****')]),
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Most common underlines for top-level headings '),
+            new Up.Text('Most common underlines for top-level headings '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(from most to least common)')
+              new Up.Text('(from most to least common)')
             ])
           ]))
       ]))
@@ -213,16 +213,16 @@ Chrono Cross;         1999`
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game`s Title')]),
-              new Up.Table.Header.Cell([new Up.PlainText('Game`s Release Date')])
+              new Up.Table.Header.Cell([new Up.Text('Game`s Title')]),
+              new Up.Table.Header.Cell([new Up.Text('Game`s Release Date')])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1995')])
+                new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.Text('1995')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1999')])
+                new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.Text('1999')])
               ])
             ])
         ]))
@@ -240,16 +240,16 @@ Square\`s Chrono Cross;       1990\`s`
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Decade')])
+              new Up.Table.Header.Cell([new Up.Text('Game')]),
+              new Up.Table.Header.Cell([new Up.Text('Release Decade')])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Square`s Chrono Trigger')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1990`s')])
+                new Up.Table.Row.Cell([new Up.Text('Square`s Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.Text('1990`s')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Square`s Chrono Cross')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1990`s')])
+                new Up.Table.Row.Cell([new Up.Text('Square`s Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.Text('1990`s')])
               ])
             ])
         ]))
@@ -270,16 +270,16 @@ Chrono Cross;     1999`
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('{: Game')]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date :}')])
+              new Up.Table.Header.Cell([new Up.Text('{: Game')]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date :}')])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1995')])
+                new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.Text('1995')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1999')])
+                new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.Text('1999')])
               ])
             ])
         ]))
@@ -297,16 +297,16 @@ Chrono Cross;         1999`
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+              new Up.Table.Header.Cell([new Up.Text('Game')]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date')])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('{: Chrono Trigger')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1995 :}')])
+                new Up.Table.Row.Cell([new Up.Text('{: Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.Text('1995 :}')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1999')])
+                new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.Text('1999')])
               ])
             ])
         ]))

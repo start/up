@@ -7,11 +7,11 @@ describe('An image convention (with its URL) followed immediately by a (second) 
   it('produces an image node within a link pointing to that second URL', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Link([
           new Up.Image('you fight Gary', 'https://example.com/fight.svg')
         ], 'http://example.com/finalbattle'),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -87,12 +87,12 @@ describe('An image convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
         new Up.InlineSpoiler([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -102,12 +102,12 @@ describe('An image directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
         new Up.InlineNsfw([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -117,12 +117,12 @@ describe('An image directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
         new Up.InlineNsfl([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -134,14 +134,14 @@ describe('An image directly followed by a footnote', () => {
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Or whatever you name him.')
+        new Up.Text('Or whatever you name him.')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("After you beat the Elite Four, "),
+          new Up.Text("After you beat the Elite Four, "),
           new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
           footnotes[0],
         ]),
@@ -157,7 +157,7 @@ describe('An otherwise-valid linkified image convention with its linkifying URL 
       insideDocumentAndParagraph([
         new Up.Image('phone call', 'https://example.com/phonecall.svg'),
         new Up.NormalParenthetical([
-          new Up.PlainText('(tel:5555555555)')
+          new Up.Text('(tel:5555555555)')
         ]),
       ]))
   })
@@ -169,7 +169,7 @@ context("When an otherwise-valid linkified image convention's URL starts with wh
     expect(Up.parse('[image: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Image('phone call', 'https://example.com/phonecall.ogg'),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

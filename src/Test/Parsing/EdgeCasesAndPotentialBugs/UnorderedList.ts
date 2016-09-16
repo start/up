@@ -15,7 +15,7 @@ describe('An unordered list with a single item', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Mittens')
+              new Up.Text('Mittens')
             ])
           ])
         ]),
@@ -39,30 +39,30 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ])
         ]),
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Kansas')
+              new Up.Text('Kansas')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Nebraska')
+              new Up.Text('Nebraska')
             ])
           ])
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Lyrics have lines')
+            new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('And addresses do, too')
+            new Up.Text('And addresses do, too')
           ])
         ])
       ]))
@@ -84,24 +84,24 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Iowa')
+              new Up.Text('Iowa')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('New Hampshire')
+              new Up.Text('New Hampshire')
             ])
           ])
         ]),
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Clinton')
+              new Up.Text('Clinton')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Sanders')
+              new Up.Text('Sanders')
             ])
           ])
         ])
@@ -126,12 +126,12 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Iowa')
+              new Up.Text('Iowa')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('New Hampshire')
+              new Up.Text('New Hampshire')
             ])
           ])
         ]),
@@ -139,12 +139,12 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Clinton')
+              new Up.Text('Clinton')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Sanders')
+              new Up.Text('Sanders')
             ])
           ])
         ])

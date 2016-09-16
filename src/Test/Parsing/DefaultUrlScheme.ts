@@ -11,7 +11,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
       url: 'stackoverflow.com',
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('this site')
+          new Up.Text('this site')
         ], 'https://stackoverflow.com')
       ])
     })
@@ -49,10 +49,10 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Walter White produces '),
+        new Up.Text('Walter White produces '),
         new Up.InlineSpoiler([
           new Up.Link([
-            new Up.PlainText('Blue Sky meth')
+            new Up.Text('Blue Sky meth')
           ], 'https://localhost/wiki/Blue_Sky')
         ])
       ]))
@@ -63,16 +63,16 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
 
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('Well, I eat one.')
+        new Up.Text('Well, I eat one.')
       ], 'https://prod-web-4/cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -84,7 +84,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('say hi')
+          new Up.Text('say hi')
         ], 'mailto:daniel@wants.email')
       ]))
   })
@@ -98,7 +98,7 @@ describe('A link URL with a URL scheme other than "http://" or "https://"', () =
       url: 'mailto:daniel@wants.email',
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('email me')
+          new Up.Text('email me')
         ], 'mailto:daniel@wants.email')
       ])
     })
@@ -113,7 +113,7 @@ describe('A URL starting with a letter; followed by letters, numbers, periods, p
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'Wiki.9-App+mcgee:wiki/Chrono_Chross')
       ]))
   })
@@ -127,7 +127,7 @@ describe('A URL not starting with a slash, but with a slash before its first col
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://wiki/chrono-cross:the-game')
       ]))
   })
@@ -141,7 +141,7 @@ describe('A URL with an underscore before its first colon', () => {
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://super_admin:123abc@localhost/wiki/chrono-cross:the-game')
       ]))
   })
@@ -155,7 +155,7 @@ describe('A URL starting with a number but otherwise looking like it has a schem
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://4wiki:wiki/Chrono_Chross')
       ]))
   })
@@ -169,7 +169,7 @@ describe('A URL with no colon (and not starting with a slash)', () => {
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Chrono Cross')
+          new Up.Text('Chrono Cross')
         ], 'https://localhost/wiki/ChronoChross:TheGame')
       ]))
   })

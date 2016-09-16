@@ -8,9 +8,9 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify('Start with "https://', () => {
       expect(Up.parse('Check out https://archive.org')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Check out '),
+          new Up.Text('Check out '),
           new Up.Link([
-            new Up.PlainText('archive.org')
+            new Up.Text('archive.org')
           ], 'https://archive.org')
         ]))
     })
@@ -18,9 +18,9 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify('Start with "http://', () => {
       expect(Up.parse('Check out https://archive.org')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Check out '),
+          new Up.Text('Check out '),
           new Up.Link([
-            new Up.PlainText('archive.org')
+            new Up.Text('archive.org')
           ], 'https://archive.org')
         ]))
     })
@@ -31,14 +31,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
     specify("It consists solely of 'http://'", () => {
       expect(Up.parse('http://')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('http://')
+          new Up.Text('http://')
         ]))
     })
 
     specify("It consists solely of 'https://'", () => {
       expect(Up.parse('https://')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('https://')
+          new Up.Text('https://')
         ]))
     })
 
@@ -47,14 +47,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
       specify("Commas", () => {
         expect(Up.parse('http://, now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.PlainText('http://, now that is my favorite URL scheme!')
+            new Up.Text('http://, now that is my favorite URL scheme!')
           ]))
       })
 
       specify("Periods", () => {
         expect(Up.parse('http://. Now that is my favorite URL scheme!')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.PlainText('http://. Now that is my favorite URL scheme!')
+            new Up.Text('http://. Now that is my favorite URL scheme!')
           ]))
       })
 
@@ -63,14 +63,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
         specify("comprising a typographical convention", () => {
           expect(Up.parse('http://---now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
-              new Up.PlainText('http://—now that is my favorite URL scheme!')
+              new Up.Text('http://—now that is my favorite URL scheme!')
             ]))
         })
 
         specify("not comprising a typographical convention", () => {
           expect(Up.parse('http://-now that is my favorite URL scheme!')).to.deep.equal(
             insideDocumentAndParagraph([
-              new Up.PlainText('http://-now that is my favorite URL scheme!')
+              new Up.Text('http://-now that is my favorite URL scheme!')
             ]))
         })
       })
@@ -81,14 +81,14 @@ context("Some bare URLs produce links. The content of a bare URL's link is the U
   specify("It has a scheme other than 'https://' or 'http://", () => {
     expect(Up.parse('ftp://google.com')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('ftp://google.com')
+        new Up.Text('ftp://google.com')
       ]))
   })
 
   specify("It doesn't have both forward slashes", () => {
     expect(Up.parse('In the homepage field, you can use either http:/mailto:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('In the homepage field, you can use either http:/mailto:')
+        new Up.Text('In the homepage field, you can use either http:/mailto:')
       ]))
   })
 })
@@ -99,9 +99,9 @@ context('Bare URLs are always terminated by whitespace:', () => {
     expect(Up.parse('https://archive.org is exciting')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org')
+          new Up.Text('archive.org')
         ], 'https://archive.org'),
-        new Up.PlainText(' is exciting')
+        new Up.Text(' is exciting')
       ]))
   })
 
@@ -109,9 +109,9 @@ context('Bare URLs are always terminated by whitespace:', () => {
     expect(Up.parse('https://archive.org\tis exciting')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org')
+          new Up.Text('archive.org')
         ], 'https://archive.org'),
-        new Up.PlainText('\tis exciting')
+        new Up.Text('\tis exciting')
       ]))
   })
 })
@@ -122,7 +122,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://this.is.a.very.real.url.co.uk')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('this.is.a.very.real.url.co.uk')
+          new Up.Text('this.is.a.very.real.url.co.uk')
         ], 'https://this.is.a.very.real.url.co.uk')
       ]))
   })
@@ -131,7 +131,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
+          new Up.Text('this.is.a.very.real.url.co.uk/and.i...love.full.stops')
         ], 'https://this.is.a.very.real.url.co.uk/and.i...love.full.stops')
       ]))
   })
@@ -140,9 +140,9 @@ describe('A bare URL', () => {
     expect(Up.parse('https://google.com/ is a neat site.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('google.com/')
+          new Up.Text('google.com/')
         ], 'https://google.com/'),
-        new Up.PlainText(' is a neat site.')
+        new Up.Text(' is a neat site.')
       ]))
   })
 
@@ -150,7 +150,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://archive.org/fake\\ url')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org/fake url')
+          new Up.Text('archive.org/fake url')
         ], 'https://archive.org/fake url')
       ]))
   })
@@ -159,7 +159,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://archive.org/fake(url)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org/fake(url)')
+          new Up.Text('archive.org/fake(url)')
         ], 'https://archive.org/fake(url)')
       ]))
   })
@@ -168,7 +168,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://archive.org/a(fake(url))is(((very)))fun')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org/a(fake(url))is(((very)))fun')
+          new Up.Text('archive.org/a(fake(url))is(((very)))fun')
         ], 'https://archive.org/a(fake(url))is(((very)))fun')
       ]))
   })
@@ -177,7 +177,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://archive.org/fake[url]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org/fake[url]')
+          new Up.Text('archive.org/fake[url]')
         ], 'https://archive.org/fake[url]')
       ]))
   })
@@ -186,7 +186,7 @@ describe('A bare URL', () => {
     expect(Up.parse('https://archive.org/a[fake[url]]is[[[very]]]fun')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
+          new Up.Text('archive.org/a[fake[url]]is[[[very]]]fun')
         ], 'https://archive.org/a[fake[url]]is[[[very]]]fun')
       ]))
   })
@@ -195,11 +195,11 @@ describe('A bare URL', () => {
     expect(Up.parse('[Visit https://inner.example.com/fake right now!](https://outer.example.com/real)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Visit '),
+          new Up.Text('Visit '),
           new Up.Link([
-            new Up.PlainText('inner.example.com/fake')
+            new Up.Text('inner.example.com/fake')
           ], 'https://inner.example.com/fake'),
-          new Up.PlainText(' right now!')
+          new Up.Text(' right now!')
         ], 'https://outer.example.com/real')
       ]))
   })
@@ -210,7 +210,7 @@ describe('A bare URL', () => {
       expect(Up.parse('https://example.org/a*normal*url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('example.org/a*normal*url')
+            new Up.Text('example.org/a*normal*url')
           ], 'https://example.org/a*normal*url')
         ]))
     })
@@ -219,7 +219,7 @@ describe('A bare URL', () => {
       expect(Up.parse('https://example.org/a**normal**url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('example.org/a**normal**url')
+            new Up.Text('example.org/a**normal**url')
           ], 'https://example.org/a**normal**url')
         ]))
     })
@@ -231,7 +231,7 @@ describe('A bare URL', () => {
       expect(Up.parse('https://example.org/a_normal_url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('example.org/a_normal_url')
+            new Up.Text('example.org/a_normal_url')
           ], 'https://example.org/a_normal_url')
         ]))
     })
@@ -240,7 +240,7 @@ describe('A bare URL', () => {
       expect(Up.parse('https://example.org/a__normal__url')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('example.org/a__normal__url')
+            new Up.Text('example.org/a__normal__url')
           ], 'https://example.org/a__normal__url')
         ]))
     })
@@ -254,7 +254,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       insideDocumentAndParagraph([
         new Up.InlineQuote([
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
         ])
       ]))
@@ -264,11 +264,11 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('(https://archive.org/fake)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -277,11 +277,11 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[https://archive.org/fake]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('['),
+          new Up.Text('['),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new Up.PlainText(']')
+          new Up.Text(']')
         ])
       ]))
   })
@@ -290,12 +290,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[highlight: I love https://archive.org/fake]!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('I love '),
+          new Up.Text('I love '),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
@@ -303,11 +303,11 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[SPOILER: I love https://archive.org/fake and you should too!]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineSpoiler([
-          new Up.PlainText('I love '),
+          new Up.Text('I love '),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new Up.PlainText(' and you should too!')
+          new Up.Text(' and you should too!')
         ])
       ]))
   })
@@ -316,11 +316,11 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[NSFW: I love https://archive.org/fake and you should too!]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineNsfw([
-          new Up.PlainText('I love '),
+          new Up.Text('I love '),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new Up.PlainText(' and you should too!')
+          new Up.Text(' and you should too!')
         ])
       ]))
   })
@@ -329,11 +329,11 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[NSFL: I love https://archive.org/fake and you should too!]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineNsfl([
-          new Up.PlainText('I love '),
+          new Up.Text('I love '),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
-          new Up.PlainText(' and you should too!')
+          new Up.Text(' and you should too!')
         ])
       ]))
   })
@@ -342,12 +342,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('[I love https://archive.org/fake] (example.com/outer) and you should too!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('I love '),
+          new Up.Text('I love '),
           new Up.Link([
-            new Up.PlainText('archive.org/fake')
+            new Up.Text('archive.org/fake')
           ], 'https://archive.org/fake'),
         ], 'https://example.com/outer'),
-        new Up.PlainText(' and you should too!')
+        new Up.Text(' and you should too!')
       ]))
   })
 
@@ -355,18 +355,18 @@ context('Bare URLs are terminated when any outer convention closes. This include
     const markup = "I don't eat cereal. [^ Well, I do: https://example.com/cereal] Never have."
 
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do: '),
+      new Up.Text('Well, I do: '),
       new Up.Link([
-        new Up.PlainText('example.com/cereal')
+        new Up.Text('example.com/cereal')
       ], 'https://example.com/cereal'),
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(' Never have.')
+          new Up.Text(' Never have.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -378,12 +378,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('*I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -391,12 +391,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('*I love https://archive.org/fake***!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -404,12 +404,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('**I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -417,12 +417,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('***I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
   })
@@ -433,12 +433,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('**I love https://archive.org/fake**!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -446,12 +446,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('**I love https://archive.org/fake***!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -459,12 +459,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('***I love https://archive.org/fake**!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
   })
@@ -475,13 +475,13 @@ context('Bare URLs are terminated when any outer convention closes. This include
       insideDocumentAndParagraph([
         new Up.Stress([
           new Up.Emphasis([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ])
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
@@ -491,12 +491,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('_I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -504,12 +504,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('_I love https://archive.org/fake___!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -517,12 +517,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('__I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -530,12 +530,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('___I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
   })
@@ -546,12 +546,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('__I love https://archive.org/fake__!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Bold([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -559,12 +559,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('__I love https://archive.org/fake___!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Bold([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
 
@@ -572,12 +572,12 @@ context('Bare URLs are terminated when any outer convention closes. This include
       expect(Up.parse('___I love https://archive.org/fake__!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Bold([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ]),
-          new Up.PlainText('!')
+          new Up.Text('!')
         ]))
     })
   })
@@ -588,13 +588,13 @@ context('Bare URLs are terminated when any outer convention closes. This include
       insideDocumentAndParagraph([
         new Up.Bold([
           new Up.Italic([
-            new Up.PlainText('I love '),
+            new Up.Text('I love '),
             new Up.Link([
-              new Up.PlainText('archive.org/fake')
+              new Up.Text('archive.org/fake')
             ], 'https://archive.org/fake')
           ])
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -605,11 +605,11 @@ describe('Inside parantheses, a bare URL', () => {
     expect(Up.parse('(https://archive.org/fake(url))')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('archive.org/fake(url)')
+            new Up.Text('archive.org/fake(url)')
           ], 'https://archive.org/fake(url)'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -618,11 +618,11 @@ describe('Inside parantheses, a bare URL', () => {
     expect(Up.parse('(https://archive.org/a(fake(url))is(((very)))fun)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('archive.org/a(fake(url))is(((very)))fun')
+            new Up.Text('archive.org/a(fake(url))is(((very)))fun')
           ], 'https://archive.org/a(fake(url))is(((very)))fun'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -634,11 +634,11 @@ describe('Inside square brackets, a bare URL', () => {
     expect(Up.parse('[https://archive.org/fake[url]]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('['),
+          new Up.Text('['),
           new Up.Link([
-            new Up.PlainText('archive.org/fake[url]')
+            new Up.Text('archive.org/fake[url]')
           ], 'https://archive.org/fake[url]'),
-          new Up.PlainText(']')
+          new Up.Text(']')
         ])
       ]))
   })
@@ -647,11 +647,11 @@ describe('Inside square brackets, a bare URL', () => {
     expect(Up.parse('[https://archive.org/a[fake[url]]is[[[very]]]fun]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('['),
+          new Up.Text('['),
           new Up.Link([
-            new Up.PlainText('archive.org/a[fake[url]]is[[[very]]]fun')
+            new Up.Text('archive.org/a[fake[url]]is[[[very]]]fun')
           ], 'https://archive.org/a[fake[url]]is[[[very]]]fun'),
-          new Up.PlainText(']')
+          new Up.Text(']')
         ])
       ]))
   })
@@ -664,9 +664,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       expect(Up.parse('https://www.demo.example.co.uk, now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('www.demo.example.co.uk')
+            new Up.Text('www.demo.example.co.uk')
           ], 'https://www.demo.example.co.uk'),
-          new Up.PlainText(', now that is my favorite site!')
+          new Up.Text(', now that is my favorite site!')
         ]))
     })
 
@@ -674,9 +674,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       expect(Up.parse('https://www.demo.example.co.uk. Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('www.demo.example.co.uk')
+            new Up.Text('www.demo.example.co.uk')
           ], 'https://www.demo.example.co.uk'),
-          new Up.PlainText('. Now that is my favorite site!')
+          new Up.Text('. Now that is my favorite site!')
         ]))
     })
 
@@ -684,9 +684,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       expect(Up.parse('https://www.demo.example.co.uk? Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('www.demo.example.co.uk')
+            new Up.Text('www.demo.example.co.uk')
           ], 'https://www.demo.example.co.uk'),
-          new Up.PlainText('? Now that is my favorite site!')
+          new Up.Text('? Now that is my favorite site!')
         ]))
     })
 
@@ -694,9 +694,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       expect(Up.parse('https://www.demo.example.co.uk! Now that is my favorite site!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('www.demo.example.co.uk')
+            new Up.Text('www.demo.example.co.uk')
           ], 'https://www.demo.example.co.uk'),
-          new Up.PlainText('! Now that is my favorite site!')
+          new Up.Text('! Now that is my favorite site!')
         ]))
     })
 
@@ -706,9 +706,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('https://www.demo.example.co.uk---now that is my favorite site!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Link([
-              new Up.PlainText('www.demo.example.co.uk')
+              new Up.Text('www.demo.example.co.uk')
             ], 'https://www.demo.example.co.uk'),
-            new Up.PlainText('—now that is my favorite site!')
+            new Up.Text('—now that is my favorite site!')
           ]))
       })
 
@@ -716,9 +716,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('https://www.demo.example.co.uk-now that is my favorite site!')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Link([
-              new Up.PlainText('www.demo.example.co.uk')
+              new Up.Text('www.demo.example.co.uk')
             ], 'https://www.demo.example.co.uk'),
-            new Up.PlainText('-now that is my favorite site!')
+            new Up.Text('-now that is my favorite site!')
           ]))
       })
     })
@@ -730,9 +730,9 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       expect(Up.parse('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('4chan.org')
+            new Up.Text('4chan.org')
           ], 'https://4chan.org'),
-          new Up.PlainText('…/r9k/ is a sad place.')
+          new Up.Text('…/r9k/ is a sad place.')
         ]))
     })
 
@@ -740,11 +740,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
     specify('The punctuation is at the end of a paragraph.', () => {
       expect(Up.parse('Avoid visiting https://4chan.org.')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Avoid visiting '),
+          new Up.Text('Avoid visiting '),
           new Up.Link([
-            new Up.PlainText('4chan.org')
+            new Up.Text('4chan.org')
           ], 'https://4chan.org'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
 
@@ -754,11 +754,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('(For more info, visit https://archive.org!)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.NormalParenthetical([
-              new Up.PlainText('(For more info, visit '),
+              new Up.Text('(For more info, visit '),
               new Up.Link([
-                new Up.PlainText('archive.org')
+                new Up.Text('archive.org')
               ], 'https://archive.org'),
-              new Up.PlainText('!)')
+              new Up.Text('!)')
             ])
           ]))
       })
@@ -767,11 +767,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('[For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.SquareParenthetical([
-              new Up.PlainText('[For more info, visit '),
+              new Up.Text('[For more info, visit '),
               new Up.Link([
-                new Up.PlainText('archive.org')
+                new Up.Text('archive.org')
               ], 'https://archive.org'),
-              new Up.PlainText('!]')
+              new Up.Text('!]')
             ])
           ]))
       })
@@ -780,11 +780,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('_For more info, visit https://archive.org!_')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Italic([
-              new Up.PlainText('For more info, visit '),
+              new Up.Text('For more info, visit '),
               new Up.Link([
-                new Up.PlainText('archive.org')
+                new Up.Text('archive.org')
               ], 'https://archive.org'),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ]))
       })
@@ -793,11 +793,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('[highlight: For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Highlight([
-              new Up.PlainText('For more info, visit '),
+              new Up.Text('For more info, visit '),
               new Up.Link([
-                new Up.PlainText('archive.org')
+                new Up.Text('archive.org')
               ], 'https://archive.org'),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ]))
       })
@@ -806,11 +806,11 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
         expect(Up.parse('[SPOILER: For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.InlineSpoiler([
-              new Up.PlainText('For more info, visit '),
+              new Up.Text('For more info, visit '),
               new Up.Link([
-                new Up.PlainText('archive.org')
+                new Up.Text('archive.org')
               ], 'https://archive.org'),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ]))
       })

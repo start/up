@@ -38,7 +38,7 @@ describe('A single line blockquote', () => {
         new Up.ThematicBreak(),
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('I choose you!')
+            new Up.Text('I choose you!')
           ])
         ]),
         new Up.ThematicBreak()

@@ -12,14 +12,14 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
     expect(Up.parse('*Please ***stop** eating the cardboard* immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard'),
+            new Up.Text(' eating the cardboard'),
           ]),
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -28,14 +28,14 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
     expect(Up.parse('*Please ***stop* eating the cardboard** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard'),
+            new Up.Text(' eating the cardboard'),
           ]),
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -44,16 +44,16 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
     expect(Up.parse('*Please ***stop* eating the cardboard* immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard'),
+            new Up.Text(' eating the cardboard'),
           ]),
         ]),
         new Up.Stress([
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -64,22 +64,22 @@ describe('An inflection start delimiter consisting of 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.parse('A ***bread* to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('A '),
+        new Up.Text('A '),
         new Up.Emphasis([
-          new Up.PlainText('bread'),
+          new Up.Text('bread'),
         ]),
-        new Up.PlainText(' to believe in')
+        new Up.Text(' to believe in')
       ]))
   })
 
   it('can be closed by double asterisks if no other subsequent asterisks close it, resulting in stressed text and no stray asterisks in the document', () => {
     expect(Up.parse('A ***bread** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('A '),
+        new Up.Text('A '),
         new Up.Stress([
-          new Up.PlainText('bread'),
+          new Up.Text('bread'),
         ]),
-        new Up.PlainText(' to believe in')
+        new Up.Text(' to believe in')
       ]))
   })
 })
@@ -89,11 +89,11 @@ describe('An inflection start delimiter consisting of 1 asterisk', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.parse('A *bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('A '),
+        new Up.Text('A '),
         new Up.Emphasis([
-          new Up.PlainText('bread'),
+          new Up.Text('bread'),
         ]),
-        new Up.PlainText(' to believe in')
+        new Up.Text(' to believe in')
       ]))
   })
 })
@@ -103,11 +103,11 @@ describe('An inflection start delimiter consisting of 2 asterisks', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.parse('A **bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('A '),
+        new Up.Text('A '),
         new Up.Stress([
-          new Up.PlainText('bread'),
+          new Up.Text('bread'),
         ]),
-        new Up.PlainText(' to believe in')
+        new Up.Text(' to believe in')
       ]))
   })
 })
@@ -118,14 +118,14 @@ describe('Inside of stressed text, text that is emphasized/again-stressed at the
     expect(Up.parse('**Please ***stop** eating the cardboard* immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard'),
+            new Up.Text(' eating the cardboard'),
           ]),
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -134,14 +134,14 @@ describe('Inside of stressed text, text that is emphasized/again-stressed at the
     expect(Up.parse('**Please ***stop* eating the cardboard** immediately**')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard')
+            new Up.Text(' eating the cardboard')
           ]),
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -150,16 +150,16 @@ describe('Inside of stressed text, text that is emphasized/again-stressed at the
     expect(Up.parse('**Please ***stop** eating the cardboard** immediately*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard'),
+            new Up.Text(' eating the cardboard'),
           ]),
         ]),
         new Up.Emphasis([
-          new Up.PlainText(' immediately')
+          new Up.Text(' immediately')
         ])
       ]))
   })
@@ -171,12 +171,12 @@ describe('Inside of stressed text, emphasized/stressed text with its stress conv
     expect(Up.parse('**Please ***stop** eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard immediately')
+            new Up.Text(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -189,12 +189,12 @@ describe('Inside of stressed text, emphasized/stressed text with its emphasis co
     expect(Up.parse('**Please ***stop* eating the cardboard immediately****')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard immediately')
+            new Up.Text(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -207,12 +207,12 @@ describe('Inside of emphasized text, emphasized/stressed text with its stress co
     expect(Up.parse('*Please ***stop** eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard immediately')
+            new Up.Text(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -225,12 +225,12 @@ describe('Inside of emphasized text, emphasized/stressed text with its inner emp
     expect(Up.parse('*Please ***stop* eating the cardboard immediately***')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.PlainText('Please '),
+          new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText('stop')
+              new Up.Text('stop')
             ]),
-            new Up.PlainText(' eating the cardboard immediately')
+            new Up.Text(' eating the cardboard immediately')
           ])
         ])
       ]))
@@ -242,7 +242,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
   it('are preserved as plain text', () => {
     expect(Up.parse('I believe ***** will win the primary in ***** easily.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I believe ***** will win the primary in ***** easily.')
+        new Up.Text('I believe ***** will win the primary in ***** easily.')
       ]))
   })
 })
@@ -252,16 +252,16 @@ describe('An inflection start delimiter consisting of 4+ asterisks, with an emph
   it('produces an emphasis node nested within stress and emphasis nodes', () => {
     expect(Up.parse('Well, ****Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Well, '),
+        new Up.Text('Well, '),
         new Up.Stress([
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.PlainText('Xamarin')
+              new Up.Text('Xamarin')
             ]),
-            new Up.PlainText(' is now free')
+            new Up.Text(' is now free')
           ]),
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -271,14 +271,14 @@ describe('An inflection start delimiter consisting of 4+ asterisks, with a stres
   it('produces nested stress nodes', () => {
     expect(Up.parse('Well, ****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Well, '),
+        new Up.Text('Well, '),
         new Up.Stress([
           new Up.Stress([
-            new Up.PlainText('Xamarin')
+            new Up.Text('Xamarin')
           ]),
-          new Up.PlainText(' is now free')
+          new Up.Text(' is now free')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -288,16 +288,16 @@ describe('An inflection start delimiter consisting of 5+ asterisks, with an emph
   it('produces a stress node nested within stress and emphasis nodes', () => {
     expect(Up.parse('Well, *****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Well, '),
+        new Up.Text('Well, '),
         new Up.Stress([
           new Up.Emphasis([
             new Up.Stress([
-              new Up.PlainText('Xamarin')
+              new Up.Text('Xamarin')
             ]),
-            new Up.PlainText(' is now free')
+            new Up.Text(' is now free')
           ]),
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -309,13 +309,13 @@ describe('Text that is emphasized/stressed at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Stress([
           new Up.Emphasis([
-            new Up.PlainText('Nimble')
+            new Up.Text('Nimble')
           ]),
-          new Up.PlainText(' navigators?')
+          new Up.Text(' navigators?')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.Stress([
-          new Up.PlainText('Tropical.')
+          new Up.Text('Tropical.')
         ])
       ]))
   })
@@ -325,13 +325,13 @@ describe('Text that is emphasized/stressed at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Stress([
           new Up.Emphasis([
-            new Up.PlainText('Nimble')
+            new Up.Text('Nimble')
           ]),
-          new Up.PlainText(' navigators?')
+          new Up.Text(' navigators?')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.Emphasis([
-          new Up.PlainText('Tropical.')
+          new Up.Text('Tropical.')
         ])
       ]))
   })
@@ -341,13 +341,13 @@ describe('Text that is emphasized/stressed at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Stress([
-            new Up.PlainText('Nimble')
+            new Up.Text('Nimble')
           ]),
-          new Up.PlainText(' navigators?')
+          new Up.Text(' navigators?')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.Stress([
-          new Up.PlainText('Tropical.')
+          new Up.Text('Tropical.')
         ])
       ]))
   })
@@ -357,13 +357,13 @@ describe('Text that is emphasized/stressed at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Stress([
-            new Up.PlainText('Nimble')
+            new Up.Text('Nimble')
           ]),
-          new Up.PlainText(' navigators?')
+          new Up.Text(' navigators?')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.Emphasis([
-          new Up.PlainText('Tropical.')
+          new Up.Text('Tropical.')
         ])
       ]))
   })

@@ -7,13 +7,13 @@ describe('A highlight followed immediately by a parenthesized/bracketd URL', () 
   it('produces a highlight node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
           new Up.Link([
-            new Up.PlainText('you fight Gary')
+            new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -27,7 +27,7 @@ describe('Any highlight followed immediately by a parenthesized/bracketed URL', 
       toProduce: insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Link([
-            new Up.PlainText('you fight Gary')
+            new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
         ]),
       ])
@@ -40,14 +40,14 @@ describe('A highlight directly followed by another highlight', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][highlight: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
-          new Up.PlainText('you fight Gary')
+          new Up.Text('you fight Gary')
         ]),
         new Up.Highlight([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -57,14 +57,14 @@ describe('A highlight directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
-          new Up.PlainText('you fight Gary')
+          new Up.Text('you fight Gary')
         ]),
         new Up.InlineNsfw([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -74,14 +74,14 @@ describe('A highlight directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
-          new Up.PlainText('you fight Gary')
+          new Up.Text('you fight Gary')
         ]),
         new Up.InlineNsfl([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -91,9 +91,9 @@ describe('A highlight directly followed by a media convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
-          new Up.PlainText('you fight Gary')
+          new Up.Text('you fight Gary')
         ]),
         new Up.Audio('final battle theme', 'https://example.com/songs/123.ogg'),
       ]))
@@ -107,16 +107,16 @@ describe('A highlight directly followed by a footnote', () => {
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Or whatever you name him.')
+        new Up.Text('Or whatever you name him.')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("After you beat the Elite Four, "),
+          new Up.Text("After you beat the Elite Four, "),
           new Up.Highlight([
-            new Up.PlainText('you fight Gary')
+            new Up.Text('you fight Gary')
           ]),
           footnotes[0],
         ]),
@@ -131,10 +131,10 @@ describe('An otherwise-valid linkified highlight with its URL escaped', () => {
     expect(Up.parse('[highlight: he called her](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('he called her')
+          new Up.Text('he called her')
         ]),
         new Up.NormalParenthetical([
-          new Up.PlainText('(tel:5555555555)')
+          new Up.Text('(tel:5555555555)')
         ]),
       ]))
   })
@@ -146,9 +146,9 @@ context("When an otherwise-valid linkified highlight's URL starts with whitespac
     expect(Up.parse('[highlight: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('he called her')
+          new Up.Text('he called her')
         ]),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })
@@ -162,7 +162,7 @@ context("If there's no whitespace between a highlight and its bracketed URL", ()
       toProduce: insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Link([
-            new Up.PlainText('you fight Gary')
+            new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
         ]),
       ])

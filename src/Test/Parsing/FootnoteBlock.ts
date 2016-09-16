@@ -11,19 +11,19 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 Anyway, none of that matters.`
 
       const footnote = new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal."),
+            new Up.Text("I don't eat cereal."),
             footnote,
-            new Up.PlainText(" Never have.")
+            new Up.Text(" Never have.")
           ]),
           new Up.FootnoteBlock([footnote]),
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -36,24 +36,24 @@ Anyway, none of that matters.`
 
       const footnotes = [
         new Up.Footnote([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText('Except for Mondays.')
+          new Up.Text('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal."),
+            new Up.Text("I don't eat cereal."),
             footnotes[0],
-            new Up.PlainText(" Never have."),
+            new Up.Text(" Never have."),
             footnotes[1]
           ]),
           new Up.FootnoteBlock(footnotes),
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -69,13 +69,13 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 Anyway, none of that matters.`
 
       const footnote = new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
       const heading = new Up.Heading([
-        new Up.PlainText("I don't eat cereal."),
+        new Up.Text("I don't eat cereal."),
         footnote,
-        new Up.PlainText(" Never have.")
+        new Up.Text(" Never have.")
       ], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -83,7 +83,7 @@ Anyway, none of that matters.`
           heading,
           new Up.FootnoteBlock([footnote]),
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ], new Up.Document.TableOfContents([heading])))
     })
@@ -97,17 +97,17 @@ Anyway, none of that matters.`
 
       const footnotes = [
         new Up.Footnote([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText('Except for Mondays.')
+          new Up.Text('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       const heading = new Up.Heading([
-        new Up.PlainText("I don't eat cereal."),
+        new Up.Text("I don't eat cereal."),
         footnotes[0],
-        new Up.PlainText(" Never have."),
+        new Up.Text(" Never have."),
         footnotes[1]
       ], { level: 1, ordinalInTableOfContents: 1 })
 
@@ -116,7 +116,7 @@ Anyway, none of that matters.`
           heading,
           new Up.FootnoteBlock(footnotes),
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ], new Up.Document.TableOfContents([heading])))
     })
@@ -132,10 +132,10 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('This is not my line.')
+        new Up.Text('This is not my line.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText('Neither is this line. I think my mom made it up.')
+        new Up.Text('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 2 })
     ]
 
@@ -143,17 +143,17 @@ Anyway, none of that matters.`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText("Roses are red"),
+            new Up.Text("Roses are red"),
             footnotes[0],
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("Violets are blue"),
+            new Up.Text("Violets are blue"),
             footnotes[1]
           ])
         ]),
         new Up.FootnoteBlock(footnotes),
         new Up.Paragraph([
-          new Up.PlainText('Anyway, none of that matters.')
+          new Up.Text('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -173,16 +173,16 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText("Well, I do, but I pretend not to.")
+        new Up.Text("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText("Or touch.")
+        new Up.Text("Or touch.")
       ], { referenceNumber: 2 }),
       new Up.Footnote([
-        new Up.PlainText('This is not my line.')
+        new Up.Text('This is not my line.')
       ], { referenceNumber: 3 }),
       new Up.Footnote([
-        new Up.PlainText('Neither is this line. I think my mom made it up.')
+        new Up.Text('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 4 })
     ]
 
@@ -192,31 +192,31 @@ Anyway, none of that matters.`
 
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               footnotes[0],
-              new Up.PlainText(" Never have.")
+              new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("It's too expensive.")
+              new Up.Text("It's too expensive.")
             ])
           ]),
 
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat"),
+              new Up.Text("I don't eat"),
               footnotes[1],
-              new Up.PlainText(" pumpkins.")
+              new Up.Text(" pumpkins.")
             ])
           ]),
 
           new Up.UnorderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText("Roses are red"),
+                new Up.Text("Roses are red"),
                 footnotes[2]
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText("Violets are blue"),
+                new Up.Text("Violets are blue"),
                 footnotes[3]
               ])
             ]),
@@ -226,7 +226,7 @@ Anyway, none of that matters.`
         new Up.FootnoteBlock(footnotes),
 
         new Up.Paragraph([
-          new Up.PlainText('Anyway, none of that matters.')
+          new Up.Text('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -243,10 +243,10 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText("Well, I do, but I pretend not to.")
+        new Up.Text("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText("Or touch.")
+        new Up.Text("Or touch.")
       ], { referenceNumber: 2 })
     ]
 
@@ -255,25 +255,25 @@ Anyway, none of that matters.`
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               footnotes[0],
-              new Up.PlainText(" Never have.")
+              new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("It's too expensive.")
+              new Up.Text("It's too expensive.")
             ])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat"),
+              new Up.Text("I don't eat"),
               footnotes[1],
-              new Up.PlainText(" pumpkins.")
+              new Up.Text(" pumpkins.")
             ])
           ], { ordinal: 2 })
         ]),
         new Up.FootnoteBlock(footnotes),
         new Up.Paragraph([
-          new Up.PlainText('Anyway, none of that matters.')
+          new Up.Text('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -289,16 +289,16 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText('Except for Mondays.')
+        new Up.Text('Except for Mondays.')
       ], { referenceNumber: 2 }),
       new Up.Footnote([
-        new Up.PlainText('This is not my line.')
+        new Up.Text('This is not my line.')
       ], { referenceNumber: 3 }),
       new Up.Footnote([
-        new Up.PlainText('Neither is this line. I think my mom made it up.')
+        new Up.Text('Neither is this line. I think my mom made it up.')
       ], { referenceNumber: 4 })
     ]
 
@@ -306,25 +306,25 @@ Anyway, none of that matters.`
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal."),
+            new Up.Text("I don't eat cereal."),
             footnotes[0],
-            new Up.PlainText(" Never have."),
+            new Up.Text(" Never have."),
             footnotes[1]
           ]),
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.PlainText("Roses are red"),
+              new Up.Text("Roses are red"),
               footnotes[2],
             ]),
             new Up.LineBlock.Line([
-              new Up.PlainText("Violets are blue"),
+              new Up.Text("Violets are blue"),
               footnotes[3]
             ])
           ]),
         ]),
         new Up.FootnoteBlock(footnotes),
         new Up.Paragraph([
-          new Up.PlainText('Anyway, none of that matters.')
+          new Up.Text('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -346,13 +346,13 @@ Anyway, none of that matters.`
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText("What happens to the creature if the seed is never planted?")
+        new Up.Text("What happens to the creature if the seed is never planted?")
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText("This probably wasn't a reference to the family of plants.")
+        new Up.Text("This probably wasn't a reference to the family of plants.")
       ], { referenceNumber: 2 }),
       new Up.Footnote([
-        new Up.PlainText("Or maybe Ash simply smelled really good.")
+        new Up.Text("Or maybe Ash simply smelled really good.")
       ], { referenceNumber: 3 })
     ]
 
@@ -360,33 +360,33 @@ Anyway, none of that matters.`
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A strange seed was planted on its back at birth.'),
+              new Up.Text('A strange seed was planted on its back at birth.'),
               footnotes[0],
-              new Up.PlainText(' The plant sprouts and grows with this Pokémon.')
+              new Up.Text(' The plant sprouts and grows with this Pokémon.')
             ])
           ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
             new Up.DescriptionList.Item.Subject([
-              new Up.PlainText('Night Shade'),
+              new Up.Text('Night Shade'),
               footnotes[1]
             ])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Ghost type moves.')
+              new Up.Text('Ghost type moves.')
             ])
           ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Gary')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Gary')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A young man with a great sense of smell.'),
+              new Up.Text('A young man with a great sense of smell.'),
               footnotes[2]
             ])
           ]))
@@ -395,7 +395,7 @@ Anyway, none of that matters.`
         new Up.FootnoteBlock(footnotes),
 
         new Up.Paragraph([
-          new Up.PlainText('Anyway, none of that matters.')
+          new Up.Text('Anyway, none of that matters.')
         ])
       ]))
   })
@@ -413,34 +413,34 @@ Final Fantasy II;     1988
 Anyway, none of that matters.`
 
       const gameFootnote = new Up.Footnote([
-        new Up.PlainText('Video game')
+        new Up.Text('Video game')
       ], { referenceNumber: 1 })
 
       const releaseDateFootnote = new Up.Footnote([
-        new Up.PlainText('Only the year')
+        new Up.Text('Only the year')
       ], { referenceNumber: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game'), gameFootnote]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date'), releaseDateFootnote])
+              new Up.Table.Header.Cell([new Up.Text('Game'), gameFootnote]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date'), releaseDateFootnote])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1987')])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+                new Up.Table.Row.Cell([new Up.Text('1987')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1988')])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy II')]),
+                new Up.Table.Row.Cell([new Up.Text('1988')])
               ])
             ]),
 
           new Up.FootnoteBlock([gameFootnote, releaseDateFootnote]),
 
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -457,35 +457,35 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
 Anyway, none of that matters.`
 
       const headerGameFootnote = new Up.Footnote([
-        new Up.PlainText('Video game')
+        new Up.Text('Video game')
       ], { referenceNumber: 1 })
 
       const headerReleaseDateFootnote = new Up.Footnote([
-        new Up.PlainText('Only the year')
+        new Up.Text('Only the year')
       ], { referenceNumber: 2 })
 
       const rowGameFootnote = new Up.Footnote([
-        new Up.PlainText('Japan uses the numeral 2')
+        new Up.Text('Japan uses the numeral 2')
       ], { referenceNumber: 3 })
 
       const rowReleaseDateFootnote = new Up.Footnote([
-        new Up.PlainText('Almost 1989')
+        new Up.Text('Almost 1989')
       ], { referenceNumber: 4 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game'), headerGameFootnote]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date'), headerReleaseDateFootnote])
+              new Up.Table.Header.Cell([new Up.Text('Game'), headerGameFootnote]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date'), headerReleaseDateFootnote])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1987')])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+                new Up.Table.Row.Cell([new Up.Text('1987')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II'), rowGameFootnote]),
-                new Up.Table.Row.Cell([new Up.PlainText('1988'), rowReleaseDateFootnote])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy II'), rowGameFootnote]),
+                new Up.Table.Row.Cell([new Up.Text('1988'), rowReleaseDateFootnote])
               ])
             ]),
 
@@ -497,7 +497,7 @@ Anyway, none of that matters.`
           ]),
 
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -514,49 +514,49 @@ Final Fantasy II [^ Japan uses the numeral 2];  1988 [^ Almost 1989]
 Anyway, none of that matters.`
 
       const captionGameNameFootnote = new Up.Footnote([
-        new Up.PlainText('ファイナルファンタジ in Japan')
+        new Up.Text('ファイナルファンタジ in Japan')
       ], { referenceNumber: 1 })
 
       const captionDecadeFootnote = new Up.Footnote([
-        new Up.PlainText('An old series!')
+        new Up.Text('An old series!')
       ], { referenceNumber: 2 })
 
       const headerGameFootnote = new Up.Footnote([
-        new Up.PlainText('Video game')
+        new Up.Text('Video game')
       ], { referenceNumber: 3 })
 
       const headerReleaseDateFootnote = new Up.Footnote([
-        new Up.PlainText('Only the year')
+        new Up.Text('Only the year')
       ], { referenceNumber: 4 })
 
       const rowGameFootnote = new Up.Footnote([
-        new Up.PlainText('Japan uses the numeral 2')
+        new Up.Text('Japan uses the numeral 2')
       ], { referenceNumber: 5 })
 
       const rowReleaseDateFootnote = new Up.Footnote([
-        new Up.PlainText('Almost 1989')
+        new Up.Text('Almost 1989')
       ], { referenceNumber: 6 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.PlainText('Game'), headerGameFootnote]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date'), headerReleaseDateFootnote])
+              new Up.Table.Header.Cell([new Up.Text('Game'), headerGameFootnote]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date'), headerReleaseDateFootnote])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
-                new Up.Table.Row.Cell([new Up.PlainText('1987')])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+                new Up.Table.Row.Cell([new Up.Text('1987')])
               ]),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II'), rowGameFootnote]),
-                new Up.Table.Row.Cell([new Up.PlainText('1988'), rowReleaseDateFootnote])
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy II'), rowGameFootnote]),
+                new Up.Table.Row.Cell([new Up.Text('1988'), rowReleaseDateFootnote])
               ])
             ],
             new Up.Table.Caption([
-              new Up.PlainText('Final Fantasy'),
+              new Up.Text('Final Fantasy'),
               captionGameNameFootnote,
-              new Up.PlainText(' in the 1980s'),
+              new Up.Text(' in the 1980s'),
               captionDecadeFootnote
             ])),
 
@@ -570,7 +570,7 @@ Anyway, none of that matters.`
           ]),
 
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -587,23 +587,23 @@ Final Fantasy II [^ Japan uses the numeral 2];        1988 [^ Almost 1989]
 Anyway, none of that matters.`
 
       const captionFootnote = new Up.Footnote([
-        new Up.PlainText('ファイナルファンタジ in Japan')
+        new Up.Text('ファイナルファンタジ in Japan')
       ], { referenceNumber: 1 })
 
       const headerFootnote = new Up.Footnote([
-        new Up.PlainText('Only the year')
+        new Up.Text('Only the year')
       ], { referenceNumber: 2 })
 
       const firstRowFootnote = new Up.Footnote([
-        new Up.PlainText('Same year as Mega Man')
+        new Up.Text('Same year as Mega Man')
       ], { referenceNumber: 3 })
 
       const secondRowHeaderCellFootnote = new Up.Footnote([
-        new Up.PlainText('Japan uses the numeral 2')
+        new Up.Text('Japan uses the numeral 2')
       ], { referenceNumber: 4 })
 
       const secondRowFootnote = new Up.Footnote([
-        new Up.PlainText('Almost 1989')
+        new Up.Text('Almost 1989')
       ], { referenceNumber: 5 })
 
       expect(Up.parse(markup)).to.deep.equal(
@@ -611,19 +611,19 @@ Anyway, none of that matters.`
           new Up.Table(
             new Up.Table.Header([
               new Up.Table.Header.Cell([]),
-              new Up.Table.Header.Cell([new Up.PlainText('Release Date'), headerFootnote])
+              new Up.Table.Header.Cell([new Up.Text('Release Date'), headerFootnote])
             ]), [
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('1987'), firstRowFootnote])
-              ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+                new Up.Table.Row.Cell([new Up.Text('1987'), firstRowFootnote])
+              ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
               new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.PlainText('1988'), secondRowFootnote])
-              ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II'), secondRowHeaderCellFootnote]))
+                new Up.Table.Row.Cell([new Up.Text('1988'), secondRowFootnote])
+              ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II'), secondRowHeaderCellFootnote]))
             ],
             new Up.Table.Caption([
-              new Up.PlainText('Final Fantasy'),
+              new Up.Text('Final Fantasy'),
               captionFootnote,
-              new Up.PlainText(' in the 1980s')
+              new Up.Text(' in the 1980s')
             ])),
 
           new Up.FootnoteBlock([
@@ -635,7 +635,7 @@ Anyway, none of that matters.`
           ]),
 
           new Up.Paragraph([
-            new Up.PlainText('Anyway, none of that matters.')
+            new Up.Text('Anyway, none of that matters.')
           ])
         ]))
     })
@@ -657,19 +657,19 @@ SPOILER:
 
       const paragraphFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText('Except for Mondays.')
+          new Up.Text('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       const lineBlockFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('This is not my line.')
+          new Up.Text('This is not my line.')
         ], { referenceNumber: 3 }),
         new Up.Footnote([
-          new Up.PlainText('Neither is this line. I think my mom made it up.')
+          new Up.Text('Neither is this line. I think my mom made it up.')
         ], { referenceNumber: 4 })
       ]
 
@@ -677,25 +677,25 @@ SPOILER:
         new Up.Document([
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               paragraphFootnotes[0],
-              new Up.PlainText(" Never have."),
+              new Up.Text(" Never have."),
               paragraphFootnotes[1]
             ]),
             new Up.FootnoteBlock(paragraphFootnotes),
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText("Roses are red"),
+                new Up.Text("Roses are red"),
                 lineBlockFootnotes[0],
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText("Violets are blue"),
+                new Up.Text("Violets are blue"),
                 lineBlockFootnotes[1]
               ])
             ]),
             new Up.FootnoteBlock(lineBlockFootnotes),
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ])
           ])
         ]))
@@ -713,19 +713,19 @@ NSFW:
 
       const paragraphFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText('Except for Mondays.')
+          new Up.Text('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       const lineBlockFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('This is not my line.')
+          new Up.Text('This is not my line.')
         ], { referenceNumber: 3 }),
         new Up.Footnote([
-          new Up.PlainText('Neither is this line. I think my mom made it up.')
+          new Up.Text('Neither is this line. I think my mom made it up.')
         ], { referenceNumber: 4 })
       ]
 
@@ -733,25 +733,25 @@ NSFW:
         new Up.Document([
           new Up.NsfwBlock([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               paragraphFootnotes[0],
-              new Up.PlainText(" Never have."),
+              new Up.Text(" Never have."),
               paragraphFootnotes[1]
             ]),
             new Up.FootnoteBlock(paragraphFootnotes),
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText("Roses are red"),
+                new Up.Text("Roses are red"),
                 lineBlockFootnotes[0],
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText("Violets are blue"),
+                new Up.Text("Violets are blue"),
                 lineBlockFootnotes[1]
               ])
             ]),
             new Up.FootnoteBlock(lineBlockFootnotes),
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ]),
           ]),
         ]))
@@ -769,19 +769,19 @@ NSFL:
 
       const paragraphFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText('Except for Mondays.')
+          new Up.Text('Except for Mondays.')
         ], { referenceNumber: 2 })
       ]
 
       const lineBlockFootnotes = [
         new Up.Footnote([
-          new Up.PlainText('This is not my line.')
+          new Up.Text('This is not my line.')
         ], { referenceNumber: 3 }),
         new Up.Footnote([
-          new Up.PlainText('Neither is this line. I think my mom made it up.')
+          new Up.Text('Neither is this line. I think my mom made it up.')
         ], { referenceNumber: 4 })
       ]
 
@@ -789,25 +789,25 @@ NSFL:
         new Up.Document([
           new Up.NsflBlock([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               paragraphFootnotes[0],
-              new Up.PlainText(" Never have."),
+              new Up.Text(" Never have."),
               paragraphFootnotes[1]
             ]),
             new Up.FootnoteBlock(paragraphFootnotes),
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText("Roses are red"),
+                new Up.Text("Roses are red"),
                 lineBlockFootnotes[0],
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText("Violets are blue"),
+                new Up.Text("Violets are blue"),
                 lineBlockFootnotes[1]
               ])
             ]),
             new Up.FootnoteBlock(lineBlockFootnotes),
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ]),
           ]),
         ]))
@@ -830,10 +830,10 @@ SPOILER:
 
       const footnotes = [
         new Up.Footnote([
-          new Up.PlainText("Well, I do, but I pretend not to.")
+          new Up.Text("Well, I do, but I pretend not to.")
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText("Or touch.")
+          new Up.Text("Or touch.")
         ], { referenceNumber: 2 })
       ]
 
@@ -844,19 +844,19 @@ SPOILER:
             new Up.UnorderedList([
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat cereal."),
+                  new Up.Text("I don't eat cereal."),
                   footnotes[0],
-                  new Up.PlainText(" Never have."),
+                  new Up.Text(" Never have."),
                 ]),
                 new Up.Paragraph([
-                  new Up.PlainText("It's too expensive.")
+                  new Up.Text("It's too expensive.")
                 ])
               ]),
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat"),
+                  new Up.Text("I don't eat"),
                   footnotes[1],
-                  new Up.PlainText(" pumpkins.")
+                  new Up.Text(" pumpkins.")
                 ])
               ])
             ]),
@@ -864,7 +864,7 @@ SPOILER:
             new Up.FootnoteBlock(footnotes),
 
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ])
           ])
         ]))
@@ -884,10 +884,10 @@ NSFW:
 
       const footnotes = [
         new Up.Footnote([
-          new Up.PlainText("Well, I do, but I pretend not to.")
+          new Up.Text("Well, I do, but I pretend not to.")
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText("Or touch.")
+          new Up.Text("Or touch.")
         ], { referenceNumber: 2 })
       ]
 
@@ -898,19 +898,19 @@ NSFW:
             new Up.UnorderedList([
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat cereal."),
+                  new Up.Text("I don't eat cereal."),
                   footnotes[0],
-                  new Up.PlainText(" Never have."),
+                  new Up.Text(" Never have."),
                 ]),
                 new Up.Paragraph([
-                  new Up.PlainText("It's too expensive.")
+                  new Up.Text("It's too expensive.")
                 ])
               ]),
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat"),
+                  new Up.Text("I don't eat"),
                   footnotes[1],
-                  new Up.PlainText(" pumpkins.")
+                  new Up.Text(" pumpkins.")
                 ])
               ])
             ]),
@@ -918,7 +918,7 @@ NSFW:
             new Up.FootnoteBlock(footnotes),
 
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ])
           ])
         ]))
@@ -938,10 +938,10 @@ NSFL:
 
       const footnotes = [
         new Up.Footnote([
-          new Up.PlainText("Well, I do, but I pretend not to.")
+          new Up.Text("Well, I do, but I pretend not to.")
         ], { referenceNumber: 1 }),
         new Up.Footnote([
-          new Up.PlainText("Or touch.")
+          new Up.Text("Or touch.")
         ], { referenceNumber: 2 })
       ]
 
@@ -952,19 +952,19 @@ NSFL:
             new Up.UnorderedList([
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat cereal."),
+                  new Up.Text("I don't eat cereal."),
                   footnotes[0],
-                  new Up.PlainText(" Never have."),
+                  new Up.Text(" Never have."),
                 ]),
                 new Up.Paragraph([
-                  new Up.PlainText("It's too expensive.")
+                  new Up.Text("It's too expensive.")
                 ])
               ]),
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText("I don't eat"),
+                  new Up.Text("I don't eat"),
                   footnotes[1],
-                  new Up.PlainText(" pumpkins.")
+                  new Up.Text(" pumpkins.")
                 ])
               ])
             ]),
@@ -972,7 +972,7 @@ NSFL:
             new Up.FootnoteBlock(footnotes),
 
             new Up.Paragraph([
-              new Up.PlainText('Anyway, none of that matters.')
+              new Up.Text('Anyway, none of that matters.')
             ])
           ])
         ]))
@@ -996,16 +996,16 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
     const footnotesInUnorderedList = [
       new Up.Footnote([
-        new Up.PlainText("Well, I do, but I pretend not to."),
+        new Up.Text("Well, I do, but I pretend not to."),
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText("Or touch."),
+        new Up.Text("Or touch."),
       ], { referenceNumber: 2 })
     ]
 
     const footnoteInParagraph =
       new Up.Footnote([
-        new Up.PlainText("It's actually been a dream of mine ever since I was young."),
+        new Up.Text("It's actually been a dream of mine ever since I was young."),
       ], { referenceNumber: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -1013,28 +1013,28 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               footnotesInUnorderedList[0],
-              new Up.PlainText(" Never have.")
+              new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("It's too expensive.")
+              new Up.Text("It's too expensive.")
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat"),
+              new Up.Text("I don't eat"),
               footnotesInUnorderedList[1],
-              new Up.PlainText(" pumpkins.")
+              new Up.Text(" pumpkins.")
             ])
           ])
         ]),
         new Up.FootnoteBlock(footnotesInUnorderedList),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText("I wear glasses"),
+          new Up.Text("I wear glasses"),
           footnoteInParagraph,
-          new Up.PlainText(" even while working out."),
+          new Up.Text(" even while working out."),
         ]),
         new Up.FootnoteBlock([footnoteInParagraph])
       ]))
@@ -1057,15 +1057,15 @@ describe("Within an outline convention, a footnote within an (inner) revealable 
 I wear glasses (^ It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const footnoteInUnorderedList = new Up.Footnote([
-      new Up.PlainText("Well, I do, but I pretend not to.")
+      new Up.Text("Well, I do, but I pretend not to.")
     ], { referenceNumber: 1 })
 
     const footnoteInSpoilerBlock = new Up.Footnote([
-      new Up.PlainText("Or touch.")
+      new Up.Text("Or touch.")
     ], { referenceNumber: 2 })
 
     const footnoteAfterUnorderedList = new Up.Footnote([
-      new Up.PlainText("It's actually been a dream of mine ever since I was young.")
+      new Up.Text("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -1073,20 +1073,20 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               footnoteInUnorderedList,
-              new Up.PlainText(" Never have.")
+              new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("It's too expensive.")
+              new Up.Text("It's too expensive.")
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.SpoilerBlock([
               new Up.Paragraph([
-                new Up.PlainText("I don't eat"),
+                new Up.Text("I don't eat"),
                 footnoteInSpoilerBlock,
-                new Up.PlainText(" pumpkins.")
+                new Up.Text(" pumpkins.")
               ]),
               new Up.FootnoteBlock([footnoteInSpoilerBlock])
             ])
@@ -1095,9 +1095,9 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
         new Up.FootnoteBlock([footnoteInUnorderedList]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText("I wear glasses"),
+          new Up.Text("I wear glasses"),
           footnoteAfterUnorderedList,
-          new Up.PlainText(" even while working out."),
+          new Up.Text(" even while working out."),
         ]),
         new Up.FootnoteBlock([footnoteAfterUnorderedList])
       ]))
@@ -1110,29 +1110,29 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really. (^Probably.)"
 
     const footnoteInsideFirstFootnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.')
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 3 })
 
     const firstFootnote = new Up.Footnote([
-      new Up.PlainText("That said, I don't eat cereal."),
+      new Up.Text("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new Up.PlainText(" Never have.")
+      new Up.Text(" Never have.")
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.PlainText("Probably."),
+      new Up.Text("Probably."),
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Me? I'm totally normal."),
+          new Up.Text("Me? I'm totally normal."),
           firstFootnote,
-          new Up.PlainText(" Really."),
+          new Up.Text(" Really."),
           secondFootnote,
         ]),
         new Up.FootnoteBlock([
@@ -1149,39 +1149,39 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const footnoteInsideFirstInnerFootnote =
       new Up.Footnote([
-        new Up.PlainText("Only on Mondays…"),
+        new Up.Text("Only on Mondays…"),
       ], { referenceNumber: 5 })
 
     const secondInnerFootnote = new Up.Footnote([
-      new Up.PlainText("At least you've never seen me.")
+      new Up.Text("At least you've never seen me.")
     ], { referenceNumber: 4 })
 
     const firstInnerFootnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do'),
+        new Up.Text('do'),
       ]),
       footnoteInsideFirstInnerFootnote,
-      new Up.PlainText(' but I pretend not to.')
+      new Up.Text(' but I pretend not to.')
     ], { referenceNumber: 3 })
 
     const firstFootnote = new Up.Footnote([
-      new Up.PlainText("That said, I don't eat cereal."),
+      new Up.Text("That said, I don't eat cereal."),
       firstInnerFootnote,
-      new Up.PlainText(" Never have."),
+      new Up.Text(" Never have."),
       secondInnerFootnote,
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.PlainText("Probably."),
+      new Up.Text("Probably."),
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Me? I'm totally normal."),
+          new Up.Text("Me? I'm totally normal."),
           firstFootnote,
-          new Up.PlainText(" Really."),
+          new Up.Text(" Really."),
           secondFootnote
         ]),
         new Up.FootnoteBlock([
@@ -1201,33 +1201,33 @@ Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I p
 I don't eat (^Or touch.) pumpkins.`
 
     const footnoteInsideFirstFootnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.'),
+      new Up.Text(', but I pretend not to.'),
     ], { referenceNumber: 3 })
 
     const firstFootnoteInFirstParagraph = new Up.Footnote([
-      new Up.PlainText("That said, I don't eat cereal."),
+      new Up.Text("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new Up.PlainText(" Never have.")
+      new Up.Text(" Never have.")
     ], { referenceNumber: 1 })
 
     const secondFootnoteInFirstParagraph = new Up.Footnote([
-      new Up.PlainText("Probably.")
+      new Up.Text("Probably.")
     ], { referenceNumber: 2 })
 
     const footnoteInSecondParagraph = new Up.Footnote([
-      new Up.PlainText("Or touch.")
+      new Up.Text("Or touch.")
     ], { referenceNumber: 4 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Me? I'm totally normal."),
+          new Up.Text("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,
-          new Up.PlainText(" Really."),
+          new Up.Text(" Really."),
           secondFootnoteInFirstParagraph,
         ]),
         new Up.FootnoteBlock([
@@ -1236,9 +1236,9 @@ I don't eat (^Or touch.) pumpkins.`
           footnoteInsideFirstFootnote
         ]),
         new Up.Paragraph([
-          new Up.PlainText("I don't eat"),
+          new Up.Text("I don't eat"),
           footnoteInSecondParagraph,
-          new Up.PlainText(' pumpkins.')
+          new Up.Text(' pumpkins.')
         ]),
         new Up.FootnoteBlock([
           footnoteInSecondParagraph
@@ -1263,44 +1263,44 @@ describe("Within an outline convention, a nested footnote within an (inner) reve
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
     const nestedFootnoteInBlockquote = new Up.Footnote([
-      new Up.PlainText("On Mondays.")
+      new Up.Text("On Mondays.")
     ], { referenceNumber: 4 })
 
     const footnoteInBlockquote = new Up.Footnote([
-      new Up.PlainText("Well, I do, but I pretend"),
+      new Up.Text("Well, I do, but I pretend"),
       nestedFootnoteInBlockquote,
-      new Up.PlainText(' not to.')
+      new Up.Text(' not to.')
     ], { referenceNumber: 1 })
 
     const nestedFootnoteInNsflBlock = new Up.Footnote([
-      new Up.PlainText("Or smell.")
+      new Up.Text("Or smell.")
     ], { referenceNumber: 3 })
 
     const footnoteInNsflBlock = new Up.Footnote([
-      new Up.PlainText("Or touch."),
+      new Up.Text("Or touch."),
       nestedFootnoteInNsflBlock
     ], { referenceNumber: 2 })
 
     const footnoteAfterBlockquote = new Up.Footnote([
-      new Up.PlainText("It's actually been a dream of mine ever since I was young.")
+      new Up.Text("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 5 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal."),
+            new Up.Text("I don't eat cereal."),
             footnoteInBlockquote,
-            new Up.PlainText(" Never have.")
+            new Up.Text(" Never have.")
           ]),
           new Up.Paragraph([
-            new Up.PlainText("It's too expensive.")
+            new Up.Text("It's too expensive.")
           ]),
           new Up.NsflBlock([
             new Up.Paragraph([
-              new Up.PlainText("I don't eat"),
+              new Up.Text("I don't eat"),
               footnoteInNsflBlock,
-              new Up.PlainText(" pumpkins.")
+              new Up.Text(" pumpkins.")
             ]),
             new Up.FootnoteBlock([
               footnoteInNsflBlock,
@@ -1314,9 +1314,9 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText("I wear glasses"),
+          new Up.Text("I wear glasses"),
           footnoteAfterBlockquote,
-          new Up.PlainText(" even while working out.")
+          new Up.Text(" even while working out.")
         ]),
         new Up.FootnoteBlock([footnoteAfterBlockquote])
       ]))

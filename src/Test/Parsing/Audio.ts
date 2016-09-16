@@ -7,9 +7,9 @@ context('Bracketed (square bracketed or parenthesized) text starting with "audio
   it('produces an audio node with the first bracketed text treated as the description and the second treated as the audio URL', () => {
     expect(Up.parse('I would never stay in a house with these sounds. [audio: ghostly howling](http://example.com/ghosts.ogg) Would you?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I would never stay in a house with these sounds. '),
+        new Up.Text('I would never stay in a house with these sounds. '),
         new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-        new Up.PlainText(' Would you?')
+        new Up.Text(' Would you?')
       ]))
   })
 })
@@ -102,9 +102,9 @@ context("When an otherwise-valid audio convention's URL starts with whitespace, 
     expect(Up.parse('[audio: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[audio: scary]')
+          new Up.Text('[audio: scary]')
         ]),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

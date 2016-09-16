@@ -15,7 +15,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -38,7 +38,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -54,7 +54,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -70,10 +70,10 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -93,10 +93,10 @@ ruins ending:
         new Up.Document([
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+              new Up.Text('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -138,10 +138,10 @@ RUINS ending:
         new Up.Document([
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+              new Up.Text('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -165,10 +165,10 @@ RUINS ending:
         new Up.Document([
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+              new Up.Text('Luckily, Pikachu ultimately decided to stay.')
             ])
           ])
         ]))
@@ -194,11 +194,11 @@ LOOK AWAY:
         new Up.Document([
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+              new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
             new Up.SpoilerBlock([
               new Up.Paragraph([
-                new Up.PlainText('Luckily, Pikachu ultimately decided to stay.')
+                new Up.Text('Luckily, Pikachu ultimately decided to stay.')
               ])
             ])
           ])

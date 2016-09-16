@@ -7,11 +7,11 @@ describe('Emphasized text containing an unmatched opening delimiter requiring ba
   it('is put inside an emphasis node', () => {
     expect(Up.parse('Hello, *my (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
-          new Up.PlainText('my (^world')
+          new Up.Text('my (^world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -22,15 +22,15 @@ describe('A convention overlapping emphasis (containing an unmatched opening del
     expect(Up.parse('[Hello, *my] (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[Hello, '),
+          new Up.Text('[Hello, '),
           new Up.Emphasis([
-            new Up.PlainText('my]')
+            new Up.Text('my]')
           ]),
         ]),
         new Up.Emphasis([
-          new Up.PlainText(' (^world')
+          new Up.Text(' (^world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -41,20 +41,20 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
     expect(Up.parse('[Hello, **my] (^lovely* world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[Hello, '),
+          new Up.Text('[Hello, '),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.PlainText('my]')
+              new Up.Text('my]')
             ])
           ]),
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText(' (^lovely')
+            new Up.Text(' (^lovely')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -65,20 +65,20 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
     expect(Up.parse('[Hello, **my] lovely* (^world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[Hello, '),
+          new Up.Text('[Hello, '),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.PlainText('my]')
+              new Up.Text('my]')
             ])
           ]),
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText(' lovely')
+            new Up.Text(' lovely')
           ]),
-          new Up.PlainText(' (^world')
+          new Up.Text(' (^world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -88,14 +88,14 @@ describe('Double emphasis (with the inner emphasis enclosing an unmatched openin
   it('is parsed as though the unmatched opening delimiter were any other bit of plain text, with the final asterisk remaining as plain text', () => {
     expect(Up.parse('Hello, **my (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText('my (^lovely')
+            new Up.Text('my (^lovely')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!!*')
+        new Up.Text('!!*')
       ]))
   })
 })
@@ -106,20 +106,20 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
     expect(Up.parse('[Hello, **my] (^lovely* world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[Hello, '),
+          new Up.Text('[Hello, '),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.PlainText('my]')
+              new Up.Text('my]')
             ])
           ]),
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText(' (^lovely')
+            new Up.Text(' (^lovely')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!!*')
+        new Up.Text('!!*')
       ]))
   })
 })
@@ -130,20 +130,20 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
     expect(Up.parse('[Hello, **my] lovely* (^world*!!*')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[Hello, '),
+          new Up.Text('[Hello, '),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.PlainText('my]')
+              new Up.Text('my]')
             ])
           ]),
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText(' lovely')
+            new Up.Text(' lovely')
           ]),
-          new Up.PlainText(' (^world')
+          new Up.Text(' (^world')
         ]),
-        new Up.PlainText('!!*')
+        new Up.Text('!!*')
       ]))
   })
 })
@@ -153,25 +153,25 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I '),
+        new Up.Text('I '),
         new Up.Stress([
-          new Up.PlainText('love '),
+          new Up.Text('love '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(quickly [^ '),
+            new Up.Text('(quickly [^ '),
             new Up.InlineQuote([
-              new Up.PlainText('eating')
+              new Up.Text('eating')
             ])
           ])
         ]),
         new Up.NormalParenthetical([
           new Up.InlineQuote([
-            new Up.PlainText(' pepperoni)')
+            new Up.Text(' pepperoni)')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.PlainText(' pizza')
+          new Up.Text(' pizza')
         ]),
-        new Up.PlainText(' all the time.')
+        new Up.Text(' all the time.')
       ]))
   })
 })
@@ -181,25 +181,25 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I '),
+        new Up.Text('I '),
         new Up.Stress([
-          new Up.PlainText('love '),
+          new Up.Text('love '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(quickly '),
+            new Up.Text('(quickly '),
             new Up.InlineQuote([
-              new Up.PlainText('eating')
+              new Up.Text('eating')
             ])
           ])
         ]),
         new Up.NormalParenthetical([
           new Up.InlineQuote([
-            new Up.PlainText(' [^ pepperoni)')
+            new Up.Text(' [^ pepperoni)')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.PlainText(' pizza')
+          new Up.Text(' pizza')
         ]),
-        new Up.PlainText(' all the time.')
+        new Up.Text(' all the time.')
       ]))
   })
 })
@@ -209,7 +209,7 @@ describe('Several unmatched footnote start delimiters in the same paragraph, wit
   it('are all preserved as plain text, along with all their leading whitespace', () => {
     expect(Up.parse("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
+        new Up.Text("(^(^ (^  \t (^ Palm trees?  (^(^ \t(^")
       ]))
   })
 })

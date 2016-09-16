@@ -7,14 +7,14 @@ describe('An inline spoiler convention', () => {
   it('can be the first convention inside another spoiler convention using same bracket type', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: [SPOILER: Gary] fights you].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineSpoiler([
           new Up.InlineSpoiler([
-            new Up.PlainText('Gary')
+            new Up.Text('Gary')
           ]),
-          new Up.PlainText(' fights you')
+          new Up.Text(' fights you')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })

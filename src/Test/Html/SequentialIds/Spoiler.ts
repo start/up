@@ -8,15 +8,15 @@ describe("Inline spoilers and spoiler blocks", () => {
       new Up.Document([
         new Up.SpoilerBlock([
           new Up.Paragraph([
-            new Up.PlainText('The main character defeats the bad guy.')
+            new Up.Text('The main character defeats the bad guy.')
           ]),
           new Up.SpoilerBlock([
             new Up.Paragraph([
-              new Up.PlainText('The hero was unambiguously '),
+              new Up.Text('The hero was unambiguously '),
               new Up.InlineSpoiler([
-                new Up.PlainText('good '),
+                new Up.Text('good '),
                 new Up.InlineSpoiler([
-                  new Up.PlainText('and righteous.')
+                  new Up.Text('and righteous.')
                 ])
               ])
             ])
@@ -24,7 +24,7 @@ describe("Inline spoilers and spoiler blocks", () => {
         ]),
         new Up.SpoilerBlock([
           new Up.Paragraph([
-            new Up.PlainText('Everyone lived happily ever after, except for the bad men.')
+            new Up.Text('Everyone lived happily ever after, except for the bad men.')
           ])
         ])
       ])
@@ -74,24 +74,24 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
     const node =
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello, '),
+          new Up.Text('Hello, '),
           new Up.InlineSpoiler([
-            new Up.PlainText('Red')
+            new Up.Text('Red')
           ]),
-          new Up.PlainText('. We meet for the '),
+          new Up.Text('. We meet for the '),
           new Up.InlineSpoiler([
             new Up.Emphasis([
-              new Up.PlainText('eighth')
+              new Up.Text('eighth')
             ])
           ]),
-          new Up.PlainText(' time.')
+          new Up.Text(' time.')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('Hello, '),
+          new Up.Text('Hello, '),
           new Up.InlineSpoiler([
-            new Up.PlainText('Blue')
+            new Up.Text('Blue')
           ]),
-          new Up.PlainText('.'),
+          new Up.Text('.'),
         ])
       ])
 
@@ -109,15 +109,15 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
       new Up.Document([
         new Up.SpoilerBlock([
           new Up.Paragraph([
-            new Up.PlainText('After you beat the Elite Four, you have to face your rival.')
+            new Up.Text('After you beat the Elite Four, you have to face your rival.')
           ])
         ]),
         new Up.Paragraph([
-          new Up.PlainText("But the game isn't over yet!")
+          new Up.Text("But the game isn't over yet!")
         ]),
         new Up.SpoilerBlock([
           new Up.Paragraph([
-            new Up.PlainText('Once you beat your rival, you can finally enter Cerulean Cave.')
+            new Up.Text('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])
         ])
       ])

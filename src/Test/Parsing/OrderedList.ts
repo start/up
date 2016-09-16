@@ -13,12 +13,12 @@ describe('Consecutive lines each bulleted by a number sign', () => {
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -38,12 +38,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Lavender Town!')
+              new Up.Text('Hello, Lavender Town!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Lavender Town!')
+              new Up.Text('Goodbye, Lavender Town!')
             ])
           ])
         ])
@@ -63,12 +63,12 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ])
         ])
@@ -88,12 +88,12 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ], { ordinal: 2 })
         ])
@@ -113,12 +113,12 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ], { ordinal: 2 })
         ])
@@ -132,7 +132,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
     expect(Up.parse('1783. Not a good year for Great Britain.')).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('1783. Not a good year for Great Britain.')
+          new Up.Text('1783. Not a good year for Great Britain.')
         ])
       ]))
   })
@@ -146,7 +146,7 @@ describe('A single line bulleted by a number sign', () => {
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ])
         ])
@@ -162,7 +162,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Lavender Town!')
+              new Up.Text('Hello, Lavender Town!')
             ])
           ])
         ])
@@ -178,7 +178,7 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ])
         ])
@@ -194,7 +194,7 @@ describe('A single line bulleted by an integer followed by a closing parenthesis
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ], { ordinal: 1 })
         ])
@@ -217,27 +217,27 @@ describe('The 5 different bullet types', () => {
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Couriway Town!')
+              new Up.Text('Hello, Couriway Town!')
             ])
           ], { ordinal: 2 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Cinnabar Island!')
+              new Up.Text('Hello, Cinnabar Island!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Cherrygrove City!')
+              new Up.Text('Hello, Cherrygrove City!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Camphrier Town!')
+              new Up.Text('Hello, Camphrier Town!')
             ])
           ])
         ])
@@ -257,20 +257,20 @@ describe('An ordered list', () => {
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, World '),
+              new Up.Text('Hello, World '),
               new Up.Emphasis([
-                new Up.PlainText('1-2')
+                new Up.Text('1-2')
               ]),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, World '),
+              new Up.Text('Goodbye, World '),
               new Up.Emphasis([
-                new Up.PlainText('1-2')
+                new Up.Text('1-2')
               ]),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ])
         ]),
@@ -288,17 +288,17 @@ Hello, World 1-2!`
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ]),
         new Up.Paragraph([
-          new Up.PlainText('Hello, World 1-2!')
+          new Up.Text('Hello, World 1-2!')
         ])
       ]))
   })
@@ -314,7 +314,7 @@ describe('An indented line immediately following an ordered list item line', () 
   Violets are blue`
 
     const heading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -325,10 +325,10 @@ describe('An indented line immediately following an ordered list item line', () 
           new Up.OrderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('Roses are red')
+                new Up.Text('Roses are red')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Violets are blue')
+                new Up.Text('Violets are blue')
               ])
             ])
           ])
@@ -352,10 +352,10 @@ describe('Multiple indented or blank lines immediately following an ordered list
   ===============`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -363,10 +363,10 @@ describe('Multiple indented or blank lines immediately following an ordered list
           new Up.OrderedList.Item([
             helloHeading,
             new Up.Paragraph([
-              new Up.PlainText('It is really late, and I am really tired.')
+              new Up.Text('It is really late, and I am really tired.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Really.')
+              new Up.Text('Really.')
             ])
           ]),
           new Up.OrderedList.Item([
@@ -413,10 +413,10 @@ describe('An ordered list item containing multiple indented lines', () => {
   ===============`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -424,17 +424,17 @@ describe('An ordered list item containing multiple indented lines', () => {
           new Up.OrderedList.Item([
             helloHeading,
             new Up.Paragraph([
-              new Up.PlainText('Upcoming features:')
+              new Up.Text('Upcoming features:')
             ]),
             new Up.OrderedList([
               new Up.OrderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText('Code blocks in list items')
+                  new Up.Text('Code blocks in list items')
                 ])
               ]),
               new Up.OrderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText('Definition lists')
+                  new Up.Text('Definition lists')
                 ])
               ])
             ])
@@ -461,10 +461,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
             new Up.OrderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -483,10 +483,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
             new Up.OrderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -505,10 +505,10 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
             new Up.OrderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -537,30 +537,30 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
           new Up.OrderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('Roses are red')
+                new Up.Text('Roses are red')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Violets are blue')
+                new Up.Text('Violets are blue')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I really like that poem.')
+              new Up.Text('I really like that poem.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I think it's my favorite.")
+              new Up.Text("I think it's my favorite.")
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('1234 Spooky Street')
+                new Up.Text('1234 Spooky Street')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Pepe, PA 17101')
+                new Up.Text('Pepe, PA 17101')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I used to live there.')
+              new Up.Text('I used to live there.')
             ])
           ])
         ])

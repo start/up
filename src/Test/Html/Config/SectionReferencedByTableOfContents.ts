@@ -11,7 +11,7 @@ describe('The ID of an element referenced by the table of contents', () => {
     })
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))

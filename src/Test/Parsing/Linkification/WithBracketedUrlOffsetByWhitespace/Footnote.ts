@@ -7,7 +7,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   specify('It has a scheme', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], 'tel:555-555-5555')
     ], { referenceNumber: 1 })
 
@@ -27,7 +27,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Advance Wars')
+          new Up.Text('Advance Wars')
         ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
       ], { referenceNumber: 1 })
 
@@ -44,20 +44,20 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the URL must not contain any spaces', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the phone was dead) (https://stackoverflow.com is where I learned)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('('),
+              new Up.Text('('),
               new Up.Link([
-                new Up.PlainText('stackoverflow.com')
+                new Up.Text('stackoverflow.com')
               ], 'https://stackoverflow.com'),
-              new Up.PlainText(' is where I learned)')
+              new Up.Text(' is where I learned)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -66,16 +66,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('there must be somethng after the scheme', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('email')
+        new Up.Text('email')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^email) (mailto:)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(mailto:)')
+              new Up.Text('(mailto:)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -84,16 +84,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('there must be somethng after the scheme beyond only slashes', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('local files')
+        new Up.Text('local files')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^local files) (file:///)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(file:///)')
+              new Up.Text('(file:///)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -103,7 +103,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the rest of the URL can consist solely of digits', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('the phone was dead')
+          new Up.Text('the phone was dead')
         ], 'tel:5555555555')
       ], { referenceNumber: 1 })
 
@@ -120,16 +120,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the scheme must not be escaped', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('email')
+        new Up.Text('email')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^email) (\\mailto:daniel@wants.email)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(mailto:daniel@wants.email)')
+              new Up.Text('(mailto:daniel@wants.email)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -141,7 +141,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   specify('It starts with a slash', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], '/wiki/dead-phone')
     ], { referenceNumber: 1 })
 
@@ -160,16 +160,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
   describe('When the URL starts with a slash, the URL', () => {
     it('must not contain any spaces', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the phone was dead) (/r9k/ was talking about it)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(/r9k/ was talking about it)'),
+              new Up.Text('(/r9k/ was talking about it)'),
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -178,16 +178,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     it('must have something after the slash', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('slash')
+        new Up.Text('slash')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^slash) (/)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(/)')
+              new Up.Text('(/)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -197,7 +197,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('can consist solely of digits after the slash', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('the phone was dead')
+          new Up.Text('the phone was dead')
         ], '/5555555555')
       ], { referenceNumber: 1 })
 
@@ -214,16 +214,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     it('must not have its slash escaped', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('slash')
+        new Up.Text('slash')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^slash) (\\/r9k/)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(/r9k/)')
+              new Up.Text('(/r9k/)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -235,7 +235,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   specify('It starts with a hash mark ("#")', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], '#wiki/dead-phone')
     ], { referenceNumber: 1 })
 
@@ -255,7 +255,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     it('may consist solely of digits', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('the phone was dead')
+          new Up.Text('the phone was dead')
         ], '#15')
       ], { referenceNumber: 1 })
 
@@ -272,16 +272,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     it('must not contain any spaces', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('the game was dead')
+        new Up.Text('the game was dead')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^the game was dead) (#starcraft2 was never trending)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(#starcraft2 was never trending)')
+              new Up.Text('(#starcraft2 was never trending)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -290,16 +290,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     it('must have something after the hash mark', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('hash mark')
+        new Up.Text('hash mark')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^hash mark) (#)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(#)')
+              new Up.Text('(#)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -308,16 +308,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     it('must not have its hashmark escaped', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('hash mark')
+        new Up.Text('hash mark')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('(^hash mark) (\\#starcraft2)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(#starcraft2)')
+              new Up.Text('(#starcraft2)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -329,7 +329,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
   specify('It has a subdomain and a top-level domain', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('Chrono Trigger')
+        new Up.Text('Chrono Trigger')
       ], 'https://chrono-trigger.wiki')
     ], { referenceNumber: 1 })
 
@@ -349,7 +349,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the top-level domain may be followed by a slash and a resource path', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Advance Wars')
+          new Up.Text('Advance Wars')
         ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
       ], { referenceNumber: 1 })
 
@@ -367,7 +367,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the top-level domain may be followed by a slash and no resource path', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Advance Wars!')
+          new Up.Text('Advance Wars!')
         ], 'https://advancewars.wikia.com/')
       ], { referenceNumber: 1 })
 
@@ -384,16 +384,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the top-level domain may not be followed by any character other than a forward slash', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('that place')
+        new Up.Text('that place')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^that place] (4chan.org-terrifying)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(4chan.org-terrifying)')
+              new Up.Text('(4chan.org-terrifying)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -403,7 +403,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('all domains before the top-level domain may consist solely of digits', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Good luck!')
+          new Up.Text('Good luck!')
         ], 'https://88.8888.cn')
       ], { referenceNumber: 1 })
 
@@ -421,16 +421,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
     context('The top-level domain must contain only letters', () => {
       specify('No numbers', () => {
         const footnote = new Up.Footnote([
-          new Up.PlainText('username')
+          new Up.Text('username')
         ], { referenceNumber: 1 })
 
         expect(Up.parse('[^username] (john.e.smith5)')).to.deep.equal(
           new Up.Document([
             new Up.Paragraph([
               footnote,
-              new Up.PlainText(' '),
+              new Up.Text(' '),
               new Up.NormalParenthetical([
-                new Up.PlainText('(john.e.smith5)')
+                new Up.Text('(john.e.smith5)')
               ])
             ]),
             new Up.FootnoteBlock([footnote])
@@ -439,16 +439,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
       specify('No hyphens', () => {
         const footnote = new Up.Footnote([
-          new Up.PlainText('username')
+          new Up.Text('username')
         ], { referenceNumber: 1 })
 
         expect(Up.parse('[^username] (john.e.smith-kline)')).to.deep.equal(
           new Up.Document([
             new Up.Paragraph([
               footnote,
-              new Up.PlainText(' '),
+              new Up.Text(' '),
               new Up.NormalParenthetical([
-                new Up.PlainText('(john.e.smith-kline)')
+                new Up.Text('(john.e.smith-kline)')
               ])
             ]),
             new Up.FootnoteBlock([footnote])
@@ -458,16 +458,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the URL must start with a letter or a number, not a period', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('top-level domain')
+        new Up.Text('top-level domain')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^top-level domain] (.co.uk)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(.co.uk)')
+              new Up.Text('(.co.uk)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -476,16 +476,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the URL must not have consecutive periods before the top-level domain', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('Ash is not his own father')
+        new Up.Text('Ash is not his own father')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^Ash is not his own father] (um..uh)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(um…uh)')
+              new Up.Text('(um…uh)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -494,16 +494,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the URL must not have consecutive periods directly after the top-level domain before the slash that indicates the start of the resource path', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('debilitating sadness')
+        new Up.Text('debilitating sadness')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(4chan.org…/r9k/)')
+              new Up.Text('(4chan.org…/r9k/)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -513,7 +513,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
     specify('the URL may have consecutive periods before the top-level domain after the slash that indicates the start of the resource path', () => {
       const footnote = new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Good luck!')
+          new Up.Text('Good luck!')
         ], 'https://88.8888.cn')
       ], { referenceNumber: 1 })
 
@@ -530,16 +530,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the URL must not contain any spaces', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('yeah')
+        new Up.Text('yeah')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^yeah] (ign.com had some hilarious forums)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(ign.com had some hilarious forums)')
+              new Up.Text('(ign.com had some hilarious forums)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -548,16 +548,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
     specify('the domain part must not be escaped', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('yeah')
+        new Up.Text('yeah')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^yeah] (\\ign.com)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(ign.com)')
+              new Up.Text('(ign.com)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])
@@ -568,16 +568,16 @@ context('A linkified footnote can have whitespace between itself and its bracket
 
   specify('If none of the conditions are satisfied, the footnote is not linkified', () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('the phone was dead')
+      new Up.Text('the phone was dead')
     ], { referenceNumber: 1 })
 
     expect(Up.parse('(^the phone was dead) (really)')).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
           footnote,
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(really)')
+            new Up.Text('(really)')
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -589,20 +589,20 @@ context('A linkified footnote can have whitespace between itself and its bracket
 describe('If there is nothing but whitspace between a footnote and a bracketed URL, but one of the whitespace characters is escaped', () => {
   it('the footnote convention is not linkified', () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('something terrible')
+      new Up.Text('something terrible')
     ], { referenceNumber: 1 })
 
     expect(Up.parse('[^something terrible]  \\  (https://example.com)')).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
           footnote,
-          new Up.PlainText('    '),
+          new Up.Text('    '),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('example.com')
+              new Up.Text('example.com')
             ], 'https://example.com'),
-            new Up.PlainText(')')
+            new Up.Text(')')
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -615,7 +615,7 @@ describe("A linkified footnote's URL, when separated from its content by whitesp
   it('can itself contain whitespace if each whitespace character is escaped', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
-        new Up.PlainText('the phone was dead')
+        new Up.Text('the phone was dead')
       ], 'https://example.com/search=phone was dead')
     ], { referenceNumber: 1 })
 

@@ -198,7 +198,7 @@ Do your pies ever turn out wrong?`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.CodeBlock('const pie = 3.5'),
-        new Up.Paragraph([new Up.PlainText('Do your pies ever turn out wrong?')])
+        new Up.Paragraph([new Up.Text('Do your pies ever turn out wrong?')])
       ]))
   })
 
@@ -214,9 +214,9 @@ Do you?`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('I enjoy baking.')]),
+        new Up.Paragraph([new Up.Text('I enjoy baking.')]),
         new Up.CodeBlock('const pie = 3.5'),
-        new Up.Paragraph([new Up.PlainText('Do you?')])
+        new Up.Paragraph([new Up.Text('Do you?')])
       ]))
   })
 })
@@ -240,7 +240,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Check out the code below!')
+          new Up.Text('Check out the code below!')
         ]),
         new Up.CodeBlock(
           `function factorial(n: number): number {
@@ -280,7 +280,7 @@ I hope you were able to find a solution without cheating.`
 }`)
         ]),
         new Up.Paragraph([
-          new Up.PlainText('I hope you were able to find a solution without cheating.')
+          new Up.Text('I hope you were able to find a solution without cheating.')
         ])
       ]))
   })

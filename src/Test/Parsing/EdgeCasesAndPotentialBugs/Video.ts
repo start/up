@@ -11,7 +11,7 @@ Do not pour the spiders into your sister's cereal.
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Do not pour the spiders into your sister's cereal.")
+          new Up.Text("Do not pour the spiders into your sister's cereal.")
         ]),
         new Up.Video('spiders crawling out of mouth', 'http://example.com/spiders.webm'),
       ]))
@@ -23,15 +23,15 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce a video node', () => {
     expect(Up.parse('I like [video: ghosts}(http://example.com/ghosts.webm).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like [video: ghosts}'),
+        new Up.Text('I like [video: ghosts}'),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com/ghosts.webm')
+            new Up.Text('example.com/ghosts.webm')
           ], 'http://example.com/ghosts.webm'),
-          new Up.PlainText(')'),
+          new Up.Text(')'),
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -41,13 +41,13 @@ describe('An otherwise-valid video convention with mismatched brackets surroundi
   it('does not produce a video node', () => {
     expect(Up.parse('I like [video: ghosts][http://example.com/ghosts.webm).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like '),
+        new Up.Text('I like '),
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: ghosts]')
+          new Up.Text('[video: ghosts]')
         ]),
-        new Up.PlainText('['),
+        new Up.Text('['),
         new Up.Link([
-          new Up.PlainText('example.com/ghosts.webm).')
+          new Up.Text('example.com/ghosts.webm).')
         ], 'http://example.com/ghosts.webm).'),
       ]))
   })
@@ -67,9 +67,9 @@ context('Unmatched opening parentheses in a video description have no affect on'
       new Up.Document([
         new Up.Paragraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Video('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new Up.PlainText(')'),
+            new Up.Text(')'),
           ])
         ])
       ]))

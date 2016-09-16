@@ -7,7 +7,7 @@ context("A NSFL block's label line does not produce a NSFL block node if it is",
   specify('the last line of the document', () => {
     expect(Up.parse('NSFL:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('NSFL:')
+        new Up.Text('NSFL:')
       ]))
   })
 
@@ -19,9 +19,9 @@ Avoid that initialism!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new Up.LineBlock.Line([new Up.PlainText('NSFL:')]),
-          new Up.LineBlock.Line([new Up.PlainText('No!')]),
-          new Up.LineBlock.Line([new Up.PlainText("Avoid that initialism!")]),
+          new Up.LineBlock.Line([new Up.Text('NSFL:')]),
+          new Up.LineBlock.Line([new Up.Text('No!')]),
+          new Up.LineBlock.Line([new Up.Text("Avoid that initialism!")]),
         ])
       ]))
   })
@@ -34,10 +34,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFL:')
+          new Up.Text('NSFL:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -51,10 +51,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFL:')
+          new Up.Text('NSFL:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -70,11 +70,11 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFL:')
+          new Up.Text('NSFL:')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })

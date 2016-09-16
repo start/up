@@ -16,13 +16,13 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Director')], 3)
+            new Up.Table.Header.Cell([new Up.Text('Director')], 3)
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Akihiko Matsui')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')]))
+              new Up.Table.Row.Cell([new Up.Text('Takashi Tokita')]),
+              new Up.Table.Row.Cell([new Up.Text('Yoshinori Kitase')]),
+              new Up.Table.Row.Cell([new Up.Text('Akihiko Matsui')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')]))
           ])
       ]))
   })
@@ -43,29 +43,29 @@ Starcraft;          Blizzard;;;                                             Marc
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Marketer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')]),
+            new Up.Table.Header.Cell([new Up.Text('Marketer')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 3),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Terranigma')])),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Terranigma')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Command & Conquer')])),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 3),
+              new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Command & Conquer')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Starcraft')]))
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3),
+              new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
+            ], new Up.Table.Header.Cell([new Up.Text('Starcraft')]))
           ])
       ]))
   })
@@ -87,28 +87,28 @@ Friday;;                                Printer had ink`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Most Common Word')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Magical Happenings')])
+            new Up.Table.Header.Cell([new Up.Text('Most Common Word')]),
+            new Up.Table.Header.Cell([new Up.Text('Magical Happenings')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Pikachu evolved')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Monday')], 2)),
+              new Up.Table.Row.Cell([new Up.Text('Pikachu evolved')])
+            ], new Up.Table.Header.Cell([new Up.Text('Monday')], 2)),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Break room destroyed by Psionic Storm')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Tuesday')], 2)),
+              new Up.Table.Row.Cell([new Up.Text('Break room destroyed by Psionic Storm')])
+            ], new Up.Table.Header.Cell([new Up.Text('Tuesday')], 2)),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Break room repaired by CSV')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Wednesday')], 2)),
+              new Up.Table.Row.Cell([new Up.Text('Break room repaired by CSV')])
+            ], new Up.Table.Header.Cell([new Up.Text('Wednesday')], 2)),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Really')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Todd finished his work')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Thursday')])),
+              new Up.Table.Row.Cell([new Up.Text('Really')]),
+              new Up.Table.Row.Cell([new Up.Text('Todd finished his work')])
+            ], new Up.Table.Header.Cell([new Up.Text('Thursday')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Printer had ink')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Friday')], 2)),
+              new Up.Table.Row.Cell([new Up.Text('Printer had ink')])
+            ], new Up.Table.Header.Cell([new Up.Text('Friday')], 2)),
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Summary of last work week')
+            new Up.Text('Summary of last work week')
           ]))
       ]))
   })

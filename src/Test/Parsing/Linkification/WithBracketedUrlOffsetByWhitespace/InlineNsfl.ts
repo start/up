@@ -12,7 +12,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       toProduce: insideDocumentAndParagraph([
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ], 'app:wiki/terrible-thing')
         ])
       ])
@@ -29,7 +29,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Advance Wars')
+              new Up.Text('Advance Wars')
             ], 'http://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -40,15 +40,15 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: something terrible] (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('stackoverflow.com')
+              new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new Up.PlainText(' is nice)')
+            new Up.Text(' is nice)')
           ])
         ]))
     })
@@ -57,11 +57,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: email] (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('email')
+            new Up.Text('email')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:)')
+            new Up.Text('(mailto:)')
           ]),
         ]))
     })
@@ -70,11 +70,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: local files] (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('local files')
+            new Up.Text('local files')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(file:///)')
+            new Up.Text('(file:///)')
           ])
         ]))
     })
@@ -87,7 +87,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('spooky phone call')
+              new Up.Text('spooky phone call')
             ], 'tel:5555555555')
           ])
         ])
@@ -104,7 +104,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       toProduce: insideDocumentAndParagraph([
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ], '/wiki/something-terrible')
         ])
       ])
@@ -117,11 +117,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: something terrible] (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/ created it)')
+            new Up.Text('(/r9k/ created it)')
           ])
         ]))
     })
@@ -130,11 +130,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: slash] (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('slash')
+            new Up.Text('slash')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/)')
+            new Up.Text('(/)')
           ])
         ]))
     })
@@ -147,7 +147,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Model 3 theft')
+              new Up.Text('Model 3 theft')
             ], '/3')
           ])
         ])
@@ -158,11 +158,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: yeah] (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('yeah')
+            new Up.Text('yeah')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/)')
+            new Up.Text('(/r9k/)')
           ]),
         ]))
     })
@@ -177,7 +177,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       toProduce: insideDocumentAndParagraph([
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ], '#wiki/something-terrible')
         ])
       ])
@@ -194,7 +194,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Model 3 theft')
+              new Up.Text('Model 3 theft')
             ], '#3')
           ])
         ])
@@ -205,11 +205,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: hash mark] (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('hash mark')
+            new Up.Text('hash mark')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#)')
+            new Up.Text('(#)')
           ])
         ]))
     })
@@ -218,11 +218,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: something terrible] (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2 was never trending)')
+            new Up.Text('(#starcraft2 was never trending)')
           ])
         ]))
     })
@@ -231,11 +231,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: yeah] (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('yeah')
+            new Up.Text('yeah')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2)')
+            new Up.Text('(#starcraft2)')
           ])
         ]))
     })
@@ -250,7 +250,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       toProduce: insideDocumentAndParagraph([
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('Chrono Trigger')
+            new Up.Text('Chrono Trigger')
           ], 'https://chrono-trigger.wiki')
         ])
       ])
@@ -267,7 +267,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Advance Wars')
+              new Up.Text('Advance Wars')
             ], 'https://advancewars.wikia.com/wiki/Advance_Wars_(game)')
           ])
         ])
@@ -282,7 +282,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Advance Wars')
+              new Up.Text('Advance Wars')
             ], 'https://advancewars.wikia.com/')
           ])
         ])
@@ -293,11 +293,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: that place] (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('that place')
+            new Up.Text('that place')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org-terrifying)')
+            new Up.Text('(4chan.org-terrifying)')
           ])
         ]))
     })
@@ -310,7 +310,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('Good luck!')
+              new Up.Text('Good luck!')
             ], 'https://88.8888.cn')
           ])
         ])
@@ -321,11 +321,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: email] (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('email')
+            new Up.Text('email')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:daniel@wants.email)')
+            new Up.Text('(mailto:daniel@wants.email)')
           ])
         ]))
     })
@@ -336,11 +336,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         expect(Up.parse('[NSFL: username] (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.InlineNsfl([
-              new Up.PlainText('username')
+              new Up.Text('username')
             ]),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith5)')
+              new Up.Text('(john.e.smith5)')
             ]),
           ]))
       })
@@ -349,11 +349,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         expect(Up.parse('[NSFL: username] (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.InlineNsfl([
-              new Up.PlainText('username')
+              new Up.Text('username')
             ]),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith-kline)')
+              new Up.Text('(john.e.smith-kline)')
             ])
           ]))
       })
@@ -363,11 +363,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: top-level domain] (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('top-level domain')
+            new Up.Text('top-level domain')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(.co.uk)')
+            new Up.Text('(.co.uk)')
           ])
         ]))
     })
@@ -376,11 +376,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: Ash is not his own father] (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('Ash is not his own father')
+            new Up.Text('Ash is not his own father')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(um…uh)')
+            new Up.Text('(um…uh)')
           ])
         ]))
     })
@@ -389,11 +389,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: debilitating sadness] (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('debilitating sadness')
+            new Up.Text('debilitating sadness')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org…/r9k/)')
+            new Up.Text('(4chan.org…/r9k/)')
           ])
         ]))
     })
@@ -406,7 +406,7 @@ context('A linkified NSFL convention can have whitespace between itself and its 
         toProduce: insideDocumentAndParagraph([
           new Up.InlineNsfl([
             new Up.Link([
-              new Up.PlainText('rocket ship')
+              new Up.Text('rocket ship')
             ], 'https://example.com/321...blastoff/1')
           ])
         ])
@@ -417,11 +417,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: yeah] (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('yeah')
+            new Up.Text('yeah')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com had some hilarious forums)')
+            new Up.Text('(ign.com had some hilarious forums)')
           ])
         ]))
     })
@@ -430,11 +430,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
       expect(Up.parse('[NSFL: yeah] (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('yeah')
+            new Up.Text('yeah')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com)')
+            new Up.Text('(ign.com)')
           ]),
         ]))
     })
@@ -445,11 +445,11 @@ context('A linkified NSFL convention can have whitespace between itself and its 
     expect(Up.parse('[NSFL: something terrible] (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineNsfl([
-          new Up.PlainText('something terrible')
+          new Up.Text('something terrible')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.NormalParenthetical([
-          new Up.PlainText('(really)')
+          new Up.Text('(really)')
         ])
       ]))
   })
@@ -461,15 +461,15 @@ describe('If there is nothing but whitspace between an inline NSFL convention an
     expect(Up.parse('[NSFL: something terrible]  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineNsfl([
-          new Up.PlainText('something terrible')
+          new Up.Text('something terrible')
         ]),
-        new Up.PlainText('    '),
+        new Up.Text('    '),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com')
+            new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -485,7 +485,7 @@ describe("A linkified NSFL convention's URL, when separated from its content by 
       toProduce: insideDocumentAndParagraph([
         new Up.InlineNsfl([
           new Up.Link([
-            new Up.PlainText('something terrible')
+            new Up.Text('something terrible')
           ], 'https://stackoverflow.com/search=something very terrible')
         ])
       ])

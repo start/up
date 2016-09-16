@@ -8,28 +8,28 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
     specify('Between words', () => {
       expect(Up.parse("Yeah, it uses base HP+-4.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Yeah, it uses base HP±4.")
+          new Up.Text("Yeah, it uses base HP±4.")
         ]))
     })
 
     specify('Following a word', () => {
       expect(Up.parse("I have 10+- ...")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("I have 10± …")
+          new Up.Text("I have 10± …")
         ]))
     })
 
     specify('Preceding a word', () => {
       expect(Up.parse('I have three homes, +-two.')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('I have three homes, ±two.')
+          new Up.Text('I have three homes, ±two.')
         ]))
     })
 
     specify('Surrounded by whitespace', () => {
       expect(Up.parse("Well, +- a million.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Well, ± a million.")
+          new Up.Text("Well, ± a million.")
         ]))
     })
   })
@@ -40,7 +40,7 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
       expect(Up.parse("[American flag emoji] (https://example.com/empojis/US+-flag?info)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText("American flag emoji")
+            new Up.Text("American flag emoji")
           ], 'https://example.com/empojis/US+-flag?info')
         ]))
     })
@@ -66,7 +66,7 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('you fight Gary')
+              new Up.Text('you fight Gary')
             ], 'http://example.com/final+-battle')
           ])
         ]))
@@ -99,14 +99,14 @@ describe('When either of the hyphens are escaped, no en dash is produced:', () =
   specify('First dash:', () => {
     expect(Up.parse("Okay\\--I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay--I'll eat the tarantula.")
+        new Up.Text("Okay--I'll eat the tarantula.")
       ]))
   })
 
   specify('Second hyphen:', () => {
     expect(Up.parse("Okay-\\-I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay--I'll eat the tarantula.")
+        new Up.Text("Okay--I'll eat the tarantula.")
       ]))
   })
 })

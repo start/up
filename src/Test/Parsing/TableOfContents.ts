@@ -14,10 +14,10 @@ I enjoy apples
 I enjoy milk
 ------------`
     const appleHeading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const milkHeading =
-      new Up.Heading([new Up.PlainText('I enjoy milk')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I enjoy milk')], { level: 2, ordinalInTableOfContents: 2 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([appleHeading, milkHeading])
@@ -42,16 +42,16 @@ I enjoy apples
 Who doesn't?`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
-        new Up.Paragraph([new Up.PlainText("Who doesn't?")])
+        new Up.Paragraph([new Up.Text("Who doesn't?")])
       ], tableOfContents))
   })
 
@@ -64,7 +64,7 @@ I enjoy apples
 2. They're delicious`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -74,10 +74,10 @@ I enjoy apples
         heading,
         new Up.OrderedList([
           new Up.OrderedList.Item([
-            new Up.Paragraph([new Up.PlainText("They're cheap")])
+            new Up.Paragraph([new Up.Text("They're cheap")])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
-            new Up.Paragraph([new Up.PlainText("They're delicious")])
+            new Up.Paragraph([new Up.Text("They're delicious")])
           ], { ordinal: 2 })
         ])
       ], tableOfContents))
@@ -92,7 +92,7 @@ I enjoy apples
 * They're delicious`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -102,10 +102,10 @@ I enjoy apples
         heading,
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
-            new Up.Paragraph([new Up.PlainText("They're cheap")])
+            new Up.Paragraph([new Up.Text("They're cheap")])
           ]),
           new Up.UnorderedList.Item([
-            new Up.Paragraph([new Up.PlainText("They're delicious")])
+            new Up.Paragraph([new Up.Text("They're delicious")])
           ])
         ])
       ], tableOfContents))
@@ -120,7 +120,7 @@ Apples
   They're delicious.`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -130,10 +130,10 @@ Apples
         heading,
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Apples')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Apples')])
           ],
             new Up.DescriptionList.Item.Description([
-              new Up.Paragraph([new Up.PlainText("They're delicious.")])
+              new Up.Paragraph([new Up.Text("They're delicious.")])
             ]))
         ])
       ], tableOfContents))
@@ -148,7 +148,7 @@ Roses are read
 Apples are blue`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -158,10 +158,10 @@ Apples are blue`
         heading,
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText("Roses are read")
+            new Up.Text("Roses are read")
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("Apples are blue")
+            new Up.Text("Apples are blue")
           ])
         ])
       ], tableOfContents))
@@ -178,17 +178,17 @@ SPOILER:
   Who doesn't?`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
         new Up.SpoilerBlock([
-          new Up.Paragraph([new Up.PlainText("Who doesn't?")])
+          new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -204,17 +204,17 @@ NSFW:
   Who doesn't?`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
         new Up.NsfwBlock([
-          new Up.Paragraph([new Up.PlainText("Who doesn't?")])
+          new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -230,17 +230,17 @@ NSFL:
   Who doesn't?`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
         new Up.NsflBlock([
-          new Up.Paragraph([new Up.PlainText("Who doesn't?")])
+          new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -255,17 +255,17 @@ I enjoy apples
 > Who doesn't?`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
         new Up.Blockquote([
-          new Up.Paragraph([new Up.PlainText("Who doesn't?")])
+          new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
   })
@@ -284,18 +284,18 @@ Who doesn't?
 No one!`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText("Anyway, let's get to the point.")]),
+        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
-        new Up.Paragraph([new Up.PlainText("Who doesn't?")]),
+        new Up.Paragraph([new Up.Text("Who doesn't?")]),
         new Up.ThematicBreak(),
-        new Up.Paragraph([new Up.PlainText("No one!")])
+        new Up.Paragraph([new Up.Text("No one!")])
       ], tableOfContents))
   })
 
@@ -309,7 +309,7 @@ const reason = "They are cheap and delicious."
 \`\`\``
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -329,10 +329,10 @@ I enjoy apples
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do, but I pretend not to.')
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     const tableOfContents =
@@ -342,9 +342,9 @@ I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.`
       new Up.Document([
         heading,
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have.")
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ], tableOfContents))
@@ -361,7 +361,7 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
     const heading =
-      new Up.Heading([new Up.PlainText('The Chrono series')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('The Chrono series')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -371,20 +371,20 @@ Chrono Cross;     1999`
         heading,
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the Chrono series')
+            new Up.Text('Games in the Chrono series')
           ]))
       ], tableOfContents))
   })
@@ -400,7 +400,7 @@ Chart: \`AND\` operator logic
 1;      true;   false
 0;      false;  false`
     const heading =
-      new Up.Heading([new Up.PlainText('Boolean logic')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Boolean logic')], { level: 1, ordinalInTableOfContents: 1 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading])
@@ -411,21 +411,21 @@ Chart: \`AND\` operator logic
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ],
           new Up.Table.Caption([
             new Up.InlineCode('AND'),
-            new Up.PlainText(' operator logic')
+            new Up.Text(' operator logic')
           ]))
       ], tableOfContents))
   })
@@ -440,7 +440,7 @@ Haunted houses
 [audio: haunted house] (example.com/hauntedhouse.ogg)`
 
       const heading =
-        new Up.Heading([new Up.PlainText('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([heading])
@@ -460,7 +460,7 @@ Haunted houses
 [image: haunted house] (example.com/hauntedhouse.svg)`
 
       const heading =
-        new Up.Heading([new Up.PlainText('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([heading])
@@ -480,7 +480,7 @@ Haunted houses
 [video: haunted house] (example.com/hauntedhouse.webm)`
 
       const heading =
-        new Up.Heading([new Up.PlainText('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([heading])
@@ -501,7 +501,7 @@ Haunted houses
 [image: haunted house] (example.com/hauntedhouse.svg) (example.com/gallery)`
 
       const heading =
-        new Up.Heading([new Up.PlainText('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('Haunted houses')], { level: 1, ordinalInTableOfContents: 1 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([heading])
@@ -537,13 +537,13 @@ I enjoy apples
    Very delicious.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const deliciousHeading =
-        new Up.Heading([new Up.PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
@@ -554,11 +554,11 @@ I enjoy apples
           new Up.OrderedList([
             new Up.OrderedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.PlainText("Very cheap.")])
+              new Up.Paragraph([new Up.Text("Very cheap.")])
             ], { ordinal: 1 }),
             new Up.OrderedList.Item([
               deliciousHeading,
-              new Up.Paragraph([new Up.PlainText("Very delicious.")])
+              new Up.Paragraph([new Up.Text("Very delicious.")])
             ], { ordinal: 2 })
           ])
         ], tableOfContents))
@@ -580,13 +580,13 @@ I enjoy apples
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const costHeading =
-        new Up.Heading([new Up.PlainText("Cost")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("Cost")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading, costHeading])
@@ -597,11 +597,11 @@ I enjoy apples
           new Up.OrderedList([
             new Up.OrderedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.PlainText("Very cheap.")]),
+              new Up.Paragraph([new Up.Text("Very cheap.")]),
               new Up.OrderedList([
                 new Up.OrderedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.PlainText("Typically, apples cost twenty dolloars per pound.")])
+                  new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
                 ])
               ])
             ])
@@ -625,13 +625,13 @@ I enjoy apples
   Very delicious.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const deliciousHeading =
-        new Up.Heading([new Up.PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading, deliciousHeading])
@@ -642,11 +642,11 @@ I enjoy apples
           new Up.UnorderedList([
             new Up.UnorderedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.PlainText("Very cheap.")])
+              new Up.Paragraph([new Up.Text("Very cheap.")])
             ]),
             new Up.UnorderedList.Item([
               deliciousHeading,
-              new Up.Paragraph([new Up.PlainText("Very delicious.")])
+              new Up.Paragraph([new Up.Text("Very delicious.")])
             ])
           ])
         ], tableOfContents))
@@ -668,13 +668,13 @@ I enjoy apples
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const costHeading =
-        new Up.Heading([new Up.PlainText("Cost")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("Cost")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading, costHeading])
@@ -685,11 +685,11 @@ I enjoy apples
           new Up.UnorderedList([
             new Up.UnorderedList.Item([
               cheapHeading,
-              new Up.Paragraph([new Up.PlainText("Very cheap.")]),
+              new Up.Paragraph([new Up.Text("Very cheap.")]),
               new Up.UnorderedList([
                 new Up.UnorderedList.Item([
                   costHeading,
-                  new Up.Paragraph([new Up.PlainText("Typically, apples cost twenty dolloars per pound.")])
+                  new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
                 ])
               ])
             ])
@@ -708,10 +708,10 @@ I enjoy apples
 > Very cheap.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading])
@@ -721,7 +721,7 @@ I enjoy apples
           applesHeading,
           new Up.Blockquote([
             cheapHeading,
-            new Up.Paragraph([new Up.PlainText("Very cheap.")])
+            new Up.Paragraph([new Up.Text("Very cheap.")])
           ])
         ], tableOfContents))
     })
@@ -742,13 +742,13 @@ I enjoy apples
 > > Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const cheapHeading =
-        new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
       const costHeading =
-        new Up.Heading([new Up.PlainText("Cost")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("Cost")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, cheapHeading, costHeading])
@@ -758,10 +758,10 @@ I enjoy apples
           applesHeading,
           new Up.Blockquote([
             cheapHeading,
-            new Up.Paragraph([new Up.PlainText("Very cheap.")]),
+            new Up.Paragraph([new Up.Text("Very cheap.")]),
             new Up.Blockquote([
               costHeading,
-              new Up.Paragraph([new Up.PlainText("Typically, apples cost twenty dolloars per pound.")])
+              new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
             ])
           ])
         ], tableOfContents))
@@ -785,13 +785,13 @@ Pink lady
   Really.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const bestFruitHeading =
-        new Up.Heading([new Up.PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("The best fruit")], { level: 2, ordinalInTableOfContents: 2 })
 
       const pinkLadyHeading =
-        new Up.Heading([new Up.PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("The best apple")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
@@ -801,16 +801,16 @@ Pink lady
           applesHeading,
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Apple')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Apple')])
             ], new Up.DescriptionList.Item.Description([
               bestFruitHeading,
-              new Up.Paragraph([new Up.PlainText('Really.')])
+              new Up.Paragraph([new Up.Text('Really.')])
             ])),
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Pink lady')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Pink lady')])
             ], new Up.DescriptionList.Item.Description([
               pinkLadyHeading,
-              new Up.Paragraph([new Up.PlainText('Really.')])
+              new Up.Paragraph([new Up.Text('Really.')])
             ]))
           ])
         ], tableOfContents))
@@ -834,13 +834,13 @@ Apple
     Really.`
 
       const applesHeading =
-        new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
       const bestFruitHeading =
-        new Up.Heading([new Up.PlainText("The best fruit")], { level: 2, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text("The best fruit")], { level: 2, ordinalInTableOfContents: 2 })
 
       const pinkLadyHeading =
-        new Up.Heading([new Up.PlainText("The best apple")], { level: 2, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text("The best apple")], { level: 2, ordinalInTableOfContents: 3 })
 
       const tableOfContents =
         new Up.Document.TableOfContents([applesHeading, bestFruitHeading, pinkLadyHeading])
@@ -850,16 +850,16 @@ Apple
           applesHeading,
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Apple')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Apple')])
             ], new Up.DescriptionList.Item.Description([
               bestFruitHeading,
-              new Up.Paragraph([new Up.PlainText('Really.')]),
+              new Up.Paragraph([new Up.Text('Really.')]),
               new Up.DescriptionList([
                 new Up.DescriptionList.Item([
-                  new Up.DescriptionList.Item.Subject([new Up.PlainText('Pink lady')])
+                  new Up.DescriptionList.Item.Subject([new Up.Text('Pink lady')])
                 ], new Up.DescriptionList.Item.Description([
                   pinkLadyHeading,
-                  new Up.Paragraph([new Up.PlainText('Really.')])
+                  new Up.Paragraph([new Up.Text('Really.')])
                 ]))
               ])
             ]))
@@ -882,10 +882,10 @@ Apple
       > ----------`
 
     const bestFruitHeading =
-      new Up.Heading([new Up.PlainText('The best fruit')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('The best fruit')], { level: 1, ordinalInTableOfContents: 1 })
 
     const purchasingHeading =
-      new Up.Heading([new Up.PlainText('Purchasing')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Purchasing')], { level: 2, ordinalInTableOfContents: 2 })
 
     const tableOfContents =
       new Up.Document.TableOfContents([bestFruitHeading, purchasingHeading])
@@ -894,15 +894,15 @@ Apple
       new Up.Document([
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
-            new Up.Paragraph([new Up.PlainText('I like apples.')]),
+            new Up.Paragraph([new Up.Text('I like apples.')]),
 
             new Up.OrderedList([
               new Up.OrderedList.Item([
-                new Up.Paragraph([new Up.PlainText('Really.')]),
+                new Up.Paragraph([new Up.Text('Really.')]),
 
                 new Up.DescriptionList([
                   new Up.DescriptionList.Item([
-                    new Up.DescriptionList.Item.Subject([new Up.PlainText('Apple')])
+                    new Up.DescriptionList.Item.Subject([new Up.Text('Apple')])
                   ], new Up.DescriptionList.Item.Description([
                     bestFruitHeading,
                     new Up.Blockquote([
@@ -929,7 +929,7 @@ SPOILER:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.SpoilerBlock([
-            new Up.Heading([new Up.PlainText("They're cheap")], { level: 1 })
+            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
           ])
         ], new Up.Document.TableOfContents([])))
     })
@@ -944,7 +944,7 @@ NSFW:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.NsfwBlock([
-            new Up.Heading([new Up.PlainText("They're cheap")], { level: 1 })
+            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
           ])
         ], new Up.Document.TableOfContents([])))
     })
@@ -959,7 +959,7 @@ NSFL:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.NsflBlock([
-            new Up.Heading([new Up.PlainText("They're cheap")], { level: 1 })
+            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
           ])
         ], new Up.Document.TableOfContents([])))
     })

@@ -37,10 +37,10 @@ describe("The ID of the footnote reference referencing the footnote", () => {
     const document = new Up.Document([
       new Up.FootnoteBlock([
         new Up.Footnote([
-          new Up.PlainText("Arwings")
+          new Up.Text("Arwings")
         ], { referenceNumber: 2 }),
         new Up.Footnote([
-          new Up.PlainText("Killer Bees")
+          new Up.Text("Killer Bees")
         ], { referenceNumber: 3 })
       ])
     ])

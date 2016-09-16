@@ -14,17 +14,17 @@ describe('Consecutive bulleted lines', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy milk')
+              new Up.Text('Buy milk')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy bread')
+              new Up.Text('Buy bread')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy tendies')
+              new Up.Text('Buy tendies')
             ])
           ])
         ])
@@ -44,12 +44,12 @@ context('Unordered list bullets can be:', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -66,12 +66,12 @@ context('Unordered list bullets can be:', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -88,12 +88,12 @@ context('Unordered list bullets can be:', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -111,17 +111,17 @@ context('Unordered list bullets can be:', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy milk')
+              new Up.Text('Buy milk')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy bread')
+              new Up.Text('Buy bread')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy happiness')
+              new Up.Text('Buy happiness')
             ])
           ])
         ])
@@ -154,7 +154,7 @@ describe('A single bulleted line', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ])
         ])
@@ -172,7 +172,7 @@ describe('An indented line immediately following an ordered list item line', () 
   Violets are blue`
 
     const heading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -183,10 +183,10 @@ describe('An indented line immediately following an ordered list item line', () 
           new Up.UnorderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('Roses are red')
+                new Up.Text('Roses are red')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Violets are blue')
+                new Up.Text('Violets are blue')
               ])
             ])
           ])
@@ -210,10 +210,10 @@ describe('Multiple indented or blank lines immediately following an unordered li
   ===============`
 
     const hellodHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -221,10 +221,10 @@ describe('Multiple indented or blank lines immediately following an unordered li
           new Up.UnorderedList.Item([
             hellodHeading,
             new Up.Paragraph([
-              new Up.PlainText('It is really late, and I am really tired.')
+              new Up.Text('It is really late, and I am really tired.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Really.')
+              new Up.Text('Really.')
             ])
           ]),
           new Up.UnorderedList.Item([
@@ -271,10 +271,10 @@ describe('An unordered list item containing multiple indented lines', () => {
   ===============`
 
     const hellodHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -282,17 +282,17 @@ describe('An unordered list item containing multiple indented lines', () => {
           new Up.UnorderedList.Item([
             hellodHeading,
             new Up.Paragraph([
-              new Up.PlainText('Upcoming features:')
+              new Up.Text('Upcoming features:')
             ]),
             new Up.UnorderedList([
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText('Code blocks in list items')
+                  new Up.Text('Code blocks in list items')
                 ])
               ]),
               new Up.UnorderedList.Item([
                 new Up.Paragraph([
-                  new Up.PlainText('Definition lists')
+                  new Up.Text('Definition lists')
                 ])
               ])
             ])
@@ -319,10 +319,10 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
             new Up.UnorderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -341,10 +341,10 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
             new Up.UnorderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -363,10 +363,10 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
             new Up.UnorderedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Roses are red'),
+                  new Up.Text('Roses are red'),
                 ]),
                 new Up.LineBlock.Line([
-                  new Up.PlainText('Violets are blue')
+                  new Up.Text('Violets are blue')
                 ])
               ])
             ])
@@ -395,30 +395,30 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
           new Up.UnorderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('Roses are red')
+                new Up.Text('Roses are red')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Violets are blue')
+                new Up.Text('Violets are blue')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I really like that poem.')
+              new Up.Text('I really like that poem.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I think it's my favorite.")
+              new Up.Text("I think it's my favorite.")
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
-                new Up.PlainText('1234 Spooky Street')
+                new Up.Text('1234 Spooky Street')
               ]),
               new Up.LineBlock.Line([
-                new Up.PlainText('Pepe, PA 17101')
+                new Up.Text('Pepe, PA 17101')
               ])
             ]),
             new Up.Paragraph([
-              new Up.PlainText('I used to live there.')
+              new Up.Text('I used to live there.')
             ])
           ])
         ])
@@ -435,9 +435,9 @@ describe('An unordered list item with an asterisk bullet', () => {
           new Up.UnorderedList.Item([
             new Up.Paragraph([
               new Up.Emphasis([
-                new Up.PlainText('Hello')
+                new Up.Text('Hello')
               ]),
-              new Up.PlainText(', world!')
+              new Up.Text(', world!')
             ])
           ])
         ])
@@ -457,20 +457,20 @@ describe('An unordered list', () => {
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, World '),
+              new Up.Text('Hello, World '),
               new Up.Emphasis([
-                new Up.PlainText('1-2')
+                new Up.Text('1-2')
               ]),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, World '),
+              new Up.Text('Goodbye, World '),
               new Up.Emphasis([
-                new Up.PlainText('1-2')
+                new Up.Text('1-2')
               ]),
-              new Up.PlainText('!')
+              new Up.Text('!')
             ])
           ])
         ]),
@@ -488,17 +488,17 @@ Hello, World 1-2!`
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ]),
         new Up.Paragraph([
-          new Up.PlainText('Hello, World 1-2!')
+          new Up.Text('Hello, World 1-2!')
         ])
       ]))
   })

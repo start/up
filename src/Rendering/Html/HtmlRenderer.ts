@@ -5,7 +5,7 @@ import { Link } from '../../SyntaxNodes/Link'
 import { Image } from '../../SyntaxNodes/Image'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Video } from '../../SyntaxNodes/Video'
-import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Text } from '../../SyntaxNodes/Text'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { Stress } from '../../SyntaxNodes/Stress'
@@ -210,7 +210,7 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Italic([new PlainText(sectionLink.sectionTitleSnippet)])
+        : new Italic([new Text(sectionLink.sectionTitleSnippet)])
 
     return representation.render(this)
   }
@@ -371,13 +371,13 @@ export class HtmlRenderer extends Renderer {
     return this.playableMediaElement(video, 'video')
   }
 
-  plainText(plainText: PlainText): string {
+  plainText(plainText: Text): string {
     return escapeHtmlContent(plainText.text)
   }
 
   private tableOfContentsTitle(): string {
     const title = new Heading([
-      new PlainText(this.settings.terms.tableOfContents)], { level: 1 })
+      new Text(this.settings.terms.tableOfContents)], { level: 1 })
 
     return title.render(this)
   }
@@ -451,7 +451,7 @@ export class HtmlRenderer extends Renderer {
     const referenceNumber = footnoteReference.referenceNumber
 
     return new Link(
-      [new PlainText(referenceNumber.toString())],
+      [new Text(referenceNumber.toString())],
       internalUrl(this.footnoteId(referenceNumber)))
   }
 
@@ -472,7 +472,7 @@ export class HtmlRenderer extends Renderer {
     const referenceNumber = footnote.referenceNumber
 
     return new Link(
-      [new PlainText(referenceNumber.toString())],
+      [new Text(referenceNumber.toString())],
       internalUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
@@ -496,7 +496,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private playableMediaFallback(content: string, url: string): Link[] {
-    return [new Link([new PlainText(content)], url)]
+    return [new Link([new Text(content)], url)]
   }
 
   private revealable(

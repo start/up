@@ -7,11 +7,11 @@ describe('Text surrounded by doublequote characters', () => {
   it('is put inside an inline quote node', () => {
     expect(Up.parse('Hello, "world"!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.InlineQuote([
-          new Up.PlainText('world')
+          new Up.Text('world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -22,9 +22,9 @@ describe('Inline quotes', () => {
     expect(Up.parse('"You should always use `<font>` elements."')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.PlainText('You should always use '),
+          new Up.Text('You should always use '),
           new Up.InlineCode('<font>'),
-          new Up.PlainText(' elements.'),
+          new Up.Text(' elements.'),
         ]),
       ]))
   })
@@ -32,13 +32,13 @@ describe('Inline quotes', () => {
   it('can contain nested inline quotes', () => {
     expect(Up.parse('John stood up. "Hello, my "little" world!"')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('John stood up. '),
+        new Up.Text('John stood up. '),
         new Up.InlineQuote([
-          new Up.PlainText('Hello, my '),
+          new Up.Text('Hello, my '),
           new Up.InlineQuote([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world!')
+          new Up.Text(' world!')
         ])
       ]))
   })
@@ -49,12 +49,12 @@ describe('Nested inline quotes', () => {
   it('can open at the same time', () => {
     expect(Up.parse('Bob recounted, ""Come here right now!", she said. But I walked away."')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Bob recounted, '),
+        new Up.Text('Bob recounted, '),
         new Up.InlineQuote([
           new Up.InlineQuote([
-            new Up.PlainText('Come here right now!'),
+            new Up.Text('Come here right now!'),
           ]),
-          new Up.PlainText(', she said. But I walked away.')
+          new Up.Text(', she said. But I walked away.')
         ])
       ]))
   })
@@ -63,12 +63,12 @@ describe('Nested inline quotes', () => {
     expect(Up.parse('"I walked away while she screamed "come here right now!"", Bob recounted.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.PlainText('I walked away while she screamed '),
+          new Up.Text('I walked away while she screamed '),
           new Up.InlineQuote([
-            new Up.PlainText('come here right now!'),
+            new Up.Text('come here right now!'),
           ]),
         ]),
-        new Up.PlainText(', Bob recounted.')
+        new Up.Text(', Bob recounted.')
       ]))
   })
 })
@@ -78,7 +78,7 @@ describe('Text separated from (otherwise surrounding) doublequotes by whitespace
   it('is not put inside an inline quote node', () => {
     expect(Up.parse('My favorite quote mark " is your favorite quote mark " and we all know it.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('My favorite quote mark " is your favorite quote mark " and we all know it.'),
+        new Up.Text('My favorite quote mark " is your favorite quote mark " and we all know it.'),
       ]))
   })
 })
@@ -88,25 +88,25 @@ context('An unmatched doublequote (that would otherwise start a quote) is preser
   specify('Can be the only doublequote in a paragraph', () => {
     expect(Up.parse('I said, "I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I said, "I am still typi'),
+        new Up.Text('I said, "I am still typi'),
       ]))
   })
 
   specify('Can follow another unmatched doublequote', () => {
     expect(Up.parse('Bob said, "I said, "I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Bob said, "I said, "I am still typi'),
+        new Up.Text('Bob said, "I said, "I am still typi'),
       ]))
   })
 
   specify('Can follow a proper inline quote', () => {
     expect(Up.parse('I said, "Hello world"! I repeat, "Hel')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I said, '),
+        new Up.Text('I said, '),
         new Up.InlineQuote([
-          new Up.PlainText('Hello world')
+          new Up.Text('Hello world')
         ]),
-        new Up.PlainText('! I repeat, "Hel')
+        new Up.Text('! I repeat, "Hel')
       ]))
   })
 })
@@ -116,25 +116,25 @@ context('An unmatched doublequote (that would otherwise end a quote) is preserve
   specify('Can be the only doublequote in a paragraph', () => {
     expect(Up.parse('My model airplane has a 30" wingspan.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('My model airplane has a 30" wingspan.'),
+        new Up.Text('My model airplane has a 30" wingspan.'),
       ]))
   })
 
   specify('Can follow another unmatched doublequote', () => {
     expect(Up.parse('My model airplane has a 30" wingspan and is 20" long')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('My model airplane has a 30" wingspan and is 20" long'),
+        new Up.Text('My model airplane has a 30" wingspan and is 20" long'),
       ]))
   })
 
   specify('Can follow a proper inline quote', () => {
     expect(Up.parse('I said, "Thanks!" My new model airplane has a 30" wingspan.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I said, '),
+        new Up.Text('I said, '),
         new Up.InlineQuote([
-          new Up.PlainText('Thanks!')
+          new Up.Text('Thanks!')
         ]),
-        new Up.PlainText(' My new model airplane has a 30" wingspan.')
+        new Up.Text(' My new model airplane has a 30" wingspan.')
       ]))
   })
 })
@@ -145,11 +145,11 @@ context('Inline quotes can follow each other in a paragraph', () => {
     expect(Up.parse('"Thanks." "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.PlainText('Thanks.')
+          new Up.Text('Thanks.')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.InlineQuote([
-          new Up.PlainText('Okay.')
+          new Up.Text('Okay.')
         ])
       ]))
   })
@@ -158,11 +158,11 @@ context('Inline quotes can follow each other in a paragraph', () => {
     expect(Up.parse('"Thanks." He looked down. "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.PlainText('Thanks.')
+          new Up.Text('Thanks.')
         ]),
-        new Up.PlainText(' He looked down. '),
+        new Up.Text(' He looked down. '),
         new Up.InlineQuote([
-          new Up.PlainText('Okay.')
+          new Up.Text('Okay.')
         ])
       ]))
   })
@@ -173,33 +173,33 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
   specify('The doublequotes can be balanced', () => {
     expect(Up.parse('Yeah, check the """"car"""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah, check the '),
+        new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.PlainText('car')
+          new Up.Text('car')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('There can be more doublequotes on the starting side', () => {
     expect(Up.parse('Yeah, check the """"""car"""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah, check the '),
+        new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.PlainText('car')
+          new Up.Text('car')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('There can be more doublequotes on the ending side', () => {
     expect(Up.parse('Yeah, check the """"car""""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah, check the '),
+        new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.PlainText('car')
+          new Up.Text('car')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
@@ -207,15 +207,15 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
   specify('This inline quote can contain nested inline quotes', () => {
     expect(Up.parse('Yeah, check the """"new "office" building"""".')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah, check the '),
+        new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.PlainText('new '),
+          new Up.Text('new '),
           new Up.InlineQuote([
-            new Up.PlainText('office')
+            new Up.Text('office')
           ]),
-          new Up.PlainText(' building')
+          new Up.Text(' building')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })

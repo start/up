@@ -5,7 +5,7 @@ import * as Up from '../../index'
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {
   specify('Paragraphs', () => {
     const document = new Up.Document([
-      new Up.Paragraph([new Up.PlainText('Nimble navigator')], { sourceLineNumber: 5 })
+      new Up.Paragraph([new Up.Text('Nimble navigator')], { sourceLineNumber: 5 })
     ])
 
     expect(Up.render(document)).to.equal('<p data-up-source-line="5">Nimble navigator</p>')
@@ -16,12 +16,12 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Up.UnorderedList([
         new Up.UnorderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Tropical')
+            new Up.Text('Tropical')
           ], { sourceLineNumber: 3 })
         ]),
         new Up.UnorderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Territories')
+            new Up.Text('Territories')
           ], { sourceLineNumber: 4 })
         ])
       ], { sourceLineNumber: 3 })
@@ -39,12 +39,12 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Up.OrderedList([
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Tropical')
+            new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ]),
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Territories')
+            new Up.Text('Territories')
           ], { sourceLineNumber: 3 })
         ])
       ], { sourceLineNumber: 1 })
@@ -62,12 +62,12 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Up.OrderedList([
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Tropical')
+            new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 3 }),
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Territories')
+            new Up.Text('Territories')
           ], { sourceLineNumber: 3 })
         ])
       ], { sourceLineNumber: 1 })
@@ -85,12 +85,12 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Up.OrderedList([
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Tropical')
+            new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 2 }),
         new Up.OrderedList.Item([
           new Up.Paragraph([
-            new Up.PlainText('Territories')
+            new Up.Text('Territories')
           ], { sourceLineNumber: 2 })
         ], { ordinal: 1 })
       ], { sourceLineNumber: 1 })
@@ -107,18 +107,18 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.DescriptionList([
         new Up.DescriptionList.Item([
-          new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+          new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
         ], new Up.DescriptionList.Item.Description([
           new Up.Paragraph([
-            new Up.PlainText('A grass type Pokemon')
+            new Up.Text('A grass type Pokemon')
           ], { sourceLineNumber: 3 })
         ])),
         new Up.DescriptionList.Item([
-          new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-          new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
+          new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+          new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
         ], new Up.DescriptionList.Item.Description([
           new Up.Paragraph([
-            new Up.PlainText('Ghost type moves')
+            new Up.Text('Ghost type moves')
           ], { sourceLineNumber: 6 })
         ]))
       ], { sourceLineNumber: 2 })
@@ -138,20 +138,20 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
-          new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-          new Up.Table.Header.Cell([new Up.PlainText('Developer')])
+          new Up.Table.Header.Cell([new Up.Text('Game')]),
+          new Up.Table.Header.Cell([new Up.Text('Developer')])
         ]), [
           new Up.Table.Row([
-            new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
-            new Up.Table.Row.Cell([new Up.PlainText('Square')])
+            new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+            new Up.Table.Row.Cell([new Up.Text('Square')])
           ]),
           new Up.Table.Row([
-            new Up.Table.Row.Cell([new Up.PlainText('Super Mario Kart')]),
-            new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
+            new Up.Table.Row.Cell([new Up.Text('Super Mario Kart')]),
+            new Up.Table.Row.Cell([new Up.Text('Nintendo')])
           ])
         ],
         new Up.Table.Caption([
-          new Up.PlainText('Influential Games')
+          new Up.Text('Influential Games')
         ]), { sourceLineNumber: 1 })
     ])
 
@@ -169,20 +169,20 @@ context('When an outline syntax node has a source line number, its outermost ele
       new Up.Table(
         new Up.Table.Header([
           new Up.Table.Header.Cell([]),
-          new Up.Table.Header.Cell([new Up.PlainText('1')]),
-          new Up.Table.Header.Cell([new Up.PlainText('0')])
+          new Up.Table.Header.Cell([new Up.Text('1')]),
+          new Up.Table.Header.Cell([new Up.Text('0')])
         ]), [
           new Up.Table.Row([
-            new Up.Table.Row.Cell([new Up.PlainText('true')]),
-            new Up.Table.Row.Cell([new Up.PlainText('false')]),
-          ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+            new Up.Table.Row.Cell([new Up.Text('true')]),
+            new Up.Table.Row.Cell([new Up.Text('false')]),
+          ], new Up.Table.Header.Cell([new Up.Text('1')])),
           new Up.Table.Row([
-            new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            new Up.Table.Row.Cell([new Up.PlainText('false')])
-          ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+            new Up.Table.Row.Cell([new Up.Text('false')]),
+            new Up.Table.Row.Cell([new Up.Text('false')])
+          ], new Up.Table.Header.Cell([new Up.Text('0')]))
         ],
         new Up.Table.Caption([
-          new Up.PlainText('AND operator logic')
+          new Up.Text('AND operator logic')
         ]), { sourceLineNumber: 3 })
     ])
 
@@ -199,10 +199,10 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.LineBlock([
         new Up.LineBlock.Line([
-          new Up.PlainText('Hollow')
+          new Up.Text('Hollow')
         ]),
         new Up.LineBlock.Line([
-          new Up.PlainText('Fangs')
+          new Up.Text('Fangs')
         ])
       ], { sourceLineNumber: 4 })
     ])
@@ -227,7 +227,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Blockquote([
         new Up.Paragraph([
-          new Up.PlainText('Centipede')
+          new Up.Text('Centipede')
         ], { sourceLineNumber: 1 })
       ], { sourceLineNumber: 1 })
     ])
@@ -241,7 +241,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 1 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 1, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 1, sourceLineNumber: 3 })
     ])
 
     expect(Up.render(document)).to.equal('<h1 data-up-source-line="3">Bulbasaur</h1>')
@@ -249,7 +249,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 2 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 2, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 2, sourceLineNumber: 1 })
     ])
 
     expect(Up.render(document)).to.equal('<h2 data-up-source-line="1">Bulbasaur</h2>')
@@ -257,7 +257,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 3 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 3, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 3, sourceLineNumber: 3 })
     ])
 
     expect(Up.render(document)).to.equal('<h3 data-up-source-line="3">Bulbasaur</h3>')
@@ -265,14 +265,14 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 4  headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
     ])
 
     expect(Up.render(document)).to.equal('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 5, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 5, sourceLineNumber: 3 })
     ])
 
     expect(Up.render(document)).to.equal('<h5 data-up-source-line="3">Bulbasaur</h5>')
@@ -280,7 +280,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 6 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 6, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 6, sourceLineNumber: 1 })
     ])
 
     expect(Up.render(document)).to.equal('<h6 data-up-source-line="1">Bulbasaur</h6>')
@@ -288,7 +288,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 10 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.PlainText('Bulbasaur')], { level: 10, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 10, sourceLineNumber: 2 })
     ])
 
     expect(Up.render(document)).to.equal('<h6 data-up-source-line="2">Bulbasaur</h6>')
@@ -306,7 +306,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.SpoilerBlock([
         new Up.Paragraph([
-          new Up.PlainText('John Carmack is a decent programmer.')
+          new Up.Text('John Carmack is a decent programmer.')
         ], { sourceLineNumber: 3 })
       ], { sourceLineNumber: 2 })
     ])
@@ -327,7 +327,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.NsfwBlock([
         new Up.Paragraph([
-          new Up.PlainText('John Carmack is a decent programmer.')
+          new Up.Text('John Carmack is a decent programmer.')
         ], { sourceLineNumber: 2 })
       ], { sourceLineNumber: 1 })
     ])
@@ -348,7 +348,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.NsflBlock([
         new Up.Paragraph([
-          new Up.PlainText('John Carmack is a decent programmer.')
+          new Up.Text('John Carmack is a decent programmer.')
         ], { sourceLineNumber: 4 })
       ], { sourceLineNumber: 2 })
     ])

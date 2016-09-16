@@ -14,7 +14,7 @@ describe('The "highlight" term', () => {
     expect(up.parse('[mark: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('Ash fights Gary')
+          new Up.Text('Ash fights Gary')
         ])
       ]))
   })
@@ -32,7 +32,7 @@ describe('The "highlight" term', () => {
     expect(Up.parse(markup, { terms: { highlight: ' \t mark \t ' } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('Ash fights Gary')
+          new Up.Text('Ash fights Gary')
         ])
       ]))
   })
@@ -43,7 +43,7 @@ describe('The "highlight" term', () => {
     expect(Up.parse(markup, { terms: { highlight: '*mark*' } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('Ash fights Gary')
+          new Up.Text('Ash fights Gary')
         ])
       ]))
   })
@@ -54,10 +54,10 @@ describe('The "highlight" term', () => {
     expect(Up.parse(markup, { terms: { highlight: ['mark', 'paint'] } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
-          new Up.PlainText('Ash fights Gary')
+          new Up.Text('Ash fights Gary')
         ]),
         new Up.Highlight([
-          new Up.PlainText('Ash fights Gary')
+          new Up.Text('Ash fights Gary')
         ])
       ]))
   })

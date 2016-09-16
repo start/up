@@ -14,7 +14,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An emphasis node', () => {
     it('produces an <em> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Emphasis([new Up.PlainText('Always')])
+        new Up.Emphasis([new Up.Text('Always')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<em>Always</em>')
@@ -25,7 +25,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A stress node', () => {
     it('produces a <strong> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Stress([new Up.PlainText('Ness')])
+        new Up.Stress([new Up.Text('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<strong>Ness</strong>')
@@ -36,7 +36,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An italic node', () => {
     it('produces an <i> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Italic([new Up.PlainText('Ness')])
+        new Up.Italic([new Up.Text('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<i>Ness</i>')
@@ -47,7 +47,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A bold node', () => {
     it('produces a <b> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Bold([new Up.PlainText('Ness')])
+        new Up.Bold([new Up.Text('Ness')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<b>Ness</b>')
@@ -80,7 +80,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A normal parenthetical node', () => {
     it('produces a <small class="up-parenthetical"> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.NormalParenthetical([new Up.PlainText('(Koopa Troopa)')])
+        new Up.NormalParenthetical([new Up.Text('(Koopa Troopa)')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical">(Koopa Troopa)</small>')
@@ -91,7 +91,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A square parenthetical node', () => {
     it('produces a <small class="up-parenthetical up-square-brackets"> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.SquareParenthetical([new Up.PlainText('[Koopa Troopa]')])
+        new Up.SquareParenthetical([new Up.Text('[Koopa Troopa]')])
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small>')
@@ -102,7 +102,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A link node', () => {
     it('produces an <a> element with its href attribute set to its URL', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Link([new Up.PlainText('Google')], 'https://google.com')
+        new Up.Link([new Up.Text('Google')], 'https://google.com')
       ])
 
       expect(Up.renderInline(inlineDocument)).to.equal('<a href="https://google.com">Google</a>')
@@ -153,7 +153,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('A highlight node', () => {
     it('produces a <mark> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.Highlight([new Up.PlainText('45.9%')])
+        new Up.Highlight([new Up.Text('45.9%')])
       ])
 
       const html =
@@ -167,7 +167,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline spoiler node', () => {
     it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span role="alert"> element containing the spoiler contents', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.InlineSpoiler([new Up.PlainText('45.9%')])
+        new Up.InlineSpoiler([new Up.Text('45.9%')])
       ])
 
       const html =
@@ -185,7 +185,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline NSFW node', () => {
     it('produces a <span class="up-nsfw up-revealable">, containing a <label> element (with the text "toggle NSFW"), an associated checkbox, and a <span role="alert"> element containing the NSFW contents', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.InlineNsfw([new Up.PlainText('naked Gary')])
+        new Up.InlineNsfw([new Up.Text('naked Gary')])
       ])
 
       const html =
@@ -203,7 +203,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline NSFL node', () => {
     it('produces a <span class="up-nsfl up-revealable">, containing a <label> element (with the text "toggle NSFL"), an associated checkbox, and a <span role="alert"> element containing the NSFL contents', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.InlineNsfl([new Up.PlainText('rotting Gary')])
+        new Up.InlineNsfl([new Up.Text('rotting Gary')])
       ])
 
       const html =
@@ -221,7 +221,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline quote node', () => {
     it('produces a <q> element', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.InlineQuote([new Up.PlainText('45.9%')])
+        new Up.InlineQuote([new Up.Text('45.9%')])
       ])
 
       const html =

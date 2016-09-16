@@ -7,9 +7,9 @@ context('Bracketed (square bracketed or parenthesized) text starting with "video
   it('produces a video node with the first bracketed text treated as the description and the second treated as the URL', () => {
     expect(Up.parse('I would never stay in a house with this. [video: ghosts eating luggage](http://example.com/poltergeists.webm) Would you?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I would never stay in a house with this. '),
+        new Up.Text('I would never stay in a house with this. '),
         new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
-        new Up.PlainText(' Would you?')
+        new Up.Text(' Would you?')
       ]))
   })
 })
@@ -115,9 +115,9 @@ context("When an otherwise-valid video's URL starts with whitespace, and the fir
     expect(Up.parse('[video: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: scary]')
+          new Up.Text('[video: scary]')
         ]),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

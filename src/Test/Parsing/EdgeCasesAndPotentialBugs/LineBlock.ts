@@ -11,10 +11,10 @@ Violets are blue`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -28,10 +28,10 @@ Roses are red
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -51,19 +51,19 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('#~#~#~#~#~#~#~#~#')
+            new Up.Text('#~#~#~#~#~#~#~#~#')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Lyrics have lines')
+            new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('And addresses do, too')
+            new Up.Text('And addresses do, too')
           ]),
         ]),
       ]))
@@ -82,16 +82,16 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red'),
+            new Up.Text('Roses are red'),
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue'),
+            new Up.Text('Violets are blue'),
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Lyrics have lines')
+            new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('And addresses do, too')
+            new Up.Text('And addresses do, too')
           ]),
         ])
       ]))
@@ -110,10 +110,10 @@ Violets are blue`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red'),
+            new Up.Text('Roses are red'),
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue'),
+            new Up.Text('Violets are blue'),
           ])
         ])
       ]))
@@ -129,10 +129,10 @@ Violets are blue`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red'),
+            new Up.Text('Roses are red'),
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue'),
+            new Up.Text('Violets are blue'),
           ])
         ])
       ]))
@@ -152,10 +152,10 @@ Skeltals are white`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ])
         ])
       ]))

@@ -7,11 +7,11 @@ describe('Square bracketed text starting with "NSFW:"', () => {
   it('is put inside an inline NSFW node', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle a naked Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle a naked Gary')
+          new Up.Text('you wrestle a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -21,11 +21,11 @@ describe('Parenthesized text starting with "NSFW:"', () => {
   it('is put inside a nsfw node', () => {
     expect(Up.parse('After you beat the Elite Four, (NSFW: you wrestle a naked Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle a naked Gary')
+          new Up.Text('you wrestle a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -42,26 +42,26 @@ describe('An NSFW convention', () => {
   it('is evaluated for other conventions', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle [image: naked Gary](https://example.com/ummmm.png)].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle '),
+          new Up.Text('you wrestle '),
           new Up.Image('naked Gary', 'https://example.com/ummmm.png'),
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   it('can be nested within another NSFW convention', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle [NSFW: a naked Gary]].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle '),
+          new Up.Text('you wrestle '),
           new Up.InlineNsfw([
-            new Up.PlainText('a naked Gary')
+            new Up.Text('a naked Gary')
           ]),
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -71,15 +71,15 @@ describe('An inline NSFW convention produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: you wrestle [and beat] a naked Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle '),
+          new Up.Text('you wrestle '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[and beat]')
+            new Up.Text('[and beat]')
           ]),
-          new Up.PlainText(' a naked Gary')
+          new Up.Text(' a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -89,15 +89,15 @@ describe('A NSFW convnetion produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.parse('After you beat the Elite Four, (NSFW: you wrestle (and beat) a naked Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle '),
+          new Up.Text('you wrestle '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(and beat)')
+            new Up.Text('(and beat)')
           ]),
-          new Up.PlainText(' a naked Gary')
+          new Up.Text(' a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -107,22 +107,22 @@ describe('Any whitespace between "NSFW:" and the start of the NSFW content', () 
   it('is optional', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW:you wrestle a naked Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle a naked Gary')
+          new Up.Text('you wrestle a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   it('is ignored', () => {
     expect(Up.parse('After you beat the Elite Four, [NSFW: \t  \t you wrestle a naked Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.InlineNsfw([
-          new Up.PlainText('you wrestle a naked Gary')
+          new Up.Text('you wrestle a naked Gary')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })

@@ -10,16 +10,16 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
     const footnote =
       new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -32,7 +32,7 @@ describe('Any footnote followed by a bracketed/parenthesized URL', () => {
     const footnote =
       new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 
@@ -54,17 +54,17 @@ describe('A footnote directly followed by another footnote (with no spaces in be
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.PlainText("Everyone does. It isn't a big deal.")
+        new Up.Text("Everyone does. It isn't a big deal.")
       ], { referenceNumber: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnotes[0],
           footnotes[1]
         ]),
@@ -80,13 +80,13 @@ describe('A footnote directly followed by a media convention', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
           new Up.Video('me not eating cereal', 'https://example.com/v/123')
         ]),
@@ -102,16 +102,16 @@ describe('A footnote directly followed by an inline spoiler', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
           new Up.InlineSpoiler([
-            new Up.PlainText("None of the Final Four's Pokemon are named 'Cereal'")
+            new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -126,16 +126,16 @@ describe('A footnote directly followed by an inline NSFW convention', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
           new Up.InlineNsfw([
-            new Up.PlainText("None of the Final Four's Pokemon are named 'Cereal'")
+            new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -150,16 +150,16 @@ describe('A footnote directly followed by an inline NSFL convention', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('Well, I do, but I pretend not to.')
+        new Up.Text('Well, I do, but I pretend not to.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
           new Up.InlineNsfl([
-            new Up.PlainText("None of the Final Four's Pokemon are named 'Cereal'")
+            new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -174,7 +174,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('He called her.')
+        new Up.Text('He called her.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -182,7 +182,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
         new Up.Paragraph([
           footnote,
           new Up.NormalParenthetical([
-            new Up.PlainText('(tel:5555555555)')
+            new Up.Text('(tel:5555555555)')
           ]),
         ]),
         new Up.FootnoteBlock([footnote])
@@ -197,14 +197,14 @@ describe("When an otherwise-valid linkified spoiler's URL starts with whitespace
 
     const footnote =
       new Up.Footnote([
-        new Up.PlainText('He called her.')
+        new Up.Text('He called her.')
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
           footnote,
-          new Up.PlainText('( \t tel:5555555555)')
+          new Up.Text('( \t tel:5555555555)')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -217,7 +217,7 @@ context("If there's no whitespace between a footnote and its bracketed URL", () 
     const footnote =
       new Up.Footnote([
         new Up.Link([
-          new Up.PlainText('Well, I do, but I pretend not to.')
+          new Up.Text('Well, I do, but I pretend not to.')
         ], 'http://example.com/luckycharms')
       ], { referenceNumber: 1 })
 

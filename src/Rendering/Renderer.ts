@@ -4,7 +4,7 @@ import { Link } from '../SyntaxNodes/Link'
 import { Image } from '../SyntaxNodes/Image'
 import { Audio } from '../SyntaxNodes/Audio'
 import { Video } from '../SyntaxNodes/Video'
-import { PlainText } from '../SyntaxNodes/PlainText'
+import { Text } from '../SyntaxNodes/Text'
 import { Emphasis } from '../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../SyntaxNodes/ExampleInput'
 import { Stress } from '../SyntaxNodes/Stress'
@@ -75,7 +75,7 @@ export abstract class Renderer {
   abstract thematicBreak(thematicBreak: ThematicBreak): string
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
-  abstract plainText(plainText: PlainText): string
+  abstract plainText(plainText: Text): string
   abstract sectionLink(sectionLink: SectionLink): string
   abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string

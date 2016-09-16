@@ -8,20 +8,20 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
     expect(Up.parse('(SPOILER: Ash dies) (https://example.com/ending:[ has all the info) ... [SPOILER: anyway, go here instead] [https://example.com/happy]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineSpoiler([
-          new Up.PlainText('Ash dies')
+          new Up.Text('Ash dies')
         ]),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com/ending:[')
+            new Up.Text('example.com/ending:[')
           ], 'https://example.com/ending:['),
-          new Up.PlainText(' has all the info)')
+          new Up.Text(' has all the info)')
         ]),
-        new Up.PlainText(' … '),
+        new Up.Text(' … '),
         new Up.InlineSpoiler([
           new Up.Link([
-            new Up.PlainText('anyway, go here instead')
+            new Up.Text('anyway, go here instead')
           ], 'https://example.com/happy')
         ])
       ]))

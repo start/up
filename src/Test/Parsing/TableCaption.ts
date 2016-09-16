@@ -16,20 +16,20 @@ Chrono Cross;   1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the Chrono series')
+            new Up.Text('Games in the Chrono series')
           ]))
       ]))
   })
@@ -50,24 +50,24 @@ Chrono Cross;   1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the '),
+            new Up.Text('Games in the '),
             new Up.Emphasis([
-              new Up.PlainText('Chrono')
+              new Up.Text('Chrono')
             ]),
-            new Up.PlainText(' series'),
+            new Up.Text(' series'),
           ]))
       ]))
   })
@@ -85,24 +85,24 @@ Chrono Cross;   1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the '),
+            new Up.Text('Games in the '),
             new Up.Emphasis([
-              new Up.PlainText('Chrono')
+              new Up.Text('Chrono')
             ]),
-            new Up.PlainText(' series'),
+            new Up.Text(' series'),
           ]))
       ]))
   })
@@ -122,20 +122,20 @@ Chrono Cross;   1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ])
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the Chrono series')
+            new Up.Text('Games in the Chrono series')
           ]))
       ]))
   })
@@ -150,12 +150,12 @@ Game;           Release Date`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]),
           [],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the Chrono series')
+            new Up.Text('Games in the Chrono series')
           ]))
       ]))
   })
@@ -170,8 +170,8 @@ Table the proposal.
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Table the proposal.')]),
-        new Up.Paragraph([new Up.PlainText("Do it now; I'm tired of waiting.")]),
+        new Up.Paragraph([new Up.Text('Table the proposal.')]),
+        new Up.Paragraph([new Up.Text("Do it now; I'm tired of waiting.")]),
       ]))
   })
 })

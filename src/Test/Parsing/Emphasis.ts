@@ -7,11 +7,11 @@ describe('Text surrounded by single asterisks', () => {
   it('is put inside an emphasis node', () => {
     expect(Up.parse('Hello, *world*!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
-          new Up.PlainText('world')
+          new Up.Text('world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -21,41 +21,41 @@ describe('Emphasized text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.parse('Hello, *`world`*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
           new Up.InlineCode('world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain further emphasized text', () => {
     expect(Up.parse('Hello, *my *little* world*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Emphasis([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain stressed text', () => {
     expect(Up.parse('Hello, *my **little** world*!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Emphasis([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Stress([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -67,9 +67,9 @@ describe('Double asterisks followed by two separate single closing asterisks', (
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.PlainText('Warning:'),
+            new Up.Text('Warning:'),
           ]),
-          new Up.PlainText(' never feed this tarantula')
+          new Up.Text(' never feed this tarantula')
         ])
       ]))
   })
@@ -80,7 +80,7 @@ describe('Text separated from (otherwise surrounding) single asterisks by whites
   it('is not put inside an emphasis node', () => {
     expect(Up.parse('Birdie Sanders * won * Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Birdie Sanders * won * Wisconsin'),
+        new Up.Text('Birdie Sanders * won * Wisconsin'),
       ]))
   })
 })

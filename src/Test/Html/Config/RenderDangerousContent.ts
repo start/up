@@ -15,7 +15,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       const document = new Up.Document([
         new Up.Paragraph([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'javascript:malicious')
         ])
       ])
@@ -28,7 +28,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       const document = new Up.Document([
         new Up.Paragraph([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'data:malicious')
         ])
       ])
@@ -41,7 +41,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       const document = new Up.Document([
         new Up.Paragraph([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'file:malicious')
         ])
       ])
@@ -54,7 +54,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       const document = new Up.Document([
         new Up.Paragraph([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'vbscript:malicious')
         ])
       ])
@@ -70,7 +70,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       new Up.Paragraph([
         new Up.Link([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'https://google.com')
         ], 'javascript:malicious')
       ])

@@ -13,10 +13,10 @@ describe('Consecutive lines starting with "> "', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, world!')
+            new Up.Text('Goodbye, world!')
           ])
         ])
       ]))
@@ -35,10 +35,10 @@ describe("Blockquote delimeters", () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, world!')
+            new Up.Text('Goodbye, world!')
           ])
         ])
       ]))
@@ -57,10 +57,10 @@ context("Within a blockquote", () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, world!')
+            new Up.Text('Goodbye, world!')
           ])
         ])
       ]))
@@ -77,11 +77,11 @@ context("Within a blockquote", () => {
           new Up.Blockquote([
             new Up.DescriptionList([
               new Up.DescriptionList.Item([
-                new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+                new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
               ],
                 new Up.DescriptionList.Item.Description([
                   new Up.Paragraph([
-                    new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                    new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -102,11 +102,11 @@ context("Within a blockquote", () => {
           new Up.Blockquote([
             new Up.DescriptionList([
               new Up.DescriptionList.Item([
-                new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+                new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
               ],
                 new Up.DescriptionList.Item.Description([
                   new Up.Paragraph([
-                    new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+                    new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
                   ])
                 ]))
             ])
@@ -128,14 +128,14 @@ describe('A blockquote', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, '),
+            new Up.Text('Goodbye, '),
             new Up.Emphasis([
-              new Up.PlainText('world')
+              new Up.Text('world')
             ]),
-            new Up.PlainText('!')
+            new Up.Text('!')
           ])
         ])
       ]))
@@ -148,7 +148,7 @@ describe('A blockquote', () => {
 
     const heading =
       new Up.Heading([
-        new Up.PlainText('Hello, world!')
+        new Up.Text('Hello, world!')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -169,11 +169,11 @@ describe('A blockquote', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText('Hello, mantle!')
+              new Up.Text('Hello, mantle!')
             ])
           ])
         ])
@@ -197,19 +197,19 @@ describe('Several blockquoted lines, followed by a blank line, followed by more 
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, world!')
+            new Up.Text('Goodbye, world!')
           ])
         ]),
 
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Welp, I tried to leave earlier.')
+            new Up.Text('Welp, I tried to leave earlier.')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('This is awkward…')
+            new Up.Text('This is awkward…')
           ])
         ])
       ]))
@@ -233,19 +233,19 @@ describe('Sseveral blockquoted lines, followed by blank line, followed by more b
         new Up.Blockquote([
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ]),
 
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText('Welp, I tried to leave earlier.')
+              new Up.Text('Welp, I tried to leave earlier.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('This is awkward…')
+              new Up.Text('This is awkward…')
             ])
           ])
         ])
@@ -267,15 +267,15 @@ describe('Within a blockquote, 3 or more blank lines', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, '),
+            new Up.Text('Goodbye, '),
             new Up.Emphasis([
-              new Up.PlainText('world')
+              new Up.Text('world')
             ]),
-            new Up.PlainText('!')
+            new Up.Text('!')
           ])
         ])
       ]))
@@ -289,7 +289,7 @@ describe('A single blockquote delimiter without its trailing space', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, taxes!')
+            new Up.Text('Hello, taxes!')
           ])
         ])
       ]))
@@ -305,11 +305,11 @@ describe('A single line blockquote', () => {
           new Up.Blockquote([
             new Up.Blockquote([
               new Up.Paragraph([
-                new Up.PlainText('Hello, '),
+                new Up.Text('Hello, '),
                 new Up.Emphasis([
-                  new Up.PlainText('world')
+                  new Up.Text('world')
                 ]),
-                new Up.PlainText('!!')
+                new Up.Text('!!')
               ])
             ])
           ])
@@ -327,7 +327,7 @@ describe('Multiple blockquote delimiters, each without their trailing space, fol
           new Up.Blockquote([
             new Up.Blockquote([
               new Up.Paragraph([
-                new Up.PlainText('Hello, world!')
+                new Up.Text('Hello, world!')
               ])
             ])
           ])
@@ -345,7 +345,7 @@ describe('Multiple blockquote delimiters, each with their trailing space, follow
           new Up.Blockquote([
             new Up.Blockquote([
               new Up.Paragraph([
-                new Up.PlainText('Hello, world!')
+                new Up.Text('Hello, world!')
               ])
             ])
           ])
@@ -369,13 +369,13 @@ context('Within a given blockquote', () => {
       new Up.Document([
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('Hello, world!')
+            new Up.Text('Hello, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Goodbye, world!')
+            new Up.Text('Goodbye, world!')
           ]),
           new Up.Paragraph([
-            new Up.PlainText('Ummm… I said goodbye.')
+            new Up.Text('Ummm… I said goodbye.')
           ])
         ])
       ]))

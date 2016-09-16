@@ -16,24 +16,24 @@ Chart: \`AND\` operator logic
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')])),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')])),
           ],
 
           new Up.Table.Caption([
             new Up.InlineCode('AND'),
-            new Up.PlainText(' operator logic')
+            new Up.Text(' operator logic')
           ]))
       ]))
   })
@@ -53,21 +53,21 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')])),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')])),
           ],
           new Up.Table.Caption([
             new Up.InlineCode('AND'),
-            new Up.PlainText(' operator logic')
+            new Up.Text(' operator logic')
           ]))
       ]))
   })
@@ -87,16 +87,16 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ],
-          new Up.Table.Caption([new Up.PlainText('Games in the Chrono series')]))
+          new Up.Table.Caption([new Up.Text('Games in the Chrono series')]))
       ]))
   })
 
@@ -111,11 +111,11 @@ Chart: Games in the Chrono series
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]),
           [],
           new Up.Table.Caption([
-            new Up.PlainText('Games in the Chrono series')
+            new Up.Text('Games in the Chrono series')
           ]))
       ]))
   })
@@ -130,8 +130,8 @@ Chart the numbers.
 Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Chart the numbers.')]),
-        new Up.Paragraph([new Up.PlainText("Do it now; I'm tired of waiting.")]),
+        new Up.Paragraph([new Up.Text('Chart the numbers.')]),
+        new Up.Paragraph([new Up.Text("Do it now; I'm tired of waiting.")]),
       ]))
   })
 })

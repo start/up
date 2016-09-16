@@ -2,7 +2,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
 
 
-export class PlainText implements InlineSyntaxNode {
+export class Text implements InlineSyntaxNode {
   constructor(public text: string) { }
 
   textAppearingInline(): string {

@@ -24,7 +24,7 @@ export enum TokenRole {
   NsfwStart,
   NormalParentheticalEnd,
   NormalParentheticalStart,
-  PlainText,
+  Text,
   PotentialRaisedVoiceEnd,
   PotentialRaisedVoiceStart,
   PotentialRaisedVoiceStartOrEnd,

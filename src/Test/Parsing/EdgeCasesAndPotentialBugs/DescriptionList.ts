@@ -18,28 +18,28 @@ context('The terms for revealable outline conventions', () => {
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Spoiler')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Spoiler')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Something that could ruin your favorite movie.')
+              new Up.Text('Something that could ruin your favorite movie.')
             ])
           ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('NSFW')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('NSFW')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Something that could get you fired.')
+                new Up.Text('Something that could get you fired.')
               ])
             ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('NSFL')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('NSFL')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Something that could ruin your life.')
+                new Up.Text('Something that could ruin your life.')
               ])
             ]))
         ])
@@ -61,19 +61,19 @@ context('The terms for tables and charts', () => {
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Table')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Table')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
+              new Up.Text('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
             ])
           ])),
 
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Chart')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Chart')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('In Up, a chart is simply a table with a second, vertical header.')
+                new Up.Text('In Up, a chart is simply a table with a second, vertical header.')
               ])
             ]))
         ])
@@ -100,32 +100,32 @@ Night Shade
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+              new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
             ])
           ]))
         ]),
 
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText("Charmanders're red")
+            new Up.Text("Charmanders're red")
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("Squirtles are blue")
+            new Up.Text("Squirtles are blue")
           ]),
         ]),
 
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Night Shade')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('Ghost type moves.')
+                new Up.Text('Ghost type moves.')
               ])
             ]))
         ])
@@ -154,36 +154,36 @@ Night Shade
         new Up.Document([
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
             ], new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+                new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
               ])
             ]))
           ]),
 
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.PlainText("Charmanders're red")
+              new Up.Text("Charmanders're red")
             ]),
             new Up.LineBlock.Line([
-              new Up.PlainText("Squirtles are blue")
+              new Up.Text("Squirtles are blue")
             ]),
           ]),
 
           new Up.Paragraph([
-            new Up.PlainText("Isn't that a good poem?")
+            new Up.Text("Isn't that a good poem?")
           ]),
 
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+              new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+              new Up.DescriptionList.Item.Subject([new Up.Text('Night Shade')])
             ],
               new Up.DescriptionList.Item.Description([
                 new Up.Paragraph([
-                  new Up.PlainText('Ghost type moves.')
+                  new Up.Text('Ghost type moves.')
                 ])
               ]))
           ])
@@ -211,37 +211,37 @@ Night Shade
         new Up.Document([
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Bulbasaur')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Bulbasaur')])
             ], new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.PlainText('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
+                new Up.Text('A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.')
               ])
             ]))
           ]),
 
           new Up.LineBlock([
             new Up.LineBlock.Line([
-              new Up.PlainText("Charmanders're red")
+              new Up.Text("Charmanders're red")
             ]),
             new Up.LineBlock.Line([
-              new Up.PlainText("Squirtles are blue")
+              new Up.Text("Squirtles are blue")
             ]),
           ]),
 
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText("Isn't that a good poem?")
+            new Up.Text("Isn't that a good poem?")
           ]),
 
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Confuse Ray')]),
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Lick')]),
-              new Up.DescriptionList.Item.Subject([new Up.PlainText('Night Shade')])
+              new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
+              new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+              new Up.DescriptionList.Item.Subject([new Up.Text('Night Shade')])
             ],
               new Up.DescriptionList.Item.Description([
                 new Up.Paragraph([
-                  new Up.PlainText('Ghost type moves.')
+                  new Up.Text('Ghost type moves.')
                 ])
               ]))
           ])

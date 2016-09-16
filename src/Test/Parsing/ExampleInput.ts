@@ -7,9 +7,9 @@ describe('Text surrounded by curly brackets', () => {
   it('is put into an example input node', () => {
     expect(Up.parse('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Press '),
+        new Up.Text('Press '),
         new Up.ExampleInput('esc'),
-        new Up.PlainText(' to quit.'),
+        new Up.Text(' to quit.'),
       ]))
   })
 })
@@ -19,18 +19,18 @@ describe('Example input', () => {
   it('is not evaluated for other (non-typographical) conventions', () => {
     expect(Up.parse("Select the {Start Game(s)} menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Select the '),
+        new Up.Text('Select the '),
         new Up.ExampleInput('Start Game(s)'),
-        new Up.PlainText(' menu item.')
+        new Up.Text(' menu item.')
       ]))
   })
 
   it('has any outer whitespace trimmed away', () => {
     expect(Up.parse("Select the {  \t Start Game(s) \t  } menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Select the '),
+        new Up.Text('Select the '),
         new Up.ExampleInput('Start Game(s)'),
-        new Up.PlainText(' menu item.')
+        new Up.Text(' menu item.')
       ]))
   })
 
@@ -39,18 +39,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Press {\\}} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Press '),
+          new Up.Text('Press '),
           new Up.ExampleInput('}'),
-          new Up.PlainText(' to view paths.')
+          new Up.Text(' to view paths.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Press { \\} } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Press '),
+          new Up.Text('Press '),
           new Up.ExampleInput('}'),
-          new Up.PlainText(' to view paths.')
+          new Up.Text(' to view paths.')
         ]))
     })
   })
@@ -60,18 +60,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Press {\\{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Press '),
+          new Up.Text('Press '),
           new Up.ExampleInput('{'),
-          new Up.PlainText(' to view paths.')
+          new Up.Text(' to view paths.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Press { \\{ } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Press '),
+          new Up.Text('Press '),
           new Up.ExampleInput('{'),
-          new Up.PlainText(' to view paths.')
+          new Up.Text(' to view paths.')
         ]))
     })
   })
@@ -81,18 +81,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Select the {Start Game{s}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('Start Game{s}'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Select the { Start Game{s} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('Start Game{s}'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
   })
@@ -102,18 +102,18 @@ describe('Example input', () => {
     specify('touching the delimiters', () => {
       expect(Up.parse("Select the {{Start Game{s}}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('{Start Game{s}}'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
 
     specify('not touching the delimiters', () => {
       expect(Up.parse("Select the { {Start Game{s}} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('{Start Game{s}}'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
   })
@@ -122,10 +122,10 @@ describe('Example input', () => {
   it('can be directly followed by another input instruction', () => {
     expect(Up.parse("Press {ctrl}{q} to quit.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Press '),
+        new Up.Text('Press '),
         new Up.ExampleInput('ctrl'),
         new Up.ExampleInput('q'),
-        new Up.PlainText(' to quit.')
+        new Up.Text(' to quit.')
       ]))
   })
 
@@ -134,27 +134,27 @@ describe('Example input', () => {
     specify('En dashes', () => {
       expect(Up.parse("Select the { Start Game -- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('Start Game – Single Player'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
 
     specify('Em dashes', () => {
       expect(Up.parse("Select the { Start Game --- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Select the '),
+          new Up.Text('Select the '),
           new Up.ExampleInput('Start Game — Single Player'),
-          new Up.PlainText(' menu item.')
+          new Up.Text(' menu item.')
         ]))
     })
 
     specify('Plus-minus signs', () => {
       expect(Up.parse("Click the {+-5 minutes} button.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Click the '),
+          new Up.Text('Click the '),
           new Up.ExampleInput('±5 minutes'),
-          new Up.PlainText(' button.')
+          new Up.Text(' button.')
         ]))
     })
   })
@@ -165,18 +165,18 @@ describe('An unmatched curly bracket', () => {
   it('is preserved as plain text', () => {
     expect(Up.parse('Yeah... :{ I hate pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah… :{ I hate pizza.')
+        new Up.Text('Yeah… :{ I hate pizza.')
       ]))
   })
 
   it('does not interfere with subsequent inline conventions', () => {
     expect(Up.parse('Yeah... :{ I *hate* pizza.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Yeah… :{ I '),
+        new Up.Text('Yeah… :{ I '),
         new Up.Emphasis([
-          new Up.PlainText('hate'),
+          new Up.Text('hate'),
         ]),
-        new Up.PlainText(' pizza.'),
+        new Up.Text(' pizza.'),
       ]))
   })
 })

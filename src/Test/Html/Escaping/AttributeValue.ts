@@ -178,7 +178,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     })
 
     const heading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))

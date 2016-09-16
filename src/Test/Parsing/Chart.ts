@@ -16,19 +16,19 @@ Chart: AND operator logic
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ],
-          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.Text('AND operator logic')]))
       ]))
   })
 })
@@ -48,19 +48,19 @@ Chart:
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ])
       ]))
   })
@@ -78,19 +78,19 @@ Chart
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ])
       ]))
   })
@@ -114,20 +114,20 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -148,20 +148,20 @@ Chart:
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -181,19 +181,19 @@ Chart: AND operator logic
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ],
-          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.Text('AND operator logic')]))
       ]))
   })
 })
@@ -218,23 +218,23 @@ I don't like video games; in fact, I never have.`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.Paragraph([
-          new Up.PlainText("I don't like video games; in fact, I never have.")
+          new Up.Text("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -258,23 +258,23 @@ I don't like video games; in fact, I never have.`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.Paragraph([
-          new Up.PlainText("I don't like video games; in fact, I never have.")
+          new Up.Text("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -299,24 +299,24 @@ I don't like video games; in fact, I never have.`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText("I don't like video games; in fact, I never have.")
+          new Up.Text("I don't like video games; in fact, I never have.")
         ])
       ]))
   })
@@ -341,21 +341,21 @@ Friday`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Magical Happenings')])
+            new Up.Table.Header.Cell([new Up.Text('Magical Happenings')])
           ]), [
             new Up.Table.Row(
-              [], new Up.Table.Header.Cell([new Up.PlainText('Monday')])),
+              [], new Up.Table.Header.Cell([new Up.Text('Monday')])),
             new Up.Table.Row(
-              [], new Up.Table.Header.Cell([new Up.PlainText('Tuesday')])),
+              [], new Up.Table.Header.Cell([new Up.Text('Tuesday')])),
             new Up.Table.Row(
-              [], new Up.Table.Header.Cell([new Up.PlainText('Wednesday')])),
+              [], new Up.Table.Header.Cell([new Up.Text('Wednesday')])),
             new Up.Table.Row(
-              [], new Up.Table.Header.Cell([new Up.PlainText('Thursday')])),
+              [], new Up.Table.Header.Cell([new Up.Text('Thursday')])),
             new Up.Table.Row(
-              [], new Up.Table.Header.Cell([new Up.PlainText('Friday')]))
+              [], new Up.Table.Header.Cell([new Up.Text('Friday')]))
           ],
           new Up.Table.Caption([
-            new Up.PlainText('Magical happenings this past work week')
+            new Up.Text('Magical happenings this past work week')
           ]))
       ]))
   })
@@ -377,30 +377,30 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Platform')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Square')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('Square')]),
+              new Up.Table.Row.Cell([new Up.Text('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Terranigma')])),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Terranigma')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')]),
-              new Up.Table.Row.Cell([new Up.PlainText('PC')]),
-              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Command & Conquer')])),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')]),
+              new Up.Table.Row.Cell([new Up.Text('PC')]),
+              new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Command & Conquer')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')]),
-              new Up.Table.Row.Cell([new Up.PlainText('PC')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Starcraft')]))
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')]),
+              new Up.Table.Row.Cell([new Up.Text('PC')]),
+              new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
+            ], new Up.Table.Header.Cell([new Up.Text('Starcraft')]))
           ])
       ]))
   })
@@ -425,24 +425,24 @@ Chrono Cross;       1999`
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
             new Up.Table.Header.Cell([
-              new Up.PlainText('Release Date '),
+              new Up.Text('Release Date '),
               new Up.NormalParenthetical([
-                new Up.PlainText('(year only)')
+                new Up.Text('(year only)')
               ])
             ])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1988')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('1988')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -461,14 +461,14 @@ Super Mario Kart;   Nintendo`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher; Developer')])
+            new Up.Table.Header.Cell([new Up.Text('Publisher; Developer')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Square')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy')])),
+              new Up.Table.Row.Cell([new Up.Text('Square')])
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Super Mario Kart')]))
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')])
+            ], new Up.Table.Header.Cell([new Up.Text('Super Mario Kart')]))
           ])
       ]))
   })
@@ -492,30 +492,30 @@ Chrono Cross;           1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')]),
             ], new Up.Table.Header.Cell([
-              new Up.PlainText('Final Fantasy '),
+              new Up.Text('Final Fantasy '),
               new Up.NormalParenthetical([
-                new Up.PlainText('(I)')
+                new Up.Text('(I)')
               ])
             ])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([
-                new Up.PlainText('1988 '),
+                new Up.Text('1988 '),
                 new Up.NormalParenthetical([
-                  new Up.PlainText('(almost 1989)')
+                  new Up.Text('(almost 1989)')
                 ])
               ]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy II')])),
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')]),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -534,14 +534,14 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')])
+            new Up.Table.Header.Cell([new Up.Text('Publisher')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Square [; Soft')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Final Fantasy; Final Fantasy II')])),
+              new Up.Table.Row.Cell([new Up.Text('Square [; Soft')])
+            ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy; Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Super Mario Kart; Mario Kart 64')]))
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')])
+            ], new Up.Table.Header.Cell([new Up.Text('Super Mario Kart; Mario Kart 64')]))
           ])
       ]))
   })
@@ -562,19 +562,19 @@ Chart:  \t  \t  \t
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ])
       ]))
   })
@@ -592,19 +592,19 @@ Chart:  \t  \t  \t
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ])
       ]))
   })
@@ -625,17 +625,17 @@ Chrono Cross;     Playstation;          1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('[: Platform')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date :]')])
+            new Up.Table.Header.Cell([new Up.Text('[: Platform')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date :]')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Playstation')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('Playstation')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -653,17 +653,17 @@ Chrono Cross;     [: Playstation;     1999 :]`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Platform')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Super Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('Super Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('[: Playstation')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999 :]')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('[: Playstation')]),
+              new Up.Table.Row.Cell([new Up.Text('1999 :]')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -681,17 +681,17 @@ Chrono Cross;         Playstation;         1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Platform')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Platform')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Super :] Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('[: Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('Super :] Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('[: Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Playstation')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('Playstation')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -709,7 +709,7 @@ Chart
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]),
           [])
       ]))

@@ -9,7 +9,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[highlight:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[highlight:]')
+            new Up.Text('[highlight:]')
           ])
         ]))
     })
@@ -18,7 +18,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[SPOILER:]')
+            new Up.Text('[SPOILER:]')
           ])
         ]))
     })
@@ -27,7 +27,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[NSFW:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[NSFW:]')
+            new Up.Text('[NSFW:]')
           ])
         ]))
     })
@@ -36,7 +36,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[NSFL:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[NSFL:]')
+            new Up.Text('[NSFL:]')
           ])
         ]))
     })
@@ -45,7 +45,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[topic:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[topic:]')
+            new Up.Text('[topic:]')
           ])
         ]))
     })
@@ -54,7 +54,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('(^)')).to.eql(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('(^)')
+            new Up.Text('(^)')
           ])
         ]))
     })
@@ -62,21 +62,21 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
     specify('Parentheses', () => {
       expect(Up.parse('()')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('()')
+          new Up.Text('()')
         ]))
     })
 
     specify('Square brackets', () => {
       expect(Up.parse('[]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
 
     specify('Example input', () => {
       expect(Up.parse('[]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
   })
@@ -87,7 +87,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[highlight:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[highlight:  \t  \t ]')
+            new Up.Text('[highlight:  \t  \t ]')
           ])
         ]))
     })
@@ -96,7 +96,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[SPOILER:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[SPOILER:  \t  \t ]')
+            new Up.Text('[SPOILER:  \t  \t ]')
           ])
         ]))
     })
@@ -105,7 +105,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('(NSFW:  \t  \t )')).to.eql(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('(NSFW:  \t  \t )')
+            new Up.Text('(NSFW:  \t  \t )')
           ])
         ]))
     })
@@ -114,7 +114,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[NSFL:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[NSFL:  \t  \t ]')
+            new Up.Text('[NSFL:  \t  \t ]')
           ])
         ]))
     })
@@ -123,7 +123,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('[section:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[section:  \t  \t ]')
+            new Up.Text('[section:  \t  \t ]')
           ])
         ]))
     })
@@ -132,7 +132,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
       expect(Up.parse('(^  \t \t )')).to.eql(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('(^  \t \t )')
+            new Up.Text('(^  \t \t )')
           ])
         ]))
     })
@@ -140,21 +140,21 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
     specify('Parentheses', () => {
       expect(Up.parse('(  \t  \t )')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('(  \t  \t )')
+          new Up.Text('(  \t  \t )')
         ]))
     })
 
     specify('Square brackets', () => {
       expect(Up.parse('[  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('[  \t  \t ]')
+          new Up.Text('[  \t  \t ]')
         ]))
     })
 
     specify('Example input', () => {
       expect(Up.parse('{  \t  \t }')).to.eql(
         insideDocumentAndParagraph([
-          new Up.PlainText('{  \t  \t }')
+          new Up.Text('{  \t  \t }')
         ]))
     })
   })
@@ -168,28 +168,28 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
         // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
         expect(Up.parse('Stars! * \t \t *')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('Stars! * \t \t *')
+            new Up.Text('Stars! * \t \t *')
           ]))
       })
 
       specify('Stress', () => {
         expect(Up.parse('**\t  \t**')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('**\t  \t**')
+            new Up.Text('**\t  \t**')
           ]))
       })
 
       specify('Combined inflection', () => {
         expect(Up.parse('*** \t \t ***')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('*** \t \t ***')
+            new Up.Text('*** \t \t ***')
           ]))
       })
 
       specify('Imbalanced delimiters', () => {
         expect(Up.parse('*****\t  \t***')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('*****\t  \t***')
+            new Up.Text('*****\t  \t***')
           ]))
       })
 
@@ -198,14 +198,14 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
         specify('1 character', () => {
           expect(Up.parse('*')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('*')
+              new Up.Text('*')
             ]))
         })
 
         specify('2 characters', () => {
           expect(Up.parse('**')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('**')
+              new Up.Text('**')
             ]))
         })
 
@@ -213,7 +213,7 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
           // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
           expect(Up.parse('Stars! ***')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('Stars! ***')
+              new Up.Text('Stars! ***')
             ]))
         })
 
@@ -221,7 +221,7 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
           // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
           expect(Up.parse('Stars! ****')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('Stars! ****')
+              new Up.Text('Stars! ****')
             ]))
         })
       })
@@ -231,28 +231,28 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
       specify('Italics', () => {
         expect(Up.parse('_ \t \t _')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('_ \t \t _')
+            new Up.Text('_ \t \t _')
           ]))
       })
 
       specify('Bold', () => {
         expect(Up.parse('__\t  \t__')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('__\t  \t__')
+            new Up.Text('__\t  \t__')
           ]))
       })
 
       specify('Combined inflection', () => {
         expect(Up.parse('___ \t \t ___')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('___ \t \t ___')
+            new Up.Text('___ \t \t ___')
           ]))
       })
 
       specify('Imbalanced delimiters', () => {
         expect(Up.parse('_____\t  \t___')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('_____\t  \t___')
+            new Up.Text('_____\t  \t___')
           ]))
       })
 
@@ -261,28 +261,28 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
         specify('1 character', () => {
           expect(Up.parse('_')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('_')
+              new Up.Text('_')
             ]))
         })
 
         specify('2 characters', () => {
           expect(Up.parse('__')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('__')
+              new Up.Text('__')
             ]))
         })
 
         specify('3 characters', () => {
           expect(Up.parse('___')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('___')
+              new Up.Text('___')
             ]))
         })
 
         specify('4 characters', () => {
           expect(Up.parse('____')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('____')
+              new Up.Text('____')
             ]))
         })
       })
@@ -293,28 +293,28 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
       specify('Surrounded by 1', () => {
         expect(Up.parse('" \t \t "')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('" \t \t "')
+            new Up.Text('" \t \t "')
           ]))
       })
 
       specify('Surrounded by 2', () => {
         expect(Up.parse('""\t  \t""')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('""\t  \t""')
+            new Up.Text('""\t  \t""')
           ]))
       })
 
       specify('Surrounded by 3', () => {
         expect(Up.parse('""" \t \t """')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('""" \t \t """')
+            new Up.Text('""" \t \t """')
           ]))
       })
 
       specify('Surrounded by 5', () => {
         expect(Up.parse('"""""\t  \t"""')).to.eql(
           insideDocumentAndParagraph([
-            new Up.PlainText('"""""\t  \t"""')
+            new Up.Text('"""""\t  \t"""')
           ]))
       })
 
@@ -323,28 +323,28 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
         specify('1 character', () => {
           expect(Up.parse('"')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('"')
+              new Up.Text('"')
             ]))
         })
 
         specify('2 characters', () => {
           expect(Up.parse('""')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('""')
+              new Up.Text('""')
             ]))
         })
 
         specify('3 characters', () => {
           expect(Up.parse('"""')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('"""')
+              new Up.Text('"""')
             ]))
         })
 
         specify('4 characters', () => {
           expect(Up.parse('""""')).to.eql(
             insideDocumentAndParagraph([
-              new Up.PlainText('""""')
+              new Up.Text('""""')
             ]))
         })
       })
@@ -359,13 +359,13 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.parse('[*Yggdra Union*][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('['),
+            new Up.Text('['),
             new Up.Emphasis([
-              new Up.PlainText('Yggdra Union')
+              new Up.Text('Yggdra Union')
             ]),
-            new Up.PlainText(']')
+            new Up.Text(']')
           ]),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
   })
@@ -376,13 +376,13 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.parse('[*Yggdra Union*]( \t )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('['),
+            new Up.Text('['),
             new Up.Emphasis([
-              new Up.PlainText('Yggdra Union')
+              new Up.Text('Yggdra Union')
             ]),
-            new Up.PlainText(']')
+            new Up.Text(']')
           ]),
-          new Up.PlainText('( \t )')
+          new Up.Text('( \t )')
         ]))
     })
   })
@@ -392,13 +392,13 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
       expect(Up.parse('()[https://google.com]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('()'),
+          new Up.Text('()'),
           new Up.SquareParenthetical([
-            new Up.PlainText('['),
+            new Up.Text('['),
             new Up.Link([
-              new Up.PlainText('google.com')
+              new Up.Text('google.com')
             ], 'https://google.com'),
-            new Up.PlainText(']')
+            new Up.Text(']')
           ])
         ]))
     })
@@ -409,13 +409,13 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
       expect(Up.parse('[ \t ](https://google.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[ \t ]'),
+          new Up.Text('[ \t ]'),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('google.com')
+              new Up.Text('google.com')
             ], 'https://google.com'),
-            new Up.PlainText(')')
+            new Up.Text(')')
           ])
         ]))
     })
@@ -426,7 +426,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it('is treated as consecutive empty brackets', () => {
       expect(Up.parse('Hello, [][]!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Hello, [][]!')
+          new Up.Text('Hello, [][]!')
         ]))
     })
   })
@@ -436,7 +436,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
     it('is treated as consecutive blank brackets', () => {
       expect(Up.parse('Beep boop, [ ][\t]!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('Beep boop, [ ][\t]!')
+          new Up.Text('Beep boop, [ ][\t]!')
         ]))
     })
   })
@@ -447,7 +447,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.parse('[\\ ][https://google.com]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('https://google.com')
+            new Up.Text('https://google.com')
           ], 'https://google.com')
         ]))
     })
@@ -459,14 +459,14 @@ context('Links are handled a bit differently, because they also have a URL to wo
       expect(Up.parse('[*Yggdra Union*](\\ )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('['),
+            new Up.Text('['),
             new Up.Emphasis([
-              new Up.PlainText('Yggdra Union')
+              new Up.Text('Yggdra Union')
             ]),
-            new Up.PlainText(']')
+            new Up.Text(']')
           ]),
           new Up.NormalParenthetical([
-            new Up.PlainText('( )')
+            new Up.Text('( )')
           ])
         ]))
     })
@@ -480,7 +480,7 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image:][http://example.com/hauntedhouse.svg]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('image:')
+            new Up.Text('image:')
           ], 'http://example.com/hauntedhouse.svg')
         ]))
     })
@@ -492,7 +492,7 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('image:\t  ')
+            new Up.Text('image:\t  ')
           ], 'http://example.com/hauntedhouse.svg')
         ]))
     })
@@ -504,9 +504,9 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image: Yggdra Union]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[image: Yggdra Union]')
+            new Up.Text('[image: Yggdra Union]')
           ]),
-          new Up.PlainText('()')
+          new Up.Text('()')
         ]))
     })
   })
@@ -517,9 +517,9 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image: Yggdra Union]( \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[image: Yggdra Union]')
+            new Up.Text('[image: Yggdra Union]')
           ]),
-          new Up.PlainText('( \t \t)')
+          new Up.Text('( \t \t)')
         ]))
     })
   })
@@ -530,7 +530,7 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image: haunted house]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[image: haunted house]')
+            new Up.Text('[image: haunted house]')
           ])
         ]))
     })
@@ -539,9 +539,9 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image: haunted house] was written on the desk')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[image: haunted house]')
+            new Up.Text('[image: haunted house]')
           ]),
-          new Up.PlainText(' was written on the desk')
+          new Up.Text(' was written on the desk')
         ]))
     })
 
@@ -549,11 +549,11 @@ context("Media conventions must have both a URL and a description.", () => {
       expect(Up.parse('[image: haunted house] was written on the desk [really]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[image: haunted house]')
+            new Up.Text('[image: haunted house]')
           ]),
-          new Up.PlainText(' was written on the desk '),
+          new Up.Text(' was written on the desk '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[really]')
+            new Up.Text('[really]')
           ])
         ]))
     })
@@ -566,7 +566,7 @@ describe('An otherwise-valid audio convention with an empty description', () => 
     expect(Up.parse('[audio:][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('audio:')
+          new Up.Text('audio:')
         ], 'http://example.com/hauntedhouse.ogg')
       ]))
   })
@@ -577,7 +577,7 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('audio:\t  ')
+            new Up.Text('audio:\t  ')
           ], 'http://example.com/hauntedhouse.ogg')
         ]))
     })
@@ -589,9 +589,9 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('(audio: Yggdra Union)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('(audio: Yggdra Union)')
+            new Up.Text('(audio: Yggdra Union)')
           ]),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
   })
@@ -602,9 +602,9 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('[audio: Yggdra Union][ \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[audio: Yggdra Union]')
+            new Up.Text('[audio: Yggdra Union]')
           ]),
-          new Up.PlainText('[ \t \t]')
+          new Up.Text('[ \t \t]')
         ]))
     })
   })
@@ -615,7 +615,7 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('[audio: haunted house]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[audio: haunted house]')
+            new Up.Text('[audio: haunted house]')
           ])
         ]))
     })
@@ -624,9 +624,9 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('[audio: haunted house] was written on the desk')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[audio: haunted house]')
+            new Up.Text('[audio: haunted house]')
           ]),
-          new Up.PlainText(' was written on the desk')
+          new Up.Text(' was written on the desk')
         ]))
     })
 
@@ -634,11 +634,11 @@ describe('An otherwise-valid audio convention with an empty description', () => 
       expect(Up.parse('[audio: haunted house] was written on the desk [really]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.PlainText('[audio: haunted house]')
+            new Up.Text('[audio: haunted house]')
           ]),
-          new Up.PlainText(' was written on the desk '),
+          new Up.Text(' was written on the desk '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[really]')
+            new Up.Text('[really]')
           ])
         ]))
     })
@@ -651,7 +651,7 @@ describe('An otherwise-valid video with an empty description', () => {
     expect(Up.parse('[video:][http://example.com/hauntedhouse.webm]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('video:')
+          new Up.Text('video:')
         ], 'http://example.com/hauntedhouse.webm')
       ]))
   })
@@ -663,7 +663,7 @@ describe('An otherwise-valid video with a blank description', () => {
     expect(Up.parse('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('video:\t  ')
+          new Up.Text('video:\t  ')
         ], 'http://example.com/hauntedhouse.webm')
       ]))
   })
@@ -675,9 +675,9 @@ describe('An otherwise-valid video with an empty URL', () => {
     expect(Up.parse('(video: Yggdra Union)[]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('(video: Yggdra Union)')
+          new Up.Text('(video: Yggdra Union)')
         ]),
-        new Up.PlainText('[]')
+        new Up.Text('[]')
       ]))
   })
 })
@@ -688,9 +688,9 @@ describe('An otherwise-valid video with a blank URL', () => {
     expect(Up.parse('[video: Yggdra Union][ \t \t]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: Yggdra Union]')
+          new Up.Text('[video: Yggdra Union]')
         ]),
-        new Up.PlainText('[ \t \t]')
+        new Up.Text('[ \t \t]')
       ]))
   })
 })
@@ -701,7 +701,7 @@ context("An otherwise-valid video missing its bracketed URL is treated as bracke
     expect(Up.parse('[video: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: haunted house]')
+          new Up.Text('[video: haunted house]')
         ])
       ]))
   })
@@ -710,9 +710,9 @@ context("An otherwise-valid video missing its bracketed URL is treated as bracke
     expect(Up.parse('[video: haunted house] was written on the desk')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: haunted house]')
+          new Up.Text('[video: haunted house]')
         ]),
-        new Up.PlainText(' was written on the desk')
+        new Up.Text(' was written on the desk')
       ]))
   })
 
@@ -720,11 +720,11 @@ context("An otherwise-valid video missing its bracketed URL is treated as bracke
     expect(Up.parse('[video: haunted house] was written on the desk [really]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[video: haunted house]')
+          new Up.Text('[video: haunted house]')
         ]),
-        new Up.PlainText(' was written on the desk '),
+        new Up.Text(' was written on the desk '),
         new Up.SquareParenthetical([
-          new Up.PlainText('[really]')
+          new Up.Text('[really]')
         ])
       ]))
   })
@@ -737,9 +737,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[highlight: Ash fights Gary]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('()')
+          new Up.Text('()')
         ]))
     })
 
@@ -747,9 +747,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[SPOILER: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
 
@@ -757,9 +757,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[NSFW: Ash fights Gary]()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfw([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('()')
+          new Up.Text('()')
         ]))
     })
 
@@ -767,22 +767,22 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[NSFL: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
 
     specify('Footnotes', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('Ash fights Gary')
+        new Up.Text('Ash fights Gary')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^ Ash fights Gary]()')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText('()')
+            new Up.Text('()')
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -792,7 +792,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[audio: Ash fights Gary](example.com/audio)()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('Ash fights Gary', 'https://example.com/audio'),
-          new Up.PlainText('()')
+          new Up.Text('()')
         ]))
     })
 
@@ -800,7 +800,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[image: Ash fights Gary](example.com/image)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('Ash fights Gary', 'https://example.com/image'),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
 
@@ -808,7 +808,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[video: Ash fights Gary](example.com/video)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('Ash fights Gary', 'https://example.com/video'),
-          new Up.PlainText('[]')
+          new Up.Text('[]')
         ]))
     })
   })
@@ -819,9 +819,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[highlight: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('(\t \t \t)')
+          new Up.Text('(\t \t \t)')
         ]))
     })
 
@@ -829,9 +829,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[SPOILER: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('(\t \t \t)')
+          new Up.Text('(\t \t \t)')
         ]))
     })
 
@@ -839,9 +839,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[NSFW: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfw([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('(\t \t \t)')
+          new Up.Text('(\t \t \t)')
         ]))
     })
 
@@ -849,9 +849,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[NSFL: Ash fights Gary][\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ]),
-          new Up.PlainText('[\t \t \t]')
+          new Up.Text('[\t \t \t]')
         ]))
     })
 
@@ -859,20 +859,20 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[topic: Ash fights Gary][\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('Ash fights Gary'),
-          new Up.PlainText('[\t \t \t]')
+          new Up.Text('[\t \t \t]')
         ]))
     })
 
     specify('Footnotes', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('Ash fights Gary')
+        new Up.Text('Ash fights Gary')
       ], { referenceNumber: 1 })
 
       expect(Up.parse('[^ Ash fights Gary](\t \t \t)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.PlainText('(\t \t \t)')
+            new Up.Text('(\t \t \t)')
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -882,7 +882,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[audio: Ash fights Gary](example.com/audio)(\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('Ash fights Gary', 'https://example.com/audio'),
-          new Up.PlainText('(\t \t \t)')
+          new Up.Text('(\t \t \t)')
         ]))
     })
 
@@ -890,7 +890,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[image: Ash fights Gary](example.com/image)[\t \t \t]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('Ash fights Gary', 'https://example.com/image'),
-          new Up.PlainText('[\t \t \t]')
+          new Up.Text('[\t \t \t]')
         ]))
     })
 
@@ -898,7 +898,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[video: Ash fights Gary](example.com/video)(\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('Ash fights Gary', 'https://example.com/video'),
-          new Up.PlainText('(\t \t \t)')
+          new Up.Text('(\t \t \t)')
         ]))
     })
   })
@@ -909,11 +909,11 @@ describe('An inline spoiler convention with escaped blank content', () => {
   it('produces an inline spoiler node containing its content (whitespace)', () => {
     expect(Up.parse("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('The moral of this severely exciting, enriching story is '),
+        new Up.Text('The moral of this severely exciting, enriching story is '),
         new Up.InlineSpoiler([
-          new Up.PlainText('  ')
+          new Up.Text('  ')
         ]),
-        new Up.PlainText(". I hope it didn't take you too long to read it.")
+        new Up.Text(". I hope it didn't take you too long to read it.")
       ]))
   })
 })
@@ -923,12 +923,12 @@ describe('An otherwise-linkified NSFW convention with escaped blank content', ()
   it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
     expect(Up.parse("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("On Professor Oak's right arm is a tattoo of "),
+        new Up.Text("On Professor Oak's right arm is a tattoo of "),
         new Up.InlineNsfw([
-          new Up.PlainText('a naked Mr. Mime')
+          new Up.Text('a naked Mr. Mime')
         ]),
         new Up.NormalParenthetical([
-          new Up.PlainText('( )')
+          new Up.Text('( )')
         ])
       ]))
   })

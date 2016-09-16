@@ -7,9 +7,9 @@ context('Bracketed (square bracketed or parenthesized) text starting with "image
   it('produces an image node with the first bracketed text treated as the description and the second treated as the image URL', () => {
     expect(Up.parse('I would never stay here. [image: haunted house](http://example.com/hauntedhouse.svg) Would you?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I would never stay here. '),
+        new Up.Text('I would never stay here. '),
         new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-        new Up.PlainText(' Would you?')
+        new Up.Text(' Would you?')
       ]))
   })
 })
@@ -115,9 +115,9 @@ context("When an otherwise-valid image convention's URL starts with whitespace, 
     expect(Up.parse('[image: scary]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('[image: scary]')
+          new Up.Text('[image: scary]')
         ]),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

@@ -7,7 +7,7 @@ context("A spoiler block's label line does not produce a spoiler block node if i
   specify('the last line of the document', () => {
     expect(Up.parse('SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('SPOILER:')
+        new Up.Text('SPOILER:')
       ]))
   })
 
@@ -19,9 +19,9 @@ Roses don't glow!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new Up.LineBlock.Line([new Up.PlainText('Spoiler:')]),
-          new Up.LineBlock.Line([new Up.PlainText('No!')]),
-          new Up.LineBlock.Line([new Up.PlainText("Roses don't glow!")]),
+          new Up.LineBlock.Line([new Up.Text('Spoiler:')]),
+          new Up.LineBlock.Line([new Up.Text('No!')]),
+          new Up.LineBlock.Line([new Up.Text("Roses don't glow!")]),
         ])
       ]))
   })
@@ -34,10 +34,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Spoiler:')
+          new Up.Text('Spoiler:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -51,10 +51,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Spoiler:')
+          new Up.Text('Spoiler:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -70,11 +70,11 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Spoiler:')
+          new Up.Text('Spoiler:')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })

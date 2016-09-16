@@ -11,7 +11,7 @@ Do not pour the spiders into your sister's cereal.
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Do not pour the spiders into your sister's cereal.")
+          new Up.Text("Do not pour the spiders into your sister's cereal.")
         ]),
         new Up.Image('sister arraigned on charges', 'http://example.com/court.jpg'),
       ]))
@@ -23,15 +23,15 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
   it('does not produce an image node', () => {
     expect(Up.parse('I like [image: ghosts}(http://example.com/ghosts.svg).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like [image: ghosts}'),
+        new Up.Text('I like [image: ghosts}'),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com/ghosts.svg')
+            new Up.Text('example.com/ghosts.svg')
           ], 'http://example.com/ghosts.svg'),
-          new Up.PlainText(')'),
+          new Up.Text(')'),
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -41,13 +41,13 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
   it('does not produce a image node', () => {
     expect(Up.parse('I like [image: ghosts][http://example.com/ghosts.svg).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like '),
+        new Up.Text('I like '),
         new Up.SquareParenthetical([
-          new Up.PlainText('[image: ghosts]')
+          new Up.Text('[image: ghosts]')
         ]),
-        new Up.PlainText('['),
+        new Up.Text('['),
         new Up.Link([
-          new Up.PlainText('example.com/ghosts.svg).')
+          new Up.Text('example.com/ghosts.svg).')
         ], 'http://example.com/ghosts.svg).'),
       ]))
   })
@@ -67,9 +67,9 @@ context('Unmatched opening parentheses in an image description have no affect on
       new Up.Document([
         new Up.Paragraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new Up.PlainText(')'),
+            new Up.Text(')'),
           ])
         ])
       ]))
@@ -103,7 +103,7 @@ describe("A line consistingly solely of a link that contains both an image and r
     expect(Up.parse('[Look: (image: haunted house)(example.com/hauntedhouse.svg)] [example.com]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Look: '),
+          new Up.Text('Look: '),
           new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg')
         ], 'https://example.com')
       ]))

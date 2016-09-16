@@ -12,7 +12,7 @@ context('A long string of whitespace should never cause cause the parser to hang
   specify('Between words', () => {
     expect(Up.parse('Hear' + lotsOfSpaces + 'me?')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hear' + lotsOfSpaces + 'me?')
+        new Up.Text('Hear' + lotsOfSpaces + 'me?')
       ]))
   })
 
@@ -52,13 +52,13 @@ context('A long string of whitespace should never cause cause the parser to hang
     const markup = "I don't eat cereal." + lotsOfSpaces + "(^Well, I do, but I pretend not to.)"
 
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do, but I pretend not to.')
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote
         ]),
         new Up.FootnoteBlock([footnote])
@@ -68,7 +68,7 @@ context('A long string of whitespace should never cause cause the parser to hang
   specify('Before an unmatched footnote start delimiter', () => {
     expect(Up.parse('Still typing' + lotsOfSpaces + '[^')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Still typing' + lotsOfSpaces + '[^')
+        new Up.Text('Still typing' + lotsOfSpaces + '[^')
       ]))
   })
 
@@ -76,16 +76,16 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parse('(Unreasonable)' + lotsOfSpaces + '(https://')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('(Unreasonable)')
+          new Up.Text('(Unreasonable)')
         ]),
-        new Up.PlainText(lotsOfSpaces + '(https://')
+        new Up.Text(lotsOfSpaces + '(https://')
       ]))
   })
 
   specify('Before an unmatched start delimiter from a rich bracketed convention', () => {
     expect(Up.parse('Still typing' + lotsOfSpaces + '[SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Still typing' + lotsOfSpaces + '[SPOILER:')
+        new Up.Text('Still typing' + lotsOfSpaces + '[SPOILER:')
       ]))
   })
 
@@ -93,7 +93,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parse('[Hear me?]' + lotsOfSpaces + '(example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Hear me?')
+          new Up.Text('Hear me?')
         ], 'https://example.com')
       ]))
   })
@@ -102,7 +102,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parse('[Hear me?' + lotsOfSpaces + '](example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.PlainText('Hear me?' + lotsOfSpaces)
+          new Up.Text('Hear me?' + lotsOfSpaces)
         ], 'https://example.com')
       ]))
   })
@@ -113,7 +113,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       expect(Up.parse('[Hear me?](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('Hear me?')
+            new Up.Text('Hear me?')
           ], 'https://example.com')
         ]))
     })
@@ -122,7 +122,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       expect(Up.parse('[Hear me?](example.com' + lotsOfSpaces + ')')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('Hear me?')
+            new Up.Text('Hear me?')
           ], 'https://example.com')
         ]))
     })
@@ -131,7 +131,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       expect(Up.parse('[Hear me?](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('Hear me?')
+            new Up.Text('Hear me?')
           ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
         ]))
     })
@@ -239,7 +239,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       insideDocumentAndParagraph([
         new Up.InlineSpoiler([
           new Up.Link([
-            new Up.PlainText('His ear grew back!')
+            new Up.Text('His ear grew back!')
           ], 'https://example.com')
         ])
       ]))
@@ -252,7 +252,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('His ear grew back!')
+              new Up.Text('His ear grew back!')
             ], 'https://example.com')
           ])
         ]))
@@ -263,7 +263,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('His ear grew back!')
+              new Up.Text('His ear grew back!')
             ], 'https://example.com')
           ])
         ]))
@@ -274,7 +274,7 @@ context('A long string of whitespace should never cause cause the parser to hang
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('His ear grew back!')
+              new Up.Text('His ear grew back!')
             ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
           ])
         ]))
@@ -286,7 +286,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     expect(Up.parse('(SPOILER:' + lotsOfSpaces + ')')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
-          new Up.PlainText('(SPOILER:' + lotsOfSpaces + ')')
+          new Up.Text('(SPOILER:' + lotsOfSpaces + ')')
         ])
       ]))
   })
@@ -297,7 +297,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       expect(Up.parse('[SPOILER:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('He did not die.')
+            new Up.Text('He did not die.')
           ])
         ]))
     })
@@ -306,7 +306,7 @@ context('A long string of whitespace should never cause cause the parser to hang
       expect(Up.parse('[SPOILER: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('He did not die.' + lotsOfSpaces)
+            new Up.Text('He did not die.' + lotsOfSpaces)
           ])
         ]))
     })
@@ -343,7 +343,7 @@ This is not reasonable.`
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('This is not reasonable.')
+        new Up.Text('This is not reasonable.')
       ]))
   })
 
@@ -354,7 +354,7 @@ This is not reasonable.
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('This is not reasonable.')
+        new Up.Text('This is not reasonable.')
       ]))
   })
 
@@ -363,7 +363,7 @@ This is not reasonable.
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('This is not reasonable.')
+        new Up.Text('This is not reasonable.')
       ]))
   })
 
@@ -372,7 +372,7 @@ This is not reasonable.
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('This is not reasonable.')
+        new Up.Text('This is not reasonable.')
       ]))
   })
 
@@ -386,10 +386,10 @@ ${lotsOfSpaces}However, we have to go with it.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('This is not reasonable.')
+          new Up.Text('This is not reasonable.')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('However, we have to go with it.')
+          new Up.Text('However, we have to go with it.')
         ])
       ]))
   })
@@ -403,10 +403,10 @@ However, we have to go with it.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('This is not reasonable.')
+          new Up.Text('This is not reasonable.')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('However, we have to go with it.')
+          new Up.Text('However, we have to go with it.')
         ])
       ]))
   })
@@ -421,7 +421,7 @@ ${lotsOfSpaces}-~-~-~-~-~-`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('This is not reasonable.')
+          new Up.Text('This is not reasonable.')
         ]),
         new Up.ThematicBreak()
       ]))
@@ -437,7 +437,7 @@ However, we have to go with it.`
       new Up.Document([
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('However, we have to go with it.')
+          new Up.Text('However, we have to go with it.')
         ])
       ]))
   })

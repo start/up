@@ -7,7 +7,7 @@ describe('A backslash that is the first character in a paragraph', () => {
   it('correctly escapes the next character', () => {
     expect(Up.parse('\\*So many* Tuesdays')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('*So many* Tuesdays')
+        new Up.Text('*So many* Tuesdays')
       ]))
   })
 })
@@ -22,8 +22,8 @@ Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
-          new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
+          new Up.LineBlock.Line([new Up.Text('Roses are red')]),
+          new Up.LineBlock.Line([new Up.Text('Violets are blue')])
         ])
       ]))
   })
@@ -39,8 +39,8 @@ Roses are red
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
-          new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
+          new Up.LineBlock.Line([new Up.Text('Roses are red')]),
+          new Up.LineBlock.Line([new Up.Text('Violets are blue')])
         ])
       ]))
   })
@@ -51,7 +51,7 @@ describe('4 consecutive backslashes', () => {
   it('produce plain text consisting of 2 consecutive backslashes', () => {
     expect(Up.parse('\\\\\\\\')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('\\\\')
+        new Up.Text('\\\\')
       ]))
   })
 })
@@ -62,7 +62,7 @@ describe('An escaped character', () => {
     expect(Up.parse('`pennsylvania()`\\ avenue')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineCode('pennsylvania()'),
-        new Up.PlainText(' avenue')
+        new Up.Text(' avenue')
       ]))
   })
 })

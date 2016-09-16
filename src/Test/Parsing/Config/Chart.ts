@@ -22,14 +22,14 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -71,14 +71,14 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -102,14 +102,14 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -140,26 +140,26 @@ Chrono Cross;     1999`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Trigger')])),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('Chrono Cross')]))
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })

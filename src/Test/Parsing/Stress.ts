@@ -7,11 +7,11 @@ describe('Text surrounded by 2 asterisks', () => {
   it('is put inside a stress node', () => {
     expect(Up.parse('Hello, **world**!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Stress([
-          new Up.PlainText('world')
+          new Up.Text('world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -21,40 +21,40 @@ describe('Stressed text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.parse('Hello, **`world`**!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Stress([
           new Up.InlineCode('world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain further stressed text', () => {
     expect(Up.parse('Hello, **my **little** world**!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Stress([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Stress([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain emphasized text', () => {
     expect(Up.parse('Hello, **my *little* world**!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Stress([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Emphasis([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })})

@@ -7,7 +7,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'javascript:malicious')
       ])
     ])
@@ -19,7 +19,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'data:malicious')
       ])
     ])
@@ -31,7 +31,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'file:malicious')
       ])
     ])
@@ -43,7 +43,7 @@ context('By default, links with dangerous schemes produce no <a> elements. Inste
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'vbscript:malicious')
       ])
     ])
@@ -58,7 +58,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'https://google.com/?q=javascript:malicious')
       ])
     ])
@@ -70,7 +70,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'https://google.com/?q=data:malicious')
       ])
     ])
@@ -82,7 +82,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'https://google.com/?q=file:malicious')
       ])
     ])
@@ -94,7 +94,7 @@ context('Though by default, links with dangerous schemes produce no HTML, link U
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'https://google.com/?q=vbscript:malicious')
       ])
     ])
@@ -109,7 +109,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'jaVAscrIpT:malicious')
       ])
     ])
@@ -121,7 +121,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'dAtA:malicious')
       ])
     ])
@@ -133,7 +133,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'FilE:malicious')
       ])
     ])
@@ -145,7 +145,7 @@ context("When determining whether a link's URL is dangerous, the capitalization 
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'VbScriPt:malicious')
       ])
     ])
@@ -161,7 +161,7 @@ describe('By default, a safe link nested inside a dangerous link', () => {
       new Up.Paragraph([
         new Up.Link([
           new Up.Link([
-            new Up.PlainText('Click me!')
+            new Up.Text('Click me!')
           ], 'https://google.com')
         ], 'data:malicious')
       ])
@@ -177,7 +177,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'javascript-app:stuff')
       ])
     ])
@@ -190,7 +190,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'data-app:stuff')
       ])
     ])
@@ -203,7 +203,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'file-app:stuff')
       ])
     ])
@@ -216,7 +216,7 @@ context("A link's URL scheme can start with a dangerous scheme without being con
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Click me!')
+          new Up.Text('Click me!')
         ], 'vbscript-app:stuff')
       ])
     ])

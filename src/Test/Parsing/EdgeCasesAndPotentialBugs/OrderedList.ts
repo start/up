@@ -16,7 +16,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
           new Up.OrderedList([
             new Up.OrderedList.Item([
               new Up.Paragraph([
-                new Up.PlainText('Mittens')
+                new Up.Text('Mittens')
               ])
             ])
           ]),
@@ -36,7 +36,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
           new Up.OrderedList([
             new Up.OrderedList.Item([
               new Up.Paragraph([
-                new Up.PlainText('Mittens')
+                new Up.Text('Mittens')
               ])
             ], { ordinal: 1 })
           ]),
@@ -54,7 +54,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 ----------------------------------------`
 
       const heading =
-        new Up.Heading([new Up.PlainText('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document(
@@ -81,24 +81,24 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Iowa')
+              new Up.Text('Iowa')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('New Hampshire')
+              new Up.Text('New Hampshire')
             ])
           ])
         ]),
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Clinton')
+              new Up.Text('Clinton')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Sanders')
+              new Up.Text('Sanders')
             ])
           ])
         ]),
@@ -123,12 +123,12 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Iowa')
+              new Up.Text('Iowa')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('New Hampshire')
+              new Up.Text('New Hampshire')
             ])
           ])
         ]),
@@ -136,12 +136,12 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Clinton')
+              new Up.Text('Clinton')
             ])
           ]),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Sanders')
+              new Up.Text('Sanders')
             ])
           ])
         ]),
@@ -161,12 +161,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ], { ordinal: 10 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -183,12 +183,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ], { ordinal: -20 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -205,12 +205,12 @@ context('An ordered list item ordinal can have leading 0 digits without affectin
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, world!')
+              new Up.Text('Hello, world!')
             ])
           ], { ordinal: 0 }),
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, world!')
+              new Up.Text('Goodbye, world!')
             ])
           ])
         ])
@@ -226,7 +226,7 @@ context("When an ordered list has just one item, that item can start with an int
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('1783. Not a good year for Great Britain.')
+              new Up.Text('1783. Not a good year for Great Britain.')
             ])
           ], { ordinal: 1 })
         ])
@@ -239,7 +239,7 @@ context("When an ordered list has just one item, that item can start with an int
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('1783. Not a good year for Great Britain.')
+              new Up.Text('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -252,7 +252,7 @@ context("When an ordered list has just one item, that item can start with an int
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('1783. Not a good year for Great Britain.')
+              new Up.Text('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -265,7 +265,7 @@ context("When an ordered list has just one item, that item can start with an int
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('1783. Not a good year for Great Britain.')
+              new Up.Text('1783. Not a good year for Great Britain.')
             ])
           ])
         ])
@@ -291,13 +291,13 @@ I enjoy apples
    Very delicious.`
 
     const enjoyHeading =
-      new Up.Heading([new Up.PlainText('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
 
     const cheapHeading =
-      new Up.Heading([new Up.PlainText("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
 
     const deliciousHeading =
-      new Up.Heading([new Up.PlainText("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -305,11 +305,11 @@ I enjoy apples
         new Up.OrderedList([
           new Up.OrderedList.Item([
             cheapHeading,
-            new Up.Paragraph([new Up.PlainText("Very cheap.")])
+            new Up.Paragraph([new Up.Text("Very cheap.")])
           ], { ordinal: 1 }),
           new Up.OrderedList.Item([
             deliciousHeading,
-            new Up.Paragraph([new Up.PlainText("Very delicious.")])
+            new Up.Paragraph([new Up.Text("Very delicious.")])
           ], { ordinal: 2 })
         ])
       ], new Up.Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))

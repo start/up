@@ -7,8 +7,8 @@ context('Inside a link', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Google'),
-          new Up.Footnote([new Up.PlainText('A really old search engine.')], { referenceNumber: 2 })
+          new Up.Text('Google'),
+          new Up.Footnote([new Up.Text('A really old search engine.')], { referenceNumber: 2 })
         ], 'https://google.com')
       ])
     ])
@@ -21,8 +21,8 @@ context('Inside a link', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.PlainText('Google is probably not '),
-          new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
+          new Up.Text('Google is probably not '),
+          new Up.Link([new Up.Text('Bing')], 'https://bing.com')
         ], 'https://google.com')
       ])
     ])
@@ -36,7 +36,7 @@ context('A link within a table of contents entry does not produce an <a> element
   specify('in the table of contents itself', () => {
     const heading =
       new Up.Heading([
-        new Up.Link([new Up.PlainText('I enjoy apples')], 'https://google.com')
+        new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -60,7 +60,7 @@ context('A link within a table of contents entry does not produce an <a> element
   specify('in a reference to that table of contents entry', () => {
     const heading =
       new Up.Heading([
-        new Up.Link([new Up.PlainText('I enjoy apples')], 'https://google.com')
+        new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -93,8 +93,8 @@ context("When a link is nested deeply within another link, it doesn't produce an
       new Up.Paragraph([
         new Up.Link([
           new Up.Emphasis([
-            new Up.PlainText('Google'),
-            new Up.Footnote([new Up.PlainText('A really old search engine.')], { referenceNumber: 2 })
+            new Up.Text('Google'),
+            new Up.Footnote([new Up.Text('A really old search engine.')], { referenceNumber: 2 })
           ])
         ], 'https://google.com')
       ])
@@ -111,8 +111,8 @@ context("When a link is nested deeply within another link, it doesn't produce an
       new Up.Paragraph([
         new Up.Link([
           new Up.Emphasis([
-            new Up.PlainText('Google is probably not '),
-            new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
+            new Up.Text('Google is probably not '),
+            new Up.Link([new Up.Text('Bing')], 'https://bing.com')
           ])
         ], 'https://google.com')
       ])
@@ -129,7 +129,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       new Up.Heading([
         new Up.Link([
           new Up.Emphasis([
-            new Up.Link([new Up.PlainText('I enjoy apples')], 'https://bing.com')
+            new Up.Link([new Up.Text('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
@@ -157,7 +157,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       new Up.Heading([
         new Up.Link([
           new Up.Emphasis([
-            new Up.Link([new Up.PlainText('I enjoy apples')], 'https://bing.com')
+            new Up.Link([new Up.Text('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
       ], { level: 1, ordinalInTableOfContents: 1 })
@@ -194,8 +194,8 @@ context('When severeal links are nested within each other', () => {
           new Up.Link([
             new Up.Link([
               new Up.Link([
-                new Up.PlainText('Google is probably not '),
-                new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
+                new Up.Text('Google is probably not '),
+                new Up.Link([new Up.Text('Bing')], 'https://bing.com')
               ], 'https://ddg.gg')
             ], 'https://google.co.uk')
           ], 'https://altavista.com')
@@ -213,8 +213,8 @@ context('When a link contains 2 or more inner links', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([
-          new Up.Link([new Up.PlainText('Google is probably not ')], 'https://google.co.nz'),
-          new Up.Link([new Up.PlainText('Bing')], 'https://bing.com')
+          new Up.Link([new Up.Text('Google is probably not ')], 'https://google.co.nz'),
+          new Up.Link([new Up.Text('Bing')], 'https://bing.com')
         ], 'https://google.com')
       ])
     ])

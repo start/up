@@ -17,7 +17,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -25,7 +25,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline spoiler start delimiter is treated as plain text', () => {
       expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^lookaway^: Not finished typi')
+          new Up.Text('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -44,7 +44,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfw([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -52,7 +52,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline NSFW start delimiter is treated as plain text', () => {
       expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^lookaway^: Not finished typi')
+          new Up.Text('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -71,7 +71,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineNsfl([
-            new Up.PlainText('Ash fights Gary')
+            new Up.Text('Ash fights Gary')
           ])
         ]))
     })
@@ -79,7 +79,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched inline NSFL start delimiter is treated as plain text', () => {
       expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^lookaway^: Not finished typi')
+          new Up.Text('[^lookaway^: Not finished typi')
         ]))
     })
   })
@@ -104,15 +104,15 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched audio start delimiter is treated as plain text', () => {
       expect(up.parse('[^listen^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^listen^: Ash fights Ga')
+          new Up.Text('[^listen^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be audio convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('listen^: I guess this means '),
-        new Up.InlineQuote([new Up.PlainText('listen up')]),
-        new Up.PlainText('?')
+        new Up.Text('listen^: I guess this means '),
+        new Up.InlineQuote([new Up.Text('listen up')]),
+        new Up.Text('?')
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^listen^: I guess this means "listen up"?]')).to.deep.equal(
@@ -143,15 +143,15 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched image start delimiter is treated as plain text', () => {
       expect(up.parse('[^look^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^look^: Ash fights Ga')
+          new Up.Text('[^look^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('look^: I guess this means '),
-        new Up.InlineQuote([new Up.PlainText('look up')]),
-        new Up.PlainText('?')
+        new Up.Text('look^: I guess this means '),
+        new Up.InlineQuote([new Up.Text('look up')]),
+        new Up.Text('?')
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^look^: I guess this means "look up"?]')).to.deep.equal(
@@ -182,15 +182,15 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('an unmatched image start delimiter is treated as plain text', () => {
       expect(up.parse('[^watch^: Ash fights Ga')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('[^watch^: Ash fights Ga')
+          new Up.Text('[^watch^: Ash fights Ga')
         ]))
     })
 
     specify('a would-be image convention without its bracketed URL produces a footnote instead', () => {
       const footnote = new Up.Footnote([
-        new Up.PlainText('watch^: I guess this means '),
-        new Up.InlineQuote([new Up.PlainText('watch up')]),
-        new Up.PlainText('?')
+        new Up.Text('watch^: I guess this means '),
+        new Up.InlineQuote([new Up.Text('watch up')]),
+        new Up.Text('?')
       ], { referenceNumber: 1 })
 
       expect(up.parse('[^watch^: I guess this means "watch up"?]')).to.deep.equal(

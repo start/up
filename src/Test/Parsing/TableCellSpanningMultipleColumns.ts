@@ -18,24 +18,24 @@ Chrono Cross;       1999`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')], 1),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')], 1)
+            new Up.Table.Header.Cell([new Up.Text('Game')], 1),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')], 1)
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')], 1),
-              new Up.Table.Row.Cell([new Up.PlainText('1987')], 1)
+              new Up.Table.Row.Cell([new Up.Text('Final Fantasy')], 1),
+              new Up.Table.Row.Cell([new Up.Text('1987')], 1)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II')], 1),
-              new Up.Table.Row.Cell([new Up.PlainText('1988')], 1)
+              new Up.Table.Row.Cell([new Up.Text('Final Fantasy II')], 1),
+              new Up.Table.Row.Cell([new Up.Text('1988')], 1)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')], 1),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')], 1)
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')], 1),
+              new Up.Table.Row.Cell([new Up.Text('1995')], 1)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')], 1),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')], 1)
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')], 1),
+              new Up.Table.Row.Cell([new Up.Text('1999')], 1)
             ]),
           ])
       ]))
@@ -56,15 +56,15 @@ Terranigma;         Nintendo;             Enix;       October 20, 1995`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')], 2),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')], 2),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Enix')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Enix')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
             ])
           ])
       ]))
@@ -85,16 +85,16 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Director')], 3),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Director')], 3),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Akihiko Matsui')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Takashi Tokita')]),
+              new Up.Table.Row.Cell([new Up.Text('Yoshinori Kitase')]),
+              new Up.Table.Row.Cell([new Up.Text('Akihiko Matsui')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
             ])
           ])
       ]))
@@ -118,31 +118,31 @@ Starcraft;          Blizzard;;                              March 31, 1998`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 2),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 2),
+              new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2),
+              new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
             ])
           ])
       ]))
@@ -166,33 +166,33 @@ Starcraft;          Blizzard;;;                                             Marc
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Marketer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')]),
+            new Up.Table.Header.Cell([new Up.Text('Marketer')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 3),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 3),
+              new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3),
+              new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
             ])
           ])
       ]))
@@ -213,13 +213,13 @@ Terranigma;         Nintendo;             Enix`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')], 2)
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')], 2)
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Enix')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Enix')])
             ])
           ])
       ]))
@@ -240,14 +240,14 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Director')], 3)
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Director')], 3)
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Akihiko Matsui')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Takashi Tokita')]),
+              new Up.Table.Row.Cell([new Up.Text('Yoshinori Kitase')]),
+              new Up.Table.Row.Cell([new Up.Text('Akihiko Matsui')])
             ])
           ])
       ]))
@@ -271,26 +271,26 @@ Starcraft;          Blizzard;;`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2)
             ])
           ])
       ]))
@@ -314,28 +314,28 @@ Starcraft;          Blizzard;;;`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Marketer')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')]),
+            new Up.Table.Header.Cell([new Up.Text('Marketer')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 3)
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 3)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 3)
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 3)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 3)
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 3)
             ])
           ])
       ]))
@@ -356,13 +356,13 @@ Terranigma;         Nintendo;             Enix`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')], 2)
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')], 2)
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Enix')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Enix')])
             ])
           ])
       ]))
@@ -386,26 +386,26 @@ Starcraft;          Blizzard;; \t \t`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')], 2)
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')], 2)
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')], 2)
             ])
           ])
       ]))
@@ -429,22 +429,22 @@ Swam laps;                Sprints on track;         March 14, 2018`
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([], 2),
-            new Up.Table.Header.Cell([new Up.PlainText('Date')])
+            new Up.Table.Header.Cell([new Up.Text('Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Squats')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('Squats')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Deadlifts')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 12, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Deadlifts')]),
+              new Up.Table.Row.Cell([new Up.Text('March 12, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Swam laps')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Sprints on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 14, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Swam laps')]),
+              new Up.Table.Row.Cell([new Up.Text('Sprints on track')]),
+              new Up.Table.Row.Cell([new Up.Text('March 14, 2018')])
             ])
           ])
       ]))
@@ -468,25 +468,25 @@ Swam laps;                Sprints on track;   Treaded water;              March 
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([], 3),
-            new Up.Table.Header.Cell([new Up.PlainText('Date')])
+            new Up.Table.Header.Cell([new Up.Text('Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Squats')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Walked on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('Squats')]),
+              new Up.Table.Row.Cell([new Up.Text('Walked on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Deadlifts')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Walked on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 12, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Deadlifts')]),
+              new Up.Table.Row.Cell([new Up.Text('Walked on track')]),
+              new Up.Table.Row.Cell([new Up.Text('March 12, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Swam laps')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Sprints on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Treaded water')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 14, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Swam laps')]),
+              new Up.Table.Row.Cell([new Up.Text('Sprints on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Treaded water')]),
+              new Up.Table.Row.Cell([new Up.Text('March 14, 2018')])
             ])
           ])
       ]))
@@ -510,28 +510,28 @@ Swam laps;                Sprints on track;         March 14, 2018`
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Aerobic Exercise')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Anaerobic Exercise')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Date')])
+            new Up.Table.Header.Cell([new Up.Text('Aerobic Exercise')]),
+            new Up.Table.Header.Cell([new Up.Text('Anaerobic Exercise')]),
+            new Up.Table.Header.Cell([new Up.Text('Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Squats')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('Squats')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Deadlifts')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 12, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Deadlifts')]),
+              new Up.Table.Row.Cell([new Up.Text('March 12, 2018')])
             ]),
             new Up.Table.Row([
               new Up.Table.Row.Cell([], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('March 13, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('March 13, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Swam laps')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Sprints on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 14, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Swam laps')]),
+              new Up.Table.Row.Cell([new Up.Text('Sprints on track')]),
+              new Up.Table.Row.Cell([new Up.Text('March 14, 2018')])
             ])
           ])
       ]))
@@ -555,32 +555,32 @@ Swam laps;                Sprints on track;     Treaded water;              Marc
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Aerobic Exercise')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Anaerobic Exercise')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Cooldown')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Date')])
+            new Up.Table.Header.Cell([new Up.Text('Aerobic Exercise')]),
+            new Up.Table.Header.Cell([new Up.Text('Anaerobic Exercise')]),
+            new Up.Table.Header.Cell([new Up.Text('Cooldown')]),
+            new Up.Table.Header.Cell([new Up.Text('Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Squats')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Walked on treadmill')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('Squats')]),
+              new Up.Table.Row.Cell([new Up.Text('Walked on treadmill')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Jogged on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Deadlifts')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Walked on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 12, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Jogged on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Deadlifts')]),
+              new Up.Table.Row.Cell([new Up.Text('Walked on track')]),
+              new Up.Table.Row.Cell([new Up.Text('March 12, 2018')])
             ]),
             new Up.Table.Row([
               new Up.Table.Row.Cell([], 3),
-              new Up.Table.Row.Cell([new Up.PlainText('March 13, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('March 13, 2018')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Swam laps')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Sprints on track')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Treaded water')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 14, 2018')])
+              new Up.Table.Row.Cell([new Up.Text('Swam laps')]),
+              new Up.Table.Row.Cell([new Up.Text('Sprints on track')]),
+              new Up.Table.Row.Cell([new Up.Text('Treaded water')]),
+              new Up.Table.Row.Cell([new Up.Text('March 14, 2018')])
             ])
           ])
       ]))
@@ -601,17 +601,17 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui;   Marc
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Director')]),
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Director')]),
             new Up.Table.Header.Cell([], 2),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Takashi Tokita')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Yoshinori Kitase')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Akihiko Matsui')]),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Takashi Tokita')]),
+              new Up.Table.Row.Cell([new Up.Text('Yoshinori Kitase')]),
+              new Up.Table.Row.Cell([new Up.Text('Akihiko Matsui')]),
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
             ])
           ])
       ]))
@@ -635,36 +635,36 @@ Starcraft;          Blizzard;                               ;;                Ma
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Developer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Publisher')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Marketer')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Developer')]),
+            new Up.Table.Header.Cell([new Up.Text('Publisher')]),
+            new Up.Table.Header.Cell([new Up.Text('Marketer')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Square')]),
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Square')]),
               new Up.Table.Row.Cell([], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('March 11, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('March 11, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Terranigma')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Nintendo')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Quintet')]),
-              new Up.Table.Row.Cell([new Up.PlainText('October 20, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('Terranigma')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('Nintendo')]),
+              new Up.Table.Row.Cell([new Up.Text('Quintet')]),
+              new Up.Table.Row.Cell([new Up.Text('October 20, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Command & Conquer')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Westwood Studios')]),
+              new Up.Table.Row.Cell([new Up.Text('Command & Conquer')]),
+              new Up.Table.Row.Cell([new Up.Text('Westwood Studios')]),
               new Up.Table.Row.Cell([], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('August 31, 1995')])
+              new Up.Table.Row.Cell([new Up.Text('August 31, 1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Starcraft')]),
-              new Up.Table.Row.Cell([new Up.PlainText('Blizzard')]),
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Blizzard')]),
               new Up.Table.Row.Cell([], 2),
-              new Up.Table.Row.Cell([new Up.PlainText('March 31, 1998')])
+              new Up.Table.Row.Cell([new Up.Text('March 31, 1998')])
             ])
           ])
       ]))

@@ -12,8 +12,8 @@ Goodbye, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -38,9 +38,9 @@ Goodbye again, world!
 =-=-=-=-=-=-=-=`
 
     const headings = [
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 }),
-      new Up.Heading([new Up.PlainText('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 }),
+      new Up.Heading([new Up.Text('Goodbye again, world!')], { level: 2, ordinalInTableOfContents: 3 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -63,8 +63,8 @@ Goodbye, world!
 ===============`
 
     const headings = [
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -84,8 +84,8 @@ Goodbye, world!
 #~~~~~~~~~~~#`
 
     const headings = [
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -131,13 +131,13 @@ Warlocked
 ---------`
 
     const headings = [
-      new Up.Heading([new Up.PlainText('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),
-      new Up.Heading([new Up.PlainText('Video Games')], { level: 2, ordinalInTableOfContents: 2 }),
-      new Up.Heading([new Up.PlainText('Handheld Video Games')], { level: 3, ordinalInTableOfContents: 3 }),
-      new Up.Heading([new Up.PlainText('Game Boy Games')], { level: 4, ordinalInTableOfContents: 4 }),
-      new Up.Heading([new Up.PlainText('Real-Time Strategy Game Boy Games')], { level: 5, ordinalInTableOfContents: 5 }),
-      new Up.Heading([new Up.PlainText('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6, ordinalInTableOfContents: 6 }),
-      new Up.Heading([new Up.PlainText('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
+      new Up.Heading([new Up.Text('Interactive Software')], { level: 1, ordinalInTableOfContents: 1 }),
+      new Up.Heading([new Up.Text('Video Games')], { level: 2, ordinalInTableOfContents: 2 }),
+      new Up.Heading([new Up.Text('Handheld Video Games')], { level: 3, ordinalInTableOfContents: 3 }),
+      new Up.Heading([new Up.Text('Game Boy Games')], { level: 4, ordinalInTableOfContents: 4 }),
+      new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games')], { level: 5, ordinalInTableOfContents: 5 }),
+      new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games Published By Nintendo')], { level: 6, ordinalInTableOfContents: 6 }),
+      new Up.Heading([new Up.Text('Warlocked')], { level: 7, ordinalInTableOfContents: 7 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -161,13 +161,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -200,13 +200,13 @@ Goodbye, world!
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -240,13 +240,13 @@ Awkward
   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -254,7 +254,7 @@ Awkward
         goodbyeHeading,
         new Up.DescriptionList([
           new Up.DescriptionList.Item(
-            [new Up.DescriptionList.Item.Subject([new Up.PlainText('Awkward')])],
+            [new Up.DescriptionList.Item.Subject([new Up.Text('Awkward')])],
             new Up.DescriptionList.Item.Description([
               keysHeading
             ]))
@@ -281,13 +281,13 @@ Goodbye, world!
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -318,13 +318,13 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
 >   =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -359,13 +359,13 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -399,13 +399,13 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
 > =-=-=-=-=-=-=-=-=-=-=`
 
     const helloHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.PlainText('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 2, ordinalInTableOfContents: 2 })
 
     const keysHeading =
-      new Up.Heading([new Up.PlainText('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Umm, I forgot my keys.')], { level: 2, ordinalInTableOfContents: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

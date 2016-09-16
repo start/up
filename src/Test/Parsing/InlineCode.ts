@@ -17,9 +17,9 @@ describe('Inline code', () => {
   it('is not evaluated for other conventions', () => {
     expect(Up.parse('Hello, `*Bruno*`!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.InlineCode('*Bruno*'),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -135,14 +135,14 @@ context("Inline code can be surrounded by more than 1 backrick on each side, but
     specify('There are fewer backticks on the opening side than the closing side', () => {
       expect(Up.parse('I enjoy the occasional backtick ` or two ``')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('I enjoy the occasional backtick ` or two ``')
+          new Up.Text('I enjoy the occasional backtick ` or two ``')
         ]))
     })
 
     specify('There are more backticks on the opening side than the closing side', () => {
       expect(Up.parse('I enjoy the occasional three backticks ``` or two ``')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('I enjoy the occasional three backticks ``` or two ``')
+          new Up.Text('I enjoy the occasional three backticks ``` or two ``')
         ]))
     })
   })
@@ -153,11 +153,11 @@ context('Inline code ends at the first matching delimiter.', () => {
   specify('Therefore, inline code can follow another instance of inline code, even when the first inline code is surrounded by the same number of backticks as the second', () => {
     expect(Up.parse('Ideally, your document will consist solely of ``<font>`` and ``<div role="alert">`` elements.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Ideally, your document will consist solely of '),
+        new Up.Text('Ideally, your document will consist solely of '),
         new Up.InlineCode('<font>'),
-        new Up.PlainText(' and '),
+        new Up.Text(' and '),
         new Up.InlineCode('<div role="alert">'),
-        new Up.PlainText(' elements.')
+        new Up.Text(' elements.')
       ]))
   })
 })
@@ -167,7 +167,7 @@ describe('Backslashes inside inline code', () => {
   it('are preserved', () => {
     expect(Up.parse('Whiteboard `\\"prop\\"`')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Whiteboard '),
+        new Up.Text('Whiteboard '),
         new Up.InlineCode('\\"prop\\"')
       ]))
   })
@@ -175,7 +175,7 @@ describe('Backslashes inside inline code', () => {
   it('do not escape the enclosing backticks', () => {
     expect(Up.parse('Funny lines: `/|\\`')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Funny lines: '),
+        new Up.Text('Funny lines: '),
         new Up.InlineCode('/|\\')
       ]))
   })

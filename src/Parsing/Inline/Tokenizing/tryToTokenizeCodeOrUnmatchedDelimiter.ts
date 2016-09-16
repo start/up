@@ -93,7 +93,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
 
   // We couldn't find a matching end delimiter, so there's nothing left to do but treat the
   // start delimiter as plain text.
-  then(new Token(TokenRole.PlainText, startDelimiter), startDelimiter.length)
+  then(new Token(TokenRole.Text, startDelimiter), startDelimiter.length)
   return true
 }
 

@@ -13,12 +13,12 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ])
         ])
@@ -35,12 +35,12 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ])
         ])
@@ -58,17 +58,17 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('No, really. Goodbye.')
+              new Up.Text('No, really. Goodbye.')
             ])
           ])
         ])
@@ -86,17 +86,17 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('No, really. Goodbye.')
+              new Up.Text('No, really. Goodbye.')
             ])
           ])
         ])
@@ -116,12 +116,12 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ])
         ])
@@ -138,12 +138,12 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ])
         ])
@@ -161,17 +161,17 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('No, really. Goodbye.')
+              new Up.Text('No, really. Goodbye.')
             ])
           ])
         ])
@@ -189,17 +189,17 @@ context('Ordered list item bullets can have a single leading space. This include
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Celadon City!')
+              new Up.Text('Hello, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Goodbye, Celadon City!')
+              new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('No, really. Goodbye.')
+              new Up.Text('No, really. Goodbye.')
             ])
           ])
         ])
@@ -219,11 +219,11 @@ Charmeleon
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmeleon')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -240,11 +240,11 @@ Charmander
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmeleon')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -262,12 +262,12 @@ Charizard
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmeleon')]),
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charizard')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmeleon')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charizard')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ])
           ]))
         ])
@@ -288,16 +288,16 @@ Skeltals are white
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -317,16 +317,16 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -370,10 +370,10 @@ context('For some outline conventions, all extra indentation is ignored:', () =>
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I'm just a normal guy who eats only when it's raining outside.")
+          new Up.Text("I'm just a normal guy who eats only when it's raining outside.")
         ]),
         new Up.Paragraph([
-          new Up.PlainText("Aren't you this way?")
+          new Up.Text("Aren't you this way?")
         ])
       ]))
   })
@@ -387,10 +387,10 @@ Hello, world!
  \t ~~~~~~~~~~~~~~~`
 
     const worldHeading =
-      new Up.Heading([new Up.PlainText('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
     const coreHeading =
-      new Up.Heading([new Up.PlainText('Hello, core!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Hello, core!')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -411,10 +411,10 @@ Hello, world!
       new Up.Document([
         new Up.SpoilerBlock([
           new Up.Paragraph([
-            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+            new Up.Text("I like shorts! They're comfy and easy to wear!")
           ]),
           new Up.Paragraph([
-            new Up.PlainText("I like blankets, too.")
+            new Up.Text("I like blankets, too.")
           ])
         ])
       ]))
@@ -432,10 +432,10 @@ Hello, world!
       new Up.Document([
         new Up.NsfwBlock([
           new Up.Paragraph([
-            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+            new Up.Text("I like shorts! They're comfy and easy to wear!")
           ]),
           new Up.Paragraph([
-            new Up.PlainText("I like blankets, too.")
+            new Up.Text("I like blankets, too.")
           ])
         ])
       ]))
@@ -453,10 +453,10 @@ Hello, world!
       new Up.Document([
         new Up.NsflBlock([
           new Up.Paragraph([
-            new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+            new Up.Text("I like shorts! They're comfy and easy to wear!")
           ]),
           new Up.Paragraph([
-            new Up.PlainText("I like blankets, too.")
+            new Up.Text("I like blankets, too.")
           ])
         ])
       ]))
@@ -477,24 +477,24 @@ Hello, world!
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.PlainText('Game')]),
-            new Up.Table.Header.Cell([new Up.PlainText('Release Date')])
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1987')])
+              new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Final Fantasy II')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1988')])
+              new Up.Table.Row.Cell([new Up.Text('Final Fantasy II')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1995')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.PlainText('1999')])
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ]),
           ])
       ]))
@@ -513,19 +513,19 @@ Hello, world!
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.PlainText('1')]),
-            new Up.Table.Header.Cell([new Up.PlainText('0')])
+            new Up.Table.Header.Cell([new Up.Text('1')]),
+            new Up.Table.Header.Cell([new Up.Text('0')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('true')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-            ], new Up.Table.Header.Cell([new Up.PlainText('1')])),
+              new Up.Table.Row.Cell([new Up.Text('true')]),
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+            ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.PlainText('false')]),
-              new Up.Table.Row.Cell([new Up.PlainText('false')])
-            ], new Up.Table.Header.Cell([new Up.PlainText('0')]))
+              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
+            ], new Up.Table.Header.Cell([new Up.Text('0')]))
           ],
-          new Up.Table.Caption([new Up.PlainText('AND operator logic')]))
+          new Up.Table.Caption([new Up.Text('AND operator logic')]))
       ]))
   })
 
@@ -540,10 +540,10 @@ Hello, world!
         new Up.Document([
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+              new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I like blankets, too.")
+              new Up.Text("I like blankets, too.")
             ])
           ])
         ]))
@@ -559,10 +559,10 @@ Hello, world!
         new Up.Document([
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+              new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I like blankets, too.")
+              new Up.Text("I like blankets, too.")
             ])
           ])
         ]))
@@ -579,11 +579,11 @@ Hello, world!
         new Up.Document([
           new Up.Blockquote([
             new Up.LineBlock([
-              new Up.LineBlock.Line([new Up.PlainText('Roses are red')]),
-              new Up.LineBlock.Line([new Up.PlainText('Violets are blue')])
+              new Up.LineBlock.Line([new Up.Text('Roses are red')]),
+              new Up.LineBlock.Line([new Up.Text('Violets are blue')])
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I like poems! They're comfy and easy to write!")
+              new Up.Text("I like poems! They're comfy and easy to write!")
             ])
           ])
         ]))
@@ -599,10 +599,10 @@ Hello, world!
         new Up.Document([
           new Up.Blockquote([
             new Up.Paragraph([
-              new Up.PlainText("I like shorts! They're comfy and easy to wear!")
+              new Up.Text("I like shorts! They're comfy and easy to wear!")
             ]),
             new Up.Paragraph([
-              new Up.PlainText("I like blankets, too.")
+              new Up.Text("I like blankets, too.")
             ])
           ])
         ]))
@@ -623,10 +623,10 @@ context("Within list items, extra indentation for outline conventions is ignored
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Hello, Lavender Town!')
+              new Up.Text('Hello, Lavender Town!')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('How are we today?')
+              new Up.Text('How are we today?')
             ])
           ], { ordinal: 1 })
         ])
@@ -644,10 +644,10 @@ context("Within list items, extra indentation for outline conventions is ignored
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Buy milk.')
+              new Up.Text('Buy milk.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Now.')
+              new Up.Text('Now.')
             ])
           ])
         ])
@@ -665,13 +665,13 @@ Charmander
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.PlainText('Charmander')])
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
           ], new Up.DescriptionList.Item.Description([
             new Up.Paragraph([
-              new Up.PlainText('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
+              new Up.Text('Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.')
             ]),
             new Up.Paragraph([
-              new Up.PlainText('Does not evolve into Kadabra.')
+              new Up.Text('Does not evolve into Kadabra.')
             ])
           ]))
         ])

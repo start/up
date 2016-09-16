@@ -83,7 +83,7 @@ class Tokenizer {
   private markupConsumer: TextConsumer
 
   // This buffer is for any text that isn't consumed by special delimiters. Eventually, the buffer gets
-  // flushed to a token, usually a `PlainText` token.
+  // flushed to a token, usually a `Text` token.
   private bufferedContent = ''
 
   // Speaking of tokens, this is our collection! Unlike a `ParseableToken`, a `Token` knows when it's part of
@@ -400,7 +400,7 @@ class Tokenizer {
       endsWith,
 
       beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
-      beforeClosingItFlushesNonEmptyBufferTo: TokenRole.PlainText,
+      beforeClosingItFlushesNonEmptyBufferTo: TokenRole.Text,
 
       whenOpening,
 
@@ -798,7 +798,7 @@ class Tokenizer {
 
       insertPlainTextToken: (text, atIndex) => {
         this.insertToken({
-          token: new Token(TokenRole.PlainText, text),
+          token: new Token(TokenRole.Text, text),
           atIndex: atIndex
         })
       }
@@ -1484,7 +1484,7 @@ class Tokenizer {
   }
 
   private flushNonEmptyBufferToPlainTextToken(): void {
-    this.flushNonEmptyBufferToToken(TokenRole.PlainText)
+    this.flushNonEmptyBufferToToken(TokenRole.Text)
   }
 
   private handleTextAwareOfRawBrackets(): void {

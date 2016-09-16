@@ -8,14 +8,14 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
     specify('Between words', () => {
       expect(Up.parse("Okay---I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay—I'll eat the tarantula.")
+          new Up.Text("Okay—I'll eat the tarantula.")
         ]))
     })
 
     specify('Following a word', () => {
       expect(Up.parse("Okay--- I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay— I'll eat the tarantula.")
+          new Up.Text("Okay— I'll eat the tarantula.")
         ]))
     })
 
@@ -23,16 +23,16 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
       expect(Up.parse('"I like Starcraft" ---Mark Twain')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.PlainText('I like Starcraft')
+            new Up.Text('I like Starcraft')
           ]),
-          new Up.PlainText(' —Mark Twain')
+          new Up.Text(' —Mark Twain')
         ]))
     })
 
     specify('Surrounded by whitespace', () => {
       expect(Up.parse("Okay --- I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay — I'll eat the tarantula.")
+          new Up.Text("Okay — I'll eat the tarantula.")
         ]))
     })
   })
@@ -43,7 +43,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
       expect(Up.parse("[American flag emoji] (https://example.com/empojis/US---flag?info)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText("American flag emoji")
+            new Up.Text("American flag emoji")
           ], 'https://example.com/empojis/US---flag?info')
         ]))
     })
@@ -69,7 +69,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('you fight Gary')
+              new Up.Text('you fight Gary')
             ], 'http://example.com/final---battle')
           ])
         ]))
@@ -102,42 +102,42 @@ context('4 or more consecutive hyphens produce as many em dashes as they can "af
   specify('4 hyphens produce a single em dash', () => {
     expect(Up.parse("Okay----I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay—I'll eat the tarantula.")
+        new Up.Text("Okay—I'll eat the tarantula.")
       ]))
   })
 
   specify('5 hyphens produce a single em dash', () => {
     expect(Up.parse("Okay-----I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay—I'll eat the tarantula.")
+        new Up.Text("Okay—I'll eat the tarantula.")
       ]))
   })
 
   specify('6 hyphens produce 2 em dashes', () => {
     expect(Up.parse("Okay, Prof. O------.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay, Prof. O——.")
+        new Up.Text("Okay, Prof. O——.")
       ]))
   })
 
   specify('7 hyphens produce 2 em dashes', () => {
     expect(Up.parse("Okay, Prof. O-------.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay, Prof. O——.")
+        new Up.Text("Okay, Prof. O——.")
       ]))
   })
 
   specify('8 hyphens produce 2 em dashes', () => {
     expect(Up.parse("Okay, Prof. --------.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay, Prof. ——.")
+        new Up.Text("Okay, Prof. ——.")
       ]))
   })
 
   specify('9 hyphens produce 3 em dashes', () => {
     expect(Up.parse("---------. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("———. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")
+        new Up.Text("———. Gene Splicing & You. Kanto: Silf Co. 1996. Print.")
       ]))
   })
 })
@@ -147,35 +147,35 @@ describe("When any of an em dash's hyphens are escaped, that single hyphen is in
   specify('Escaping the first of 3 hyphens produces a hyphen followed by an en dash', () => {
     expect(Up.parse("My favorite dashes: \\---")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("My favorite dashes: -–")
+        new Up.Text("My favorite dashes: -–")
       ]))
   })
 
   specify('Escaping the second of 3 hyphens produces 3 hyphens, because there are not 2 consecutive unescaped hyphens', () => {
     expect(Up.parse("Okay-\\--I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay---I'll eat the tarantula.")
+        new Up.Text("Okay---I'll eat the tarantula.")
       ]))
   })
 
   specify('Escaping the third of 3 hyphens produces an en dash followed by a hyphen', () => {
     expect(Up.parse("My favorite dashes: --\\-")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("My favorite dashes: –-")
+        new Up.Text("My favorite dashes: –-")
       ]))
   })
 
   specify('Escaping the third of 4 hyphens produces an em dash followed by a hyphen', () => {
     expect(Up.parse("My favorite dashes: ---\\-")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("My favorite dashes: —-")
+        new Up.Text("My favorite dashes: —-")
       ]))
   })
 
   specify('Escaping the fourth of 5 hyphens produces an em dash followed by a hyphen', () => {
     expect(Up.parse("My favorite dashes: ----\\-")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("My favorite dashes: —-")
+        new Up.Text("My favorite dashes: —-")
       ]))
   })
 })

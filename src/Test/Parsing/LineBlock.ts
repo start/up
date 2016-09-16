@@ -12,10 +12,10 @@ Violets are blue`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -36,19 +36,19 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are '),
+            new Up.Text('Violets are '),
             new Up.Stress([
-              new Up.PlainText('blue')
+              new Up.Text('blue')
             ])
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Lyrics have lines')
+            new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('And addresses do, too')
+            new Up.Text('And addresses do, too')
           ]),
         ]),
       ]))
@@ -71,24 +71,24 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -109,24 +109,24 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -144,19 +144,19 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
         new Up.ThematicBreak(),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Lyrics have lines')
+            new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('And addresses do, too')
+            new Up.Text('And addresses do, too')
           ]),
         ]),
       ]))
@@ -176,29 +176,29 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.Blockquote([
           new Up.Paragraph([
-            new Up.PlainText('posting your address on the internet in the current year')
+            new Up.Text('posting your address on the internet in the current year')
           ])
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -218,31 +218,31 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.OrderedList([
           new Up.OrderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Never post your address unless you subsequently post poetry.')
+              new Up.Text('Never post your address unless you subsequently post poetry.')
             ])
           ], { ordinal: 1 })
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -262,31 +262,31 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('Never post your address unless you subsequently post poetry.')
+              new Up.Text('Never post your address unless you subsequently post poetry.')
             ])
           ])
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -306,10 +306,10 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -317,16 +317,16 @@ You're in for a fright`
         new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ]),
         ])
       ]))
@@ -346,10 +346,10 @@ You're in for a fright`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('1234 Spooky Street')
+            new Up.Text('1234 Spooky Street')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Pepe, PA 17101')
+            new Up.Text('Pepe, PA 17101')
           ])
         ]),
         new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
@@ -357,16 +357,16 @@ You're in for a fright`
         new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Skeltals are white')
+            new Up.Text('Skeltals are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('If you stay here')
+            new Up.Text('If you stay here')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText("You're in for a fright")
+            new Up.Text("You're in for a fright")
           ])
         ])
       ]))
@@ -384,10 +384,10 @@ Violets are blue  \t  `
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -402,10 +402,10 @@ Violets are blue\\\t   `
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -420,10 +420,10 @@ Violets are blue\t  \\   \\\t   `
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue')
+            new Up.Text('Violets are blue')
           ]),
         ]),
       ]))
@@ -438,10 +438,10 @@ Violets are blue\\\\\\\\\\  \\   \\\t   `
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red\\')
+            new Up.Text('Roses are red\\')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are blue\\\\')
+            new Up.Text('Violets are blue\\\\')
           ]),
         ]),
       ]))

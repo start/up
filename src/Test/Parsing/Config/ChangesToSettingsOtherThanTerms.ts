@@ -78,10 +78,10 @@ function itWorksAsAdvertised(
 
 describe('The "createSourceMap" setting', () => {
   const headingWithSourceMap =
-    new Up.Heading([new Up.PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+    new Up.Heading([new Up.Text('Very important')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
   const headingWithoutSourceMap =
-    new Up.Heading([new Up.PlainText('Very important')], { level: 1, ordinalInTableOfContents: 1 })
+    new Up.Heading([new Up.Text('Very important')], { level: 1, ordinalInTableOfContents: 1 })
 
   itWorksAsAdvertised({
     markup: `
@@ -113,13 +113,13 @@ describe('The "defaultUrlScheme" setting', () => {
 
     documentWhenChangeIsApplied: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/users')
+        new Up.Link([new Up.Text('See users')], 'my-app://example.com/users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], 'https://example.com/users')
+        new Up.Link([new Up.Text('See users')], 'https://example.com/users')
       ])
     ]),
 
@@ -140,13 +140,13 @@ describe('The "fancyEllipsis" setting', () => {
 
     documentWhenChangeIsApplied: new Up.Document([
       new Up.Paragraph([
-        new Up.PlainText('I think so⋯')
+        new Up.Text('I think so⋯')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new Up.Document([
       new Up.Paragraph([
-        new Up.PlainText('I think so…')
+        new Up.Text('I think so…')
       ])
     ]),
 
@@ -167,13 +167,13 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
 
     documentWhenChangeIsApplied: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/see/users')
+        new Up.Link([new Up.Text('See users')], 'my-app://example.com/see/users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], '/users')
+        new Up.Link([new Up.Text('See users')], '/users')
       ])
     ]),
 
@@ -194,13 +194,13 @@ describe('The "baseForUrlsStartingWithHashMark" setting', () => {
 
     documentWhenChangeIsApplied: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], 'my-app://example.com/see#users')
+        new Up.Link([new Up.Text('See users')], 'my-app://example.com/see#users')
       ])
     ]),
 
     documentWhenSettingIsNotChanged: new Up.Document([
       new Up.Paragraph([
-        new Up.Link([new Up.PlainText('See users')], '#users')
+        new Up.Link([new Up.Text('See users')], '#users')
       ])
     ]),
 

@@ -1,7 +1,7 @@
 import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { PlainText } from '../../SyntaxNodes/PlainText'
+import { Text } from '../../SyntaxNodes/Text'
 import { isWhitespace } from '../isWhitespace'
 import { last } from '../../CollectionHelpers'
 import { ParseableToken } from './ParseableToken'
@@ -79,8 +79,8 @@ class Parser {
           return
         }
 
-        case TokenRole.PlainText: {
-          this.nodes.push(new PlainText(token.value))
+        case TokenRole.Text: {
+          this.nodes.push(new Text(token.value))
           continue
         }
 
@@ -106,7 +106,7 @@ class Parser {
           const urlAfterScheme = url.substr(urlScheme.length)
 
           this.nodes.push(
-            new LINK.SyntaxNodeType([new PlainText(urlAfterScheme)], url))
+            new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
 
           continue
         }
@@ -121,7 +121,7 @@ class Parser {
 
           if (isContentBlank) {
             // If the link has blank content, we use the URL for the content
-            children = [new PlainText(url)]
+            children = [new Text(url)]
           }
 
           this.nodes.push(new Link(children, url))
@@ -218,7 +218,7 @@ function combineConsecutivePlainTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNo
   for (const node of nodes) {
     const lastNode = last(resultNodes)
 
-    if ((node instanceof PlainText) && (lastNode instanceof PlainText)) {
+    if ((node instanceof Text) && (lastNode instanceof Text)) {
       lastNode.text += node.text
       continue
     }

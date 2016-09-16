@@ -13,7 +13,7 @@ const pie = 3.5
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('My pies never turn out quite right.')
+          new Up.Text('My pies never turn out quite right.')
         ]),
         new Up.CodeBlock('const pie = 3.5')
       ]))
@@ -33,16 +33,16 @@ const pie = 3.5
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.PlainText('Roses are red')
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Violets are white')
+            new Up.Text('Violets are white')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('My pies just never')
+            new Up.Text('My pies just never')
           ]),
           new Up.LineBlock.Line([
-            new Up.PlainText('Turn out quite right')
+            new Up.Text('Turn out quite right')
           ])
         ]),
         new Up.CodeBlock('const pie = 3.5')
@@ -60,7 +60,7 @@ My pies never turn out quite right.`
       new Up.Document([
         new Up.CodeBlock('const pie = 3.5'),
         new Up.Paragraph([
-          new Up.PlainText('My pies never turn out quite right.')
+          new Up.Text('My pies never turn out quite right.')
         ])
       ]))
   })
@@ -107,7 +107,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Check out the code below!')
+          new Up.Text('Check out the code below!')
         ]),
         new Up.CodeBlock(
           `function factorial(n: number): number {
@@ -131,10 +131,10 @@ That's what the robot wrote!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineQuote([new Up.PlainText('```')])
+          new Up.InlineQuote([new Up.Text('```')])
         ]),
         new Up.Paragraph([
-          new Up.PlainText("That's what the robot wrote!")
+          new Up.Text("That's what the robot wrote!")
         ])
       ]))
   })

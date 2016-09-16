@@ -11,13 +11,13 @@ context('When most otherwise-nested conventions overlap by only their start deli
           new Up.InlineQuote([
             new Up.Stress([
               new Up.Italic([
-                new Up.PlainText('Hello')
+                new Up.Text('Hello')
               ]),
-              new Up.PlainText(' good')
+              new Up.Text(' good')
             ]),
-            new Up.PlainText(' friend!')
+            new Up.Text(' friend!')
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
 
@@ -27,13 +27,13 @@ context('When most otherwise-nested conventions overlap by only their start deli
           new Up.Stress([
             new Up.InlineNsfl([
               new Up.Link([
-                new Up.PlainText('Ash')
+                new Up.Text('Ash')
               ], 'https://example.com'),
-              new Up.PlainText(' is')
+              new Up.Text(' is')
             ]),
-            new Up.PlainText(' a friend!')
+            new Up.Text(' a friend!')
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
 
@@ -42,9 +42,9 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.Italic([
             new Up.InlineQuote([
-              new Up.PlainText('Oh')
+              new Up.Text('Oh')
             ]),
-            new Up.PlainText(' why would you do this?')
+            new Up.Text(' why would you do this?')
           ])
         ]))
     })
@@ -54,11 +54,11 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.Link([
             new Up.Emphasis([
-              new Up.PlainText('Yes'),
+              new Up.Text('Yes'),
             ]),
-            new Up.PlainText(", I watched it live")
+            new Up.Text(", I watched it live")
           ], 'https://example.com/replay'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
 
@@ -67,11 +67,11 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.Emphasis([
             new Up.Link([
-              new Up.PlainText('Yes, I watched it live'),
+              new Up.Text('Yes, I watched it live'),
             ], 'https://example.com/replay'),
-            new Up.PlainText(' yesterday')
+            new Up.Text(' yesterday')
           ]),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
   })
@@ -83,9 +83,9 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
             new Up.InlineQuote([
-              new Up.PlainText('(Oh')
+              new Up.Text('(Oh')
             ]),
-            new Up.PlainText(' why would you do this?)')
+            new Up.Text(' why would you do this?)')
           ])
         ]))
     })
@@ -95,9 +95,9 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
             new Up.InlineQuote([
-              new Up.PlainText('[Oh')
+              new Up.Text('[Oh')
             ]),
-            new Up.PlainText(' why would you do this?]')
+            new Up.Text(' why would you do this?]')
           ])
         ]))
     })
@@ -111,15 +111,15 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('"Hello **good _friend!"_** Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.PlainText('Hello '),
+            new Up.Text('Hello '),
             new Up.Stress([
-              new Up.PlainText('good '),
+              new Up.Text('good '),
               new Up.Italic([
-                new Up.PlainText('friend!')
+                new Up.Text('friend!')
               ])
             ])
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
 
@@ -127,15 +127,15 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('There was another '),
+            new Up.Text('There was another '),
             new Up.InlineNsfl([
-              new Up.PlainText('rotten '),
+              new Up.Text('rotten '),
               new Up.Bold([
-                new Up.PlainText('body')
+                new Up.Text('body')
               ]),
             ]),
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
 
@@ -143,15 +143,15 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('_There was another [NSFL: rotten body (NSFW: squish_)] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('There was another '),
+            new Up.Text('There was another '),
             new Up.InlineNsfl([
-              new Up.PlainText('rotten body '),
+              new Up.Text('rotten body '),
               new Up.InlineNsfw([
-                new Up.PlainText('squish')
+                new Up.Text('squish')
               ]),
             ]),
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
 
@@ -159,21 +159,21 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('**There _was (SPOILER: another [NSFL: loud __stomp_**)__]. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('There '),
+            new Up.Text('There '),
             new Up.Italic([
-              new Up.PlainText('was '),
+              new Up.Text('was '),
               new Up.InlineSpoiler([
-                new Up.PlainText('another '),
+                new Up.Text('another '),
                 new Up.InlineNsfl([
-                  new Up.PlainText('loud '),
+                  new Up.Text('loud '),
                   new Up.Bold([
-                    new Up.PlainText('stomp')
+                    new Up.Text('stomp')
                   ])
                 ])
               ])
             ])
           ]),
-          new Up.PlainText('. Hi!')
+          new Up.Text('. Hi!')
         ]))
     })
 
@@ -181,21 +181,21 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('**There _was (SPOILER: another [NSFL: loud __stomp_**)]__. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('There '),
+            new Up.Text('There '),
             new Up.Italic([
-              new Up.PlainText('was '),
+              new Up.Text('was '),
               new Up.InlineSpoiler([
-                new Up.PlainText('another '),
+                new Up.Text('another '),
                 new Up.InlineNsfl([
-                  new Up.PlainText('loud '),
+                  new Up.Text('loud '),
                   new Up.Bold([
-                    new Up.PlainText('stomp')
+                    new Up.Text('stomp')
                   ])
                 ])
               ])
             ])
           ]),
-          new Up.PlainText('. Hi!')
+          new Up.Text('. Hi!')
         ]))
     })
 
@@ -203,21 +203,21 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('**There _was "another [NSFL: loud (SPOILER: stomp_**"]). Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.PlainText('There '),
+            new Up.Text('There '),
             new Up.Italic([
-              new Up.PlainText('was '),
+              new Up.Text('was '),
               new Up.InlineQuote([
-                new Up.PlainText('another '),
+                new Up.Text('another '),
                 new Up.InlineNsfl([
-                  new Up.PlainText('loud '),
+                  new Up.Text('loud '),
                   new Up.InlineSpoiler([
-                    new Up.PlainText('stomp')
+                    new Up.Text('stomp')
                   ])
                 ])
               ])
             ])
           ]),
-          new Up.PlainText('. Hi!')
+          new Up.Text('. Hi!')
         ]))
     })
 
@@ -225,9 +225,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Mario fell off the platform. '),
+            new Up.Text('Mario fell off the platform. '),
             new Up.Link([
-              new Up.PlainText('splat')
+              new Up.Text('splat')
             ], 'https://example.com')
           ])
         ]))
@@ -237,9 +237,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('loudly sings '),
+            new Up.Text('loudly sings '),
             new Up.InlineSpoiler([
-              new Up.PlainText("Jigglypuff's Lullaby")
+              new Up.Text("Jigglypuff's Lullaby")
             ])
           ], 'https://example.com')
         ]))
@@ -249,9 +249,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse("*I watched it [live*](example.com/replay)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.PlainText('I watched it '),
+            new Up.Text('I watched it '),
             new Up.Link([
-              new Up.PlainText("live")
+              new Up.Text("live")
             ], 'https://example.com/replay')
           ])
         ]))
@@ -261,9 +261,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('[Mario fell off the platform. (highlight: splat][example.com/game-over])')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('Mario fell off the platform. '),
+            new Up.Text('Mario fell off the platform. '),
             new Up.Highlight([
-              new Up.PlainText('splat')
+              new Up.Text('splat')
             ])
           ], 'https://example.com/game-over')
         ]))
@@ -273,9 +273,9 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('(highlight: loud [thwomp)](example.com/thwomp)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('loud '),
+            new Up.Text('loud '),
             new Up.Link([
-              new Up.PlainText('thwomp')
+              new Up.Text('thwomp')
             ], 'https://example.com/thwomp')
           ])
         ]))
@@ -288,14 +288,14 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('There was another '),
+            new Up.Text('There was another '),
             new Up.InlineNsfl([
               new Up.Link([
-                new Up.PlainText('rotten body'),
+                new Up.Text('rotten body'),
               ], 'https://example.com/rotten')
             ]),
           ]),
-          new Up.PlainText(' Hi!')
+          new Up.Text(' Hi!')
         ]))
     })
   })
@@ -306,13 +306,13 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('_Oh (why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
-            new Up.PlainText('Oh '),
+            new Up.Text('Oh '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(why would you do this?')
+              new Up.Text('(why would you do this?')
             ]),
           ]),
           new Up.NormalParenthetical([
-            new Up.PlainText(')')
+            new Up.Text(')')
           ])
         ]))
     })
@@ -321,13 +321,13 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('"Oh [why would you do this?"]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.PlainText('Oh '),
+            new Up.Text('Oh '),
             new Up.SquareParenthetical([
-              new Up.PlainText('[why would you do this?')
+              new Up.Text('[why would you do this?')
             ]),
           ]),
           new Up.SquareParenthetical([
-            new Up.PlainText(']')
+            new Up.Text(']')
           ])
         ]))
     })
@@ -342,7 +342,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Italic([
-              new Up.PlainText('Why would you do this?')
+              new Up.Text('Why would you do this?')
             ])
           ])
         ]))
@@ -353,7 +353,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         insideDocumentAndParagraph([
           new Up.Emphasis([
             new Up.InlineSpoiler([
-              new Up.PlainText('Why would you do this?')
+              new Up.Text('Why would you do this?')
             ])
           ])
         ]))
@@ -364,7 +364,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Emphasis([
-              new Up.PlainText('Why would you do this?')
+              new Up.Text('Why would you do this?')
             ])
           ])
         ]))
@@ -376,9 +376,9 @@ context('When most conventions completely overlap, they nest perfectly, with the
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
           new Up.Italic([
-            new Up.PlainText('(Why would you do this?')
+            new Up.Text('(Why would you do this?')
           ]),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -388,9 +388,9 @@ context('When most conventions completely overlap, they nest perfectly, with the
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
           new Up.InlineQuote([
-            new Up.PlainText('[Why would you do this?')
+            new Up.Text('[Why would you do this?')
           ]),
-          new Up.PlainText(']')
+          new Up.Text(']')
         ])
       ]))
   })
@@ -400,9 +400,9 @@ context('When most conventions completely overlap, they nest perfectly, with the
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
           new Up.Italic([
-            new Up.PlainText('(Why would you do this?')
+            new Up.Text('(Why would you do this?')
           ]),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })
@@ -411,9 +411,9 @@ context('When most conventions completely overlap, they nest perfectly, with the
     expect(Up.parse('["Why would you do this?]"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.PlainText('['),
+          new Up.Text('['),
           new Up.InlineQuote([
-            new Up.PlainText('Why would you do this?]')
+            new Up.Text('Why would you do this?]')
           ]),
         ])
       ]))
@@ -427,10 +427,10 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.parse('[highlight: Oh "]why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('Oh ')
+            new Up.Text('Oh ')
           ]),
           new Up.InlineQuote([
-            new Up.PlainText('why would you do this?')
+            new Up.Text('why would you do this?')
           ])
         ]))
     })
@@ -439,10 +439,10 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.parse('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
-            new Up.PlainText('Oh ')
+            new Up.Text('Oh ')
           ]),
           new Up.Link([
-            new Up.PlainText('why would you do this?')
+            new Up.Text('why would you do this?')
           ], 'https://example.com')
         ]))
     })
@@ -451,10 +451,10 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.parse('[Well, well, "](example.com) why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText('Well, well, ')
+            new Up.Text('Well, well, ')
           ], 'https://example.com'),
           new Up.InlineQuote([
-            new Up.PlainText(' why would you do this?')
+            new Up.Text(' why would you do this?')
           ])
         ]))
     })
@@ -465,13 +465,13 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.parse('[highlight: Oh (]why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('Oh '),
+            new Up.Text('Oh '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(')
+              new Up.Text('(')
             ]),
           ]),
           new Up.NormalParenthetical([
-            new Up.PlainText('why would you do this?)')
+            new Up.Text('why would you do this?)')
           ])
         ]))
     })
@@ -480,13 +480,13 @@ context("When most conventions overlap by only the first convention's end delimi
       expect(Up.parse('(highlight: Oh [)why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
-            new Up.PlainText('Oh '),
+            new Up.Text('Oh '),
             new Up.SquareParenthetical([
-              new Up.PlainText('[')
+              new Up.Text('[')
             ]),
           ]),
           new Up.SquareParenthetical([
-            new Up.PlainText('why would you do this?]')
+            new Up.Text('why would you do this?]')
           ])
         ]))
     })

@@ -357,7 +357,7 @@ Lesson 1
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Lesson 1')
+                new Up.Text('Lesson 1')
               ])
             ],
               new Up.DescriptionList.Item.Description([
@@ -384,7 +384,7 @@ Lesson 1
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Lesson 1')
+                new Up.Text('Lesson 1')
               ])
             ],
               new Up.DescriptionList.Item.Description([
@@ -411,7 +411,7 @@ Lesson 1
           new Up.DescriptionList([
             new Up.DescriptionList.Item([
               new Up.DescriptionList.Item.Subject([
-                new Up.PlainText('Lesson 1')
+                new Up.Text('Lesson 1')
               ])
             ],
               new Up.DescriptionList.Item.Description([

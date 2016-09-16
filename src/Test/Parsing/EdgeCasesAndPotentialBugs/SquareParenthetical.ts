@@ -8,30 +8,30 @@ context('Square bracketed text can be directly followed by whitespace followed b
     specify('that only contains whitespace directly after the colon', () => {
       expect(Up.parse('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('After you beat the Elite Four, you have to face '),
+          new Up.Text('After you beat the Elite Four, you have to face '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[the one and only]')
+            new Up.Text('[the one and only]')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.InlineSpoiler([
-            new Up.PlainText('Gary')
+            new Up.Text('Gary')
           ]),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
       expect(Up.parse('After you beat the Elite Four, you have to face [the one and only] [SPOILER:Gary Oak].')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('After you beat the Elite Four, you have to face '),
+          new Up.Text('After you beat the Elite Four, you have to face '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[the one and only]')
+            new Up.Text('[the one and only]')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.InlineSpoiler([
-            new Up.PlainText('Gary Oak')
+            new Up.Text('Gary Oak')
           ]),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
   })
@@ -41,18 +41,18 @@ context('Square bracketed text can be directly followed by whitespace followed b
       const markup = "I don't eat cereal [or oatmeal] (^ Lying.) on Mondays."
 
       const footnote = new Up.Footnote([
-        new Up.PlainText('Lying.')
+        new Up.Text('Lying.')
       ], { referenceNumber: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal "),
+            new Up.Text("I don't eat cereal "),
             new Up.SquareParenthetical([
-              new Up.PlainText('[or oatmeal]')
+              new Up.Text('[or oatmeal]')
             ]),
             footnote,
-            new Up.PlainText(" on Mondays."),
+            new Up.Text(" on Mondays."),
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -62,18 +62,18 @@ context('Square bracketed text can be directly followed by whitespace followed b
       const markup = "I don't eat cereal [or oatmeal] (^Definitely lying.) on Mondays."
 
       const footnote = new Up.Footnote([
-        new Up.PlainText('Definitely lying.')
+        new Up.Text('Definitely lying.')
       ], { referenceNumber: 1 })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([
-            new Up.PlainText("I don't eat cereal "),
+            new Up.Text("I don't eat cereal "),
             new Up.SquareParenthetical([
-              new Up.PlainText('[or oatmeal]')
+              new Up.Text('[or oatmeal]')
             ]),
             footnote,
-            new Up.PlainText(" on Mondays."),
+            new Up.Text(" on Mondays."),
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -85,26 +85,26 @@ context('Square bracketed text can be directly followed by whitespace followed b
     specify('that only contains whitespace directly after the colon', () => {
       expect(Up.parse('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image: Gary] (example.com/gary.png).')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('After you beat the Elite Four, you have to face Gary '),
+          new Up.Text('After you beat the Elite Four, you have to face Gary '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[in Pokémon Red/Blue/Yellow]')
+            new Up.Text('[in Pokémon Red/Blue/Yellow]')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.Image('Gary', 'https://example.com/gary.png'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
 
     specify('that contains whitespace, but non directly after the colon', () => {
       expect(Up.parse('After you beat the Elite Four, you have to face Gary [in Pokémon Red/Blue/Yellow] [image:Gary Oak] (example.com/gary.png).')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText('After you beat the Elite Four, you have to face Gary '),
+          new Up.Text('After you beat the Elite Four, you have to face Gary '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[in Pokémon Red/Blue/Yellow]')
+            new Up.Text('[in Pokémon Red/Blue/Yellow]')
           ]),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.Image('Gary Oak', 'https://example.com/gary.png'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]))
     })
   })

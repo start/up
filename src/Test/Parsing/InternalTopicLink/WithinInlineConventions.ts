@@ -18,28 +18,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Bold([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -59,28 +59,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Emphasis([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -100,31 +100,31 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     const footnote = new Up.Footnote([
-      new Up.PlainText('See '),
+      new Up.Text('See '),
       new Up.SectionLink('interesting', interestingHeading),
-      new Up.PlainText('.')
+      new Up.Text('.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits.'),
+          new Up.Text('I have plenty of good traits.'),
           footnote
         ]),
         new Up.FootnoteBlock([footnote]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -144,28 +144,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Highlight([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -185,28 +185,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.InlineNsfl([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -226,28 +226,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.InlineNsfw([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -267,28 +267,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.InlineSpoiler([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -308,28 +308,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Italic([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -349,28 +349,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Link([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading)
           ], 'https://example.com'),
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -390,28 +390,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(See '),
+            new Up.Text('(See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.)')
+            new Up.Text('.)')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -431,28 +431,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.SquareParenthetical([
-            new Up.PlainText('[See '),
+            new Up.Text('[See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.]')
+            new Up.Text('.]')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
@@ -472,28 +472,28 @@ I am interesting
 I love all sorts of fancy stuff.`
 
     const sodaHeading =
-      new Up.Heading([new Up.PlainText('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
 
     const interestingHeading =
-      new Up.Heading([new Up.PlainText('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('I have plenty of good traits. '),
+          new Up.Text('I have plenty of good traits. '),
           new Up.Stress([
-            new Up.PlainText('See '),
+            new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
-            new Up.PlainText('.')
+            new Up.Text('.')
           ])
         ]),
         sodaHeading,
         new Up.Paragraph([
-          new Up.PlainText('Actually, I only drink milk.')
+          new Up.Text('Actually, I only drink milk.')
         ]),
         interestingHeading,
         new Up.Paragraph([
-          new Up.PlainText('I love all sorts of fancy stuff.')
+          new Up.Text('I love all sorts of fancy stuff.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })

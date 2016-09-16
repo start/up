@@ -6,7 +6,7 @@ describe('Within a plain text node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -19,7 +19,7 @@ describe('Within a plain text node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.PlainText('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+        new Up.Text('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 
@@ -265,7 +265,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
         new Up.Emphasis([
           new Up.Stress([
             new Up.InlineQuote([
-              new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+              new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])
         ])
@@ -284,7 +284,7 @@ describe('Inside a plain text node itself nested within several outline nodes, a
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
             new Up.Paragraph([
-              new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+              new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])
         ])
@@ -324,7 +324,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
   specify('In the table of contents itself', () => {
     const heading =
       new Up.Heading([
-        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -348,7 +348,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
   specify('In a section link referencing that table of contents entry', () => {
     const heading =
       new Up.Heading([
-        new Up.PlainText('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =

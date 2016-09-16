@@ -7,11 +7,11 @@ describe('Text surrounded by single underscores', () => {
   it('is put inside an italic node', () => {
     expect(Up.parse('Hello, _world_!!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Italic([
-          new Up.PlainText('world')
+          new Up.Text('world')
         ]),
-        new Up.PlainText('!!')
+        new Up.Text('!!')
       ]))
   })
 })
@@ -21,41 +21,41 @@ describe('Italicized text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.parse('Hello, _`world`_!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Italic([
           new Up.InlineCode('world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain further italicized text', () => {
     expect(Up.parse('Hello, _my _little_ world_!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Italic([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Italic([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 
   it('can contain stressed text', () => {
     expect(Up.parse('Hello, _my __little__ world_!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Hello, '),
+        new Up.Text('Hello, '),
         new Up.Italic([
-          new Up.PlainText('my '),
+          new Up.Text('my '),
           new Up.Bold([
-            new Up.PlainText('little')
+            new Up.Text('little')
           ]),
-          new Up.PlainText(' world')
+          new Up.Text(' world')
         ]),
-        new Up.PlainText('!')
+        new Up.Text('!')
       ]))
   })
 })
@@ -67,9 +67,9 @@ describe('Double underscores followed by two separate single closing underscores
       insideDocumentAndParagraph([
         new Up.Italic([
           new Up.Italic([
-            new Up.PlainText('Warning:'),
+            new Up.Text('Warning:'),
           ]),
-          new Up.PlainText(' never feed this tarantula')
+          new Up.Text(' never feed this tarantula')
         ])
       ]))
   })
@@ -80,7 +80,7 @@ describe('Text separated from (otherwise surrounding) underscores by whitespace'
   it('is not put inside an italic node', () => {
     expect(Up.parse('Birdie Sanders _ won _ Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('Birdie Sanders _ won _ Wisconsin'),
+        new Up.Text('Birdie Sanders _ won _ Wisconsin'),
       ]))
   })
 })

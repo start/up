@@ -55,13 +55,13 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: something terrible](https://example.com/video.webm) (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('something terrible', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('stackoverflow.com')
+              new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new Up.PlainText(' is nice)')
+            new Up.Text(' is nice)')
           ]),
         ]))
     })
@@ -70,9 +70,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: email sending] (https://example.com/video.webm) (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('email sending', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:)')
+            new Up.Text('(mailto:)')
           ]),
         ]))
     })
@@ -81,9 +81,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: local files rustling](https://example.com/video.webm) (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('local files rustling', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(file:///)')
+            new Up.Text('(file:///)')
           ]),
         ]))
     })
@@ -112,9 +112,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: email sending] (https://example.com/video.webm) (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('email sending', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:daniel@wants.email)')
+            new Up.Text('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -147,9 +147,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: something terrible](https://example.com/video.webm) (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('something terrible', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/ created it)')
+            new Up.Text('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -158,9 +158,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: slash] (https://example.com/video.webm) (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('slash', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/)')
+            new Up.Text('(/)')
           ]),
         ]))
     })
@@ -189,9 +189,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: robots](https://example.com/video.webm) (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('robots', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/)')
+            new Up.Text('(/r9k/)')
           ]),
         ]))
     })
@@ -244,9 +244,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: hash marking](https://example.com/video.webm) (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('hash marking', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#)')
+            new Up.Text('(#)')
           ]),
         ]))
     })
@@ -255,9 +255,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: something terrible] (https://example.com/video.webm) (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('something terrible', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2 was never trending)')
+            new Up.Text('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -266,9 +266,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: hash marking](https://example.com/video.webm) (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('hash marking', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2)')
+            new Up.Text('(#starcraft2)')
           ]),
         ]))
     })
@@ -341,9 +341,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: 4chan] (https://example.com/video.webm) (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('4chan', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org-terrifying)')
+            new Up.Text('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -373,9 +373,9 @@ context('A linkified video convention can have whitespace between its video URL 
         expect(Up.parse('[video: usernaming](https://example.com/video.webm) (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Video('usernaming', 'https://example.com/video.webm'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith5)')
+              new Up.Text('(john.e.smith5)')
             ]),
           ]))
       })
@@ -384,9 +384,9 @@ context('A linkified video convention can have whitespace between its video URL 
         expect(Up.parse('[video: usernaming] (https://example.com/video.webm) (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Video('usernaming', 'https://example.com/video.webm'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith-kline)')
+              new Up.Text('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -396,9 +396,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: being British](https://example.com/video.webm) (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('being British', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(.co.uk)')
+            new Up.Text('(.co.uk)')
           ]),
         ]))
     })
@@ -407,9 +407,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: Ash claiming to be his own father] (https://example.com/video.webm) (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('Ash claiming to be his own father', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(um…uh)')
+            new Up.Text('(um…uh)')
           ]),
         ]))
     })
@@ -418,9 +418,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: debilitating sadness](https://example.com/video.webm) (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('debilitating sadness', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org…/r9k/)')
+            new Up.Text('(4chan.org…/r9k/)')
           ]),
         ]))
     })
@@ -449,9 +449,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: yeah] (https://example.com/video.webm) (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('yeah', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com had some hilarious forums)')
+            new Up.Text('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -460,9 +460,9 @@ context('A linkified video convention can have whitespace between its video URL 
       expect(Up.parse('[video: yeah](https://example.com/video.webm) (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('yeah', 'https://example.com/video.webm'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com)')
+            new Up.Text('(ign.com)')
           ]),
         ]))
     })
@@ -473,9 +473,9 @@ context('A linkified video convention can have whitespace between its video URL 
     expect(Up.parse('[video: something terrible] (https://example.com/video.webm) (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Video('something terrible', 'https://example.com/video.webm'),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.NormalParenthetical([
-          new Up.PlainText('(really)')
+          new Up.Text('(really)')
         ]),
       ]))
   })
@@ -487,13 +487,13 @@ describe("If there is whitespace between an otherwise-valid linkified video conv
     expect(Up.parse('[video: something terrible](https://example.com/video.webm)  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Video('something terrible', 'https://example.com/video.webm'),
-        new Up.PlainText('    '),
+        new Up.Text('    '),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com')
+            new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })

@@ -7,11 +7,11 @@ describe('An example input convention followed by a parenthesized/bracketd URL',
   it('produces an example input node within a link pointing to the URL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.Link([
           new Up.ExampleInput('My Cart')
         ], 'https://example.com/my-cart'),
-        new Up.PlainText(' and scroll down.')
+        new Up.Text(' and scroll down.')
       ]))
   })
 })
@@ -83,55 +83,55 @@ context('An example input convention is not linkified when it is directly follow
   specify('Inline spoilers', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
         new Up.InlineSpoiler([
-          new Up.PlainText('and then buy me stuff')
+          new Up.Text('and then buy me stuff')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('Inline NSFW', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
         new Up.InlineNsfw([
-          new Up.PlainText('and then buy me stuff')
+          new Up.Text('and then buy me stuff')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('Inline NSFL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
         new Up.InlineNsfl([
-          new Up.PlainText('and then buy me stuff')
+          new Up.Text('and then buy me stuff')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('Highlights', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
         new Up.Highlight([
-          new Up.PlainText('and then buy me stuff')
+          new Up.Text('and then buy me stuff')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 
   specify('Section links', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('To view your shopping cart, press '),
+        new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
         new Up.SectionLink('shopping cart')
       ]))
@@ -142,17 +142,17 @@ context('An example input convention is not linkified when it is directly follow
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Then buy me stuff!')
+        new Up.Text('Then buy me stuff!')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("To view your shopping cart, press "),
+          new Up.Text("To view your shopping cart, press "),
           new Up.ExampleInput('My Cart'),
           footnotes[0],
-          new Up.PlainText('.')
+          new Up.Text('.')
         ]),
         new Up.FootnoteBlock(footnotes)
       ]))
@@ -166,7 +166,7 @@ describe('An otherwise-valid linkified example input convention with its linkify
       insideDocumentAndParagraph([
         new Up.ExampleInput('Call'),
         new Up.NormalParenthetical([
-          new Up.PlainText('(tel:5555555555)')
+          new Up.Text('(tel:5555555555)')
         ]),
       ]))
   })
@@ -178,7 +178,7 @@ context("When an otherwise-valid linkified example input convention's URL starts
     expect(Up.parse('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.ExampleInput('Call'),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

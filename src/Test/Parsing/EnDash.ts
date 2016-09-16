@@ -8,14 +8,14 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
     specify('Between words', () => {
       expect(Up.parse("Okay--I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay–I'll eat the tarantula.")
+          new Up.Text("Okay–I'll eat the tarantula.")
         ]))
     })
 
     specify('Following a word', () => {
       expect(Up.parse("Okay-- I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay– I'll eat the tarantula.")
+          new Up.Text("Okay– I'll eat the tarantula.")
         ]))
     })
 
@@ -23,16 +23,16 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
       expect(Up.parse('"I like Starcraft" --Mark Twain')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.PlainText('I like Starcraft')
+            new Up.Text('I like Starcraft')
           ]),
-          new Up.PlainText(' –Mark Twain')
+          new Up.Text(' –Mark Twain')
         ]))
     })
 
     specify('Surrounded by whitespace', () => {
       expect(Up.parse("Okay -- I'll eat the tarantula.")).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.PlainText("Okay – I'll eat the tarantula.")
+          new Up.Text("Okay – I'll eat the tarantula.")
         ]))
     })
   })
@@ -43,7 +43,7 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
       expect(Up.parse("[American flag emoji] (https://example.com/empojis/US--flag?info)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
-            new Up.PlainText("American flag emoji")
+            new Up.Text("American flag emoji")
           ], 'https://example.com/empojis/US--flag?info')
         ]))
     })
@@ -69,7 +69,7 @@ context('2 consecutive hyphens normally produce an en dash.', () => {
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
             new Up.Link([
-              new Up.PlainText('you fight Gary')
+              new Up.Text('you fight Gary')
             ], 'http://example.com/final--battle')
           ])
         ]))
@@ -102,14 +102,14 @@ describe('When either of the hyphens are escaped, no en dash is produced:', () =
   specify('First dash:', () => {
     expect(Up.parse("Okay\\--I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay--I'll eat the tarantula.")
+        new Up.Text("Okay--I'll eat the tarantula.")
       ]))
   })
 
   specify('Second hyphen:', () => {
     expect(Up.parse("Okay-\\-I'll eat the tarantula.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("Okay--I'll eat the tarantula.")
+        new Up.Text("Okay--I'll eat the tarantula.")
       ]))
   })
 })

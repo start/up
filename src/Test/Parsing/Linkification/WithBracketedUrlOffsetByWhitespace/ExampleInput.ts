@@ -43,13 +43,13 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Ask Question } (https://stackoverflow.com is nice)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Ask Question'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Link([
-              new Up.PlainText('stackoverflow.com')
+              new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
-            new Up.PlainText(' is nice)')
+            new Up.Text(' is nice)')
           ]),
         ]))
     })
@@ -58,9 +58,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Send Email } (mailto:)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Send Email'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:)')
+            new Up.Text('(mailto:)')
           ]),
         ]))
     })
@@ -69,9 +69,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Rustle Files } (file:///)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Rustle Files'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(file:///)')
+            new Up.Text('(file:///)')
           ]),
         ]))
     })
@@ -95,9 +95,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Send Email } (\\mailto:daniel@wants.email)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Send Email'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(mailto:daniel@wants.email)')
+            new Up.Text('(mailto:daniel@wants.email)')
           ]),
         ]))
     })
@@ -125,9 +125,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Something Terrible } (/r9k/ created it)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Something Terrible'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/ created it)')
+            new Up.Text('(/r9k/ created it)')
           ]),
         ]))
     })
@@ -136,9 +136,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Slash } (/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Slash'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/)')
+            new Up.Text('(/)')
           ]),
         ]))
     })
@@ -162,9 +162,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Get Sad } (\\/r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Get Sad'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(/r9k/)')
+            new Up.Text('(/r9k/)')
           ]),
         ]))
     })
@@ -207,9 +207,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Hash } (#)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Hash'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#)')
+            new Up.Text('(#)')
           ]),
         ]))
     })
@@ -218,9 +218,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Play } (#starcraft2 was never trending)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Play'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2 was never trending)')
+            new Up.Text('(#starcraft2 was never trending)')
           ]),
         ]))
     })
@@ -229,9 +229,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{Play} (\\#starcraft2)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Play'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(#starcraft2)')
+            new Up.Text('(#starcraft2)')
           ]),
         ]))
     })
@@ -289,9 +289,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Get Scared } (4chan.org-terrifying)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Get Scared'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org-terrifying)')
+            new Up.Text('(4chan.org-terrifying)')
           ]),
         ]))
     })
@@ -316,9 +316,9 @@ context('A linkified example input convention can have whitespace between itself
         expect(Up.parse('{ Create User } (john.e.smith5)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.ExampleInput('Create User'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith5)')
+              new Up.Text('(john.e.smith5)')
             ]),
           ]))
       })
@@ -327,9 +327,9 @@ context('A linkified example input convention can have whitespace between itself
         expect(Up.parse('{Create User} (john.e.smith-kline)')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.ExampleInput('Create User'),
-            new Up.PlainText(' '),
+            new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.PlainText('(john.e.smith-kline)')
+              new Up.Text('(john.e.smith-kline)')
             ]),
           ]))
       })
@@ -339,9 +339,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Buy Domain } (.co.uk)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Buy Domain'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(.co.uk)')
+            new Up.Text('(.co.uk)')
           ]),
         ]))
     })
@@ -350,9 +350,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Claim To Be Your Own Father } (um..uh)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Claim To Be Your Own Father'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(um…uh)')
+            new Up.Text('(um…uh)')
           ]),
         ]))
     })
@@ -361,9 +361,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Get Sad } (4chan.org../r9k/)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Get Sad'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(4chan.org…/r9k/)')
+            new Up.Text('(4chan.org…/r9k/)')
           ]),
         ]))
     })
@@ -387,9 +387,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{ Create Topic } (ign.com had some hilarious forums)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Create Topic'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com had some hilarious forums)')
+            new Up.Text('(ign.com had some hilarious forums)')
           ]),
         ]))
     })
@@ -398,9 +398,9 @@ context('A linkified example input convention can have whitespace between itself
       expect(Up.parse('{Create Topic} (\\ign.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('Create Topic'),
-          new Up.PlainText(' '),
+          new Up.Text(' '),
           new Up.NormalParenthetical([
-            new Up.PlainText('(ign.com)')
+            new Up.Text('(ign.com)')
           ]),
         ]))
     })
@@ -411,9 +411,9 @@ context('A linkified example input convention can have whitespace between itself
     expect(Up.parse('{Try} (really)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.ExampleInput('Try'),
-        new Up.PlainText(' '),
+        new Up.Text(' '),
         new Up.NormalParenthetical([
-          new Up.PlainText('(really)')
+          new Up.Text('(really)')
         ]),
       ]))
   })
@@ -425,13 +425,13 @@ describe("If there is whitespace between an otherwise-valid linkified audio conv
     expect(Up.parse('{ Something Terrible }  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.ExampleInput('Something Terrible'),
-        new Up.PlainText('    '),
+        new Up.Text('    '),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com')
+            new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.PlainText(')')
+          new Up.Text(')')
         ])
       ]))
   })

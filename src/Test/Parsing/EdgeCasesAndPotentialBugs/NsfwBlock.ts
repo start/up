@@ -7,7 +7,7 @@ context("A NSFW block's label line does not produce a NSFW block node if it is",
   specify('the last line of the document', () => {
     expect(Up.parse('NSFW:')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('NSFW:')
+        new Up.Text('NSFW:')
       ]))
   })
 
@@ -19,9 +19,9 @@ Avoid that initialism!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
-          new Up.LineBlock.Line([new Up.PlainText('NSFW:')]),
-          new Up.LineBlock.Line([new Up.PlainText('No!')]),
-          new Up.LineBlock.Line([new Up.PlainText("Avoid that initialism!")]),
+          new Up.LineBlock.Line([new Up.Text('NSFW:')]),
+          new Up.LineBlock.Line([new Up.Text('No!')]),
+          new Up.LineBlock.Line([new Up.Text("Avoid that initialism!")]),
         ])
       ]))
   })
@@ -34,10 +34,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFW:')
+          new Up.Text('NSFW:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -51,10 +51,10 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFW:')
+          new Up.Text('NSFW:')
         ]),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })
@@ -70,11 +70,11 @@ No!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('NSFW:')
+          new Up.Text('NSFW:')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('No!')
+          new Up.Text('No!')
         ])
       ]))
   })

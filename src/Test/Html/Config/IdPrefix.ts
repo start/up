@@ -86,10 +86,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.PlainText("Arwings")
+            new Up.Text("Arwings")
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.PlainText("Killer Bees")
+            new Up.Text("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -112,10 +112,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.PlainText("Arwings")
+            new Up.Text("Arwings")
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.PlainText("Killer Bees")
+            new Up.Text("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -138,10 +138,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.PlainText("Arwings")
+            new Up.Text("Arwings")
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.PlainText("Killer Bees")
+            new Up.Text("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -164,10 +164,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.PlainText("Arwings")
+            new Up.Text("Arwings")
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.PlainText("Killer Bees")
+            new Up.Text("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -190,10 +190,10 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
       new Up.Document([
         new Up.FootnoteBlock([
           new Up.Footnote([
-            new Up.PlainText("Arwings")
+            new Up.Text("Arwings")
           ], { referenceNumber: 2 }),
           new Up.Footnote([
-            new Up.PlainText("Killer Bees")
+            new Up.Text("Killer Bees")
           ], { referenceNumber: 3 })
         ])
       ])
@@ -972,7 +972,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 describe("The URL of a section link (which is the ID of the actual entry in the document)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Up.Heading([
-      new Up.PlainText('Howdy there')
+      new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -1003,7 +1003,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     })
 
     const heading = new Up.Heading([
-      new Up.PlainText('Howdy there')
+      new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -1034,7 +1034,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     })
 
     const heading = new Up.Heading([
-      new Up.PlainText('Howdy there')
+      new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -1065,7 +1065,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     })
 
     const heading = new Up.Heading([
-      new Up.PlainText('Howdy there')
+      new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =
@@ -1096,7 +1096,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     })
 
     const heading = new Up.Heading([
-      new Up.PlainText('Howdy there')
+      new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
 
     const document =

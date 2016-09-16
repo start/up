@@ -14,11 +14,11 @@ Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello, world!')
+          new Up.Text('Hello, world!')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('Goodbye, world!')
+          new Up.Text('Goodbye, world!')
         ]),
       ]))
   })
@@ -38,11 +38,11 @@ Goodbye, world!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello, world!')
+          new Up.Text('Hello, world!')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('Goodbye, world!')
+          new Up.Text('Goodbye, world!')
         ])
       ]))
   })
@@ -63,7 +63,7 @@ Hello, world!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello, world!')
+          new Up.Text('Hello, world!')
         ])
       ]))
   })
@@ -84,7 +84,7 @@ Hello, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello, world!')
+          new Up.Text('Hello, world!')
         ])
       ]))
   })
@@ -113,7 +113,7 @@ describe('A thematic break streak', () => {
       new Up.Document([
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('60.4%')
+          new Up.Text('60.4%')
         ])
       ]))
   })
@@ -141,11 +141,11 @@ Goodbye.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText('Hello.')
+          new Up.Text('Hello.')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.PlainText('Goodbye.')
+          new Up.Text('Goodbye.')
         ]),
       ]))
   })
@@ -178,7 +178,7 @@ And that's my story.`
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText("And that's my story.")
+            new Up.Text("And that's my story.")
           ])
         ]))
     })
@@ -193,7 +193,7 @@ And that's my story.`
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText("And that's my story.")
+            new Up.Text("And that's my story.")
           ])
         ]))
     })
@@ -211,7 +211,7 @@ And that's my story.`
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText("And that's my story.")
+            new Up.Text("And that's my story.")
           ])
         ]))
     })
@@ -226,7 +226,7 @@ And that's my story.`
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
-            new Up.PlainText("And that's my story.")
+            new Up.Text("And that's my story.")
           ])
         ]))
     })

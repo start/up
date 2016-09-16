@@ -9,15 +9,15 @@ const footnoteProducedByParentheses =
 describe('In a paragraph, parenthesized text starting with a caret', () => {
   it("produces a footnote node inside the paragraph, and a footnote block node for the footnote after the paragraph", () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do, but I pretend not to.')
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(footnoteProducedByParentheses)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -41,13 +41,13 @@ describe('A word followed by several spaces followed by a footnote', () => {
     const markup = "I don't eat cereal.   (^Well, I do, but I pretend not to.)"
 
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do, but I pretend not to.')
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote
         ]),
         new Up.FootnoteBlock([footnote])
@@ -59,19 +59,19 @@ describe('A word followed by several spaces followed by a footnote', () => {
 describe('A footnote', () => {
   it('is evaluated for inline conventions', () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.')
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse("I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.")).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -79,20 +79,20 @@ describe('A footnote', () => {
 
   it('can be nested within an inline convention', () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.')
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse("**I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.**")).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
           new Up.Stress([
-            new Up.PlainText("I don't eat cereal."),
+            new Up.Text("I don't eat cereal."),
             footnote,
-            new Up.PlainText(" Never have."),
+            new Up.Text(" Never have."),
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -101,11 +101,11 @@ describe('A footnote', () => {
 
   it('can be nested within multiple inline convention', () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.')
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse("***I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.***")).to.deep.equal(
@@ -113,9 +113,9 @@ describe('A footnote', () => {
         new Up.Paragraph([
           new Up.Stress([
             new Up.Emphasis([
-              new Up.PlainText("I don't eat cereal."),
+              new Up.Text("I don't eat cereal."),
               footnote,
-              new Up.PlainText(" Never have."),
+              new Up.Text(" Never have."),
             ])
           ])
         ]),
@@ -127,25 +127,25 @@ describe('A footnote', () => {
     const markup = "Me? I'm totally normal. (^That said, I don't eat cereal. (^Well, I *do*, but I pretend not to.) Never have.) Really."
 
     const innerFootnote = new Up.Footnote([
-      new Up.PlainText('Well, I '),
+      new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.PlainText('do')
+        new Up.Text('do')
       ]),
-      new Up.PlainText(', but I pretend not to.'),
+      new Up.Text(', but I pretend not to.'),
     ], { referenceNumber: 2 })
 
     const outerFootnote = new Up.Footnote([
-      new Up.PlainText("That said, I don't eat cereal."),
+      new Up.Text("That said, I don't eat cereal."),
       innerFootnote,
-      new Up.PlainText(" Never have."),
+      new Up.Text(" Never have."),
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Me? I'm totally normal."),
+          new Up.Text("Me? I'm totally normal."),
           outerFootnote,
-          new Up.PlainText(" Really."),
+          new Up.Text(" Really."),
         ]),
         new Up.FootnoteBlock([
           outerFootnote,
@@ -159,15 +159,15 @@ describe('A footnote', () => {
 describe('Any whitespace after the caret in a footnote start delimiter', () => {
   it("is ignored", () => {
     const footnote = new Up.Footnote([
-      new Up.PlainText('Well, I do, but I pretend not to.')
+      new Up.Text('Well, I do, but I pretend not to.')
     ], { referenceNumber: 1 })
 
     expect(Up.parse("I don't eat cereal. (^ \tWell, I do, but I pretend not to.) Never have.")).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("I don't eat cereal."),
+          new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.PlainText(" Never have."),
+          new Up.Text(" Never have."),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

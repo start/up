@@ -7,7 +7,7 @@ describe('A typical line of text', () => {
   it('produces a paragraph node', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Also, it has to be around 70 degrees.")
       ]))
   })
 })
@@ -17,11 +17,11 @@ describe('A paragraph', () => {
   it('can contain inline conventions', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Up.Emphasis([
-          new Up.PlainText('everyone')
+          new Up.Text('everyone')
         ]),
-        new Up.PlainText(" like that?")
+        new Up.Text(" like that?")
       ]))
   })
 })
@@ -31,44 +31,44 @@ context('Trailing whitespace in a paragraph is completely inconsequential. This 
   specify('Not escaped', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?  \t  \t ")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Up.Emphasis([
-          new Up.PlainText('everyone')
+          new Up.Text('everyone')
         ]),
-        new Up.PlainText(" like that?")
+        new Up.Text(" like that?")
       ]))
   })
 
   specify('Escaped', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\ \t  ")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Up.Emphasis([
-          new Up.PlainText('everyone')
+          new Up.Text('everyone')
         ]),
-        new Up.PlainText(" like that?")
+        new Up.Text(" like that?")
       ]))
   })
 
   specify('Both escaped and not escaped', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that? \t \\ \\\t  \t ")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Up.Emphasis([
-          new Up.PlainText('everyone')
+          new Up.Text('everyone')
         ]),
-        new Up.PlainText(" like that?")
+        new Up.Text(" like that?")
       ]))
   })
 
   specify('Both escaped and not escaped, all following a backslash itself following an escaped backslash', () => {
     expect(Up.parse("I'm just a normal guy who only eats when it's raining. Isn't *everyone* like that?\\\\\\  \t \\ \\\t  \t ")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText("I'm just a normal guy who only eats when it's raining. Isn't "),
+        new Up.Text("I'm just a normal guy who only eats when it's raining. Isn't "),
         new Up.Emphasis([
-          new Up.PlainText('everyone')
+          new Up.Text('everyone')
         ]),
-        new Up.PlainText(" like that?\\")
+        new Up.Text(" like that?\\")
       ]))
   })
 })
@@ -82,8 +82,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.PlainText('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -95,8 +95,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.PlainText('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -107,8 +107,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.PlainText('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
       ]))
   })
 
@@ -120,8 +120,8 @@ Pokemon Moon has a Mew under a truck.
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Paragraph([new Up.PlainText('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.PlainText('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
       ]))
   })
 })
@@ -136,7 +136,7 @@ You'll never believe this fake evidence!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("You'll never believe this fake evidence!")
+          new Up.Text("You'll never believe this fake evidence!")
         ]),
         new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
@@ -158,7 +158,7 @@ You'll never believe this fake evidence!`
         new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
         new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new Up.Paragraph([
-          new Up.PlainText("You'll never believe this fake evidence!")
+          new Up.Text("You'll never believe this fake evidence!")
         ])
       ]))
   })
@@ -178,7 +178,7 @@ You'll never believe this fake evidence!
         new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
         new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm'),
         new Up.Paragraph([
-          new Up.PlainText("You'll never believe this fake evidence!")
+          new Up.Text("You'll never believe this fake evidence!")
         ]),
         new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
         new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),

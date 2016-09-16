@@ -7,11 +7,11 @@ describe('A video convention (with its URL) followed immediately by a (second) p
   it('produces a video node within a link pointing to that second URL', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Link([
           new Up.Video('you fight Gary', 'https://example.com/fight.webm')
         ], 'http://example.com/finalbattle'),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -86,12 +86,12 @@ describe('A video convention directly followed by an inline spoiler', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
         new Up.InlineSpoiler([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -101,12 +101,12 @@ describe('A video directly followed by an inline NSFW convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
         new Up.InlineNsfw([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -116,12 +116,12 @@ describe('A video directly followed by an inline NSFL convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('After you beat the Elite Four, '),
+        new Up.Text('After you beat the Elite Four, '),
         new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
         new Up.InlineNsfl([
-          new Up.PlainText('and win')
+          new Up.Text('and win')
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -133,14 +133,14 @@ describe('A video directly followed by a footnote', () => {
 
     const footnotes = [
       new Up.Footnote([
-        new Up.PlainText('Or whatever you name him.')
+        new Up.Text('Or whatever you name him.')
       ], { referenceNumber: 1 })
     ]
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("After you beat the Elite Four, "),
+          new Up.Text("After you beat the Elite Four, "),
           new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
           footnotes[0],
         ]),
@@ -156,7 +156,7 @@ describe('An otherwise-valid linkified video convention with its linkifying URL 
       insideDocumentAndParagraph([
         new Up.Video('phone call', 'https://example.com/phonecall.webm'),
         new Up.NormalParenthetical([
-          new Up.PlainText('(tel:5555555555)')
+          new Up.Text('(tel:5555555555)')
         ]),
       ]))
   })
@@ -168,7 +168,7 @@ context("When an otherwise-valid linkified video's URL starts with whitespace, a
     expect(Up.parse('[video: phone call](https://example.com/phonecall.ogg)( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Video('phone call', 'https://example.com/phonecall.ogg'),
-        new Up.PlainText('( \t tel:5555555555)')
+        new Up.Text('( \t tel:5555555555)')
       ]))
   })
 })

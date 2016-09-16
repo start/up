@@ -11,7 +11,7 @@ Do not pour the spiders into your sister's cereal.
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.PlainText("Do not pour the spiders into your sister's cereal.")
+          new Up.Text("Do not pour the spiders into your sister's cereal.")
         ]),
         new Up.Audio('six seconds of screaming', 'http://example.com/screaming.ogg'),
       ]))
@@ -23,15 +23,15 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
   it('does not produce an audio node', () => {
     expect(Up.parse('I like [audio: ghosts}(http://example.com/ghosts.ogg).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like [audio: ghosts}'),
+        new Up.Text('I like [audio: ghosts}'),
         new Up.NormalParenthetical([
-          new Up.PlainText('('),
+          new Up.Text('('),
           new Up.Link([
-            new Up.PlainText('example.com/ghosts.ogg')
+            new Up.Text('example.com/ghosts.ogg')
           ], 'http://example.com/ghosts.ogg'),
-          new Up.PlainText(')'),
+          new Up.Text(')'),
         ]),
-        new Up.PlainText('.')
+        new Up.Text('.')
       ]))
   })
 })
@@ -41,13 +41,13 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
   it('does not produce an audio node', () => {
     expect(Up.parse('I like [audio: ghosts][http://example.com/ghosts.ogg).')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I like '),
+        new Up.Text('I like '),
         new Up.SquareParenthetical([
-          new Up.PlainText('[audio: ghosts]')
+          new Up.Text('[audio: ghosts]')
         ]),
-        new Up.PlainText('['),
+        new Up.Text('['),
         new Up.Link([
-          new Up.PlainText('example.com/ghosts.ogg).')
+          new Up.Text('example.com/ghosts.ogg).')
         ], 'http://example.com/ghosts.ogg).'),
       ]))
   })
@@ -67,9 +67,9 @@ context('Unmatched opening parentheses in an audio description have no affect on
       new Up.Document([
         new Up.Paragraph([
           new Up.NormalParenthetical([
-            new Up.PlainText('('),
+            new Up.Text('('),
             new Up.Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new Up.PlainText(')'),
+            new Up.Text(')'),
           ])
         ])
       ]))

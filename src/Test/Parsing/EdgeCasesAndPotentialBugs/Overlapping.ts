@@ -7,27 +7,27 @@ describe('A paragraph with 2 separate instances of overlapped conventions with e
   it('prorduce the correct nodes for each', () => {
     expect(Up.parse('I *love [highlight: drinking* whole] milk. I *love [highlight: drinking* whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I '),
+        new Up.Text('I '),
         new Up.Emphasis([
-          new Up.PlainText('love '),
+          new Up.Text('love '),
           new Up.Highlight([
-            new Up.PlainText('drinking')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.Highlight([
-          new Up.PlainText(' whole')
+          new Up.Text(' whole')
         ]),
-        new Up.PlainText(' milk. I '),
+        new Up.Text(' milk. I '),
         new Up.Emphasis([
-          new Up.PlainText('love '),
+          new Up.Text('love '),
           new Up.Highlight([
-            new Up.PlainText('drinking')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.Highlight([
-          new Up.PlainText(' whole')
+          new Up.Text(' whole')
         ]),
-        new Up.PlainText(' milk.')
+        new Up.Text(' milk.')
       ]))
   })
 })
@@ -39,27 +39,27 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.PlainText('I do '),
+        new Up.Text('I do '),
         new Up.Emphasis([
-          new Up.PlainText('not '),
+          new Up.Text('not '),
         ]),
         new Up.Link([
           new Up.Emphasis([
-            new Up.PlainText('care'),
+            new Up.Text('care'),
           ]),
-          new Up.PlainText(' at'),
+          new Up.Text(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new Up.PlainText(' all. I do '),
+        new Up.Text(' all. I do '),
         new Up.Emphasis([
-          new Up.PlainText('not '),
+          new Up.Text('not '),
         ]),
         new Up.Link([
           new Up.Emphasis([
-            new Up.PlainText('care'),
+            new Up.Text('care'),
           ]),
-          new Up.PlainText(' at'),
+          new Up.Text(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
-        new Up.PlainText(' all.')
+        new Up.Text(' all.')
       ]))
   })
 })
