@@ -399,7 +399,7 @@ class Tokenizer {
 
       endsWith,
 
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
       beforeClosingItFlushesNonEmptyBufferTo: TokenRole.Text,
 
       whenOpening,
@@ -421,7 +421,7 @@ class Tokenizer {
     return this.markupConsumer.consume({
       pattern: BARE_URL_SCHEME_AND_HOSTNAME,
       thenBeforeConsumingText: url => {
-        this.flushNonEmptyBufferToPlainTextToken()
+        this.flushNonEmptyBufferToTextToken()
         this.appendNewToken(TokenRole.BareUrl, url)
       }
     })
@@ -461,7 +461,7 @@ class Tokenizer {
       startsWith: startDelimiterNotFollowedByEndDelimiter(CURLY_BRACKET.startPattern, CURLY_BRACKET.endPattern),
       endsWith: CURLY_BRACKET.endPattern,
 
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
 
       insteadOfOpeningRegularConventionsWhileOpen: () => {
         this.tryToOpen(this.rawCurlyBracketConvention)
@@ -494,7 +494,7 @@ class Tokenizer {
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
-        beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+        beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
 
         insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
@@ -516,7 +516,7 @@ class Tokenizer {
             startPatternContainsATerm: true,
             endsWith: bracket.endPattern,
 
-            beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+            beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
             insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
             beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenRole,
@@ -531,7 +531,7 @@ class Tokenizer {
       startsWith: ANY_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken: true,
+      beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
 
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
@@ -796,7 +796,7 @@ class Tokenizer {
         this.encloseWithin(args)
       },
 
-      insertPlainTextToken: (text, atIndex) => {
+      insertTextToken: (text, atIndex) => {
         this.insertToken({
           token: new Token(TokenRole.Text, text),
           atIndex: atIndex
@@ -839,10 +839,10 @@ class Tokenizer {
       }
     }
 
-    this.flushNonEmptyBufferToPlainTextToken()
+    this.flushNonEmptyBufferToTextToken()
 
     for (const inflectionHandler of this.inflectionHandlers) {
-      inflectionHandler.treatDanglingStartDelimitersAsPlainText()
+      inflectionHandler.treatDanglingStartDelimitersAsText()
     }
 
     return true
@@ -1111,7 +1111,7 @@ class Tokenizer {
     const { richConvention } = args
     let startTokenIndex = args.startingBackAtTokenIndex
 
-    this.flushNonEmptyBufferToPlainTextToken()
+    this.flushNonEmptyBufferToTextToken()
 
     // Normally, when conventions overlap, we split them into pieces to ensure each convention has just a
     // single parent. If splitting a convention produces an empty piece on one side, that empty piece is
@@ -1210,12 +1210,12 @@ class Tokenizer {
     return (
       this.conventions.some(convention => this.tryToOpen(convention))
       || this.tryToTokenizeBareUrlSchemeAndHostname()
-      || this.tryToStartInflectingOrTreatDelimiterAsPlainText()
+      || this.tryToStartInflectingOrTreatDelimiterAsText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeTypographicalConvention())
   }
 
-  private tryToStartInflectingOrTreatDelimiterAsPlainText(): boolean {
+  private tryToStartInflectingOrTreatDelimiterAsText(): boolean {
     const didOpen = this.inflectionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
@@ -1224,7 +1224,7 @@ class Tokenizer {
           // For a delimiter to start "inflecting", it must appear to be touching the beginning of some content
           // (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
-            this.flushNonEmptyBufferToPlainTextToken()
+            this.flushNonEmptyBufferToTextToken()
             handler.addOpenStartDelimiter(delimiter, this.tokens.length)
           } else {
             // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as plain
@@ -1252,7 +1252,7 @@ class Tokenizer {
     return tryToTokenizeCodeOrUnmatchedDelimiter({
       markup: this.markupConsumer.remaining,
       then: (resultToken, lengthConsumed) => {
-        this.flushNonEmptyBufferToPlainTextToken()
+        this.flushNonEmptyBufferToTextToken()
         this.appendToken(resultToken)
         this.markupConsumer.index += lengthConsumed
       }
@@ -1341,7 +1341,7 @@ class Tokenizer {
   }
 
   private tryToOpen(convention: Convention): boolean {
-    const { startsWith, flushesBufferToPlainTextTokenBeforeOpening, whenOpening } = convention
+    const { startsWith, flushesBufferToTextTokenBeforeOpening, whenOpening } = convention
 
     const didOpen = (
       this.canTry(convention)
@@ -1350,8 +1350,8 @@ class Tokenizer {
         pattern: startsWith,
 
         thenBeforeConsumingText: (match, charAfterMatch, ...captures) => {
-          if (flushesBufferToPlainTextTokenBeforeOpening) {
-            this.flushNonEmptyBufferToPlainTextToken()
+          if (flushesBufferToTextTokenBeforeOpening) {
+            this.flushNonEmptyBufferToTextToken()
           }
 
           this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
@@ -1483,7 +1483,7 @@ class Tokenizer {
     this.mostRecentToken = token
   }
 
-  private flushNonEmptyBufferToPlainTextToken(): void {
+  private flushNonEmptyBufferToTextToken(): void {
     this.flushNonEmptyBufferToToken(TokenRole.Text)
   }
 

@@ -21,5 +21,5 @@ export class Text implements InlineSyntaxNode {
     return renderer.plainText(this)
   }
 
-  protected PLAIN_TEXT(): void { }
+  protected TEXT(): void { }
 }

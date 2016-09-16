@@ -175,7 +175,7 @@ class Parser {
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutivePlainTexts(this.nodes)
+      nodes: combineConsecutiveTexts(this.nodes)
     }
   }
 
@@ -212,7 +212,7 @@ function isBlank(nodes: InlineSyntaxNode[]): boolean {
   return nodes.every(isWhitespace)
 }
 
-function combineConsecutivePlainTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+function combineConsecutiveTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   const resultNodes: InlineSyntaxNode[] = []
 
   for (const node of nodes) {

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('Within a plain text node, all instances of < and &', () => {
+describe('Within a text node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
     const document = new Up.Document([
       new Up.Paragraph([
@@ -15,7 +15,7 @@ describe('Within a plain text node, all instances of < and &', () => {
 })
 
 
-describe('Within a plain text node, >, \', and "', () => {
+describe('Within a text node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new Up.Document([
       new Up.Paragraph([
@@ -258,7 +258,7 @@ describe("Within a NSFL block's label, all instances of < and &", () => {
 })
 
 
-describe('Inside a plain text node itself nested within several inline nodes, all instances of < and &', () => {
+describe('Inside a text node itself nested within several inline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
     const document = new Up.Document([
       new Up.Paragraph([
@@ -277,7 +277,7 @@ describe('Inside a plain text node itself nested within several inline nodes, al
 })
 
 
-describe('Inside a plain text node itself nested within several outline nodes, all instances of < and &', () => {
+describe('Inside a text node itself nested within several outline nodes, all instances of < and &', () => {
   it('are escaped once', () => {
     const document = new Up.Document([
       new Up.Blockquote([

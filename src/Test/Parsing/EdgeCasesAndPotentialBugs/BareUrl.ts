@@ -159,7 +159,7 @@ describe('A bare URL scheme (only) immediately followed by another convention cl
 
 
 describe('A bare URL followed by a space then a footnote', () => {
-  it('produces a link node immediately followed by a footnote node. The space is not put into a plain text node', () => {
+  it('produces a link node immediately followed by a footnote node. The space is not put into a text node', () => {
     const markup = "https://google.com (^An old search engine.)"
 
     const footnote = new Up.Footnote([

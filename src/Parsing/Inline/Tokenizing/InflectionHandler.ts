@@ -20,7 +20,7 @@ export class InflectionHandler {
       // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
       // A callback to invoke whenever it comes time to treat a dangling start delimiter as plain text. 
-      insertPlainTextToken: (text: string, atIndex: number) => void
+      insertTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for internal use only. Please see the `clone` method.
     private openStartDelimiters: InflectionStartDelimiter[] = [],
@@ -162,10 +162,10 @@ export class InflectionHandler {
     return unspentEndDelimiterLength < endDelimiter.length
   }
 
-  treatDanglingStartDelimitersAsPlainText(): void {
+  treatDanglingStartDelimitersAsText(): void {
     for (const startDelimiter of this.openStartDelimiters) {
       if (startDelimiter.isDangling()) {
-        this.args.insertPlainTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
+        this.args.insertTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }
   }

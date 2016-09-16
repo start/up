@@ -11,7 +11,7 @@ export class Convention {
   canOnlyOpenIfDirectlyFollowing: TokenRole[]
   isCutShortByWhitespace: boolean
   canConsistSolelyOfWhitespace: boolean
-  flushesBufferToPlainTextTokenBeforeOpening: boolean
+  flushesBufferToTextTokenBeforeOpening: boolean
   whenOpening: OnTextMatch
   insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
   insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
@@ -31,7 +31,7 @@ export class Convention {
       canOnlyOpenIfDirectlyFollowing?: TokenRole[]
       isCutShortByWhitespace?: boolean
       canConsistSolelyOfWhitespace?: boolean
-      beforeOpeningItFlushesNonEmptyBufferToPlainTextToken?: boolean
+      beforeOpeningItFlushesNonEmptyBufferToTextToken?: boolean
       whenOpening?: OnTextMatch
       insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
       insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
@@ -58,7 +58,7 @@ export class Convention {
     this.canOnlyOpenIfDirectlyFollowing = args.canOnlyOpenIfDirectlyFollowing
     this.isCutShortByWhitespace = args.isCutShortByWhitespace
     this.canConsistSolelyOfWhitespace = args.canConsistSolelyOfWhitespace
-    this.flushesBufferToPlainTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToPlainTextToken
+    this.flushesBufferToTextTokenBeforeOpening = args.beforeOpeningItFlushesNonEmptyBufferToTextToken
     this.whenOpening = args.whenOpening
     this.insteadOfClosingOuterConventionsWhileOpen = args.insteadOfClosingOuterConventionsWhileOpen
     this.insteadOfOpeningRegularConventionsWhileOpen = args.insteadOfOpeningRegularConventionsWhileOpen
