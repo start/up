@@ -403,7 +403,7 @@ export class HtmlRenderer extends Renderer {
 
   private linkToActualEntryInDocument(entry: Document.TableOfContents.Entry): Link {
     return new Link(
-      entry.representationOfContentWithinTableOfContents(),
+      entry.representationWithinTableOfContents(),
       internalUrl(this.idOfActualEntryInDocument(entry)))
   }
 
