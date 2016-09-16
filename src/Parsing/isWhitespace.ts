@@ -4,5 +4,5 @@ import { BLANK_PATTERN } from '../Patterns'
 
 
 export function isWhitespace(node: InlineSyntaxNode): boolean {
-  return (node instanceof PlainText) && BLANK_PATTERN.test(node.content)
+  return (node instanceof PlainText) && BLANK_PATTERN.test(node.text)
 }

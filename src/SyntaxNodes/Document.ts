@@ -106,8 +106,8 @@ export namespace Document {
       // Section links try to match their `sectionTitleSnippet` with this value.
       searchableText(): string
 
-      // The inline syntax nodes that should represent the entry within the table of contents itself.
-      representationWithinTableOfContents(): InlineSyntaxNode[]
+      // Within the table of contents, the inline syntax nodes that represent this entry's contents.
+      contentWithinTableOfContents(): InlineSyntaxNode[]
 
       // All inline descendents (children, grandchildren, etc.) of the syntax node represented by this
       // table of contents entry.

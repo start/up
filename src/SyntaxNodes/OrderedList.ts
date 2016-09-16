@@ -29,7 +29,7 @@ export class OrderedList implements OutlineSyntaxNode {
 
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? OrderedList.Order.Descrending
+        ? OrderedList.Order.Descending
         : OrderedList.Order.Ascending)
   }
 
@@ -66,6 +66,6 @@ export namespace OrderedList {
 
   export enum Order {
     Ascending = 1,
-    Descrending
+    Descending
   }
 }

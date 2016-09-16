@@ -219,7 +219,7 @@ function combineConsecutivePlainTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNo
     const lastNode = last(resultNodes)
 
     if ((node instanceof PlainText) && (lastNode instanceof PlainText)) {
-      lastNode.content += node.content
+      lastNode.text += node.text
       continue
     }
 

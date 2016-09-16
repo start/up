@@ -4,8 +4,8 @@ import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
 
 
-// If a line consists solely of media conventions, those media conventions are placed directly
-// into the outline. Otherwise, media conventions are placed within a paragraph (or line block).
+// If a line consists solely of media conventions (or media conventions within links),
+// those media conventions are placed directly into the outline.
 export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {
   public sourceLineNumber: number = undefined
 

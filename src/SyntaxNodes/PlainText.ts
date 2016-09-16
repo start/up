@@ -3,14 +3,14 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class PlainText implements InlineSyntaxNode {
-  constructor(public content: string) { }
+  constructor(public text: string) { }
 
   textAppearingInline(): string {
-    return this.content
+    return this.text
   }
 
   searchableText(): string {
-    return this.content
+    return this.text
   }
 
   inlineDescendants(): InlineSyntaxNode[] {

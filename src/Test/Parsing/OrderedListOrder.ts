@@ -46,7 +46,7 @@ describe('An ordered list with non-bullets bullets between the 2 numeral bullets
 #) Goodbye, world!
 1) Goodbye, world!`
 
-    expectListOrderToBe(Up.OrderedList.Order.Descrending, markup)
+    expectListOrderToBe(Up.OrderedList.Order.Descending, markup)
   })
 })
 
@@ -84,7 +84,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 5. Hello, world!
 1) Goodbye, world!`
 
-      expectListOrderToBe(Up.OrderedList.Order.Descrending, markup)
+      expectListOrderToBe(Up.OrderedList.Order.Descending, markup)
     })
 
     specify('the 2 numeral bullets are negative and descending', () => {
@@ -92,7 +92,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 -2. Hello, world!
 -3) Goodbye, world!`
 
-      expectListOrderToBe(Up.OrderedList.Order.Descrending, markup)
+      expectListOrderToBe(Up.OrderedList.Order.Descending, markup)
     })
 
     specify('the first numeral bullet is positive and the second is negative, even if the absolute value of the first numeral is less', () => {
@@ -100,7 +100,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 1. Hello, world!
 -2) Goodbye, world!`
 
-      expectListOrderToBe(Up.OrderedList.Order.Descrending, markup)
+      expectListOrderToBe(Up.OrderedList.Order.Descending, markup)
     })
   })
 })
@@ -122,7 +122,7 @@ describe('An ordered list with more than 2 numeral bullets', () => {
 4) Goodbye, world!
 10. Goodbye, world!`
 
-    expectListOrderToBe(Up.OrderedList.Order.Descrending, markup)
+    expectListOrderToBe(Up.OrderedList.Order.Descending, markup)
   })
 })
 

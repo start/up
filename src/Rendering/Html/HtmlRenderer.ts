@@ -120,7 +120,7 @@ export class HtmlRenderer extends Renderer {
       attrs.start = start
     }
 
-    if (list.order() === OrderedList.Order.Descrending) {
+    if (list.order() === OrderedList.Order.Descending) {
       attrs.reversed = NO_ATTRIBUTE_VALUE
     }
 
@@ -372,7 +372,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   plainText(plainText: PlainText): string {
-    return escapeHtmlContent(plainText.content)
+    return escapeHtmlContent(plainText.text)
   }
 
   private tableOfContentsTitle(): string {
@@ -403,7 +403,7 @@ export class HtmlRenderer extends Renderer {
 
   private linkToActualEntryInDocument(entry: Document.TableOfContents.Entry): Link {
     return new Link(
-      entry.representationWithinTableOfContents(),
+      entry.contentWithinTableOfContents(),
       internalUrl(this.idOfActualEntryInDocument(entry)))
   }
 
