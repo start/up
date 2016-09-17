@@ -9,8 +9,8 @@ export interface InlineSyntaxNode extends SyntaxNode {
   textAppearingInline(): string
 
   // Represents the searchable text of the syntax node. In contrast to `textAppearingInline`,
-  // footnotes and images should have searchable text (footnotes have content, and images have
-  // a description).
+  // footnotes and images do have searchable text (footnotes have content, and images have a
+  // description).
   //
   // This method is used to help section links match the most appropriate table of content entry.
   searchableText(): string

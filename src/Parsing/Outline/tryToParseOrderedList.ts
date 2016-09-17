@@ -23,13 +23,13 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     let unparsedListItem: UnparsedListItem
 
     const isLineBulleted = markupLineConsumer.consume({
-      linePattern: BULLETED_PATTERN,
+      linePattern: LINE_WITH_NUMERIC_BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       thenBeforeConsumingLine: (line, bullet) => {
         unparsedListItem =
           new UnparsedListItem({
             bullet,
-            firstLineOfMarkup: line.replace(BULLETED_PATTERN, ''),
+            firstLineOfMarkup: line.replace(LINE_WITH_NUMERIC_BULLET_PATTERN, ''),
             sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed
           })
       }
@@ -41,7 +41,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
     let shouldTerminateList = false
 
-    // Let's collect the rest of the lines in the current list item (if there are any)  
+    // Let's collect the rest of the lines in the current list item (if there are any). 
     getIndentedBlock({
       lines: markupLineConsumer.remaining(),
       then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
@@ -124,7 +124,8 @@ function isAnOrderedList(unparsedListItems: UnparsedListItem[]): boolean {
       // Did the author intend the paragraph be an ordered list with a single item? Probably not.
       //
       // Therefore, if the first bullet style is used, we require more than one list item.
-      (length > 1) || !BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(unparsedListItems[0].bullet)))
+      length > 1
+      || !BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN.test(unparsedListItems[0].bullet)))
 }
 
 
@@ -141,17 +142,17 @@ function getExplicitOrdinal(unparsedListItem: UnparsedListItem): number {
 export const INTEGER =
   optional(escapeForRegex('-')) + oneOrMore(DIGIT)
 
-const FIRST_INTEGER_PATTERN =
-  new RegExp(INTEGER)
-
-const BULLET =
+const NUMERIC_BULLET =
   either(
     '#',
     capture(either(INTEGER, '#') + anyCharFrom('.', ')')))
 
-const BULLETED_PATTERN =
+const LINE_WITH_NUMERIC_BULLET_PATTERN =
   patternStartingWith(
-    optional(' ') + BULLET + INLINE_WHITESPACE_CHAR)
+    optional(' ') + NUMERIC_BULLET + INLINE_WHITESPACE_CHAR)
 
 const BULLETED_BY_INTEGER_FOLLOWED_BY_PERIOD_PATTERN =
   patternStartingWith(INTEGER + '\\.')
+
+const FIRST_INTEGER_PATTERN =
+  new RegExp(INTEGER)

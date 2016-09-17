@@ -25,9 +25,9 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
 
     const isLineBulleted = markupLineConsumer.consume({
-      linePattern: BULLET_PATTERN,
+      linePattern: BULLETED_LINE_PATTERN,
       thenBeforeConsumingLine: line => {
-        linesOfMarkupInCurrentListItem.push(line.replace(BULLET_PATTERN, ''))
+        linesOfMarkupInCurrentListItem.push(line.replace(BULLETED_LINE_PATTERN, ''))
       }
     })
 
@@ -72,6 +72,6 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   return true
 }
 
-const BULLET_PATTERN =
+const BULLETED_LINE_PATTERN =
   patternStartingWith(
     optional(' ') + anyCharFrom('*', '-', '•') + INLINE_WHITESPACE_CHAR)

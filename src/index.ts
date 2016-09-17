@@ -65,7 +65,7 @@ export function renderInline(inlineDocument: InlineDocument, renderingSettings?:
   return up.renderInline(inlineDocument, renderingSettings)
 }
 
-export { Transformer } from './Transformer'
+export { Transformer, RenderedDocumentAndTableOfContents } from './Transformer'
 export { UserProvidedSettings } from './UserProvidedSettings'
 
 export { Document } from './SyntaxNodes/Document'
