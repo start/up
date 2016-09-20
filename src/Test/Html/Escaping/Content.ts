@@ -272,7 +272,10 @@ describe('Inside a text node itself nested within several inline nodes, all inst
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><em><strong><q>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</q></strong></em></p>')
+    expect(Up.render(document)).to.equal(
+      '<p>'
+      + '<em><strong><span class="up-inline-quote">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</span></strong></em>'
+      + '</p>')
   })
 })
 

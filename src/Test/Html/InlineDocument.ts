@@ -219,13 +219,13 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('An inline quote node', () => {
-    it('produces a <q> element', () => {
+    it('produces a <span class="up-inline-quote"> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.InlineQuote([new Up.Text('45.9%')])
       ])
 
       const html =
-        '<q>45.9%</q>'
+        '<span class="up-inline-quote">45.9%</span>'
 
       expect(Up.renderInline(inlineDocument)).to.equal(html)
     })
