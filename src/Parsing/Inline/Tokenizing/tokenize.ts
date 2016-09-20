@@ -22,6 +22,7 @@ import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
+import { restoreDelimitersRepresentingActualContent } from './restoreDelimitersRepresentingActualContent'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -213,7 +214,9 @@ class Tokenizer {
     this.configureConventions(options && options.isTokenizingInlineDocument)
 
     this.tokenize()
-    this.result = nestOverlappingConventions(this.tokens)
+    this.result =
+      nestOverlappingConventions(
+        restoreDelimitersRepresentingActualContent(this.tokens))
   }
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
@@ -358,10 +361,17 @@ class Tokenizer {
       startsWith: bracket.startPattern + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: bracket.endPattern,
 
-      whenOpening: () => { this.bufferedContent += bracket.open },
-      whenClosing: () => { this.bufferedContent += bracket.close },
-
-      insteadOfFailingWhenLeftUnclosed: () => { /*  Neither fail nor do anything special  */ }
+      insteadOfFailingWhenLeftUnclosed: context => {
+        // Even though we failed to find a matching closing bracket for our parenthetical
+        // convention, we don't need to backtrack!
+        //
+        // Instead, we can simply insert a plain text token representing the unmatched open
+        // bracket. 
+        this.insertToken({
+          token: new Token(TokenRole.Text, bracket.open),
+          atIndex: context.startTokenIndex
+        })
+      }
     })
   }
 
