@@ -134,7 +134,7 @@ context('An unmatched doublequote (that would otherwise end a quote) is preserve
       insideDocumentAndParagraph([
         new Up.Text('I said, '),
         new Up.InlineQuote([
-          new Up.Text('Thanks!')
+          new Up.Text('"Thanks!"')
         ]),
         new Up.Text(' My new model airplane has a 30" wingspan.')
       ]))
@@ -147,11 +147,11 @@ context('Inline quotes can follow each other in a paragraph', () => {
     expect(Up.parse('"Thanks." "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Text('Thanks.')
+          new Up.Text('"Thanks."')
         ]),
         new Up.Text(' '),
         new Up.InlineQuote([
-          new Up.Text('Okay.')
+          new Up.Text('"Okay."')
         ])
       ]))
   })
@@ -160,11 +160,11 @@ context('Inline quotes can follow each other in a paragraph', () => {
     expect(Up.parse('"Thanks." He looked down. "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Text('Thanks.')
+          new Up.Text('"Thanks."')
         ]),
         new Up.Text(' He looked down. '),
         new Up.InlineQuote([
-          new Up.Text('Okay.')
+          new Up.Text('"Okay."')
         ])
       ]))
   })
@@ -177,7 +177,7 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
       insideDocumentAndParagraph([
         new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.Text('car')
+          new Up.Text('"car"')
         ]),
         new Up.Text('.')
       ]))
@@ -188,7 +188,7 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
       insideDocumentAndParagraph([
         new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.Text('car')
+          new Up.Text('"car"')
         ]),
         new Up.Text('.')
       ]))
@@ -199,7 +199,7 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
       insideDocumentAndParagraph([
         new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.Text('car')
+          new Up.Text('"car"')
         ]),
         new Up.Text('.')
       ]))
@@ -211,11 +211,11 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
       insideDocumentAndParagraph([
         new Up.Text('Yeah, check the '),
         new Up.InlineQuote([
-          new Up.Text('new '),
+          new Up.Text('"new '),
           new Up.InlineQuote([
-            new Up.Text('office')
+            new Up.Text('"office"')
           ]),
-          new Up.Text(' building')
+          new Up.Text(' building"')
         ]),
         new Up.Text('.')
       ]))
