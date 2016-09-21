@@ -75,7 +75,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify("A link whose content is wrapped in square brackets and emphasis", () => {
+  specify("Emphasis and a link", () => {
     expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -88,7 +88,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
+  specify("A link and epmhasis", () => {
     expect(Up.parse("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
@@ -113,9 +113,10 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Stress([
               new Up.Text('good '),
               new Up.Italic([
-                new Up.Text('friend!"')
+                new Up.Text('friend!')
               ])
-            ])
+            ]),
+            new Up.Text('"')
           ]),
           new Up.Text(' Hi!')
         ]))
@@ -302,7 +303,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('[why would you do this?]')
           ]),
           new Up.Text('"')
-        ]),
+        ])
       ]))
   })
 
@@ -381,7 +382,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         new Up.SquareParenthetical([
           new Up.Text('['),
           new Up.InlineQuote([
-            new Up.Text('Why would you do this?')
+            new Up.Text('"Why would you do this?"')
           ]),
           new Up.Text(']')
         ])
@@ -405,9 +406,11 @@ context('When most conventions completely overlap, they nest perfectly, with the
     expect(Up.parse('["Why would you do this?]"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
+          new Up.Text('"'),
           new Up.SquareParenthetical([
             new Up.Text('[Why would you do this?]')
-          ])
+          ]),
+          new Up.Text('"')
         ])
       ]))
   })
@@ -416,19 +419,19 @@ context('When most conventions completely overlap, they nest perfectly, with the
 
 context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second.", () => {
   context('This includes:', () => {
-    specify('Highlightex text and quoted text', () => {
-      expect(Up.parse('[highlight: Oh "]why would you do this?"')).to.deep.equal(
+    specify('Highlighted text and italics', () => {
+      expect(Up.parse('[highlight: Oh _]why would you do this?_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
             new Up.Text('Oh ')
           ]),
-          new Up.InlineQuote([
+          new Up.Italic([
             new Up.Text('why would you do this?')
           ])
         ]))
     })
 
-    specify('A spoiler and a link whose content is wrapped in square brackets', () => {
+    specify('A spoiler and a link', () => {
       expect(Up.parse('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineSpoiler([
@@ -440,13 +443,13 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('A link whose content is wrapped in square brackets and quoted text', () => {
-      expect(Up.parse('[Well, well, "](example.com) why would you do this?"')).to.deep.equal(
+    specify('A link whose content is wrapped in square brackets and stress', () => {
+      expect(Up.parse('[Well, well, **](example.com) why would you do this?**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
             new Up.Text('Well, well, ')
           ], 'https://example.com'),
-          new Up.InlineQuote([
+          new Up.Stress([
             new Up.Text(' why would you do this?')
           ])
         ]))
