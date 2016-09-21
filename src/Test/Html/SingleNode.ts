@@ -827,13 +827,15 @@ describe('An inline quote node', () => {
   it('produces a <span class="up-inline-quote"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineQuote([new Up.Text('45.9%')])
+        new Up.InlineQuote([
+          new Up.Text('"45.9%"')
+        ])
       ])
     ])
 
     const html =
       '<p>'
-      + '<span class="up-inline-quote">45.9%</span>'
+      + '<span class="up-inline-quote">"45.9%"</span>'
       + '</p>'
 
     expect(Up.render(document)).to.equal(html)
