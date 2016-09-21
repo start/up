@@ -1,4 +1,4 @@
-import { NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL, QUOTE } from '../RichConventions'
 import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 
@@ -21,11 +21,13 @@ export function restoreDelimitersRepresentingActualContent(tokens: Token[]): Tok
 
     addTextIfTokenIs(NORMAL_PARENTHETICAL.endTokenRole, ')')
     addTextIfTokenIs(SQUARE_PARENTHETICAL.endTokenRole, ']')
+    addTextIfTokenIs(QUOTE.endTokenRole, '"')
 
     resultTokens.push(token)
 
     addTextIfTokenIs(NORMAL_PARENTHETICAL.startTokenRole, '(')
     addTextIfTokenIs(SQUARE_PARENTHETICAL.startTokenRole, '[')
+    addTextIfTokenIs(QUOTE.startTokenRole, '"')
   }
 
   return resultTokens
