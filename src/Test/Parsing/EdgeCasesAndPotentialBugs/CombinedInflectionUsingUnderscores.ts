@@ -11,9 +11,9 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
   it('can have its bold convention closed first', () => {
     expect(Up.parse('_Please ___stop__ eating the cardboard_ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('stop')
             ]),
@@ -27,10 +27,10 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
   it('can have its inner mphasis convention closed first', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard__ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard'),
@@ -43,10 +43,10 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
   it('can have the 2 italic conventions closed before the bold convention', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard_ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard'),
@@ -65,7 +65,7 @@ describe('An inflection start delimiter consisting of 3 underscores', () => {
     expect(Up.parse('A ___bread_ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('A '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('bread'),
         ]),
         new Up.Text(' to believe in')
@@ -90,7 +90,7 @@ describe('An inflection start delimiter consisting of 1 underscore', () => {
     expect(Up.parse('A _bread___ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('A '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('bread'),
         ]),
         new Up.Text(' to believe in')
@@ -119,7 +119,7 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
       insideDocumentAndParagraph([
         new Up.Bold([
           new Up.Text('Please '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('stop')
             ]),
@@ -136,7 +136,7 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
         new Up.Bold([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard')
@@ -151,14 +151,14 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
       insideDocumentAndParagraph([
         new Up.Bold([
           new Up.Text('Please '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard'),
           ]),
         ]),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text(' immediately')
         ])
       ]))
@@ -172,7 +172,7 @@ describe('Inside of bolded text, italiczed/bolded text with its bold convention 
       insideDocumentAndParagraph([
         new Up.Bold([
           new Up.Text('Please '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('stop')
             ]),
@@ -191,7 +191,7 @@ describe('Inside of bolded text, italiczed/bolded text with its italic conventio
         new Up.Bold([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard immediately')
@@ -206,9 +206,9 @@ describe('Inside of italiczed text, italiczed/bolded text with its bold conventi
   it('can have the reamining two italic convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('stop')
             ]),
@@ -224,10 +224,10 @@ describe('Inside of italiczed text, italiczed/bolded text with its inner italic 
   it('can have the reamining bold convention and italic convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop')
             ]),
             new Up.Text(' eating the cardboard immediately')
@@ -254,8 +254,8 @@ describe('An inflection start delimiter consisting of 4+ underscores, with an it
       insideDocumentAndParagraph([
         new Up.Text('Well, '),
         new Up.Bold([
-          new Up.Italic([
-            new Up.Italic([
+          new Up.Italics([
+            new Up.Italics([
               new Up.Text('Xamarin')
             ]),
             new Up.Text(' is now free')
@@ -290,7 +290,7 @@ describe('An inflection start delimiter consisting of 5+ underscores, with an it
       insideDocumentAndParagraph([
         new Up.Text('Well, '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Bold([
               new Up.Text('Xamarin')
             ]),
@@ -308,7 +308,7 @@ describe('Text that is italiczed/bolded at the same time', () => {
     expect(Up.parse('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('Nimble')
           ]),
           new Up.Text(' navigators?')
@@ -324,13 +324,13 @@ describe('Text that is italiczed/bolded at the same time', () => {
     expect(Up.parse('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('Nimble')
           ]),
           new Up.Text(' navigators?')
         ]),
         new Up.Text(' '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Tropical.')
         ])
       ]))
@@ -339,7 +339,7 @@ describe('Text that is italiczed/bolded at the same time', () => {
   it('can have its bold convention closed first and be followed by bolded text', () => {
     expect(Up.parse('___Nimble__ navigators?_ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Bold([
             new Up.Text('Nimble')
           ]),
@@ -355,14 +355,14 @@ describe('Text that is italiczed/bolded at the same time', () => {
   it('can have its bold convention closed first and be followed by italiczed text', () => {
     expect(Up.parse('___Nimble__ navigators?_ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Bold([
             new Up.Text('Nimble')
           ]),
           new Up.Text(' navigators?')
         ]),
         new Up.Text(' '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Tropical.')
         ])
       ]))

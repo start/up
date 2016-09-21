@@ -8,7 +8,7 @@ describe('Text surrounded by 2 underscores to its left and 1 underscore to its r
     expect(Up.parse('Xamarin is now __free_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('free'),
         ]),
         new Up.Text('!')
@@ -22,7 +22,7 @@ describe('Text surrounded by 1 underscore to its left and 2 underscores to its r
     expect(Up.parse('Xamarin is now _free__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('free'),
         ]),
         new Up.Text('!')
@@ -36,7 +36,7 @@ describe('Text surrounded by 3 underscores to its left and 1 underscore to its r
     expect(Up.parse('Xamarin is now ___free_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('free'),
         ]),
         new Up.Text('!')
@@ -64,7 +64,7 @@ describe('Text surrounded by 1 underscore to its left and 3 underscores to its r
     expect(Up.parse('Xamarin is now _free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('free'),
         ]),
         new Up.Text('!')

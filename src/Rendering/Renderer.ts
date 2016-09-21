@@ -8,7 +8,7 @@ import { Text } from '../SyntaxNodes/Text'
 import { Emphasis } from '../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../SyntaxNodes/ExampleInput'
 import { Stress } from '../SyntaxNodes/Stress'
-import { Italic } from '../SyntaxNodes/Italic'
+import { Italics } from '../SyntaxNodes/Italics'
 import { Bold } from '../SyntaxNodes/Bold'
 import { InlineCode } from '../SyntaxNodes/InlineCode'
 import { SectionLink } from '../SyntaxNodes/SectionLink'
@@ -66,7 +66,7 @@ export abstract class Renderer {
   abstract inlineNsfw(inlineNsfw: InlineNsfw): string
   abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
   abstract inlineQuote(inlineQuote: InlineQuote): string
-  abstract italic(italic: Italic): string
+  abstract italics(italics: Italics): string
   abstract lineBlock(lineBlock: LineBlock): string
   abstract link(link: Link): string
   abstract nsflBlock(nsflBlock: NsflBlock): string

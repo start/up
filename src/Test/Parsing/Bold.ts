@@ -50,7 +50,7 @@ describe('Bold text', () => {
         new Up.Text('Hello, '),
         new Up.Bold([
           new Up.Text('my '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('little')
           ]),
           new Up.Text(' world')

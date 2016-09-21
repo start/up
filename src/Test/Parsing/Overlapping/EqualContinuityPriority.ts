@@ -51,7 +51,7 @@ describe('Overlapped italicized and emphasized text', () => {
     expect(Up.parse('I _love *drinking_ whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('love '),
           new Up.Emphasis([
             new Up.Text('drinking')
@@ -73,11 +73,11 @@ describe('Overlapped emphasized and italicized text', () => {
         new Up.Text('I '),
         new Up.Emphasis([
           new Up.Text('love '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('drinking')
           ])
         ]),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')

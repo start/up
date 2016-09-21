@@ -1,4 +1,4 @@
-import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
@@ -162,7 +162,7 @@ class Tokenizer {
       conventionForMajorInflection: STRESS
     }, {
       delimiterChar: '_',
-      conventionForMinorInflection: ITALIC,
+      conventionForMinorInflection: ITALICS,
       conventionForMajorInflection: BOLD
     }, {
       delimiterChar: '"',

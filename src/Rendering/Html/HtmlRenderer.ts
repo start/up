@@ -9,7 +9,7 @@ import { Text } from '../../SyntaxNodes/Text'
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { Italic } from '../../SyntaxNodes/Italic'
+import { Italics } from '../../SyntaxNodes/Italics'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { SectionLink } from '../../SyntaxNodes/SectionLink'
@@ -185,8 +185,8 @@ export class HtmlRenderer extends Renderer {
     return this.element('strong', stress.children)
   }
 
-  italic(italic: Italic): string {
-    return this.element('i', italic.children)
+  italics(italics: Italics): string {
+    return this.element('i', italics.children)
   }
 
   bold(bold: Bold): string {
@@ -210,7 +210,7 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Italic([new Text(sectionLink.sectionTitleSnippet)])
+        : new Italics([new Text(sectionLink.sectionTitleSnippet)])
 
     return representation.render(this)
   }

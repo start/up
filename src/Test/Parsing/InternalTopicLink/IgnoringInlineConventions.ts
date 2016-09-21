@@ -543,7 +543,7 @@ Well, maybe I'm not so great.`
       const greatnessHeading =
         new Up.Heading([
           new Up.Text("I am great. Read the "),
-          new Up.Italic([new Up.Text("full transcript of my greatness")])
+          new Up.Italics([new Up.Text("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(

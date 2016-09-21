@@ -13,7 +13,7 @@ describe('Text surrounded by 3 underscores', () => {
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('free'),
           ])
         ]),
@@ -29,7 +29,7 @@ describe('Text that is italicized/bolded at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Text('Koopas! '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('Mario is on his way!'),
           ])
         ]),
@@ -42,7 +42,7 @@ describe('Text that is italicized/bolded at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Text('Koopas! '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('Mario is on his way!'),
           ])
         ]),
@@ -55,7 +55,7 @@ describe('Text that is italicized/bolded at the same time', () => {
       insideDocumentAndParagraph([
         new Up.Text('Hello, '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('my'),
           ]),
           new Up.Text(' world')
@@ -68,7 +68,7 @@ describe('Text that is italicized/bolded at the same time', () => {
     expect(Up.parse('Hello, ___my__ world_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Hello, '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Bold([
             new Up.Text('my'),
           ]),
@@ -84,10 +84,10 @@ context("You can italicize/bold text at the same time when you're already within
   specify('an italic convention', () => {
     expect(Up.parse('_Please ___stop eating the cardboard___ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop eating the cardboard'),
             ])
           ]),
@@ -102,7 +102,7 @@ context("You can italicize/bold text at the same time when you're already within
         new Up.Bold([
           new Up.Text('Please '),
           new Up.Bold([
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('stop eating the cardboard'),
             ])
           ]),
@@ -119,7 +119,7 @@ context('An inflection start delimiter consisting of 3 underscores with its ital
       insideDocumentAndParagraph([
         new Up.Text('Well, '),
         new Up.Bold([
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('Xamarin')
           ]),
           new Up.Text(' is now free')
@@ -135,7 +135,7 @@ describe('An inflection start delimiter consisting of 3 underscores with its bol
     expect(Up.parse('Well, ___Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Well, '),
-        new Up.Italic([
+        new Up.Italics([
           new Up.Bold([
             new Up.Text('Xamarin')
           ]),
@@ -154,7 +154,7 @@ context('Text that is bolded then italicized can have both conventions closed to
         new Up.Text('Xamarin is '),
         new Up.Bold([
           new Up.Text('now '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('free')
           ])
         ]),
@@ -168,7 +168,7 @@ context('Text that is bolded then italicized can have both conventions closed to
         new Up.Text('Xamarin is '),
         new Up.Bold([
           new Up.Text('now '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('free')
           ])
         ]),
@@ -182,7 +182,7 @@ context('Text that is italicized then bolded can have both conventions closed to
   specify('3 underscores', () => {
     expect(Up.parse('_He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
           new Up.Bold([
             new Up.Text('six in a row!')
@@ -194,7 +194,7 @@ context('Text that is italicized then bolded can have both conventions closed to
   specify('4 or more underscores', () => {
     expect(Up.parse('_He has won __six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
           new Up.Bold([
             new Up.Text('six in a row!')
@@ -209,9 +209,9 @@ context('Doubly italicized text can be closed together by', () => {
   specify('2 underscores', () => {
     expect(Up.parse('_He has won _six in a row!__')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('six in a row!')
           ])
         ])
@@ -221,9 +221,9 @@ context('Doubly italicized text can be closed together by', () => {
   specify('3 underscores', () => {
     expect(Up.parse('_He has won _six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('six in a row!')
           ])
         ])
@@ -233,9 +233,9 @@ context('Doubly italicized text can be closed together by', () => {
   specify('4 or more underscores', () => {
     expect(Up.parse('_He has won _six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('six in a row!')
           ])
         ])
@@ -275,7 +275,7 @@ describe('Two inflection start delimiters, both consisting of 2 underscores,', (
   it('can be closed by 3 underscores, bolding the inner text and italicizing the outer text', () => {
     expect(Up.parse('__He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has won '),
           new Up.Bold([
             new Up.Text('six in a row!')
@@ -290,11 +290,11 @@ context('Triply italicized text can be closed together by', () => {
   specify('3 underscores', () => {
     expect(Up.parse('_He has _won _six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('won '),
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('six in a row!')
             ])
           ])
@@ -305,11 +305,11 @@ context('Triply italicized text can be closed together by', () => {
   specify('4 or more underscores', () => {
     expect(Up.parse('_He has _won _six in a row!_____')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
+        new Up.Italics([
           new Up.Text('He has '),
-          new Up.Italic([
+          new Up.Italics([
             new Up.Text('won '),
-            new Up.Italic([
+            new Up.Italics([
               new Up.Text('six in a row!')
             ])
           ])
@@ -323,10 +323,10 @@ describe('Quadruple underscores followed by 4 separate single closing underscore
   it('produces 4 nested italic nodes', () => {
     expect(Up.parse('____Warning:_ never_ feed_ this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
-          new Up.Italic([
-            new Up.Italic([
-              new Up.Italic([
+        new Up.Italics([
+          new Up.Italics([
+            new Up.Italics([
+              new Up.Italics([
                 new Up.Text('Warning:'),
               ]),
               new Up.Text(' never')

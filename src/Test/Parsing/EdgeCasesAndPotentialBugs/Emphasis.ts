@@ -29,7 +29,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
           new Up.Text('Luigi stood up. '),
           new Up.Emphasis([
             new Up.Text('Hello, my '),
-            new Up.Italic([
+            new Up.Italics([
               new Up.Emphasis([
                 new Up.Text('leetle')
               ]),
@@ -85,7 +85,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
             new Up.Text('"'),
             new Up.NormalParenthetical([
               new Up.Text('('),
-              new Up.Italic([
+              new Up.Italics([
                 new Up.Emphasis([
                   new Up.Text('leetle')
                 ])
@@ -126,7 +126,7 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Text('Luigi stood up. '),
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
-              new Up.Italic([
+              new Up.Italics([
                 new Up.Text('Mario'),
               ]),
             ]),

@@ -1,4 +1,4 @@
-import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
+import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Text } from '../../SyntaxNodes/Text'
@@ -27,7 +27,7 @@ export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
 const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   EMPHASIS,
   STRESS,
-  ITALIC,
+  ITALICS,
   BOLD,
   HIGHLIGHT,
   SPOILER,
