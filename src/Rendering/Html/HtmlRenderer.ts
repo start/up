@@ -228,7 +228,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   inlineQuote(inlineQuote: InlineQuote): string {
-    // Why do we produce a `<span>` instead of a `<q>`?
+    // Why do we render a `<span>` element instead of a `<q>` element?
     //
     // If an inline quote overlaps a link or a spoiler, the inline quote gets split in two. That would
     // produce two separate `<q>` elements, which is semantically inaccurate.
