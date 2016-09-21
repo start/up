@@ -8,13 +8,14 @@ context('When most otherwise-nested conventions overlap by only their start deli
     expect(Up.parse('**_"Hello_ good** friend!" Hi!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
+          new Up.Text('"'),
           new Up.Stress([
             new Up.Italic([
               new Up.Text('Hello')
             ]),
             new Up.Text(' good')
           ]),
-          new Up.Text(' friend!')
+          new Up.Text(' friend!"')
         ]),
         new Up.Text(' Hi!')
       ]))
