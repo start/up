@@ -29,7 +29,7 @@ function itWorksAsAdvertised(
   // And now we're ready to test!
 
   context('is disabled by default', () => {
-    specify('when the default parse method is called', () => {
+    specify('when the default parse function is called', () => {
       expect(Up.parse(markup)).to.deep.equal(documentWhenSettingIsNotChanged)
     })
 
@@ -40,7 +40,7 @@ function itWorksAsAdvertised(
 
 
   context('works when enabled', () => {
-    specify('when calling the default parse method', () => {
+    specify('when calling the default parse function', () => {
       expect(Up.parse(markup, change)).to.deep.equal(documentWhenChangeIsApplied)
     })
 
@@ -64,7 +64,7 @@ function itWorksAsAdvertised(
 
 
   context('does not affect subsequent calls when provided', () => {
-    specify('when calling the default parse method', () => {
+    specify('when calling the default parse function', () => {
       expect(Up.parse(markup, change)).to.be.not.eql(Up.parse(markup))
     })
 

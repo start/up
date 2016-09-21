@@ -23,7 +23,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.renderDocumentAndTableOfContents(document)
 
 
-  describe("when provided to the default renderDocumentAndTableOfContents method", () => {
+  describe("when provided to the default renderDocumentAndTableOfContents function", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the changed settings would actually change the HTML
       expect(Up.renderDocumentAndTableOfContents(document, change)).to.not.equal(htmlFromDefaultSettings)
@@ -62,7 +62,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe('when provided to a Transformer object at creation', () => {
-    it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents method', () => {
+    it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents function', () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 

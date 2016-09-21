@@ -94,7 +94,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   }
 
 
-  describe("when provided to the default parse method", () => {
+  describe("when provided to the default parse function", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
       expect(Up.parse(markupForTermVariations, changedParsingSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
     })
@@ -166,7 +166,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const whenProvidingChangesAtCreation =
       up.parse(markupForTermVariations)
 
-    it('has the same result as providing the term when calling the default parse method', () => {
+    it('has the same result as providing the term when calling the default parse function', () => {
       expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedParsingSettings))
     })
 
@@ -576,7 +576,7 @@ context('Settings settings are totally independent. When one setting is changed,
       ]))
   })
 
-  specify('the default parse method', () => {
+  specify('the default parse function', () => {
     const document =
       Up.parse('[SPOILER: Ash fights Gary]', {
         terms: {
