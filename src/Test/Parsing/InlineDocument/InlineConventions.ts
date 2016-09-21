@@ -117,7 +117,7 @@ context('Except for footnotes and internal topic links, every inline convention 
         ]))
     })
 
-    specify('Italic', () => {
+    specify('Italics', () => {
       expect(Up.parseInline('I loved my _Game Boy_, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),

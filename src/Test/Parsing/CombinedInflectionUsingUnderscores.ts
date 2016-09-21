@@ -50,7 +50,7 @@ describe('Text that is italicized/bolded at the same time', () => {
       ]))
   })
 
-  it('can have its italic convention closed first (and thus opened second), with the remaining text being bolded', () => {
+  it('can have its italics convention closed first (and thus opened second), with the remaining text being bolded', () => {
     expect(Up.parse('Hello, ___my_ world__!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Hello, '),
@@ -64,7 +64,7 @@ describe('Text that is italicized/bolded at the same time', () => {
       ]))
   })
 
-  it('can have its italic convention closed first (and thus opened second), with the remaining text being italicized', () => {
+  it('can have its italics convention closed first (and thus opened second), with the remaining text being italicized', () => {
     expect(Up.parse('Hello, ___my__ world_!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Hello, '),
@@ -81,7 +81,7 @@ describe('Text that is italicized/bolded at the same time', () => {
 
 
 context("You can italicize/bold text at the same time when you're already within", () => {
-  specify('an italic convention', () => {
+  specify('an italics convention', () => {
     expect(Up.parse('_Please ___stop eating the cardboard___ immediately_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -113,7 +113,7 @@ context("You can italicize/bold text at the same time when you're already within
 })
 
 
-context('An inflection start delimiter consisting of 3 underscores with its italic ended first', () => {
+context('An inflection start delimiter consisting of 3 underscores with its italics ended first', () => {
   it('can have its bold convention closed with 3 underscores', () => {
     expect(Up.parse('Well, ___Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -131,7 +131,7 @@ context('An inflection start delimiter consisting of 3 underscores with its ital
 
 
 describe('An inflection start delimiter consisting of 3 underscores with its bold ended first', () => {
-  it('can have its italic convention closed with 3 underscores', () => {
+  it('can have its italics convention closed with 3 underscores', () => {
     expect(Up.parse('Well, ___Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Well, '),

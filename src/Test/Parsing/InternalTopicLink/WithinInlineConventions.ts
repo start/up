@@ -293,7 +293,7 @@ I love all sorts of fancy stuff.`
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
-  specify('Italic', () => {
+  specify('Italics', () => {
     const markup = `
 I have plenty of good traits. _See [section: interesting]._
 

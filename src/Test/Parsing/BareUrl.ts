@@ -226,7 +226,7 @@ describe('A bare URL', () => {
   })
 
 
-  context('if not inside an italic/bold convention', () => {
+  context('if not inside an italics/bold convention', () => {
     specify("can contain unescaped underscores", () => {
       expect(Up.parse('https://example.org/a_normal_url')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -488,7 +488,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  context('Italic', () => {
+  context('Italics', () => {
     specify('Surrounded by 1 underscore on either side', () => {
       expect(Up.parse('_I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -585,7 +585,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  specify('Italic and bold together', () => {
+  specify('Italics and bold together', () => {
     expect(Up.parse('___I love https://archive.org/fake___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([

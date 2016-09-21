@@ -40,7 +40,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
       ]))
   })
 
-  it('can have the 2 italic conventions closed before the bold convention', () => {
+  it('can have the 2 italics conventions closed before the bold convention', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard_ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -130,7 +130,7 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
       ]))
   })
 
-  it('can have its italic convention closed first', () => {
+  it('can have its italics convention closed first', () => {
     expect(Up.parse('__Please ___stop_ eating the cardboard__ immediately__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -167,7 +167,7 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
 
 
 describe('Inside of bolded text, italiczed/bolded text with its bold convention closed first', () => {
-  it('can have the reamining italic convention and bold convention closed by 3 or more underscores', () => {
+  it('can have the reamining italics convention and bold convention closed by 3 or more underscores', () => {
     expect(Up.parse('__Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -184,7 +184,7 @@ describe('Inside of bolded text, italiczed/bolded text with its bold convention 
 })
 
 
-describe('Inside of bolded text, italiczed/bolded text with its italic convention closed first', () => {
+describe('Inside of bolded text, italiczed/bolded text with its italics convention closed first', () => {
   it('can have the reamining 2 bold conventions closed by 4 or more underscores', () => {
     expect(Up.parse('__Please ___stop_ eating the cardboard immediately____')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -203,7 +203,7 @@ describe('Inside of bolded text, italiczed/bolded text with its italic conventio
 
 
 describe('Inside of italiczed text, italiczed/bolded text with its bold convention closed first', () => {
-  it('can have the reamining two italic convention closed by 3 or more underscores', () => {
+  it('can have the reamining two italics convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop__ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -220,8 +220,8 @@ describe('Inside of italiczed text, italiczed/bolded text with its bold conventi
 })
 
 
-describe('Inside of italiczed text, italiczed/bolded text with its inner italic convention closed first', () => {
-  it('can have the reamining bold convention and italic convention closed by 3 or more underscores', () => {
+describe('Inside of italiczed text, italiczed/bolded text with its inner italics convention closed first', () => {
+  it('can have the reamining bold convention and italics convention closed by 3 or more underscores', () => {
     expect(Up.parse('_Please ___stop_ eating the cardboard immediately___')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -248,7 +248,7 @@ describe('Matching clusters of 3+ underscores each surrounded by whitespce', () 
 })
 
 
-describe('An inflection start delimiter consisting of 4+ underscores, with an italic convention ended first, subsequently ending in 3+ additional underscores', () => {
+describe('An inflection start delimiter consisting of 4+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces an italics node nested within bold and italics nodes', () => {
     expect(Up.parse('Well, ____Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -284,7 +284,7 @@ describe('An inflection start delimiter consisting of 4+ underscores, with a bol
 })
 
 
-describe('An inflection start delimiter consisting of 5+ underscores, with an italic convention ended first, subsequently ending in 3+ additional underscores', () => {
+describe('An inflection start delimiter consisting of 5+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces a bold node nested within bold and italics nodes', () => {
     expect(Up.parse('Well, _____Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -304,7 +304,7 @@ describe('An inflection start delimiter consisting of 5+ underscores, with an it
 
 
 describe('Text that is italiczed/bolded at the same time', () => {
-  it('can have its italic convention closed first and be followed by bolded text', () => {
+  it('can have its italics convention closed first and be followed by bolded text', () => {
     expect(Up.parse('___Nimble_ navigators?__ __Tropical.__')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
@@ -320,7 +320,7 @@ describe('Text that is italiczed/bolded at the same time', () => {
       ]))
   })
 
-  it('can have its italic convention closed first and be followed by italiczed text', () => {
+  it('can have its italics convention closed first and be followed by italiczed text', () => {
     expect(Up.parse('___Nimble_ navigators?__ _Tropical._')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([

@@ -150,7 +150,7 @@ class Tokenizer {
   // bare URL that needs to be manually closed when an outer convention is closing.
   private bareUrlPathConvention = this.getBareUrlPathConvention()
 
-  // Inflection means any change of voice, which includes emphasis, stress, italic, bold, and quotes.
+  // Inflection means any change of voice, which includes emphasis, stress, italics, bold, and quotes.
   //
   // We handle inflection in a manner incompatible with the rest of our conventions, so we throw all that
   // special logic into the InflectionHandler class. More information can be found in comments within that
