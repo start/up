@@ -3,104 +3,101 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '.././Helpers'
 
 
-context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split.', () => {
-  context('This includes:', () => {
-    specify('Two "freely-splittable" conventions (e.g. stress, italics) overlap a third (e.g. quoted text)', () => {
-      expect(Up.parse('**_"Hello_ good** friend!" Hi!')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineQuote([
-            new Up.Stress([
-              new Up.Italic([
-                new Up.Text('Hello')
-              ]),
-              new Up.Text(' good')
-            ]),
-            new Up.Text(' friend!')
-          ]),
-          new Up.Text(' Hi!')
-        ]))
-    })
-
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
-      expect(Up.parse('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.deep.equal(
-        insideDocumentAndParagraph([
+context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split. This includes:', () => {
+  specify('Two "freely-splittable" conventions (e.g. stress, italics) overlap a third (e.g. quoted text)', () => {
+    expect(Up.parse('**_"Hello_ good** friend!" Hi!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.InlineQuote([
           new Up.Stress([
-            new Up.InlineNsfl([
-              new Up.Link([
-                new Up.Text('Ash')
-              ], 'https://example.com'),
-              new Up.Text(' is')
+            new Up.Italic([
+              new Up.Text('Hello')
             ]),
-            new Up.Text(' a friend!')
+            new Up.Text(' good')
           ]),
-          new Up.Text(' Hi!')
-        ]))
-    })
-
-    specify('Quoted text and italics', () => {
-      expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Italic([
-            new Up.InlineQuote([
-              new Up.Text('Oh')
-            ]),
-            new Up.Text(' why would you do this?')
-          ])
-        ]))
-    })
-
-    specify("A link whose content is wrapped in square brackets and emphasis", () => {
-      expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Link([
-            new Up.Emphasis([
-              new Up.Text('Yes'),
-            ]),
-            new Up.Text(", I watched it live")
-          ], 'https://example.com/replay'),
-          new Up.Text('.')
-        ]))
-    })
-
-    specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
-      expect(Up.parse("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Emphasis([
-            new Up.Link([
-              new Up.Text('Yes, I watched it live'),
-            ], 'https://example.com/replay'),
-            new Up.Text(' yesterday')
-          ]),
-          new Up.Text('.')
-        ]))
-    })
+          new Up.Text(' friend!')
+        ]),
+        new Up.Text(' Hi!')
+      ]))
   })
 
+  specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
+    expect(Up.parse('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Stress([
+          new Up.InlineNsfl([
+            new Up.Link([
+              new Up.Text('Ash')
+            ], 'https://example.com'),
+            new Up.Text(' is')
+          ]),
+          new Up.Text(' a friend!')
+        ]),
+        new Up.Text(' Hi!')
+      ]))
+  })
 
-  context('But not conventions whose delimiters represent actual content:', () => {
-    specify('Parentheses', () => {
-      expect(Up.parse('"(Oh" why would you do this?)')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.NormalParenthetical([
-            new Up.InlineQuote([
-              new Up.Text('(Oh')
-            ]),
-            new Up.Text(' why would you do this?)')
-          ])
-        ]))
-    })
+  specify('Quoted text and italics', () => {
+    expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Italic([
+          new Up.InlineQuote([
+            new Up.Text('Oh')
+          ]),
+          new Up.Text(' why would you do this?')
+        ])
+      ]))
+  })
 
-    specify('Square brackets', () => {
-      expect(Up.parse('"[Oh" why would you do this?]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.InlineQuote([
-              new Up.Text('[Oh')
-            ]),
-            new Up.Text(' why would you do this?]')
-          ])
-        ]))
-    })
+  specify('Quoted text and parentheses', () => {
+    expect(Up.parse('"(Oh" why would you do this?)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.NormalParenthetical([
+          new Up.Text('('),
+          new Up.InlineQuote([
+            new Up.Text('Oh')
+          ]),
+          new Up.Text(' why would you do this?)')
+        ])
+      ]))
+  })
+
+  specify('Quoted text and square brackets', () => {
+    expect(Up.parse('"[Oh" why would you do this?]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.SquareParenthetical([
+          new Up.Text('['),
+          new Up.InlineQuote([
+            new Up.Text('Oh')
+          ]),
+          new Up.Text(' why would you do this?]')
+        ])
+      ]))
+  })
+
+  specify("A link whose content is wrapped in square brackets and emphasis", () => {
+    expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Emphasis([
+            new Up.Text('Yes'),
+          ]),
+          new Up.Text(", I watched it live")
+        ], 'https://example.com/replay'),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify("Emphasis and a link whose content is wrapped in square brackets and emphasis", () => {
+    expect(Up.parse("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Emphasis([
+          new Up.Link([
+            new Up.Text('Yes, I watched it live'),
+          ], 'https://example.com/replay'),
+          new Up.Text(' yesterday')
+        ]),
+        new Up.Text('.')
+      ]))
   })
 })
 
@@ -282,6 +279,30 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
   })
 
+  specify('Parentheses', () => {
+    expect(Up.parse('_Oh (why would you do this?_)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Italic([
+          new Up.Text('Oh '),
+          new Up.NormalParenthetical([
+            new Up.Text('(why would you do this?)')
+          ]),
+        ]),
+      ]))
+  })
+
+  specify('Square brackets', () => {
+    expect(Up.parse('"Oh [why would you do this?"]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.InlineQuote([
+          new Up.Text('Oh '),
+          new Up.SquareParenthetical([
+            new Up.Text('[why would you do this?]')
+          ]),
+        ]),
+      ]))
+  })
+
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable,', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
@@ -296,39 +317,6 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             ]),
           ]),
           new Up.Text(' Hi!')
-        ]))
-    })
-  })
-
-
-  context('But not conventions whose delimiters represent actual content:', () => {
-    specify('Parentheses', () => {
-      expect(Up.parse('_Oh (why would you do this?_)')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Italic([
-            new Up.Text('Oh '),
-            new Up.NormalParenthetical([
-              new Up.Text('(why would you do this?')
-            ]),
-          ]),
-          new Up.NormalParenthetical([
-            new Up.Text(')')
-          ])
-        ]))
-    })
-
-    specify('Square brackets', () => {
-      expect(Up.parse('"Oh [why would you do this?"]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineQuote([
-            new Up.Text('Oh '),
-            new Up.SquareParenthetical([
-              new Up.Text('[why would you do this?')
-            ]),
-          ]),
-          new Up.SquareParenthetical([
-            new Up.Text(']')
-          ])
         ]))
     })
   })
@@ -374,10 +362,12 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Italics and parentheses', () => {
     expect(Up.parse('_(Why would you do this?_)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italic([
-          new Up.NormalParenthetical([
-            new Up.Text('(Why would you do this?)')
+        new Up.NormalParenthetical([
+          new Up.Text('('),
+          new Up.Italic([
+            new Up.Text('Why would you do this?')
           ]),
+          new Up.Text(')')
         ])
       ]))
   })
@@ -403,7 +393,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
           new Up.Italic([
             new Up.Text('Why would you do this?')
           ]),
-          new Up.Text(')'),
+          new Up.Text(')')
         ])
       ]))
   })
