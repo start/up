@@ -129,7 +129,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   describe("when provided to a Transformer object's parse method", () => {
     const up = new Up.Transformer()
 
-    it("does not alter the Up object's original settings", () => {
+    it("does not alter the Transformer object's original settings", () => {
       expectConventiontoProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
     })
 
@@ -170,11 +170,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the term when calling the Up object's parse method", () => {
+    it("has the same result as providing the term when calling the Transformer object's parse method", () => {
       expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer().parse(markupForTermVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the term when calling the Up object's parse method, overwriting the term provided at creation", () => {
+    it("has the same result as providing the term when calling the Transformer object's parse method, overwriting the term provided at creation", () => {
       expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer(conflictingSettings).parse(markupForTermVariations, changedParsingSettings))
     })
 
@@ -576,7 +576,7 @@ context('Settings settings are totally independent. When one setting is changed,
       ]))
   })
 
-  specify('the default Up object', () => {
+  specify('the default parse method', () => {
     const document =
       Up.parse('[SPOILER: Ash fights Gary]', {
         terms: {

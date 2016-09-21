@@ -39,7 +39,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   describe("when provided to a Transformer object's renderDocumentAndTableOfContents method", () => {
-    it("does not alter the Up object's original settings", () => {
+    it("does not alter the Transformer object's original settings", () => {
       const up = new Up.Transformer(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
@@ -66,11 +66,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
-    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method", () => {
+    it("has the same result as providing the setting when calling the Transformer object's renderDocumentAndTableOfContents method", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
+    it("has the same result as providing the setting when calling the Transformer object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })
