@@ -297,10 +297,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     expect(Up.parse('"Oh [why would you do this?"]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Text('Oh '),
+          new Up.Text('"Oh '),
           new Up.SquareParenthetical([
             new Up.Text('[why would you do this?]')
           ]),
+          new Up.Text('"')
         ]),
       ]))
   })
