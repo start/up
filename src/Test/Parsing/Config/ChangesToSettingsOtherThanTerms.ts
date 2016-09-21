@@ -13,10 +13,10 @@ function itWorksAsAdvertised(
     documentWhenChangeIsApplied: Up.Document
     documentWhenSettingIsNotChanged: Up.Document
     change: Up.UserProvidedSettings.Parsing
-    conflictingChange: Up.UserProvidedSettings.Parsing
+    changeBackToDefault: Up.UserProvidedSettings.Parsing
   }
 ): void {
-  const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, change, conflictingChange } = args
+  const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, change, changeBackToDefault } = args
 
   // First, let's make sure the caller is expecting their settings changes to make a difference
   expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
@@ -24,7 +24,7 @@ function itWorksAsAdvertised(
   // Next, we'll produce "overall" settings (which cover both parsing and rendering
   // settings). Up's constructor accepts these settings. 
   const changedSettings = settingsFor(change)
-  const conflictingChangedSettings = settingsFor(conflictingChange)
+  const conflictingChangedSettings = settingsFor(changeBackToDefault)
 
   // And now we're ready to test!
 
@@ -59,7 +59,7 @@ function itWorksAsAdvertised(
 
 
   specify('can be set back to default when calling the parse method on a Transformer object on which the setting was changed when the object was created', () => {
-    expect(new Up.Transformer(changedSettings).parse(markup, conflictingChange)).to.deep.equal(documentWhenSettingIsNotChanged)
+    expect(new Up.Transformer(changedSettings).parse(markup, changeBackToDefault)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
 
@@ -100,7 +100,7 @@ Very important
       createSourceMap: true
     },
 
-    conflictingChange: {
+    changeBackToDefault: {
       createSourceMap: false
     }
   })
@@ -127,7 +127,7 @@ describe('The "defaultUrlScheme" setting', () => {
       defaultUrlScheme: 'my-app://'
     },
 
-    conflictingChange: {
+    changeBackToDefault: {
       defaultUrlScheme: 'https://'
     }
   })
@@ -154,7 +154,7 @@ describe('The "fancyEllipsis" setting', () => {
       fancyEllipsis: '⋯'
     },
 
-    conflictingChange: {
+    changeBackToDefault: {
       fancyEllipsis: '…'
     }
   })
@@ -181,7 +181,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       baseForUrlsStartingWithSlash: 'my-app://example.com/see'
     },
 
-    conflictingChange: {
+    changeBackToDefault: {
       baseForUrlsStartingWithSlash: ''
     }
   })
@@ -208,7 +208,7 @@ describe('The "baseForUrlsStartingWithHashMark" setting', () => {
       baseForUrlsStartingWithHashMark: 'my-app://example.com/see'
     },
 
-    conflictingChange: {
+    changeBackToDefault: {
       baseForUrlsStartingWithHashMark: ''
     }
   })
