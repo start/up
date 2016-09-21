@@ -42,7 +42,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       insideDocumentAndParagraph([
         new Up.Italic([
           new Up.InlineQuote([
-            new Up.Text('Oh')
+            new Up.Text('"Oh"')
           ]),
           new Up.Text(' why would you do this?')
         ])
@@ -55,7 +55,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         new Up.NormalParenthetical([
           new Up.Text('('),
           new Up.InlineQuote([
-            new Up.Text('Oh')
+            new Up.Text('"Oh"')
           ]),
           new Up.Text(' why would you do this?)')
         ])
@@ -68,7 +68,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         new Up.SquareParenthetical([
           new Up.Text('['),
           new Up.InlineQuote([
-            new Up.Text('Oh')
+            new Up.Text('"Oh"')
           ]),
           new Up.Text(' why would you do this?]')
         ])
@@ -109,11 +109,11 @@ context('When most otherwise-nested conventions overlap by only their end delimi
       expect(Up.parse('"Hello **good _friend!"_** Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('Hello '),
+            new Up.Text('"Hello '),
             new Up.Stress([
               new Up.Text('good '),
               new Up.Italic([
-                new Up.Text('friend!')
+                new Up.Text('friend!"')
               ])
             ])
           ]),
@@ -205,13 +205,14 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Italic([
               new Up.Text('was '),
               new Up.InlineQuote([
-                new Up.Text('another '),
+                new Up.Text('"another '),
                 new Up.InlineNsfl([
                   new Up.Text('loud '),
                   new Up.InlineSpoiler([
                     new Up.Text('stomp')
                   ])
-                ])
+                ]),
+                new Up.Text('"')
               ])
             ])
           ]),
