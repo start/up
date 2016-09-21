@@ -64,7 +64,7 @@ Ash "Little Marco" Ketchum
           new Up.DescriptionList.Item([
             new Up.DescriptionList.Item.Subject([
               new Up.Text('Ash '),
-              new Up.InlineQuote([new Up.Text('Little Marco')]),
+              new Up.InlineQuote([new Up.Text('"Little Marco"')]),
               new Up.Text(' Ketchum')
             ])
           ],

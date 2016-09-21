@@ -128,10 +128,11 @@ context("For a streak of backticks to serve as a code block's fence, it must be 
 "\`\`\`"
 
 That's what the robot wrote!`
+
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineQuote([new Up.Text('```')])
+          new Up.InlineQuote([new Up.Text('"```"')])
         ]),
         new Up.Paragraph([
           new Up.Text("That's what the robot wrote!")

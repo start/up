@@ -23,7 +23,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
       expect(Up.parse('"I like Starcraft" ...still')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('I like Starcraft')
+            new Up.Text('"I like Starcraft"')
           ]),
           new Up.Text(' …still')
         ]))

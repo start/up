@@ -315,11 +315,11 @@ context('When a link overlaps a quote, the quote will always be split. This incl
         new Up.Link([
           new Up.Text('trash '),
           new Up.InlineQuote([
-            new Up.Text('can')
+            new Up.Text('"can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.InlineQuote([
-          new Up.Text(' not')
+          new Up.Text(' not"')
         ]),
         new Up.Text(' stay here.')
       ]))
@@ -330,11 +330,11 @@ context('When a link overlaps a quote, the quote will always be split. This incl
       insideDocumentAndParagraph([
         new Up.Text('I do '),
         new Up.InlineQuote([
-          new Up.Text('not ')
+          new Up.Text('"not ')
         ]),
         new Up.Link([
           new Up.InlineQuote([
-            new Up.Text('care')
+            new Up.Text('care"')
           ]),
           new Up.Text(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),

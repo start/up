@@ -159,7 +159,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           new Up.NormalParenthetical([
             new Up.Text('(quickly [^ '),
             new Up.InlineQuote([
-              new Up.Text('eating')
+              new Up.Text('"eating')
             ])
           ])
         ]),
@@ -169,7 +169,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' pizza')
+          new Up.Text(' pizza"')
         ]),
         new Up.Text(' all the time.')
       ]))
@@ -187,7 +187,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           new Up.NormalParenthetical([
             new Up.Text('(quickly '),
             new Up.InlineQuote([
-              new Up.Text('eating')
+              new Up.Text('"eating')
             ])
           ])
         ]),
@@ -197,7 +197,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' pizza')
+          new Up.Text(' pizza"')
         ]),
         new Up.Text(' all the time.')
       ]))
