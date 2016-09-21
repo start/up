@@ -252,9 +252,9 @@ describe('Overlapped quoted and emphasized text', () => {
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
-          new Up.Text('love '),
+          new Up.Text('"love '),
           new Up.Emphasis([
-            new Up.Text('drinking')
+            new Up.Text('drinking"')
           ])
         ]),
         new Up.Emphasis([
@@ -274,11 +274,11 @@ describe('Overlapped emphasized and quoted text', () => {
         new Up.Emphasis([
           new Up.Text('love '),
           new Up.InlineQuote([
-            new Up.Text('drinking')
+            new Up.Text('"drinking')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' whole')
+          new Up.Text(' whole"')
         ]),
         new Up.Text(' milk.')
       ]))
@@ -294,11 +294,11 @@ describe('Overlapped quoted and stressed text', () => {
         new Up.Stress([
           new Up.Text('love '),
           new Up.InlineQuote([
-            new Up.Text('drinking')
+            new Up.Text('"drinking')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' whole')
+          new Up.Text(' whole"')
         ]),
         new Up.Text(' milk.')
       ]))
@@ -312,9 +312,9 @@ describe('Overlapped stressed and quoted text', () => {
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
-          new Up.Text('love '),
+          new Up.Text('"love '),
           new Up.Stress([
-            new Up.Text('drinking')
+            new Up.Text('drinking"')
           ])
         ]),
         new Up.Stress([
@@ -334,11 +334,11 @@ describe('Overlapped quoted and highlighted text', () => {
         new Up.Highlight([
           new Up.Text('love '),
           new Up.InlineQuote([
-            new Up.Text('drinking')
+            new Up.Text('"drinking')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' whole')
+          new Up.Text(' whole"')
         ]),
         new Up.Text(' milk.')
       ]))
@@ -352,9 +352,9 @@ describe('Overlapped highlighted and quoted text', () => {
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
-          new Up.Text('love '),
+          new Up.Text('"love '),
           new Up.Highlight([
-            new Up.Text('drinking')
+            new Up.Text('drinking"')
           ])
         ]),
         new Up.Highlight([

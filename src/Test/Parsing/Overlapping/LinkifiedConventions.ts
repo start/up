@@ -34,12 +34,12 @@ describe('A linkified spoiler overlapping quoted text', () => {
           new Up.Link([
             new Up.Text('you fight Gary '),
             new Up.InlineQuote([
-              new Up.Text('Ketchum')
+              new Up.Text('"Ketchum')
             ])
           ], 'http://example.com/finalbattle')
         ]),
         new Up.InlineQuote([
-          new Up.Text(' and then the credits roll')
+          new Up.Text(' and then the credits roll"')
         ]),
         new Up.Text('.')
       ]))
