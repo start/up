@@ -67,7 +67,7 @@ describe('Overlapped italicized and emphasized text', () => {
 
 
 describe('Overlapped emphasized and italicized text', () => {
-  it('splits the italic node because it opened second', () => {
+  it('splits the italics node because it opened second', () => {
     expect(Up.parse('I *love _drinking* whole_ milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),

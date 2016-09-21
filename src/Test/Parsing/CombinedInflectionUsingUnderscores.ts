@@ -320,7 +320,7 @@ context('Triply italicized text can be closed together by', () => {
 
 
 describe('Quadruple underscores followed by 4 separate single closing underscores', () => {
-  it('produces 4 nested italic nodes', () => {
+  it('produces 4 nested italics nodes', () => {
     expect(Up.parse('____Warning:_ never_ feed_ this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([

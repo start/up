@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 
 
 describe('Text surrounded by single underscores', () => {
-  it('is put inside an italic node', () => {
+  it('is put inside an italics node', () => {
     expect(Up.parse('Hello, _world_!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Hello, '),
@@ -62,7 +62,7 @@ describe('Italicized text', () => {
 
 
 describe('Double underscores followed by two separate single closing underscores', () => {
-  it('produces 2 nested italic nodes', () => {
+  it('produces 2 nested italics nodes', () => {
     expect(Up.parse('__Warning:_ never feed this tarantula_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -77,7 +77,7 @@ describe('Double underscores followed by two separate single closing underscores
 
 
 describe('Text separated from (otherwise surrounding) underscores by whitespace', () => {
-  it('is not put inside an italic node', () => {
+  it('is not put inside an italics node', () => {
     expect(Up.parse('Birdie Sanders _ won _ Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Birdie Sanders _ won _ Wisconsin'),

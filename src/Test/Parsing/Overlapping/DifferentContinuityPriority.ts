@@ -46,7 +46,7 @@ describe('A link overlapping emphasized text', () => {
 
 
 describe('Italicized text overlapping a link', () => {
-  it('splits the italic node, not the link node', () => {
+  it('splits the italics node, not the link node', () => {
     expect(Up.parse('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I do '),

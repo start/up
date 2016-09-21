@@ -33,7 +33,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   })
 
 
-  describe('An italic node', () => {
+  describe('An italics node', () => {
     it('produces an <i> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.Italics([new Up.Text('Ness')])

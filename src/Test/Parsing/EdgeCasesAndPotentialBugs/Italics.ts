@@ -171,14 +171,14 @@ context('Within italics, (inner) italics can close directly after a convention i
 
 
 describe('An unmatched opening underscore', () => {
-  it('does not create an italic node', () => {
+  it('does not create an italics node', () => {
     expect(Up.parse('Hello, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Hello, _world!')
       ]))
   })
 
-  it('does not create an italic node, even when following 2 matching underscores', () => {
+  it('does not create an italics node, even when following 2 matching underscores', () => {
     expect(Up.parse('_Hello_, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italics([
@@ -201,7 +201,7 @@ describe('Matching single underscores each surrounded by whitespace', () => {
 
 
 describe('An underscore followed by whitespace with a matching underscore touching the end of a word', () => {
-  it('does not produce an italic node and is preserved as plain text', () => {
+  it('does not produce an italics node and is preserved as plain text', () => {
     expect(Up.parse('I believe_ my spelling_ was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I believe_ my spelling_ was wrong.')
@@ -211,7 +211,7 @@ describe('An underscore followed by whitespace with a matching underscore touchi
 
 
 describe('An underscore touching the beginning of a word with a matching underscore preceded by whitespace', () => {
-  it('does not produce an italic node and is preserved as plain text', () => {
+  it('does not produce an italics node and is preserved as plain text', () => {
     expect(Up.parse('I _believe my _spelling was wrong.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I _believe my _spelling was wrong.')

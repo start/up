@@ -589,7 +589,7 @@ describe('A stress node', () => {
 })
 
 
-describe('An italic node', () => {
+describe('An italics node', () => {
   it('produces an <i> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
