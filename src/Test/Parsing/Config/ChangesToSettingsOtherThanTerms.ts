@@ -58,7 +58,7 @@ function itWorksAsAdvertised(
   })
 
 
-  specify('can be set back to default when calling the parse method on a Transformer object that had the setting changed when the object was created', () => {
+  specify('can be set back to default when calling the parse method on a Transformer object on which the setting was changed when the object was created', () => {
     expect(new Up.Transformer(changedSettings).parse(markup, conflictingChange)).to.deep.equal(documentWhenSettingIsNotChanged)
   })
 
