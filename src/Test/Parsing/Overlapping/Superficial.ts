@@ -486,5 +486,20 @@ context("When most conventions overlap by only the first convention's end delimi
           ])
         ]))
     })
+
+    specify('Inline quotes', () => {
+      expect(Up.parse('(highlight: Oh ")why would you do this?"')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.Highlight([
+            new Up.Text('Oh '),
+            new Up.InlineQuote([
+              new Up.Text('"')
+            ]),
+          ]),
+          new Up.InlineQuote([
+            new Up.Text('why would you do this?"')
+          ])
+        ]))
+    })
   })
 })
