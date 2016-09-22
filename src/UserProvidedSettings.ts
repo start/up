@@ -23,7 +23,6 @@ export namespace UserProvidedSettings {
   export namespace Parsing {
     export interface Terms {
       audio?: Term
-      chart?: Term
       highlight?: Term
       image?: Term
       nsfl?: Term

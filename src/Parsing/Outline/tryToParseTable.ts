@@ -54,10 +54,12 @@ import { getTableCells } from './getTableCells'
 //         1;      0
 // 1;      true;   false
 // 0;      false;  false
-export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
+export function tryToParseTable(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { settings } = args
+  
+  // TODO: Rewrite
 
   const getLabelPattern = (labels: string[]) =>
     solelyAndIgnoringCapitalization(
@@ -74,16 +76,13 @@ export function tryToParseTableOrChart(args: OutlineParserArgs): boolean {
       linePattern: getLabelPattern(settings.terms.table),
       thenBeforeConsumingLine: setRawCaptionMarkup
     })
+  
 
-  const isChart =
-    !isTable && markupLineConsumer.consume({
-      linePattern: getLabelPattern(settings.terms.chart),
-      thenBeforeConsumingLine: setRawCaptionMarkup
-    })
-
-  if (!isTable && !isChart) {
+  if (!isTable) {
     return false
   }
+  
+  const isChart = false
 
   // We have our label line (with an optional caption).
   //

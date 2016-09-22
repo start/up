@@ -116,7 +116,6 @@ export namespace Settings {
       // The private fields below represent the (sanitized) variations provided by the user
       // for each term.
       private _audio: Term = []
-      private _chart: Term = []
       private _highlight: Term = []
       private _image: Term = []
       private _nsfl: Term = []
@@ -128,10 +127,6 @@ export namespace Settings {
 
       get audio(): Term {
         return distinct('audio', ...this._audio)
-      }
-
-      get chart(): Term {
-        return distinct('chart', ...this._chart)
       }
 
       get highlight(): Term {
@@ -170,7 +165,6 @@ export namespace Settings {
         const clone = new Terms()
 
         clone._audio = this._audio
-        clone._chart = this._chart
         clone._highlight = this._highlight
         clone._image = this._image
         clone._nsfl = this._nsfl
@@ -190,9 +184,6 @@ export namespace Settings {
 
         this._audio =
           sanitizeVariations(terms.audio)
-
-        this._chart =
-          sanitizeVariations(terms.chart)
 
         this._highlight =
           sanitizeVariations(terms.highlight)

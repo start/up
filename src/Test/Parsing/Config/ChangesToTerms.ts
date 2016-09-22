@@ -442,56 +442,6 @@ Chrono Cross;     1999`,
 })
 
 
-describe('The "chart" term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: `
-Data:
-
-                  Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`,
-
-    markupForDefaultSettings: `
-Chart:
-
-                  Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`,
-
-    termVariations: {
-      chart: 'data'
-    },
-
-    invalidMarkupForEmptyTerm: `
-:
-
-                  Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`,
-
-    invalidMarkupForBlankTerm: `
- \t \t :
-
-                  Release Date
-Chrono Trigger;   1995
-Chrono Cross;     1999`,
-
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      chart: [null, 'data', '', ' \t \t ', undefined]
-    },
-    onlyEmptyAndBlankTermVariations: {
-      chart: [null, '', ' \t \t ', undefined]
-    },
-    zeroTermVariations: {
-      chart: []
-    },
-    conflictingTermVariations: {
-      chart: 'info'
-    }
-  })
-})
-
-
 describe('The "sectionLink" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `

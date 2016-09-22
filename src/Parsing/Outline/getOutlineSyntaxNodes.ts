@@ -12,7 +12,7 @@ import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
-import { tryToParseTableOrChart } from './tryToParseTableOrChart'
+import { tryToParseTable } from './tryToParseTable'
 import { getLabeledBlockParser } from './getLabeledBlockParser'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { NON_BLANK_PATTERN } from '../../Patterns'
@@ -44,7 +44,7 @@ export function getOutlineSyntaxNodes(
     tryToParseThematicBreakStreak,
     tryToParseCodeBlock,
     tryToParseBlockquote,
-    tryToParseTableOrChart,
+    tryToParseTable,
     getLabeledBlockParser(terms.spoiler, SpoilerBlock),
     getLabeledBlockParser(terms.nsfw, NsfwBlock),
     getLabeledBlockParser(terms.nsfl, NsflBlock),
