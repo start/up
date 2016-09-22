@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../../../index'
 
 
 context("A chart caption is exactly like a table caption.", () => {
