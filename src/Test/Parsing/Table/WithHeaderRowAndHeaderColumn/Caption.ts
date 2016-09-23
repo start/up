@@ -5,7 +5,7 @@ import * as Up from '../../../../index'
 context("A chart caption is exactly like a table caption.", () => {
   specify('It is evaluated for inline conventions', () => {
     const markup = `
-Chart: \`AND\` operator logic
+Table: \`AND\` operator logic
 
         1;      0
 1;      true;   false
@@ -42,7 +42,7 @@ Chart: \`AND\` operator logic
 
   specify('Its outer whitespace is trimmed away', () => {
     const markup = `
-Chart:  \t  \t  \`AND\` operator logic \t \t  
+Table:  \t  \t  \`AND\` operator logic \t \t  
 
         1;      0
 1;      true;   false
@@ -76,7 +76,7 @@ Chart:  \t  \t  \`AND\` operator logic \t \t
 describe("A chart with a caption (just like a chart without a caption)", () => {
   it('does not need to have a blank line before the header row', () => {
     const markup = `
-Chart: Games in the Chrono series
+Table: Games in the Chrono series
                 Release Date
 
 Chrono Trigger;   1995
@@ -102,7 +102,7 @@ Chrono Cross;     1999`
 
   it('does not need any rows', () => {
     const markup = `
-Chart: Games in the Chrono series
+Table: Games in the Chrono series
 
         Release Date`
 

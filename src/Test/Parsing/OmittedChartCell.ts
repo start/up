@@ -5,7 +5,7 @@ import * as Up from '../../index'
 context('Just like a table, when a chart row has fewer cells than the header or than other rows', () => {
   specify('no extra cells are added to that row', () => {
     const markup = `
-Chart:
+Table:
 
                     Developer;            Platform;         Release Date
 
@@ -46,7 +46,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 describe('A chart header', () => {
   specify('can have fewer cells than its rows have', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date
 

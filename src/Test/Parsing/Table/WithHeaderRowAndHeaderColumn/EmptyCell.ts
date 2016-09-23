@@ -5,7 +5,7 @@ import * as Up from '../../../../index'
 describe('Just like a table, a chart row ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date
 
@@ -42,7 +42,7 @@ Chrono Cross;       1999`
 describe('A chart row ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date
 
@@ -79,7 +79,7 @@ Chrono Cross;       1999`
 describe('A chart header ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date;
 
@@ -119,7 +119,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 describe('A chart header ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date; \t \t 
 
@@ -159,7 +159,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 describe('A (non-empty) chart header cell consisting only of whitespace', () => {
   it('is considered empty', () => {
     const markup = `
-Chart:
+Table:
 
                     Developer;        \t  ;         Release Date
 
@@ -206,7 +206,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 describe('A (non-empty) chart row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
     const markup = `
-Chart:
+Table:
 
                     Developer;            Platform;         Release Date
 
@@ -253,7 +253,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 describe('A chart header starting with a semicolon', () => {
   it("starts with 2 empty cells (the first empty cell is the one that's added automatically)", () => {
     const markup = `
-Chart:
+Table:
 
 ;                                         Platform;         Release Date
 

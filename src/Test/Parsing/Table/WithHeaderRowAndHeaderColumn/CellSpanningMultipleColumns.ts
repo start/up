@@ -5,7 +5,7 @@ import * as Up from '../../../../index'
 context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
   specify('Header cells', () => {
     const markup = `
-Chart:
+Table:
 
                      Director;;;
 
@@ -29,7 +29,7 @@ Chrono Trigger;     Takashi Tokita;   Yoshinori Kitase;   Akihiko Matsui`
 
   specify('Row cells', () => {
     const markup = `
-Chart:
+Table:
 
                     Developer;            Publisher;        Marketer;       Release Date
 
@@ -72,7 +72,7 @@ Starcraft;          Blizzard;;;                                             Marc
 
   specify('Row header cells', () => {
     const markup = `
-Chart: Summary of last work week
+Table: Summary of last work week
 
               Most Common Word;         Magical Happenings
 

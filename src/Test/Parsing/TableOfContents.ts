@@ -394,7 +394,7 @@ Chrono Cross;     1999`
 Boolean logic
 =============
 
-Chart: \`AND\` operator logic
+Table: \`AND\` operator logic
 
         1;      0
 1;      true;   false

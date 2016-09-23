@@ -589,7 +589,7 @@ I never lie
 
 Not quite true.
 
-Chart: Reasons I lie
+Table: Reasons I lie
 
                                           Validity
 

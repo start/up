@@ -577,7 +577,7 @@ Anyway, none of that matters.`
 
     specify("Their content row header cells (for charts only)", () => {
       const markup = `
-Chart: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
+Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
                                                       Release Date [^ Only the year]
 

@@ -5,7 +5,7 @@ import * as Up from '../../../../index'
 context('A chart is simply a table with a second, vertical header. Its syntax is almost exactly the same, except it uses the term "chart" instead of "table".', () => {
   specify("An empty cell is added to the beginning of a chart's header row (its top-left corner) due to the header column beneath it, and the first cell of chart row is treated as a header cell for that row.", () => {
     const markup = `
-Chart: AND operator logic
+Table: AND operator logic
 
         1;      0
 1;      true;   false
@@ -37,7 +37,7 @@ Chart: AND operator logic
 context("On a chart's label line", () => {
   specify("the caption is not required", () => {
     const markup = `
-Chart:
+Table:
 
         1;      0
 1;      true;   false
@@ -67,7 +67,7 @@ Chart:
 
   specify("the colon after the tern for 'chart' is optional", () => {
     const markup = `
-Chart
+Table
 
         1;      0
 1;      true;   false
@@ -100,7 +100,7 @@ Chart
 context('Within a chart', () => {
   specify('single blank lines are allowed anywhere', () => {
     const markup = `
-Chart:
+Table:
 
                   Release Date
 
@@ -134,7 +134,7 @@ Chrono Cross;     1999`
 
   specify('outer whitespace is trimmed from each header and row cell', () => {
     const markup = `
-Chart:
+Table:
 
  \t  \t\t  \t              Release Date \t \t \t 
 
@@ -171,7 +171,7 @@ Chart:
 describe('The padding between cells in a chart', () => {
   it("is optional", () => {
     const markup = `
-Chart: AND operator logic
+Table: AND operator logic
 1;0
 1;true;false
 0;false;false`
@@ -202,7 +202,7 @@ Chart: AND operator logic
 context('The rows of a chart (and thus the chart itself) are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
-Chart:
+Table:
 
                   Release Date
 
@@ -241,7 +241,7 @@ I don't like video games; in fact, I never have.`
 
   specify('2 consecutive blank lines', () => {
     const markup = `
-Chart:
+Table:
 
                   Release Date
 
@@ -281,7 +281,7 @@ I don't like video games; in fact, I never have.`
 
   specify('3 consecutive blank lines', () => {
     const markup = `
-Chart:
+Table:
 
                   Release Date
 
@@ -326,7 +326,7 @@ I don't like video games; in fact, I never have.`
 describe('A chart', () => {
   it('can have 1 column, and when it does, that 1 column interpreted as a vertical heading', () => {
     const markup = `
-Chart: Magical happenings this past work week
+Table: Magical happenings this past work week
 
             Magical Happenings
 
@@ -363,7 +363,7 @@ Friday`
 
   it('can have 3 or more columns', () => {
     const markup = `
-Chart:
+Table:
 
                     Developer;            Platform;         Release Date
 
@@ -410,7 +410,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 context('Chart header cells', () => {
   specify('can contain inline conventions', () => {
     const markup = `
-Chart:
+Table:
 
                     Release Date (year only)
 
@@ -449,7 +449,7 @@ Chrono Cross;       1999`
 
   specify('can contain escaped semicolons', () => {
     const markup = `
-Chart:
+Table:
 
                     Publisher\\; Developer
 
@@ -478,7 +478,7 @@ Super Mario Kart;   Nintendo`
 context('Chart row cells', () => {
   specify('can contain inline conventions', () => {
     const markup = `
-Chart:
+Table:
 
                         Release Date
 
@@ -522,7 +522,7 @@ Chrono Cross;           1999`
 
   specify('can contain escaped semicolons', () => {
     const markup = `
-Chart:
+Table:
 
                                     Publisher
 
@@ -551,7 +551,7 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 context("The label line for charts can end with whitespace, regardless of whether the term for 'chart' is followed by a colon.", () => {
   specify("When followed by a colon without a caption", () => {
     const markup = `
-Chart:  \t  \t  \t 
+Table:  \t  \t  \t 
 
         1;      0
 1;      true;   false
@@ -581,7 +581,7 @@ Chart:  \t  \t  \t
 
   specify("When followed by a colon with a caption", () => {
     const markup = `
-Chart:  \t  \t  \t 
+Table:  \t  \t  \t 
 
         1;      0
 1;      true;   false
@@ -614,7 +614,7 @@ Chart:  \t  \t  \t
 context('Inline conventions are evaluated separately in each chart cell. Delimiters in one cell only affect markup in that one cell. This is true for:', () => {
   specify('Header cells', () => {
     const markup = `
-Chart:
+Table:
 
                   [: Platform;          Release Date :]
 Chrono Trigger;   Super Nintendo;       1995
@@ -642,7 +642,7 @@ Chrono Cross;     Playstation;          1999`
 
   specify('Row cells', () => {
     const markup = `
-Chart:
+Table:
 
                   Platform;           Release Date
 Chrono Trigger;   Super Nintendo;     1995
@@ -670,7 +670,7 @@ Chrono Cross;     [: Playstation;     1999 :]`
 
   specify('Row header cells', () => {
     const markup = `
-Chart:
+Table:
 
                       Platform;            Release Date
 [: Chrono Trigger;    Super :] Nintendo;   1995
@@ -700,7 +700,7 @@ Chrono Cross;         Playstation;         1999`
 describe('A chart', () => {
   it('does not need any rows', () => {
     const markup = `
-Chart
+Table
 
 	      Release Date`
 

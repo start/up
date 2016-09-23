@@ -132,7 +132,7 @@ Chrono Cross;     1999`
 
     specify('Charts with captions', () => {
       const markup = `
-Chart: \`AND\` operator logic
+Table: \`AND\` operator logic
 
         1;      0
 1;      true;   false
@@ -416,7 +416,7 @@ Chrono Cross;     1999`
 
     specify("Charts without captions", () => {
       const markup = `
-Chart:
+Table:
 
         1;      0
 1;      true;   false

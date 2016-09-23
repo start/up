@@ -1,11 +1,11 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../../index'
 
 
 describe("A chart header cell", () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
-Chart
+Table
 
                      Release Date [\\;
 Chrono Trigger;      1995
@@ -30,7 +30,7 @@ Chrono Cross;        1999`
 
   it('can end with an escaped backslash', () => {
     const markup = `
-Chart
+Table
 
                       Release Date :\\\\
 Chrono Trigger;       1995
@@ -58,7 +58,7 @@ Chrono Cross;         1999`
 describe("A chart row cell", () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
-Chart
+Table
 
                      Release Date
 Chrono Trigger [\\;; 1995
@@ -83,7 +83,7 @@ Chrono Cross;        1999 [\\;`
 
   it('can end with an escaped backslash', () => {
     const markup = `
-Chart
+Table
 
                       Release Date
 Chrono Trigger :\\\\; 1995
@@ -111,7 +111,7 @@ Chrono Cross;         1999 :\\\\`
 context("A chart's label line", () => {
   specify('cannot be followed by two or more blank lines', () => {
     const markup = `
-Chart: my favorite outline convention.
+Table: my favorite outline convention.
 
 
 I almost didn't include them; however, I realized charts are too useful to leave out.`
@@ -127,7 +127,7 @@ I almost didn't include them; however, I realized charts are too useful to leave
 describe("A chart's header row", () => {
   it('cannot be followed by two or more blank lines', () => {
     const markup = `
-Chart: Good games on the Sega Genesis
+Table: Good games on the Sega Genesis
 
         Release Date
 
@@ -156,7 +156,7 @@ I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 describe('A chart with one column', () => {
   it('can contain row header cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
     const markup = `
-Chart: Most common underlines for top-level headings (from most to least common)
+Table: Most common underlines for top-level headings (from most to least common)
 
       Underline Frequency
 
@@ -193,7 +193,7 @@ context("Outline conventions are evaluated before inline conventions, so chart c
   context('Inline code delimiters do not interfere with delimiters for', () => {
     specify('Header cells', () => {
       const markup = `
-Chart
+Table
 
                     Game\`s Platform;       Game\`s Release Date
 Chrono Trigger;     Super NES;              1995
@@ -221,7 +221,7 @@ Chrono Cross;       Playstation;            1999`
 
     specify('Row cells', () => {
       const markup = `
-Chart
+Table
 
                     Platform;                 Release Decade
 Chrono Trigger;     Nintendo\`s Super NES;    1990\`s
@@ -249,7 +249,7 @@ Chrono Cross;       Sony\`s Playstation;      1990\`s`
 
     specify('Row header cells', () => {
       const markup = `
-Chart
+Table
 
                               Platform;         Release Decade
 Square\`s Chrono Trigger;     Super NES;        1990\`s
@@ -280,7 +280,7 @@ Square\s Chrono Cross;        Playstation;      1990\`s`
   context('Delimiters for example input do not interfere with', () => {
     specify('Header cells', () => {
       const markup = `
-Chart:
+Table:
 
                   {: Platform;          Release Date :}
 Chrono Trigger;   Super Nintendo;       1995
@@ -308,7 +308,7 @@ Chrono Cross;     Playstation;          1999`
 
     specify('Row cells', () => {
       const markup = `
-Chart:
+Table:
 
                   Platform;           Release Date
 Chrono Trigger;   Super Nintendo;     1995
@@ -336,7 +336,7 @@ Chrono Cross;     {: Playstation;     1999 :}`
 
     specify('Row header cells', () => {
       const markup = `
-Chart:
+Table:
 
                       Platform;            Release Date
 {: Chrono Trigger;    Super :} Nintendo;   1995
