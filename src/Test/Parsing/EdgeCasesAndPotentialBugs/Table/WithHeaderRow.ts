@@ -369,4 +369,37 @@ Chrono Cross;         1999`
         ]))
     })
   })
+
 })
+
+  context('Within a table cell, backslashes escape characters as expected.', () => {
+    specify('For example, a backslash can escape an asterisk', () => {
+            const markup = `
+Table: My favorite faces
+
+Face;     Reason for liking
+
+\\*oo*;   It looks sneaky
+83;       It's comprised of digits`
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.Text('Face')]),
+              new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('*oo*')]),
+                new Up.Table.Row.Cell([new Up.Text('It looks sneaky')])
+              ]),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('83')]),
+                new Up.Table.Row.Cell([new Up.Text("It's comprised of digits")])
+              ])
+            ], new Up.Table.Caption([
+              new Up.Text('My favorite faces')
+            ]))
+        ]))
+    })
+  })
