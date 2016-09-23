@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../../index'
 
 
-context('Just like in a table, cells in a chart can span multiple columns. The syntax is the same. Any chart cell can span multiple columns:', () => {
+context('Just like in a normal table, cells in a table with a vertical header can span multiple columns. The syntax is the same, and any cell can span multiple columns:', () => {
   specify('Header cells', () => {
     const markup = `
 Table:

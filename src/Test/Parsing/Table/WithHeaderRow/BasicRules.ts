@@ -32,7 +32,7 @@ Chrono Cross;1999`
 
 
 context('Within a table', () => {
-  specify('single blank lines are allowed', () => {
+  specify('single blank lines are allowed above and below the header row', () => {
     const markup = `
 Table:
 
@@ -110,7 +110,7 @@ Table:
 })
 
 
-context('The rows of a table (and thus the table itself) are terminated by:', () => {
+context('The rows of a table are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
 Table:
@@ -474,63 +474,6 @@ describe("The colon after the 'table' term", () => {
   it('is not required', () => {
     const markup = `
 Table
-
-Game;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.Text('Game')]),
-            new Up.Table.Header.Cell([new Up.Text('Release Date')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.Text('1995')])
-            ]),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.Text('1999')])
-            ])
-          ])
-      ]))
-  })
-})
-
-
-context("The label line for tables can end with whitespace, regardless of whether the term for 'table' is followed by a colon.", () => {
-  specify('When followed by a colon without a caption', () => {
-    const markup = `
-Table:  \t \t 
-
-Game;           Release Date
-Chrono Trigger; 1995
-Chrono Cross;   1999`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.Text('Game')]),
-            new Up.Table.Header.Cell([new Up.Text('Release Date')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.Text('1995')])
-            ]),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.Text('1999')])
-            ])
-          ])
-      ]))
-  })
-
-  specify('When not followed by a colon', () => {
-    const markup = `
-Table  \t \t 
 
 Game;           Release Date
 Chrono Trigger; 1995

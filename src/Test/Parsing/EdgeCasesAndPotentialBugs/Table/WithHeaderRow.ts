@@ -2,6 +2,63 @@ import { expect } from 'chai'
 import * as Up from '../../../../index'
 
 
+context("When a table doesn't have a caption, its first line can still have trailing whitespace.", () => {
+  specify('When "Table" is followed by a colon', () => {
+    const markup = `
+Table:  \t \t 
+
+Game;           Release Date
+Chrono Trigger; 1995
+Chrono Cross;   1999`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ])
+          ])
+      ]))
+  })
+
+  specify('When "Table" is not followed by a colon', () => {
+    const markup = `
+Table  \t \t 
+
+Game;           Release Date
+Chrono Trigger; 1995
+Chrono Cross;   1999`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Game')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
+            ]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
+            ])
+          ])
+      ]))
+  })
+})
+
+
 describe("A table header cell", () => {
   it('can end with an escaped semicolon', () => {
     const markup = `
