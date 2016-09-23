@@ -229,7 +229,7 @@ Table: Most common underlines for top-level headings (from most to least common)
 })
 
 
-context("Outline conventions are evaluated before inline conventions, so chart cells' delimiters are evaluated before their inline contents.", () => {
+context("Just like with regular tables, the delimiters of cells in a table with a header column are evaluated before any inline conventions.", () => {
   context('Inline code delimiters do not interfere with delimiters for', () => {
     specify('Header cells', () => {
       const markup = `

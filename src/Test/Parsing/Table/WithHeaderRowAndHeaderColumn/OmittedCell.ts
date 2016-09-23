@@ -1,9 +1,9 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../../../index'
 
 
-context('Just like a table, when a chart row has fewer cells than the header or than other rows', () => {
-  specify('no extra cells are added to that row', () => {
+describe('The header row of a table with a header column', () => {
+  specify('can have more cells than one or more of its rows', () => {
     const markup = `
 Table:
 
@@ -40,11 +40,8 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
           ])
       ]))
   })
-})
 
-
-describe('A chart header', () => {
-  specify('can have fewer cells than its rows have', () => {
+  specify('can have fewer cells than one or more of its rows', () => {
     const markup = `
 Table:
 

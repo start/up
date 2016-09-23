@@ -48,14 +48,11 @@ context('The terms for revealable outline conventions', () => {
 })
 
 
-context('The terms for tables and charts', () => {
-  it('can be the subjects in a description list if they are escaped', () => {
+context('The term for table', () => {
+  it('can be the subject in a description list if it is escaped', () => {
     const markup = `
 \\Table
-  A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.
-
-\\Chart
-  In Up, a chart is simply a table with a second, vertical header.`
+  A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -67,15 +64,6 @@ context('The terms for tables and charts', () => {
               new Up.Text('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
             ])
           ])),
-
-          new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.Text('Chart')])
-          ],
-            new Up.DescriptionList.Item.Description([
-              new Up.Paragraph([
-                new Up.Text('In Up, a chart is simply a table with a second, vertical header.')
-              ])
-            ]))
         ])
       ]))
   })

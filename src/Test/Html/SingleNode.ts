@@ -345,8 +345,8 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 })
 
 
-context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
-  specify('Each of those header column cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
+context('When a table has a header column', () => {
+  specify('each of those header column cells produces a <th scope="row"> at the beginning of the <tr> element of the cell', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([

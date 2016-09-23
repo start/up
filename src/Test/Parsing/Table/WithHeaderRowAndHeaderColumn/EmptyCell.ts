@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../../index'
 
 
-describe('Just like a table, a chart row ending with an unescaped semicolon', () => {
+describe('In a table with a header column, a row that ends with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
     const markup = `
 Table:
@@ -39,7 +39,7 @@ Chrono Cross;       1999`
 })
 
 
-describe('A chart row ending with an unescaped semicolon followed by whitespace', () => {
+describe('Just like in a regular table, in a table with a header column, a row ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
     const markup = `
 Table:
@@ -76,7 +76,7 @@ Chrono Cross;       1999`
 })
 
 
-describe('A chart header ending with an unescaped semicolon', () => {
+describe('The header row of a table (with a header column) ending with an unescaped semicolon', () => {
   it('ends with an empty cell', () => {
     const markup = `
 Table:
@@ -116,7 +116,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 })
 
 
-describe('A chart header ending with an unescaped semicolon followed by whitespace', () => {
+describe('The header row of a table (with a header column) ending with an unescaped semicolon followed by whitespace', () => {
   it('ends with an empty cell', () => {
     const markup = `
 Table:
@@ -156,7 +156,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
 })
 
 
-describe('A (non-empty) chart header cell consisting only of whitespace', () => {
+describe('In a table with a header column, a (non-empty) header row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
     const markup = `
 Table:
@@ -203,7 +203,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-describe('A (non-empty) chart row cell consisting only of whitespace', () => {
+describe('In a table with a header column, a (non-empty) row cell consisting only of whitespace', () => {
   it('is considered empty', () => {
     const markup = `
 Table:
@@ -250,7 +250,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-describe('A chart header starting with an indented semicolon', () => {
+describe('The header row of a table (with a header column) starting with an indented semicolon', () => {
   it("starts with 2 empty cells (the first empty cell is the one that's added automatically)", () => {
     const markup = `
 Table:

@@ -1,17 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
-
-// Both tables and charts are represented by instances of the `Table` class. Likewise, both
-// table row cells and chart row cells are represented by instances of `Table.Row.Cell`.
-//
-// To test whether a row cell is numeric, we call its `isNumeric` method, which evaluates the
-// cell's contents and returns the result.
-//
-// Because testing table row cells and testing chart row cells both involve calling the same
-// method on instances of the same class, and considering we verify elsewhere that both tables
-// and charts produce proper syntax trees, we only need to test one of the two.
-//
-// For simplicity, we test tables.  
+import * as Up from '../../../index'
 
 function expectTableCellToBeNumeric(cellMarkup: string): void {
   expectTableCell({
@@ -46,7 +34,7 @@ ${cellMarkup};`
 }
 
 
-context('A table (or chart) row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
+context('A table row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
   context('This includes', () => {
     specify('an integer', () => {
       expectTableCellToBeNumeric('1995')
