@@ -462,8 +462,10 @@ Hello, world!
       ]))
   })
 
-  specify('Tables (as long as the header row is indented less than 2 spaces)', () => {
-    const markup = `
+
+  context('Tables:', () => {
+    specify('When the header row is indented less than 2 spaces (which would produce a header column)', () => {
+      const markup = `
   \t Table:
 
  Game; Release Date
@@ -473,31 +475,61 @@ Hello, world!
  \t Chrono Trigger; 1995
  \t  Chrono Cross; 1999`
 
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.Text('Game')]),
-            new Up.Table.Header.Cell([new Up.Text('Release Date')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
-              new Up.Table.Row.Cell([new Up.Text('1987')])
-            ]),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Final Fantasy II')]),
-              new Up.Table.Row.Cell([new Up.Text('1988')])
-            ]),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
-              new Up.Table.Row.Cell([new Up.Text('1995')])
-            ]),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
-              new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
-          ])
-      ]))
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.Text('Game')]),
+              new Up.Table.Header.Cell([new Up.Text('Release Date')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy')]),
+                new Up.Table.Row.Cell([new Up.Text('1987')])
+              ]),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('Final Fantasy II')]),
+                new Up.Table.Row.Cell([new Up.Text('1988')])
+              ]),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+                new Up.Table.Row.Cell([new Up.Text('1995')])
+              ]),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
+                new Up.Table.Row.Cell([new Up.Text('1999')])
+              ]),
+            ])
+        ]))
+    })
+
+    specify('When the header row is indented 2 or more spaces (producing a header column)', () => {
+      const markup = `
+ \t  Table: AND operator logic
+
+   \t     1;      0
+ \t  1;      true;   false
+  0;      false;  false`
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([]),
+              new Up.Table.Header.Cell([new Up.Text('1')]),
+              new Up.Table.Header.Cell([new Up.Text('0')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('true')]),
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+              ], new Up.Table.Header.Cell([new Up.Text('1')])),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
+              ], new Up.Table.Header.Cell([new Up.Text('0')]))
+            ],
+            new Up.Table.Caption([new Up.Text('AND operator logic')]))
+        ]))
+    })
   })
 
 
