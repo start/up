@@ -250,12 +250,12 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-describe('A chart header starting with a semicolon', () => {
+describe('A chart header starting with an indented semicolon', () => {
   it("starts with 2 empty cells (the first empty cell is the one that's added automatically)", () => {
     const markup = `
 Table:
 
-;                                         Platform;         Release Date
+                    ;                     Platform;         Release Date
 
 Chrono Trigger;     Square;               Super Nintendo;   March 11, 1995
 Terranigma;         Quintet;              Super Nintendo;   October 20, 1995
