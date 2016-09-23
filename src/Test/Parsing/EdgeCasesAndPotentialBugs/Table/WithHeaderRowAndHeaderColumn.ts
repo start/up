@@ -287,7 +287,7 @@ Chrono Cross;       Sony\`s Playstation;      1990\`s`
         ]))
     })
 
-    specify('Row header cells', () => {
+    specify('Header column cells', () => {
       const markup = `
 Table
 
@@ -374,7 +374,7 @@ Chrono Cross;     {: Playstation;     1999 :}`
         ]))
     })
 
-    specify('Row header cells', () => {
+    specify('Header column cells', () => {
       const markup = `
 Table:
 

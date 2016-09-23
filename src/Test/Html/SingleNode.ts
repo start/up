@@ -346,7 +346,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 
 context('A chart uses the same syntax node as a table. Unlike tables, however, each row of a chart has a header cell.', () => {
-  specify('Each of those row header cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
+  specify('Each of those header column cells produces a <th scope="row"> at the beginning of the <tr> element produced by the row', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
@@ -375,7 +375,7 @@ context('A chart uses the same syntax node as a table. Unlike tables, however, e
       + '</table>')
   })
 
-  specify('When a row header cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
+  specify('When a header column cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([

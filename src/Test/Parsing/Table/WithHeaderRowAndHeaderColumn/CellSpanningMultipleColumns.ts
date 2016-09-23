@@ -70,7 +70,7 @@ Starcraft;          Blizzard;;;                                             Marc
       ]))
   })
 
-  specify('Row header cells', () => {
+  specify('Header column cells', () => {
     const markup = `
 Table: Summary of last work week
 

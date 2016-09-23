@@ -577,7 +577,7 @@ I get hungry (see [section: soda]);     Very valid`
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('Row header cells', () => {
+    specify('Header column cells', () => {
       const markup = `
 I drink soda
 ============

@@ -575,7 +575,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("Their content row header cells (for charts only)", () => {
+    specify("Their header column cells (for charts only)", () => {
       const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 
