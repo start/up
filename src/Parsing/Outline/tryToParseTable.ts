@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { Table } from '../../SyntaxNodes/Table'
 import { OutlineParserArgs } from './OutlineParserArgs'
 import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../../PatternHelpers'
-import { BLANK_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
+import { BLANK_PATTERN, NON_BLANK_PATTERN, INDENTED_PATTERN } from '../../Patterns'
 import { REST_OF_TEXT } from '../../PatternPieces'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
@@ -53,7 +53,7 @@ import { getTableCells } from './getTableCells'
 //
 // 1. The first cell of each row in the table is treated as a header for that row.
 // 2. An empty cell is automatically added to the beginning of the table's header
-//    row (the top left corner) due to the header column beneath it.
+//    row (the top left corner, above the header column).
 
 export function tryToParseTable(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
@@ -82,15 +82,19 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   // Let's consume the optional blank line before the header row. 
   consumeBlankLine(markupLineConsumer)
 
-  const isChart = false
+  let alsoHasHeaderColumn: boolean
 
   let headerCells: Table.Header.Cell[]
 
   const hasHeader =
     markupLineConsumer.consume({
       linePattern: NON_BLANK_PATTERN,
-      thenBeforeConsumingLine: line => {
-        headerCells = getTableCells(line, settings).map(toHeaderCell)
+      thenBeforeConsumingLine: headerMarkup => {
+        // As a rule, if a table's header row is indented, it indicates the table should
+        // also have a header column (in addition to its header row).
+        alsoHasHeaderColumn = INDENTED_PATTERN.test(headerMarkup)
+
+        headerCells = getTableCells(headerMarkup, settings).map(toHeaderCell)
       }
     })
 
@@ -99,11 +103,11 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   }
 
   // Okay! Now that we've found a label line (with an optional caption) and have a header,
-  // we know we're dealing with a table/chart.
+  // we know we're dealing with a table.
 
-  if (isChart) {
-    // Charts have an extra empty cell added to the beginning of their header row due
-    // to the header column beneath it.
+  if (alsoHasHeaderColumn) {
+    // When a table has a header column, we add an extra empty cell to the beginning of its
+    // header row (above the header column).
     headerCells.unshift(new Table.Header.Cell([]))
   }
 
@@ -136,9 +140,8 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
       thenBeforeConsumingLine: line => {
         const cells = getTableCells(line, settings)
 
-        // In a chart, the first cell of each row is treated as a header for that row.
         const rowHeaderCell =
-          isChart
+          alsoHasHeaderColumn
             ? toHeaderCell(cells.shift())
             : undefined
 

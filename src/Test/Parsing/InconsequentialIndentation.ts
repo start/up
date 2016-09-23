@@ -462,11 +462,11 @@ Hello, world!
       ]))
   })
 
-  specify('Tables', () => {
+  specify('Tables (as long as the header row is indented less than 2 spaces)', () => {
     const markup = `
   \t Table:
 
- \t  Game; Release Date
+ Game; Release Date
 
  \t Final Fantasy; 1987
  \t  Final Fantasy II; 1988
@@ -500,34 +500,6 @@ Hello, world!
       ]))
   })
 
-  specify("Charts", () => {
-    const markup = `
- \t  Chart: AND operator logic
-
-   \t     1;      0
- \t  1;      true;   false
-  0;      false;  false`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.Text('1')]),
-            new Up.Table.Header.Cell([new Up.Text('0')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
-            ], new Up.Table.Header.Cell([new Up.Text('1')])),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('false')]),
-              new Up.Table.Row.Cell([new Up.Text('false')])
-            ], new Up.Table.Header.Cell([new Up.Text('0')]))
-          ],
-          new Up.Table.Caption([new Up.Text('AND operator logic')]))
-      ]))
-  })
 
   context('Blockquotes:', () => {
     specify('The first line', () => {
