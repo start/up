@@ -108,22 +108,6 @@ Chrono Cross;         1999 :\\\\`
 })
 
 
-context("A chart's label line", () => {
-  specify('cannot be followed by two or more blank lines', () => {
-    const markup = `
-Table: my favorite outline convention.
-
-
-I almost didn't include them; however, I realized charts are too useful to leave out.`
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([new Up.Text('Chart: my favorite outline convention.')]),
-        new Up.Paragraph([new Up.Text("I almost didn't include them; however, I realized charts are too useful to leave out.")]),
-      ]))
-  })
-})
-
-
 describe("A chart's header row", () => {
   it('cannot be followed by two or more blank lines', () => {
     const markup = `

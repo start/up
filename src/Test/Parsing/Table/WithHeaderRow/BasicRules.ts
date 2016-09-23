@@ -70,11 +70,12 @@ Chrono Cross;1999`
       ]))
   })
 
-  specify('outer whitespace is trimmed from each header and row cell', () => {
+  specify('outer whitespace is trimmed from each header and row cell (though indenting the header row 2 or more spaces produces a header column)', () => {
     const markup = `
 Table:
 
- \t Game\t ; \t Release Date \t
+ Game\t ; \t Release Date \t
+
  \t Final Fantasy\t ;\t 1987 \t 
  \t Final Fantasy II\t ;\t 1988 \t 
  \t Chrono Trigger\t ;\t 1995 \t 
