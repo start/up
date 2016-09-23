@@ -471,7 +471,7 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 
 
 describe("The colon after the 'table' term", () => {
-  it('is not required', () => {
+  it('is optional if there is no caption', () => {
     const markup = `
 Table
 

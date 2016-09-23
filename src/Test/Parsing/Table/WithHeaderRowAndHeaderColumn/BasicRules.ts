@@ -34,7 +34,7 @@ Table: AND operator logic
 })
 
 
-context("In a table with a vertical table", () => {
+context("In a table with a header column", () => {
   specify("the caption is not required", () => {
     const markup = `
 Table:
@@ -65,7 +65,7 @@ Table:
       ]))
   })
 
-  specify("the colon after the tern for 'table' is optional", () => {
+  specify("the colon after the tern for 'table' is optional if there is no caption", () => {
     const markup = `
 Table
 
