@@ -172,7 +172,7 @@ describe('The padding between cells in a chart', () => {
   it("is optional", () => {
     const markup = `
 Table: AND operator logic
-1;0
+  1;0
 1;true;false
 0;false;false`
 
