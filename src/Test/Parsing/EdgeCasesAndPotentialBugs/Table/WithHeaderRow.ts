@@ -437,10 +437,10 @@ Snippet;                            Reason for liking
     const markup = `
 Table: My favorite programming snippets
 
-Snippet;                            Reason for liking
+Snippet;                  Reason for liking
 
-\`parse("\\\\\\;")\`;    It looks convoluted
-\`void main() { }\`;     I see it everywhere`
+\`parse("\\\\\\;")\`;     It looks convoluted
+\`void main() { }\`;      I see it everywhere`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
