@@ -40,54 +40,49 @@ import { getTableCells } from './getTableCells'
 // Starcraft;          Blizzard;;                              March 31, 1998
 //
 //
-// Charts are tables with a second, vertical header. The only differences are:
+// If a table's header row is indented, it indicates the table should also have a
+// header column in addition to its header row. For example:
 //
-// 1. Charts use the configurable term for "chart" instead of "table".
-// 2. The first cell of each row in a chart is treated as a header for that row.
-// 3. An empty cell is automatically added to the beginning of the chart's header
-//    row (the top left corner) due to the header column beneath it.
-//
-// Here's an example chart:
-//
-// Chart: `AND` operator logic
+// Table: `AND` operator logic
 //
 //         1;      0
 // 1;      true;   false
-// 0;      false;  false
+// 0;      false;  false 
+//
+// Specifically, when the header row is indented: 
+//
+// 1. The first cell of each row in the table is treated as a header for that row.
+// 2. An empty cell is automatically added to the beginning of the table's header
+//    row (the top left corner) due to the header column beneath it.
+
 export function tryToParseTable(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { settings } = args
-  
-  // TODO: Rewrite
 
-  const getLabelPattern = (labels: string[]) =>
-    solelyAndIgnoringCapitalization(
-      either(...labels.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
+  const labelPattern = solelyAndIgnoringCapitalization(
+    either(...settings.terms.table.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
 
   let captionMarkup: string
 
-  function setRawCaptionMarkup(_: string, caption: string): void {
-    captionMarkup = (caption || '').trim()
-  }
-
   const isTable =
     markupLineConsumer.consume({
-      linePattern: getLabelPattern(settings.terms.table),
-      thenBeforeConsumingLine: setRawCaptionMarkup
+      linePattern: labelPattern,
+      thenBeforeConsumingLine: (_, caption) => {
+        captionMarkup = (caption || '').trim()
+      }
     })
-  
 
   if (!isTable) {
     return false
   }
-  
-  const isChart = false
 
   // We have our label line (with an optional caption).
   //
   // Let's consume the optional blank line before the header row. 
   consumeBlankLine(markupLineConsumer)
+
+  const isChart = false
 
   let headerCells: Table.Header.Cell[]
 
@@ -108,7 +103,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
   if (isChart) {
     // Charts have an extra empty cell added to the beginning of their header row due
-    // to the header column beneath it
+    // to the header column beneath it.
     headerCells.unshift(new Table.Header.Cell([]))
   }
 
