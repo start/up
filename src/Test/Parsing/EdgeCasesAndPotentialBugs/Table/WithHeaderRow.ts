@@ -369,37 +369,67 @@ Chrono Cross;         1999`
         ]))
     })
   })
-
 })
 
-  context('Within a table cell, backslashes escape characters as expected.', () => {
-    specify('For example, a backslash can escape an asterisk', () => {
-            const markup = `
+
+context('Within a table cell, backslashes escape characters as expected.', () => {
+  specify('For example, a backslash can escape an asterisk', () => {
+    const markup = `
 Table: My favorite faces
 
 Face;     Reason for liking
 
-\\*oo*;   It looks sneaky
+\\*oo*;   It looks suspicious
 83;       It's comprised of digits`
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.Table(
-            new Up.Table.Header([
-              new Up.Table.Header.Cell([new Up.Text('Face')]),
-              new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
-            ]), [
-              new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.Text('*oo*')]),
-                new Up.Table.Row.Cell([new Up.Text('It looks sneaky')])
-              ]),
-              new Up.Table.Row([
-                new Up.Table.Row.Cell([new Up.Text('83')]),
-                new Up.Table.Row.Cell([new Up.Text("It's comprised of digits")])
-              ])
-            ], new Up.Table.Caption([
-              new Up.Text('My favorite faces')
-            ]))
-        ]))
-    })
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Face')]),
+            new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('*oo*')]),
+              new Up.Table.Row.Cell([new Up.Text('It looks suspicious')])
+            ]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.Text('83')]),
+              new Up.Table.Row.Cell([new Up.Text("It's comprised of digits")])
+            ])
+          ], new Up.Table.Caption([
+            new Up.Text('My favorite faces')
+          ]))
+      ]))
   })
+
+    specify('However, when a semiclon is escaped, its "escaping" backslash is not preserved. This allows semicolons to be included in inline code within a table cell', () => {
+    const markup = `
+Table: My favorite programming snippets
+
+Snippet;                            Reason for liking
+
+\`parse()\\;\`;                     It looks important
+\`int main() { return 0\\; }\`;     I see it everywhere`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Snippet')]),
+            new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.InlineCode('parse();')]),
+              new Up.Table.Row.Cell([new Up.Text('It looks important')])
+            ]),
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.InlineCode('int main() { return 0; }')]),
+              new Up.Table.Row.Cell([new Up.Text('I see it everywhere')])
+            ])
+          ], new Up.Table.Caption([
+            new Up.Text('My favorite programming snippets')
+          ]))
+      ]))
+  })
+})
