@@ -3,22 +3,22 @@ import * as Up from '../../../index'
 
 function expectTableCellToBeNumeric(cellMarkup: string): void {
   expectTableCell({
-    withRawValue: cellMarkup,
+    cellMarkup,
     toBeNumeric: true
   })
 }
 
 function expectTableCellNotToBeNumeric(cellMarkup: string): void {
   expectTableCell({
-    withRawValue: cellMarkup,
+    cellMarkup,
     toBeNumeric: false
   })
 }
 
-function expectTableCell(args: { withRawValue: string, toBeNumeric: boolean }): void {
-  const { withRawValue, toBeNumeric } = args
+function expectTableCell(args: { cellMarkup: string, toBeNumeric: boolean }): void {
+  const { cellMarkup, toBeNumeric } = args
 
-  expect(isCellNumeric(withRawValue)).to.deep.equal(toBeNumeric)
+  expect(isCellNumeric(cellMarkup)).to.deep.equal(toBeNumeric)
 }
 
 function isCellNumeric(cellMarkup: string): boolean {
