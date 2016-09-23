@@ -24,8 +24,10 @@ export function getTableCells(row: string, settings: Settings.Parsing): Table.Ce
   // necessary. However, doing so (or at least trimming the end of the strimg) makes it a
   // bit easier for us to tell when a row ends with a single unescaped semicolon.
   //
-  // As a rule, if the last cell in the table isn't blank, and if it spans just a single
-  // column, we add an extra empty cell to the end of the row.
+  // As a rule, if the last cell in a row spans just a single column (i.e. it ends in
+  // a single unescaped semiclon), and if that last cell was not 0-length cell at the
+  // start of the row (i.e. the row does not consist solely of a single semicolon), then
+  // we add an extra empty cell to the end of the row.   
   row = row.trim()
 
   const cells: TableCell[] = []
@@ -43,12 +45,12 @@ export function getTableCells(row: string, settings: Settings.Parsing): Table.Ce
     const char = row[charIndex]
 
     if (char === BACKSLASH) {
-      // Escaped delimiters don't delimit cells, so we can safely skip the next character.
+      // Escaped semiclons don't delimit cells, so we can safely skip the next character.
       charIndex++
       continue
     }
 
-    const result = DELIMITER_PATTERN.exec(row.slice(charIndex))
+    const result = CELL_DELIMITER_PATTERN.exec(row.slice(charIndex))
 
     if (!result) {
       // We aren't dealing with the end of a cell, so let's just continue the loop.
@@ -68,33 +70,24 @@ export function getTableCells(row: string, settings: Settings.Parsing): Table.Ce
   // collect the row's final cell (the one after the last delimiter).
   //
   // Furthermore, even if the last delimiter was on the end of the row, we have to satisfy
-  // the rule described at the to of the mthod: If the last cell in the table isn't blank,
-  // and if it spans just a single column, we have to add an extra empty cell to the end
-  // of the row.
+  // the rule described at the to of the mthod: If the last cell in a row spans just a single
+  // column (i.e. it ends in a single unescaped semiclon), and if that last cell was not
+  // 0-length cell at the start of the row (i.e. the row does not consist solely of a single
+  // semicolon), then we add an extra empty cell to the end of the row.   
 
   const lastCell = last(cells)
 
-  const shouldCollectAnotherCell =
-    // If the last delimiter on the row wasn't at the end of the row...
+  const shouldCollectOneLastCell =
+    // If the last delimiter row wasn't at the end of the row...
     charIndexOfStartOfNextCell < row.length
     || (
-      // ... or if the last cell isnt blank...
-      //
-      // Two notes:
-      //
-      // 1. We know `row` will never be empty, and we know the first cell always starts at
-      //    the `0` index of `row`. Therefore, if `charIndexOfStartOfNextCell` is the row's
-      //    length, we must have already found at least one cell (and thus `lastCell` won't
-      //    be null).
-      //
-      // 2. Before we parse a cell for inline nodes, its content is trimmed. Therefore, to
-      //    check whether a cell is blank, we can simply check whether it has no children.
-      lastCell.children.length !== 0
-      // ... and if the last cell spans just one column, then we should collect another
-      // cell.
-      && lastCell.countColumnsSpanned === 1)
+      // ... or if the last cell spans just a single column...
+      lastCell.countColumnsSpanned === 1
+      // ... and row does not consist solely of a single semicolon, then we'll add an extra
+      // cell to the end of the row.
+      && row !== SEMICOLON)
 
-  if (shouldCollectAnotherCell) {
+  if (shouldCollectOneLastCell) {
     collectCell({ countColumnsSpanned: 1 })
   }
 
@@ -102,5 +95,7 @@ export function getTableCells(row: string, settings: Settings.Parsing): Table.Ce
 }
 
 
-const DELIMITER_PATTERN =
-  patternStartingWith(oneOrMore(';'))
+const SEMICOLON = ';'
+
+const CELL_DELIMITER_PATTERN =
+  patternStartingWith(oneOrMore(SEMICOLON))
