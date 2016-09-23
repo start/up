@@ -3,7 +3,7 @@ import * as Up from '../../../../index'
 
 
 context('When the header row of a table is indented', () => {
-  specify("the table is given a vertical header", () => {
+  specify("the table is given a header column", () => {
     const markup = `
 Table: AND operator logic
 
@@ -97,7 +97,7 @@ Table
 })
 
 
-context('Within a table with a vertical header', () => {
+context('Within a table with a header column', () => {
   specify('single blank lines are allowed above and below the header row', () => {
     const markup = `
 Table:
@@ -168,7 +168,7 @@ Table:
 })
 
 
-context('In a table with a vertical header, the padding between cells is optional. This naturally assumes the header row is indented:', () => {
+context('In a table with a header column, the padding between cells is optional. This naturally assumes the header row is indented:', () => {
   specify("At least 2 spaces", () => {
     const markup = `
 Table: AND operator logic
@@ -255,7 +255,7 @@ Table: AND operator logic
 })
 
 
-context('The content rows of a table with a vertical header are terminated by:', () => {
+context('The content rows of a table with a header column are terminated by:', () => {
   specify('A blank line', () => {
     const markup = `
 Table:
@@ -379,8 +379,8 @@ I don't like video games; in fact, I never have.`
 })
 
 
-describe('A table with a vertical header', () => {
-  it('can have 1 column, and when it does, that 1 column interpreted as a vertical header', () => {
+describe('A table with a header column', () => {
+  it('can have 1 column, and when it does, that 1 column interpreted as a header column', () => {
     const markup = `
 Table: Magical happenings this past work week
 
@@ -463,7 +463,7 @@ Starcraft;          Blizzard;             PC;               March 31, 1998`
 })
 
 
-context('The cells in the header row of a table with a vertical header', () => {
+context('The cells in the header row of a table with a header column', () => {
   specify('can contain inline conventions', () => {
     const markup = `
 Table:
@@ -531,7 +531,7 @@ Super Mario Kart;   Nintendo`
 })
 
 
-context('The content row cells of a table with a vertical header', () => {
+context('The content row cells of a table with a header column', () => {
   specify('can contain inline conventions', () => {
     const markup = `
 Table:
@@ -604,7 +604,7 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 })
 
 
-context('Within a table with a vertical header, inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect markup in that one cell. This is true for:', () => {
+context('Within a table with a header column, inline conventions are evaluated separately in each table cell. Delimiters in one cell only affect markup in that one cell. This is true for:', () => {
   specify('Header row cells', () => {
     const markup = `
 Table:
@@ -691,7 +691,7 @@ Chrono Cross;         Playstation;         1999`
 })
 
 
-describe('Just like a normal table, a table with a vertical header', () => {
+describe('Just like a normal table, a table with a header column', () => {
   it('does not need any rows', () => {
     const markup = `
 Table
