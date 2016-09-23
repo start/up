@@ -168,11 +168,67 @@ Table:
   })
 
 
-  describe('The padding between cells in a table', () => {
-    it("is optional", () => {
+  context('The padding between cells in a table is optional as long as the header row is indented:', () => {
+    specify("At least 2 spaces", () => {
       const markup = `
 Table: AND operator logic
   1;0
+1;true;false
+0;false;false`
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([]),
+              new Up.Table.Header.Cell([new Up.Text('1')]),
+              new Up.Table.Header.Cell([new Up.Text('0')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('true')]),
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+              ], new Up.Table.Header.Cell([new Up.Text('1')])),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
+              ], new Up.Table.Header.Cell([new Up.Text('0')]))
+            ],
+            new Up.Table.Caption([new Up.Text('AND operator logic')]))
+        ]))
+    })
+
+    specify("At least 1 tab", () => {
+      const markup = `
+Table: AND operator logic
+\t1;0
+1;true;false
+0;false;false`
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([]),
+              new Up.Table.Header.Cell([new Up.Text('1')]),
+              new Up.Table.Header.Cell([new Up.Text('0')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('true')]),
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+              ], new Up.Table.Header.Cell([new Up.Text('1')])),
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
+              ], new Up.Table.Header.Cell([new Up.Text('0')]))
+            ],
+            new Up.Table.Caption([new Up.Text('AND operator logic')]))
+        ]))
+    })
+
+    specify("At least 1 space and 1 tab", () => {
+      const markup = `
+Table: AND operator logic
+ \t1;0
 1;true;false
 0;false;false`
 
