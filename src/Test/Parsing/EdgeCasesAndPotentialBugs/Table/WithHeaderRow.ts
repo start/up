@@ -173,8 +173,8 @@ Chrono Cross;           1999`
 })
 
 
-context("A table's label line", () => {
-  specify('cannot be followed by two or more blank lines', () => {
+context("A table", () => {
+  specify('is terminated if its caption line is followed by two or more blank lines', () => {
     const markup = `
 Table: my favorite outline convention.
 

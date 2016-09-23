@@ -164,8 +164,8 @@ Chrono Cross;         1999`
 
 
 
-describe("A chart's header row", () => {
-  it('cannot be followed by two or more blank lines', () => {
+describe("A table with a header column", () => {
+  it('is terminated if its caption line is followed by two or more blank lines', () => {
     const markup = `
 Table: Good games on the Sega Genesis
 
@@ -193,8 +193,8 @@ I'm not biased; instead, I simply recognize Nintendo is completely flawless.`
 })
 
 
-describe('A chart with one column', () => {
-  it('can contain row header cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
+describe('A table with a header column', () => {
+  it('can contain header column cells that would otherwise be interpreted as thematic break streaks, assuming the streaks have no special inline role (e.g. multiple dashes)', () => {
     const markup = `
 Table: Most common underlines for top-level headings (from most to least common)
 
