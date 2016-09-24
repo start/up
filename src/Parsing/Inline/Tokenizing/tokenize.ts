@@ -249,7 +249,7 @@ class Tokenizer {
             // We'll support regular footnotes
             ...this.getFootnoteConventions(),
             // And we'll support section links!
-            ...this.getInternalTopicLinkConventions()
+            ...this.getSectionLinkConventions()
           ]),
 
       ...this.getLinkifyingUrlConventions(),
@@ -295,14 +295,9 @@ class Tokenizer {
         richConvention: NORMAL_PARENTHETICAL,
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
-        
-        whenOpening: () => {
-          this.bufferedContent += PARENTHESIS.open
-        },
 
-        whenClosing: () => {
-          this.bufferedContent += PARENTHESIS.close
-        }
+        whenOpening: () => { this.bufferedContent += PARENTHESIS.open },
+        whenClosing: () => { this.bufferedContent += PARENTHESIS.close }
       }))
   }
 
@@ -389,14 +384,14 @@ class Tokenizer {
       //
       // (NSFW:)
       //
-      // Therefore, we instead treat it as a parenthesized convention containing the text "NSFW:".
+      // Therefore, we instead treat it as a parenthetical convention containing the text "NSFW:".
       //
       // Furthermore, Up never recognizes rich conventions if they contain only whitespace. For example,
       // this would-be inline NSFW convention contains only whitespace: 
       //
-      // [NSFW:   ]
+      // (NSFW:   )
       //
-      // Therefore, we instead treat it as a square bracketed convention containing the text "NSFW:   ".
+      // Therefore, we instead treat it as a parenthetical convention containing the text "NSFW:   ".
       startsWith: startDelimiterNotFollowedByEndDelimiter(startsWith, endsWith),
       startPatternContainsATerm,
 
@@ -487,7 +482,7 @@ class Tokenizer {
   //
   //   Shading pixel art
   //   =================
-  private getInternalTopicLinkConventions(): Convention[] {
+  private getSectionLinkConventions(): Convention[] {
     const term =
       this.settings.terms.sectionLink
 
