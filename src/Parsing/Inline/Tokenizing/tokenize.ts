@@ -355,17 +355,8 @@ class Tokenizer {
       startsWith: bracket.startPattern + NOT_FOLLOWED_BY_WHITESPACE,
       endsWith: bracket.endPattern,
 
-      insteadOfFailingWhenLeftUnclosed: context => {
-        // Even though we failed to find a matching closing bracket for our parenthetical
-        // convention, we don't need to backtrack!
-        //
-        // Instead, we can simply insert a plain text token representing the unmatched open
-        // bracket. 
-        this.insertToken({
-          token: new Token(TokenRole.Text, bracket.open),
-          atIndex: context.startTokenIndex
-        })
-      }
+      whenOpening: () => { this.bufferedContent += bracket.open },
+      whenClosing: () => { this.bufferedContent += bracket.close },
     })
   }
 
@@ -1371,6 +1362,7 @@ class Tokenizer {
   private getCurrentSnapshot(): TokenizerSnapshot {
     return {
       markupIndex: this.markupConsumer.index,
+      markupIndexWeLastOpenedAConvention: this.markupIndexWeLastOpenedAConvention,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
       inflectionHandlers: this.inflectionHandlers.map(handler => handler.clone()),
@@ -1433,6 +1425,7 @@ class Tokenizer {
     this.tokens = snapshot.tokens
     this.bufferedContent = snapshot.bufferedContent
     this.markupConsumer.index = snapshot.markupIndex
+    this.markupIndexWeLastOpenedAConvention = snapshot.markupIndexWeLastOpenedAConvention
     this.openContexts = snapshot.openContexts
     this.inflectionHandlers = snapshot.inflectionHandlers
   }

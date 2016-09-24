@@ -18,9 +18,9 @@ context('An unmatched left parenthesis within quotation marks produces a quote:'
     expect(Up.parse('"(" is a left parenthesis.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Text('(')
+          new Up.Text('"("')
         ]),
-        new Up.Text(' is a left parenthesis')
+        new Up.Text(' is a left parenthesis.')
       ]))
   })
 })
