@@ -37,44 +37,6 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify('Quoted text and italics', () => {
-    expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Italics([
-          new Up.InlineQuote([
-            new Up.Text('"Oh"')
-          ]),
-          new Up.Text(' why would you do this?')
-        ])
-      ]))
-  })
-
-  specify('Quoted text and parentheses', () => {
-    expect(Up.parse('"(Oh" why would you do this?)')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('('),
-          new Up.InlineQuote([
-            new Up.Text('"Oh"')
-          ]),
-          new Up.Text(' why would you do this?)')
-        ])
-      ]))
-  })
-
-  specify('Quoted text and square brackets', () => {
-    expect(Up.parse('"[Oh" why would you do this?]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.SquareParenthetical([
-          new Up.Text('['),
-          new Up.InlineQuote([
-            new Up.Text('"Oh"')
-          ]),
-          new Up.Text(' why would you do this?]')
-        ])
-      ]))
-  })
-
   specify("Emphasis and a link", () => {
     expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -103,6 +65,21 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
 
   context('But not conventions whose delimiters represent actual content:', () => {
+    specify('Parentheses and emphasis', () => {
+      expect(Up.parse('(*Oh) why would you do this?*')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.NormalParenthetical([
+            new Up.Text('('),
+            new Up.Emphasis([
+              new Up.Text('Oh)')
+            ]),
+          ]),
+          new Up.Emphasis([
+            new Up.Text(' why would you do this?)')
+          ])
+        ]))
+    })
+
     specify('Emphasis and parentheses', () => {
       expect(Up.parse('*(Oh* why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -111,6 +88,21 @@ context('When most otherwise-nested conventions overlap by only their start deli
               new Up.Text('(Oh')
             ]),
             new Up.Text(' why would you do this?)')
+          ])
+        ]))
+    })
+
+    specify('Square brackets and emphasis', () => {
+      expect(Up.parse('[*Oh] why would you do this?*')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.SquareParenthetical([
+            new Up.Text('['),
+            new Up.Emphasis([
+              new Up.Text('Oh)')
+            ]),
+          ]),
+          new Up.Emphasis([
+            new Up.Text(' why would you do this?]')
           ])
         ]))
     })
@@ -126,24 +118,78 @@ context('When most otherwise-nested conventions overlap by only their start deli
           ])
         ]))
     })
+
+    specify('Quoted text and italics', () => {
+      expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.InlineQuote([
+            new Up.Text('"'),
+            new Up.Italics([
+              new Up.Text('Oh"')
+            ]),
+          ]),
+          new Up.Italics([
+            new Up.Text(' why would you do this?')
+          ])
+        ]))
+    })
+
+    specify('Italics and quoted text', () => {
+      expect(Up.parse('_"Oh_ why would you do this?_')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.InlineQuote([
+            new Up.Italics([
+              new Up.Text('"Oh')
+            ]),
+            new Up.Text(' why would you do this?"')
+          ])
+        ]))
+    })
+
+    specify('Quoted text and parentheses', () => {
+      expect(Up.parse('"(Oh" why would you do this?)')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.InlineQuote([
+            new Up.NormalParenthetical([
+              new Up.Text('(Oh'),
+            ]),
+          ]),
+          new Up.NormalParenthetical([
+            new Up.Text(' why would you do this?)')
+          ])
+        ]))
+    })
+
+    specify('Parentheses and quoted text', () => {
+      expect(Up.parse('("Oh) why would you do this?"')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.NormalParenthetical([
+            new Up.InlineQuote([
+              new Up.Text('"Oh'),
+            ]),
+          ]),
+          new Up.InlineQuote([
+            new Up.Text(' why would you do this?"')
+          ])
+        ]))
+    })
   })
 })
 
 
 context('When most otherwise-nested conventions overlap by only their end delimiters, they nest without being split.', () => {
   context('This includes:', () => {
-    specify('Two "freely-splittable" conventions (e.g. stress, italics) being overlapped by a third (e.g. quoted text)', () => {
-      expect(Up.parse('"Hello **good _friend!"_** Hi!')).to.deep.equal(
+    specify('Two "freely-splittable" conventions (e.g. stress, italics) being overlapped by a third (e.g. emphasis)', () => {
+      expect(Up.parse('*Hello **good _friend!*_** Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineQuote([
-            new Up.Text('"Hello '),
+          new Up.Emphasis([
+            new Up.Text('Hello '),
             new Up.Stress([
               new Up.Text('good '),
               new Up.Italics([
                 new Up.Text('friend!')
               ])
             ]),
-            new Up.Text('"')
           ]),
           new Up.Text(' Hi!')
         ]))
@@ -225,22 +271,21 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single convention that should only be split when necessary', () => {
-      expect(Up.parse('**There _was "another [NSFL: loud (SPOILER: stomp_**"]). Hi!')).to.deep.equal(
+    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping two conventions that should only be split when necessary', () => {
+      expect(Up.parse('**There _was __another [NSFL: loud (SPOILER: stomp_**__]). Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
             new Up.Italics([
               new Up.Text('was '),
-              new Up.InlineQuote([
-                new Up.Text('"another '),
+              new Up.Bold([
+                new Up.Text('another '),
                 new Up.InlineNsfl([
                   new Up.Text('loud '),
                   new Up.InlineSpoiler([
                     new Up.Text('stomp')
                   ])
-                ]),
-                new Up.Text('"')
+                ])
               ])
             ])
           ]),
@@ -398,32 +443,6 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
   })
 
-  specify('Quoted text and square brackets', () => {
-    expect(Up.parse('"[Why would you do this?"]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.SquareParenthetical([
-          new Up.Text('['),
-          new Up.InlineQuote([
-            new Up.Text('"Why would you do this?"')
-          ]),
-          new Up.Text(']')
-        ])
-      ]))
-  })
-
-  specify('Square brackets and quoted text', () => {
-    expect(Up.parse('["Why would you do this?]"')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineQuote([
-          new Up.Text('"'),
-          new Up.SquareParenthetical([
-            new Up.Text('[Why would you do this?]')
-          ]),
-          new Up.Text('"')
-        ])
-      ]))
-  })
-
 
   context('But not conventions whose delimiters represent actual content:', () => {
     specify('Parentheses and italics', () => {
@@ -438,7 +457,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Parentheses and italics', () => {
+    specify('Italics and parentheses', () => {
       expect(Up.parse('_(Why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -473,6 +492,60 @@ context('When most conventions completely overlap, they nest perfectly, with the
           ])
         ]))
     })
+  })
+
+  specify('Quoted text and italics', () => {
+    expect(Up.parse('"_Why would you do this?"_')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.NormalParenthetical([
+          new Up.Text('"'),
+          new Up.InlineQuote([
+            new Up.Text('Why would you do this?"')
+          ]),
+        ])
+      ]))
+  })
+
+  specify('Italics and quoted text', () => {
+    expect(Up.parse('_"Why would you do this?_"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.InlineQuote([
+          new Up.Italics([
+            new Up.Text('"Why would you do this?')
+          ]),
+          new Up.Text('"')
+        ])
+      ]))
+  })
+
+  specify('Quoted text and square brackets', () => {
+    expect(Up.parse('"[Why would you do this?"]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.InlineQuote([
+          new Up.Text('"'),
+          new Up.SquareParenthetical([
+            new Up.Text('[Why would you do this?"')
+          ])
+        ]),
+        new Up.SquareParenthetical([
+          new Up.Text(']')
+        ])
+      ]))
+  })
+
+  specify('Square brackets and quoted text', () => {
+    expect(Up.parse('["Why would you do this?]"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.SquareParenthetical([
+          new Up.Text('['),
+          new Up.InlineQuote([
+            new Up.Text('"Why would you do this?]')
+          ]),
+          new Up.InlineQuote([
+            new Up.Text('"')
+          ])
+        ])
+      ]))
   })
 })
 
