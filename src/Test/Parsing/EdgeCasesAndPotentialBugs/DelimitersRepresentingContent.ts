@@ -3,7 +3,6 @@ import { insideDocumentAndParagraph } from '../Helpers'
 import * as Up from '../../../index'
 
 
-
 context('An unmatched left parenthesis within quotation marks produces a quote:', () => {
   specify('At the end of a paragraph', () => {
     expect(Up.parse('"("')).to.deep.equal(
