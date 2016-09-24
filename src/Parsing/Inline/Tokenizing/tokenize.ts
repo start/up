@@ -59,7 +59,7 @@ const PARENTHESIS =
 const SQUARE_BRACKET =
   new Bracket('[', ']')
 
-const NORMAL_BRACKETS = [
+const PARENTHETICAL_BRACKETS = [
   PARENTHESIS,
   SQUARE_BRACKET
 ]
@@ -273,7 +273,7 @@ class Tokenizer {
   }
 
   private getFootnoteConventions(): Convention[] {
-    return NORMAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: FOOTNOTE,
         // For regular footnotes (i.e. these), we collapse any leading whitespace.
@@ -290,7 +290,7 @@ class Tokenizer {
   // In inline documents, this purpose can't be fulfilled, so we do the next best thing: we treat footnotes
   // as normal parentheticals.
   private getFootnoteConventionsForInlineDocuments(): Convention[] {
-    return NORMAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: NORMAL_PARENTHETICAL,
         startsWith: this.getFootnoteStartDelimiter(bracket),
@@ -310,7 +310,7 @@ class Tokenizer {
   }
 
   private getLinkContentConventions(): Convention[] {
-    return NORMAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention: LINK,
         startsWith: bracket.startPattern,
@@ -336,7 +336,7 @@ class Tokenizer {
   ): Convention[] {
     const { richConvention, term } = args
 
-    return NORMAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
         startsWith: labeledBracketStartDelimiter(term, bracket),
@@ -486,7 +486,7 @@ class Tokenizer {
     const term =
       this.settings.terms.sectionLink
 
-    return NORMAL_BRACKETS.map(bracket =>
+    return PARENTHETICAL_BRACKETS.map(bracket =>
       new Convention({
         startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(term, bracket), bracket.endPattern),
         startPatternContainsATerm: true,
@@ -508,7 +508,7 @@ class Tokenizer {
       [IMAGE, VIDEO, AUDIO].map(media => {
         const mediaTerm = media.term(this.settings.terms)
 
-        return NORMAL_BRACKETS.map(bracket =>
+        return PARENTHETICAL_BRACKETS.map(bracket =>
           new Convention({
             startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(mediaTerm, bracket), bracket.endPattern),
             startPatternContainsATerm: true,
@@ -525,7 +525,7 @@ class Tokenizer {
   }
 
   private getMediaUrlConventions(): Convention[] {
-    return NORMAL_BRACKETS.map(bracket => new Convention({
+    return PARENTHETICAL_BRACKETS.map(bracket => new Convention({
       startsWith: ANY_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
@@ -573,7 +573,7 @@ class Tokenizer {
       this.mostRecentToken.value = url
     }
 
-    return concat(NORMAL_BRACKETS.map(bracket => [
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => [
       this.getConventionForBracketedUrl({ bracket, whenClosing }),
       this.getConventionForBracketedUrlOffsetByWhitespace({ bracket, whenClosing })
     ]))
@@ -597,7 +597,7 @@ class Tokenizer {
       FOOTNOTE
     ].map(richConvention => richConvention.endTokenRole)
 
-    return concat(NORMAL_BRACKETS.map(bracket => {
+    return concat(PARENTHETICAL_BRACKETS.map(bracket => {
       const argsForRichConventions = {
         bracket,
         canOnlyOpenIfDirectlyFollowing: LINKIFIABLE_RICH_CONVENTIONS,
@@ -754,7 +754,7 @@ class Tokenizer {
   }
 
   private getRawParentheticalBracketConventions(): Convention[] {
-    return NORMAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
+    return PARENTHETICAL_BRACKETS.map(bracket => this.getRawBracketConvention(bracket))
   }
 
   private getRawCurlyBracketConvention(): Convention {
@@ -947,7 +947,7 @@ class Tokenizer {
     const charFollowingLeadingWhitespace =
       remainingMarkup[leadingWhitespace.length]
 
-    if (NORMAL_OPEN_BRACKET_PATTERN.test(charFollowingLeadingWhitespace)) {
+    if (PARENTHETICAL_OPEN_BRACKET_PATTERN.test(charFollowingLeadingWhitespace)) {
       // Uh-oh. That whitespace might be special. Let's bail!
       return false
     }
@@ -1574,10 +1574,10 @@ const BARE_URL_SCHEME_AND_HOSTNAME =
 //
 // For more information, see the `bufferContentThatCanNeverServeAsDelimiter` method.
 
-const NORMAL_OPEN_BRACKET_PATTERN =
+const PARENTHETICAL_OPEN_BRACKET_PATTERN =
   patternStartingWith(
     anyCharMatching(
-      ...NORMAL_BRACKETS.map(bracket => bracket.startPattern)))
+      ...PARENTHETICAL_BRACKETS.map(bracket => bracket.startPattern)))
 
 const ALL_BRACKETS =
   [PARENTHESIS, SQUARE_BRACKET, CURLY_BRACKET]
