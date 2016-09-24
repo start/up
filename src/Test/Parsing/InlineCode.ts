@@ -163,20 +163,37 @@ context('Inline code ends at the first matching delimiter.', () => {
 })
 
 
-describe('Backslashes inside inline code', () => {
-  it('are preserved', () => {
-    expect(Up.parse('Whiteboard `\\"prop\\"`')).to.deep.equal(
+describe('Within inline code, backslashes', () => {
+  it('can escape backticks', () => {
+    expect(Up.parse('The clock expects `\\`ticks\\``')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('Whiteboard '),
-        new Up.InlineCode('\\"prop\\"')
+        new Up.Text('The clock expects '),
+        new Up.InlineCode('`ticks`')
       ]))
   })
 
-  it('do not escape the enclosing backticks', () => {
-    expect(Up.parse('Funny lines: `/|\\`')).to.deep.equal(
+  it('can escape other backslashes', () => {
+    expect(Up.parse('Funny lines: `\\\\\\\\`')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Funny lines: '),
-        new Up.InlineCode('/|\\')
+        new Up.InlineCode('\\\\')
+      ]))
+  })
+
+  it('can escape characters that otherwise have no special meaning', () => {
+    expect(Up.parse('No point: `\\*`')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('No point: '),
+        new Up.InlineCode('*')
+      ]))
+  })
+
+  it('can escape a backslash that itself precedes an unescaped backslash', () => {
+    expect(Up.parse('Use `\\\\\\`` to confuse everyone!')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('Use '),
+        new Up.InlineCode('\\`'),
+        new Up.Text(' to confuse everyone!')
       ]))
   })
 })

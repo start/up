@@ -405,8 +405,8 @@ Chrono Cross;         Playstation;         1999`
 })
 
 
-context('Like in a regular table, within a cell in a table with a header column, backslashes escape characters (like they normally do).', () => {
-  specify('For example, a backslash can escape an asterisk', () => {
+context('Like in a regular table, within a cell in a table with a header column,', () => {
+  specify('backslashes escape characters (like they normally do)', () => {
     const markup = `
 Table: My favorite faces
 
@@ -430,62 +430,6 @@ Table: My favorite faces
             ], new Up.Table.Header.Cell([new Up.Text('83')]))
           ], new Up.Table.Caption([
             new Up.Text('My favorite faces')
-          ]))
-      ]))
-  })
-
-  specify('However, when a semiclon is escaped, its "escaping" backslash is not preserved. This allows semicolons to be included in inline code within a table cell', () => {
-    const markup = `
-Table: My favorite programming snippets
-
-                                    Reason for liking
-
-\`parse()\\;\`;                     It looks important
-\`int main() { return 0\\; }\`;     I see it everywhere`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('It looks important')])
-            ], new Up.Table.Header.Cell([new Up.InlineCode('parse();')])),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('I see it everywhere')])
-            ], new Up.Table.Header.Cell([new Up.InlineCode('int main() { return 0; }')]))
-          ], new Up.Table.Caption([
-            new Up.Text('My favorite programming snippets')
-          ]))
-      ]))
-  })
-
-  specify('If three backslashes preceed a semicolon, the first two are preserved', () => {
-    const markup = `
-Table: My favorite programming snippets
-
-                          Reason for liking
-
-\`parse("\\\\\\;")\`;     It looks convoluted
-\`void main() { }\`;      I see it everywhere`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.Text('Reason for liking')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('It looks convoluted')])
-            ], new Up.Table.Header.Cell([new Up.InlineCode('parse("\\\\;")')])),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('I see it everywhere')])
-            ], new Up.Table.Header.Cell([new Up.InlineCode('void main() { }')]))
-          ], new Up.Table.Caption([
-            new Up.Text('My favorite programming snippets')
           ]))
       ]))
   })

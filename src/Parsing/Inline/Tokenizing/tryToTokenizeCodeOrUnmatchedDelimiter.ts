@@ -63,14 +63,8 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   COLLECT_INLINE_CODE: while (!markupConsumer.done()) {
     // First, lets collect all inline code up to the first unescaped backtick. That backtick might
     // not terminate our inline code, but we'll find that out later!
-    while (true) {
-      const { currentChar } = markupConsumer
-
-      if (currentChar === BACKTICK) {
-        break
-      }
-      
-      if (currentChar === BACKSLASH) {
+    while (markupConsumer.currentChar !== BACKTICK) {
+      if (markupConsumer.currentChar === BACKSLASH) {
         markupConsumer.index += 1
       }
 
@@ -78,7 +72,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
         break COLLECT_INLINE_CODE
       }
 
-      inlineCode += currentChar
+      inlineCode += markupConsumer.currentChar
       markupConsumer.index += 1
     }
 
