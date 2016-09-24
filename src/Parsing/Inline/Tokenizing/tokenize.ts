@@ -1246,18 +1246,13 @@ class Tokenizer {
     return didOpen
   }
 
-  // Inline code is the only convention that:
-  //
-  // 1. Does not support escaped characters
-  // 2. Cannot contain any other conventions
-  //
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
     return tryToTokenizeCodeOrUnmatchedDelimiter({
       markup: this.markupConsumer.remaining,
-      then: (resultToken, lengthConsumed) => {
+      then: (inlineCodeToken, lengthConsumed) => {
         this.flushNonEmptyBufferToTextToken()
-        this.appendToken(resultToken)
+        this.appendToken(inlineCodeToken)
         this.markupConsumer.index += lengthConsumed
       }
     })
