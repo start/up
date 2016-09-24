@@ -295,6 +295,14 @@ class Tokenizer {
         richConvention: NORMAL_PARENTHETICAL,
         startsWith: this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket),
+        
+        whenOpening: () => {
+          this.bufferedContent += PARENTHESIS.open
+        },
+        
+        whenClosing: () => {
+          this.bufferedContent += PARENTHESIS.close
+        }
       }))
   }
 
