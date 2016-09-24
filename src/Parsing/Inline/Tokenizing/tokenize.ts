@@ -299,7 +299,7 @@ class Tokenizer {
         whenOpening: () => {
           this.bufferedContent += PARENTHESIS.open
         },
-        
+
         whenClosing: () => {
           this.bufferedContent += PARENTHESIS.close
         }
@@ -1170,26 +1170,28 @@ class Tokenizer {
     for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
       let token = this.tokens[i]
 
-      // If the current token has a `correspondingEnclosingToken`, it must be an end token. It cannot be a start
-      // token, because:
-      //
-      // 1. Rich conventions' start tokens are added after the convention closes along with their end tokens
-      //    (as explained above). If a rich convention has a start token, it has an end token, too. This
-      //    brings us to the second reason...
-      //
-      // 2. Rich conventions cannot be totally empty. There will always be content between a rich convention's
-      //    start token and its end token. 
-      //
-      // Below, we break from the loop if we encounter actual content, so we can't ever encounter a start
-      // token here.
-      const isCurrentTokenAnEndToken =
-        token.correspondingEnclosingToken != null
-
       // We should insert our new end token before the current end token if...
       const shouldEndTokenAppearBeforeCurrentToken =
-        // ...the current token is actually a rich convention's end token...
-        isCurrentTokenAnEndToken
-        // ...and our start token (that we just added) is inside the current end token's convention. 
+        // ...the current token belongs to a rich convention (we aren't sure whether this is an end token yet,
+        // but we'll find out soon)...
+        token.correspondingEnclosingToken != null
+        // ...and our start token (that we just added) comes after the corresponding token for the current
+        // token.
+        //
+        // This guarantees that the current token is an end token, not a start token. How?
+        //
+        // 1. We are looping backwards, and we naturally break from the loop once we find we aren't able to
+        //    insert our end token before the current token.
+        //
+        // 2. Rich conventions' start tokens are only added once the convention closes, along with their end
+        //    tokens (as explained above). If our token collection has a start token, it has an end token, too.
+        //
+        // 3. End tokens always come after start tokens. Since we're looping backward, if the current token is
+        //    a start token, we would have already looped past the end token.
+        //
+        // Therefore, if the current token is a start token, the only way for *our* start token to be after the
+        // current token's end token is for us to have already looped past our own start token. That's not
+        // possble, because we haven't even inserted our end token yet.
         && startTokenIndex > this.tokens.indexOf(token.correspondingEnclosingToken)
 
       if (shouldEndTokenAppearBeforeCurrentToken) {
