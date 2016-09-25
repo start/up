@@ -5,8 +5,8 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 
 
 // Represents the rules for a single variation of an inline convention (e.g. an inline spoiler
-// delimited by square brackets).  
-export class Convention {
+// wrapped in square brackets).  
+export class Rules {
   startsWith: RegExp
   endsWith: RegExp
   canOnlyOpenIfDirectlyFollowing: TokenRole[]
@@ -20,7 +20,7 @@ export class Convention {
   beforeClosingItFlushesNonEmptyBufferTo: TokenRole
   beforeClosingItAlwaysFlushesBufferTo: TokenRole
   whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: Convention[]
+  mustBeDirectlyFollowedBy: Rules[]
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
   parsedContentIsEnclosedByText: TextThatEnclosesParsedContent
@@ -41,7 +41,7 @@ export class Convention {
       beforeClosingItAlwaysFlushesBufferTo?: TokenRole
       beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
       whenClosingItAlsoClosesInnerConventions?: boolean
-      mustBeDirectlyFollowedBy?: Convention[]
+      mustBeDirectlyFollowedBy?: Rules[]
       whenClosing?: OnConventionEvent
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
