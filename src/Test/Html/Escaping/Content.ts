@@ -265,7 +265,7 @@ describe('Inside a text node itself nested within several inline nodes, all inst
         new Up.Emphasis([
           new Up.Stress([
             new Up.InlineQuote([
-              new Up.Text('"4 & 5 < 10, and 6 & 7 < 10. Coincidence?"')
+              new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])
           ])
         ])
@@ -274,7 +274,7 @@ describe('Inside a text node itself nested within several inline nodes, all inst
 
     expect(Up.render(document)).to.equal(
       '<p>'
-      + '<em><strong><span class="up-inline-quote">"4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?"</span></strong></em>'
+      + '<em><strong><q>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</q></strong></em>'
       + '</p>')
   })
 })
