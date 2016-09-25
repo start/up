@@ -22,7 +22,6 @@ import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
 import { InflectionHandler } from './InflectionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
-import { restoreDelimitersRepresentingActualContent } from './restoreDelimitersRepresentingActualContent'
 import { TextThatEnclosesParsedContent } from './TextThatEnclosesParsedContent'
 
 
@@ -219,9 +218,7 @@ class Tokenizer {
     this.configureConventions(options && options.isTokenizingInlineDocument)
 
     this.tokenize()
-    this.result =
-      nestOverlappingConventions(
-        restoreDelimitersRepresentingActualContent(this.tokens))
+    this.result = nestOverlappingConventions(this.tokens)
   }
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
