@@ -19,7 +19,7 @@ import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { Convention, OnConventionEvent } from './Convention'
+import { Convention, OnConventionEvent, TextThatEnclosesParsedContent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 import { restoreDelimitersRepresentingActualContent } from './restoreDelimitersRepresentingActualContent'
@@ -359,7 +359,7 @@ class Tokenizer {
       endsWith: bracket.endPattern,
 
       whenOpening: () => { this.bufferedContent += bracket.open },
-      whenClosing: () => { this.bufferedContent += bracket.close },
+      whenClosing: () => { this.bufferedContent += bracket.close }
     })
   }
 
@@ -373,9 +373,10 @@ class Tokenizer {
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       whenClosing?: OnConventionEvent
       mustBeDirectlyFollowedBy?: Convention[]
+      parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy, parsedContentIsEnclosedByText } = args
 
     return new Convention({
       // Up never applies empty conventions, and that naturally applies for rich conventions, too.
@@ -409,6 +410,8 @@ class Tokenizer {
 
         this.encloseContextWithinConvention(richConvention, context)
       },
+  
+      parsedContentIsEnclosedByText,
 
       insteadOfFailingWhenLeftUnclosed,
       mustBeDirectlyFollowedBy
@@ -1102,7 +1105,7 @@ class Tokenizer {
   }
 
   private encloseContextWithinConvention(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({ richConvention, startingBackAtTokenIndex: context.startTokenIndex })
+    this.encloseWithin({richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs): void {
