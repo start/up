@@ -408,10 +408,9 @@ class Tokenizer {
           whenClosing(context)
         }
 
-        this.encloseContextWithinConvention(context)
+        this.encloseContextWithinConvention(richConvention, context)
       },
   
-      richConvention,
       parsedContentIsEnclosedByText,
 
       insteadOfFailingWhenLeftUnclosed,
@@ -1105,9 +1104,7 @@ class Tokenizer {
     }
   }
 
-  private encloseContextWithinConvention(context: ConventionContext): void {
-    const { richConvention } = context.convention
-
+  private encloseContextWithinConvention(richConvention: RichConvention, context: ConventionContext): void {
     this.encloseWithin({richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
