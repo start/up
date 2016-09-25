@@ -19,10 +19,11 @@ import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { Convention, OnConventionEvent, TextThatEnclosesParsedContent } from './Convention'
+import { Convention, OnConventionEvent } from './Convention'
 import { InflectionHandler } from './InflectionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 import { restoreDelimitersRepresentingActualContent } from './restoreDelimitersRepresentingActualContent'
+import { TextThatEnclosesParsedContent } from './TextThatEnclosesParsedContent'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -376,7 +377,7 @@ class Tokenizer {
       parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
     }
   ): Convention {
-    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy, parsedContentIsEnclosedByText } = args
+    const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new Convention({
       // Up never applies empty conventions, and that naturally applies for rich conventions, too.
@@ -411,8 +412,6 @@ class Tokenizer {
         this.encloseContextWithinConvention(richConvention, context)
       },
   
-      parsedContentIsEnclosedByText,
-
       insteadOfFailingWhenLeftUnclosed,
       mustBeDirectlyFollowedBy
     })

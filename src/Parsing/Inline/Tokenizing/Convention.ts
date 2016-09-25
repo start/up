@@ -23,7 +23,6 @@ export class Convention {
   mustBeDirectlyFollowedBy: Convention[]
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
-  parsedContentIsEnclosedByText: TextThatEnclosesParsedContent
 
   constructor(
     args: {
@@ -44,7 +43,6 @@ export class Convention {
       mustBeDirectlyFollowedBy?: Convention[]
       whenClosing?: OnConventionEvent
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
-      parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
     }
   ) {
     const { startsWith, endsWith } = args
@@ -72,7 +70,6 @@ export class Convention {
     this.mustBeDirectlyFollowedBy = args.mustBeDirectlyFollowedBy
     this.whenClosing = args.whenClosing
     this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
-    this.parsedContentIsEnclosedByText = args.parsedContentIsEnclosedByText
   }
 }
 
@@ -81,7 +78,3 @@ export interface OnConventionEvent {
   (context: ConventionContext): void
 }
 
-export interface TextThatEnclosesParsedContent {
-  atStart: string
-  atEnd: string
-}
