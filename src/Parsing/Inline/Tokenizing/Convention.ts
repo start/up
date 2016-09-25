@@ -1,7 +1,8 @@
+import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './TextConsumer'
 import { TokenRole } from '../TokenRole'
-import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
+import { RichConvention } from './RichConvention'
 
 
 // Represents the rules for a single inline convention (e.g. an inline spoiler wrapped in square brackets).  
@@ -23,6 +24,7 @@ export class Convention {
   whenClosing: OnConventionEvent
   insteadOfFailingWhenLeftUnclosed: OnConventionEvent
   parsedContentIsEnclosedByText: TextThatEnclosesParsedContent
+  richConvention: RichConvention
 
   constructor(
     args: {
@@ -44,6 +46,7 @@ export class Convention {
       whenClosing?: OnConventionEvent
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
+      richConvention?: RichConvention
     }
   ) {
     const { startsWith, endsWith } = args
@@ -72,6 +75,7 @@ export class Convention {
     this.whenClosing = args.whenClosing
     this.insteadOfFailingWhenLeftUnclosed = args.insteadOfFailingWhenLeftUnclosed
     this.parsedContentIsEnclosedByText = args.parsedContentIsEnclosedByText
+    this.richConvention = args.richConvention
   }
 }
 
