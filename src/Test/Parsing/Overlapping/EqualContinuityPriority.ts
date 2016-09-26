@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../index'
-import { insideDocumentAndParagraph } from'.././Helpers'
+import { insideDocumentAndParagraph } from '.././Helpers'
 
 
 // TODO: Organize these tests into contexts for clarity
@@ -246,15 +246,15 @@ describe('Overlapped stressed and square bracketed text', () => {
 })
 
 
-describe('Overlapped quoted and emphasized text', () => {
-  it('splits the emphasis node because it opened second', () => {
+context('When quoted text overlaps emphasis text, the emphasis node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
     expect(Up.parse('I "love *drinking" whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
-          new Up.Text('"love '),
+          new Up.Text('love '),
           new Up.Emphasis([
-            new Up.Text('drinking"')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.Emphasis([
@@ -263,61 +263,18 @@ describe('Overlapped quoted and emphasized text', () => {
         new Up.Text(' milk.')
       ]))
   })
-})
 
-
-describe('Overlapped emphasized and quoted text', () => {
-  it('splits the inline quote node because it opened second', () => {
+  specify('The emphasis opens first', () => {
     expect(Up.parse('I *love "drinking* whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.Emphasis([
           new Up.Text('love '),
           new Up.InlineQuote([
-            new Up.Text('"drinking')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' whole"')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-})
-
-
-describe('Overlapped quoted and stressed text', () => {
-  it('splits the stress node because it opened second', () => {
-    expect(Up.parse('I **love "drinking** whole" milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.Stress([
-          new Up.Text('love '),
-          new Up.InlineQuote([
-            new Up.Text('"drinking')
-          ])
-        ]),
-        new Up.InlineQuote([
-          new Up.Text(' whole"')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-})
-
-
-describe('Overlapped stressed and quoted text', () => {
-  it('splits the quoted node because it opened second', () => {
-    expect(Up.parse('I "love **drinking" whole** milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.InlineQuote([
-          new Up.Text('"love '),
-          new Up.Stress([
-            new Up.Text('drinking"')
-          ])
-        ]),
-        new Up.Stress([
           new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')
@@ -326,19 +283,36 @@ describe('Overlapped stressed and quoted text', () => {
 })
 
 
-describe('Overlapped quoted and highlighted text', () => {
-  it('splits the highlight node because it opened second', () => {
-    expect(Up.parse('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
+context('When quoted text overlaps stressed text, the stress node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
+    expect(Up.parse('I "love **drinking" whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
-        new Up.Highlight([
+        new Up.InlineQuote([
+          new Up.Text('love '),
+          new Up.Stress([
+            new Up.Text('drinking')
+          ])
+        ]),
+        new Up.Stress([
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+
+  specify('The stress opens first', () => {
+    expect(Up.parse('I **love "drinking** whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.Stress([
           new Up.Text('love '),
           new Up.InlineQuote([
-            new Up.Text('"drinking')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' whole"')
+          new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')
       ]))
@@ -346,18 +320,35 @@ describe('Overlapped quoted and highlighted text', () => {
 })
 
 
-describe('Overlapped highlighted and quoted text', () => {
-  it('splits the quoted node because it opened second', () => {
+context('When quoted text overlaps highlighted text, the highlight node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
     expect(Up.parse('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
-          new Up.Text('"love '),
+          new Up.Text('love '),
           new Up.Highlight([
-            new Up.Text('drinking"')
+            new Up.Text('drinking')
           ])
         ]),
         new Up.Highlight([
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+
+  specify('The highlight opens first', () => {
+    expect(Up.parse('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.Highlight([
+          new Up.Text('love '),
+          new Up.InlineQuote([
+            new Up.Text('drinking')
+          ])
+        ]),
+        new Up.InlineQuote([
           new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')
