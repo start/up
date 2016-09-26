@@ -476,8 +476,8 @@ export class HtmlRenderer extends Renderer {
       internalUrl(this.footnoteReferenceId(referenceNumber)))
   }
 
-  private playableMediaElement(media: Audio | Video, tagName: string): string {
-    const { url, description } = media
+  private playableMediaElement(playableMedia: Audio | Video, tagName: string): string {
+    const { url, description } = playableMedia
 
     if (!this.isUrlAllowed(url)) {
       return ''
@@ -485,7 +485,7 @@ export class HtmlRenderer extends Renderer {
 
     const attrs =
       attrsFor(
-        media, {
+        playableMedia, {
           src: url,
           title: description,
           controls: NO_ATTRIBUTE_VALUE,
