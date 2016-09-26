@@ -197,7 +197,7 @@ context('The following conventions cannot be linkified:', () => {
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, you '),
         new Up.InlineQuote([
-          new Up.Text('"win"')
+          new Up.Text('win')
         ]),
         new Up.Text(' '),
         new Up.NormalParenthetical([

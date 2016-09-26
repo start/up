@@ -28,13 +28,13 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
-            new Up.Text('"Hello, my '),
+            new Up.Text('Hello, my '),
             new Up.Emphasis([
               new Up.InlineQuote([
                 new Up.Text('leetle')
               ]),
             ]),
-            new Up.Text(' Mario!"')
+            new Up.Text(' Mario!')
           ])
         ]))
     })

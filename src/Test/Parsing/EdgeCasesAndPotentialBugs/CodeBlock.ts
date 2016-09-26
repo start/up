@@ -132,7 +132,7 @@ That's what the robot wrote!`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineQuote([new Up.Text('"```"')])
+          new Up.InlineQuote([new Up.Text('```')])
         ]),
         new Up.Paragraph([
           new Up.Text("That's what the robot wrote!")
