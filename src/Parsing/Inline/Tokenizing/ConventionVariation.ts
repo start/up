@@ -77,4 +77,3 @@ export class ConventionVariation {
 export interface OnConventionEvent {
   (context: ConventionContext): void
 }
-
