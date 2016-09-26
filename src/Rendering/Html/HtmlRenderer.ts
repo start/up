@@ -578,8 +578,8 @@ export class HtmlRenderer extends Renderer {
     const cells =
       row.cells.map(cell => this.tableRowCell(cell))
 
-    if (row.headerCell) {
-      cells.unshift(this.tableHeaderCell(row.headerCell, 'row'))
+    if (row.headerColumnCell) {
+      cells.unshift(this.tableHeaderCell(row.headerColumnCell, 'row'))
     }
 
     return htmlElementWithAlreadyEscapedChildren('tr', cells)

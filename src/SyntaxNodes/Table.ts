@@ -72,13 +72,13 @@ export namespace Table {
 
 
   export class Row {
-    constructor(public cells: Row.Cell[], public headerCell?: Header.Cell) { }
+    constructor(public cells: Row.Cell[], public headerColumnCell?: Header.Cell) { }
 
     get allCellsStartingHeaderColumnCell(): Table.Cell[] {
       const allCells: Table.Cell[] = this.cells.slice()
 
-      if (this.headerCell) {
-        allCells.unshift(this.headerCell)
+      if (this.headerColumnCell) {
+        allCells.unshift(this.headerColumnCell)
       }
 
       return allCells
