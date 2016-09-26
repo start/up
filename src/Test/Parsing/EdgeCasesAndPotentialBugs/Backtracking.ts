@@ -157,18 +157,18 @@ describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched
         new Up.Stress([
           new Up.Text('love '),
           new Up.NormalParenthetical([
-            new Up.Text('(quickly [^ '),
-            new Up.InlineQuote([
-              new Up.Text('eating')
-            ])
-          ])
-        ]),
-        new Up.NormalParenthetical([
-          new Up.InlineQuote([
-            new Up.Text(' pepperoni)')
+            new Up.Text('(quickly [^ ')
           ])
         ]),
         new Up.InlineQuote([
+          new Up.Stress([
+            new Up.NormalParenthetical([
+              new Up.Text('eating')
+            ])
+          ]),
+          new Up.NormalParenthetical([
+            new Up.Text(' pepperoni)')
+          ]),
           new Up.Text(' pizza')
         ]),
         new Up.Text(' all the time.')
@@ -186,17 +186,17 @@ describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched
           new Up.Text('love '),
           new Up.NormalParenthetical([
             new Up.Text('(quickly '),
-            new Up.InlineQuote([
-              new Up.Text('eating')
-            ])
-          ])
-        ]),
-        new Up.NormalParenthetical([
-          new Up.InlineQuote([
-            new Up.Text(' [^ pepperoni)')
           ])
         ]),
         new Up.InlineQuote([
+          new Up.Stress([
+            new Up.NormalParenthetical([
+              new Up.Text('eating')
+            ])
+          ]),
+          new Up.NormalParenthetical([
+            new Up.Text(' [^ pepperoni)')
+          ]),
           new Up.Text(' pizza')
         ]),
         new Up.Text(' all the time.')
