@@ -489,7 +489,6 @@ export class HtmlRenderer extends Renderer {
           src: url,
           title: description,
           controls: NO_ATTRIBUTE_VALUE,
-          loop: NO_ATTRIBUTE_VALUE
         })
 
     return this.element(tagName, this.playableMediaFallback(description, url), attrs)
