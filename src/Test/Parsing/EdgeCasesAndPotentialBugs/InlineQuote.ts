@@ -135,7 +135,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
       expect(Up.parse('"Luigi stood up. "Help me find brother _Mario_", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('"Luigi stood up. '),
+            new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
               new Up.Italics([

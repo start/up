@@ -23,7 +23,7 @@ context('3 consecutive hyphens normally produce an em dash.', () => {
       expect(Up.parse('"I like Starcraft" ---Mark Twain')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('"I like Starcraft"')
+            new Up.Text('I like Starcraft')
           ]),
           new Up.Text(' —Mark Twain')
         ]))
