@@ -43,7 +43,7 @@ const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   BOLD,
   HIGHLIGHT,
   NORMAL_PARENTHETICAL,
-  SQUARE_PARENTHETICAL,
+  SQUARE_PARENTHETICAL
 ]
 
 // We avoid splitting these conventions.

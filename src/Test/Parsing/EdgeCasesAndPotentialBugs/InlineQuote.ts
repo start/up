@@ -10,15 +10,15 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
-            new Up.Text('"Hello, my '),
+            new Up.Text('Hello, my '),
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.InlineQuote([
-                new Up.Text('"leetle"')
+                new Up.Text('leetle')
               ]),
               new Up.Text(')')
             ]),
-            new Up.Text(' Mario!"')
+            new Up.Text(' Mario!')
           ])
         ]))
     })
@@ -44,10 +44,10 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
-            new Up.Text('"Hello, my '),
+            new Up.Text('Hello, my '),
             new Up.Italics([
               new Up.InlineQuote([
-                new Up.Text('"leetle"')
+                new Up.Text('leetle')
               ]),
             ]),
             new Up.Text(' Mario!"')
@@ -60,13 +60,13 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
-            new Up.Text('"Hello, my '),
+            new Up.Text('Hello, my '),
             new Up.Highlight([
               new Up.InlineQuote([
-                new Up.Text('"leetle"')
+                new Up.Text('leetle')
               ])
             ]),
-            new Up.Text(' Mario!"')
+            new Up.Text(' Mario!')
           ])
         ]))
     })
@@ -78,19 +78,19 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
       insideDocumentAndParagraph([
         new Up.Text('Luigi stood up. '),
         new Up.InlineQuote([
-          new Up.Text('"Hello, my '),
+          new Up.Text('Hello, my '),
           new Up.Italics([
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.Emphasis([
                 new Up.InlineQuote([
-                  new Up.Text('"leetle"')
+                  new Up.Text('leetle')
                 ])
               ]),
               new Up.Text(')')
             ])
           ]),
-          new Up.Text(' Mario!"')
+          new Up.Text(' Mario!')
         ])
       ]))
   })
@@ -103,15 +103,14 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
       expect(Up.parse('"Luigi stood up. "Help me find brother (Mario)", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('"Luigi stood up. '),
+            new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
-              new Up.Text('"Help me find brother '),
+              new Up.Text('Help me find brother '),
               new Up.NormalParenthetical([
                 new Up.Text('(Mario)'),
               ]),
-              new Up.Text('"')
             ]),
-            new Up.Text(', I heard Luigi say."')
+            new Up.Text(', I heard Luigi say.')
           ])
         ]))
     })
@@ -120,15 +119,14 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
       expect(Up.parse('"Luigi stood up. "Help me find brother *Mario*", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('"Luigi stood up. '),
+            new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
-              new Up.Text('"Help me find brother '),
+              new Up.Text('Help me find brother '),
               new Up.Emphasis([
                 new Up.Text('Mario'),
               ]),
-              new Up.Text('"')
             ]),
-            new Up.Text(', I heard Luigi say."')
+            new Up.Text(', I heard Luigi say.')
           ])
         ]))
     })
@@ -139,13 +137,12 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
           new Up.InlineQuote([
             new Up.Text('"Luigi stood up. '),
             new Up.InlineQuote([
-              new Up.Text('"Help me find brother '),
+              new Up.Text('Help me find brother '),
               new Up.Italics([
                 new Up.Text('Mario'),
               ]),
-              new Up.Text('"')
             ]),
-            new Up.Text(', I heard Luigi say."')
+            new Up.Text(', I heard Luigi say.')
           ])
         ]))
     })
@@ -154,15 +151,14 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
       expect(Up.parse('"Luigi stood up. "Help me find brother [highlight:Mario]", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
-            new Up.Text('"Luigi stood up. '),
+            new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
-              new Up.Text('"Help me find brother '),
+              new Up.Text('Help me find brother '),
               new Up.Highlight([
                 new Up.Text('Mario'),
               ]),
-              new Up.Text('"')
             ]),
-            new Up.Text(', I heard Luigi say."')
+            new Up.Text(', I heard Luigi say.')
           ])
         ]))
     })
