@@ -515,13 +515,10 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Quoted text and square brackets', () => {
     expect(Up.parse('"[Why would you do this?"]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineQuote([
-          new Up.Text('"'),
-          new Up.SquareParenthetical([
-            new Up.Text('[Why would you do this?"')
-          ])
-        ]),
         new Up.SquareParenthetical([
+          new Up.InlineQuote([
+            new Up.Text('[Why would you do this?')
+          ]),
           new Up.Text(']')
         ])
       ]))
@@ -533,11 +530,8 @@ context('When most conventions completely overlap, they nest perfectly, with the
         new Up.SquareParenthetical([
           new Up.Text('['),
           new Up.InlineQuote([
-            new Up.Text('"Why would you do this?]')
+            new Up.Text('Why would you do this?]')
           ]),
-          new Up.InlineQuote([
-            new Up.Text('"')
-          ])
         ])
       ]))
   })
@@ -583,6 +577,30 @@ context("When most conventions overlap by only the first convention's end delimi
     })
   })
 
+  specify('Highlight and inline quotes', () => {
+    expect(Up.parse('(highlight: Oh ")why would you do this?"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Highlight([
+          new Up.Text('Oh '),
+        ]),
+        new Up.InlineQuote([
+          new Up.Text('why would you do this?')
+        ])
+      ]))
+  })
+
+  specify('Inline quotes and italics', () => {
+    expect(Up.parse('"Oh _"why would you do this?"')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.InlineQuote([
+          new Up.Text('Oh '),
+        ]),
+        new Up.Italics([
+          new Up.Text('why would you do this?')
+        ])
+      ]))
+  })
+
   context('But not parenthetical conventions:', () => {
     specify('Parentheses', () => {
       expect(Up.parse('[highlight: Oh (]why would you do this?)')).to.deep.equal(
@@ -610,21 +628,6 @@ context("When most conventions overlap by only the first convention's end delimi
           ]),
           new Up.SquareParenthetical([
             new Up.Text('why would you do this?]')
-          ])
-        ]))
-    })
-
-    specify('Inline quotes', () => {
-      expect(Up.parse('(highlight: Oh ")why would you do this?"')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Highlight([
-            new Up.Text('Oh '),
-            new Up.InlineQuote([
-              new Up.Text('"')
-            ]),
-          ]),
-          new Up.InlineQuote([
-            new Up.Text('why would you do this?"')
           ])
         ]))
     })
