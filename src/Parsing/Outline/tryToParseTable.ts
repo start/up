@@ -140,12 +140,12 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
       thenBeforeConsumingLine: line => {
         const cells = getTableCells(line, settings)
 
-        const rowHeaderCell =
+        const headerColumnCell =
           alsoHasHeaderColumn
             ? toHeaderCell(cells.shift())
             : undefined
 
-        rows.push(new Table.Row(cells.map(toRowCell), rowHeaderCell))
+        rows.push(new Table.Row(cells.map(toRowCell), headerColumnCell))
       }
     })
   ) {

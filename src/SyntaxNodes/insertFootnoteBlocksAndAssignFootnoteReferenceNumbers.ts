@@ -190,7 +190,7 @@ class FootnoteBlockInserter {
     return concat([
       table.caption ? [table.caption] : [],
       table.header.cells,
-      ...table.rows.map(row => row.allCellsStartingWithRowHeaderCell)
+      ...table.rows.map(row => row.allCellsStartingHeaderColumnCell)
     ].map(captionOrCell => this.getBlocklessFootnotesFromInlineContainers(captionOrCell)))
   }
 
