@@ -31,7 +31,7 @@ export class Table implements OutlineSyntaxNode {
     const captionAndCells = concat<InlineSyntaxNodeContainer>([
       this.caption ? [this.caption] : [],
       this.header.cells,
-      ...this.rows.map(row => row.allCellsStartingHeaderColumnCell)
+      ...this.rows.map(row => row.allCellsStartingWithHeaderColumnCell)
     ])
 
     return concat(
@@ -74,7 +74,7 @@ export namespace Table {
   export class Row {
     constructor(public cells: Row.Cell[], public headerColumnCell?: Header.Cell) { }
 
-    get allCellsStartingHeaderColumnCell(): Table.Cell[] {
+    get allCellsStartingWithHeaderColumnCell(): Table.Cell[] {
       const allCells: Table.Cell[] = this.cells.slice()
 
       if (this.headerColumnCell) {
