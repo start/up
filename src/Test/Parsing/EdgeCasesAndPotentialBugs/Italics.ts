@@ -46,11 +46,9 @@ context('Within italics, (inner) italics can be the first convention within any 
           new Up.Italics([
             new Up.Text('Hello, my '),
             new Up.InlineQuote([
-              new Up.Text('"'),
               new Up.Italics([
                 new Up.Text('leetle')
               ]),
-              new Up.Text('"')
             ]),
             new Up.Text(' Mario!')
           ])
@@ -82,7 +80,6 @@ context('Within italics, (inner) italics can be the first convention within any 
         new Up.Italics([
           new Up.Text('Hello, my '),
           new Up.InlineQuote([
-            new Up.Text('"'),
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.Emphasis([
@@ -91,8 +88,7 @@ context('Within italics, (inner) italics can be the first convention within any 
                 ])
               ]),
               new Up.Text(')')
-            ]),
-            new Up.Text('"'),
+            ])
           ]),
           new Up.Text(' Mario!')
         ])
@@ -143,7 +139,7 @@ context('Within italics, (inner) italics can close directly after a convention i
             new Up.Italics([
               new Up.Text('Help me find brother '),
               new Up.InlineQuote([
-                new Up.Text('"Mario"'),
+                new Up.Text('Mario'),
               ]),
             ]),
             new Up.Text(', I heard Luigi say.')

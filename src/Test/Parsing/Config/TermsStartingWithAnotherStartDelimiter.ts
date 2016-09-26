@@ -112,7 +112,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       const footnote = new Up.Footnote([
         new Up.Text('listen^: I guess this means '),
         new Up.InlineQuote([
-          new Up.Text('"listen up"')
+          new Up.Text('listen up')
         ]),
         new Up.Text('?')
       ], { referenceNumber: 1 })
@@ -153,7 +153,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       const footnote = new Up.Footnote([
         new Up.Text('look^: I guess this means '),
         new Up.InlineQuote([
-          new Up.Text('"look up"')
+          new Up.Text('look up')
         ]),
         new Up.Text('?')
       ], { referenceNumber: 1 })
@@ -194,7 +194,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       const footnote = new Up.Footnote([
         new Up.Text('watch^: I guess this means '),
         new Up.InlineQuote([
-          new Up.Text('"watch up"')
+          new Up.Text('watch up')
         ]),
         new Up.Text('?')
       ], { referenceNumber: 1 })

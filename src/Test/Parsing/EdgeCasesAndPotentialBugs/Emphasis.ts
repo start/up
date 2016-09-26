@@ -46,11 +46,9 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
           new Up.Emphasis([
             new Up.Text('Hello, my '),
             new Up.InlineQuote([
-              new Up.Text('"'),
               new Up.Emphasis([
                 new Up.Text('leetle')
-              ]),
-              new Up.Text('"')
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -82,7 +80,6 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
         new Up.Emphasis([
           new Up.Text('Hello, my '),
           new Up.InlineQuote([
-            new Up.Text('"'),
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.Italics([
@@ -92,7 +89,6 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
               ]),
               new Up.Text(')')
             ]),
-            new Up.Text('"')
           ]),
           new Up.Text(' Mario!')
         ])
@@ -143,7 +139,7 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
               new Up.InlineQuote([
-                new Up.Text('"Mario"'),
+                new Up.Text('Mario'),
               ]),
             ]),
             new Up.Text(', I heard Luigi say.')

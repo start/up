@@ -253,11 +253,9 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('"https://archive.org/fake"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Text('"'),
           new Up.Link([
             new Up.Text('archive.org/fake')
-          ], 'https://archive.org/fake'),
-          new Up.Text('"'),
+          ], 'https://archive.org/fake')
         ])
       ]))
   })

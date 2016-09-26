@@ -149,7 +149,7 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
 })
 
 
-describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the normal parenthetical convention', () => {
+describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched start delimiter (requiring backtracking) inside the normal parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly [^ "eating** pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -159,7 +159,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           new Up.NormalParenthetical([
             new Up.Text('(quickly [^ '),
             new Up.InlineQuote([
-              new Up.Text('"eating')
+              new Up.Text('eating')
             ])
           ])
         ]),
@@ -169,7 +169,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' pizza"')
+          new Up.Text(' pizza')
         ]),
         new Up.Text(' all the time.')
       ]))
@@ -177,7 +177,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
 })
 
 
-describe('Overlapped stressed, parenthesized, and square bracketed text, with an unmatched start delimiter (requiring backtracking) inside the square parenthetical convention', () => {
+describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched start delimiter (requiring backtracking) inside the square parenthetical convention', () => {
   it("is parsed as though the unmatched opening delimiter were any other bit of plain text", () => {
     expect(Up.parse('I **love (quickly "eating** [^ pepperoni) pizza" all the time.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -187,7 +187,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           new Up.NormalParenthetical([
             new Up.Text('(quickly '),
             new Up.InlineQuote([
-              new Up.Text('"eating')
+              new Up.Text('eating')
             ])
           ])
         ]),
@@ -197,7 +197,7 @@ describe('Overlapped stressed, parenthesized, and square bracketed text, with an
           ])
         ]),
         new Up.InlineQuote([
-          new Up.Text(' pizza"')
+          new Up.Text(' pizza')
         ]),
         new Up.Text(' all the time.')
       ]))
