@@ -8,6 +8,28 @@ import { ParseableToken } from '../ParseableToken'
 // rearranges and adds tokens to make that process simpler.
 //
 // Overlapping rich conventions are split into multiple pieces to ensure each piece has just a single parent.
+//
+// That being said, Up offers no real support for *self-overlapping* conventions. When a convention overlaps
+// one or more instances of itself, the start/end delimiters are simply matched from innermost to outermost.
+//
+// For example, this:
+//
+//   This [SPOILER: does (SPOILER: not] make) much sense.
+//
+// ...should be parsed as though it were this:
+//
+//   This [SPOILER: does [SPOILER: not] make] much sense.
+//
+// Note the identical brackets in the second example.
+//
+// As mentioned above, in cases of self-overlapping, we want to match tokens from innermost to outermost.
+// Therefore, in the first example, we want to match `(SPOILER:` with `]`.
+//
+// Luckily, we have an easy solution: Just leave the tokens alone!
+//
+// The `nestOverlappingConventions` function returns a `ParseableToken` collection. A `ParseableToken` simply
+// has a role (e.g. SpoilerStart) and an optional value. Because they lack the `correspondingEnclosingToken`
+// field, it's naturally impossible for them to express self-overlapping.
 export function nestOverlappingConventions(tokens: Token[]): ParseableToken[] {
   return new ConventionNester(tokens).tokens
 }
@@ -22,7 +44,6 @@ const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   HIGHLIGHT,
   NORMAL_PARENTHETICAL,
   SQUARE_PARENTHETICAL,
-  QUOTE
 ]
 
 // We avoid splitting these conventions.
@@ -33,30 +54,11 @@ const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
   SPOILER,
   NSFW,
   NSFL,
+  QUOTE,
   FOOTNOTE
 ]
 
 
-// Up offers no real support for self-overlapping conventions. When a convention overlaps one or more instances of itself,
-// the start/end delimiters are simply matched from innermost to outermost.
-//
-// For example, this:
-//
-//   This [SPOILER: does (SPOILER: not] make) much sense.
-//
-// ...should be parsed as though it were this:
-//
-//   This [SPOILER: does [SPOILER: not] make] much sense.
-//
-// Note the identical brackets in the second example.
-//
-// As mentioned above, in cases of self-overlapping, we want to match tokens from innermost to outermost. Therefore, in the
-// first example, we want to match `(SPOILER:` with `]`.
-//
-// Luckily, we have an easy solution: Just leave the tokens alone!
-//
-// We return `ParseableToken` collection. A `ParseableToken` simply has a role (e.g. SpoilerStart) and an optional value.
-// Because they lack the `correspondingEnclosingToken` field, it's naturally impossible for them to express self-overlapping.
 class ConventionNester {
   constructor(public tokens: Token[]) {
     this.tokens = tokens.slice()
