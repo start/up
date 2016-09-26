@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../index'
-import { insideDocumentAndParagraph } from'.././Helpers'
+import { insideDocumentAndParagraph } from '.././Helpers'
 
 
 // TODO: Organize these tests into contexts for clarity
@@ -307,19 +307,19 @@ context('When a link overlaps square bracketed text, the square bracketed text w
 })
 
 
-context('When a link overlaps a quote, the quote will always be split. This includes when:', () => {
-  specify('the link opens first', () => {
+context('When a link overlaps a quote, the link will always be split. This includes when:', () => {
+  specify('The link opens first', () => {
     expect(Up.parse('This [trash "can][https://en.wikipedia.org/wiki/Waste_container] not" stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This '),
         new Up.Link([
-          new Up.Text('trash '),
-          new Up.InlineQuote([
-            new Up.Text('"can')
-          ]),
+          new Up.Text('trash ')
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.InlineQuote([
-          new Up.Text(' not"')
+          new Up.Link([
+            new Up.Text('can')
+          ], 'https://en.wikipedia.org/wiki/Waste_container'),
+          new Up.Text(' not')
         ]),
         new Up.Text(' stay here.')
       ]))
@@ -330,12 +330,12 @@ context('When a link overlaps a quote, the quote will always be split. This incl
       insideDocumentAndParagraph([
         new Up.Text('I do '),
         new Up.InlineQuote([
-          new Up.Text('"not ')
+          new Up.Text('not '),
+          new Up.Link([
+            new Up.Text('care')
+          ], 'https://en.wikipedia.org/wiki/Carrot'),
         ]),
         new Up.Link([
-          new Up.InlineQuote([
-            new Up.Text('care"')
-          ]),
           new Up.Text(' at'),
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
