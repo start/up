@@ -592,6 +592,43 @@ context('When quoted text overlaps highlighted text, the highlight node will alw
 })
 
 
+context('When quoted text overlaps an inline NSFW convention, the inline NSFW node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
+    expect(Up.parse('I "love [NSFW: drinking" whole] milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineQuote([
+          new Up.Text('love '),
+          new Up.InlineNsfw([
+            new Up.Text('drinking')
+          ])
+        ]),
+        new Up.InlineNsfw([
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+
+  specify('The inline NSFW opens first', () => {
+    expect(Up.parse('I [NSFW: love "drinking] whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineNsfw([
+          new Up.Text('love ')
+        ]),
+        new Up.InlineQuote([
+          new Up.InlineNsfw([
+            new Up.Text('drinking')
+          ]),
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+})
+
+
 describe('An inline NSFW convention that overlaps a footnote', () => {
   it("splits the NSFW node, not the footnote node", () => {
     const markup = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
