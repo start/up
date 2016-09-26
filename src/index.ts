@@ -24,7 +24,7 @@ export function parseAndRender(markup: string, settings?: UserProvidedSettings):
   return up.parseAndRender(markup, settings)
 }
 
-// This method converts Up markup into two pieces of HTML, both of which are returned:
+// This function converts Up markup into two pieces of HTML, both of which are returned:
 //
 // 1. A table of contents
 // 2. The document itself
@@ -52,7 +52,7 @@ export function render(document: Document, renderingSettings?: UserProvidedSetti
   return up.render(document, renderingSettings)
 }
 
-// This method converts a syntax tree into two pieces of HTML, both of which are returned:
+// This function converts a syntax tree into two pieces of HTML, both of which are returned:
 //
 // 1. A table of contents
 // 2. The document itself
