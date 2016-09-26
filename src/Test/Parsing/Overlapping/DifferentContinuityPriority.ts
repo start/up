@@ -592,6 +592,43 @@ context('When quoted text overlaps highlighted text, the highlight node will alw
 })
 
 
+context('When quoted text overlaps an inline spoiler, the inline spoiler node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
+    expect(Up.parse('I "love [SPOILER: drinking" whole] milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineQuote([
+          new Up.Text('love '),
+          new Up.InlineSpoiler([
+            new Up.Text('drinking')
+          ])
+        ]),
+        new Up.InlineSpoiler([
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+
+  specify('The inline spoiler opens first', () => {
+    expect(Up.parse('I [SPOILER: love "drinking] whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineSpoiler([
+          new Up.Text('love ')
+        ]),
+        new Up.InlineQuote([
+          new Up.InlineSpoiler([
+            new Up.Text('drinking')
+          ]),
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+})
+
+
 context('When quoted text overlaps an inline NSFW convention, the inline NSFW node will always be split. This includes whens:', () => {
   specify('The inline quote opens first', () => {
     expect(Up.parse('I "love [NSFW: drinking" whole] milk.')).to.deep.equal(
@@ -619,6 +656,43 @@ context('When quoted text overlaps an inline NSFW convention, the inline NSFW no
         ]),
         new Up.InlineQuote([
           new Up.InlineNsfw([
+            new Up.Text('drinking')
+          ]),
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+})
+
+
+context('When quoted text overlaps an inline NSFL convention, the inline NSFL node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
+    expect(Up.parse('I "love [NSFL: drinking" whole] milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineQuote([
+          new Up.Text('love '),
+          new Up.InlineNsfl([
+            new Up.Text('drinking')
+          ])
+        ]),
+        new Up.InlineNsfl([
+          new Up.Text(' whole')
+        ]),
+        new Up.Text(' milk.')
+      ]))
+  })
+
+  specify('The inline NSFL opens first', () => {
+    expect(Up.parse('I [NSFL: love "drinking] whole" milk.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I '),
+        new Up.InlineNsfl([
+          new Up.Text('love ')
+        ]),
+        new Up.InlineQuote([
+          new Up.InlineNsfl([
             new Up.Text('drinking')
           ]),
           new Up.Text(' whole')
