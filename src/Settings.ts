@@ -35,7 +35,6 @@ export class Settings {
 }
 
 
-
 export namespace Settings {
   export class Parsing {
     createSourceMap = false
