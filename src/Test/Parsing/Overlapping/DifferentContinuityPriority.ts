@@ -703,6 +703,57 @@ context('When quoted text overlaps an inline NSFL convention, the inline NSFL no
 })
 
 
+context('When quoted text overlaps a footnote convention, the inline quote node will always be split. This includes whens:', () => {
+  specify('The inline quote opens first', () => {
+    const markup = '"This is not [^ as realistic" as some other unit tests]'
+
+    const footnote =
+      new Up.Footnote([
+        new Up.InlineQuote([
+          new Up.Text('as realistic')
+        ]),
+        new Up.Text(' as some other unit tests')
+      ], { referenceNumber: 1 })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.InlineQuote([
+            new Up.Text('This is not'),
+          ]),
+          footnote
+        ]),
+        new Up.FootnoteBlock([footnote])
+      ]))
+  })
+
+  specify('The footnote opens first', () => {
+    const markup = 'Eventually, I will use a [^ reasonable "and realistic] example" of a footnote that overlaps an inline quote.'
+
+    const footnote =
+      new Up.Footnote([
+        new Up.Text('reasonable '),
+        new Up.InlineQuote([
+          new Up.Text('and realistic')
+        ]),
+      ], { referenceNumber: 1 })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.Text('Eventually, I will use a'),
+          footnote,
+          new Up.InlineQuote([
+            new Up.Text(' example'),
+          ]),
+          new Up.Text(' of a footnote that overlaps an inline quote.')
+        ]),
+        new Up.FootnoteBlock([footnote])
+      ]))
+  })
+})
+
+
 describe('An inline NSFW convention that overlaps a footnote', () => {
   it("splits the NSFW node, not the footnote node", () => {
     const markup = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
