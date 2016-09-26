@@ -31,7 +31,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
             new Up.Text('"Hello, my '),
             new Up.Emphasis([
               new Up.InlineQuote([
-                new Up.Text('"leetle"')
+                new Up.Text('leetle')
               ]),
             ]),
             new Up.Text(' Mario!"')
@@ -50,7 +50,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
                 new Up.Text('leetle')
               ]),
             ]),
-            new Up.Text(' Mario!"')
+            new Up.Text(' Mario!')
           ])
         ]))
     })

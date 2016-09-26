@@ -111,7 +111,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.InlineQuote([
-            new Up.Text('"Game Boy"'),
+            new Up.Text('Game Boy'),
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))

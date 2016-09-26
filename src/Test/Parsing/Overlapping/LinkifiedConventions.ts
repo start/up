@@ -25,21 +25,21 @@ describe('Emphasis overlapping a linkified spoiler', () => {
 })
 
 
-describe('A linkified spoiler overlapping quoted text', () => {
+describe('A linkified spoiler overlapping highlighted text', () => {
   it('splits the inline quote node', () => {
-    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary "Ketchum](http://example.com/finalbattle) and then the credits roll".')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary (highlight: Oak][http://example.com/finalbattle] and then the credits roll).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.InlineSpoiler([
           new Up.Link([
             new Up.Text('you fight Gary '),
-            new Up.InlineQuote([
-              new Up.Text('"Ketchum')
+            new Up.Highlight([
+              new Up.Text('Oak')
             ])
           ], 'http://example.com/finalbattle')
         ]),
-        new Up.InlineQuote([
-          new Up.Text(' and then the credits roll"')
+        new Up.Highlight([
+          new Up.Text(' and then the credits roll')
         ]),
         new Up.Text('.')
       ]))

@@ -213,7 +213,7 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
           new Up.InlineQuote([
             new Up.Text('office')
           ]),
-          new Up.Text(' building"')
+          new Up.Text(' building')
         ]),
         new Up.Text('.')
       ]))
