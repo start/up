@@ -260,7 +260,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls loop src="javascript-app:stuff" title="Uh-oh!">'
+      '<audio controls src="javascript-app:stuff" title="Uh-oh!">'
       + '<a href="javascript-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -271,7 +271,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls loop src="data-app:stuff" title="Uh-oh!">'
+      '<audio controls src="data-app:stuff" title="Uh-oh!">'
       + '<a href="data-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -282,7 +282,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls loop src="file-app:stuff" title="Uh-oh!">'
+      '<audio controls src="file-app:stuff" title="Uh-oh!">'
       + '<a href="file-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -293,7 +293,7 @@ context("An audio convention's URL scheme can start with a dangerous scheme with
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls loop src="vbscript-app:stuff" title="Uh-oh!">'
+      '<audio controls src="vbscript-app:stuff" title="Uh-oh!">'
       + '<a href="vbscript-app:stuff">Uh-oh!</a>'
       + '</audio>')
   })
@@ -307,7 +307,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls loop src="javascript-app:stuff" title="Uh-oh!">'
+      '<video controls src="javascript-app:stuff" title="Uh-oh!">'
       + '<a href="javascript-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -318,7 +318,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls loop src="data-app:stuff" title="Uh-oh!">'
+      '<video controls src="data-app:stuff" title="Uh-oh!">'
       + '<a href="data-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -329,7 +329,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls loop src="file-app:stuff" title="Uh-oh!">'
+      '<video controls src="file-app:stuff" title="Uh-oh!">'
       + '<a href="file-app:stuff">Uh-oh!</a>'
       + '</video>')
   })
@@ -340,7 +340,7 @@ context("A video's URL scheme can start with a dangerous scheme without being co
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls loop src="vbscript-app:stuff" title="Uh-oh!">'
+      '<video controls src="vbscript-app:stuff" title="Uh-oh!">'
       + '<a href="vbscript-app:stuff">Uh-oh!</a>'
       + '</video>')
   })

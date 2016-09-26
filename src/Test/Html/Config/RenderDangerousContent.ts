@@ -127,7 +127,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<audio controls loop src="javascript:malicious" title="Uh-oh!">'
+        '<audio controls src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -138,7 +138,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<audio controls loop src="data:malicious" title="Uh-oh!">'
+        '<audio controls src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -149,7 +149,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<audio controls loop src="file:malicious" title="Uh-oh!">'
+        '<audio controls src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -160,7 +160,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<audio controls loop src="vbscript:malicious" title="Uh-oh!">'
+        '<audio controls src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</audio>')
     })
@@ -174,7 +174,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<video controls loop src="javascript:malicious" title="Uh-oh!">'
+        '<video controls src="javascript:malicious" title="Uh-oh!">'
         + '<a href="javascript:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -185,7 +185,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<video controls loop src="data:malicious" title="Uh-oh!">'
+        '<video controls src="data:malicious" title="Uh-oh!">'
         + '<a href="data:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -196,7 +196,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<video controls loop src="file:malicious" title="Uh-oh!">'
+        '<video controls src="file:malicious" title="Uh-oh!">'
         + '<a href="file:malicious">Uh-oh!</a>'
         + '</video>')
     })
@@ -207,7 +207,7 @@ context('When the "renderDangerousContent" setting is enabled, links/media with 
       ])
 
       expect(up.render(document)).to.equal(
-        '<video controls loop src="vbscript:malicious" title="Uh-oh!">'
+        '<video controls src="vbscript:malicious" title="Uh-oh!">'
         + '<a href="vbscript:malicious">Uh-oh!</a>'
         + '</video>')
     })

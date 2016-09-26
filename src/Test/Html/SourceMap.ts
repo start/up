@@ -381,7 +381,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls data-up-source-line="3" loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
+      '<audio controls data-up-source-line="3" src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
   })
@@ -392,7 +392,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls data-up-source-line="5" loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
+      '<video controls data-up-source-line="5" src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
   })

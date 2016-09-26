@@ -784,7 +784,7 @@ describe('An audio node', () => {
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls loop src="http://example.com/ghosts.ogg" title="ghostly howling">'
+      '<audio controls src="http://example.com/ghosts.ogg" title="ghostly howling">'
       + '<a href="http://example.com/ghosts.ogg">ghostly howling</a>'
       + '</audio>')
   })
@@ -798,7 +798,7 @@ describe('A video node', () => {
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls loop src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
+      '<video controls src="http://example.com/poltergeists.webm" title="ghosts eating luggage">'
       + '<a href="http://example.com/poltergeists.webm">ghosts eating luggage</a>'
       + '</video>')
   })
