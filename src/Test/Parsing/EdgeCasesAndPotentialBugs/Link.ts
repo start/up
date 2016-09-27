@@ -163,8 +163,8 @@ describe("bracketed text followed by a parenthesized URL starting with an open p
 
 
 
-context('Parenthesized text followed by whitespace followed by an empty bracketed convention does not produce a link. Specificaly, parenthesized text can be followed by:', () => {
-  specify('Spoilers', () => {
+context('Parenthesized text followed by whitespace followed by an empty bracketed convention does not produce a link. This includes what would otherwise be:', () => {
+  specify('Inline revealables', () => {
     expect(Up.parse('(I know.) [SPOILER:]')).to.eql(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
@@ -177,33 +177,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
       ]))
   })
 
-  specify('NSFW', () => {
-    expect(Up.parse('(I know.) [NSFW:]')).to.eql(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(I know.)')
-        ]),
-        new Up.Text(' '),
-        new Up.SquareParenthetical([
-          new Up.Text('[NSFW:]')
-        ])
-      ]))
-  })
-
-  specify('NSFL', () => {
-    expect(Up.parse('(I know.) [NSFL:]')).to.eql(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(I know.)')
-        ]),
-        new Up.Text(' '),
-        new Up.SquareParenthetical([
-          new Up.Text('[NSFL:]')
-        ])
-      ]))
-  })
-
-  specify('Parentheses', () => {
+  specify('Normal parentheticals', () => {
     expect(Up.parse('(I know.) ()')).to.eql(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([
@@ -213,7 +187,7 @@ context('Parenthesized text followed by whitespace followed by an empty brackete
       ]))
   })
 
-  specify('Square brackets', () => {
+  specify('Square parentheticals', () => {
     expect(Up.parse('(I know.) []')).to.eql(
       insideDocumentAndParagraph([
         new Up.NormalParenthetical([

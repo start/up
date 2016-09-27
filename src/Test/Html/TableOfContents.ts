@@ -21,7 +21,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
 
     expect(documentHtml).to.equal(
       '<div class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
+      + '<label for="up-nsfw-1">reveal</label>'
       + '<input id="up-nsfw-1" role="button" type="checkbox">'
       + '<div role="alert">'
       + '<h1>I enjoy apples</h1>'

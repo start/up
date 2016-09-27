@@ -61,7 +61,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a slash', () => {
+  it('is prefixed to linkified inline revealable URLs that start with a slash', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](/wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -75,27 +75,13 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified NSFW URLs that start with a slash', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth](/wiki/Blue_Sky)'
+  it('is prefixed to linkified highlight URLs that start with a slash', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth](/wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified NSFL URLs that start with a slash', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth](/wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
@@ -159,7 +145,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a slash when the spoiler part and the URL are separated by whitespace', () => {
+  it('is prefixed to linkified inline revealable URLs that start with a slash when the revealable and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth] (/wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -173,27 +159,13 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified NSFW URLs that start with a slash when the NSFW part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth] (/wiki/Blue_Sky)'
+  it('is prefixed to linkified highlight URLs that start with a slash when the highlight and the URL are separated by whitespace', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth] (/wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified NSFL URLs that start with a slash when the NSFL part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth] (/wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')

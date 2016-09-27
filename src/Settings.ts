@@ -156,9 +156,7 @@ export namespace Settings {
         clone._audio = this._audio
         clone._highlight = this._highlight
         clone._image = this._image
-        clone._nsfl = this._nsfl
         clone._sectionLink = this._sectionLink
-        clone._nsfw = this._nsfw
         clone._revealable = this._revealable
         clone._table = this._table
         clone._video = this._video
@@ -235,7 +233,7 @@ export namespace Settings {
       footnoteReference: Term = 'footnote reference'
       sectionReferencedByTableOfContents: Term = 'topic'
       tableOfContents: Term = 'Table of Contents'
-      toggleVisibility: Term = 'toggle visibility'
+      revealContent: Term = 'reveal'
 
       clone(): Terms {
         const clone = new Terms()
@@ -244,7 +242,7 @@ export namespace Settings {
         clone.footnoteReference = this.footnoteReference
         clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
         clone.tableOfContents = this.tableOfContents
-        clone.toggleVisibility = this.toggleVisibility
+        clone.revealContent = this.revealContent
 
         return clone
       }
@@ -266,8 +264,8 @@ export namespace Settings {
         this.tableOfContents =
           coalesce(terms.tableOfContents, this.tableOfContents)
 
-        this.toggleVisibility =
-          coalesce(terms.toggleVisibility, this.toggleVisibility)
+        this.revealContent =
+          coalesce(terms.revealContent, this.revealContent)
       }
     }
 
@@ -279,7 +277,7 @@ export namespace Settings {
 // In Up, there are two types of terms:
 //
 // 1. Terms found in markup (e.g. "image", "table")
-// 2. Terms rendered to output (e.g. "Table of Contents", "toggle NSFW")
+// 2. Terms rendered to output (e.g. "Table of Contents", "toggle visibility")
 //
 // We allow multiple variations for terms found in markup. Internally, each markup term is
 // represented by an array of strings containing those variations.

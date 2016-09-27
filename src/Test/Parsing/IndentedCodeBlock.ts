@@ -21,7 +21,7 @@ context('A code block preserves all indentation when it is', () => {
   })
 
 
-  context('within a spoiler block', () => {
+  context('within a revealable block', () => {
     specify('using 2 spaces for indentation', () => {
       const markup = `
 SPOILER:
@@ -74,132 +74,6 @@ SPOILER:
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.RevealableBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-  })
-
-
-  context('within a NSFW block', () => {
-    specify('using 2 spaces for indentation', () => {
-      const markup = `
-NSFW:
-  \`\`\`
-    if (x < 0) {
-  \t\treturn false
-    }
-  \`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsfwBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-
-    specify('using 1 tab for indentation', () => {
-      const markup = `
-NSFW:
-\t\`\`\`
-\t  if (x < 0) {
-\t\t\treturn false
-\t  }
-\t\`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsfwBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-
-    specify('using 1 space and 1 tab for indentation', () => {
-      const markup = `
-NSFW:
- \t\`\`\`
- \t  if (x < 0) {
- \t\t\treturn false
- \t  }
- \t\`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsfwBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-  })
-
-
-  context('within a NSFL block', () => {
-    specify('using 2 spaces for indentation', () => {
-      const markup = `
-NSFL:
-  \`\`\`
-    if (x < 0) {
-  \t\treturn false
-    }
-  \`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsflBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-
-    specify('using 1 tab for indentation', () => {
-      const markup = `
-NSFL:
-\t\`\`\`
-\t  if (x < 0) {
-\t\t\treturn false
-\t  }
-\t\`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsflBlock([
-            new Up.CodeBlock(
-              `  if (x < 0) {
-\t\treturn false
-  }`),
-          ])
-        ]))
-    })
-
-    specify('using 1 space and 1 tab for indentation', () => {
-      const markup = `
-NSFL:
- \t\`\`\`
- \t  if (x < 0) {
- \t\t\treturn false
- \t  }
- \t\`\`\``
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsflBlock([
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false

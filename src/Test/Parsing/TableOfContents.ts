@@ -167,7 +167,7 @@ Apples are blue`
       ], tableOfContents))
   })
 
-  specify('Spoiler blocks', () => {
+  specify('Revealable blocks', () => {
     const markup = `
 Anyway, let's get to the point.
 
@@ -188,58 +188,6 @@ SPOILER:
         new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
         new Up.RevealableBlock([
-          new Up.Paragraph([new Up.Text("Who doesn't?")])
-        ])
-      ], tableOfContents))
-  })
-
-  specify('NSFW blocks', () => {
-    const markup = `
-Anyway, let's get to the point.
-
-I enjoy apples
-==============
-
-NSFW:
-  Who doesn't?`
-
-    const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const tableOfContents =
-      new Up.Document.TableOfContents([heading])
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
-        heading,
-        new Up.NsfwBlock([
-          new Up.Paragraph([new Up.Text("Who doesn't?")])
-        ])
-      ], tableOfContents))
-  })
-
-  specify('NSFL blocks', () => {
-    const markup = `
-Anyway, let's get to the point.
-
-I enjoy apples
-==============
-
-NSFL:
-  Who doesn't?`
-
-    const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const tableOfContents =
-      new Up.Document.TableOfContents([heading])
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
-        heading,
-        new Up.NsflBlock([
           new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
@@ -918,51 +866,19 @@ Apple
   })
 
 
-  context('However they cannot be inside revealable blocks:', () => {
-    specify('Spoiler blocks', () => {
-      const markup = `
+  specify('However, they cannot be inside revealable blocks', () => {
+    const markup = `
 SPOILER:
 
   They're cheap
   -------------`
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.RevealableBlock([
-            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
-          ])
-        ], new Up.Document.TableOfContents([])))
-    })
-
-    specify('NSFW blocks', () => {
-      const markup = `
-NSFW:
-
-  They're cheap
-  -------------`
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsfwBlock([
-            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
-          ])
-        ], new Up.Document.TableOfContents([])))
-    })
-
-    specify('NSFL blocks', () => {
-      const markup = `
-NSFL:
-
-  They're cheap
-  -------------`
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsflBlock([
-            new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
-          ])
-        ], new Up.Document.TableOfContents([])))
-    })
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
+        ])
+      ], new Up.Document.TableOfContents([])))
   })
 })
 

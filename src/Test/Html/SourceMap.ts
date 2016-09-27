@@ -323,48 +323,6 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal(html)
   })
 
-  specify('NSFW blocks', () => {
-    const document = new Up.Document([
-      new Up.NsfwBlock([
-        new Up.Paragraph([
-          new Up.Text('John Carmack is a decent programmer.')
-        ], { sourceLineNumber: 2 })
-      ], { sourceLineNumber: 1 })
-    ])
-
-    const html =
-      '<div class="up-nsfw up-revealable" data-up-source-line="1">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
-      + '<div role="alert">'
-      + '<p data-up-source-line="2">John Carmack is a decent programmer.</p>'
-      + '</div>'
-      + '</div>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-
-  specify('NSFL blocks', () => {
-    const document = new Up.Document([
-      new Up.NsflBlock([
-        new Up.Paragraph([
-          new Up.Text('John Carmack is a decent programmer.')
-        ], { sourceLineNumber: 4 })
-      ], { sourceLineNumber: 2 })
-    ])
-
-    const html =
-      '<div class="up-nsfl up-revealable" data-up-source-line="2">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" role="button" type="checkbox">'
-      + '<div role="alert">'
-      + '<p data-up-source-line="4">John Carmack is a decent programmer.</p>'
-      + '</div>'
-      + '</div>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-
   specify('Images', () => {
     const document = new Up.Document([
       new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg', { sourceLineNumber: 2 })

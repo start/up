@@ -106,7 +106,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { toggleVisibility: '<_< & show & hide' }
+        terms: { revealContent: '<_< & show & hide' }
       }
     })
 
@@ -134,7 +134,7 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { toggleVisibility: '<_< & show & hide' }
+        terms: { revealContent: '<_< & show & hide' }
       }
     })
 

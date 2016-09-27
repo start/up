@@ -47,7 +47,7 @@ export namespace UserProvidedSettings {
       footnoteReference?: Term
       sectionReferencedByTableOfContents?: Term
       tableOfContents?: Term
-      toggleVisibility?: Term
+      revealContent?: Term
     }
 
     export type Term = string

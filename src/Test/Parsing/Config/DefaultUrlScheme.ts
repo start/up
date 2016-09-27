@@ -47,7 +47,7 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to schemeless linkified spoiler URLs', () => {
+  it('is prefixed to schemeless linkified inline revealable URLs', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -61,27 +61,13 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to schemeless linkified NSFW URLs', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth](wiki/Blue_Sky)'
+  it('is prefixed to schemeless linkified highlight URLs', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth](wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'my-app:wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to schemeless linkified NSFLW URLs', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth](wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
@@ -156,7 +142,7 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified schemeless spoiler URLs when the spoiler part and the URL are separated by whitespace', () => {
+  it('is prefixed to linkified schemeless inline revealable URLs when the revelable and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth] (example.wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -170,27 +156,13 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to schemeless linkified NSFW URLs when the NSFW part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth] (example.wiki/Blue_Sky)'
+  it('is prefixed to linkified schemeless highlight URLs when the highlight and the URL are separated by whitespace', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth] (example.wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'my-app:example.wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to schemeless linkified NSFL URLs when the NSFL part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth] (example.wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')

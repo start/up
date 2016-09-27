@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-context('The terms for revealable outline conventions', () => {
+context('The terms for revealable block conventions', () => {
   it('can be the subjects in a description list if they are escaped', () => {
     const markup = `
 \\Spoiler

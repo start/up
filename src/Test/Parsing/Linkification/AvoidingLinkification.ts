@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('Once a convention has been linkified, it cannot be linkified again. This applies for:', () => {
-  specify('Spoilers', () => {
+  specify('Inline revealables', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
@@ -25,32 +25,11 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       ]))
   })
 
-  specify('NSFW', () => {
-    expect(Up.parse('After you beat the Elite Four, [NSFW: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
+  specify('Highlights', () => {
+    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('you fight Gary')
-          ], 'https://example.com/finalbattle')
-        ]),
-        new Up.Text(' '),
-        new Up.NormalParenthetical([
-          new Up.Text('('),
-          new Up.Link([
-            new Up.Text('example.com')
-          ], 'https://example.com'),
-          new Up.Text(')'),
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-
-  specify('NSFL', () => {
-    expect(Up.parse('After you beat the Elite Four, [NSFL: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'https://example.com/finalbattle')

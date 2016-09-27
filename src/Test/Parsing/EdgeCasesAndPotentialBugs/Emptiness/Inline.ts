@@ -23,24 +23,6 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         ]))
     })
 
-    specify('NSFW', () => {
-      expect(Up.parse('[NSFW:]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[NSFW:]')
-          ])
-        ]))
-    })
-
-    specify('NSFL', () => {
-      expect(Up.parse('[NSFL:]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[NSFL:]')
-          ])
-        ]))
-    })
-
     specify('Section links', () => {
       expect(Up.parse('[topic:]')).to.eql(
         insideDocumentAndParagraph([
@@ -97,24 +79,6 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
             new Up.Text('[SPOILER:  \t  \t ]')
-          ])
-        ]))
-    })
-
-    specify('NSFW', () => {
-      expect(Up.parse('(NSFW:  \t  \t )')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.NormalParenthetical([
-            new Up.Text('(NSFW:  \t  \t )')
-          ])
-        ]))
-    })
-
-    specify('NSFL', () => {
-      expect(Up.parse('[NSFL:  \t  \t ]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[NSFL:  \t  \t ]')
           ])
         ]))
     })
@@ -753,26 +717,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
     })
 
-    specify('NSFW', () => {
-      expect(Up.parse('[NSFW: Ash fights Gary]()')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfw([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.Text('()')
-        ]))
-    })
-
-    specify('NSFL', () => {
-      expect(Up.parse('[NSFL: Ash fights Gary][]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfl([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.Text('[]')
-        ]))
-    })
-
     specify('Footnotes', () => {
       const footnote = new Up.Footnote([
         new Up.Text('Ash fights Gary')
@@ -832,26 +776,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
             new Up.Text('Ash fights Gary')
           ]),
           new Up.Text('(\t \t \t)')
-        ]))
-    })
-
-    specify('NSFW', () => {
-      expect(Up.parse('[NSFW: Ash fights Gary](\t \t \t)')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfw([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.Text('(\t \t \t)')
-        ]))
-    })
-
-    specify('NSFL', () => {
-      expect(Up.parse('[NSFL: Ash fights Gary][\t \t \t]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfl([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.Text('[\t \t \t]')
         ]))
     })
 
@@ -919,12 +843,12 @@ describe('An inline spoiler convention with escaped blank content', () => {
 })
 
 
-describe('An otherwise-linkified NSFW convention with escaped blank content', () => {
+describe('An otherwise-linkified inline revealable convention with escaped blank content', () => {
   it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
     expect(Up.parse("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text("On Professor Oak's right arm is a tattoo of "),
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text('a naked Mr. Mime')
         ]),
         new Up.NormalParenthetical([

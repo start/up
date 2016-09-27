@@ -342,56 +342,6 @@ describe('The "spoiler" term', () => {
 })
 
 
-describe('The "nsfw" term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[GETS YOU FIRED: Ash fights Gary]',
-    markupForDefaultSettings: '[NSFW: Ash fights Gary]',
-    termVariations: {
-      nsfw: 'GETS YOU FIRED'
-    },
-    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
-    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      nsfw: [null, 'GETS YOU FIRED', '', ' \t \t ', undefined]
-    },
-    onlyEmptyAndBlankTermVariations: {
-      nsfw: [null, '', ' \t \t ', undefined]
-    },
-    zeroTermVariations: {
-      nsfw: []
-    },
-    conflictingTermVariations: {
-      nsfw: 'look away'
-    }
-  })
-})
-
-
-describe('The "nsfl" term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[RUINS LIFE: Ash fights Gary]',
-    markupForDefaultSettings: '[NSFL: Ash fights Gary]',
-    termVariations: {
-      nsfl: 'RUINS LIFE'
-    },
-    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
-    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      nsfl: [null, 'RUINS LIFE', '', ' \t \t ', undefined]
-    },
-    onlyEmptyAndBlankTermVariations: {
-      nsfl: [null, '', ' \t \t ', undefined]
-    },
-    zeroTermVariations: {
-      nsfl: []
-    },
-    conflictingTermVariations: {
-      nsfl: 'look away'
-    }
-  })
-})
-
-
 describe('The "table" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForTermVariations: `

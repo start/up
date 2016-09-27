@@ -260,35 +260,6 @@ SPOILER:
         ]))
     })
 
-    specify('NSFW blocks (and the outline nodes they contain)', () => {
-      const markup = `
-NSFW:
-
-  Who doesn't?`
-
-      expect(up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsfwBlock([
-            new Up.Paragraph([new Up.Text("Who doesn't?")], { sourceLineNumber: 4 })
-          ], { sourceLineNumber: 2 })
-        ]))
-    })
-
-    specify('NSFL blocks (and the outline nodes they contain)', () => {
-      const markup = `
-NSFL:
-
-
-  Who doesn't?`
-
-      expect(up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.NsflBlock([
-            new Up.Paragraph([new Up.Text("Who doesn't?")], { sourceLineNumber: 5 })
-          ], { sourceLineNumber: 2 })
-        ]))
-    })
-
     specify('Blockquotes (and the outline nodes they contain)', () => {
       const markup = `
 > Who doesn't?`

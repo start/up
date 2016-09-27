@@ -116,7 +116,7 @@ context('A table row cell is numeric if its text content (ignoring footnotes) co
       expectTableCellToBeNumeric('[$15.40] (example.com/price)')
     })
 
-    specify('a NSFW convention whose content is numeric', () => {
+    specify('an inline revealable convention whose content is numeric', () => {
       expectTableCellToBeNumeric('[NSFW: 80085]')
     })
 

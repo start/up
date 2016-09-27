@@ -14,6 +14,9 @@ import { RevealableConvention } from './RevealableConvention'
 import { URL_SCHEME_PATTERN } from '../../Patterns'
 
 
+// TODO: Update behavior to reflect the new single revealable convention.
+
+
 // Returns a collection of inline syntax nodes representing inline conventions.
 export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
   return new Parser({

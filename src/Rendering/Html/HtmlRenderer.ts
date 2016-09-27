@@ -55,7 +55,7 @@ export class HtmlRenderer extends Renderer {
   //
   // To accomplish this, we increment a counter each time we render revealable content (inline or block),
   // appending the counter's value to the checkbox's ID.
-  private revealableCount: number
+  private revealableContentCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an <a> element for the inner link.
@@ -222,8 +222,6 @@ export class HtmlRenderer extends Renderer {
 
   inlineRevealable(inlineRevealable: InlineRevealable): string {
     return this.Revealable({
-      termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.revealableCount,
       revealable: inlineRevealable,
       tagNameForGenericContainers: 'span'
     })
@@ -231,8 +229,6 @@ export class HtmlRenderer extends Renderer {
 
   revealableBlock(revealableBlock: RevealableBlock): string {
     return this.Revealable({
-      termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.revealableCount,
       revealable: revealableBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(revealableBlock)
@@ -445,14 +441,13 @@ export class HtmlRenderer extends Renderer {
 
   private Revealable(
     args: {
-      termForTogglingVisibility: string
-      conventionCount: number
       revealable: InlineRevealable | RevealableBlock
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
   ): string {
-    let checkBoxIdParts = ['revealable', args.conventionCount]
+
+    let checkBoxIdParts = ['revealable', ++this.revealableContentCount]
 
     // We use this nasty little hack to prevent the IDs of revealable elements' checkboxes
     // within the table of contents from clashing with IDs within the document itself.
@@ -474,7 +469,7 @@ export class HtmlRenderer extends Renderer {
         })
 
     const label =
-      htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
+      htmlElement('label', this.settings.terms.revealContent, { for: checkboxId })
 
     const Revealable =
       this.element(
@@ -573,7 +568,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {
-    this.revealableCount = 0
+    this.revealableContentCount = 0
     this.isInsideLink = false
     this.isInsideTableOfContents = args && args.isInsideTableOfContents
   }

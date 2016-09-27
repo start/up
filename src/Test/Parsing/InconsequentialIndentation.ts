@@ -420,48 +420,6 @@ Hello, world!
       ]))
   })
 
-  specify('NSFW blocks', () => {
-    const markup = `
-  \t NSFW:
- \t
-   \t I like shorts! They're comfy and easy to wear!
-
-\t I like blankets, too.`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.NsfwBlock([
-          new Up.Paragraph([
-            new Up.Text("I like shorts! They're comfy and easy to wear!")
-          ]),
-          new Up.Paragraph([
-            new Up.Text("I like blankets, too.")
-          ])
-        ])
-      ]))
-  })
-
-  specify('NSFL blocks', () => {
-    const markup = `
-  \t NSFL:
- \t
-   \t I like shorts! They're comfy and easy to wear!
-
-\t I like blankets, too.`
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.NsflBlock([
-          new Up.Paragraph([
-            new Up.Text("I like shorts! They're comfy and easy to wear!")
-          ]),
-          new Up.Paragraph([
-            new Up.Text("I like blankets, too.")
-          ])
-        ])
-      ]))
-  })
-
 
   context('Tables:', () => {
     specify('When the header row is indented less than 2 spaces (which would produce a header column)', () => {

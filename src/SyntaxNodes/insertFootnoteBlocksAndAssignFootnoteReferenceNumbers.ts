@@ -34,19 +34,15 @@ import { Table } from '../SyntaxNodes/Table'
 //    inside a description list, it's placed into a block after the description list, because the description
 //    list is the outermost, top-level outline convention.
 //
-// 2. Rule 1 applies to all outline conventions except for the "revealables":
+// 2. Rule 1 applies to all outline conventions except for the "revealables".
 //
-//    1. Spoiler blocks
-//    2. NSFW blocks
-//    3. NSFL blocks
-//
-//    To prevent footnotes from "leaking" out of revealable outline conventions, footnote blocks are kept
-//    hidden-away inside them. Therefore, for the purpose of producing footnote blocks, revealable outline
+//    To prevent footnotes from "leaking" out of revealable block conventions, footnote blocks are kept
+//    hidden-away inside them. Therefore, for the purpose of producing footnote blocks, revealable block
 //    conventions are essentially treated like mini-documents.
 //
-//    For example, a footnote inside a paragraph inside an ordered list inside a spoiler block is placed into
-//    a footnote block after the ordered list, but still inside the spoiler block, because the ordered list
-//    is the outermost, top-level convention within the spoiler block.
+//    For example, a footnote inside a paragraph inside an ordered list inside a revealable block is placed
+//    a footnote block after the ordered list, but still inside the revealable block, because the ordered list
+//    is the outermost, top-level convention within the revealable block.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:
 //

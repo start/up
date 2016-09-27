@@ -6,7 +6,7 @@ describe("The text in an inline spoiler's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { toggleVisibility: 'show/hide' }
+        terms: { revealContent: 'show/hide' }
       }
     })
 
@@ -34,7 +34,7 @@ describe("The text in a spoiler block's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { toggleVisibility: 'show/hide' }
+        terms: { revealContent: 'show/hide' }
       }
     })
 

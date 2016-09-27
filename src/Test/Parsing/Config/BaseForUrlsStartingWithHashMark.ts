@@ -50,7 +50,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a hash mark', () => {
+  it('is prefixed to linkified inline revealable URLs that start with a hash mark', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -64,27 +64,13 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified NSFW URLs that start with a hash mark', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth](#wiki/Blue_Sky)'
+  it('is prefixed to linkified highlight URLs that start with a hash mark', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth](#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'https://example.com/page#wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified NSFL URLs that start with a hash mark', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth](#wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
@@ -159,7 +145,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified spoiler URLs that start with a hash mark when the spoiler part and the URL are separated by whitespace', () => {
+  it('is prefixed to linkified inline revealable URLs that start with a hash mark when the revealable and the URL are separated by whitespace', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth] (#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -173,27 +159,13 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified NSFW URLs that start with a hash mark when the NSFW part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFW: Blue Sky meth] (#wiki/Blue_Sky)'
+  it('is prefixed to linkified highlight URLs that start with a hash mark when the highlight and the URL are separated by whitespace', () => {
+    const markup = 'Walter White produces [highlight: Blue Sky meth] (#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'https://example.com/page#wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified NSFL URLs that start with a hash mark when the NSFL part and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [NSFL: Blue Sky meth] (#wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.InlineNsfl([
+        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
