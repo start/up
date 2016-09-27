@@ -8,7 +8,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     const up = new Up.Transformer({
       parsing: {
         terms: {
-          spoiler: '^lookaway^'
+          revealable: '^lookaway^'
         }
       }
     })

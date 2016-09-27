@@ -322,21 +322,21 @@ describe('The "spoiler" term', () => {
     markupForTermVariations: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
     termVariations: {
-      spoiler: 'ruins ending'
+      revealable: 'ruins ending'
     },
     invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
     invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
     equivalentTermVariationsPlusEmptyAndBlankVariations: {
-      spoiler: [null, 'ruins ending', '', ' \t \t ', undefined]
+      revealable: [null, 'ruins ending', '', ' \t \t ', undefined]
     },
     onlyEmptyAndBlankTermVariations: {
-      spoiler: [null, '', ' \t \t ', undefined]
+      revealable: [null, '', ' \t \t ', undefined]
     },
     zeroTermVariations: {
-      spoiler: []
+      revealable: []
     },
     conflictingTermVariations: {
-      spoiler: 'look away'
+      revealable: 'look away'
     }
   })
 })

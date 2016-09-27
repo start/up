@@ -117,10 +117,8 @@ export namespace Settings {
       private _audio: Term = []
       private _highlight: Term = []
       private _image: Term = []
-      private _nsfl: Term = []
-      private _nsfw: Term = []
       private _sectionLink: Term = []
-      private _spoiler: Term = []
+      private _revealable: Term = []
       private _table: Term = []
       private _video: Term = []
 
@@ -136,20 +134,12 @@ export namespace Settings {
         return distinct('image', 'img', ...this._image)
       }
 
-      get nsfl(): Term {
-        return distinct('nsfl', ...this._nsfl)
-      }
-
-      get nsfw(): Term {
-        return distinct('nsfw', ...this._nsfw)
-      }
-
       get sectionLink(): Term {
         return distinct('section', 'topic', ...this._sectionLink)
       }
 
-      get spoiler(): Term {
-        return distinct('spoiler', ...this._spoiler)
+      get revealable(): Term {
+        return distinct('spoiler', 'nsfw', 'nsfl', 'revealable', ...this._revealable)
       }
 
       get table(): Term {
@@ -169,7 +159,7 @@ export namespace Settings {
         clone._nsfl = this._nsfl
         clone._sectionLink = this._sectionLink
         clone._nsfw = this._nsfw
-        clone._spoiler = this._spoiler
+        clone._revealable = this._revealable
         clone._table = this._table
         clone._video = this._video
 
@@ -190,17 +180,11 @@ export namespace Settings {
         this._image =
           sanitizeVariations(terms.image)
 
-        this._nsfl =
-          sanitizeVariations(terms.nsfl)
-
-        this._nsfw =
-          sanitizeVariations(terms.nsfw)
-
         this._sectionLink =
           sanitizeVariations(terms.sectionLink)
 
-        this._spoiler =
-          sanitizeVariations(terms.spoiler)
+        this._revealable =
+          sanitizeVariations(terms.revealable)
 
         this._table =
           sanitizeVariations(terms.table)
@@ -251,9 +235,7 @@ export namespace Settings {
       footnoteReference: Term = 'footnote reference'
       sectionReferencedByTableOfContents: Term = 'topic'
       tableOfContents: Term = 'Table of Contents'
-      toggleNsfl: Term = 'toggle NSFL'
-      toggleNsfw: Term = 'toggle NSFW'
-      toggleVisibility: Term = 'toggle spoiler'
+      toggleVisibility: Term = 'toggle visibility'
 
       clone(): Terms {
         const clone = new Terms()
@@ -262,8 +244,6 @@ export namespace Settings {
         clone.footnoteReference = this.footnoteReference
         clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
         clone.tableOfContents = this.tableOfContents
-        clone.toggleNsfl = this.toggleNsfl
-        clone.toggleNsfw = this.toggleNsfw
         clone.toggleVisibility = this.toggleVisibility
 
         return clone
@@ -286,14 +266,8 @@ export namespace Settings {
         this.tableOfContents =
           coalesce(terms.tableOfContents, this.tableOfContents)
 
-        this.toggleNsfl =
-          coalesce(terms.toggleNsfl, this.toggleNsfl)
-
-        this.toggleNsfw =
-          coalesce(terms.toggleNsfw, this.toggleNsfw)
-
         this.toggleVisibility =
-          coalesce(terms.toggleSpoiler, this.toggleVisibility)
+          coalesce(terms.toggleVisibility, this.toggleVisibility)
       }
     }
 

@@ -1,16 +1,16 @@
 import { TokenRole } from './TokenRole'
-import { InlineRevealableContentType } from '../../SyntaxNodes/InlineRevealableContentType'
+import { InlineRevealableType } from '../../SyntaxNodes/InlineRevealableType'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
 
 
 export class RevealableConvention implements RichConventionWithoutExtraFields {
-  SyntaxNodeType: InlineRevealableContentType
+  SyntaxNodeType: InlineRevealableType
   startTokenRole: TokenRole
   endTokenRole: TokenRole
 
   constructor(
     args: {
-      SyntaxNodeType: InlineRevealableContentType
+      SyntaxNodeType: InlineRevealableType
       startTokenRole: TokenRole
       endTokenRole: TokenRole
     }

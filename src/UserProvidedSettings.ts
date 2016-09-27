@@ -25,10 +25,8 @@ export namespace UserProvidedSettings {
       audio?: Term
       highlight?: Term
       image?: Term
-      nsfl?: Term
-      nsfw?: Term
       sectionLink?: Term
-      spoiler?: Term
+      revealable?: Term
       table?: Term
       video?: Term
     }
@@ -49,9 +47,7 @@ export namespace UserProvidedSettings {
       footnoteReference?: Term
       sectionReferencedByTableOfContents?: Term
       tableOfContents?: Term
-      toggleNsfl?: Term
-      toggleNsfw?: Term
-      toggleSpoiler?: Term
+      toggleVisibility?: Term
     }
 
     export type Term = string

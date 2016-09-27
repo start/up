@@ -1,4 +1,4 @@
-import { EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, SPOILER, NSFW, NSFL, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
@@ -228,14 +228,8 @@ class Tokenizer {
           richConvention: HIGHLIGHT,
           term: this.settings.terms.highlight
         }, {
-          richConvention: SPOILER,
-          term: this.settings.terms.spoiler
-        }, {
-          richConvention: NSFW,
-          term: this.settings.terms.nsfw
-        }, {
-          richConvention: NSFL,
-          term: this.settings.terms.nsfl
+          richConvention: REVEALABLE,
+          term: this.settings.terms.revealable
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -594,9 +588,7 @@ class Tokenizer {
   private getLinkifyingUrlConventions(): ConventionVariation[] {
     const LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT,
-      SPOILER,
-      NSFW,
-      NSFL,
+      REVEALABLE,
       FOOTNOTE
     ].map(richConvention => richConvention.endTokenRole)
 

@@ -17,7 +17,7 @@ LOOK AWAY
       const html = Up.parseAndRender(markup, {
         parsing: {
           createSourceMap: true,
-          terms: { spoiler: 'LOOK AWAY' }
+          terms: { revealable: 'LOOK AWAY' }
         }
       })
 
@@ -74,7 +74,7 @@ LOOK AWAY
       const html = Up.parseAndRender(markup, {
         parsing: {
           createSourceMap: true,
-          terms: { spoiler: 'LOOK AWAY' }
+          terms: { revealable: 'LOOK AWAY' }
         },
         rendering: {
           idPrefix: 'article'
@@ -131,7 +131,7 @@ LOOK AWAY
         Up.parseAndRenderDocumentAndTableOfContents(markup, {
           parsing: {
             createSourceMap: true,
-            terms: { spoiler: 'LOOK AWAY' }
+            terms: { revealable: 'LOOK AWAY' }
           }
         })
 
@@ -206,7 +206,7 @@ LOOK AWAY
         Up.parseAndRenderDocumentAndTableOfContents(markup, {
           parsing: {
             createSourceMap: true,
-            terms: { spoiler: 'LOOK AWAY' }
+            terms: { revealable: 'LOOK AWAY' }
           },
           rendering: {
             terms: { tableOfContents: 'In This Article' }
@@ -273,7 +273,7 @@ SPOILER
 
       const html = Up.parseAndRenderInline(markup, {
         parsing: {
-          terms: { spoiler: 'LOOK AWAY' }
+          terms: { revealable: 'LOOK AWAY' }
         }
       })
 
@@ -313,7 +313,7 @@ SPOILER
 
       const html = Up.parseAndRenderInline(markup, {
         parsing: {
-          terms: { spoiler: 'LOOK AWAY' }
+          terms: { revealable: 'LOOK AWAY' }
         },
         rendering: {
           idPrefix: 'reply 104'

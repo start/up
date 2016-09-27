@@ -166,12 +166,12 @@ describe('The "toggleSpoiler" term', () => {
     ]),
     change: {
       terms: {
-        toggleSpoiler: 'show/hide'
+        toggleVisibility: 'show/hide'
       }
     },
     conflictingChange: {
       terms: {
-        toggleSpoiler: 'see spoiler?'
+        toggleVisibility: 'see spoiler?'
       }
     }
   })

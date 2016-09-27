@@ -16,8 +16,8 @@ import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
-import { InlineRevealableContent } from '../../SyntaxNodes/InlineRevealableContent'
-import { OutlineRevealableContent } from '../../SyntaxNodes/OutlineRevealableContent'
+import { InlineRevealable } from '../../SyntaxNodes/InlineRevealable'
+import { OutlineRevealable } from '../../SyntaxNodes/OutlineRevealable'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
@@ -58,7 +58,7 @@ export class HtmlRenderer extends Renderer {
   // time we render a spoiler (inline or block), appending the counter's value to the checkbox's ID.
   //
   // We'll do the same for NSFW and NSFL conventions.
-  private revealableContentCount: number
+  private RevealableCount: number
   private nsfwCount: number
   private nsflCount: number
 
@@ -225,22 +225,22 @@ export class HtmlRenderer extends Renderer {
     return this.element('q', inlineQuote.children)
   }
 
-  inlineRevealableContent(inlineRevealableContent: InlineRevealableContent): string {
-    return this.revealableContent({
+  inlineRevealable(inlineRevealable: InlineRevealable): string {
+    return this.Revealable({
       termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.revealableContentCount,
-      revealable: inlineRevealableContent,
+      conventionCount: ++this.RevealableCount,
+      revealable: inlineRevealable,
       tagNameForGenericContainers: 'span'
     })
   }
 
-  outlineRevealableContent(outlineRevealableContent: OutlineRevealableContent): string {
-    return this.revealableContent({
+  outlineRevealable(outlineRevealable: OutlineRevealable): string {
+    return this.Revealable({
       termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.revealableContentCount,
-      revealable: outlineRevealableContent,
+      conventionCount: ++this.RevealableCount,
+      revealable: outlineRevealable,
       tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(outlineRevealableContent)
+      attrsForOuterContainer: attrsFor(outlineRevealable)
     })
   }
 
@@ -448,11 +448,11 @@ export class HtmlRenderer extends Renderer {
     return [new Link([new Text(content)], url)]
   }
 
-  private revealableContent(
+  private Revealable(
     args: {
       termForTogglingVisibility: string
       conventionCount: number
-      revealable: InlineRevealableContent | OutlineRevealableContent
+      revealable: InlineRevealable | OutlineRevealable
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
@@ -481,7 +481,7 @@ export class HtmlRenderer extends Renderer {
     const label =
       htmlElement('label', args.termForTogglingVisibility, { for: checkboxId })
 
-    const revealableContent =
+    const Revealable =
       this.element(
         args.tagNameForGenericContainers,
         args.revealable.children,
@@ -494,7 +494,7 @@ export class HtmlRenderer extends Renderer {
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
-      [label, checkbox, revealableContent],
+      [label, checkbox, Revealable],
       attrsForOuterContainer)
   }
 
@@ -578,7 +578,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {
-    this.revealableContentCount = 0
+    this.RevealableCount = 0
     this.nsfwCount = 0
     this.nsflCount = 0
     this.isInsideLink = false

@@ -3,9 +3,7 @@ import { Stress } from '../../SyntaxNodes/Stress'
 import { Italics } from '../../SyntaxNodes/Italics'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { Highlight } from '../../SyntaxNodes/Highlight'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineRevealable } from '../../SyntaxNodes/InlineRevealable'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
@@ -78,20 +76,8 @@ export const LINK = {
   endTokenRole: TokenRole.LinkEndAndUrl
 }
 
-export const SPOILER = new RevealableConvention({
-  SyntaxNodeType: InlineSpoiler,
-  startTokenRole: TokenRole.SpoilerStart,
-  endTokenRole: TokenRole.SpoilerEnd
-})
-
-export const NSFW = new RevealableConvention({
-  SyntaxNodeType: InlineNsfw,
-  startTokenRole: TokenRole.NsfwStart,
-  endTokenRole: TokenRole.NsfwEnd
-})
-
-export const NSFL = new RevealableConvention({
-  SyntaxNodeType: InlineNsfl,
-  startTokenRole: TokenRole.NsflStart,
-  endTokenRole: TokenRole.NsflEnd
+export const REVEALABLE = new RevealableConvention({
+  SyntaxNodeType: InlineRevealable,
+  startTokenRole: TokenRole.RevealableStart,
+  endTokenRole: TokenRole.RevealableEnd
 })

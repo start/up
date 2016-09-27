@@ -15,8 +15,8 @@ import { SectionLink } from '../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../SyntaxNodes/Highlight'
-import { InlineRevealableContent } from '../SyntaxNodes/InlineRevealableContent'
-import { OutlineRevealableContent } from '../SyntaxNodes/OutlineRevealableContent'
+import { InlineRevealable } from '../SyntaxNodes/InlineRevealable'
+import { OutlineRevealable } from '../SyntaxNodes/OutlineRevealable'
 import { InlineQuote } from '../SyntaxNodes/InlineQuote'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
@@ -67,8 +67,8 @@ export abstract class Renderer {
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract text(text: Text): string
-  abstract inlineRevealableContent(inlineRevealableContent: InlineRevealableContent): string
-  abstract outlineRevealableContent(outlineRevealableContent: OutlineRevealableContent): string
+  abstract inlineRevealable(inlineRevealable: InlineRevealable): string
+  abstract outlineRevealable(outlineRevealable: OutlineRevealable): string
   abstract sectionLink(sectionLink: SectionLink): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   abstract stress(stress: Stress): string

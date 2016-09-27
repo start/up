@@ -4,9 +4,9 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 // A "revealable" convention is one that requires deliberate action from the reader to reveal.
-export class OutlineRevealableContent extends RichOutlineSyntaxNode {
+export class OutlineRevealable extends RichOutlineSyntaxNode {
   render(renderer: Renderer): string {
-    return renderer.outlineRevealableContent(this)
+    return renderer.outlineRevealable(this)
   }
 
 
@@ -16,5 +16,5 @@ export class OutlineRevealableContent extends RichOutlineSyntaxNode {
     return []
   }
 
-  protected OUTLINE_REVEALABLE_CONTENT(): void { }
+  protected OUTLINE_REVEALABLE(): void { }
 }

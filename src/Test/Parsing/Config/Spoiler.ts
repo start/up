@@ -6,7 +6,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 context('The "spoiler" term is used by both inline spoilers and spoiler blocks.', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { spoiler: 'ruins ending' }
+      terms: { revealable: 'ruins ending' }
     }
   })
 
@@ -31,7 +31,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
           terms: {
-            spoiler: ' \t ruins ending \t '
+            revealable: ' \t ruins ending \t '
           }
         })
 
@@ -47,7 +47,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
           terms: {
-            spoiler: '*ruins* ending'
+            revealable: '*ruins* ending'
           }
         })
 
@@ -63,7 +63,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
       const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
           terms: {
-            spoiler: ['look away', 'ruins ending']
+            revealable: ['look away', 'ruins ending']
           }
         })
 
@@ -130,7 +130,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          spoiler: ' \t ruins ending \t '
+          revealable: ' \t ruins ending \t '
         }
       })
 
@@ -157,7 +157,7 @@ RUINS ending:
 
       const document = Up.parse(markup, {
         terms: {
-          spoiler: '*ruins* ending'
+          revealable: '*ruins* ending'
         }
       })
 
@@ -186,7 +186,7 @@ LOOK AWAY:
 
       const document = Up.parse(markup, {
         terms: {
-          spoiler: ['look away', 'ruins ending']
+          revealable: ['look away', 'ruins ending']
         }
       })
 
