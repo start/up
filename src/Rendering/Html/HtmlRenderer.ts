@@ -40,8 +40,8 @@ import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Patt
 
 
 export class HtmlRenderer extends Renderer {
-  // Our HTML for revealable content doesn't require JavaScript (just CSS), and it
-  // works perfectly well for screen-readers.
+  // Our HTML for revealable content doesn't require JavaScript (just CSS), and it works perfectly well for
+  // screen-readers.
   //
   // For example, here's our HTML for inline revealable content:
   //
@@ -51,9 +51,10 @@ export class HtmlRenderer extends Renderer {
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
-  // This solution requires generating unique IDs to associate each label with its checkbox, so increment a
-  // counter each time we render revealable content (inline or block), appending the counter's value to the
-  // checkbox's ID.
+  // This solution requires generating unique IDs to associate each label with its checkbox.
+  //
+  // To accomplish this, we increment a counter each time we render revealable content (inline or block),
+  // appending the counter's value to the checkbox's ID.
   private revealableCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
