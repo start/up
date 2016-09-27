@@ -253,7 +253,7 @@ export namespace Settings {
       tableOfContents: Term = 'Table of Contents'
       toggleNsfl: Term = 'toggle NSFL'
       toggleNsfw: Term = 'toggle NSFW'
-      toggleSpoiler: Term = 'toggle spoiler'
+      toggleVisibility: Term = 'toggle spoiler'
 
       clone(): Terms {
         const clone = new Terms()
@@ -264,7 +264,7 @@ export namespace Settings {
         clone.tableOfContents = this.tableOfContents
         clone.toggleNsfl = this.toggleNsfl
         clone.toggleNsfw = this.toggleNsfw
-        clone.toggleSpoiler = this.toggleSpoiler
+        clone.toggleVisibility = this.toggleVisibility
 
         return clone
       }
@@ -292,8 +292,8 @@ export namespace Settings {
         this.toggleNsfw =
           coalesce(terms.toggleNsfw, this.toggleNsfw)
 
-        this.toggleSpoiler =
-          coalesce(terms.toggleSpoiler, this.toggleSpoiler)
+        this.toggleVisibility =
+          coalesce(terms.toggleSpoiler, this.toggleVisibility)
       }
     }
 

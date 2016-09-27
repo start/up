@@ -7,7 +7,7 @@ import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { RevealableOutlineSyntaxNode } from '../SyntaxNodes/RevealableOutlineSyntaxNode'
+import { OutlineRevealableContent } from '../SyntaxNodes/OutlineRevealableContent'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
 import { OrderedList } from '../SyntaxNodes/OrderedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
@@ -105,7 +105,7 @@ class FootnoteBlockInserter {
       return this.getOutermostFootnotesAndAssignTheirReferenceNumbers(node.children)
     }
 
-    if (node instanceof RevealableOutlineSyntaxNode) {
+    if (node instanceof OutlineRevealableContent) {
       this.insertFootnoteBlocksAndAssignFootnoteReferenceNumbers(node)
 
       // We've just produced footnote blocks for all footnotes within this revealable outline convention, so

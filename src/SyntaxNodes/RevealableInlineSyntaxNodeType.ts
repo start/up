@@ -1,7 +1,7 @@
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { RevealableInlineSyntaxNode } from './RevealableInlineSyntaxNode'
+import { InlineRevealableContent } from './InlineRevealableContent'
 
 
-export interface RevealableInlineSyntaxNodeType {
-  new (children: InlineSyntaxNode[]): RevealableInlineSyntaxNode
+export interface InlineRevealableContentType {
+  new (children: InlineSyntaxNode[]): InlineRevealableContent
 }

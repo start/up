@@ -15,13 +15,9 @@ import { SectionLink } from '../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../SyntaxNodes/Highlight'
-import { InlineSpoiler } from '../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../SyntaxNodes/InlineNsfl'
+import { InlineRevealableContent } from '../SyntaxNodes/InlineRevealableContent'
+import { OutlineRevealableContent } from '../SyntaxNodes/OutlineRevealableContent'
 import { InlineQuote } from '../SyntaxNodes/InlineQuote'
-import { SpoilerBlock } from '../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../SyntaxNodes/NsflBlock'
 import { Footnote } from '../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { Table } from '../SyntaxNodes/Table'
@@ -62,22 +58,18 @@ export abstract class Renderer {
   abstract highlight(highlight: Highlight): string
   abstract image(image: Image): string
   abstract inlineCode(inlineCode: InlineCode): string
-  abstract inlineNsfl(inlineNsfl: InlineNsfl): string
-  abstract inlineNsfw(inlineNsfw: InlineNsfw): string
-  abstract inlineSpoiler(inlineSpoiler: InlineSpoiler): string
   abstract inlineQuote(inlineQuote: InlineQuote): string
   abstract italics(italics: Italics): string
   abstract lineBlock(lineBlock: LineBlock): string
   abstract link(link: Link): string
-  abstract nsflBlock(nsflBlock: NsflBlock): string
-  abstract nsfwBlock(nsfwBlock: NsfwBlock): string
   abstract orderedList(list: OrderedList): string
   abstract thematicBreak(thematicBreak: ThematicBreak): string
   abstract paragraph(paragraph: Paragraph): string
   abstract normalParenthetical(normalParenthetical: NormalParenthetical): string
   abstract text(text: Text): string
+  abstract inlineRevealableContent(inlineRevealableContent: InlineRevealableContent): string
+  abstract outlineRevealableContent(outlineRevealableContent: OutlineRevealableContent): string
   abstract sectionLink(sectionLink: SectionLink): string
-  abstract spoilerBlock(spoilerBlock: SpoilerBlock): string
   abstract squareParenthetical(squareParenthetical: SquareParenthetical): string
   abstract stress(stress: Stress): string
   abstract table(table: Table): string

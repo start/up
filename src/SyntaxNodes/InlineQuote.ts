@@ -1,8 +1,8 @@
-import { RevealableInlineSyntaxNode } from './RevealableInlineSyntaxNode'
+import { InlineRevealableContent } from './InlineRevealableContent'
 import { Renderer } from '../Rendering/Renderer'
 
 
-export class InlineQuote extends RevealableInlineSyntaxNode {
+export class InlineQuote extends InlineRevealableContent {
   render(renderer: Renderer): string {
     return renderer.inlineQuote(this)
   }

@@ -16,13 +16,9 @@ import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
-import { InlineSpoiler } from '../../SyntaxNodes/InlineSpoiler'
-import { InlineNsfw } from '../../SyntaxNodes/InlineNsfw'
-import { InlineNsfl } from '../../SyntaxNodes/InlineNsfl'
+import { InlineRevealableContent } from '../../SyntaxNodes/InlineRevealableContent'
+import { OutlineRevealableContent } from '../../SyntaxNodes/OutlineRevealableContent'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
 import { Table } from '../../SyntaxNodes/Table'
@@ -37,8 +33,6 @@ import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { RevealableInlineSyntaxNode } from '../../SyntaxNodes/RevealableInlineSyntaxNode'
-import { RevealableOutlineSyntaxNode } from '../../SyntaxNodes/RevealableOutlineSyntaxNode'
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './ElementHelpers'
 import { escapeHtmlContent } from './EscapingHelpers'
@@ -46,14 +40,14 @@ import { patternIgnoringCapitalizationAndStartingWith, either } from '../../Patt
 
 
 export class HtmlRenderer extends Renderer {
-  // Our HTML for revealable content (spoilers, NSFW, and NSFL) doesn't require JavaScript (just CSS), and it
+  // Our HTML for revealable content doesn't require JavaScript (just CSS), and it
   // works perfectly well for screen-readers.
   //
-  // For example, here's our HTML for inline spoilers:
+  // For example, here's our HTML for inline revealable content:
   //
-  // <span class="up-spoiler up-revealable">
-  //   <label for="up-spoiler-1">toggle spoiler</label>
-  //   <input id="up-spoiler-1" role="button" type="checkbox">
+  // <span class="up-revealable">
+  //   <label for="up-revealable-1">toggle visibility</label>
+  //   <input id="up-revealable-1" role="button" type="checkbox">
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
@@ -64,7 +58,7 @@ export class HtmlRenderer extends Renderer {
   // time we render a spoiler (inline or block), appending the counter's value to the checkbox's ID.
   //
   // We'll do the same for NSFW and NSFL conventions.
-  private spoilerCount: number
+  private revealableContentCount: number
   private nsfwCount: number
   private nsflCount: number
 
@@ -231,66 +225,22 @@ export class HtmlRenderer extends Renderer {
     return this.element('q', inlineQuote.children)
   }
 
-  inlineSpoiler(inlineSpoiler: InlineSpoiler): string {
-    return this.revealable({
-      conventionName: 'spoiler',
-      termForTogglingVisibility: this.settings.terms.toggleSpoiler,
-      conventionCount: ++this.spoilerCount,
-      revealable: inlineSpoiler,
+  inlineRevealableContent(inlineRevealableContent: InlineRevealableContent): string {
+    return this.revealableContent({
+      termForTogglingVisibility: this.settings.terms.toggleVisibility,
+      conventionCount: ++this.revealableContentCount,
+      revealable: inlineRevealableContent,
       tagNameForGenericContainers: 'span'
     })
   }
 
-  inlineNsfw(inlineNsfw: InlineNsfw): string {
-    return this.revealable({
-      conventionName: 'nsfw',
-      termForTogglingVisibility: this.settings.terms.toggleNsfw,
-      conventionCount: ++this.nsfwCount,
-      revealable: inlineNsfw,
-      tagNameForGenericContainers: 'span'
-    })
-  }
-
-  inlineNsfl(inlineNsfl: InlineNsfl): string {
-    return this.revealable({
-      conventionName: 'nsfl',
-      termForTogglingVisibility: this.settings.terms.toggleNsfl,
-      conventionCount: ++this.nsflCount,
-      revealable: inlineNsfl,
-      tagNameForGenericContainers: 'span'
-    })
-  }
-
-  spoilerBlock(spoilerBlock: SpoilerBlock): string {
-    return this.revealable({
-      conventionName: 'spoiler',
-      termForTogglingVisibility: this.settings.terms.toggleSpoiler,
-      conventionCount: ++this.spoilerCount,
-      revealable: spoilerBlock,
+  outlineRevealableContent(outlineRevealableContent: OutlineRevealableContent): string {
+    return this.revealableContent({
+      termForTogglingVisibility: this.settings.terms.toggleVisibility,
+      conventionCount: ++this.revealableContentCount,
+      revealable: outlineRevealableContent,
       tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(spoilerBlock)
-    })
-  }
-
-  nsfwBlock(nsfwBlock: NsfwBlock): string {
-    return this.revealable({
-      conventionName: 'nsfw',
-      termForTogglingVisibility: this.settings.terms.toggleNsfw,
-      conventionCount: ++this.nsfwCount,
-      revealable: nsfwBlock,
-      tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(nsfwBlock)
-    })
-  }
-
-  nsflBlock(nsflBlock: NsflBlock): string {
-    return this.revealable({
-      conventionName: 'nsfl',
-      termForTogglingVisibility: this.settings.terms.toggleNsfl,
-      conventionCount: ++this.nsflCount,
-      revealable: nsflBlock,
-      tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(nsflBlock)
+      attrsForOuterContainer: attrsFor(outlineRevealableContent)
     })
   }
 
@@ -498,17 +448,16 @@ export class HtmlRenderer extends Renderer {
     return [new Link([new Text(content)], url)]
   }
 
-  private revealable(
+  private revealableContent(
     args: {
-      conventionName: string
       termForTogglingVisibility: string
       conventionCount: number
-      revealable: RevealableInlineSyntaxNode | RevealableOutlineSyntaxNode
+      revealable: InlineRevealableContent | OutlineRevealableContent
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
   ): string {
-    let checkBoxIdParts = [args.conventionName, args.conventionCount]
+    let checkBoxIdParts = ['revealable', args.conventionCount]
 
     // We use this nasty little hack to prevent the IDs of revealable elements' checkboxes
     // within the table of contents from clashing with IDs within the document itself.
@@ -541,7 +490,7 @@ export class HtmlRenderer extends Renderer {
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
     attrsForOuterContainer.class =
-      classAttrValue(args.conventionName, 'revealable')
+      classAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
@@ -629,7 +578,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {
-    this.spoilerCount = 0
+    this.revealableContentCount = 0
     this.nsfwCount = 0
     this.nsflCount = 0
     this.isInsideLink = false
