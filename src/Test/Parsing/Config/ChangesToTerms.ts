@@ -520,7 +520,7 @@ context('Settings settings are totally independent. When one setting is changed,
 
     expect(up.parse('[SPOILER: Ash fights Gary]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Ash fights Gary')
         ])
       ]))
@@ -536,7 +536,7 @@ context('Settings settings are totally independent. When one setting is changed,
 
     expect(document).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Ash fights Gary')
         ])
       ]))

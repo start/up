@@ -129,7 +129,7 @@ describe('Within an outline convention, footnotes within a revealable outline co
       new Up.Document([
         new Up.UnorderedList([
           new Up.UnorderedList.Item([
-            new Up.SpoilerBlock([
+            new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text("I don't eat cereal."),
                 paragraphFootnotes[0],

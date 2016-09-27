@@ -8,8 +8,8 @@ describe('An inline spoiler convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: [SPOILER: Gary] fights you].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
-          new Up.InlineSpoiler([
+        new Up.InlineRevealable([
+          new Up.InlineRevealable([
             new Up.Text('Gary')
           ]),
           new Up.Text(' fights you')

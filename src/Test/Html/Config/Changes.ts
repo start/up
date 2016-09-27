@@ -161,7 +161,7 @@ describe('The "toggleSpoiler" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ]),
     change: {

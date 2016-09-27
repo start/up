@@ -67,7 +67,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')
@@ -165,7 +165,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'ftp://example.com/wiki/Blue_Sky')

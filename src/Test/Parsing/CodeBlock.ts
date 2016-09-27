@@ -270,7 +270,7 @@ I hope you were able to find a solution without cheating.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.CodeBlock(
             `function nthFibonacci(n: number): number {
   return (

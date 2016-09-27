@@ -25,9 +25,9 @@ context('Up offers no real support for self-overlapping. When a convention overl
       expect(Up.parse('This [SPOILER: does (SPOILER: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('This '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('does '),
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Text('not')
             ]),
             new Up.Text(' make')
@@ -146,11 +146,11 @@ context('Up offers no real support for self-overlapping. When a convention overl
         specify('Two inline spoilers overlapping another', () => {
           expect(Up.parse('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text('This '),
-                new Up.InlineSpoiler([
+                new Up.InlineRevealable([
                   new Up.Text('does '),
-                  new Up.InlineSpoiler([
+                  new Up.InlineRevealable([
                     new Up.Text('not')
                   ]),
                 ]),
@@ -163,11 +163,11 @@ context('Up offers no real support for self-overlapping. When a convention overl
         specify('An inline spoiler overlapping two others', () => {
           expect(Up.parse('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text('This '),
-                new Up.InlineSpoiler([
+                new Up.InlineRevealable([
                   new Up.Text('does '),
-                  new Up.InlineSpoiler([
+                  new Up.InlineRevealable([
                     new Up.Text('not')
                   ]),
                   new Up.Text(' make')
@@ -186,12 +186,12 @@ context('Up offers no real support for self-overlapping. When a convention overl
       expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('This '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('truly '),
             new Up.Emphasis([
               new Up.Text('does ')
             ]),
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Emphasis([
                 new Up.Text('not')
               ])

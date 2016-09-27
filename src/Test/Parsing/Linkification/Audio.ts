@@ -89,7 +89,7 @@ describe('An audio convention directly followed by an inline spoiler', () => {
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.Audio('you fight Gary', 'https://example.com/fight.ogg'),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and win')
         ]),
         new Up.Text('.')

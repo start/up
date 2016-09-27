@@ -193,7 +193,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Two conventions (e.g. NSFL, bold) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
       expect(Up.parse('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('There was another '),
             new Up.InlineNsfl([
               new Up.Text('rotten '),
@@ -229,7 +229,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('There '),
             new Up.Italics([
               new Up.Text('was '),
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text('another '),
                 new Up.InlineNsfl([
                   new Up.Text('loud '),
@@ -251,7 +251,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('There '),
             new Up.Italics([
               new Up.Text('was '),
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text('another '),
                 new Up.InlineNsfl([
                   new Up.Text('loud '),
@@ -277,7 +277,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
                 new Up.Text('another '),
                 new Up.InlineNsfl([
                   new Up.Text('loud '),
-                  new Up.InlineSpoiler([
+                  new Up.InlineRevealable([
                     new Up.Text('stomp')
                   ])
                 ])
@@ -291,7 +291,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify("An inline spoiler and a link", () => {
       expect(Up.parse('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Mario fell off the platform. '),
             new Up.Link([
               new Up.Text('splat')
@@ -305,7 +305,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new Up.Link([
             new Up.Text('loudly sings '),
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Text("Jigglypuff's Lullaby")
             ])
           ], 'https://example.com')
@@ -387,7 +387,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
       expect(Up.parse('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('There was another '),
             new Up.InlineNsfl([
               new Up.Link([
@@ -419,7 +419,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.parse('[SPOILER: *Why would you do this?]*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Text('Why would you do this?')
             ])
           ])
@@ -429,7 +429,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     specify('Emphasis and an inline spoiler', () => {
       expect(Up.parse('*[SPOILER: Why would you do this?*]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Emphasis([
               new Up.Text('Why would you do this?')
             ])
@@ -554,7 +554,7 @@ context("When most conventions overlap by only the first convention's end delimi
     specify('A spoiler and a link', () => {
       expect(Up.parse('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Oh ')
           ]),
           new Up.Link([

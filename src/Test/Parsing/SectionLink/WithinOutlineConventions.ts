@@ -397,7 +397,7 @@ SPOILER:
         new Up.Paragraph([
           new Up.Text('Not quite true.')
         ]),
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('First of all, see '),
             new Up.SectionLink('soda', sodaHeading),

@@ -112,7 +112,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -195,7 +195,7 @@ describe("Within a spoiler block's label, all instances of < and &", () => {
     })
 
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =

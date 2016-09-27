@@ -187,7 +187,7 @@ SPOILER:
       new Up.Document([
         new Up.Paragraph([new Up.Text("Anyway, let's get to the point.")]),
         heading,
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([new Up.Text("Who doesn't?")])
         ])
       ], tableOfContents))
@@ -928,7 +928,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Heading([new Up.Text("They're cheap")], { level: 1 })
           ])
         ], new Up.Document.TableOfContents([])))

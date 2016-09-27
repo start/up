@@ -56,7 +56,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')
@@ -165,7 +165,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')

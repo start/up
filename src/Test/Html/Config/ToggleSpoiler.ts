@@ -12,7 +12,7 @@ describe("The text in an inline spoiler's label", () => {
 
     const node = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -39,7 +39,7 @@ describe("The text in a spoiler block's label", () => {
     })
 
     const node = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =

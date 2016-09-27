@@ -237,7 +237,7 @@ context('A long string of whitespace should never cause cause the parser to hang
   specify("Between a non-media convention's bracketed URL and its linkifying URL", () => {
     expect(Up.parse('[SPOILER: His ear grew back!]' + lotsOfSpaces + '(example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('His ear grew back!')
           ], 'https://example.com')
@@ -250,7 +250,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("At the start", () => {
       expect(Up.parse('[SPOILER: His ear grew back!](' + lotsOfSpaces + 'example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('His ear grew back!')
             ], 'https://example.com')
@@ -261,7 +261,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("At the end", () => {
       expect(Up.parse('[SPOILER: His ear grew back!](example.com' + lotsOfSpaces + ')')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('His ear grew back!')
             ], 'https://example.com')
@@ -272,7 +272,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("Before a an open bracket", () => {
       expect(Up.parse('[SPOILER: His ear grew back!](example.com?some=ridiculous-' + lotsOfSpaces + '[arg])')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('His ear grew back!')
             ], 'https://example.com?some=ridiculous-' + lotsOfSpaces + '[arg]')
@@ -296,7 +296,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("At the start", () => {
       expect(Up.parse('[SPOILER:' + lotsOfSpaces + 'He did not die.]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('He did not die.')
           ])
         ]))
@@ -305,7 +305,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("At the end", () => {
       expect(Up.parse('[SPOILER: He did not die.' + lotsOfSpaces + ']')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('He did not die.' + lotsOfSpaces)
           ])
         ]))

@@ -8,7 +8,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'https://example.com/finalbattle')

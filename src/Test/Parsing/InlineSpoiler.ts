@@ -8,7 +8,7 @@ describe('Square bracketed text starting with "SPOILER:"', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.Text('.')
@@ -22,7 +22,7 @@ describe('Parenthesized text starting with "SPOILER:"', () => {
     expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.Text('.')
@@ -43,7 +43,7 @@ describe('An inline spoiler convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight *Gary*].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight '),
           new Up.Emphasis([
             new Up.Text('Gary')
@@ -57,9 +57,9 @@ describe('An inline spoiler convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Gary')
           ]),
         ]),
@@ -74,7 +74,7 @@ describe('An inline spoiler produced by square brackets', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight '),
           new Up.SquareParenthetical([
             new Up.Text('[and beat]')
@@ -92,7 +92,7 @@ describe('An inline spoiler produced by parentheses', () => {
     expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight '),
           new Up.NormalParenthetical([
             new Up.Text('(and beat)')
@@ -110,7 +110,7 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
     expect(Up.parse('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.Text('.')
@@ -121,7 +121,7 @@ describe('Any whitespace between "SPOILER:" and the start of the spoiler content
     expect(Up.parse('After you beat the Elite Four, [SPOILER: \t  \t you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.Text('.')

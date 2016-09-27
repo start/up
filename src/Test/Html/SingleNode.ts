@@ -847,7 +847,7 @@ describe('An inline spoiler node', () => {
   it('produces an outer <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([new Up.Text('45.9%')])
+        new Up.InlineRevealable([new Up.Text('45.9%')])
       ])
     ])
 
@@ -912,7 +912,7 @@ describe('An inline NSFL node', () => {
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new Up.Document([
-      new Up.SpoilerBlock([
+      new Up.RevealableBlock([
         new Up.Paragraph([
           new Up.Text('John Carmack is a decent programmer.')
         ])

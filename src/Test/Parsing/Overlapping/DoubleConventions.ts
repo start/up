@@ -57,9 +57,9 @@ describe('Nested spoilers (closing at the same time) overlapping emphasis', () =
   it('split the emphasis node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('I know. '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text("Well, I don't "),
             new Up.Emphasis([
               new Up.Text('really.')
@@ -82,8 +82,8 @@ describe('Emphasis overlapping nested spoilers (opening at the same time)', () =
         new Up.Emphasis([
           new Up.Text("I suspect "),
         ]),
-        new Up.InlineSpoiler([
-          new Up.InlineSpoiler([
+        new Up.InlineRevealable([
+          new Up.InlineRevealable([
             new Up.Emphasis([
               new Up.Text('you')
             ]),
@@ -100,9 +100,9 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
   it('split the link node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('I know. '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text("Well, I don't "),
             new Up.Link([
               new Up.Text('really.')
@@ -125,8 +125,8 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
         new Up.Link([
           new Up.Text("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new Up.InlineSpoiler([
-          new Up.InlineSpoiler([
+        new Up.InlineRevealable([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('you')
             ], 'https://example.com/crime-suspects'),
@@ -402,7 +402,7 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
     expect(Up.parse("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('In Texas, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Emphasis([
             new Up.Text('I never eat '),
           ]),
@@ -447,7 +447,7 @@ describe('A linkified spoiler overlapping emphasized text', () => {
     expect(Up.parse('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('trash '),
             new Up.Emphasis([
@@ -469,7 +469,7 @@ describe('An inline spoiler overlapping an emphasis convention split in two (by 
     expect(Up.parse('This [SPOILER: old (trash *can)(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('old '),
           new Up.Link([
             new Up.Text('trash '),

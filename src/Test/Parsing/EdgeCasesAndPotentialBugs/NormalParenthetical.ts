@@ -13,7 +13,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
             new Up.Text('(the one and only)')
           ]),
           new Up.Text(' '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Gary')
           ]),
           new Up.Text('.')
@@ -28,7 +28,7 @@ context('parenthesized text can be directly followed by whitespace followed by',
             new Up.Text('(the one and only)')
           ]),
           new Up.Text(' '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Gary Oak')
           ]),
           new Up.Text('.')

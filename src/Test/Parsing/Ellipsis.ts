@@ -67,7 +67,7 @@ context('Consecutive periods normally produce an ellipsis.', () => {
     specify('Linkified URLs for non-media conventions', () => {
       expect(Up.parse('[SPOILER: you fight Gary] (http://example.com/final...battle)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('you fight Gary')
             ], 'http://example.com/final...battle')

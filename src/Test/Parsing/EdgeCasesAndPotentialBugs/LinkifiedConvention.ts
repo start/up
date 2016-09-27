@@ -7,7 +7,7 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
   it('can contain an unclosed square bracket without affecting a linkified spoiler with a square bracketed URL that follows it', () => {
     expect(Up.parse('(SPOILER: Ash dies) (https://example.com/ending:[ has all the info) ... [SPOILER: anyway, go here instead] [https://example.com/happy]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Ash dies')
         ]),
         new Up.Text(' '),
@@ -19,7 +19,7 @@ describe("An almost-linkified spoiler (with whitespace between its content and U
           new Up.Text(' has all the info)')
         ]),
         new Up.Text(' … '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('anyway, go here instead')
           ], 'https://example.com/happy')

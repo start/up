@@ -302,7 +302,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   specify("Inline spoilers", () => {
     expect(Up.parse('[SPOILER: I love https://archive.org/fake and you should too!]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('I love '),
           new Up.Link([
             new Up.Text('archive.org/fake')
@@ -805,7 +805,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       specify('Inline spoilers', () => {
         expect(Up.parse('[SPOILER: For more info, visit https://archive.org!]')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Text('For more info, visit '),
               new Up.Link([
                 new Up.Text('archive.org')

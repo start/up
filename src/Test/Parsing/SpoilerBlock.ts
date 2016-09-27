@@ -12,7 +12,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -35,7 +35,7 @@ sPoiLeR:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -56,7 +56,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -77,7 +77,7 @@ SPOILER
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -99,7 +99,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -123,7 +123,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -144,7 +144,7 @@ SPOILER:  \t  \t
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -165,7 +165,7 @@ SPOILER  \t  \t
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
@@ -192,11 +192,11 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Up.SpoilerBlock([
+            new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text('Luckily, Pikachu ultimately decided to stay.')
               ])
@@ -217,7 +217,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
@@ -244,7 +244,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.CodeBlock(
               `function nthFibonacci(n: number): number {
   return (
@@ -265,7 +265,7 @@ That was my favorite episode.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -286,7 +286,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a '),
             new Up.Emphasis([
@@ -311,7 +311,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -326,7 +326,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -341,7 +341,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
           ])
@@ -361,7 +361,7 @@ SPOILER:
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('Well…')
           ]),

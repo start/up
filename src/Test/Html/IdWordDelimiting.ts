@@ -88,7 +88,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
     specify('The ID of the checkboxes for inline spoilers', () => {
       const document = new Up.Document([
         new Up.Paragraph([
-          new Up.InlineSpoiler([new Up.Text('45.9%')])
+          new Up.InlineRevealable([new Up.Text('45.9%')])
         ])
       ])
 
@@ -144,7 +144,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The ID of the checkboxes for spoiler blocks', () => {
       const document = new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([new Up.Text('45.9%')])
         ])
       ])

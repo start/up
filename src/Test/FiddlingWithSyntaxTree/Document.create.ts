@@ -10,7 +10,7 @@ context("The `Document.create` is automatically used during the normal parsing p
         new Up.Footnote([new Up.Text('Well, I do, but I pretend not to.')]),
         new Up.Text(" Never have.")
       ]),
-      new Up.SpoilerBlock([
+      new Up.RevealableBlock([
         new Up.Paragraph([
           new Up.Text("This ruins the movie."),
           new Up.Footnote([new Up.Text("And this is a fun fact.")])
@@ -37,7 +37,7 @@ context("The `Document.create` is automatically used during the normal parsing p
         new Up.FootnoteBlock([
           cerealFootnote,
         ]),
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text("This ruins the movie."),
             new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })

@@ -8,7 +8,7 @@ describe('An inline spoiler followed immediately by a parenthesized/bracketd URL
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
@@ -25,7 +25,7 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
       content: 'SPOILER: you fight Gary',
       url: 'http://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
@@ -41,10 +41,10 @@ describe('An inline spoiler directly followed by another spoiler', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and win')
         ]),
         new Up.Text('.')
@@ -58,7 +58,7 @@ describe('An inline spoiler directly followed by an inline NSFW convention', () 
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][NSFW: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.InlineNsfw([
@@ -75,7 +75,7 @@ describe('An inline spoiler directly followed by an inline NSFL convention', () 
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][NSFL: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.InlineNsfl([
@@ -92,7 +92,7 @@ describe('An inline spoiler directly followed by a media convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
         new Up.Audio('final battle theme', 'https://example.com/songs/123.ogg'),
@@ -115,7 +115,7 @@ describe('An inline spoiler directly followed by a footnote', () => {
       new Up.Document([
         new Up.Paragraph([
           new Up.Text("After you beat the Elite Four, "),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('you fight Gary')
           ]),
           footnotes[0],
@@ -130,7 +130,7 @@ describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.parse('[SPOILER: he called her](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('he called her')
         ]),
         new Up.NormalParenthetical([
@@ -145,7 +145,7 @@ context("When an otherwise-valid linkified spoiler's URL starts with whitespace,
   specify('the spoiler convention is not linkified', () => {
     expect(Up.parse('[SPOILER: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('he called her')
         ]),
         new Up.Text('( \t tel:5555555555)')
@@ -160,7 +160,7 @@ context("If there's no whitespace between an inline spoiler and its bracketed UR
       content: 'SPOILER: you fight Gary',
       url: ' \t \thttp://example.com/finalbattle',
       toProduce: insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')

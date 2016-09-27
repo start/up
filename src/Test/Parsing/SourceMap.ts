@@ -254,7 +254,7 @@ SPOILER:
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([new Up.Text("Who doesn't?")], { sourceLineNumber: 3 })
           ], { sourceLineNumber: 2 })
         ]))
@@ -614,7 +614,7 @@ Pink lady
             new Up.DescriptionList.Item.Subject([new Up.Text('Apple')])
           ], new Up.DescriptionList.Item.Description([
             bestFruitHeading,
-            new Up.SpoilerBlock([
+            new Up.RevealableBlock([
               new Up.Paragraph([new Up.Text('Really.')], { sourceLineNumber: 13 })
             ], { sourceLineNumber: 12 })
           ])),

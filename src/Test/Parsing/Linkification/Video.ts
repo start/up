@@ -88,7 +88,7 @@ describe('A video convention directly followed by an inline spoiler', () => {
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and win')
         ]),
         new Up.Text('.')

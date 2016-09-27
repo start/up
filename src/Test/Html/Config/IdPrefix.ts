@@ -213,7 +213,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -237,7 +237,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -260,7 +260,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -283,7 +283,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -307,7 +307,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineSpoiler([])
+        new Up.InlineRevealable([])
       ])
     ])
 
@@ -562,7 +562,7 @@ describe("The ID of an inline NSFL conventions's checkbox (on both the checkbox 
 describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =
@@ -582,7 +582,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =
@@ -601,7 +601,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =
@@ -620,7 +620,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =
@@ -639,7 +639,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
     })
 
     const document = new Up.Document([
-      new Up.SpoilerBlock([])
+      new Up.RevealableBlock([])
     ])
 
     const html =

@@ -304,7 +304,7 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Spoiler blocks', () => {
     const document = new Up.Document([
-      new Up.SpoilerBlock([
+      new Up.RevealableBlock([
         new Up.Paragraph([
           new Up.Text('John Carmack is a decent programmer.')
         ], { sourceLineNumber: 3 })

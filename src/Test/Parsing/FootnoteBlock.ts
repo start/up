@@ -675,7 +675,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               paragraphFootnotes[0],
@@ -839,7 +839,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
 
             new Up.UnorderedList([
               new Up.UnorderedList.Item([
@@ -1082,7 +1082,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
             ])
           ]),
           new Up.UnorderedList.Item([
-            new Up.SpoilerBlock([
+            new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text("I don't eat"),
                 footnoteInSpoilerBlock,

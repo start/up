@@ -375,19 +375,19 @@ context("Within the table of contents, the IDs of revealable content elements do
     const applesHeading =
       new Up.Heading([
         new Up.Text('I enjoy apples '),
-        new Up.InlineSpoiler([new Up.Text('sometimes')])
+        new Up.InlineRevealable([new Up.Text('sometimes')])
       ], { level: 1, ordinalInTableOfContents: 1 })
 
     const grapesHeading =
       new Up.Heading([
         new Up.Text('I enjoy grapes '),
-        new Up.InlineSpoiler([new Up.Text('usually')])
+        new Up.InlineRevealable([new Up.Text('usually')])
       ], { level: 1, ordinalInTableOfContents: 2 })
 
     const document =
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineSpoiler([new Up.Text('Never')]),
+          new Up.InlineRevealable([new Up.Text('Never')]),
           new Up.Text(' eat apples.'),
         ]),
         applesHeading,

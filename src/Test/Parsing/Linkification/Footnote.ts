@@ -110,7 +110,7 @@ describe('A footnote directly followed by an inline spoiler', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
           ])
         ]),

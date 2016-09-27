@@ -10,7 +10,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
       ], { referenceNumber: 1 })
 
       const footnoteInsideHiddenConvention = new Up.Footnote([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Well, I do, but I pretend not to.')
         ])
       ], { referenceNumber: 2 })
@@ -21,7 +21,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
             new Up.Text("I'm normal."),
             footnoteOutsideHiddenConvention,
             new Up.Text(" "),
-            new Up.InlineSpoiler([
+            new Up.InlineRevealable([
               new Up.Text("I don't eat cereal."),
               footnoteInsideHiddenConvention,
               new Up.Text(" Never have."),
@@ -99,7 +99,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
   specify("This doesn't affect revealable conventions within footnotes", () => {
     const footnote = new Up.Footnote([
       new Up.Text('After you beat the Elite Four, '),
-      new Up.InlineSpoiler([
+      new Up.InlineRevealable([
         new Up.Text('You have to beat your rival.')
       ])
     ], { referenceNumber: 1 })
@@ -152,7 +152,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
   context("When a footnote is inside multiple revealable inline conventions, the footnote's body is only placed inside the innermost one. This includes when the footnote is nested within", () => {
     specify("a spoiler convention within a NSFW convention", () => {
       const footnote = new Up.Footnote([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Well, I do, but I pretend not to.')
         ])
       ], { referenceNumber: 1 })
@@ -161,7 +161,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
         new Up.Document([
           new Up.Paragraph([
             new Up.InlineNsfw([
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text("I don't eat cereal."),
                 footnote,
                 new Up.Text(" Never have."),
@@ -209,7 +209,7 @@ context("When a footnote is inside a revealable inline convention, the footnote'
     expect(Up.parse("(SPOILER: [NSFL: I don't eat cereal. (^ Well, I do, but I pretend not to.) Never have.])")).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.InlineNsfl([
               new Up.Text("I don't eat cereal."),
               footnote,

@@ -53,7 +53,7 @@ describe('The "defaultUrlScheme" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'my-app:wiki/Blue_Sky')
@@ -162,7 +162,7 @@ describe('The "defaultUrlScheme" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')

@@ -502,7 +502,7 @@ Well, maybe I'm not so great.`
       const greatnessHeading =
         new Up.Heading([
           new Up.Text("I am great. Read the "),
-          new Up.InlineSpoiler([new Up.Text("full transcript of my greatness")])
+          new Up.InlineRevealable([new Up.Text("full transcript of my greatness")])
         ], { level: 1, ordinalInTableOfContents: 2 })
 
       expect(Up.parse(markup)).to.deep.equal(

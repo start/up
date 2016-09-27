@@ -85,7 +85,7 @@ context('An example input convention is not linkified when it is directly follow
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),
         new Up.ExampleInput('My Cart'),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and then buy me stuff')
         ]),
         new Up.Text('.')

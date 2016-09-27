@@ -89,7 +89,7 @@ describe('An image convention directly followed by an inline spoiler', () => {
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and win')
         ]),
         new Up.Text('.')

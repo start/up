@@ -6,23 +6,23 @@ describe("Inline spoilers and spoiler blocks", () => {
   it("have sequential IDs", () => {
     const node =
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('The main character defeats the bad guy.')
           ]),
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('The hero was unambiguously '),
-              new Up.InlineSpoiler([
+              new Up.InlineRevealable([
                 new Up.Text('good '),
-                new Up.InlineSpoiler([
+                new Up.InlineRevealable([
                   new Up.Text('and righteous.')
                 ])
               ])
             ])
           ])
         ]),
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('Everyone lived happily ever after, except for the bad men.')
           ])
@@ -75,11 +75,11 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
       new Up.Document([
         new Up.Paragraph([
           new Up.Text('Hello, '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Red')
           ]),
           new Up.Text('. We meet for the '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Emphasis([
               new Up.Text('eighth')
             ])
@@ -88,7 +88,7 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
         ]),
         new Up.Paragraph([
           new Up.Text('Hello, '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Blue')
           ]),
           new Up.Text('.'),
@@ -107,7 +107,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
 
     const node =
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('After you beat the Elite Four, you have to face your rival.')
           ])
@@ -115,7 +115,7 @@ describe("The ID of a spoiler block's checkbox (on both the checkbox and the lab
         new Up.Paragraph([
           new Up.Text("But the game isn't over yet!")
         ]),
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text('Once you beat your rival, you can finally enter Cerulean Cave.')
           ])

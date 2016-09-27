@@ -99,7 +99,7 @@ context('Except for footnotes and section links, every inline convention is supp
       expect(Up.parseInline('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Game Boy'),
           ]),
           new Up.Text(', though I never took it with me when I left home.')
@@ -265,7 +265,7 @@ context('Except for footnotes and section links, every inline convention is supp
     specify('Both kinds of footnotes are nested within other inline conventions', () => {
       expect(Up.parseInline('[SPOILER: *I loved my Game Boy [^ from Nintendo], though I never (^ well, maybe once) took it with me when I left home.*]')).to.deep.equal(
         new Up.InlineDocument([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Emphasis([
               new Up.Text('I loved my Game Boy '),
               new Up.NormalParenthetical([

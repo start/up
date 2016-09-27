@@ -16,7 +16,7 @@ context("When the custom term for an inline convention starts with a caret, the 
     specify('inline spoilers can be produced using the term', () => {
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ])
         ]))

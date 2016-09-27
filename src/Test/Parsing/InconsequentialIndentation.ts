@@ -409,7 +409,7 @@ Hello, world!
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.SpoilerBlock([
+        new Up.RevealableBlock([
           new Up.Paragraph([
             new Up.Text("I like shorts! They're comfy and easy to wear!")
           ]),

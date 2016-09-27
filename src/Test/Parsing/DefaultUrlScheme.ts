@@ -50,7 +50,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
     expect(Up.parse(markup)).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://localhost/wiki/Blue_Sky')

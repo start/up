@@ -33,7 +33,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
@@ -53,7 +53,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
@@ -73,7 +73,7 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false

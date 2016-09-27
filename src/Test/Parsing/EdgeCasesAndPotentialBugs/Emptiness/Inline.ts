@@ -746,7 +746,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ]),
           new Up.Text('[]')
@@ -828,7 +828,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
     specify('Spoilers', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ]),
           new Up.Text('(\t \t \t)')
@@ -910,7 +910,7 @@ describe('An inline spoiler convention with escaped blank content', () => {
     expect(Up.parse("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('The moral of this severely exciting, enriching story is '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('  ')
         ]),
         new Up.Text(". I hope it didn't take you too long to read it.")

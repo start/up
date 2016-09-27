@@ -348,7 +348,7 @@ describe('An inline spoiler that overlaps a link', () => {
   it("splits the link node, not the spoiler node", () => {
     expect(Up.parse('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Gary loses to '),
           new Up.Link([
             new Up.Text('Ash')
@@ -373,7 +373,7 @@ describe('A link that overlaps an inline spoiler', () => {
         new Up.Link([
           new Up.Text('Gary Oak ')
         ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('loses to Ash Ketchum')
           ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
@@ -391,7 +391,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
 
     const footnote =
       new Up.Footnote([
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('Ketchum')
         ]),
         new Up.Text(' is his last name')
@@ -400,7 +400,7 @@ describe('An inline spoiler that overlaps a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Gary loses to Ash'),
           ]),
           footnote
@@ -418,7 +418,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
     const footnote =
       new Up.Footnote([
         new Up.Text('reasonable '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('and realistic')
         ]),
       ], { referenceNumber: 1 })
@@ -428,7 +428,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
         new Up.Paragraph([
           new Up.Text('Eventually, I will think of one'),
           footnote,
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text(' example of a')
           ]),
           new Up.Text(' footnote that overlaps an inline spoiler.'),
@@ -599,11 +599,11 @@ context('When quoted text overlaps an inline spoiler, the inline spoiler node wi
         new Up.Text('I '),
         new Up.InlineQuote([
           new Up.Text('love '),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('drinking')
           ])
         ]),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')
@@ -614,11 +614,11 @@ context('When quoted text overlaps an inline spoiler, the inline spoiler node wi
     expect(Up.parse('I [SPOILER: love "drinking] whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Text('love ')
         ]),
         new Up.InlineQuote([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('drinking')
           ]),
           new Up.Text(' whole')

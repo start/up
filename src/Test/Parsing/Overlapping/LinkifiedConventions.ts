@@ -11,7 +11,7 @@ describe('Emphasis overlapping a linkified spoiler', () => {
         new Up.Emphasis([
           new Up.Text('only ')
         ]),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Emphasis([
               new Up.Text('you')
@@ -30,7 +30,7 @@ describe('A linkified spoiler overlapping highlighted text', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary (highlight: Oak][http://example.com/finalbattle] and then the credits roll).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
-        new Up.InlineSpoiler([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('you fight Gary '),
             new Up.Highlight([

@@ -14,7 +14,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ])
         ]))
@@ -37,7 +37,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ])
         ]))
@@ -53,7 +53,7 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ])
         ]))
@@ -69,10 +69,10 @@ context('The "spoiler" term is used by both inline spoilers and spoiler blocks.'
 
       expect(document).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ]),
-          new Up.InlineSpoiler([
+          new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ])
         ]))
@@ -91,7 +91,7 @@ ruins ending:
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
@@ -136,7 +136,7 @@ RUINS ending:
 
       expect(document).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
@@ -163,7 +163,7 @@ RUINS ending:
 
       expect(document).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
@@ -192,11 +192,11 @@ LOOK AWAY:
 
       expect(document).to.deep.equal(
         new Up.Document([
-          new Up.SpoilerBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
             ]),
-            new Up.SpoilerBlock([
+            new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text('Luckily, Pikachu ultimately decided to stay.')
               ])

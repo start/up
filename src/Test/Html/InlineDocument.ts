@@ -167,7 +167,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   describe('An inline spoiler node', () => {
     it('produces a <span class="up-spoiler up-revealable"> element, containing a <label> element (with the text "toggle spoiler"), an associated checkbox, and a <span role="alert"> element containing the spoiler contents', () => {
       const inlineDocument = new Up.InlineDocument([
-        new Up.InlineSpoiler([new Up.Text('45.9%')])
+        new Up.InlineRevealable([new Up.Text('45.9%')])
       ])
 
       const html =
