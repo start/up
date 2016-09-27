@@ -120,54 +120,6 @@ describe('A footnote directly followed by an inline spoiler', () => {
 })
 
 
-describe('A footnote directly followed by an inline NSFW convention', () => {
-  it("is not linkified", () => {
-    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFW: None of the Final Four's Pokemon are named 'Cereal']"
-
-    const footnote =
-      new Up.Footnote([
-        new Up.Text('Well, I do, but I pretend not to.')
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.Text("I don't eat cereal."),
-          footnote,
-          new Up.InlineNsfw([
-            new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
-          ])
-        ]),
-        new Up.FootnoteBlock([footnote])
-      ]))
-  })
-})
-
-
-describe('A footnote directly followed by an inline NSFL convention', () => {
-  it("is not linkified", () => {
-    const markup = "I don't eat cereal. (^Well, I do, but I pretend not to.)[NSFL: None of the Final Four's Pokemon are named 'Cereal']"
-
-    const footnote =
-      new Up.Footnote([
-        new Up.Text('Well, I do, but I pretend not to.')
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.Text("I don't eat cereal."),
-          footnote,
-          new Up.InlineNsfl([
-            new Up.Text("None of the Final Four's Pokemon are named 'Cereal'")
-          ])
-        ]),
-        new Up.FootnoteBlock([footnote])
-      ]))
-  })
-})
-
-
 describe('An otherwise-valid linkified footnote with its URL escaped', () => {
   it('is not linkified', () => {
     const markup = "[^He called her.](\\tel:5555555555)"

@@ -865,50 +865,6 @@ describe('An inline spoiler node', () => {
 })
 
 
-describe('An inline NSFW node', () => {
-  it('produces an outer <span class="up-nsfw up-revealable">, containing a <label> (with the text "toggle NSFW"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFW contents', () => {
-    const document = new Up.Document([
-      new Up.Paragraph([
-        new Up.InlineNsfw([new Up.Text('naked Gary')])
-      ])
-    ])
-
-    const html =
-      '<p>'
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
-      + '<span role="alert">naked Gary</span>'
-      + '</span>'
-      + '</p>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-})
-
-
-describe('An inline NSFL node', () => {
-  it('produces an outer <span class="up-nsfl up-revealable">, containing a <label> (with the text "toggle NSFL"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the NSFL contents', () => {
-    const document = new Up.Document([
-      new Up.Paragraph([
-        new Up.InlineNsfl([new Up.Text('rotting Gary')])
-      ])
-    ])
-
-    const html =
-      '<p>'
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" role="button" type="checkbox">'
-      + '<span role="alert">rotting Gary</span>'
-      + '</span>'
-      + '</p>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-})
-
-
 describe('A spoiler block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new Up.Document([
@@ -923,54 +879,6 @@ describe('A spoiler block node', () => {
       '<div class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-1">toggle spoiler</label>'
       + '<input id="up-spoiler-1" role="button" type="checkbox">'
-      + '<div role="alert">'
-      + '<p>John Carmack is a decent programmer.</p>'
-      + '</div>'
-      + '</div>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-})
-
-
-describe('A NSFW block node', () => {
-  it('produces the same HTML as an inline NSFW node, but with <div role="alert">s instead of <span role="alert">s', () => {
-    const document = new Up.Document([
-      new Up.NsfwBlock([
-        new Up.Paragraph([
-          new Up.Text('John Carmack is a decent programmer.')
-        ])
-      ])
-    ])
-
-    const html =
-      '<div class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
-      + '<div role="alert">'
-      + '<p>John Carmack is a decent programmer.</p>'
-      + '</div>'
-      + '</div>'
-
-    expect(Up.render(document)).to.equal(html)
-  })
-})
-
-
-describe('A NSFL block node', () => {
-  it('produces the same HTML as an inline NSFL node, but with <div role="alert">s instead of <span role="alert">s', () => {
-    const document = new Up.Document([
-      new Up.NsflBlock([
-        new Up.Paragraph([
-          new Up.Text('John Carmack is a decent programmer.')
-        ])
-      ])
-    ])
-
-    const html =
-      '<div class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" role="button" type="checkbox">'
       + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'

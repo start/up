@@ -375,20 +375,6 @@ class Tokenizer {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new ConventionVariation({
-      // Up never applies empty conventions, and that naturally applies for rich conventions, too.
-      //
-      // For example, this would-be inline NSFW convention is empty:
-      //
-      // (NSFW:)
-      //
-      // Therefore, we instead treat it as a parenthetical convention containing the text "NSFW:".
-      //
-      // Furthermore, Up never recognizes rich conventions if they contain only whitespace. For example,
-      // this would-be inline NSFW convention contains only whitespace: 
-      //
-      // (NSFW:   )
-      //
-      // Therefore, we instead treat it as a parenthetical convention containing the text "NSFW:   ".
       startsWith: startDelimiterNotFollowedByEndDelimiter(startsWith, endsWith),
       startPatternContainsATerm,
 

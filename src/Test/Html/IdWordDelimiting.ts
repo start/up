@@ -104,44 +104,6 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
-    specify('The ID of the checkboxes for inline NSFW conventions', () => {
-      const document = new Up.Document([
-        new Up.Paragraph([
-          new Up.InlineNsfw([new Up.Text('45.9%')])
-        ])
-      ])
-
-      const html =
-        '<p>'
-        + '<span class="up-nsfw up-revealable">'
-        + '<label for="thread-11-reply-65-nsfw-1">toggle NSFW</label>'
-        + '<input id="thread-11-reply-65-nsfw-1" role="button" type="checkbox">'
-        + '<span role="alert">45.9%</span>'
-        + '</span>'
-        + '</p>'
-
-      expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
-    })
-
-    specify('The ID of the checkboxes for inline NSFL conventions', () => {
-      const document = new Up.Document([
-        new Up.Paragraph([
-          new Up.InlineNsfl([new Up.Text('45.9%')])
-        ])
-      ])
-
-      const html =
-        '<p>'
-        + '<span class="up-nsfl up-revealable">'
-        + '<label for="thread-11-reply-65-nsfl-1">toggle NSFL</label>'
-        + '<input id="thread-11-reply-65-nsfl-1" role="button" type="checkbox">'
-        + '<span role="alert">45.9%</span>'
-        + '</span>'
-        + '</p>'
-
-      expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
-    })
-
     specify('The ID of the checkboxes for spoiler blocks', () => {
       const document = new Up.Document([
         new Up.RevealableBlock([
@@ -159,39 +121,6 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
-    specify('The ID of the checkboxes for NSFW blocks', () => {
-      const document = new Up.Document([
-        new Up.NsfwBlock([
-          new Up.Paragraph([new Up.Text('45.9%')])
-        ])
-      ])
-
-      const html =
-        '<div class="up-nsfw up-revealable">'
-        + '<label for="thread-11-reply-65-nsfw-1">toggle NSFW</label>'
-        + '<input id="thread-11-reply-65-nsfw-1" role="button" type="checkbox">'
-        + '<div role="alert"><p>45.9%</p></div>'
-        + '</div>'
-
-      expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
-    })
-
-    specify('The ID of the checkboxes for NSFL blocks', () => {
-      const document = new Up.Document([
-        new Up.NsflBlock([
-          new Up.Paragraph([new Up.Text('45.9%')])
-        ])
-      ])
-
-      const html =
-        '<div class="up-nsfl up-revealable">'
-        + '<label for="thread-11-reply-65-nsfl-1">toggle NSFL</label>'
-        + '<input id="thread-11-reply-65-nsfl-1" role="button" type="checkbox">'
-        + '<div role="alert"><p>45.9%</p></div>'
-        + '</div>'
-
-      expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
-    })
     specify('Footnotes and footnote references', () => {
       const footnote = new Up.Footnote([
         new Up.Text('Well, I do, but I pretend not to.')

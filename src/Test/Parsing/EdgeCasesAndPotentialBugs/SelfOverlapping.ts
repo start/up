@@ -36,36 +36,6 @@ context('Up offers no real support for self-overlapping. When a convention overl
         ]))
     })
 
-    specify('Inline NSFW', () => {
-      expect(Up.parse('This [NSFW: does (NSFW: not] make) much sense.')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('This '),
-          new Up.InlineNsfw([
-            new Up.Text('does '),
-            new Up.InlineNsfw([
-              new Up.Text('not')
-            ]),
-            new Up.Text(' make')
-          ]),
-          new Up.Text(' much sense.')
-        ]))
-    })
-
-    specify('Inline NSFL', () => {
-      expect(Up.parse('This [NSFL: does (NSFL: not] make) much sense.')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('This '),
-          new Up.InlineNsfl([
-            new Up.Text('does '),
-            new Up.InlineNsfl([
-              new Up.Text('not')
-            ]),
-            new Up.Text(' make')
-          ]),
-          new Up.Text(' much sense.')
-        ]))
-    })
-
     specify('Links', () => {
       expect(Up.parse('This [does (not][example.org] make)(google.com) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([

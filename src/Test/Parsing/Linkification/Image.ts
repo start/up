@@ -98,36 +98,6 @@ describe('An image convention directly followed by an inline spoiler', () => {
 })
 
 
-describe('An image directly followed by an inline NSFW convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFW: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
-        new Up.InlineNsfw([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
-describe('An image directly followed by an inline NSFL convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[NSFL: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
-        new Up.InlineNsfl([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
 describe('An image directly followed by a footnote', () => {
   it("is not linkified", () => {
     const markup = "After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)(^Or whatever you name him.)"

@@ -98,36 +98,6 @@ describe('An audio convention directly followed by an inline spoiler', () => {
 })
 
 
-describe('An audio convention directly followed by an inline NSFW convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFW: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Audio('you fight Gary', 'https://example.com/fight.ogg'),
-        new Up.InlineNsfw([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
-describe('An audio convention directly followed by an inline NSFL convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[NSFL: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Audio('you fight Gary', 'https://example.com/fight.ogg'),
-        new Up.InlineNsfl([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
 describe('An audio convention directly followed by a footnote', () => {
   it("is not linkified", () => {
     const markup = "After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)(^Or whatever you name him.)"

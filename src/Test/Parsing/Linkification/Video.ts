@@ -97,36 +97,6 @@ describe('A video convention directly followed by an inline spoiler', () => {
 })
 
 
-describe('A video directly followed by an inline NSFW convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFW: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
-        new Up.InlineNsfw([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
-describe('A video directly followed by an inline NSFL convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[NSFL: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
-        new Up.InlineNsfl([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
 describe('A video directly followed by a footnote', () => {
   it("is not linkified", () => {
     const markup = "After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)(^Or whatever you name him.)"

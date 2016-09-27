@@ -31,60 +31,6 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'nsfw' starts with a caret", () => {
-    const up = new Up.Transformer({
-      parsing: {
-        terms: {
-          nsfw: '^lookaway^'
-        }
-      }
-    })
-
-    specify('inline NSFW conventions can be produced using the term', () => {
-      expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfw([
-            new Up.Text('Ash fights Gary')
-          ])
-        ]))
-    })
-
-    specify('an unmatched inline NSFW start delimiter is treated as plain text', () => {
-      expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('[^lookaway^: Not finished typi')
-        ]))
-    })
-  })
-
-
-  context("When the custom term for 'nsfl' starts with a caret", () => {
-    const up = new Up.Transformer({
-      parsing: {
-        terms: {
-          nsfl: '^lookaway^'
-        }
-      }
-    })
-
-    specify('inline NSFL conventions can be produced using the term', () => {
-      expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineNsfl([
-            new Up.Text('Ash fights Gary')
-          ])
-        ]))
-    })
-
-    specify('an unmatched inline NSFL start delimiter is treated as plain text', () => {
-      expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('[^lookaway^: Not finished typi')
-        ]))
-    })
-  })
-
-
   context("When the custom term for 'audio' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {

@@ -73,28 +73,6 @@ context('Except for footnotes and section links, every inline convention is supp
         ]))
     })
 
-    specify('Inline NSFL', () => {
-      expect(Up.parseInline('I loved my [NSFL: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
-        new Up.InlineDocument([
-          new Up.Text('I loved my '),
-          new Up.InlineNsfl([
-            new Up.Text('Game Boy'),
-          ]),
-          new Up.Text(', though I never took it with me when I left home.')
-        ]))
-    })
-
-    specify('Inline NSFW', () => {
-      expect(Up.parseInline('I loved my [NSFW: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
-        new Up.InlineDocument([
-          new Up.Text('I loved my '),
-          new Up.InlineNsfw([
-            new Up.Text('Game Boy'),
-          ]),
-          new Up.Text(', though I never took it with me when I left home.')
-        ]))
-    })
-
     specify('Inline spoilers', () => {
       expect(Up.parseInline('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([

@@ -6,7 +6,7 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
   specify('When a document has no table of contents entries, the HTML for the table of contents consists only of the above', () => {
     const document =
       new Up.Document([
-        new Up.NsfwBlock([
+        new Up.RevealableBlock([
           new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 })
         ])
       ])
@@ -198,7 +198,7 @@ context("The table of contents has no effect on elements that aren't referenced 
     const document =
       new Up.Document([
         headingInTableOfContents,
-        new Up.NsfwBlock([
+        new Up.RevealableBlock([
           new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 })
         ])
       ], new Up.Document.TableOfContents([headingInTableOfContents]))
@@ -442,158 +442,6 @@ context("Within the table of contents, the IDs of revealable content elements do
       + '<span class="up-spoiler up-revealable">'
       + '<label for="up-spoiler-3">toggle spoiler</label>'
       + '<input id="up-spoiler-3" role="button" type="checkbox">'
-      + '<span role="alert">usually</span>'
-      + '</span>'
-      + '</h1>')
-  })
-
-  specify('Inline NSFW conventions', () => {
-    const applesHeading =
-      new Up.Heading([
-        new Up.Text('I enjoy apples '),
-        new Up.InlineNsfw([new Up.Text('sometimes')])
-      ], { level: 1, ordinalInTableOfContents: 1 })
-
-    const grapesHeading =
-      new Up.Heading([
-        new Up.Text('I enjoy grapes '),
-        new Up.InlineNsfw([new Up.Text('usually')])
-      ], { level: 1, ordinalInTableOfContents: 2 })
-
-    const document =
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.InlineNsfw([new Up.Text('Never')]),
-          new Up.Text(' eat apples.'),
-        ]),
-        applesHeading,
-        grapesHeading,
-      ], new Up.Document.TableOfContents([applesHeading, grapesHeading]))
-
-    const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
-
-    expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><h2><a href="#up-topic-1">'
-      + 'I enjoy apples '
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-toc-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-toc-nsfw-1" role="button" type="checkbox">'
-      + '<span role="alert">sometimes</span>'
-      + '</span>'
-      + '</a></h2></li>'
-      + '<li><h2><a href="#up-topic-2">'
-      + 'I enjoy grapes '
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-toc-nsfw-2">toggle NSFW</label>'
-      + '<input id="up-toc-nsfw-2" role="button" type="checkbox">'
-      + '<span role="alert">usually</span>'
-      + '</span>'
-      + '</a></h2></li>'
-      + '</ul>'
-      + '</nav>')
-
-    expect(documentHtml).to.equal(
-      '<p>'
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
-      + '<span role="alert">Never</span>'
-      + '</span>'
-      + ' eat apples.'
-      + '</p>'
-      + '<h1 id="up-topic-1">'
-      + 'I enjoy apples '
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-2">toggle NSFW</label>'
-      + '<input id="up-nsfw-2" role="button" type="checkbox">'
-      + '<span role="alert">sometimes</span>'
-      + '</span>'
-      + '</h1>'
-      + '<h1 id="up-topic-2">'
-      + 'I enjoy grapes '
-      + '<span class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-3">toggle NSFW</label>'
-      + '<input id="up-nsfw-3" role="button" type="checkbox">'
-      + '<span role="alert">usually</span>'
-      + '</span>'
-      + '</h1>')
-  })
-
-  specify('Inline NSFL conventions', () => {
-    const applesHeading =
-      new Up.Heading([
-        new Up.Text('I enjoy apples '),
-        new Up.InlineNsfl([new Up.Text('sometimes')])
-      ], { level: 1, ordinalInTableOfContents: 1 })
-
-    const grapesHeading =
-      new Up.Heading([
-        new Up.Text('I enjoy grapes '),
-        new Up.InlineNsfl([new Up.Text('usually')])
-      ], { level: 1, ordinalInTableOfContents: 2 })
-
-    const document =
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.InlineNsfl([new Up.Text('Never')]),
-          new Up.Text(' eat apples.'),
-        ]),
-        applesHeading,
-        grapesHeading,
-      ], new Up.Document.TableOfContents([applesHeading, grapesHeading]))
-
-    const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
-
-    expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
-      + '<ul>'
-      + '<li><h2><a href="#up-topic-1">'
-      + 'I enjoy apples '
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-toc-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-toc-nsfl-1" role="button" type="checkbox">'
-      + '<span role="alert">sometimes</span>'
-      + '</span>'
-      + '</a></h2></li>'
-      + '<li><h2><a href="#up-topic-2">'
-      + 'I enjoy grapes '
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-toc-nsfl-2">toggle NSFL</label>'
-      + '<input id="up-toc-nsfl-2" role="button" type="checkbox">'
-      + '<span role="alert">usually</span>'
-      + '</span>'
-      + '</a></h2></li>'
-      + '</ul>'
-      + '</nav>')
-
-    expect(documentHtml).to.equal(
-      '<p>'
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-1">toggle NSFL</label>'
-      + '<input id="up-nsfl-1" role="button" type="checkbox">'
-      + '<span role="alert">Never</span>'
-      + '</span>'
-      + ' eat apples.'
-      + '</p>'
-      + '<h1 id="up-topic-1">'
-      + 'I enjoy apples '
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-2">toggle NSFL</label>'
-      + '<input id="up-nsfl-2" role="button" type="checkbox">'
-      + '<span role="alert">sometimes</span>'
-      + '</span>'
-      + '</h1>'
-      + '<h1 id="up-topic-2">'
-      + 'I enjoy grapes '
-      + '<span class="up-nsfl up-revealable">'
-      + '<label for="up-nsfl-3">toggle NSFL</label>'
-      + '<input id="up-nsfl-3" role="button" type="checkbox">'
       + '<span role="alert">usually</span>'
       + '</span>'
       + '</h1>')

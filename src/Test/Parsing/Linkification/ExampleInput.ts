@@ -92,30 +92,6 @@ context('An example input convention is not linkified when it is directly follow
       ]))
   })
 
-  specify('Inline NSFW', () => {
-    expect(Up.parse('To view your shopping cart, press { My Cart }[NSFW: and then buy me stuff].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('To view your shopping cart, press '),
-        new Up.ExampleInput('My Cart'),
-        new Up.InlineNsfw([
-          new Up.Text('and then buy me stuff')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-
-  specify('Inline NSFL', () => {
-    expect(Up.parse('To view your shopping cart, press { My Cart }[NSFL: and then buy me stuff].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('To view your shopping cart, press '),
-        new Up.ExampleInput('My Cart'),
-        new Up.InlineNsfl([
-          new Up.Text('and then buy me stuff')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-
   specify('Highlights', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([

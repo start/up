@@ -53,40 +53,6 @@ describe('A highlight directly followed by another highlight', () => {
 })
 
 
-describe('A highlight directly followed by an inline NSFW convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][NSFW: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Highlight([
-          new Up.Text('you fight Gary')
-        ]),
-        new Up.InlineNsfw([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
-describe('A highlight directly followed by an inline NSFL convention', () => {
-  it('is not linkified', () => {
-    expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][NSFL: and win].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Highlight([
-          new Up.Text('you fight Gary')
-        ]),
-        new Up.InlineNsfl([
-          new Up.Text('and win')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
 describe('A highlight directly followed by a media convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(

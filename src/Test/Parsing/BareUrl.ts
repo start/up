@@ -312,32 +312,6 @@ context('Bare URLs are terminated when any outer convention closes. This include
       ]))
   })
 
-  specify("Inline NSFW", () => {
-    expect(Up.parse('[NSFW: I love https://archive.org/fake and you should too!]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineNsfw([
-          new Up.Text('I love '),
-          new Up.Link([
-            new Up.Text('archive.org/fake')
-          ], 'https://archive.org/fake'),
-          new Up.Text(' and you should too!')
-        ])
-      ]))
-  })
-
-  specify("Inline NSFL", () => {
-    expect(Up.parse('[NSFL: I love https://archive.org/fake and you should too!]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineNsfl([
-          new Up.Text('I love '),
-          new Up.Link([
-            new Up.Text('archive.org/fake')
-          ], 'https://archive.org/fake'),
-          new Up.Text(' and you should too!')
-        ])
-      ]))
-  })
-
   specify("Links", () => {
     expect(Up.parse('[I love https://archive.org/fake] (example.com/outer) and you should too!')).to.deep.equal(
       insideDocumentAndParagraph([
