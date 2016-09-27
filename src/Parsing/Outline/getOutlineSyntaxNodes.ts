@@ -1,9 +1,6 @@
 import { LineConsumer } from './LineConsumer'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { SpoilerBlock } from '../../SyntaxNodes/SpoilerBlock'
-import { NsfwBlock } from '../../SyntaxNodes/NsfwBlock'
-import { NsflBlock } from '../../SyntaxNodes/NsflBlock'
 import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
@@ -13,13 +10,31 @@ import { tryToParseUnorderedList } from './tryToParseUnorderedList'
 import { trytoParseOrderedList } from './tryToParseOrderedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { tryToParseTable } from './tryToParseTable'
-import { getLabeledBlockParser } from './getLabeledBlockParser'
+import { tryToParseRevealableBlock } from './tryToParseRevealableBlock'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
 import { Settings } from '../../Settings'
 import { OutlineParserArgs } from './OutlineParserArgs'
+
+
+
+// This includes every outline convention except paragraphs and line blocks.
+//
+// Paragraphs and line blocks serve as a last resort if none of these conventions apply.
+const OUTLINE_CONVENTION_PARSERS = [
+  tryToParseBlankLineSeparation,
+  tryToParseUnorderedList,
+  trytoParseOrderedList,
+  tryToParseHeading,
+  tryToParseThematicBreakStreak,
+  tryToParseCodeBlock,
+  tryToParseBlockquote,
+  tryToParseTable,
+  tryToParseRevealableBlock,
+  tryToParseDescriptionList
+]
 
 
 export function getOutlineSyntaxNodes(
@@ -31,25 +46,6 @@ export function getOutlineSyntaxNodes(
   }
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, settings } = args
-  const { terms } = settings
-
-  // This includes every outline convention except paragraphs and line blocks.
-  //
-  // Paragraphs and line blocks serve as a last resort if none of these conventions apply.
-  const outlineConventions = [
-    tryToParseBlankLineSeparation,
-    tryToParseUnorderedList,
-    trytoParseOrderedList,
-    tryToParseHeading,
-    tryToParseThematicBreakStreak,
-    tryToParseCodeBlock,
-    tryToParseBlockquote,
-    tryToParseTable,
-    getLabeledBlockParser(terms.revealable, SpoilerBlock),
-    getLabeledBlockParser(terms.nsfw, NsfwBlock),
-    getLabeledBlockParser(terms.nsfl, NsflBlock),
-    tryToParseDescriptionList
-  ]
 
   const markupWithoutLeadingBlankLines =
     withoutLeadingBlankLines(markupLines)
@@ -87,7 +83,7 @@ export function getOutlineSyntaxNodes(
       }
     }
 
-    if (!outlineConventions.some(tryToParse => tryToParse(outlineParserArgs))) {
+    if (!OUTLINE_CONVENTION_PARSERS.some(tryToParse => tryToParse(outlineParserArgs))) {
       parseParagraphOrLineBlock(outlineParserArgs)
     }
   }

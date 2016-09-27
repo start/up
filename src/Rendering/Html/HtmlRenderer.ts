@@ -17,7 +17,7 @@ import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
 import { Highlight } from '../../SyntaxNodes/Highlight'
 import { InlineRevealable } from '../../SyntaxNodes/InlineRevealable'
-import { OutlineRevealable } from '../../SyntaxNodes/OutlineRevealable'
+import { RevealableBlock } from '../../SyntaxNodes/RevealableBlock'
 import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
 import { Footnote } from '../../SyntaxNodes/Footnote'
 import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
@@ -234,13 +234,13 @@ export class HtmlRenderer extends Renderer {
     })
   }
 
-  outlineRevealable(outlineRevealable: OutlineRevealable): string {
+  revealableBlock(revealableBlock: RevealableBlock): string {
     return this.Revealable({
       termForTogglingVisibility: this.settings.terms.toggleVisibility,
       conventionCount: ++this.RevealableCount,
-      revealable: outlineRevealable,
+      revealable: revealableBlock,
       tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(outlineRevealable)
+      attrsForOuterContainer: attrsFor(revealableBlock)
     })
   }
 
@@ -452,7 +452,7 @@ export class HtmlRenderer extends Renderer {
     args: {
       termForTogglingVisibility: string
       conventionCount: number
-      revealable: InlineRevealable | OutlineRevealable
+      revealable: InlineRevealable | RevealableBlock
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
