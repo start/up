@@ -139,15 +139,15 @@ describe('A link overlapping nested spoilers (opening at the same time)', () => 
 })
 
 
-describe('A link overlapping an inline NSFL convention containing an inline NSFW convention (opening at the same time)', () => {
+describe('A link overlapping an inline revealable convention containing a nested inline revealable convention (opening at the same time)', () => {
   it('splits the link node', () => {
     expect(Up.parse("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text("I suspect "),
         ], 'https://example.com/crime-suspects'),
-        new Up.InlineNsfl([
-          new Up.InlineNsfw([
+        new Up.InlineRevealable([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('naked you')
             ], 'https://example.com/crime-suspects'),
@@ -160,13 +160,13 @@ describe('A link overlapping an inline NSFL convention containing an inline NSFW
 })
 
 
-describe('An inline NSFW convention nested within an inline NSFL convention (closing at the same time), both of which overlap a link', () => {
+describe('An inline revealable convention nested within another inline revealable convention (closing at the same time), both of which overlap a link', () => {
   it('splits the link node', () => {
     expect(Up.parse("[NSFL: I know. [NSFW: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineNsfl([
+        new Up.InlineRevealable([
           new Up.Text('I know. '),
-          new Up.InlineNsfw([
+          new Up.InlineRevealable([
             new Up.Text("Well, I don't "),
             new Up.Link([
               new Up.Text('really.')
@@ -420,7 +420,7 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
 })
 
 
-describe('Emphasis overlapping a linkified NSFL convention', () => {
+describe('Emphasis overlapping a linkified inline revealable convention', () => {
   it('splits the emphasis node, not the NSF: or link nodes', () => {
     expect(Up.parse('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -428,7 +428,7 @@ describe('Emphasis overlapping a linkified NSFL convention', () => {
         new Up.Emphasis([
           new Up.Text('not ')
         ]),
-        new Up.InlineNsfl([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Emphasis([
               new Up.Text('care')

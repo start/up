@@ -51,16 +51,10 @@ export class HtmlRenderer extends Renderer {
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
-  // Unfortunately, this solution requires generating unique IDs to associate each spoiler's label with its
-  // checkbox.
-  //
-  // Because each Renderer class instance is only used once per document, we can simply increment a counter each
-  // time we render a spoiler (inline or block), appending the counter's value to the checkbox's ID.
-  //
-  // We'll do the same for NSFW and NSFL conventions.
-  private RevealableCount: number
-  private nsfwCount: number
-  private nsflCount: number
+  // This solution requires generating unique IDs to associate each label with its checkbox, so increment a
+  // counter each time we render revealable content (inline or block), appending the counter's value to the
+  // checkbox's ID.
+  private revealableCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an <a> element for the inner link.
@@ -228,7 +222,7 @@ export class HtmlRenderer extends Renderer {
   inlineRevealable(inlineRevealable: InlineRevealable): string {
     return this.Revealable({
       termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.RevealableCount,
+      conventionCount: ++this.revealableCount,
       revealable: inlineRevealable,
       tagNameForGenericContainers: 'span'
     })
@@ -237,7 +231,7 @@ export class HtmlRenderer extends Renderer {
   revealableBlock(revealableBlock: RevealableBlock): string {
     return this.Revealable({
       termForTogglingVisibility: this.settings.terms.toggleVisibility,
-      conventionCount: ++this.RevealableCount,
+      conventionCount: ++this.revealableCount,
       revealable: revealableBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(revealableBlock)
@@ -578,9 +572,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   private reset(args?: { isInsideTableOfContents: boolean }): void {
-    this.RevealableCount = 0
-    this.nsfwCount = 0
-    this.nsflCount = 0
+    this.revealableCount = 0
     this.isInsideLink = false
     this.isInsideTableOfContents = args && args.isInsideTableOfContents
   }
