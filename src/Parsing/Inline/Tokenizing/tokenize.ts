@@ -350,7 +350,7 @@ class Tokenizer {
 
     return this.getTokenizableRichConvention({
       richConvention,
-      startsWith: bracket.startPattern + NOT_FOLLOWED_BY_WHITESPACE,
+      startsWith: bracket.startPattern + notFollowedBy(WHITESPACE_CHAR),
       endsWith: bracket.endPattern,
 
       whenOpening: () => { this.bufferedContent += bracket.open },
@@ -1485,10 +1485,6 @@ class Tokenizer {
 function labeledBracketStartDelimiter(term: Settings.Parsing.Term, bracket: Bracket): string {
   return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
-
-
-const NOT_FOLLOWED_BY_WHITESPACE =
-  notFollowedBy(WHITESPACE_CHAR)
 
 
 const PERIOD =
