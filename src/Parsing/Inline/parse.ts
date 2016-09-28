@@ -15,11 +15,11 @@ import { URL_SCHEME_PATTERN } from '../../Patterns'
 
 // Returns a collection of inline syntax nodes representing inline conventions.
 export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
-  return new Parser({ tokens }).result.nodes
+  return parseAndGetResult({ tokens }).nodes
 }
 
 
-// This includes every rich convention except for links. Links have that pesky URL.
+// This includes every rich convention except for links, because links have a URL.
 const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   EMPHASIS,
   STRESS,
@@ -40,140 +40,126 @@ const MEDIA_CONVENTIONS = [
 ]
 
 
-class Parser {
-  result: {
-    nodes: InlineSyntaxNode[]
-    countTokensParsed: number
+interface ParseResult {
+  nodes: InlineSyntaxNode[]
+  countTokensParsed: number
+}
+
+
+function parseAndGetResult(
+  args: {
+    tokens: ParseableToken[],
+    until?: TokenRole
   }
+): ParseResult {
+  const { tokens, until } = args
 
-  private tokens: ParseableToken[]
-  private tokenIndex = 0
-  private countTokensParsed = 0
-  private inlineSyntaxNodes: InlineSyntaxNode[] = []
+  let tokenIndex = 0
+  let countTokensParsed = 0
+  let nodes: InlineSyntaxNode[] = []
 
-  constructor(
-    args: { tokens: ParseableToken[], until?: TokenRole }) {
-    this.tokens = args.tokens
-    const endTokenRole = args.until
-
-    TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
-      const token = this.tokens[this.tokenIndex]
-      this.countTokensParsed = this.tokenIndex + 1
-
-      switch (token.role) {
-        case endTokenRole: {
-          this.setResult()
-          return
-        }
-
-        case TokenRole.Text: {
-          this.inlineSyntaxNodes.push(new Text(token.value))
-          continue
-        }
-
-        case TokenRole.InlineCode: {
-          this.inlineSyntaxNodes.push(new InlineCode(token.value))
-          continue
-        }
-
-        case TokenRole.ExampleInput: {
-          this.inlineSyntaxNodes.push(new ExampleInput(token.value))
-          continue
-        }
-
-        case TokenRole.SectionLink: {
-          this.inlineSyntaxNodes.push(new SectionLink(token.value))
-          continue
-        }
-
-        case TokenRole.BareUrl: {
-          const url = token.value
-
-          const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
-          const urlAfterScheme = url.substr(urlScheme.length)
-
-          this.inlineSyntaxNodes.push(
-            new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
-
-          continue
-        }
-
-        case LINK.startTokenRole: {
-          let children = this.getInlineSyntaxNodes({
-            fromHereUntil: TokenRole.LinkEndAndUrl
-          })
-
-          const isContentBlank = isBlank(children)
-
-          // The URL was in the LinkEndAndUrl token, the last token we parsed
-          let url = this.tokens[this.tokenIndex].value.trim()
-
-          if (isContentBlank) {
-            // As a rule, if link has blank content, we use its URL as its content
-            children = [new Text(url)]
-          }
-
-          this.inlineSyntaxNodes.push(new Link(children, url))
-          continue
-        }
-      }
-
-      for (const media of MEDIA_CONVENTIONS) {
-        if (token.role === media.tokenRoleForStartAndDescription) {
-          let description = token.value.trim()
-
-          // The next token will be a MediaEndAndUrl token. All media conventions
-          // use the same role for their end tokens.
-          let url = this.getNextTokenAndAdvanceIndex().value.trim()
-
-          this.inlineSyntaxNodes.push(new media.SyntaxNodeType(description, url))
-          continue TokenLoop
-        }
-      }
-
-      for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
-        if (token.role === richConvention.startTokenRole) {
-          let children = this.getInlineSyntaxNodes({
-            fromHereUntil: richConvention.endTokenRole
-          })
-
-          this.inlineSyntaxNodes.push(new richConvention.SyntaxNodeType(children))
-          continue TokenLoop
-        }
-      }
-
-      throw new Error('Unrecognized token: ' + TokenRole[token.role])
-    }
-
-    this.setResult()
-  }
-
-  private setResult(): void {
-    this.result = {
-      countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutiveTextNodes(this.inlineSyntaxNodes)
-    }
-  }
-
-  private getNextTokenAndAdvanceIndex(): ParseableToken {
-    return this.tokens[++this.tokenIndex]
-  }
-
-  private getInlineSyntaxNodes(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
-    const { result } = new Parser({
-      tokens: this.tokens.slice(this.countTokensParsed),
+  function getChildren(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
+    const result = parseAndGetResult({
+      tokens: tokens.slice(countTokensParsed),
       until: args.fromHereUntil
     })
 
-    this.tokenIndex += result.countTokensParsed
+    tokenIndex += result.countTokensParsed
     return result.nodes
+  }
+
+  TokenLoop: for (; tokenIndex < tokens.length; tokenIndex++) {
+    const token = tokens[tokenIndex]
+    countTokensParsed = tokenIndex + 1
+
+    switch (token.role) {
+      case until: {
+        break TokenLoop
+      }
+
+      case TokenRole.Text: {
+        nodes.push(new Text(token.value))
+        continue
+      }
+
+      case TokenRole.InlineCode: {
+        nodes.push(new InlineCode(token.value))
+        continue
+      }
+
+      case TokenRole.ExampleInput: {
+        nodes.push(new ExampleInput(token.value))
+        continue
+      }
+
+      case TokenRole.SectionLink: {
+        nodes.push(new SectionLink(token.value))
+        continue
+      }
+
+      case TokenRole.BareUrl: {
+        const url = token.value
+
+        const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
+        const urlAfterScheme = url.substr(urlScheme.length)
+
+        nodes.push(new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
+
+        continue
+      }
+
+      case LINK.startTokenRole: {
+        let children = getChildren({
+          fromHereUntil: TokenRole.LinkEndAndUrl
+        })
+
+        // Our link's URL was in the `LinkEndAndUrl `token, the last token we parsed.
+        let url = tokens[tokenIndex].value.trim()
+
+        if (children.every(isWhitespace)) {
+          // As a rule, if link has blank content, we use its URL as its content.
+          children = [new Text(url)]
+        }
+
+        nodes.push(new Link(children, url))
+        continue
+      }
+    }
+
+    for (const media of MEDIA_CONVENTIONS) {
+      if (token.role === media.tokenRoleForStartAndDescription) {
+        let description = token.value.trim()
+
+        // The next token will always be a `MediaEndAndUrl` token. All media conventions
+        // use the same role for their end tokens.
+        const urlToken = tokens[++tokenIndex]
+        let url = urlToken.value.trim()
+
+        nodes.push(new media.SyntaxNodeType(description, url))
+        continue TokenLoop
+      }
+    }
+
+    for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
+      if (token.role === richConvention.startTokenRole) {
+        let children = getChildren({
+          fromHereUntil: richConvention.endTokenRole
+        })
+
+        nodes.push(new richConvention.SyntaxNodeType(children))
+        continue TokenLoop
+      }
+    }
+
+    throw new Error('Unrecognized token: ' + TokenRole[token.role])
+  }
+
+  return {
+    countTokensParsed,
+    nodes: combineConsecutiveTextNodes(nodes)
   }
 }
 
-
-function isBlank(nodes: InlineSyntaxNode[]): boolean {
-  return nodes.every(isWhitespace)
-}
 
 function combineConsecutiveTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   const resultNodes: InlineSyntaxNode[] = []
