@@ -314,9 +314,30 @@ context("Due to the nature of the inflection syntax, inflection conventions cann
 })
 
 
-context('Links are handled a bit differently, because they also have a URL to worry about. An otherwise-valid link...', () => {
-  describe('with an empty URL', () => {
-    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its empty bracketed URL is treated as normal empty brackets", () => {
+context('When a link has empty or blank content, its URL serves as its content:', () => {
+  specify("Empty content", () => {
+    expect(Up.parse('()[https://google.com]')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('https://google.com')
+        ], 'https://google.com'),
+      ]))
+  })
+
+  it("Blank content", () => {
+    expect(Up.parse('[ \t ](ftp://google.com)')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('ftp://google.com')
+        ], 'ftp://google.com'),
+      ]))
+  })
+})
+
+
+context('An otherwise-valid link:', () => {
+  describe('With an empty URL', () => {
+    it("does not produce a link", () => {
       expect(Up.parse('[*Yggdra Union*][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -334,8 +355,8 @@ context('Links are handled a bit differently, because they also have a URL to wo
   })
 
 
-  describe('with a blank URL', () => {
-    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its blank bracketed URL is treated as normal blank brackets", () => {
+  describe('With a blank URL', () => {
+    it("does not produce a link", () => {
       expect(Up.parse('[*Yggdra Union*]( \t )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -351,51 +372,24 @@ context('Links are handled a bit differently, because they also have a URL to wo
   })
 
 
-  describe('with empty content', () => {
-    it("does not produce a link. Instead, its content is treated as normal empty brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.parse('()[https://google.com]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('()'),
-          new Up.SquareParenthetical([
-            new Up.Text('['),
-            new Up.Link([
-              new Up.Text('google.com')
-            ], 'https://google.com'),
-            new Up.Text(']')
-          ])
-        ]))
-    })
-  })
-
-
-  describe('with blank content', () => {
-    it("does not produce a link. Instead, its content is treated as normal blank brackets, and its bracketed URL is treated as the appropriate bracketed convention", () => {
-      expect(Up.parse('[ \t ](https://google.com)')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('[ \t ]'),
-          new Up.NormalParenthetical([
-            new Up.Text('('),
-            new Up.Link([
-              new Up.Text('google.com')
-            ], 'https://google.com'),
-            new Up.Text(')')
-          ])
-        ]))
-    })
-  })
-
-
-  describe('with empty content and an empty URL', () => {
+  describe('With empty content and an empty URL', () => {
     it('is treated as consecutive empty brackets', () => {
       expect(Up.parse('Hello, [][]!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Text('Hello, [][]!')
+          new Up.Text('Hello, '),
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ]),
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ]),
+          new Up.Text('!'),
         ]))
     })
   })
 
 
-  describe('with blank content and a blank URL', () => {
+  describe('With blank content and a blank URL', () => {
     it('is treated as consecutive blank brackets', () => {
       expect(Up.parse('Beep boop, [ ][\t]!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -418,7 +412,7 @@ context('Links are handled a bit differently, because they also have a URL to wo
 
 
   describe('with an escaped blank URL', () => {
-    it("does not produce a link. Instead, its content is treated as the appropriate bracketed convention, and its bracketed URL is treated as the appropriate bracketed convention", () => {
+    it("does not produce a link", () => {
       expect(Up.parse('[*Yggdra Union*](\\ )')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -441,14 +435,14 @@ context('An image can have a blank or empty description:', () => {
   specify('Blank', () => {
     expect(Up.parse('[image:][http://example.com/hauntedhouse.svg]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Video('', 'http://example.com/hauntedhouse.svg')
+        new Up.Image('', 'http://example.com/hauntedhouse.svg')
       ]))
   })
 
   specify('Empty', () => {
     expect(Up.parse('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Video('', 'http://example.com/hauntedhouse.svg')
+        new Up.Image('', 'http://example.com/hauntedhouse.svg')
       ]))
   })
 })

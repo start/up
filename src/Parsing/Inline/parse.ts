@@ -107,7 +107,7 @@ class Parser {
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (isContentBlank) {
-            // If the link has blank content, we use the URL for the content
+            // If a link has blank content, we use its URL as its content
             children = [new Text(url)]
           }
 
