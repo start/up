@@ -2,53 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../index'
 
 
-context("The `Document.create` is automatically used during the normal parsing process. It returns a document object with:", () => {
-  specify("Footnotes assigned their reference numbers (mutating them) and placed in footnote blocks (mutating any outline nodes the blocks are placed inside)", () => {
-    const documentChildren = [
-      new Up.Paragraph([
-        new Up.Text("I don't eat cereal."),
-        new Up.Footnote([new Up.Text('Well, I do, but I pretend not to.')]),
-        new Up.Text(" Never have.")
-      ]),
-      new Up.RevealableBlock([
-        new Up.Paragraph([
-          new Up.Text("This ruins the movie."),
-          new Up.Footnote([new Up.Text("And this is a fun fact.")])
-        ])
-      ])
-    ]
-
-    const document =
-      Up.Document.create(documentChildren)
-
-    const cerealFootnote =
-      new Up.Footnote([new Up.Text('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
-
-    const movieFootnote =
-      new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })
-
-    expect(document).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.Text("I don't eat cereal."),
-          cerealFootnote,
-          new Up.Text(" Never have.")
-        ]),
-        new Up.FootnoteBlock([
-          cerealFootnote,
-        ]),
-        new Up.RevealableBlock([
-          new Up.Paragraph([
-            new Up.Text("This ruins the movie."),
-            new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })
-          ]),
-          new Up.FootnoteBlock([
-            movieFootnote,
-          ])
-        ])
-      ]))
-  })
-
+context("The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:", () => {
   specify("A table of contents", () => {
     const documentChildren = [
       new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 }),
@@ -92,7 +46,7 @@ context("The `Document.create` is automatically used during the normal parsing p
       ], new Up.Document.TableOfContents([enjoyHeading, cheapHeading, deliciousHeading])))
   })
 
-  specify("Referemces to table of contents entries associated with the appropriate entries", () => {
+  specify("Section links matched with the appropriate table of contents entries", () => {
     const documentChildren = [
       new Up.Heading([new Up.Text('I drink soda')], { level: 1 }),
       new Up.Paragraph([
@@ -128,5 +82,51 @@ context("The `Document.create` is automatically used during the normal parsing p
           new Up.Text('.')
         ])
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+
+  specify("Any footnotes assigned their reference numbers (mutating them) and placed in footnote blocks (mutating any outline nodes the blocks are placed inside)", () => {
+    const documentChildren = [
+      new Up.Paragraph([
+        new Up.Text("I don't eat cereal."),
+        new Up.Footnote([new Up.Text('Well, I do, but I pretend not to.')]),
+        new Up.Text(" Never have.")
+      ]),
+      new Up.RevealableBlock([
+        new Up.Paragraph([
+          new Up.Text("This ruins the movie."),
+          new Up.Footnote([new Up.Text("And this is a fun fact.")])
+        ])
+      ])
+    ]
+
+    const document =
+      Up.Document.create(documentChildren)
+
+    const cerealFootnote =
+      new Up.Footnote([new Up.Text('Well, I do, but I pretend not to.')], { referenceNumber: 1 })
+
+    const movieFootnote =
+      new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })
+
+    expect(document).to.deep.equal(
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.Text("I don't eat cereal."),
+          cerealFootnote,
+          new Up.Text(" Never have.")
+        ]),
+        new Up.FootnoteBlock([
+          cerealFootnote,
+        ]),
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text("This ruins the movie."),
+            new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })
+          ]),
+          new Up.FootnoteBlock([
+            movieFootnote,
+          ])
+        ])
+      ]))
   })
 })
