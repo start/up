@@ -83,7 +83,7 @@ context("As long as there is no whitespace between the image's URL and the linki
 })
 
 
-describe('An image convention directly followed by an inline spoiler', () => {
+describe('An image convention directly followed by an inline revealable', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [image: you fight Gary](https://example.com/fight.svg)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([

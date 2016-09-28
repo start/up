@@ -47,7 +47,7 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to schemeless linkified inline revealable URLs', () => {
+  it('is prefixed to schemeless linified revealable URLs', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(

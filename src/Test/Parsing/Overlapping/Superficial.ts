@@ -288,7 +288,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("An inline spoiler and a link", () => {
+    specify("An inline revealable and a link", () => {
       expect(Up.parse('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -300,7 +300,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A link and an inline spoiler", () => {
+    specify("A link and an inline revealable", () => {
       expect(Up.parse("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -415,7 +415,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('An inline spoiler and emphasis', () => {
+    specify('An inline revealable and emphasis', () => {
       expect(Up.parse('[SPOILER: *Why would you do this?]*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
@@ -426,7 +426,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Emphasis and an inline spoiler', () => {
+    specify('Emphasis and an inline revealable', () => {
       expect(Up.parse('*[SPOILER: Why would you do this?*]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([

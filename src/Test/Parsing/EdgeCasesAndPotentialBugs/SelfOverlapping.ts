@@ -130,7 +130,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
             ]))
         })
 
-        specify('An inline spoiler overlapping two others', () => {
+        specify('An inline revealable overlapping two others', () => {
           expect(Up.parse('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.InlineRevealable([

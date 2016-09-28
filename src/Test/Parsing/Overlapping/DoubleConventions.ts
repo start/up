@@ -397,7 +397,7 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
 })
 
 
-describe('Emphasis nested with an inline spoiler, both of which overlap a link', () => {
+describe('Emphasis nested with an inline revealable, both of which overlap a link', () => {
   it('splits the emphasis node then the link node', () => {
     expect(Up.parse("In Texas, (SPOILER: *I never eat [cereal*) outside](example.com/sun-flakes)")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -420,7 +420,7 @@ describe('Emphasis nested with an inline spoiler, both of which overlap a link',
 })
 
 
-describe('Emphasis overlapping a linkified inline revealable convention', () => {
+describe('Emphasis overlapping a linified revealable convention', () => {
   it('splits the emphasis node, not the NSF: or link nodes', () => {
     expect(Up.parse('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -464,7 +464,7 @@ describe('A linkified spoiler overlapping emphasized text', () => {
 })
 
 
-describe('An inline spoiler overlapping an emphasis convention split in two (by a link) ending in the second piece of the split emphasis', () => {
+describe('An inline revealable overlapping an emphasis convention split in two (by a link) ending in the second piece of the split emphasis', () => {
   it('splits the emphasis node again', () => {
     expect(Up.parse('This [SPOILER: old (trash *can)(en.wikipedia.org/wiki/Waste_container) certainly] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([

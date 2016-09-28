@@ -50,7 +50,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified inline revealable URLs that start with a hash mark', () => {
+  it("is prefixed to linified revealables' URLs that start with a hash mark", () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -145,7 +145,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified inline revealable URLs that start with a hash mark when the revealable and the URL are separated by whitespace', () => {
+  it("is prefixed to linified revealables' URLs that start with a hash mark when the revealable and the URL are separated by whitespace", () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth] (#wiki/Blue_Sky)'
 
     expect(up.parse(markup)).to.deep.equal(

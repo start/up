@@ -83,7 +83,7 @@ context("As long as there is no whitespace between the audio's URL and the linki
 })
 
 
-describe('An audio convention directly followed by an inline spoiler', () => {
+describe('An audio convention directly followed by an inline revealable', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [audio: you fight Gary](https://example.com/fight.ogg)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([

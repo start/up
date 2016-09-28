@@ -431,8 +431,8 @@ context('A link can have whitespace between its bracketed content and bracketed 
 })
 
 
-describe('If there is nothing but whitspace between an inline spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
-  it('the spoiler convention is not linkified', () => {
+describe('If there is nothing but whitspace between an inline revealable and a bracketed URL, but one of the whitespace characters is escaped', () => {
+  it('the inline revealable is not linkified', () => {
     expect(Up.parse('[something terrible]  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([

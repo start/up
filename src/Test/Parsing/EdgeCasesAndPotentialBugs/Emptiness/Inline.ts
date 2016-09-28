@@ -843,7 +843,7 @@ describe('An inline revealable convention with escaped blank content', () => {
 })
 
 
-describe('An otherwise-linkified inline revealable convention with escaped blank content', () => {
+describe('An otherwise-linified revealable convention with escaped blank content', () => {
   it("is not linkified. Instead, the bracketed URL is treated as the appropriate bracketed convention", () => {
     expect(Up.parse("On Professor Oak's right arm is a tattoo of [NSFW: a naked Mr. Mime](\\ )")).to.deep.equal(
       insideDocumentAndParagraph([

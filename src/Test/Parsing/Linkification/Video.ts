@@ -82,7 +82,7 @@ describe('Any video convention (with its URL) followed immediately by a (second)
 })
 
 
-describe('A video convention directly followed by an inline spoiler', () => {
+describe('A video convention directly followed by an inline revealable', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [video: you fight Gary](https://example.com/fight.webm)[SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([

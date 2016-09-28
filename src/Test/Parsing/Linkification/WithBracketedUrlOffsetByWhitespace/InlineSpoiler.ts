@@ -3,7 +3,7 @@ import * as Up from '../../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
 
 
-context('A linkified spoiler can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
+context('A linified revealable can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: something terrible',
@@ -455,8 +455,8 @@ context('A linkified spoiler can have whitespace between itself and its brackete
 })
 
 
-describe('If there is nothing but whitspace between an inline spoiler and a bracketed URL, but one of the whitespace characters is escaped', () => {
-  it('the spoiler convention is not linkified', () => {
+describe('If there is nothing but whitspace between an inline revealable and a bracketed URL, but one of the whitespace characters is escaped', () => {
+  it('the revealable convention is not linkified', () => {
     expect(Up.parse('[SPOILER: something terrible]  \\  (https://example.com)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineRevealable([
@@ -475,8 +475,8 @@ describe('If there is nothing but whitspace between an inline spoiler and a brac
 })
 
 
-describe("A linkified spoiler's URL, when separated from its content by whitespace,", () => {
-  it('can itself contain whitespace if each whitespace character is escaped', () => {
+describe("When a linkified revealable convention has whitespace between itself and its URL", () => {
+  it('its URL can contain escaped whitespace', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: something terrible',
       partsBetweenContentAndUrl: ['  ', '\t', ' \t '],

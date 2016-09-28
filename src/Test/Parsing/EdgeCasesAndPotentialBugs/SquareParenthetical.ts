@@ -3,8 +3,8 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-context('Square bracketed text can be directly followed by whitespace followed by', () => {
-  context('an inline spoiler', () => {
+context('A square parenthetical text can be directly followed by whitespace followed by', () => {
+  context('an inline revealable', () => {
     specify('that only contains whitespace directly after the colon', () => {
       expect(Up.parse('After you beat the Elite Four, you have to face [the one and only] [SPOILER: Gary].')).to.deep.equal(
         insideDocumentAndParagraph([

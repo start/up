@@ -344,49 +344,8 @@ context('When a link overlaps a quote, the link will always be split. This inclu
 })
 
 
-describe('An inline spoiler that overlaps a link', () => {
-  it("splits the link node, not the spoiler node", () => {
-    expect(Up.parse('(SPOILER: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineRevealable([
-          new Up.Text('Gary loses to '),
-          new Up.Link([
-            new Up.Text('Ash')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-        ]),
-        new Up.Link([
-          new Up.Text(' Ketchum')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ]))
-  })
-})
-
-
-describe('A link that overlaps an inline spoiler', () => {
-  it("splits the link node, not the spoiler node", () => {
-    const markup =
-      'In Pokémon Red, [Gary Oak (SPOILER: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
-
-    expect(Up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('In Pokémon Red, '),
-        new Up.Link([
-          new Up.Text('Gary Oak ')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new Up.InlineRevealable([
-          new Up.Link([
-            new Up.Text('loses to Ash Ketchum')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-          new Up.Text(' repeatedly')
-        ]),
-        new Up.Text(' throughout the game.')
-      ]))
-  })
-})
-
-
-describe('An inline spoiler that overlaps a footnote', () => {
-  it("splits the spoiler node, not the footnote node", () => {
+describe('An inline revealable that overlaps a footnote', () => {
+  it("splits the revealable node, not the footnote node", () => {
     const markup = '[SPOILER: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
@@ -411,9 +370,9 @@ describe('An inline spoiler that overlaps a footnote', () => {
 })
 
 
-describe('A footnote that overlaps an inline spoiler', () => {
-  it("splits the spoiler node, not the footnote node", () => {
-    const markup = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline spoiler.'
+describe('A footnote that overlaps an inline revealable', () => {
+  it("splits the revealable node, not the footnote node", () => {
+    const markup = 'Eventually, I will think of one (^reasonable [SPOILER: and realistic) example of a] footnote that overlaps an inline revealable.'
 
     const footnote =
       new Up.Footnote([
@@ -431,7 +390,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
           new Up.InlineRevealable([
             new Up.Text(' example of a')
           ]),
-          new Up.Text(' footnote that overlaps an inline spoiler.'),
+          new Up.Text(' footnote that overlaps an inline revealable.'),
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -439,7 +398,7 @@ describe('A footnote that overlaps an inline spoiler', () => {
 })
 
 
-context('When a link overlaps an inline revealable convention, the link node will always be split. This includes when:', () => {
+context('When a link overlaps an inline revealable, the link node will always be split. This includes when:', () => {
   specify("The link opens first", () => {
     const markup =
       'In Pokémon Red, [Gary Oak (NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
