@@ -81,9 +81,8 @@ export function tryToTokenizeInlineCode(
       markupConsumer.index += 1
     }
 
-    // Alright, we've consumed a chunk of inline code. Either we've reached the end of the markup,
-    // or we're up against a possible end delimiter.
-
+    // We're up against a possible end delimiter. If it doesn't match our start delimiter, we'll
+    // simply include it in our inline code.
     let possibleEndDelimiter: string
 
     markupConsumer.consume({
@@ -92,11 +91,6 @@ export function tryToTokenizeInlineCode(
         possibleEndDelimiter = delimiter
       }
     })
-
-    if (!possibleEndDelimiter) {
-      // Looks like we reached the end of the markup. Let's bail.
-      break
-    }
 
     if (possibleEndDelimiter === startDelimiter) {
       then(new Token(TokenRole.InlineCode, trimCode(inlineCode)), markupConsumer.index)
