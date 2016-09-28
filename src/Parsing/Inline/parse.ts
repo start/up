@@ -55,12 +55,15 @@ function parseAndGetResult(
   const { tokens, until } = args
 
   let tokenIndex = 0
-  let countTokensParsed = 0
   let nodes: InlineSyntaxNode[] = []
+
+  function getCountTokensParsed(): number {
+    return tokenIndex + 1
+  }
 
   function getChildren(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
     const result = parseAndGetResult({
-      tokens: tokens.slice(countTokensParsed),
+      tokens: tokens.slice(getCountTokensParsed()),
       until: args.fromHereUntil
     })
 
@@ -70,7 +73,6 @@ function parseAndGetResult(
 
   TokenLoop: for (; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
-    countTokensParsed = tokenIndex + 1
 
     switch (token.role) {
       case until: {
@@ -155,8 +157,8 @@ function parseAndGetResult(
   }
 
   return {
-    countTokensParsed,
-    nodes: combineConsecutiveTextNodes(nodes)
+    nodes: combineConsecutiveTextNodes(nodes),
+    countTokensParsed: getCountTokensParsed()
   }
 }
 
