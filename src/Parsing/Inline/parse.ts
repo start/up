@@ -99,7 +99,7 @@ class Parser {
         }
 
         case LINK.startTokenRole: {
-          let children = this.getNodes({ fromHereUntil: TokenRole.LinkEndAndUrl })
+          let children = this.getInlineSyntaxNodes({ fromHereUntil: TokenRole.LinkEndAndUrl })
 
           const isContentBlank = isBlank(children)
 
@@ -131,7 +131,7 @@ class Parser {
 
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.role === richConvention.startTokenRole) {
-          let children = this.getNodes({
+          let children = this.getInlineSyntaxNodes({
             fromHereUntil: richConvention.endTokenRole
           })
 
@@ -157,7 +157,7 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private getNodes(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
+  private getInlineSyntaxNodes(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
       until: args.fromHereUntil

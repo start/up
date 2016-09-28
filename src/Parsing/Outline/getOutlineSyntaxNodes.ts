@@ -71,14 +71,14 @@ export function getOutlineSyntaxNodes(
       sourceLineNumber,
       headingLeveler,
       settings,
-      then: (newNodes, countLinesConsumed) => {
+      then: (parsedOutlineSyntaxNodes, countLinesConsumed) => {
         if (settings.createSourceMap) {
-          for (const node of newNodes) {
+          for (const node of parsedOutlineSyntaxNodes) {
             node.sourceLineNumber = sourceLineNumber
           }
         }
 
-        outlineNodes.push(...newNodes)
+        outlineNodes.push(...parsedOutlineSyntaxNodes)
         markupLineConsumer.skipLines(countLinesConsumed)
       }
     }
