@@ -132,7 +132,7 @@ class Tokenizer {
   // context.
   //
   // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
-  // closing bracket), we backtrack to the beginning of the media convention and try something else. 
+  // closing bracket), we backtrack to right before we opened the media convention. 
   private mediaUrlConventions = this.getMediaUrlConventions()
 
   // Link URL conventions serve the same purpose as media URL conventions, but for links.  
@@ -487,18 +487,18 @@ class Tokenizer {
   private getMediaDescriptionConventions(): ConventionVariation[] {
     return concat(
       [IMAGE, VIDEO, AUDIO].map(media => {
-        const mediaTerm = media.term(this.settings.terms)
+        const termForThisMediaConvention = media.term(this.settings.terms)
 
         return PARENTHETICAL_BRACKETS.map(bracket =>
           new ConventionVariation({
-            startsWith: labeledBracketStartDelimiter(mediaTerm, bracket),
+            startsWith: labeledBracketStartDelimiter(termForThisMediaConvention, bracket),
             startPatternContainsATerm: true,
             endsWith: bracket.endPattern,
 
             beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
             insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
 
-            beforeClosingItAlwaysFlushesBufferTo: media.startAndDescriptionTokenRole,
+            beforeClosingItAlwaysFlushesBufferTo: media.tokenRoleForStartAndDescription,
             whenClosingItAlsoClosesInnerConventions: true,
             mustBeDirectlyFollowedBy: this.mediaUrlConventions
           }))

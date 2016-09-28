@@ -117,10 +117,11 @@ class Parser {
       }
 
       for (const media of MEDIA_CONVENTIONS) {
-        if (token.role === media.startAndDescriptionTokenRole) {
+        if (token.role === media.tokenRoleForStartAndDescription) {
           let description = token.value.trim()
 
-          // The next token will be a MediaEndAndUrl token
+          // The next token will be a MediaEndAndUrl token. All media conventions
+          // use the same role for their end tokens.
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
           this.nodes.push(new media.SyntaxNodeType(description, url))
