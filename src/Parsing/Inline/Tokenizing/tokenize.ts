@@ -390,7 +390,7 @@ class Tokenizer {
 
         this.encloseContextWithinConvention(richConvention, context)
       },
-  
+
       insteadOfFailingWhenLeftUnclosed,
       mustBeDirectlyFollowedBy
     })
@@ -1081,7 +1081,7 @@ class Tokenizer {
   }
 
   private encloseContextWithinConvention(richConvention: RichConvention, context: ConventionContext): void {
-    this.encloseWithin({richConvention, startingBackAtTokenIndex: context.startTokenIndex })
+    this.encloseWithin({ richConvention, startingBackAtTokenIndex: context.startTokenIndex })
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs): void {
@@ -1363,7 +1363,7 @@ class Tokenizer {
     // three ways that convention can fail:
     //
     // 1. It's missing its end delimiter (or was otherwise deemed invalid). This is the normal way for
-    //    a convention to fail, and our `failedConventionTracker` easily takes care of this below.
+    //    a convention to fail, and our `backtrackedConventionHelper` easily takes care of this below.
     //
     // 2. None of the subsequent required conventions could be opened. This is handled elsewhere.
     //
@@ -1372,12 +1372,13 @@ class Tokenizer {
     //
     // To handle that third case, we also check whether any of the subsequent required conventions have
     // failed. This is made easier by the fact that any subsequent required conventions inherit the
-    // snapshot of their "parent", and therefore have their failure registered at parent's markup index.
+    // snapshot of their "predecessor", and therefore have their failure registered at their
+    // predecessor's markup index.
     //
-    // If a subsequent required convention has failed, we consider the parent convention to have failed,
-    // too, and we don't try opening it again. This logic is subject to change, but for now, because all
-    // of the subsequent required conventions for a given parent have incompatible start patterns,
-    // there's no point in trying again.
+    // If a subsequent required convention has failed, we consider the predecessor convention to have
+    // failed, too, and we don't try opening it again. This logic is subject to change, but for now,
+    // because all of the subsequent required conventions for a given predecessor have incompatible start
+    // patterns, there's no point in trying again.
     const subsequentRequiredConventions =
       conventionToOpen.mustBeDirectlyFollowedBy
 
@@ -1584,7 +1585,7 @@ const CONTENT_WITH_NO_SPECIAL_MEANING =
         PERIOD + notFollowedBy(PERIOD),
         // Multiple hyphens produce en/em dashes, but single hyphens have no special role.
         HYPHEN + notFollowedBy(HYPHEN),
-        // A plus sign followed by a minus sign produces a plus-minus sign, but otherwise, plus
+        // A plus sign followed by a hyphen produces a plus-minus sign, but otherwise, plus
         // signs don't have any special role.
         PLUS_SIGN + notFollowedBy(HYPHEN)
       )))
