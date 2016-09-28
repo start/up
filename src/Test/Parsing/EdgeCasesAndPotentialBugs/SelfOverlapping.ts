@@ -21,7 +21,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
 
   context('This is true for conventions with continuity priority:', () => {
-    specify('Inline spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parse('This [SPOILER: does (SPOILER: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('This '),
@@ -113,7 +113,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
 
       context('A convention with continuity priority', () => {
-        specify('Two inline spoilers overlapping another', () => {
+        specify('Two inline revealable conventions overlapping another', () => {
           expect(Up.parse('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
             insideDocumentAndParagraph([
               new Up.InlineRevealable([

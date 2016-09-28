@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
-  context("When the custom term for 'spoiler' starts with a caret", () => {
+  context("When the custom term for 'revealable' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
         terms: {
@@ -13,7 +13,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       }
     })
 
-    specify('inline spoilers can be produced using the term', () => {
+    specify('inline revealables can be produced using the term', () => {
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -22,7 +22,7 @@ context("When the custom term for an inline convention starts with a caret, the 
         ]))
     })
 
-    specify('an unmatched inline spoiler start delimiter is treated as plain text', () => {
+    specify('an unmatched inline revealable start delimiter is treated as plain text', () => {
       expect(up.parse('[^lookaway^: Not finished typi')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('[^lookaway^: Not finished typi')

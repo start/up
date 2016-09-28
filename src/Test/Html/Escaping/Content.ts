@@ -130,7 +130,7 @@ describe("Within an inline spoiler's label, all instances of < and &", () => {
 })
 
 
-describe("Within a spoiler block's label, all instances of < and &", () => {
+describe("Within a revealable block's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {

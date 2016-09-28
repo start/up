@@ -85,7 +85,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
 
   context('This applies to the "idPrefix" configuration setting, which is prefixed to every ID:', () => {
-    specify('The ID of the checkboxes for inline spoilers', () => {
+    specify('The ID of the checkboxes for inline revealables', () => {
       const document = new Up.Document([
         new Up.Paragraph([
           new Up.InlineRevealable([new Up.Text('45.9%')])
@@ -104,7 +104,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       expect(Up.render(document, { idPrefix: 'thread 11 reply 65' })).to.equal(html)
     })
 
-    specify('The ID of the checkboxes for spoiler blocks', () => {
+    specify('The ID of the checkboxes for revealable blocks', () => {
       const document = new Up.Document([
         new Up.RevealableBlock([
           new Up.Paragraph([new Up.Text('45.9%')])

@@ -843,7 +843,7 @@ describe('An inline quote node', () => {
 })
 
 
-describe('An inline spoiler node', () => {
+describe('An inline revealable node', () => {
   it('produces an outer <span class="up-spoiler up-revealable">, containing a <label> (with the text "toggle spoiler"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
     const document = new Up.Document([
       new Up.Paragraph([
@@ -865,7 +865,7 @@ describe('An inline spoiler node', () => {
 })
 
 
-describe('A spoiler block node', () => {
+describe('A revealable block node', () => {
   it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
     const document = new Up.Document([
       new Up.RevealableBlock([

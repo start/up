@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../index'
 
 
-describe("Inline spoilers and spoiler blocks", () => {
+describe("Both inline revealables and revealable blocks", () => {
   it("have sequential IDs", () => {
     const node =
       new Up.Document([
@@ -67,8 +67,8 @@ describe("Inline spoilers and spoiler blocks", () => {
 })
 
 
-describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new Up.Document is written", () => {
+describe("The ID of an inline revealable's checkbox (on both the checkbox and the label)", () => {
+  it("is reset each time a new document is written", () => {
     const up = new Up.Transformer()
 
     const node =
@@ -101,8 +101,8 @@ describe("The ID of an inline spoiler's checkbox (on both the checkbox and the l
 
 
 
-describe("The ID of a spoiler block's checkbox (on both the checkbox and the label)", () => {
-  it("is reset each time a new Up.Document is written", () => {
+describe("The ID of a revealable block's checkbox (on both the checkbox and the label)", () => {
+  it("is reset each time a new document is written", () => {
     const up = new Up.Transformer()
 
     const node =

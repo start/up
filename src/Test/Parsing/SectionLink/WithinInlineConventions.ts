@@ -129,7 +129,7 @@ I love all sorts of fancy stuff.`
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
-  specify('Highlight', () => {
+  specify('Highlights', () => {
     const markup = `
 I have plenty of good traits. [highlight: See [section: interesting].]
 
@@ -170,7 +170,7 @@ I love all sorts of fancy stuff.`
       ], new Up.Document.TableOfContents([sodaHeading, interestingHeading])))
   })
 
-  specify('Inline spoilers', () => {
+  specify('Inline revealables', () => {
     const markup = `
 I have plenty of good traits. [SPOILER: See [section: interesting].]
 

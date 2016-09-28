@@ -30,7 +30,7 @@ describe("The text in an inline spoiler's label", () => {
 })
 
 
-describe("The text in a spoiler block's label", () => {
+describe("The text in a revealable block's label", () => {
   it("uses the provided term for 'toggleSpoiler'", () => {
     const up = new Up.Transformer({
       rendering: {

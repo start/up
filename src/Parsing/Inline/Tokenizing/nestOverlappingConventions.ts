@@ -28,7 +28,7 @@ import { ParseableToken } from '../ParseableToken'
 // Luckily, we have an easy solution: Just leave the tokens alone!
 //
 // The `nestOverlappingConventions` function returns a `ParseableToken` collection. A `ParseableToken` simply
-// has a role (e.g. SpoilerStart) and an optional value. Because they lack the `correspondingEnclosingToken`
+// has a role (e.g. RevealableStart) and an optional value. Because they lack the `correspondingEnclosingToken`
 // field, it's naturally impossible for them to express self-overlapping.
 export function nestOverlappingConventions(tokens: Token[]): ParseableToken[] {
   return new ConventionNester(tokens).tokens

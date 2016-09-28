@@ -53,7 +53,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and paren
 })
 
 
-describe('Nested spoilers (closing at the same time) overlapping emphasis', () => {
+describe('Nested inline revealables (closing at the same time) overlapping emphasis', () => {
   it('split the emphasis node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't *really.]] Good!* Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -75,7 +75,7 @@ describe('Nested spoilers (closing at the same time) overlapping emphasis', () =
 })
 
 
-describe('Emphasis overlapping nested spoilers (opening at the same time)', () => {
+describe('Emphasis overlapping nested Inline revealables (opening at the same time)', () => {
   it('split the emphasis node', () => {
     expect(Up.parse("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -96,7 +96,7 @@ describe('Emphasis overlapping nested spoilers (opening at the same time)', () =
 })
 
 
-describe('Nested spoilers (closing at the same time) overlapping a link', () => {
+describe('Nested Inline revealables (closing at the same time) overlapping a link', () => {
   it('split the link node', () => {
     expect(Up.parse("[SPOILER: I know. [SPOILER: Well, I don't (really.]] Good!)(example.com/really-good) Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
@@ -118,7 +118,7 @@ describe('Nested spoilers (closing at the same time) overlapping a link', () => 
 })
 
 
-describe('A link overlapping nested spoilers (opening at the same time)', () => {
+describe('A link overlapping nested Inline revealables (opening at the same time)', () => {
   it('splits the link node', () => {
     expect(Up.parse("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([

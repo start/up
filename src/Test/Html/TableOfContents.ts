@@ -370,8 +370,8 @@ context("Within the table of contents itself", () => {
 })
 
 
-context("Within the table of contents, the IDs of revealable content elements do not clash with those in the document:", () => {
-  specify('Inline spoilers', () => {
+context("Within the table of contents itself", () => {
+  specify('the IDs of revealable content elements do not clash with those in the document', () => {
     const applesHeading =
       new Up.Heading([
         new Up.Text('I enjoy apples '),

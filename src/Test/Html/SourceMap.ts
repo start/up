@@ -302,7 +302,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal('<hr data-up-source-line="2">')
   })
 
-  specify('Spoiler blocks', () => {
+  specify('Revealable blocks', () => {
     const document = new Up.Document([
       new Up.RevealableBlock([
         new Up.Paragraph([

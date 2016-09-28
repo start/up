@@ -73,7 +73,7 @@ context('Except for footnotes and section links, every inline convention is supp
         ]))
     })
 
-    specify('Inline spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parseInline('I loved my [SPOILER: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),

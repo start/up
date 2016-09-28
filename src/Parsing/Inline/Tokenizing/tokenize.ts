@@ -45,7 +45,7 @@ export function tokenizeForInlineDocument(inlineMarkup: string, settings: Settin
 }
 
 
-// Most of our conventions, including links and inline spoilers, incorporate brackets into their syntax.
+// Most of our conventions, including links and inline revealables, incorporate brackets into their syntax.
 // These conventions support both parentheses and square brackets, allowing either kind of bracket to be
 // used interchangeably.
 //
@@ -1099,7 +1099,7 @@ class Tokenizer {
     //
     //   I've had enough! **I hate [SPOILER: Professor Oak!**]
     //
-    // In the above example, the spoiler convention starts inside the stress convention and ends after the
+    // In the above example, the revealable convention starts inside the stress convention and ends after the
     // stress convention. The two conventions overlap, but only by only their end tokens. By inserting the
     // end token for the spoiler before the end token of the stress convention, we can avoid having to split
     // any conventions.
@@ -1111,10 +1111,11 @@ class Tokenizer {
     // stress convention than an inline spoiler, and we'd rather split an inline spoiler than a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
-    // overlapped by one that we’d prefer to split, it splits the convention we’d rather split. Because we’d
-    // rather split stress conventions than spoilers, the stress convention in the above example would be
-    // split in two, with one half outside the spoiler, and the other half inside the spoiler. By moving the
-    // spoiler’s end token inside the stress convention, we can avoid having to split the stress convention. 
+    // overlapped by one that we’d rather split, it splits the convention we’d rather split. Because we’d
+    // rather split stress syntax nodes than revealable syntax nodes, the stress syntax node in the above
+    // example would be split in two, with one half outside the revealable syntax node, and the other half
+    // inside. By moving the revealable convention's end token inside the stress convention, we can avoid
+    // having to split the stress syntax node. 
 
     const startToken = new Token(richConvention.startTokenRole)
     const endToken = new Token(richConvention.endTokenRole)

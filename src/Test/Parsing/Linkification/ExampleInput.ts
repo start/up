@@ -80,7 +80,7 @@ context("As long as there is no whitespace between the example input and the lin
 
 
 context('An example input convention is not linkified when it is directly followed by another bracketed convention, including (but not limited to):', () => {
-  specify('Inline spoilers', () => {
+  specify('Inline revealables', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),

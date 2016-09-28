@@ -14,7 +14,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         ]))
     })
 
-    specify('Spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -74,7 +74,7 @@ context('Inline conventions are not recognized if they are empty or blank.', () 
         ]))
     })
 
-    specify('Spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -707,7 +707,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
     })
 
-    specify('Spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -769,7 +769,7 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         ]))
     })
 
-    specify('Spoilers', () => {
+    specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([

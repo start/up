@@ -400,7 +400,7 @@ Well, maybe I'm not so great.`
         ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading])))
     })
 
-    specify('Inline spoilers', () => {
+    specify('Inline revealables', () => {
       const markup = `
 I'm a great guy. For more information, skip to [section: the full transcript]. 
 
