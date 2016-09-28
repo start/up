@@ -117,8 +117,8 @@ export namespace Settings {
       private _audio: Term = []
       private _highlight: Term = []
       private _image: Term = []
-      private _sectionLink: Term = []
       private _revealable: Term = []
+      private _sectionLink: Term = []
       private _table: Term = []
       private _video: Term = []
 
@@ -134,12 +134,12 @@ export namespace Settings {
         return distinct('image', 'img', ...this._image)
       }
 
-      get sectionLink(): Term {
-        return distinct('section', 'topic', ...this._sectionLink)
-      }
-
       get revealable(): Term {
         return distinct('spoiler', 'nsfw', 'nsfl', 'revealable', ...this._revealable)
+      }
+
+      get sectionLink(): Term {
+        return distinct('section', 'topic', ...this._sectionLink)
       }
 
       get table(): Term {
@@ -156,8 +156,8 @@ export namespace Settings {
         clone._audio = this._audio
         clone._highlight = this._highlight
         clone._image = this._image
-        clone._sectionLink = this._sectionLink
         clone._revealable = this._revealable
+        clone._sectionLink = this._sectionLink
         clone._table = this._table
         clone._video = this._video
 
@@ -178,11 +178,11 @@ export namespace Settings {
         this._image =
           sanitizeVariations(terms.image)
 
-        this._sectionLink =
-          sanitizeVariations(terms.sectionLink)
-
         this._revealable =
           sanitizeVariations(terms.revealable)
+
+        this._sectionLink =
+          sanitizeVariations(terms.sectionLink)
 
         this._table =
           sanitizeVariations(terms.table)
@@ -231,18 +231,18 @@ export namespace Settings {
     export class Terms {
       footnote: Term = 'footnote'
       footnoteReference: Term = 'footnote reference'
+      revealContent: Term = 'reveal'
       sectionReferencedByTableOfContents: Term = 'topic'
       tableOfContents: Term = 'Table of Contents'
-      revealContent: Term = 'reveal'
 
       clone(): Terms {
         const clone = new Terms()
 
         clone.footnote = this.footnote
         clone.footnoteReference = this.footnoteReference
+        clone.revealContent = this.revealContent
         clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
         clone.tableOfContents = this.tableOfContents
-        clone.revealContent = this.revealContent
 
         return clone
       }
@@ -258,14 +258,14 @@ export namespace Settings {
         this.footnoteReference =
           coalesce(terms.footnoteReference, this.footnoteReference)
 
+        this.revealContent =
+          coalesce(terms.revealContent, this.revealContent)
+
         this.sectionReferencedByTableOfContents =
           coalesce(terms.sectionReferencedByTableOfContents, this.sectionReferencedByTableOfContents)
 
         this.tableOfContents =
           coalesce(terms.tableOfContents, this.tableOfContents)
-
-        this.revealContent =
-          coalesce(terms.revealContent, this.revealContent)
       }
     }
 

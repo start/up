@@ -25,8 +25,8 @@ export namespace UserProvidedSettings {
       audio?: Term
       highlight?: Term
       image?: Term
-      sectionLink?: Term
       revealable?: Term
+      sectionLink?: Term
       table?: Term
       video?: Term
     }
@@ -45,9 +45,9 @@ export namespace UserProvidedSettings {
     export interface Terms {
       footnote?: Term
       footnoteReference?: Term
+      revealContent?: Term
       sectionReferencedByTableOfContents?: Term
       tableOfContents?: Term
-      revealContent?: Term
     }
 
     export type Term = string
