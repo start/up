@@ -27,7 +27,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Footnotes', () => {
-      const footnote = new Up.Footnote([])
+      const footnote = new Up.Footnote([], { referenceNumber: 1 })
 
       expect(Up.parse('(^)')).to.eql(
         new Up.Document([
@@ -86,7 +86,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Footnotes', () => {
-      const footnote = new Up.Footnote([])
+      const footnote = new Up.Footnote([], { referenceNumber: 1 })
 
       expect(Up.parse('(^  \t \t )')).to.eql(
         new Up.Document([
@@ -95,30 +95,29 @@ context('Most inline conventions are recognized even when they are empty or blan
         ]))
     })
 
-    specify('Parentheses', () => {
-      expect(Up.parse('(  \t  \t )')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('(  \t  \t )')
-          ])
-      ]))
-    })
-
-    specify('Square brackets', () => {
-      expect(Up.parse('[  \t  \t ]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[  \t  \t ]')
-          ])
-      ]))
-    })
-
     specify('Example input', () => {
       expect(Up.parse('{  \t  \t }')).to.eql(
         insideDocumentAndParagraph([
           new Up.ExampleInput('')
         ]))
     })
+  })
+})
+
+
+context('The opening bracket for parenthetical conventions cannot be followed by whitespace:', () => {
+  specify('Normal parentheticals', () => {
+    expect(Up.parse('(  \t  \t )')).to.eql(
+      insideDocumentAndParagraph([
+        new Up.Text('(  \t  \t )')
+      ]))
+  })
+
+  specify('Square parentheticals', () => {
+    expect(Up.parse('[  \t  \t ]')).to.eql(
+      insideDocumentAndParagraph([
+        new Up.Text('[  \t  \t ]')
+      ]))
   })
 })
 
@@ -639,7 +638,9 @@ describe('An otherwise-valid video with an empty URL', () => {
         new Up.NormalParenthetical([
           new Up.Text('(video: Yggdra Union)')
         ]),
-        new Up.Text('[]')
+        new Up.NormalParenthetical([
+          new Up.Text('()')
+        ])
       ]))
   })
 })
@@ -652,7 +653,7 @@ describe('An otherwise-valid video with a blank URL', () => {
         new Up.SquareParenthetical([
           new Up.Text('[video: Yggdra Union]')
         ]),
-        new Up.Text('[ \t \t]')
+        new Up.Text('[\t \t \t]')
       ]))
   })
 })
@@ -711,7 +712,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
           new Up.InlineRevealable([
             new Up.Text('Ash fights Gary')
           ]),
-          new Up.Text('[]')
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ])
         ]))
     })
 
@@ -724,7 +727,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
         new Up.Document([
           new Up.Paragraph([
             footnote,
-            new Up.Text('()')
+            new Up.NormalParenthetical([
+              new Up.Text('()')
+            ])
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -734,7 +739,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[audio: Ash fights Gary](example.com/audio)()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Audio('Ash fights Gary', 'https://example.com/audio'),
-          new Up.Text('()')
+          new Up.NormalParenthetical([
+            new Up.Text('()')
+          ])
         ]))
     })
 
@@ -742,7 +749,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[image: Ash fights Gary](example.com/image)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Image('Ash fights Gary', 'https://example.com/image'),
-          new Up.Text('[]')
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ])
         ]))
     })
 
@@ -750,7 +759,9 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
       expect(Up.parse('[video: Ash fights Gary](example.com/video)[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Video('Ash fights Gary', 'https://example.com/video'),
-          new Up.Text('[]')
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ])
         ]))
     })
   })
@@ -774,14 +785,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
             new Up.Text('Ash fights Gary')
           ]),
           new Up.Text('(\t \t \t)')
-        ]))
-    })
-
-    specify('Section links', () => {
-      expect(Up.parse('[topic: Ash fights Gary][\t \t \t]')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.SectionLink('Ash fights Gary'),
-          new Up.Text('[\t \t \t]')
         ]))
     })
 
