@@ -437,7 +437,7 @@ class Tokenizer {
   //   Press {esc} to quit.
   private getExampleInputConvention(): ConventionVariation {
     return new ConventionVariation({
-      startsWith: startDelimiterNotFollowedByEndDelimiter(CURLY_BRACKET.startPattern, CURLY_BRACKET.endPattern),
+      startsWith: CURLY_BRACKET.startPattern,
       endsWith: CURLY_BRACKET.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
@@ -469,7 +469,7 @@ class Tokenizer {
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new ConventionVariation({
-        startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(term, bracket), bracket.endPattern),
+        startsWith: labeledBracketStartDelimiter(term, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
@@ -491,7 +491,7 @@ class Tokenizer {
 
         return PARENTHETICAL_BRACKETS.map(bracket =>
           new ConventionVariation({
-            startsWith: startDelimiterNotFollowedByEndDelimiter(labeledBracketStartDelimiter(mediaTerm, bracket), bracket.endPattern),
+            startsWith: labeledBracketStartDelimiter(mediaTerm, bracket),
             startPatternContainsATerm: true,
             endsWith: bracket.endPattern,
 
@@ -1483,10 +1483,6 @@ class Tokenizer {
 
 function labeledBracketStartDelimiter(term: Settings.Parsing.Term, bracket: Bracket): string {
   return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
-}
-
-function startDelimiterNotFollowedByEndDelimiter(startDelimiter: string, endDelimiter: string): string {
-  return startDelimiter + notFollowedBy(ANY_WHITESPACE + endDelimiter)
 }
 
 
