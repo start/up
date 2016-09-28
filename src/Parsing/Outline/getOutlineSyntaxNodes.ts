@@ -53,32 +53,32 @@ export function getOutlineSyntaxNodes(
   const countLeadingBlankLinesRemoved =
     (markupLines.length - markupWithoutLeadingBlankLines.length)
 
-  const startingSourceLineNumber =
+  const initialSourceLineNumber =
     args.sourceLineNumber + countLeadingBlankLinesRemoved
 
   const markupWithoutOuterBlankLines =
     withoutTrailingBlankLines(markupWithoutLeadingBlankLines)
 
   const markupLineConsumer = new LineConsumer(markupWithoutOuterBlankLines)
-  const outlineNodes: OutlineSyntaxNode[] = []
+  const nodes: OutlineSyntaxNode[] = []
 
   while (!markupLineConsumer.done()) {
     const sourceLineNumber =
-      startingSourceLineNumber + markupLineConsumer.countLinesConsumed
+      initialSourceLineNumber + markupLineConsumer.countLinesConsumed
 
     const outlineParserArgs: OutlineParserArgs = {
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
       settings,
-      then: (parsedOutlineSyntaxNodes, countLinesConsumed) => {
+      then: (parsedNodes, countLinesConsumed) => {
         if (settings.createSourceMap) {
-          for (const node of parsedOutlineSyntaxNodes) {
+          for (const node of parsedNodes) {
             node.sourceLineNumber = sourceLineNumber
           }
         }
 
-        outlineNodes.push(...parsedOutlineSyntaxNodes)
+        nodes.push(...parsedNodes)
         markupLineConsumer.skipLines(countLinesConsumed)
       }
     }
@@ -88,7 +88,7 @@ export function getOutlineSyntaxNodes(
     }
   }
 
-  return condenseConsecutiveThematicBreaks(outlineNodes)
+  return condenseConsecutiveThematicBreaks(nodes)
 }
 
 
