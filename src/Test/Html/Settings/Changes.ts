@@ -157,7 +157,7 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
 })
 
 
-describe('The "toggleSpoiler" term', () => {
+describe('The "revealContent" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document([
       new Up.Paragraph([
@@ -171,49 +171,7 @@ describe('The "toggleSpoiler" term', () => {
     },
     conflictingChange: {
       terms: {
-        revealContent: 'see spoiler?'
-      }
-    }
-  })
-})
-
-
-describe('The "toggleNsfw" term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new Up.Document([
-      new Up.Paragraph([
-        new Up.InlineNsfw([])
-      ])
-    ]),
-    change: {
-      terms: {
-        toggleNsfw: 'see/hide'
-      }
-    },
-    conflictingChange: {
-      terms: {
-        toggleNsfw: 'show nsfw?'
-      }
-    }
-  })
-})
-
-
-describe('The "toggleNsfl" term', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new Up.Document([
-      new Up.Paragraph([
-        new Up.InlineNsfl([])
-      ])
-    ]),
-    change: {
-      terms: {
-        toggleNsfl: 'see/hide'
-      }
-    },
-    conflictingChange: {
-      terms: {
-        toggleNsfl: 'show nsfl?'
+        revealContent: 'see'
       }
     }
   })

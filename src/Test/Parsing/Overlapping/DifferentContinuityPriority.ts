@@ -439,12 +439,31 @@ describe('A footnote that overlaps an inline spoiler', () => {
 })
 
 
+context('When a link overlaps an inline revealable convention, the link node will always be split. This includes when:', () => {
+  specify("The link opens first", () => {
+    const markup =
+      'In Pokémon Red, [Gary Oak (NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
 
-describe('An inline NSFW convention that overlaps a link', () => {
-  it("splits the link node, not the NSFW node", () => {
+    expect(Up.parse(markup)).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('In Pokémon Red, '),
+        new Up.Link([
+          new Up.Text('Gary Oak ')
+        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+        new Up.InlineRevealable([
+          new Up.Link([
+            new Up.Text('loses to Ash Ketchum')
+          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
+          new Up.Text(' repeatedly')
+        ]),
+        new Up.Text(' throughout the game.')
+      ]))
+  })
+
+  specify("The inline revealable opens first", () => {
     expect(Up.parse('(NSFW: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text('Gary loses to '),
           new Up.Link([
             new Up.Text('Ash')
@@ -458,30 +477,7 @@ describe('An inline NSFW convention that overlaps a link', () => {
 })
 
 
-describe('A link that overlaps an inline NSFW convention', () => {
-  it("splits the link node, not the NSFW node", () => {
-    const markup =
-      'In Pokémon Red, [Gary Oak (NSFW: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
-
-    expect(Up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('In Pokémon Red, '),
-        new Up.Link([
-          new Up.Text('Gary Oak ')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new Up.InlineNsfw([
-          new Up.Link([
-            new Up.Text('loses to Ash Ketchum')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-          new Up.Text(' repeatedly')
-        ]),
-        new Up.Text(' throughout the game.')
-      ]))
-  })
-})
-
-
-context('When quoted text overlaps emphasis text, the emphasis node will always be split. This includes whens:', () => {
+context('When quoted text overlaps emphasis text, the emphasis node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
     expect(Up.parse('I "love *drinking" whole* milk.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -518,7 +514,7 @@ context('When quoted text overlaps emphasis text, the emphasis node will always 
 })
 
 
-context('When quoted text overlaps stressed text, the stress node will always be split. This includes whens:', () => {
+context('When quoted text overlaps stressed text, the stress node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
     expect(Up.parse('I "love **drinking" whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -555,7 +551,7 @@ context('When quoted text overlaps stressed text, the stress node will always be
 })
 
 
-context('When quoted text overlaps highlighted text, the highlight node will always be split. This includes whens:', () => {
+context('When quoted text overlaps highlighted text, the highlight node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
     expect(Up.parse('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -592,70 +588,33 @@ context('When quoted text overlaps highlighted text, the highlight node will alw
 })
 
 
-context('When quoted text overlaps an inline spoiler, the inline spoiler node will always be split. This includes whens:', () => {
-  specify('The inline quote opens first', () => {
-    expect(Up.parse('I "love [SPOILER: drinking" whole] milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.InlineQuote([
-          new Up.Text('love '),
-          new Up.InlineRevealable([
-            new Up.Text('drinking')
-          ])
-        ]),
-        new Up.InlineRevealable([
-          new Up.Text(' whole')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-
-  specify('The inline spoiler opens first', () => {
-    expect(Up.parse('I [SPOILER: love "drinking] whole" milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.InlineRevealable([
-          new Up.Text('love ')
-        ]),
-        new Up.InlineQuote([
-          new Up.InlineRevealable([
-            new Up.Text('drinking')
-          ]),
-          new Up.Text(' whole')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-})
-
-
-context('When quoted text overlaps an inline NSFW convention, the inline NSFW node will always be split. This includes whens:', () => {
+context('When quoted text overlaps an inline revealable convention, the revealable node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
     expect(Up.parse('I "love [NSFW: drinking" whole] milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
           new Up.Text('love '),
-          new Up.InlineNsfw([
+          new Up.InlineRevealable([
             new Up.Text('drinking')
           ])
         ]),
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text(' whole')
         ]),
         new Up.Text(' milk.')
       ]))
   })
 
-  specify('The inline NSFW opens first', () => {
+  specify('The revealable opens first', () => {
     expect(Up.parse('I [NSFW: love "drinking] whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text('love ')
         ]),
         new Up.InlineQuote([
-          new Up.InlineNsfw([
+          new Up.InlineRevealable([
             new Up.Text('drinking')
           ]),
           new Up.Text(' whole')
@@ -666,44 +625,7 @@ context('When quoted text overlaps an inline NSFW convention, the inline NSFW no
 })
 
 
-context('When quoted text overlaps an inline NSFL convention, the inline NSFL node will always be split. This includes whens:', () => {
-  specify('The inline quote opens first', () => {
-    expect(Up.parse('I "love [NSFL: drinking" whole] milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.InlineQuote([
-          new Up.Text('love '),
-          new Up.InlineNsfl([
-            new Up.Text('drinking')
-          ])
-        ]),
-        new Up.InlineNsfl([
-          new Up.Text(' whole')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-
-  specify('The inline NSFL opens first', () => {
-    expect(Up.parse('I [NSFL: love "drinking] whole" milk.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('I '),
-        new Up.InlineNsfl([
-          new Up.Text('love ')
-        ]),
-        new Up.InlineQuote([
-          new Up.InlineNsfl([
-            new Up.Text('drinking')
-          ]),
-          new Up.Text(' whole')
-        ]),
-        new Up.Text(' milk.')
-      ]))
-  })
-})
-
-
-context('When quoted text overlaps a footnote convention, the inline quote node will always be split. This includes whens:', () => {
+context('When quoted text overlaps a footnote, the inline quote node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
     const markup = '"This is not [^ as realistic" as some other unit tests]'
 
@@ -754,13 +676,13 @@ context('When quoted text overlaps a footnote convention, the inline quote node 
 })
 
 
-describe('An inline NSFW convention that overlaps a footnote', () => {
-  it("splits the NSFW node, not the footnote node", () => {
-    const markup = '[NSFW: Gary loses to Ash (^Ketchum] is his last name)'
+context('When an inline revealable convention overlaps footnote, the revealable node will always be split. This includes when:', () => {
+  specify("The inline revealable opens first", () => {
+    const markup = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
 
     const footnote =
       new Up.Footnote([
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text('Ketchum')
         ]),
         new Up.Text(' is his last name')
@@ -769,25 +691,22 @@ describe('An inline NSFW convention that overlaps a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineNsfw([
-            new Up.Text('Gary loses to Ash')
+          new Up.InlineRevealable([
+            new Up.Text('Gary loses to Ash'),
           ]),
           footnote
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
   })
-})
 
-
-describe('A footnote that overlaps an inline NSFW convention', () => {
-  it("splits the NSFW node, not the footnote node", () => {
-    const markup = 'Eventually, I will think of one (^reasonable [NSFW: and realistic) example of a] footnote that overlaps an inline NSFW convention.'
+  specify("The footnote opens first", () => {
+    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline revealable convention.'
 
     const footnote =
       new Up.Footnote([
         new Up.Text('reasonable '),
-        new Up.InlineNsfw([
+        new Up.InlineRevealable([
           new Up.Text('and realistic')
         ]),
       ], { referenceNumber: 1 })
@@ -797,7 +716,7 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
         new Up.Paragraph([
           new Up.Text('Eventually, I will think of one'),
           footnote,
-          new Up.InlineNsfw([
+          new Up.InlineRevealable([
             new Up.Text(' example of a'),
           ]),
           new Up.Text(' footnote that overlaps an inline NSFW convention.')
@@ -807,97 +726,3 @@ describe('A footnote that overlaps an inline NSFW convention', () => {
   })
 })
 
-
-describe('An inline NSFL convention that overlaps a link', () => {
-  it("splits the link node, not the NSFL node", () => {
-    expect(Up.parse('(NSFL: Gary loses to [Ash) Ketchum][http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineNsfl([
-          new Up.Text('Gary loses to '),
-          new Up.Link([
-            new Up.Text('Ash')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-        ]),
-        new Up.Link([
-          new Up.Text(' Ketchum')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Ash_Ketchum')
-      ]))
-  })
-})
-
-
-describe('A link that overlaps an inline NSFL convention', () => {
-  it("splits the link node, not the NSFL node", () => {
-    const markup =
-      'In Pokémon Red, [Gary Oak (NSFL: loses to Ash Ketchum][http://bulbapedia.bulbagarden.net/wiki/Red_(game)] repeatedly) throughout the game.'
-
-    expect(Up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('In Pokémon Red, '),
-        new Up.Link([
-          new Up.Text('Gary Oak ')
-        ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-        new Up.InlineNsfl([
-          new Up.Link([
-            new Up.Text('loses to Ash Ketchum')
-          ], 'http://bulbapedia.bulbagarden.net/wiki/Red_(game)'),
-          new Up.Text(' repeatedly')
-        ]),
-        new Up.Text(' throughout the game.')
-      ]))
-  })
-})
-
-
-describe('An inline NSFL convention that overlaps a footnote', () => {
-  it("splits the NSFL node, not the footnote node", () => {
-    const markup = '[NSFL: Gary loses to Ash (^Ketchum] is his last name)'
-
-    const footnote =
-      new Up.Footnote([
-        new Up.InlineNsfl([
-          new Up.Text('Ketchum')
-        ]),
-        new Up.Text(' is his last name')
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.InlineNsfl([
-            new Up.Text('Gary loses to Ash'),
-          ]),
-          footnote
-        ]),
-        new Up.FootnoteBlock([footnote])
-      ]))
-  })
-})
-
-
-describe('A footnote that overlaps an inline NSFL convention', () => {
-  it("splits the NSFL node, not the footnote node", () => {
-    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] footnote that overlaps an inline NSFL convention.'
-
-    const footnote =
-      new Up.Footnote([
-        new Up.Text('reasonable '),
-        new Up.InlineNsfl([
-          new Up.Text('and realistic')
-        ])
-      ], { referenceNumber: 1 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([
-          new Up.Text('Eventually, I will think of one'),
-          footnote,
-          new Up.InlineNsfl([
-            new Up.Text(' example of a')
-          ]),
-          new Up.Text(' footnote that overlaps an inline NSFL convention.')
-        ]),
-        new Up.FootnoteBlock([footnote])
-      ]))
-  })
-})

@@ -224,98 +224,6 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify('NSFL blocks', () => {
-    const markup = `
-I drink soda
-============
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true.
-
-NSFL:
-  First of all, see [section: soda].
-
-  Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
-
-    const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        sodaHeading,
-        new Up.Paragraph([
-          new Up.Text('Actually, I only drink milk.')
-        ]),
-        neverLieHeading,
-        new Up.Paragraph([
-          new Up.Text('Not quite true.')
-        ]),
-        new Up.NsflBlock([
-          new Up.Paragraph([
-            new Up.Text('First of all, see '),
-            new Up.SectionLink('soda', sodaHeading),
-            new Up.Text('.')
-          ]),
-          new Up.Paragraph([
-            new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
-          ])
-        ])
-      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
-  })
-
-  specify('NSFW blocks', () => {
-    const markup = `
-I drink soda
-============
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true.
-
-NSFW:
-  First of all, see [section: soda].
-
-  Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
-
-    const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        sodaHeading,
-        new Up.Paragraph([
-          new Up.Text('Actually, I only drink milk.')
-        ]),
-        neverLieHeading,
-        new Up.Paragraph([
-          new Up.Text('Not quite true.')
-        ]),
-        new Up.NsfwBlock([
-          new Up.Paragraph([
-            new Up.Text('First of all, see '),
-            new Up.SectionLink('soda', sodaHeading),
-            new Up.Text('.')
-          ]),
-          new Up.Paragraph([
-            new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
-          ])
-        ])
-      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
-  })
-
   specify("Ordered lists", () => {
     const markup = `
 I drink soda
@@ -364,7 +272,7 @@ Not quite true.
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify('Spoiler blocks', () => {
+  specify('Revealable blocks', () => {
     const markup = `
 I drink soda
 ============
@@ -411,7 +319,7 @@ SPOILER:
   })
 
 
-  context('Table/charts. Specifically, their:', () => {
+  context('Tables. Specifically, their:', () => {
     specify('Captions', () => {
       const markup = `
 I drink soda

@@ -47,14 +47,14 @@ describe('A linkified spoiler overlapping highlighted text', () => {
 })
 
 
-describe('A footnote that overlaps a linkified NSFL convention', () => {
-  it("splits the NSFL convention node and its inner link node, not the footnote node", () => {
-    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] [example.com] footnote that overlaps an inline NSFL convention.'
+describe('A footnote that overlaps a linkified inline revealable convention', () => {
+  it("splits the revealable node and its inner link node, not the footnote node", () => {
+    const markup = 'Eventually, I will think of one (^reasonable [NSFL: and realistic) example of a] [example.com] footnote that overlaps an inline revealable convention.'
 
     const footnote =
       new Up.Footnote([
         new Up.Text('reasonable '),
-        new Up.InlineNsfl([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('and realistic')
           ], 'https://example.com')
@@ -66,12 +66,12 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
         new Up.Paragraph([
           new Up.Text('Eventually, I will think of one'),
           footnote,
-          new Up.InlineNsfl([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text(' example of a')
             ], 'https://example.com')
           ]),
-          new Up.Text(' footnote that overlaps an inline NSFL convention.')
+          new Up.Text(' footnote that overlaps an inline revealable convention.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -79,13 +79,13 @@ describe('A footnote that overlaps a linkified NSFL convention', () => {
 })
 
 
-describe('A linkified NSFL convention that overlaps a footnote', () => {
-  it("splits the NSFL convention node and its inner link node, not the footnote node", () => {
+describe('A linkified inline revealable convention that overlaps a footnote', () => {
+  it("splits the revealable node and its inner link node, not the footnote node", () => {
     const markup = '[NSFL: Gary loses to Ash (^Ketchum] (example.com) is his last name)'
 
     const footnote =
       new Up.Footnote([
-        new Up.InlineNsfl([
+        new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Ketchum')
           ], 'https://example.com')
@@ -96,7 +96,7 @@ describe('A linkified NSFL convention that overlaps a footnote', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.InlineNsfl([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('Gary loses to Ash'),
             ], 'https://example.com')

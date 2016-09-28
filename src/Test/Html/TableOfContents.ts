@@ -216,9 +216,9 @@ context("The table of contents has no effect on elements that aren't referenced 
 
     expect(documentHtml).to.equal(
       '<h1 id="up-topic-1">I enjoy apples</h1>'
-      + '<div class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">toggle NSFW</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      + '<div class="up-revealable">'
+      + '<label for="up-revealable-1">reveal</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<div role="alert">'
       + '<h1>I enjoy apples</h1>'
       + '</div>'

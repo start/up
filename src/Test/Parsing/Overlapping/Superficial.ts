@@ -20,11 +20,11 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify('Two "only-split-when-necessary" conventions (e.g. NSFL, link) overlapping a freely-splittable convention (e.g. stress)', () => {
+  specify('Two "only-split-when-necessary" conventions (e.g. inline revealable, link) overlapping a freely-splittable convention (e.g. stress)', () => {
     expect(Up.parse('[NSFL: (**Ash)(example.com) is] a friend!** Hi!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Stress([
-          new Up.InlineNsfl([
+          new Up.InlineRevealable([
             new Up.Link([
               new Up.Text('Ash')
             ], 'https://example.com'),
@@ -190,12 +190,12 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two conventions (e.g. NSFL, bold) being overlapped by a third with a priority in between the first two (e.g. spoiler)', () => {
-      expect(Up.parse('(SPOILER: There was another [NSFL: rotten __body)__] Hi!')).to.deep.equal(
+    specify('Two conventions (e.g. inline quote, bold) being overlapped by a third with continuity priority in between the first two (e.g. inline revealable)', () => {
+      expect(Up.parse('(SPOILER: There was another "rotten __body)__" Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
             new Up.Text('There was another '),
-            new Up.InlineNsfl([
+            new Up.InlineQuote([
               new Up.Text('rotten '),
               new Up.Bold([
                 new Up.Text('body')
@@ -206,14 +206,14 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Two "only-split-when-necessary" conventions (e.g. NSFL, NSFW) being overlapped by a freely-splittable convention (e.g. italics)', () => {
-      expect(Up.parse('_There was another [NSFL: rotten body (NSFW: squish_)] Hi!')).to.deep.equal(
+    specify('Two conventions with continuity priority (e.g. inline revealable, quote) being overlapped by a freely-splittable convention (e.g. italics)', () => {
+      expect(Up.parse('_There was another [NSFL: rotten body "squish_"] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italics([
             new Up.Text('There was another '),
-            new Up.InlineNsfl([
+            new Up.InlineRevealable([
               new Up.Text('rotten body '),
-              new Up.InlineNsfw([
+              new Up.InlineQuote([
                 new Up.Text('squish')
               ]),
             ]),
@@ -223,7 +223,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
-      expect(Up.parse('**There _was (SPOILER: another [NSFL: loud __stomp_**)__]. Hi!')).to.deep.equal(
+      expect(Up.parse('**There _was (SPOILER: another "loud __stomp_**)__". Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
@@ -231,7 +231,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Text('was '),
               new Up.InlineRevealable([
                 new Up.Text('another '),
-                new Up.InlineNsfl([
+                new Up.InlineQuote([
                   new Up.Text('loud '),
                   new Up.Bold([
                     new Up.Text('stomp')
@@ -245,15 +245,15 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single freely-splittable convention', () => {
-      expect(Up.parse('**There _was (SPOILER: another [NSFL: loud __stomp_**)]__. Hi!')).to.deep.equal(
+      expect(Up.parse('**There _was "another [NSFL: loud __stomp_**"]__. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
             new Up.Italics([
               new Up.Text('was '),
-              new Up.InlineRevealable([
+              new Up.InlineQuote([
                 new Up.Text('another '),
-                new Up.InlineNsfl([
+                new Up.InlineRevealable([
                   new Up.Text('loud '),
                   new Up.Bold([
                     new Up.Text('stomp')
@@ -267,7 +267,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping two conventions that should only be split when necessary', () => {
-      expect(Up.parse('**There _was __another [NSFL: loud (SPOILER: stomp_**__]). Hi!')).to.deep.equal(
+      expect(Up.parse('**There _was __another "loud (SPOILER: stomp_**__"). Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
@@ -275,7 +275,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Text('was '),
               new Up.Bold([
                 new Up.Text('another '),
-                new Up.InlineNsfl([
+                new Up.InlineRevealable([
                   new Up.Text('loud '),
                   new Up.InlineRevealable([
                     new Up.Text('stomp')
@@ -385,13 +385,13 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable,', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
-      expect(Up.parse('(SPOILER: There was another [NSFL: rotten body)] (example.com/rotten) Hi!')).to.deep.equal(
+      expect(Up.parse('(SPOILER: There was another [highlight: rotten vegetable)] (example.com/rotten) Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
             new Up.Text('There was another '),
-            new Up.InlineNsfl([
+            new Up.Highlight([
               new Up.Link([
-                new Up.Text('rotten body'),
+                new Up.Text('rotten vegetable'),
               ], 'https://example.com/rotten')
             ]),
           ]),
