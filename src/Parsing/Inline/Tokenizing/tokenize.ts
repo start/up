@@ -373,7 +373,7 @@ class Tokenizer {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new ConventionVariation({
-      startsWith: startDelimiterNotFollowedByEndDelimiter(startsWith, endsWith),
+      startsWith: startsWith,
       startPatternContainsATerm,
 
       endsWith,
