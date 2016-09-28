@@ -1,4 +1,4 @@
-import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
+import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Text } from '../../SyntaxNodes/Text'
@@ -26,11 +26,11 @@ const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
   ITALICS,
   BOLD,
   HIGHLIGHT,
-  REVEALABLE,
+  INLINE_REVEALABLE,
   FOOTNOTE,
   NORMAL_PARENTHETICAL,
   SQUARE_PARENTHETICAL,
-  QUOTE
+  INLINE_QUOTE
 ]
 
 const MEDIA_CONVENTIONS = [
@@ -49,7 +49,7 @@ class Parser {
   private tokens: ParseableToken[]
   private tokenIndex = 0
   private countTokensParsed = 0
-  private nodes: InlineSyntaxNode[] = []
+  private inlineSyntaxNodes: InlineSyntaxNode[] = []
 
   constructor(
     args: { tokens: ParseableToken[], until?: TokenRole }) {
@@ -67,22 +67,22 @@ class Parser {
         }
 
         case TokenRole.Text: {
-          this.nodes.push(new Text(token.value))
+          this.inlineSyntaxNodes.push(new Text(token.value))
           continue
         }
 
-        case TokenRole.Code: {
-          this.nodes.push(new InlineCode(token.value))
+        case TokenRole.InlineCode: {
+          this.inlineSyntaxNodes.push(new InlineCode(token.value))
           continue
         }
 
         case TokenRole.ExampleInput: {
-          this.nodes.push(new ExampleInput(token.value))
+          this.inlineSyntaxNodes.push(new ExampleInput(token.value))
           continue
         }
 
         case TokenRole.SectionLink: {
-          this.nodes.push(new SectionLink(token.value))
+          this.inlineSyntaxNodes.push(new SectionLink(token.value))
           continue
         }
 
@@ -92,14 +92,16 @@ class Parser {
           const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
           const urlAfterScheme = url.substr(urlScheme.length)
 
-          this.nodes.push(
+          this.inlineSyntaxNodes.push(
             new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
 
           continue
         }
 
         case LINK.startTokenRole: {
-          let children = this.getInlineSyntaxNodes({ fromHereUntil: TokenRole.LinkEndAndUrl })
+          let children = this.getInlineSyntaxNodes({
+            fromHereUntil: TokenRole.LinkEndAndUrl
+          })
 
           const isContentBlank = isBlank(children)
 
@@ -107,11 +109,11 @@ class Parser {
           let url = this.tokens[this.tokenIndex].value.trim()
 
           if (isContentBlank) {
-            // If a link has blank content, we use its URL as its content
+            // As a rule, if link has blank content, we use its URL as its content
             children = [new Text(url)]
           }
 
-          this.nodes.push(new Link(children, url))
+          this.inlineSyntaxNodes.push(new Link(children, url))
           continue
         }
       }
@@ -124,7 +126,7 @@ class Parser {
           // use the same role for their end tokens.
           let url = this.getNextTokenAndAdvanceIndex().value.trim()
 
-          this.nodes.push(new media.SyntaxNodeType(description, url))
+          this.inlineSyntaxNodes.push(new media.SyntaxNodeType(description, url))
           continue TokenLoop
         }
       }
@@ -135,7 +137,7 @@ class Parser {
             fromHereUntil: richConvention.endTokenRole
           })
 
-          this.nodes.push(new richConvention.SyntaxNodeType(children))
+          this.inlineSyntaxNodes.push(new richConvention.SyntaxNodeType(children))
           continue TokenLoop
         }
       }
@@ -149,7 +151,7 @@ class Parser {
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutiveTextNodes(this.nodes)
+      nodes: combineConsecutiveTextNodes(this.inlineSyntaxNodes)
     }
   }
 

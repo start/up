@@ -43,10 +43,10 @@ export const HIGHLIGHT: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.HighlightEnd
 }
 
-export const QUOTE: RichConventionWithoutExtraFields = {
+export const INLINE_QUOTE: RichConventionWithoutExtraFields = {
   SyntaxNodeType: InlineQuote,
-  startTokenRole: TokenRole.QuoteStart,
-  endTokenRole: TokenRole.QuoteEnd
+  startTokenRole: TokenRole.InlineQuoteStart,
+  endTokenRole: TokenRole.InlineQuoteEnd
 }
 
 export const FOOTNOTE: RichConventionWithoutExtraFields = {
@@ -67,10 +67,10 @@ export const SQUARE_PARENTHETICAL: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.SquareParentheticalEnd
 }
 
-export const REVEALABLE: RichConventionWithoutExtraFields = {
+export const INLINE_REVEALABLE: RichConventionWithoutExtraFields = {
   SyntaxNodeType: InlineRevealable,
-  startTokenRole: TokenRole.RevealableStart,
-  endTokenRole: TokenRole.RevealableEnd
+  startTokenRole: TokenRole.InlineRevealableStart,
+  endTokenRole: TokenRole.InlineRevealableEnd
 }
 
 

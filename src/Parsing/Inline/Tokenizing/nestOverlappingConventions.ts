@@ -1,4 +1,4 @@
-import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
@@ -51,8 +51,8 @@ const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
 // The order is important: We'd rather split a link than revealable ontent, and we'll never split a footnote.
 const CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT = [
   LINK,
-  REVEALABLE,
-  QUOTE,
+  INLINE_REVEALABLE,
+  INLINE_QUOTE,
   FOOTNOTE
 ]
 

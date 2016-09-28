@@ -1,4 +1,4 @@
-import { EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, QUOTE, REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
@@ -6,7 +6,7 @@ import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { BACKSLASH } from '../../Strings'
 import { Settings } from '../../../Settings'
 import { RichConvention } from './RichConvention'
-import { tryToTokenizeCodeOrUnmatchedDelimiter } from './tryToTokenizeCodeOrUnmatchedDelimiter'
+import { tryToTokenizeInlineCode } from './tryToTokenizeInlineCode'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
 import { last, concat, reversed } from '../../../CollectionHelpers'
 import { repeat } from '../../../StringHelpers'
@@ -169,7 +169,7 @@ class Tokenizer {
       conventionForMajorInflection: BOLD
     }, {
       delimiterChar: '"',
-      conventionForMinorInflection: QUOTE
+      conventionForMinorInflection: INLINE_QUOTE
     }
   ].map(args => this.getInflectionHandler(args))
 
@@ -227,7 +227,7 @@ class Tokenizer {
           richConvention: HIGHLIGHT,
           term: this.settings.terms.highlight
         }, {
-          richConvention: REVEALABLE,
+          richConvention: INLINE_REVEALABLE,
           term: this.settings.terms.revealable
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
@@ -572,7 +572,7 @@ class Tokenizer {
   private getLinkifyingUrlConventions(): ConventionVariation[] {
     const LINKIFIABLE_RICH_CONVENTIONS = [
       HIGHLIGHT,
-      REVEALABLE,
+      INLINE_REVEALABLE,
       FOOTNOTE
     ].map(richConvention => richConvention.endTokenRole)
 
@@ -1225,7 +1225,7 @@ class Tokenizer {
 
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
-    return tryToTokenizeCodeOrUnmatchedDelimiter({
+    return tryToTokenizeInlineCode({
       markup: this.markupConsumer.remaining,
       then: (inlineCodeToken, lengthConsumed) => {
         this.flushNonEmptyBufferToTextToken()

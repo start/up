@@ -6,6 +6,11 @@ import { Token } from './Token'
 
 
 // Text surrounded on either side by an equal number of backticks is treated as inline code.
+// 
+// If `markup` starts with inline code, this function tokenizes it, ultimately producing an
+// `InlineCode` token. If `markup` instead starts with an unmatched inline code start delimiter
+// (i.e. streak of backticks), this function produces a text token for that unmatched delimiter.
+// Otherwise, thie method does nothing.
 //
 // Within inline code, backticks can be escaped with a backslash. That being said, inline code can
 // contain streaks of *unescaped* backticks that aren't exactly as long as the delimiters.
@@ -36,7 +41,7 @@ import { Token } from './Token'
 // Furthermore, that single space is only trimmed away when it's used to separate a delimiter from
 // backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
 // between the delimiter and the first backtick, nothing gets trimmed from that side.    
-export function tryToTokenizeCodeOrUnmatchedDelimiter(
+export function tryToTokenizeInlineCode(
   args: {
     markup: string
     then: (inlineCodeToken: Token, lengthConsumed: number) => void
@@ -48,7 +53,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
   let startDelimiter: string
 
   markupConsumer.consume({
-    pattern: CODE_DELIMITER_PATTERN,
+    pattern: DELIMITER_PATTERN,
     thenBeforeConsumingText: delimiter => {
       startDelimiter = delimiter
     }
@@ -82,7 +87,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     let possibleEndDelimiter: string
 
     markupConsumer.consume({
-      pattern: CODE_DELIMITER_PATTERN,
+      pattern: DELIMITER_PATTERN,
       thenBeforeConsumingText: delimiter => {
         possibleEndDelimiter = delimiter
       }
@@ -94,7 +99,7 @@ export function tryToTokenizeCodeOrUnmatchedDelimiter(
     }
 
     if (possibleEndDelimiter === startDelimiter) {
-      then(new Token(TokenRole.Code, trimCode(inlineCode)), markupConsumer.index)
+      then(new Token(TokenRole.InlineCode, trimCode(inlineCode)), markupConsumer.index)
       return true
     }
 
@@ -124,7 +129,7 @@ function trimCode(code: string): string {
 const BACKTICK =
   '`'
 
-const CODE_DELIMITER_PATTERN =
+const DELIMITER_PATTERN =
   patternStartingWith(
     oneOrMore(BACKTICK))
 
