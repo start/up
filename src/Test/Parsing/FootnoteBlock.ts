@@ -1050,13 +1050,13 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
       new Up.Text(' not to.')
     ], { referenceNumber: 1 })
 
-    const nestedFootnoteInNsflBlock = new Up.Footnote([
+    const nestedFootnoteInRevealableBlock = new Up.Footnote([
       new Up.Text("Or smell.")
     ], { referenceNumber: 3 })
 
-    const footnoteInNsflBlock = new Up.Footnote([
+    const footnoteInRevealableBlock = new Up.Footnote([
       new Up.Text("Or touch."),
-      nestedFootnoteInNsflBlock
+      nestedFootnoteInRevealableBlock
     ], { referenceNumber: 2 })
 
     const footnoteAfterBlockquote = new Up.Footnote([
@@ -1077,12 +1077,12 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
-              footnoteInNsflBlock,
+              footnoteInRevealableBlock,
               new Up.Text(" pumpkins.")
             ]),
             new Up.FootnoteBlock([
-              footnoteInNsflBlock,
-              nestedFootnoteInNsflBlock
+              footnoteInRevealableBlock,
+              nestedFootnoteInRevealableBlock
             ])
           ])
         ]),

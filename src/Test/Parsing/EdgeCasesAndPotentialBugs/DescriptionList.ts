@@ -12,7 +12,10 @@ context('The terms for revealable block conventions', () => {
   Something that could get you fired.
   
 \\NSFL
-  Something that could ruin your life.`
+  Something that could ruin your life.
+  
+\\Revealable
+  Something that can be revealed.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -40,6 +43,15 @@ context('The terms for revealable block conventions', () => {
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
                 new Up.Text('Something that could ruin your life.')
+              ])
+            ])),
+
+          new Up.DescriptionList.Item([
+            new Up.DescriptionList.Item.Subject([new Up.Text('Revealable')])
+          ],
+            new Up.DescriptionList.Item.Description([
+              new Up.Paragraph([
+                new Up.Text('Something that can be revealed.')
               ])
             ]))
         ])

@@ -3,8 +3,8 @@ import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 
 
-describe('Square bracketed text starting with "SPOILER:"', () => {
-  it('is put inside an inline spoiler node', () => {
+context('Bracketed text labeled by a revealable term produces an inline revealable node. The label can be:', () => {
+  specify('Spoiler', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
@@ -14,12 +14,31 @@ describe('Square bracketed text starting with "SPOILER:"', () => {
         new Up.Text('.')
       ]))
   })
-})
 
+  specify('NSFW', () => {
+    expect(Up.parse('After you beat the Elite Four, [NSFW: you fight Gary].')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.InlineRevealable([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
 
-describe('Parenthesized text starting with "SPOILER:"', () => {
-  it('is put inside an inline spoiler node', () => {
-    expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.deep.equal(
+  specify('NSFL', () => {
+    expect(Up.parse('After you beat the Elite Four, [NSFL: you fight Gary].')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.InlineRevealable([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify('Revealable', () => {
+    expect(Up.parse('After you beat the Elite Four, [revealable: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.InlineRevealable([
@@ -31,8 +50,19 @@ describe('Parenthesized text starting with "SPOILER:"', () => {
 })
 
 
-describe('An inline spoiler convention', () => {
-  it('can use any capitalization of the word "spoiler"', () => {
+describe('An inline revealable convention', () => {
+  it('can be produced by parentheses', () => {
+    expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight Gary).')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.InlineRevealable([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  it('can use any capitalization for its label', () => {
     const withLowercase = 'After you beat the Elite Four, [spoiler: you fight Gary].'
     const withRandomCase = 'After you beat the Elite Four, [SPoILeR: you fight Gary].'
 
@@ -53,7 +83,7 @@ describe('An inline spoiler convention', () => {
       ]))
   })
 
-  it('can be nested within another spoiler convention', () => {
+  it('can be nested within another inline revealable convention', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [SPOILER: Gary]].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
@@ -69,7 +99,7 @@ describe('An inline spoiler convention', () => {
 })
 
 
-describe('An inline spoiler produced by square brackets', () => {
+describe('An inline revealable convention produced by square brackets', () => {
   it('can contain square bracketed text', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight [and beat] Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -87,7 +117,7 @@ describe('An inline spoiler produced by square brackets', () => {
 })
 
 
-describe('An inline spoiler produced by parentheses', () => {
+describe('An inline revealable convention produced by parentheses', () => {
   it('can contain parenthesized text', () => {
     expect(Up.parse('After you beat the Elite Four, (SPOILER: you fight (and beat) Gary).')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -105,7 +135,7 @@ describe('An inline spoiler produced by parentheses', () => {
 })
 
 
-describe('Any whitespace between "SPOILER:" and the start of the spoiler content', () => {
+describe('Any whitespace between label of an inline revealable convention and the start of its content', () => {
   it('is optional', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER:you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([
