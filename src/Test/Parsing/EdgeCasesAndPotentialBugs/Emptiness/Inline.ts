@@ -3,62 +3,61 @@ import * as Up from '../../../../index'
 import { insideDocumentAndParagraph } from '../../Helpers'
 
 
-context('Inline conventions are not recognized if they are empty or blank.', () => {
+context('Most inline conventions are recognized even when they are empty or blank.', () => {
   context('Empty:', () => {
     specify('Highlights', () => {
       expect(Up.parse('[highlight:]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[highlight:]')
-          ])
+          new Up.Highlight([])
         ]))
     })
 
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[SPOILER:]')
-          ])
+          new Up.InlineRevealable([])
         ]))
     })
 
     specify('Section links', () => {
       expect(Up.parse('[topic:]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[topic:]')
-          ])
+          new Up.SectionLink('')
         ]))
     })
 
     specify('Footnotes', () => {
+      const footnote = new Up.Footnote([])
+
       expect(Up.parse('(^)')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.NormalParenthetical([
-            new Up.Text('(^)')
-          ])
+        new Up.Document([
+          new Up.Paragraph([footnote]),
+          new Up.FootnoteBlock([footnote])
         ]))
     })
 
     specify('Parentheses', () => {
       expect(Up.parse('()')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('()')
+          new Up.NormalParenthetical([
+            new Up.Text('()')
+          ])
         ]))
     })
 
     specify('Square brackets', () => {
       expect(Up.parse('[]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('[]')
+          new Up.SquareParenthetical([
+            new Up.Text('[]')
+          ])
         ]))
     })
 
     specify('Example input', () => {
-      expect(Up.parse('[]')).to.eql(
+      expect(Up.parse('{}')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('[]')
+          new Up.Text('{}')
         ]))
     })
   })
