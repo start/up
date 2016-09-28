@@ -719,7 +719,7 @@ context('When an inline revealable convention overlaps footnote, the revealable 
           new Up.InlineRevealable([
             new Up.Text(' example of a'),
           ]),
-          new Up.Text(' footnote that overlaps an inline NSFW convention.')
+          new Up.Text(' footnote that overlaps an inline revealable convention.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

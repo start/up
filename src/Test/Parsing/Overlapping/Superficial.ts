@@ -222,7 +222,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping each other', () => {
+    specify('Several conventions (some freely splittable, and some with continuity priority) overlapping each other', () => {
       expect(Up.parse('**There _was (SPOILER: another "loud __stomp_**)__". Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
@@ -244,7 +244,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping a single freely-splittable convention', () => {
+    specify('Several conventions (some freely splittable, and some with continuity priority) overlapping a single freely-splittable convention', () => {
       expect(Up.parse('**There _was "another [NSFL: loud __stomp_**"]__. Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
@@ -266,7 +266,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Several conventions (some freely splittable, and some that should only be split when necessary) overlapping two conventions that should only be split when necessary', () => {
+    specify('Several conventions (some freely splittable, and some with continuity priority) overlapping two conventions that should only be split when necessary', () => {
       expect(Up.parse('**There _was __another "loud (SPOILER: stomp_**__"). Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
@@ -275,7 +275,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Text('was '),
               new Up.Bold([
                 new Up.Text('another '),
-                new Up.InlineRevealable([
+                new Up.InlineQuote([
                   new Up.Text('loud '),
                   new Up.InlineRevealable([
                     new Up.Text('stomp')
