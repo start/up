@@ -57,7 +57,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Example input', () => {
       expect(Up.parse('{}')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('{}')
+          new Up.ExampleInput('')
         ]))
     })
   })
@@ -67,57 +67,56 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Highlights', () => {
       expect(Up.parse('[highlight:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[highlight:  \t  \t ]')
-          ])
+          new Up.Highlight([])
         ]))
     })
 
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[SPOILER:  \t  \t ]')
-          ])
+          new Up.InlineRevealable([])
         ]))
     })
 
     specify('Section links', () => {
       expect(Up.parse('[section:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.SquareParenthetical([
-            new Up.Text('[section:  \t  \t ]')
-          ])
+          new Up.SectionLink('')
         ]))
     })
 
     specify('Footnotes', () => {
+      const footnote = new Up.Footnote([])
+
       expect(Up.parse('(^  \t \t )')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.NormalParenthetical([
-            new Up.Text('(^  \t \t )')
-          ])
+        new Up.Document([
+          new Up.Paragraph([footnote]),
+          new Up.FootnoteBlock([footnote])
         ]))
     })
 
     specify('Parentheses', () => {
       expect(Up.parse('(  \t  \t )')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('(  \t  \t )')
-        ]))
+          new Up.SquareParenthetical([
+            new Up.Text('(  \t  \t )')
+          ])
+      ]))
     })
 
     specify('Square brackets', () => {
       expect(Up.parse('[  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('[  \t  \t ]')
-        ]))
+          new Up.SquareParenthetical([
+            new Up.Text('[  \t  \t ]')
+          ])
+      ]))
     })
 
     specify('Example input', () => {
       expect(Up.parse('{  \t  \t }')).to.eql(
         insideDocumentAndParagraph([
-          new Up.Text('{  \t  \t }')
+          new Up.ExampleInput('')
         ]))
     })
   })
