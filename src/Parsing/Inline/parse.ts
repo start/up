@@ -19,27 +19,6 @@ export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
 }
 
 
-// This includes every rich convention except for links, because links have a URL.
-const RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS = [
-  EMPHASIS,
-  STRESS,
-  ITALICS,
-  BOLD,
-  HIGHLIGHT,
-  INLINE_REVEALABLE,
-  FOOTNOTE,
-  NORMAL_PARENTHETICAL,
-  SQUARE_PARENTHETICAL,
-  INLINE_QUOTE
-]
-
-const MEDIA_CONVENTIONS = [
-  AUDIO,
-  IMAGE,
-  VIDEO
-]
-
-
 interface ParseResult {
   nodes: InlineSyntaxNode[]
   countTokensParsed: number
@@ -57,13 +36,13 @@ function parseAndGetResult(
   let tokenIndex = 0
   let nodes: InlineSyntaxNode[] = []
 
-  function getCountTokensParsed(): number {
+  function countTokensParsed(): number {
     return tokenIndex + 1
   }
 
   function getChildren(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
     const result = parseAndGetResult({
-      tokens: tokens.slice(getCountTokensParsed()),
+      tokens: tokens.slice(countTokensParsed()),
       until: args.fromHereUntil
     })
 
@@ -128,7 +107,7 @@ function parseAndGetResult(
       }
     }
 
-    for (const media of MEDIA_CONVENTIONS) {
+    for (const media of [AUDIO, IMAGE, VIDEO]) {
       if (token.role === media.tokenRoleForStartAndDescription) {
         let description = token.value.trim()
 
@@ -142,7 +121,18 @@ function parseAndGetResult(
       }
     }
 
-    for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
+    for (const richConvention of [
+      EMPHASIS,
+      STRESS,
+      ITALICS,
+      BOLD,
+      HIGHLIGHT,
+      INLINE_REVEALABLE,
+      FOOTNOTE,
+      NORMAL_PARENTHETICAL,
+      SQUARE_PARENTHETICAL,
+      INLINE_QUOTE
+    ]) {
       if (token.role === richConvention.startTokenRole) {
         let children = getChildren({
           fromHereUntil: richConvention.endTokenRole
@@ -158,7 +148,7 @@ function parseAndGetResult(
 
   return {
     nodes: combineConsecutiveTextNodes(nodes),
-    countTokensParsed: getCountTokensParsed()
+    countTokensParsed: countTokensParsed()
   }
 }
 

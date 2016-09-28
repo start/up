@@ -73,7 +73,6 @@ export const INLINE_REVEALABLE: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.InlineRevealableEnd
 }
 
-
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
 // `RichConventionWithoutExtraFields` interface.
 export const LINK = {
