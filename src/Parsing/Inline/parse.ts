@@ -10,19 +10,12 @@ import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
 import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { Link } from '../../SyntaxNodes/Link'
-import { RevealableConvention } from './RevealableConvention'
 import { URL_SCHEME_PATTERN } from '../../Patterns'
-
-
-// TODO: Update behavior to reflect the new single revealable convention.
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
 export function parse(tokens: ParseableToken[]): InlineSyntaxNode[] {
-  return new Parser({
-    tokens,
-    ancestorRevealableInlineConventions: []
-  }).result.nodes
+  return new Parser({ tokens }).result.nodes
 }
 
 
@@ -54,20 +47,13 @@ class Parser {
   }
 
   private tokens: ParseableToken[]
-  private ancestorRevealableInlineConventions: RevealableConvention[]
   private tokenIndex = 0
   private countTokensParsed = 0
   private nodes: InlineSyntaxNode[] = []
 
   constructor(
-    args: {
-      tokens: ParseableToken[]
-      until?: TokenRole
-      ancestorRevealableInlineConventions: RevealableConvention[]
-    }
-  ) {
+    args: { tokens: ParseableToken[], until?: TokenRole }) {
     this.tokens = args.tokens
-    this.ancestorRevealableInlineConventions = args.ancestorRevealableInlineConventions
     const endTokenRole = args.until
 
     TokenLoop: for (; this.tokenIndex < this.tokens.length; this.tokenIndex++) {
@@ -145,22 +131,8 @@ class Parser {
       for (const richConvention of RICH_CONVENTIONS_WITHOUT_EXTRA_FIELDS) {
         if (token.role === richConvention.startTokenRole) {
           let children = this.getNodes({
-            fromHereUntil: richConvention.endTokenRole,
-            parentRevealableInlineConvention: (richConvention instanceof RevealableConvention) ? richConvention : null
+            fromHereUntil: richConvention.endTokenRole
           })
-
-          if ((richConvention === FOOTNOTE) && this.ancestorRevealableInlineConventions.length) {
-            // Okay, we're dealing with a footnote that is within a revealable inline convention.
-            //
-            // To prevent this footnote's contents from being exposed within its footnote block, we put its
-            // children directly inside the syntax node representing its closest revealable ancestor. This
-            // stays true to the markup author's original intent.
-            //
-            // On a side note, any footnotes within revealable *outline* conventions are placed into a footnote
-            // block inside the revealable outline convention. This serves the same purpose. 
-            const closestRevealableAncestorConvention = last(this.ancestorRevealableInlineConventions)
-            children = [new closestRevealableAncestorConvention.SyntaxNodeType(children)]
-          }
 
           this.nodes.push(new richConvention.SyntaxNodeType(children))
           continue TokenLoop
@@ -176,7 +148,7 @@ class Parser {
   private setResult(): void {
     this.result = {
       countTokensParsed: this.countTokensParsed,
-      nodes: combineConsecutiveTexts(this.nodes)
+      nodes: combineConsecutiveTextNodes(this.nodes)
     }
   }
 
@@ -184,23 +156,10 @@ class Parser {
     return this.tokens[++this.tokenIndex]
   }
 
-  private getNodes(
-    args: {
-      fromHereUntil: TokenRole
-      parentRevealableInlineConvention?: RevealableConvention
-    }
-  ): InlineSyntaxNode[] {
-    const { parentRevealableInlineConvention } = args
-
-    let outerRevealableConventions =
-      parentRevealableInlineConvention
-        ? this.ancestorRevealableInlineConventions.concat(parentRevealableInlineConvention)
-        : this.ancestorRevealableInlineConventions
-
+  private getNodes(args: { fromHereUntil: TokenRole }): InlineSyntaxNode[] {
     const { result } = new Parser({
       tokens: this.tokens.slice(this.countTokensParsed),
-      until: args.fromHereUntil,
-      ancestorRevealableInlineConventions: outerRevealableConventions
+      until: args.fromHereUntil
     })
 
     this.tokenIndex += result.countTokensParsed
@@ -213,7 +172,7 @@ function isBlank(nodes: InlineSyntaxNode[]): boolean {
   return nodes.every(isWhitespace)
 }
 
-function combineConsecutiveTexts(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
+function combineConsecutiveTextNodes(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {
   const resultNodes: InlineSyntaxNode[] = []
 
   for (const node of nodes) {

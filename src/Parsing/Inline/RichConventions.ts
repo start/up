@@ -11,7 +11,6 @@ import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
 import { Link } from '../../SyntaxNodes/Link'
 import { TokenRole } from './TokenRole'
 import { RichConventionWithoutExtraFields } from './RichConventionWithoutExtraFields'
-import { RevealableConvention } from './RevealableConvention'
 
 
 export const EMPHASIS: RichConventionWithoutExtraFields = {
@@ -68,6 +67,13 @@ export const SQUARE_PARENTHETICAL: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.SquareParentheticalEnd
 }
 
+export const REVEALABLE: RichConventionWithoutExtraFields = {
+  SyntaxNodeType: InlineRevealable,
+  startTokenRole: TokenRole.RevealableStart,
+  endTokenRole: TokenRole.RevealableEnd
+}
+
+
 // The link convention has an extra field: its URL. Therefore, it doesn't satisfy the
 // `RichConventionWithoutExtraFields` interface.
 export const LINK = {
@@ -75,9 +81,3 @@ export const LINK = {
   startTokenRole: TokenRole.LinkStart,
   endTokenRole: TokenRole.LinkEndAndUrl
 }
-
-export const REVEALABLE = new RevealableConvention({
-  SyntaxNodeType: InlineRevealable,
-  startTokenRole: TokenRole.RevealableStart,
-  endTokenRole: TokenRole.RevealableEnd
-})
