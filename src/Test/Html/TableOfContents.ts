@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../index'
 
 
-context('A table of contents produces <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
+context('A table of contents produces a <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {
   specify('When a document has no table of contents entries, the HTML for the table of contents consists only of the above', () => {
     const document =
       new Up.Document([
@@ -20,9 +20,9 @@ context('A table of contents produces <nav class="up-table-of-contents"> startin
       + '</nav>')
 
     expect(documentHtml).to.equal(
-      '<div class="up-nsfw up-revealable">'
-      + '<label for="up-nsfw-1">reveal</label>'
-      + '<input id="up-nsfw-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="up-revealable-1">reveal</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<div role="alert">'
       + '<h1>I enjoy apples</h1>'
       + '</div>'
@@ -403,17 +403,17 @@ context("Within the table of contents itself", () => {
       + '<ul>'
       + '<li><h2><a href="#up-topic-1">'
       + 'I enjoy apples '
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-toc-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-toc-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-toc-revealable-1">reveal</label>'
+      + '<input id="up-toc-revealable-1" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
       + '</a></h2></li>'
       + '<li><h2><a href="#up-topic-2">'
       + 'I enjoy grapes '
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-toc-spoiler-2">toggle spoiler</label>'
-      + '<input id="up-toc-spoiler-2" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-toc-revealable-2">reveal</label>'
+      + '<input id="up-toc-revealable-2" role="button" type="checkbox">'
       + '<span role="alert">usually</span>'
       + '</span>'
       + '</a></h2></li>'
@@ -422,26 +422,26 @@ context("Within the table of contents itself", () => {
 
     expect(documentHtml).to.equal(
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-revealable-1">reveal</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<span role="alert">Never</span>'
       + '</span>'
       + ' eat apples.'
       + '</p>'
       + '<h1 id="up-topic-1">'
       + 'I enjoy apples '
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-2">toggle spoiler</label>'
-      + '<input id="up-spoiler-2" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-revealable-2">reveal</label>'
+      + '<input id="up-revealable-2" role="button" type="checkbox">'
       + '<span role="alert">sometimes</span>'
       + '</span>'
       + '</h1>'
       + '<h1 id="up-topic-2">'
       + 'I enjoy grapes '
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-3">toggle spoiler</label>'
-      + '<input id="up-spoiler-3" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-revealable-3">reveal</label>'
+      + '<input id="up-revealable-3" role="button" type="checkbox">'
       + '<span role="alert">usually</span>'
       + '</span>'
       + '</h1>')

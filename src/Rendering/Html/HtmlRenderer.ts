@@ -46,7 +46,7 @@ export class HtmlRenderer extends Renderer {
   // For example, here's our HTML for inline revealable content:
   //
   // <span class="up-revealable">
-  //   <label for="up-revealable-1">toggle visibility</label>
+  //   <label for="up-revealable-1">reveal</label>
   //   <input id="up-revealable-1" role="button" type="checkbox">
   //   <span role="alert">Ash fights Gary</span>
   // </span>

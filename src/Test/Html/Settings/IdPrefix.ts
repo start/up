@@ -219,9 +219,9 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-revealable-1">reveal</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -243,9 +243,9 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="reply-11-spoiler-1">toggle spoiler</label>'
-      + '<input id="reply-11-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="reply-11-revealable-1">reveal</label>'
+      + '<input id="reply-11-revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -266,9 +266,9 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="spoiler-1">toggle spoiler</label>'
-      + '<input id="spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="revealable-1">reveal</label>'
+      + '<input id="revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -289,9 +289,9 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="spoiler-1">toggle spoiler</label>'
-      + '<input id="spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="revealable-1">reveal</label>'
+      + '<input id="revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -313,9 +313,9 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1">toggle spoiler</label>'
-      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1">reveal</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -332,9 +332,9 @@ describe("The ID of a revealable block's checkbox (on both the checkbox and the 
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">toggle spoiler</label>'
-      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="up-revealable-1">reveal</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
@@ -352,9 +352,9 @@ describe("The ID of a revealable block's checkbox (on both the checkbox and the 
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="reply-11-spoiler-1">toggle spoiler</label>'
-      + '<input id="reply-11-spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="reply-11-revealable-1">reveal</label>'
+      + '<input id="reply-11-revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
@@ -371,9 +371,9 @@ describe("The ID of a revealable block's checkbox (on both the checkbox and the 
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="spoiler-1">toggle spoiler</label>'
-      + '<input id="spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="revealable-1">reveal</label>'
+      + '<input id="revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
@@ -390,9 +390,9 @@ describe("The ID of a revealable block's checkbox (on both the checkbox and the 
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="spoiler-1">toggle spoiler</label>'
-      + '<input id="spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="revealable-1">reveal</label>'
+      + '<input id="revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
@@ -409,9 +409,9 @@ describe("The ID of a revealable block's checkbox (on both the checkbox and the 
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1">toggle spoiler</label>'
-      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1">reveal</label>'
+      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 

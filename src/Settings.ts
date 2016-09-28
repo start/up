@@ -277,7 +277,7 @@ export namespace Settings {
 // In Up, there are two types of terms:
 //
 // 1. Terms found in markup (e.g. "image", "table")
-// 2. Terms rendered to output (e.g. "Table of Contents", "toggle visibility")
+// 2. Terms rendered to output (e.g. "Table of Contents", "reveal")
 //
 // We allow multiple variations for terms found in markup. Internally, each markup term is
 // represented by an array of strings containing those variations.

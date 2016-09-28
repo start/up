@@ -18,9 +18,9 @@ describe("The text in an inline revealable's label", () => {
 
     const html =
       '<p>'
-      + '<span class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">show/hide</label>'
-      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      + '<span class="up-revealable">'
+      + '<label for="up-revealable-1">show/hide</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -43,9 +43,9 @@ describe("The text in a revealable block's label", () => {
     ])
 
     const html =
-      '<div class="up-spoiler up-revealable">'
-      + '<label for="up-spoiler-1">show/hide</label>'
-      + '<input id="up-spoiler-1" role="button" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<label for="up-revealable-1">show/hide</label>'
+      + '<input id="up-revealable-1" role="button" type="checkbox">'
       + '<div role="alert"></div>'
       + '</div>'
 
