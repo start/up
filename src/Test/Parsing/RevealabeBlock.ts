@@ -2,12 +2,70 @@ import { expect } from 'chai'
 import * as Up from '../../index'
 
 
-// TODO: Test other revealable labels
-
-describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
-  it('produces a revealable block node', () => {
+context('When a line consisting solely of a revealable term is followed by an indented block of text, it produces a revealable block. The term can be:', () => {
+  specify('Spoiler', () => {
     const markup = `
-SPOILER:
+SPOILER
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new Up.Paragraph([
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  specify('NSFW', () => {
+    const markup = `
+NSFW
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new Up.Paragraph([
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  specify('NSFL', () => {
+    const markup = `
+NSFL
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new Up.Paragraph([
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  specify('Revealable', () => {
+    const markup = `
+Revealable
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
@@ -27,10 +85,30 @@ SPOILER:
 })
 
 
-describe('The label line in a revealable block', () => {
+describe('The "label line" of a revealable block', () => {
   it('is case-insensitive', () => {
     const markup = `
-sPoiLeR:
+sPoiLeR
+  With a very sad song playing in the background, Ash said goodbye to Pikachu.
+  
+  Luckily, Pikachu ultimately decided to stay.`
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('With a very sad song playing in the background, Ash said goodbye to Pikachu.')
+          ]),
+          new Up.Paragraph([
+            new Up.Text('Luckily, Pikachu ultimately decided to stay.')
+          ])
+        ])
+      ]))
+  })
+
+  it('can be followed by a colon', () => {
+    const markup = `
+Revealable:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
   
   Luckily, Pikachu ultimately decided to stay.`
@@ -157,7 +235,7 @@ SPOILER:  \t  \t
       ]))
   })
 
-  it("can have whitespace the 'spoiler' term if there isn't a colon", () => {
+  it("can have whitespace after the revealable term if there isn't a colon", () => {
     const markup = `
 SPOILER  \t  \t  
 

@@ -3,8 +3,8 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-describe('An inline spoiler followed immediately by a parenthesized/bracketd URL', () => {
-  it('produces an inline spoiler node whose contents are put inside a link pointing to that URL', () => {
+describe('An inline revealable followed immediately by a parenthesized/bracketd URL', () => {
+  it('produces an inline revealable node whose contents are put inside a link pointing to that URL', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary](http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
@@ -19,8 +19,8 @@ describe('An inline spoiler followed immediately by a parenthesized/bracketd URL
 })
 
 
-describe('Any spoiler followed immediately by a parenthesized/bracketed URL', () => {
-  it('produces an inline spoiler node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the spoiler can be different from the type of bracket surrounding the URL', () => {
+describe('Any inline revealable followed immediately by a parenthesized/bracketed URL', () => {
+  it('produces an inline revealable node whose contents are put inside a link pointing to that URL. The type of bracket surrounding the revealable can be different from the type of bracket surrounding the URL', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
       url: 'http://example.com/finalbattle',
@@ -36,7 +36,7 @@ describe('Any spoiler followed immediately by a parenthesized/bracketed URL', ()
 })
 
 
-describe('An inline spoiler directly followed by another spoiler', () => {
+describe('An inline revealable directly followed by another inline revealable', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][SPOILER: and win].')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -53,7 +53,7 @@ describe('An inline spoiler directly followed by another spoiler', () => {
 })
 
 
-describe('An inline spoiler directly followed by a media convention', () => {
+describe('An inline revealable directly followed by a media convention', () => {
   it('is not linkified', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary][audio: final battle theme](https://example.com/songs/123.ogg)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -67,7 +67,7 @@ describe('An inline spoiler directly followed by a media convention', () => {
 })
 
 
-describe('An inline spoiler directly followed by a footnote', () => {
+describe('An inline revealable directly followed by a footnote', () => {
   it("is not linkified", () => {
     const markup = "After you beat the Elite Four, [SPOILER: you fight Gary](^Or whatever you name him.)"
 
@@ -92,7 +92,7 @@ describe('An inline spoiler directly followed by a footnote', () => {
 })
 
 
-describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
+describe('An otherwise-valid linkified revealable with its URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.parse('[SPOILER: he called her](\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -107,7 +107,7 @@ describe('An otherwise-valid linkified spoiler with its URL escaped', () => {
 })
 
 
-context("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+context("When an otherwise-valid linkified revealable's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the spoiler convention is not linkified', () => {
     expect(Up.parse('[SPOILER: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -120,7 +120,7 @@ context("When an otherwise-valid linkified spoiler's URL starts with whitespace,
 })
 
 
-context("If there's no whitespace between an inline spoiler and its bracketed URL", () => {
+context("If there's no whitespace between an inline revealable and its bracketed URL", () => {
   specify("the URL can start with whitespace", () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'SPOILER: you fight Gary',
