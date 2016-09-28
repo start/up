@@ -2,8 +2,8 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe("The text in an inline spoiler's label", () => {
-  it("uses the provided term for 'toggleSpoiler'", () => {
+describe("The text in an inline revealable's label", () => {
+  it("uses the provided term for 'revealContent'", () => {
     const up = new Up.Transformer({
       rendering: {
         terms: { revealContent: 'show/hide' }
@@ -31,7 +31,7 @@ describe("The text in an inline spoiler's label", () => {
 
 
 describe("The text in a revealable block's label", () => {
-  it("uses the provided term for 'toggleSpoiler'", () => {
+  it("uses the provided term for 'revealContent'", () => {
     const up = new Up.Transformer({
       rendering: {
         terms: { revealContent: 'show/hide' }

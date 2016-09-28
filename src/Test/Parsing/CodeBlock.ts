@@ -254,7 +254,7 @@ document.write('The factorial of 5 is: ' + factorial(5))`)
       ]))
   })
 
-  specify('If the code block is nested with a spoiler block, it extends to the end of the spoiler block', () => {
+  specify('If the code block is nested with a revealable block, it extends to the end of the revealable block', () => {
     const markup = `
 SPOILER:
 

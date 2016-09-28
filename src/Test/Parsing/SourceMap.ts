@@ -247,7 +247,7 @@ Apples are blue`
         ]))
     })
 
-    specify('Spoiler blocks (and the outline nodes they contain)', () => {
+    specify('Revealable blocks (and the outline nodes they contain)', () => {
       const markup = `
 SPOILER:
   Who doesn't?`

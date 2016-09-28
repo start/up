@@ -1108,14 +1108,15 @@ class Tokenizer {
     // syntax tree. How? Well...
     //
     // It's less disruptive to split certain conventions than to split others. We'd rather split an
-    // stress convention than an inline spoiler, and we'd rather split an inline spoiler than a footnote.
+    // stress convention than an inline revealable convention, and we'd rather split an inline convention than
+    // a footnote.
     //
     // Once our process for splitting overlapping conventions has determined that a convention is being
-    // overlapped by one that we’d rather split, it splits the convention we’d rather split. Because we’d
-    // rather split stress syntax nodes than revealable syntax nodes, the stress syntax node in the above
-    // example would be split in two, with one half outside the revealable syntax node, and the other half
-    // inside. By moving the revealable convention's end token inside the stress convention, we can avoid
-    // having to split the stress syntax node. 
+    // overlapped by one that we’d rather split, it (naturaly) splits the one we’d rather split. Because we’d
+    // rather split  a stress convention than an inline revealable convention, the stress convention in the
+    // above example would be split in two, with one half outside the revealable convention, and the other half
+    // inside. By moving the revealable convention's end token inside the stress convention, we avoid having to
+    // split the stress convention. 
 
     const startToken = new Token(richConvention.startTokenRole)
     const endToken = new Token(richConvention.endTokenRole)

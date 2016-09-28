@@ -643,10 +643,9 @@ Anyway, none of that matters.`
 })
 
 
-context('To prevent footnotes from "leaking" out of revealable outline conventions, footnote blocks are kept hidden-away inside them. Revealable outline conventions are basically treated as mini-documents.', () => {
-  context('Specifically:', () => {
-    specify('Spoiler blocks', () => {
-      const markup = `
+context('To prevent footnotes from "leaking" out of revealable blocks', () => {
+  specify('footnote blocks are kept hidden-away inside them', () => {
+    const markup = `
 SPOILER:
   I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
  
@@ -655,51 +654,50 @@ SPOILER:
 
   Anyway, none of that matters.`
 
-      const paragraphFootnotes = [
-        new Up.Footnote([
-          new Up.Text('Well, I do, but I pretend not to.')
-        ], { referenceNumber: 1 }),
-        new Up.Footnote([
-          new Up.Text('Except for Mondays.')
-        ], { referenceNumber: 2 })
-      ]
+    const paragraphFootnotes = [
+      new Up.Footnote([
+        new Up.Text('Well, I do, but I pretend not to.')
+      ], { referenceNumber: 1 }),
+      new Up.Footnote([
+        new Up.Text('Except for Mondays.')
+      ], { referenceNumber: 2 })
+    ]
 
-      const lineBlockFootnotes = [
-        new Up.Footnote([
-          new Up.Text('This is not my line.')
-        ], { referenceNumber: 3 }),
-        new Up.Footnote([
-          new Up.Text('Neither is this line. I think my mom made it up.')
-        ], { referenceNumber: 4 })
-      ]
+    const lineBlockFootnotes = [
+      new Up.Footnote([
+        new Up.Text('This is not my line.')
+      ], { referenceNumber: 3 }),
+      new Up.Footnote([
+        new Up.Text('Neither is this line. I think my mom made it up.')
+      ], { referenceNumber: 4 })
+    ]
 
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          new Up.RevealableBlock([
-            new Up.Paragraph([
-              new Up.Text("I don't eat cereal."),
-              paragraphFootnotes[0],
-              new Up.Text(" Never have."),
-              paragraphFootnotes[1]
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text("I don't eat cereal."),
+            paragraphFootnotes[0],
+            new Up.Text(" Never have."),
+            paragraphFootnotes[1]
+          ]),
+          new Up.FootnoteBlock(paragraphFootnotes),
+          new Up.LineBlock([
+            new Up.LineBlock.Line([
+              new Up.Text("Roses are red"),
+              lineBlockFootnotes[0],
             ]),
-            new Up.FootnoteBlock(paragraphFootnotes),
-            new Up.LineBlock([
-              new Up.LineBlock.Line([
-                new Up.Text("Roses are red"),
-                lineBlockFootnotes[0],
-              ]),
-              new Up.LineBlock.Line([
-                new Up.Text("Violets are blue"),
-                lineBlockFootnotes[1]
-              ])
-            ]),
-            new Up.FootnoteBlock(lineBlockFootnotes),
-            new Up.Paragraph([
-              new Up.Text('Anyway, none of that matters.')
+            new Up.LineBlock.Line([
+              new Up.Text("Violets are blue"),
+              lineBlockFootnotes[1]
             ])
+          ]),
+          new Up.FootnoteBlock(lineBlockFootnotes),
+          new Up.Paragraph([
+            new Up.Text('Anyway, none of that matters.')
           ])
-        ]))
-    })
+        ])
+      ]))
   })
 
 

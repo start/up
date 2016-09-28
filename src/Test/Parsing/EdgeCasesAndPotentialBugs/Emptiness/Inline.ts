@@ -829,8 +829,8 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 })
 
 
-describe('An inline spoiler convention with escaped blank content', () => {
-  it('produces an inline spoiler node containing its content (whitespace)', () => {
+describe('An inline revealable convention with escaped blank content', () => {
+  it('produces an inline revealable node containing its content (whitespace)', () => {
     expect(Up.parse("The moral of this severely exciting, enriching story is [SPOILER:\\  ]. I hope it didn't take you too long to read it.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('The moral of this severely exciting, enriching story is '),

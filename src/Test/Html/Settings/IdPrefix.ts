@@ -209,7 +209,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 })
 
 
-describe("The ID of an inline spoiler's checkbox (on both the checkbox and the label)", () => {
+describe("The ID of an inline revealable's checkbox (on both the checkbox and the label)", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const document = new Up.Document([
       new Up.Paragraph([

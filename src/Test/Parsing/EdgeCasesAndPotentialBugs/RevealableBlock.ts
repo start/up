@@ -3,7 +3,7 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-context("A spoiler block's label line does not produce a spoiler block node if it is", () => {
+context("A revealable block's label line does not produce a spoiler block node if it is", () => {
   specify('the last line of the document', () => {
     expect(Up.parse('SPOILER:')).to.deep.equal(
       insideDocumentAndParagraph([

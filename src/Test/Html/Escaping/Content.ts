@@ -102,7 +102,7 @@ describe('Within an example input node, >, \', and "', () => {
 })
 
 
-describe("Within an inline spoiler's label, all instances of < and &", () => {
+describe("Within an inline revealable's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {

@@ -866,7 +866,7 @@ describe('An inline revealable node', () => {
 
 
 describe('A revealable block node', () => {
-  it('produces the same HTML as an inline spoiler node, but with <div role="alert">s instead of <span role="alert">s', () => {
+  it('produces the same HTML as an inline revealable node, but with <div role="alert"> instead of <span role="alert">', () => {
     const document = new Up.Document([
       new Up.RevealableBlock([
         new Up.Paragraph([

@@ -2,8 +2,10 @@ import { expect } from 'chai'
 import * as Up from '../../index'
 
 
+// TODO: Test other revealable labels
+
 describe('A line consisting solely of "SPOILER:", followed by an indented block of text,', () => {
-  it('produces a spoiler block node', () => {
+  it('produces a revealable block node', () => {
     const markup = `
 SPOILER:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
@@ -25,7 +27,7 @@ SPOILER:
 })
 
 
-describe('The "SPOILER:" line in a spoiler block', () => {
+describe('The label line in a revealable block', () => {
   it('is case-insensitive', () => {
     const markup = `
 sPoiLeR:
@@ -178,9 +180,9 @@ SPOILER  \t  \t
 })
 
 
-describe('Spoiler blocks', () => {
+describe('Revealable blocks', () => {
   context('can contain any outline convention, including:', () => {
-    specify('Other spoiler blocks', () => {
+    specify('Other revealable blocks', () => {
       const markup = `
 SPOILER:
 
@@ -303,7 +305,7 @@ SPOILER:
 })
 
 
-context('The indentation of a spoiler block can be provided by', () => {
+context('The indentation of a revealable block can be provided by', () => {
   specify('2 spaces', () => {
     const markup = `
 SPOILER:
@@ -349,7 +351,7 @@ SPOILER:
       ]))
   })
 
-  specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the spoiler block', () => {
+  specify('2 spaces, 1 tab, or 1 space and 1 tab, all on different lines within the revealable block', () => {
     const markup = `
 SPOILER:
 

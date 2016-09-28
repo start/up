@@ -399,7 +399,7 @@ Hello, world!
       ], new Up.Document.TableOfContents([worldHeading, coreHeading])))
   })
 
-  specify('Spoiler blocks', () => {
+  specify('Revealable blocks', () => {
     const markup = `
  \t SPOILER:
  \t
