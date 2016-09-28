@@ -282,12 +282,10 @@ context('A long string of whitespace should never cause cause the parser to hang
   })
 
 
-  specify("Between the delimiters of an otherwise-valid convention that cannot be blank", () => {
+  specify("Between the delimiters of a a rich convention", () => {
     expect(Up.parse('(SPOILER:' + lotsOfSpaces + ')')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(SPOILER:' + lotsOfSpaces + ')')
-        ])
+        new Up.InlineRevealable([])
       ]))
   })
 

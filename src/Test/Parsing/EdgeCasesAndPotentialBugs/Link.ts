@@ -148,57 +148,6 @@ describe('A link missing its final closing bracket', () => {
 })
 
 
-describe("bracketed text followed by a parenthesized URL starting with an open parenthesis (that gets matched at some point before the URL ends)", () => {
-  it('produce a link node (whose URL is prefixed by the default scheme)', () => {
-    expect(Up.parse('See the [documentation]((parenthetical)operators).')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('See the '),
-        new Up.Link([
-          new Up.Text('documentation')
-        ], 'https://(parenthetical)operators'),
-        new Up.Text('.')
-      ]))
-  })
-})
-
-
-
-context('Parenthesized text followed by whitespace followed by an empty bracketed convention does not produce a link. This includes what would otherwise be:', () => {
-  specify('Inline revealables', () => {
-    expect(Up.parse('(I know.) [SPOILER:]')).to.eql(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(I know.)')
-        ]),
-        new Up.Text(' '),
-        new Up.SquareParenthetical([
-          new Up.Text('[SPOILER:]')
-        ])
-      ]))
-  })
-
-  specify('Normal parentheticals', () => {
-    expect(Up.parse('(I know.) ()')).to.eql(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(I know.)')
-        ]),
-        new Up.Text(' ()')
-      ]))
-  })
-
-  specify('Square parentheticals', () => {
-    expect(Up.parse('(I know.) []')).to.eql(
-      insideDocumentAndParagraph([
-        new Up.NormalParenthetical([
-          new Up.Text('(I know.)')
-        ]),
-        new Up.Text(' []')
-      ]))
-  })
-})
-
-
 describe("An almost-link (with whitespace between its content and URL) terminated early due to a space in its URL", () => {
   it('can contain an unclosed square bracket without affecting a link with a square bracketed URL that follows it', () => {
     expect(Up.parse('[sigh] (https://example.com/sad:[ is a strange page) ... [anyway, go here instead] [https://example.com/happy]')).to.deep.equal(
