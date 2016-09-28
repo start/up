@@ -877,3 +877,72 @@ context('The snippet belonging to a section link can contain the same type of br
     })
   })
 })
+
+
+context('An empty or blank section link will not be matched with a table of contents entry', () => {
+  specify('Empty', () => {
+    const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [topic:  \t  \t  ].`
+
+    const sodaHeading =
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        sodaHeading,
+        new Up.Paragraph([
+          new Up.Text('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Up.Paragraph([
+          new Up.Text('Not quite true. For example, see '),
+          new Up.SectionLink(''),
+          new Up.Text('.')
+        ])
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+
+  specify('Blank', () => {
+    const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I never lie
+===========
+
+Not quite true. For example, see [topic:].`
+
+    const sodaHeading =
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+
+    const neverLieHeading =
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        sodaHeading,
+        new Up.Paragraph([
+          new Up.Text('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Up.Paragraph([
+          new Up.Text('Not quite true. For example, see '),
+          new Up.SectionLink(''),
+          new Up.Text('.')
+        ])
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+})

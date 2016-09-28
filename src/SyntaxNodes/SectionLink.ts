@@ -31,6 +31,12 @@ export class SectionLink implements InlineSyntaxNode {
     // "Outer" entries are those that conceptually enclose a given an entry. For example, a level-3
     // heading is enclosed by a level-2 and a level-1 heading.
 
+    // As a rule, section links with empty title snippets are never matched to a table of contents
+    // entry.
+    if (!this.sectionTitleSnippet) {
+      return
+    }
+
     for (const entry of tableOfContents.entries) {
       const textOfEntry = entry.searchableText()
       const { sectionTitleSnippet } = this
@@ -60,7 +66,7 @@ export class SectionLink implements InlineSyntaxNode {
         ? this.entry.searchableText()
         : this.sectionTitleSnippet)
   }
-  
+
   // Right now, searchable text is only used for one thing: to determine whether a given table of
   // contents entry (i.e. a heading) contains the `sectionTitleSnippet` of a section link.
   //
