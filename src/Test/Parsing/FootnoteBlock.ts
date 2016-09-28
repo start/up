@@ -1028,7 +1028,7 @@ I don't eat (^Or touch.) pumpkins.`
 })
 
 
-describe("Within an outline convention, a nested footnote within an (inner) revealable outline convention which follows a nested footnote before the (inner) revealable outline convention", () => {
+describe("Within an outline convention, a nested footnote within an (inner) revealable block which follows a nested footnote before the (inner) revealable block", () => {
   it('has a reference number lower than that of the preceding nested footnote because it gets referenced in an earlier footnote block', () => {
     const markup = `
 > I don't eat cereal. (^Well, I do, but I pretend [^On Mondays.] not to.) Never have.
@@ -1076,7 +1076,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           new Up.Paragraph([
             new Up.Text("It's too expensive.")
           ]),
-          new Up.NsflBlock([
+          new Up.RevealableBlock([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnoteInNsflBlock,

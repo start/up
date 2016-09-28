@@ -22,7 +22,6 @@ import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
 import { InflectionHandler } from './InflectionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
-import { TextThatEnclosesParsedContent } from './TextThatEnclosesParsedContent'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -369,7 +368,6 @@ class Tokenizer {
       insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
       whenClosing?: OnConventionEvent
       mustBeDirectlyFollowedBy?: ConventionVariation[]
-      parsedContentIsEnclosedByText?: TextThatEnclosesParsedContent
     }
   ): ConventionVariation {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args

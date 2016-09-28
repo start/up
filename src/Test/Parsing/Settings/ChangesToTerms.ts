@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../../index'
-import { insideDocumentAndParagraph } from '../Helpers'
 import { settingsFor } from './Helpers'
 import { distinct } from '../../../CollectionHelpers'
 
@@ -454,41 +453,5 @@ I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
     conflictingTermVariations: {
       sectionLink: 'reference'
     }
-  })
-})
-
-
-context('Settings settings are totally independent. When one setting is changed, the others remain as their defaults. This holds true when using', () => {
-  specify('a Transformer object you create', () => {
-    const up = new Up.Transformer({
-      parsing: {
-        terms: {
-          nsfw: 'ruins ending'
-        }
-      }
-    })
-
-    expect(up.parse('[SPOILER: Ash fights Gary]')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineRevealable([
-          new Up.Text('Ash fights Gary')
-        ])
-      ]))
-  })
-
-  specify('the default parse function', () => {
-    const document =
-      Up.parse('[SPOILER: Ash fights Gary]', {
-        terms: {
-          nsfw: 'ruins ending'
-        }
-      })
-
-    expect(document).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.InlineRevealable([
-          new Up.Text('Ash fights Gary')
-        ])
-      ]))
   })
 })
