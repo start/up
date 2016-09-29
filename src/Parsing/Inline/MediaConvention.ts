@@ -4,7 +4,7 @@ import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
 
 
 export interface MediaConvention {
-  term: (terms: Settings.Parsing.Terms) => Settings.Parsing.Term
+  keyword: (terms: Settings.Parsing.Keywords) => Settings.Parsing.Keyword
   SyntaxNodeType: MediaSyntaxNodeType
   tokenRoleForStartAndDescription: TokenRole
 }

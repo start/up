@@ -4,64 +4,64 @@ import { settingsFor } from './Helpers'
 import { distinct } from '../../../CollectionHelpers'
 
 
-// Elsewhere, we verify that these terms work.
+// Elsewhere, we verify that these keywords work.
 //
 // Here, we simply make sure they work as advertised no matter how they are supplied.
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     markupForDefaultSettings: string
-    markupForTermVariations: string
-    termVariations: Up.UserProvidedSettings.Parsing.Terms
-    invalidMarkupForEmptyTerm: string
-    invalidMarkupForBlankTerm: string
-    equivalentTermVariationsPlusEmptyAndBlankVariations: Up.UserProvidedSettings.Parsing.Terms
-    onlyEmptyAndBlankTermVariations: Up.UserProvidedSettings.Parsing.Terms
-    zeroTermVariations: Up.UserProvidedSettings.Parsing.Terms
-    conflictingTermVariations: Up.UserProvidedSettings.Parsing.Terms
+    markupForKeywordVariations: string
+    keywordVariations: Up.UserProvidedSettings.Parsing.Keywords
+    invalidMarkupForEmptyKeyword: string
+    invalidMarkupForBlankKeyword: string
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: Up.UserProvidedSettings.Parsing.Keywords
+    onlyEmptyAndBlankKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
+    zeroKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
+    conflictingKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
   }
 ): void {
-  const { markupForDefaultSettings, markupForTermVariations, invalidMarkupForEmptyTerm, invalidMarkupForBlankTerm } = args
+  const { markupForDefaultSettings, markupForKeywordVariations, invalidMarkupForEmptyKeyword, invalidMarkupForBlankKeyword } = args
 
   // A quick sanity check! Let's make sure the caller didn't accidentlly provide duplicate
   // markup arguments. 
   const distinctMarkupArguments = distinct(
-    markupForTermVariations,
+    markupForKeywordVariations,
     markupForDefaultSettings,
-    invalidMarkupForBlankTerm
+    invalidMarkupForBlankKeyword
   )
 
   expect(distinctMarkupArguments).to.have.lengthOf(3)
 
   // Okay! We're almost ready to start testing.
   //
-  // First, we need to produce actual, usable settings from the provided term variations.
+  // First, we need to produce actual, usable settings from the provided keyword variations.
   //
   // We'll start by producing parsing settings, which are accepted by the library's
   // parsing methods.
 
   const parsingSettingsFor =
-    (changes: Up.UserProvidedSettings.Parsing.Terms): Up.UserProvidedSettings.Parsing => ({
-      terms: changes
+    (changes: Up.UserProvidedSettings.Parsing.Keywords): Up.UserProvidedSettings.Parsing => ({
+      keywords: changes
     })
 
   const changedParsingSettings =
-    parsingSettingsFor(args.termVariations)
+    parsingSettingsFor(args.keywordVariations)
 
   const equivalentParsingSettingsWithEmptyAndBlankVariations =
-    parsingSettingsFor(args.equivalentTermVariationsPlusEmptyAndBlankVariations)
+    parsingSettingsFor(args.equivalentKeywordVariationsPlusEmptyAndBlankVariations)
 
   const equivalentParsingSettingsWithOnlyEmptyAndBlankVariations =
-    parsingSettingsFor(args.onlyEmptyAndBlankTermVariations)
+    parsingSettingsFor(args.onlyEmptyAndBlankKeywordVariations)
 
   const parsingSettingsWithZeroVariations =
-    parsingSettingsFor(args.zeroTermVariations)
+    parsingSettingsFor(args.zeroKeywordVariations)
 
   const conflictingParsingSettings =
-    parsingSettingsFor(args.conflictingTermVariations)
+    parsingSettingsFor(args.conflictingKeywordVariations)
 
   // Next, we'll produce "overall" settings (which cover both parsing and rendering
-  // settings). Up's constructor accepts these settings. 
+  // settings). The `Transformer` class's constructor accepts these settings. 
 
   const changedSettings =
     settingsFor(changedParsingSettings)
@@ -95,7 +95,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
   describe("when provided to the default parse function", () => {
     it("does not alter settings for subsequent calls to the default method", () => {
-      expect(Up.parse(markupForTermVariations, changedParsingSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
+      expect(Up.parse(markupForKeywordVariations, changedParsingSettings)).to.deep.equal(Up.parse(markupForDefaultSettings))
     })
 
     it("does not replace the default variations", () => {
@@ -108,11 +108,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has any empty or blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expectConventionFailToParse(Up.parse(invalidMarkupForEmptyTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
-      expectConventionFailToParse(Up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(Up.parse(invalidMarkupForEmptyKeyword, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(Up.parse(invalidMarkupForBlankKeyword, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
-      // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventiontoProperlyParse(Up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      // Now, let's make sure empty or blank variations don't interfere with valid variations
+      expectConventiontoProperlyParse(Up.parse(markupForKeywordVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
@@ -129,7 +129,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up.Transformer()
 
     it("does not alter the Transformer object's original settings", () => {
-      expectConventiontoProperlyParse(up.parse(markupForTermVariations, changedParsingSettings))
+      expectConventiontoProperlyParse(up.parse(markupForKeywordVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
@@ -142,11 +142,11 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expectConventionFailToParse(up.parse(invalidMarkupForEmptyTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
-      expectConventionFailToParse(up.parse(invalidMarkupForBlankTerm, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(up.parse(invalidMarkupForEmptyKeyword, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventionFailToParse(up.parse(invalidMarkupForBlankKeyword, equivalentParsingSettingsWithEmptyAndBlankVariations))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventiontoProperlyParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
+      expectConventiontoProperlyParse(up.parse(markupForKeywordVariations, equivalentParsingSettingsWithEmptyAndBlankVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
@@ -163,18 +163,18 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     const up = new Up.Transformer(changedSettings)
 
     const whenProvidingChangesAtCreation =
-      up.parse(markupForTermVariations)
+      up.parse(markupForKeywordVariations)
 
-    it('has the same result as providing the term when calling the default parse function', () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForTermVariations, changedParsingSettings))
+    it('has the same result as providing the keyword when calling the default parse function', () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForKeywordVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the term when calling the Transformer object's parse method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer().parse(markupForTermVariations, changedParsingSettings))
+    it("has the same result as providing the keyword when calling the Transformer object's parse method", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer().parse(markupForKeywordVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the term when calling the Transformer object's parse method, overwriting the term provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer(conflictingSettings).parse(markupForTermVariations, changedParsingSettings))
+    it("has the same result as providing the keyword when calling the Transformer object's parse method, overwriting the keyword provided at creation", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer(conflictingSettings).parse(markupForKeywordVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
@@ -186,19 +186,19 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expectConventiontoProperlyParse(new Up.Transformer(conflictingSettings).parse(markupForDefaultSettings))
     })
 
-    it("can be overwritten by providing different custom terms to the parse method", () => {
-      expectConventionFailToParse(up.parse(markupForTermVariations, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
-      expectConventionFailToParse(up.parse(markupForTermVariations, parsingSettingsWithZeroVariations))
-      expectConventionFailToParse(up.parse(markupForTermVariations, conflictingParsingSettings))
+    it("can be overwritten by providing different custom keywords to the parse method", () => {
+      expectConventionFailToParse(up.parse(markupForKeywordVariations, equivalentParsingSettingsWithOnlyEmptyAndBlankVariations))
+      expectConventionFailToParse(up.parse(markupForKeywordVariations, parsingSettingsWithZeroVariations))
+      expectConventionFailToParse(up.parse(markupForKeywordVariations, conflictingParsingSettings))
     })
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyTerm))
-      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankTerm))
+      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyKeyword))
+      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankKeyword))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForTermVariations))
+      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForKeywordVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
@@ -216,134 +216,134 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-describe('The "audio" term', () => {
+describe('The "audio" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
-    markupForTermVariations: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
-    termVariations: {
+    markupForKeywordVariations: '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    keywordVariations: {
       audio: 'listen'
     },
-    invalidMarkupForEmptyTerm: '[: chanting at Nevada caucus][https://example.com/audio.ogg]',
-    invalidMarkupForBlankTerm: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    invalidMarkupForEmptyKeyword: '[: chanting at Nevada caucus][https://example.com/audio.ogg]',
+    invalidMarkupForBlankKeyword: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       audio: [null, 'listen', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       audio: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       audio: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       audio: 'sound'
     }
   })
 })
 
 
-describe('The "image" term', () => {
+describe('The "image" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[see: Chrono Cross logo][https://example.com/cc.png]',
+    markupForKeywordVariations: '[see: Chrono Cross logo][https://example.com/cc.png]',
     markupForDefaultSettings: '[image: Chrono Cross logo][https://example.com/cc.png]',
-    termVariations: {
+    keywordVariations: {
       image: 'see'
     },
-    invalidMarkupForEmptyTerm: '[: Chrono Cross logo][https://example.com/cc.png]',
-    invalidMarkupForBlankTerm: '[ \t \t : Chrono Cross logo][https://example.com/cc.png]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    invalidMarkupForEmptyKeyword: '[: Chrono Cross logo][https://example.com/cc.png]',
+    invalidMarkupForBlankKeyword: '[ \t \t : Chrono Cross logo][https://example.com/cc.png]',
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       image: [null, 'see', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       image: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       image: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       image: 'picture'
     }
   })
 })
 
 
-describe('The "video" term', () => {
+describe('The "video" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[watch: Nevada caucus footage][https://example.com/video.webm]',
+    markupForKeywordVariations: '[watch: Nevada caucus footage][https://example.com/video.webm]',
     markupForDefaultSettings: '[video: Nevada caucus footage][https://example.com/video.webm]',
-    termVariations: {
+    keywordVariations: {
       video: 'watch'
     },
-    invalidMarkupForEmptyTerm: '[: Nevada caucus footage][https://example.com/video.webm]',
-    invalidMarkupForBlankTerm: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    invalidMarkupForEmptyKeyword: '[: Nevada caucus footage][https://example.com/video.webm]',
+    invalidMarkupForBlankKeyword: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       video: [null, 'watch', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       video: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       video: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       video: 'observe'
     }
   })
 })
 
 
-describe('The "highlight" term', () => {
+describe('The "highlight" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[paint: Ash fights Gary]',
+    markupForKeywordVariations: '[paint: Ash fights Gary]',
     markupForDefaultSettings: '[highlight: Ash fights Gary]',
-    termVariations: {
+    keywordVariations: {
       highlight: 'paint'
     },
-    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
-    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    invalidMarkupForEmptyKeyword: '[: Ash fights Gary]',
+    invalidMarkupForBlankKeyword: '[ \t \t : Ash fights Gary]',
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       highlight: [null, 'paint', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       highlight: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       highlight: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       highlight: 'note'
     }
   })
 })
 
 
-describe('The "spoiler" term', () => {
+describe('The "spoiler" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: '[RUINS ENDING: Ash fights Gary]',
+    markupForKeywordVariations: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
-    termVariations: {
+    keywordVariations: {
       revealable: 'ruins ending'
     },
-    invalidMarkupForEmptyTerm: '[: Ash fights Gary]',
-    invalidMarkupForBlankTerm: '[ \t \t : Ash fights Gary]',
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    invalidMarkupForEmptyKeyword: '[: Ash fights Gary]',
+    invalidMarkupForBlankKeyword: '[ \t \t : Ash fights Gary]',
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       revealable: [null, 'ruins ending', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       revealable: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       revealable: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       revealable: 'look away'
     }
   })
 })
 
 
-describe('The "table" term', () => {
+describe('The "table" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: `
+    markupForKeywordVariations: `
 Data:
 
 Game;             Release Date
@@ -357,43 +357,43 @@ Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
 
-    termVariations: {
+    keywordVariations: {
       table: 'data'
     },
 
-    invalidMarkupForEmptyTerm: `
+    invalidMarkupForEmptyKeyword: `
 :
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
 
-    invalidMarkupForBlankTerm: `
+    invalidMarkupForBlankKeyword: `
  \t \t :
 
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`,
 
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       table: [null, 'data', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       table: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       table: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       table: 'info'
     }
   })
 })
 
 
-describe('The "sectionLink" term', () => {
+describe('The "sectionLink" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForTermVariations: `
+    markupForKeywordVariations: `
 I drink exotic soda
 =====================
 
@@ -415,11 +415,11 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [section: exotic].`,
 
-    termVariations: {
+    keywordVariations: {
       sectionLink: 'heading'
     },
 
-    invalidMarkupForEmptyTerm: `
+    invalidMarkupForEmptyKeyword: `
 I drink exotic soda
 =====================
 
@@ -430,7 +430,7 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [: exotic].`,
 
-    invalidMarkupForBlankTerm: `
+    invalidMarkupForBlankKeyword: `
 I drink exotic soda
 =====================
 
@@ -441,16 +441,16 @@ I am interesting
 
 I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
-    equivalentTermVariationsPlusEmptyAndBlankVariations: {
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
       sectionLink: [null, 'heading', '', ' \t \t ', undefined]
     },
-    onlyEmptyAndBlankTermVariations: {
+    onlyEmptyAndBlankKeywordVariations: {
       sectionLink: [null, '', ' \t \t ', undefined]
     },
-    zeroTermVariations: {
+    zeroKeywordVariations: {
       sectionLink: []
     },
-    conflictingTermVariations: {
+    conflictingKeywordVariations: {
       sectionLink: 'reference'
     }
   })

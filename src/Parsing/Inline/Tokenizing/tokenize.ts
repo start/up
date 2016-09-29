@@ -225,10 +225,10 @@ class Tokenizer {
       ...concat([
         {
           richConvention: HIGHLIGHT,
-          term: this.settings.terms.highlight
+          keyword: this.settings.keywords.highlight
         }, {
           richConvention: INLINE_REVEALABLE,
-          term: this.settings.terms.revealable
+          keyword: this.settings.keywords.revealable
         }
       ].map(args => this.getConventionsForLabeledRichBrackets(args))),
 
@@ -320,21 +320,21 @@ class Tokenizer {
   //
   // For all labeled rich bracket conventions:
   //
-  // 1. The term preceding the colon is case-insensitive
+  // 1. The keyword preceding the colon is case-insensitive
   // 2. Whitespace after the colon is optional
   // 3. Parentheses can be used instead of square brackets
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      term: Settings.Parsing.Term
+      keyword: Settings.Parsing.Keyword
     }
   ): ConventionVariation[] {
-    const { richConvention, term } = args
+    const { richConvention, keyword } = args
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
       this.getTokenizableRichConvention({
         richConvention,
-        startsWith: labeledBracketStartDelimiter(term, bracket),
+        startsWith: labeledBracketStartDelimiter(keyword, bracket),
         endsWith: bracket.endPattern,
         startPatternContainsATerm: true
       }))
@@ -464,12 +464,12 @@ class Tokenizer {
   //   Shading pixel art
   //   =================
   private getSectionLinkConventions(): ConventionVariation[] {
-    const term =
-      this.settings.terms.sectionLink
+    const keyword =
+      this.settings.keywords.sectionLink
 
     return PARENTHETICAL_BRACKETS.map(bracket =>
       new ConventionVariation({
-        startsWith: labeledBracketStartDelimiter(term, bracket),
+        startsWith: labeledBracketStartDelimiter(keyword, bracket),
         startPatternContainsATerm: true,
         endsWith: bracket.endPattern,
 
@@ -487,7 +487,7 @@ class Tokenizer {
   private getMediaDescriptionConventions(): ConventionVariation[] {
     return concat(
       [IMAGE, VIDEO, AUDIO].map(media => {
-        const termForThisMediaConvention = media.term(this.settings.terms)
+        const termForThisMediaConvention = media.keyword(this.settings.keywords)
 
         return PARENTHETICAL_BRACKETS.map(bracket =>
           new ConventionVariation({
@@ -1482,7 +1482,7 @@ class Tokenizer {
 }
 
 
-function labeledBracketStartDelimiter(term: Settings.Parsing.Term, bracket: Bracket): string {
+function labeledBracketStartDelimiter(term: Settings.Parsing.Keyword, bracket: Bracket): string {
   return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
 

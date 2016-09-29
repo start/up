@@ -596,7 +596,7 @@ Not quite true.`
 })
 
 
-describe('The term used to create a section link ("section" by default)', () => {
+describe('The keyword used to create a section link ("section" by default)', () => {
   it('is case-insensitive', () => {
     const markup = `
 I drink soda

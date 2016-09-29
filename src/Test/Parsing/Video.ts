@@ -72,7 +72,7 @@ describe("The brackets enclosing a video convention's description and URL", () =
 })
 
 
-describe('The term "vid"', () => {
+describe('The keyword "vid"', () => {
   it('can be used instead of "video".', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'vid: ghostly howling',

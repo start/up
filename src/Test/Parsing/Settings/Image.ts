@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('The term that represents image conventions', () => {
+describe('The keyword that represents image conventions', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { image: 'see' }
+      keywords: { image: 'see' }
     }
   })
 
@@ -29,7 +29,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[see: Chrono Cross logo][https://example.com/cc.png]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         image: ' \t see \t'
       }
     })
@@ -44,7 +44,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[*see*: Chrono Cross logo][https://example.com/cc.png]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         image: '*see*'
       }
     })
@@ -59,7 +59,7 @@ describe('The term that represents image conventions', () => {
     const markup = '[look: Chrono Cross logo](https://example.com/cc.png) [view: Chrono Cross logo](https://example.com/cc.png)'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         image: ['view', 'look']
       }
     })

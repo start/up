@@ -209,7 +209,7 @@ context('Ordered list item bullets can have a single leading space. This include
 
 
 context('Description list subjects can have a single leading space. This includes:', () => {
-  specify('The first term for a description', () => {
+  specify('The first subject for a description', () => {
     const markup = `
  Charmander
 Charmeleon
@@ -230,7 +230,7 @@ Charmeleon
       ]))
   })
 
-  specify('The last term for a description', () => {
+  specify('The last subject for a description', () => {
     const markup = `
 Charmander
  Charmeleon
@@ -251,7 +251,7 @@ Charmander
       ]))
   })
 
-  specify('A term that is neither the first nor the last for a description', () => {
+  specify('A subject that is neither the first nor the last for a description', () => {
     const markup = `
 Charmander
  Charmeleon

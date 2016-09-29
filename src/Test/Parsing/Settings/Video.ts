@@ -2,10 +2,10 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('The term that represents video conventions', () => {
+describe('The keyword that represents video conventions', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { video: 'watch' }
+      keywords: { video: 'watch' }
     }
   })
 
@@ -29,7 +29,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[watch: Nevada caucus footage][https://example.com/video.webm]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         video: ' \t watch \t '
       }
     })
@@ -44,7 +44,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[*watch*: Nevada caucus footage][https://example.com/video.webm]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         video: '*watch*'
       }
     })
@@ -59,7 +59,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[watch: Nevada caucus footage](https://example.com/video.webm) [view: Nevada caucus footage](https://example.com/video.webm)'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         video: ['view', 'watch']
       }
     })

@@ -6,7 +6,7 @@ import { insideDocumentAndParagraph } from '../Helpers'
 context('The "revealable" term is used by both inline revealables and revealable blocks.', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { revealable: 'ruins ending' }
+      keywords: { revealable: 'ruins ending' }
     }
   })
 
@@ -30,7 +30,7 @@ context('The "revealable" term is used by both inline revealables and revealable
     it('is trimmed', () => {
       const document = Up.parse(
         '[RUINS ending: Ash fights Gary]', {
-          terms: {
+          keywords: {
             revealable: ' \t ruins ending \t '
           }
         })
@@ -46,7 +46,7 @@ context('The "revealable" term is used by both inline revealables and revealable
     it('ignores inline conventions and regular expression rules', () => {
       const document = Up.parse(
         '[*RUINS* ending: Ash fights Gary]', {
-          terms: {
+          keywords: {
             revealable: '*ruins* ending'
           }
         })
@@ -62,7 +62,7 @@ context('The "revealable" term is used by both inline revealables and revealable
     it('can have multiple variations', () => {
       const document = Up.parse(
         '[RUINS ENDING: Ash fights Gary][LOOK AWAY: Ash fights Gary]', {
-          terms: {
+          keywords: {
             revealable: ['look away', 'ruins ending']
           }
         })
@@ -129,7 +129,7 @@ RUINS ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {
-        terms: {
+        keywords: {
           revealable: ' \t ruins ending \t '
         }
       })
@@ -156,7 +156,7 @@ RUINS ending:
   Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {
-        terms: {
+        keywords: {
           revealable: '*ruins* ending'
         }
       })
@@ -185,7 +185,7 @@ LOOK AWAY:
     Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {
-        terms: {
+        keywords: {
           revealable: ['look away', 'ruins ending']
         }
       })

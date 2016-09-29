@@ -5,7 +5,7 @@ import * as Up from '../../../index'
 describe('The "sectionLink" term', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { sectionLink: 'heading' }
+      keywords: { sectionLink: 'heading' }
     }
   })
 
@@ -81,7 +81,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         sectionLink: ' \t heading \t '
       }
     })
@@ -120,7 +120,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         sectionLink: '*heading*'
       }
     })
@@ -159,7 +159,7 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         sectionLink: ['heading', 'ref']
       }
     })

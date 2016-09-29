@@ -60,7 +60,7 @@ context('The terms for revealable block conventions', () => {
 })
 
 
-context('The term for table', () => {
+context('The keyword for table', () => {
   it('can be the subject in a description list if it is escaped', () => {
     const markup = `
 \\Table

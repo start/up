@@ -3,10 +3,10 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('The "highlight" term', () => {
+describe('The "highlight" keyword', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { highlight: 'mark' }
+      keywords: { highlight: 'mark' }
     }
   })
 
@@ -29,7 +29,7 @@ describe('The "highlight" term', () => {
   it('is trimmed', () => {
     const markup = '[mark: Ash fights Gary]'
 
-    expect(Up.parse(markup, { terms: { highlight: ' \t mark \t ' } })).to.deep.equal(
+    expect(Up.parse(markup, { keywords: { highlight: ' \t mark \t ' } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Text('Ash fights Gary')
@@ -40,7 +40,7 @@ describe('The "highlight" term', () => {
   it('ignores inline conventions and regular expression rules', () => {
     const markup = '[*mark*: Ash fights Gary]'
 
-    expect(Up.parse(markup, { terms: { highlight: '*mark*' } })).to.deep.equal(
+    expect(Up.parse(markup, { keywords: { highlight: '*mark*' } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Text('Ash fights Gary')
@@ -51,7 +51,7 @@ describe('The "highlight" term', () => {
   it('can have multiple variations', () => {
     const markup = '[paint: Ash fights Gary][mark: Ash fights Gary]'
 
-    expect(Up.parse(markup, { terms: { highlight: ['mark', 'paint'] } })).to.deep.equal(
+    expect(Up.parse(markup, { keywords: { highlight: ['mark', 'paint'] } })).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Text('Ash fights Gary')

@@ -39,7 +39,7 @@ export namespace Settings {
   export class Parsing {
     createSourceMap = false
     fancyEllipsis = '…'
-    terms = new Parsing.Terms()
+    keywords = new Parsing.Keywords()
 
     private defaultUrlScheme = 'https://'
     private baseForUrlsStartingWithSlash = ''
@@ -53,7 +53,7 @@ export namespace Settings {
       clone.defaultUrlScheme = this.defaultUrlScheme
       clone.baseForUrlsStartingWithSlash = this.baseForUrlsStartingWithSlash
       clone.baseForUrlsStartingWithHashMark = this.baseForUrlsStartingWithHashMark
-      clone.terms = this.terms.clone()
+      clone.keywords = this.keywords.clone()
 
       return clone
     }
@@ -78,7 +78,7 @@ export namespace Settings {
       this.baseForUrlsStartingWithHashMark =
         coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
 
-      this.terms.applyUserProvidedSettings(settings.terms)
+      this.keywords.applyUserProvidedSettings(settings.keywords)
     }
 
     // Applies the relevant settings settings to `url` and returns the result.
@@ -104,54 +104,55 @@ export namespace Settings {
 
 
   export namespace Parsing {
-    export class Terms {
-      // Users can provide custom variations for markup terms, but they can't overwrite the
-      // defaults.
+    export class Keywords {
+      // Users can provide custom variations for keywords, but users can't overwrite the
+      // default variations.
       //
-      // However, users *can* overwrite their own custom terms! If the user creates an `Up`
-      // object and provides custom markup terms to its constructor, those terms can be
-      // overwritten by providing the `parse` method with a different set of terms.
+      // However, users *can* overwrite their own custom variations! If the user creates
+      // a `Transformer` object and provides custom keywords to its constructor, those
+      // keywords can be overwritten by providing the `parse` method with a different set
+      // of keywords.
       //
       // The private fields below represent the (sanitized) variations provided by the user
-      // for each term.
-      private _audio: Term = []
-      private _highlight: Term = []
-      private _image: Term = []
-      private _revealable: Term = []
-      private _sectionLink: Term = []
-      private _table: Term = []
-      private _video: Term = []
+      // for each keyword.
+      private _audio: Keyword = []
+      private _highlight: Keyword = []
+      private _image: Keyword = []
+      private _revealable: Keyword = []
+      private _sectionLink: Keyword = []
+      private _table: Keyword = []
+      private _video: Keyword = []
 
-      get audio(): Term {
+      get audio(): Keyword {
         return distinct('audio', ...this._audio)
       }
 
-      get highlight(): Term {
+      get highlight(): Keyword {
         return distinct('highlight', ...this._highlight)
       }
 
-      get image(): Term {
+      get image(): Keyword {
         return distinct('image', 'img', ...this._image)
       }
 
-      get revealable(): Term {
+      get revealable(): Keyword {
         return distinct('spoiler', 'nsfw', 'nsfl', 'revealable', ...this._revealable)
       }
 
-      get sectionLink(): Term {
+      get sectionLink(): Keyword {
         return distinct('section', 'topic', ...this._sectionLink)
       }
 
-      get table(): Term {
+      get table(): Keyword {
         return distinct('table', ...this._table)
       }
 
-      get video(): Term {
+      get video(): Keyword {
         return distinct('video', 'vid', ...this._video)
       }
 
-      clone(): Terms {
-        const clone = new Terms()
+      clone(): Keywords {
+        const clone = new Keywords()
 
         clone._audio = this._audio
         clone._highlight = this._highlight
@@ -164,35 +165,35 @@ export namespace Settings {
         return clone
       }
 
-      applyUserProvidedSettings(terms: UserProvidedSettings.Parsing.Terms): void {
-        if (!terms) {
+      applyUserProvidedSettings(keywords: UserProvidedSettings.Parsing.Keywords): void {
+        if (!keywords) {
           return
         }
 
         this._audio =
-          sanitizeVariations(terms.audio)
+          sanitizeVariations(keywords.audio)
 
         this._highlight =
-          sanitizeVariations(terms.highlight)
+          sanitizeVariations(keywords.highlight)
 
         this._image =
-          sanitizeVariations(terms.image)
+          sanitizeVariations(keywords.image)
 
         this._revealable =
-          sanitizeVariations(terms.revealable)
+          sanitizeVariations(keywords.revealable)
 
         this._sectionLink =
-          sanitizeVariations(terms.sectionLink)
+          sanitizeVariations(keywords.sectionLink)
 
         this._table =
-          sanitizeVariations(terms.table)
+          sanitizeVariations(keywords.table)
 
         this._video =
-          sanitizeVariations(terms.video)
+          sanitizeVariations(keywords.video)
       }
     }
 
-    export type Term = string[]
+    export type Keyword = string[]
   }
 
 
@@ -274,22 +275,16 @@ export namespace Settings {
 }
 
 
-// In Up, there are two types of terms:
+// We allow multiple variations for each keyword. Internally, each keyword is represented by
+// an array of strings containing those variations.
 //
-// 1. Terms found in markup (e.g. "image", "table")
-// 2. Terms rendered to output (e.g. "Table of Contents", "reveal")
+// For a given keyword, if the user wants to specify multiple new variations, those variations
+// are naturally specified using a string array. However, if the user only wants to specify a
+// single new variation, they can specify the single new variation with a plain string.
 //
-// We allow multiple variations for terms found in markup. Internally, each markup term is
-// represented by an array of strings containing those variations.
-//
-// For custom markup terms, if the user wants to specify multiple new variations, those
-// variations are naturally specified using a string array. However, if the user only wants
-// to specify a single new variation, they can specify the single new variation with a plain
-// string.
-//
-// This function takes the markup terms provided by the user, cleans them up, and massages
-// them into the format we use internally.
-function sanitizeVariations(variations: UserProvidedSettings.Parsing.Term): Settings.Parsing.Term {
+// This function takes the keyword variations provided by the user, cleans them up, and massages
+// them into arrays.
+function sanitizeVariations(variations: UserProvidedSettings.Parsing.Keyword): Settings.Parsing.Keyword {
   if (variations == null) {
     return []
   }

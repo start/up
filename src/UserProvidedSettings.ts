@@ -17,21 +17,21 @@ export namespace UserProvidedSettings {
     baseForUrlsStartingWithSlash?: string
     baseForUrlsStartingWithHashMark?: string
     fancyEllipsis?: string
-    terms?: Parsing.Terms
+    keywords?: Parsing.Keywords
   }
 
   export namespace Parsing {
-    export interface Terms {
-      audio?: Term
-      highlight?: Term
-      image?: Term
-      revealable?: Term
-      sectionLink?: Term
-      table?: Term
-      video?: Term
+    export interface Keywords {
+      audio?: Keyword
+      highlight?: Keyword
+      image?: Keyword
+      revealable?: Keyword
+      sectionLink?: Keyword
+      table?: Keyword
+      video?: Keyword
     }
 
-    export type Term = string[] | string
+    export type Keyword = string[] | string
   }
 
 

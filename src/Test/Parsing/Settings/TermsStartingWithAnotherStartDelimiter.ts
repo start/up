@@ -7,7 +7,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   context("When the custom term for 'revealable' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
-        terms: {
+        keywords: {
           revealable: '^lookaway^'
         }
       }
@@ -34,7 +34,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   context("When the custom term for 'audio' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
-        terms: {
+        keywords: {
           audio: '^listen^'
         }
       }
@@ -75,7 +75,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   context("When the custom term for 'image' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
-        terms: {
+        keywords: {
           image: '^look^'
         }
       }
@@ -116,7 +116,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   context("When the custom term for 'video' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
-        terms: {
+        keywords: {
           video: '^watch^'
         }
       }

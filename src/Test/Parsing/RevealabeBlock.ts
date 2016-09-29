@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../index'
 
 
-context('When a line consisting solely of a revealable term is followed by an indented block of text, it produces a revealable block. The term can be:', () => {
+context('When a line consisting solely of a revealable keyword is followed by an indented block of text, it produces a revealable block. The keyword can be:', () => {
   specify('Spoiler', () => {
     const markup = `
 SPOILER

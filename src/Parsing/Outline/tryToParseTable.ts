@@ -9,7 +9,7 @@ import { getTableCells } from './getTableCells'
 
 
 // Tables start with a "label line". The label line consists of the configurable
-// term for "table", followed by an optional colon, followed by an optional
+// keyword for "table", followed by an optional colon, followed by an optional
 // caption. The caption can contain inline conventions.
 //
 // Next, there's the header, which is a line of semicolon-delimited cells.
@@ -61,7 +61,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const { settings } = args
 
   const labelPattern = solelyAndIgnoringCapitalization(
-    either(...settings.terms.table.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
+    either(...settings.keywords.table.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
 
   let captionMarkup: string
 

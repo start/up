@@ -470,7 +470,7 @@ Super Mario Kart\\; Mario Kart 64;  Nintendo`
 })
 
 
-describe("The colon after the 'table' term", () => {
+describe("The colon after the 'table' keyword", () => {
   it('is optional if there is no caption', () => {
     const markup = `
 Table

@@ -3,7 +3,7 @@ import * as Up from '../../index'
 import { insideDocumentAndParagraph } from './Helpers'
 
 
-context('Bracketed text labeled by a revealable term produces an inline revealable node. The label can be:', () => {
+context('Bracketed text "labeled" with a revealable keyword produces an inline revealable node. The keyword can be:', () => {
   specify('Spoiler', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary].')).to.deep.equal(
       insideDocumentAndParagraph([

@@ -6,17 +6,17 @@ import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } fro
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// A revealable block consists of a "label line" (a term followed by an optional colon) followed by
+// A revealable block consists of a "label line" (a keyword followed by an optional colon) followed by
 // an indented block.
 //
-// A revealable block can contain any outline convention, and its label's term is case-insensitive. 
+// A revealable block can contain any outline convention, and its label's keyword is case-insensitive. 
 export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  const { terms } = args.settings
+  const { keywords } = args.settings
 
   const labelLinePattern =
     solelyAndIgnoringCapitalization(
-      either(...terms.revealable.map(escapeForRegex)) + optional(':'))
+      either(...keywords.revealable.map(escapeForRegex)) + optional(':'))
 
   if (!markupLineConsumer.consume({ linePattern: labelLinePattern })) {
     return false

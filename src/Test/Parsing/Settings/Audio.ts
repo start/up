@@ -2,14 +2,14 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('The term that represents video conventions', () => {
+describe('The keyword that represents video conventions', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { audio: 'listen' }
+      keywords: { audio: 'listen' }
     }
   })
 
-  it('comes from the "audio" term', () => {
+  it('comes from the "audio" keyword', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     expect(up.parse(markup)).to.deep.equal(
@@ -29,7 +29,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[listen: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         audio: ' \t listen \t '
       }
     })
@@ -44,7 +44,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[*listen*: chanting at Nevada caucus][https://example.com/audio.ogg]'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         audio: '*listen*'
       }
     })
@@ -59,7 +59,7 @@ describe('The term that represents video conventions', () => {
     const markup = '[hear: chanting at Nevada caucus](https://example.com/audio.ogg) [listen: chanting at Nevada caucus](https://example.com/audio.ogg)'
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         audio: ['hear', 'listen']
       }
     })

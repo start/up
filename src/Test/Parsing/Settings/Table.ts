@@ -5,7 +5,7 @@ import * as Up from '../../../index'
 describe('The "table" term', () => {
   const up = new Up.Transformer({
     parsing: {
-      terms: { table: 'data' }
+      keywords: { table: 'data' }
     }
   })
 
@@ -63,7 +63,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         table: ' \t data \t '
       }
     })
@@ -96,7 +96,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         table: '*data*'
       }
     })
@@ -136,7 +136,7 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`
 
     const document = Up.parse(markup, {
-      terms: {
+      keywords: {
         table: ['data', 'info']
       }
     })

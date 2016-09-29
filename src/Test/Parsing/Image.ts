@@ -72,7 +72,7 @@ describe("The brackets enclosing an image convention's description and URL", () 
 })
 
 
-describe('The term "img"', () => {
+describe('The keyword "img"', () => {
   it('can be used instead of "image"', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'image: ghostly howling',

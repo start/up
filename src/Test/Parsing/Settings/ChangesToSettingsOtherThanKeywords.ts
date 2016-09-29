@@ -21,8 +21,8 @@ function itWorksAsAdvertised(
   // First, let's make sure the caller is expecting their settings changes to make a difference
   expect(documentWhenChangeIsApplied).to.not.deep.equal(documentWhenSettingIsNotChanged)
 
-  // Next, we'll produce "overall" settings (which cover both parsing and rendering
-  // settings). Up's constructor accepts these settings. 
+  // Next, we'll produce "overall" settings (which cover both parsing and rendering setttings).
+  // The `Transformer` class's constructor accepts these settings.
   const changedSettings = settingsFor(change)
   const conflictingChangedSettings = settingsFor(changeBackToDefault)
 
