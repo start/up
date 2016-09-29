@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('The "table" term', () => {
+describe('The "table" keyword', () => {
   const up = new Up.Transformer({
     parsing: {
       keywords: { table: 'data' }

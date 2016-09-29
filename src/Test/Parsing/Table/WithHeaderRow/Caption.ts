@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../../index'
 
 
-context("In a table's label line, when the term for 'table' is followed by a colon,", () => {
+context("In a table's label line, when the keyword for 'table' is followed by a colon,", () => {
   specify('the colon can be folowed by a caption', () => {
     const markup = `
 Table: Games in the Chrono series
@@ -162,7 +162,7 @@ Game;           Release Date`
 })
 
 
-context("When there isn't a colon after the term for 'table' in a table's label line", () => {
+context("When there isn't a colon after the keyword for 'table' in a table's label line", () => {
   specify('the table cannot have a caption', () => {
     const markup = `
 Table the proposal.

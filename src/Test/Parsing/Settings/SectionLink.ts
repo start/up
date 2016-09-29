@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../index'
 
 
-describe('The "sectionLink" term', () => {
+describe('The "sectionLink" keyword', () => {
   const up = new Up.Transformer({
     parsing: {
       keywords: { sectionLink: 'heading' }

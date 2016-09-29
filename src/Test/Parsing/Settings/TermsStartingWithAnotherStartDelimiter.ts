@@ -3,8 +3,8 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-context("When the custom term for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
-  context("When the custom term for 'revealable' starts with a caret", () => {
+context("When the custom keyword for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
+  context("When the custom keyword for 'revealable' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
         keywords: {
@@ -13,7 +13,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       }
     })
 
-    specify('inline revealables can be produced using the term', () => {
+    specify('inline revealables can be produced using the keyword', () => {
       expect(up.parse('[^lookaway^: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -31,7 +31,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'audio' starts with a caret", () => {
+  context("When the custom keyword for 'audio' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
         keywords: {
@@ -40,7 +40,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       }
     })
 
-    specify('audio conventions can be produced using the term', () => {
+    specify('audio conventions can be produced using the keyword', () => {
       expect(up.parse('[^listen^: Ash fights Gary](example.com/audio.ogg)')).to.deep.equal(
         new Up.Document([
           new Up.Audio('Ash fights Gary', 'https://example.com/audio.ogg')
@@ -72,7 +72,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'image' starts with a caret", () => {
+  context("When the custom keyword for 'image' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
         keywords: {
@@ -81,7 +81,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       }
     })
 
-    specify('audio conventions can be produced using the term', () => {
+    specify('audio conventions can be produced using the keyword', () => {
       expect(up.parse('[^look^: Ash fights Gary](example.com/image.svg)')).to.deep.equal(
         new Up.Document([
           new Up.Image('Ash fights Gary', 'https://example.com/image.svg')
@@ -113,7 +113,7 @@ context("When the custom term for an inline convention starts with a caret, the 
   })
 
 
-  context("When the custom term for 'video' starts with a caret", () => {
+  context("When the custom keyword for 'video' starts with a caret", () => {
     const up = new Up.Transformer({
       parsing: {
         keywords: {
@@ -122,7 +122,7 @@ context("When the custom term for an inline convention starts with a caret, the 
       }
     })
 
-    specify('audio conventions can be produced using the term', () => {
+    specify('audio conventions can be produced using the keyword', () => {
       expect(up.parse('[^watch^: Ash fights Gary](example.com/video.webm)')).to.deep.equal(
         new Up.Document([
           new Up.Video('Ash fights Gary', 'https://example.com/video.webm')

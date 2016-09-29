@@ -235,7 +235,7 @@ SPOILER:  \t  \t
       ]))
   })
 
-  it("can have whitespace after the revealable term if there isn't a colon", () => {
+  it("can have whitespace after the revealable keyword if there isn't a colon", () => {
     const markup = `
 SPOILER  \t  \t  
 

@@ -1482,8 +1482,8 @@ class Tokenizer {
 }
 
 
-function labeledBracketStartDelimiter(term: Settings.Parsing.Keyword, bracket: Bracket): string {
-  return bracket.startPattern + either(...term.map(escapeForRegex)) + ':' + ANY_WHITESPACE
+function labeledBracketStartDelimiter(keyword: Settings.Parsing.Keyword, bracket: Bracket): string {
+  return bracket.startPattern + either(...keyword.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
 
 

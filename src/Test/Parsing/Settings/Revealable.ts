@@ -3,14 +3,14 @@ import * as Up from '../../../index'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-context('The "revealable" term is used by both inline revealables and revealable blocks.', () => {
+context('The "revealable" keyword is used by both inline revealables and revealable blocks.', () => {
   const up = new Up.Transformer({
     parsing: {
       keywords: { revealable: 'ruins ending' }
     }
   })
 
-  context('For inline revealables, the term', () => {
+  context('For inline revealables, the keyword', () => {
     it('is used', () => {
       expect(up.parse('[ruins ending: Ash fights Gary]')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -80,7 +80,7 @@ context('The "revealable" term is used by both inline revealables and revealable
   })
 
 
-  context('For revealable blocks, the term', () => {
+  context('For revealable blocks, the keyword', () => {
     specify('is used', () => {
       const markup = `
 ruins ending:
