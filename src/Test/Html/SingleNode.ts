@@ -351,6 +351,35 @@ context('When a table has a header column', () => {
       new Up.Table(
         new Up.Table.Header([
           new Up.Table.Header.Cell([]),
+          new Up.Table.Header.Cell([new Up.Text('Developer')])
+        ]), [
+          new Up.Table.Row([
+            new Up.Table.Row.Cell([new Up.Text('Square')])
+          ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
+          new Up.Table.Row([
+            new Up.Table.Row.Cell([new Up.Text('Nintendo')])
+          ], new Up.Table.Header.Cell([new Up.Text('Super Mario Kart')]))
+        ],
+        new Up.Table.Caption([new Up.Text('Influential Games')]))
+    ])
+
+    expect(Up.render(document)).to.equal(
+      '<table>'
+      + '<caption>Influential Games</caption>'
+      + '<thead><tr><th scope="col"></th><th scope="col">Developer</th></tr></thead>'
+      + '<tr><th scope="row">Final Fantasy</th><td>Square</td></tr>'
+      + '<tr><th scope="row">Super Mario Kart</th><td>Nintendo</td></tr>'
+      + '</table>')
+  })
+})
+
+
+describe('When any table header cell has a numeric value, incuding those in the header column of a table,', () => {
+  specify('the <th> produced for those cells has the "up-numerifc" class', () => {
+    const document = new Up.Document([
+      new Up.Table(
+        new Up.Table.Header([
+          new Up.Table.Header.Cell([]),
           new Up.Table.Header.Cell([new Up.Text('1')]),
           new Up.Table.Header.Cell([new Up.Text('0')])
         ]), [
@@ -369,13 +398,16 @@ context('When a table has a header column', () => {
     expect(Up.render(document)).to.equal(
       '<table>'
       + '<caption>AND operator logic</caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
+      + '<thead><tr><th scope="col"></th><th class="up-numeric" scope="col">1</th><th class="up-numeric" scope="col">0</th></tr></thead>'
+      + '<tr><th class="up-numeric" scope="row">1</th><td>true</td><td>false</td></tr>'
+      + '<tr><th class="up-numeric" scope="row">0</th><td>false</td><td>false</td></tr>'
       + '</table>')
   })
+})
 
-  specify('When a header column cell spans multiple columns, the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
+
+context('When a header column cell spans multiple columns', () => {
+  specify('the <th> element produced for that cell has a "colspan" attribute whose value is the number of columns spanned', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
