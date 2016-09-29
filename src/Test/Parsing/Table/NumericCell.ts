@@ -18,10 +18,12 @@ function expectTableCellNotToBeNumeric(cellMarkup: string): void {
 function expectTableCell(args: { cellMarkup: string, toBeNumeric: boolean }): void {
   const { cellMarkup, toBeNumeric } = args
 
-  expect(isCellNumeric(cellMarkup)).to.deep.equal(toBeNumeric)
-}
-
-function isCellNumeric(cellMarkup: string): boolean {
+  // The `isNumeric` method exists on the base `Table.Cell` class, which is extended by
+  // both `Table.Row.Cell` and Table.Header.Cell`.
+  //
+  // It's less complicated to test `isNumeric` on a `Table.Row.Cell`, because if
+  // `cellMarkup` is pure whitespace, inserting it into a header cell would give the
+  // table a header column.
   const markup = `
 Table
 Dummy Header Cell
@@ -30,11 +32,14 @@ ${cellMarkup};`
   const table =
     Up.parse(markup).children[0] as Up.Table
 
-  return table.rows[0].cells[0].isNumeric()
+  const isCellNumeric =
+    table.rows[0].cells[0].isNumeric()
+
+  expect(isCellNumeric).to.equal(toBeNumeric)
 }
 
 
-context('A table row cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
+context('A table cell is numeric if its text content (ignoring footnotes) contains digits, no letters, no underscores, and no spaces.', () => {
   context('This includes', () => {
     specify('an integer', () => {
       expectTableCellToBeNumeric('1995')
