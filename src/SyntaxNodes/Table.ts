@@ -51,13 +51,23 @@ export namespace Table {
 
 
   export abstract class Cell extends InlineSyntaxNodeContainer {
-    constructor(
-      children: InlineSyntaxNode[],
-      public countColumnsSpanned = 1
-    ) {
+    constructor(children: InlineSyntaxNode[], public countColumnsSpanned = 1) {
       super(children)
     }
+
+    isNumeric(): boolean {
+      const textContent = this.children
+        .map(child => child.textAppearingInline())
+        .join('')
+
+      return CONTAINS_DIGIT.test(textContent) && !CONTAINS_NON_NUMERIC_CHARACTER.test(textContent)
+    }
   }
+
+  const CONTAINS_DIGIT = new RegExp(DIGIT)
+
+  const CONTAINS_NON_NUMERIC_CHARACTER = new RegExp(
+    anyCharMatching(LETTER_CLASS, '_', WHITESPACE_CHAR))
 
 
   export class Header {
@@ -87,21 +97,7 @@ export namespace Table {
 
   export namespace Row {
     export class Cell extends Table.Cell {
-      isNumeric(): boolean {
-        const textContent = this.children
-          .map(child => child.textAppearingInline())
-          .join('')
-
-        return HAS_DIGIT_PATTERN.test(textContent) && !HAS_NON_NUMERIC_CHARACTER_PATTERN.test(textContent)
-      }
-
       protected TABLE_ROW_CELL(): void { }
     }
-
-
-    const HAS_DIGIT_PATTERN = new RegExp(DIGIT)
-
-    const HAS_NON_NUMERIC_CHARACTER_PATTERN = new RegExp(
-      anyCharMatching(LETTER_CLASS, '_', WHITESPACE_CHAR))
   }
 }
