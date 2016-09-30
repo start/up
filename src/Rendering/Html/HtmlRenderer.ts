@@ -505,10 +505,7 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
   }
 
-  private tableHeaderCell(
-    cell: Table.Header.Cell,
-    scope: 'col' | 'row'
-  ): string {
+  private tableHeaderCell(cell: Table.Header.Cell, scope: 'col' | 'row'): string {
     return this.tableCell('th', cell, { scope })
   }
 
@@ -524,16 +521,14 @@ export class HtmlRenderer extends Renderer {
   }
 
   private tableRowCell(cell: Table.Row.Cell): string {
-    const attrs: { class?: string } = {}
+    return this.tableCell('td', cell)
+  }
 
+  private tableCell(tagName: string, cell: Table.Cell, attrs: any = {}): string {
     if (cell.isNumeric()) {
       attrs.class = classAttrValue('numeric')
     }
 
-    return this.tableCell('td', cell, attrs)
-  }
-
-  private tableCell(tagName: string, cell: Table.Cell, attrs: any = {}): string {
     if (cell.countColumnsSpanned > 1) {
       attrs.colspan = cell.countColumnsSpanned
     }

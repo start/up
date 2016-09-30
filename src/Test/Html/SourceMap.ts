@@ -164,7 +164,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</table>')
   })
 
-  specify('Charts', () => {
+  specify('Tables with a header column', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
@@ -189,9 +189,9 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal(
       '<table data-up-source-line="3">'
       + '<caption>AND operator logic</caption>'
-      + '<thead><tr><th scope="col"></th><th scope="col">1</th><th scope="col">0</th></tr></thead>'
-      + '<tr><th scope="row">1</th><td>true</td><td>false</td></tr>'
-      + '<tr><th scope="row">0</th><td>false</td><td>false</td></tr>'
+      + '<thead><tr><th scope="col"></th><th class="up-numeric" scope="col">1</th><th class="up-numeric" scope="col">0</th></tr></thead>'
+      + '<tr><th class="up-numeric" scope="row">1</th><td>true</td><td>false</td></tr>'
+      + '<tr><th class="up-numeric" scope="row">0</th><td>false</td><td>false</td></tr>'
       + '</table>')
   })
 
