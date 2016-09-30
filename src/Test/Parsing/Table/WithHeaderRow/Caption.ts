@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../index'
+import * as Up from '../../../../Up'
 
 
 context("In a table's label line, when the keyword for 'table' is followed by a colon,", () => {

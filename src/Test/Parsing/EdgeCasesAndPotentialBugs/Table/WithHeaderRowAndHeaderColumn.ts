@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../index'
+import * as Up from '../../../../Up'
 
 
 context('Within a table with a header column:', () => {

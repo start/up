@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../Up'
 
 
 context('Inline documents completely ignore outline conventions. This includes:', () => {

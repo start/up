@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../Up'
 
 
 describe('The main heading within the table of contents', () => {

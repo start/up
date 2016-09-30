@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../Up'
 
 
 context('A table of contents produces a <nav class="up-table-of-contents"> starting with an <h1> containing the term for "Table of Contents".', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../Up'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {

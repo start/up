@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../Up'
 
 
 describe('An ordered list with non-numeral bullets', () => {

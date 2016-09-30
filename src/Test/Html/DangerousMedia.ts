@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../Up'
  
 
 // TODO: The rules for "dangerous" media elements might be too cautious.

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../index'
+import * as Up from '../../../../Up'
 
 
 describe('In a table with a header column, a row that ends with an unescaped semicolon', () => {

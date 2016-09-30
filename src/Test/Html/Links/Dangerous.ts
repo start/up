@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../Up'
 
 
 context('By default, links with dangerous schemes produce no <a> elements. Instead, their contents are included directly into their outer element. These dangerous URL schemes are:', () => {

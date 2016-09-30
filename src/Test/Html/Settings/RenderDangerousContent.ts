@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../index'
+import * as Up from '../../../Up'
 
 
 context('When the "renderDangerousContent" setting is enabled, links/media with dangerous URL schemes produce their regular HTML elements.', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../index'
+import * as Up from '../../Up'
 
 
 context("The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:", () => {
