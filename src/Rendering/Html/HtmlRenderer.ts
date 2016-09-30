@@ -90,7 +90,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   blockquote(blockquote: Blockquote): string {
-    return this.element('blockquote', blockquote.children, attrsFor(blockquote))
+    return this.htmlElement('blockquote', blockquote.children, attrsFor(blockquote))
   }
 
   unorderedList(list: UnorderedList): string {
@@ -146,7 +146,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   paragraph(paragraph: Paragraph): string {
-    return this.element('p', paragraph.children, attrsFor(paragraph))
+    return this.htmlElement('p', paragraph.children, attrsFor(paragraph))
   }
 
   heading(heading: Heading): string {
@@ -156,7 +156,7 @@ export class HtmlRenderer extends Renderer {
       attrs.id = this.idOfActualEntryInDocument(heading)
     }
 
-    return this.element(
+    return this.htmlElement(
       'h' + Math.min(6, heading.level),
       heading.children,
       attrsFor(heading, attrs))
@@ -167,19 +167,19 @@ export class HtmlRenderer extends Renderer {
   }
 
   emphasis(emphasis: Emphasis): string {
-    return this.element('em', emphasis.children)
+    return this.htmlElement('em', emphasis.children)
   }
 
   stress(stress: Stress): string {
-    return this.element('strong', stress.children)
+    return this.htmlElement('strong', stress.children)
   }
 
   italics(italics: Italics): string {
-    return this.element('i', italics.children)
+    return this.htmlElement('i', italics.children)
   }
 
   bold(bold: Bold): string {
-    return this.element('b', bold.children)
+    return this.htmlElement('b', bold.children)
   }
 
   inlineCode(inlineCode: InlineCode): string {
@@ -213,11 +213,11 @@ export class HtmlRenderer extends Renderer {
   }
 
   highlight(highlight: Highlight): string {
-    return this.element('mark', highlight.children)
+    return this.htmlElement('mark', highlight.children)
   }
 
   inlineQuote(inlineQuote: InlineQuote): string {
-    return this.element('q', inlineQuote.children)
+    return this.htmlElement('q', inlineQuote.children)
   }
 
   inlineRevealable(inlineRevealable: InlineRevealable): string {
@@ -241,7 +241,7 @@ export class HtmlRenderer extends Renderer {
       return ''
     }
 
-    return this.element(
+    return this.htmlElement(
       'sup',
       [this.footnoteReferenceInnerLink(footnote)], {
         id: this.footnoteReferenceId(footnote.referenceNumber),
@@ -279,7 +279,7 @@ export class HtmlRenderer extends Renderer {
     this.isInsideLink = true
 
     const html =
-      this.element('a',
+      this.htmlElement('a',
         link.children,
         attrsFor(link, { href: link.url }))
 
@@ -353,11 +353,11 @@ export class HtmlRenderer extends Renderer {
       class: classAttrValue('parenthetical', ...extraCssClassNames)
     }
 
-    return this.element('small', parenthetical.children, attrs)
+    return this.htmlElement('small', parenthetical.children, attrs)
   }
 
   private unorderedListItem(listItem: UnorderedList.Item): string {
-    return this.element('li', listItem.children)
+    return this.htmlElement('li', listItem.children)
   }
 
   private orderedListItem(listItem: OrderedList.Item): string {
@@ -367,7 +367,7 @@ export class HtmlRenderer extends Renderer {
       attrs.value = listItem.ordinal
     }
 
-    return this.element('li', listItem.children, attrs)
+    return this.htmlElement('li', listItem.children, attrs)
   }
 
   private descriptionListItem(listItem: DescriptionList.Item): string {
@@ -377,15 +377,15 @@ export class HtmlRenderer extends Renderer {
   }
 
   private descriptionSubject(subject: DescriptionList.Item.Subject): string {
-    return this.element('dt', subject.children)
+    return this.htmlElement('dt', subject.children)
   }
 
   private description(description: DescriptionList.Item.Description): string {
-    return this.element('dd', description.children)
+    return this.htmlElement('dd', description.children)
   }
 
   private line(line: LineBlock.Line): string {
-    return this.element('div', line.children)
+    return this.htmlElement('div', line.children)
   }
 
   private footnoteReferenceInnerLink(footnoteReference: Footnote): Link {
@@ -398,13 +398,13 @@ export class HtmlRenderer extends Renderer {
 
   private footnoteInFootnoteBlock(footnote: Footnote): string {
     const linkBackToReferenceContainer =
-      this.element(
+      this.htmlElement(
         'dt',
         [this.footnoteLinkBackToReference(footnote)],
         { id: this.footnoteId(footnote.referenceNumber) })
 
     const bodyContainer =
-      this.element('dd', footnote.children)
+      this.htmlElement('dd', footnote.children)
 
     return linkBackToReferenceContainer + bodyContainer
   }
@@ -432,7 +432,7 @@ export class HtmlRenderer extends Renderer {
           controls: NO_ATTRIBUTE_VALUE
         })
 
-    return this.element(tagName, this.playableMediaFallback(description, url), attrs)
+    return this.htmlElement(tagName, this.playableMediaFallback(description, url), attrs)
   }
 
   private playableMediaFallback(content: string, url: string): Link[] {
@@ -471,7 +471,7 @@ export class HtmlRenderer extends Renderer {
       htmlElement('label', this.settings.terms.revealContent, { for: checkboxId })
 
     const revealableContent =
-      this.element(
+      this.htmlElement(
         args.tagNameForGenericContainers,
         args.revealableSyntaxNode.children,
         { role: 'alert' })
@@ -490,8 +490,7 @@ export class HtmlRenderer extends Renderer {
   private tableCaption(caption: Table.Caption): string {
     return (
       caption
-        ? htmlElementWithAlreadyEscapedChildren(
-          'caption', this.renderEach(caption.children))
+        ? htmlElementWithAlreadyEscapedChildren('caption', this.renderEach(caption.children))
         : '')
   }
 
@@ -539,7 +538,7 @@ export class HtmlRenderer extends Renderer {
     )
   }
 
-  private element(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
+  private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
