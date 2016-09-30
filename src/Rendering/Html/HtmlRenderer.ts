@@ -34,8 +34,8 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, classAttrValue, internalUrl, NO_ATTRIBUTE_VALUE } from './ElementHelpers'
-import { escapeHtmlContent } from './EscapingHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, NO_ATTRIBUTE_VALUE } from './HtmlElementHelpers'
+import { escapeHtmlContent } from './HtmlEscapingHelpers'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../../PatternHelpers'
 
 
@@ -86,18 +86,18 @@ export class HtmlRenderer extends Renderer {
         this.tableOfContentsTitle(),
         this.tableOfContentsEntries(tableOfContents.entries)
       ],
-      { class: classAttrValue("table-of-contents") })
+      { class: classHtmlAttrValue("table-of-contents") })
   }
 
   blockquote(blockquote: Blockquote): string {
-    return this.htmlElement('blockquote', blockquote.children, attrsFor(blockquote))
+    return this.htmlElement('blockquote', blockquote.children, htmlAttrsFor(blockquote))
   }
 
   unorderedList(list: UnorderedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
       list.items.map(listItem => this.unorderedListItem(listItem)),
-      attrsFor(list))
+      htmlAttrsFor(list))
   }
 
   orderedList(list: OrderedList): string {
@@ -116,21 +116,21 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
       list.items.map(listItem => this.orderedListItem(listItem)),
-      attrsFor(list, attrs))
+      htmlAttrsFor(list, attrs))
   }
 
   descriptionList(list: DescriptionList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       list.items.map(item => this.descriptionListItem(item)),
-      attrsFor(list))
+      htmlAttrsFor(list))
   }
 
   lineBlock(lineBlock: LineBlock): string {
     const attrs =
-      attrsFor(
+      htmlAttrsFor(
         lineBlock,
-        { class: classAttrValue('lines') })
+        { class: classHtmlAttrValue('lines') })
 
     return htmlElementWithAlreadyEscapedChildren(
       'div',
@@ -142,28 +142,28 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
       [htmlElement('code', codeBlock.code)],
-      attrsFor(codeBlock))
+      htmlAttrsFor(codeBlock))
   }
 
   paragraph(paragraph: Paragraph): string {
-    return this.htmlElement('p', paragraph.children, attrsFor(paragraph))
+    return this.htmlElement('p', paragraph.children, htmlAttrsFor(paragraph))
   }
 
   heading(heading: Heading): string {
     const attrs: { id?: string } = {}
 
     if (heading.ordinalInTableOfContents) {
-      attrs.id = this.idOfActualEntryInDocument(heading)
+      attrs.id = this.htmlIdOfActualEntryInDocument(heading)
     }
 
     return this.htmlElement(
       'h' + Math.min(6, heading.level),
       heading.children,
-      attrsFor(heading, attrs))
+      htmlAttrsFor(heading, attrs))
   }
 
   thematicBreak(thematicBreak: ThematicBreak): string {
-    return singleTagHtmlElement('hr', attrsFor(thematicBreak))
+    return singleTagHtmlElement('hr', htmlAttrsFor(thematicBreak))
   }
 
   emphasis(emphasis: Emphasis): string {
@@ -231,7 +231,7 @@ export class HtmlRenderer extends Renderer {
     return this.revealable({
       revealableSyntaxNode: revealableBlock,
       tagNameForGenericContainers: 'div',
-      attrsForOuterContainer: attrsFor(revealableBlock)
+      attrsForOuterContainer: htmlAttrsFor(revealableBlock)
     })
   }
 
@@ -244,15 +244,15 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement(
       'sup',
       [this.footnoteReferenceInnerLink(footnote)], {
-        id: this.footnoteReferenceId(footnote.referenceNumber),
-        class: classAttrValue('footnote-reference')
+        id: this.footnoteReferenceHtmlId(footnote.referenceNumber),
+        class: classHtmlAttrValue('footnote-reference')
       })
   }
 
   footnoteBlock(footnoteBlock: FootnoteBlock): string {
-    const attrs = attrsFor(
+    const attrs = htmlAttrsFor(
       footnoteBlock, {
-        class: classAttrValue('footnotes')
+        class: classHtmlAttrValue('footnotes')
       })
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -268,7 +268,7 @@ export class HtmlRenderer extends Renderer {
         this.tableHeader(table.header),
         table.rows.map(row => this.tableRow(row)).join('')
       ],
-      attrsFor(table))
+      htmlAttrsFor(table))
   }
 
   link(link: Link): string {
@@ -281,7 +281,7 @@ export class HtmlRenderer extends Renderer {
     const html =
       this.htmlElement('a',
         link.children,
-        attrsFor(link, { href: link.url }))
+        htmlAttrsFor(link, { href: link.url }))
 
     this.isInsideLink = false
 
@@ -294,7 +294,7 @@ export class HtmlRenderer extends Renderer {
     }
 
     const attrs =
-      attrsFor(
+      htmlAttrsFor(
         image, {
           src: image.url,
           alt: image.description,
@@ -345,12 +345,12 @@ export class HtmlRenderer extends Renderer {
   private linkToActualEntryInDocument(entry: Document.TableOfContents.Entry): Link {
     return new Link(
       entry.contentWithinTableOfContents(),
-      internalUrl(this.idOfActualEntryInDocument(entry)))
+      fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
   }
 
   private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
     const attrs = {
-      class: classAttrValue('parenthetical', ...extraCssClassNames)
+      class: classHtmlAttrValue('parenthetical', ...extraCssClassNames)
     }
 
     return this.htmlElement('small', parenthetical.children, attrs)
@@ -393,7 +393,7 @@ export class HtmlRenderer extends Renderer {
 
     return new Link(
       [new Text(referenceNumber.toString())],
-      internalUrl(this.footnoteId(referenceNumber)))
+      fragmentUrl(this.footnoteHtmlId(referenceNumber)))
   }
 
   private footnoteInFootnoteBlock(footnote: Footnote): string {
@@ -401,7 +401,7 @@ export class HtmlRenderer extends Renderer {
       this.htmlElement(
         'dt',
         [this.footnoteLinkBackToReference(footnote)],
-        { id: this.footnoteId(footnote.referenceNumber) })
+        { id: this.footnoteHtmlId(footnote.referenceNumber) })
 
     const bodyContainer =
       this.htmlElement('dd', footnote.children)
@@ -414,7 +414,7 @@ export class HtmlRenderer extends Renderer {
 
     return new Link(
       [new Text(referenceNumber.toString())],
-      internalUrl(this.footnoteReferenceId(referenceNumber)))
+      fragmentUrl(this.footnoteReferenceHtmlId(referenceNumber)))
   }
 
   private playableMediaElement(playableMedia: Audio | Video, tagName: string): string {
@@ -425,7 +425,7 @@ export class HtmlRenderer extends Renderer {
     }
 
     const attrs =
-      attrsFor(
+      htmlAttrsFor(
         playableMedia, {
           src: url,
           title: description,
@@ -479,7 +479,7 @@ export class HtmlRenderer extends Renderer {
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
     attrsForOuterContainer.class =
-      classAttrValue('revealable')
+      classHtmlAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
@@ -524,7 +524,7 @@ export class HtmlRenderer extends Renderer {
 
   private tableCell(tagName: string, cell: Table.Cell, attrs: any = {}): string {
     if (cell.isNumeric()) {
-      attrs.class = classAttrValue('numeric')
+      attrs.class = classHtmlAttrValue('numeric')
     }
 
     if (cell.countColumnsSpanned > 1) {
@@ -542,17 +542,17 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
-  private idOfActualEntryInDocument(entry: Document.TableOfContents.Entry): string {
+  private htmlIdOfActualEntryInDocument(entry: Document.TableOfContents.Entry): string {
     return this.idFor(
       this.settings.terms.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
   }
 
-  private footnoteId(referenceNumber: number): string {
+  private footnoteHtmlId(referenceNumber: number): string {
     return this.idFor(this.settings.terms.footnote, referenceNumber)
   }
 
-  private footnoteReferenceId(referenceNumber: number): string {
+  private footnoteReferenceHtmlId(referenceNumber: number): string {
     return this.idFor(this.settings.terms.footnoteReference, referenceNumber)
   }
 
@@ -568,12 +568,23 @@ export class HtmlRenderer extends Renderer {
 }
 
 
-function attrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
+function htmlAttrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
   if (node.sourceLineNumber) {
     attrs['data-up-source-line'] = node.sourceLineNumber
   }
 
   return attrs
+}
+
+// We always prefix our CSS class names with `up-`, regardless of the `idPrefix` setting.
+function classHtmlAttrValue(...classNames: string[]): string {
+  return classNames
+    .map(className => 'up-' + className)
+    .join(' ')
+}
+
+function fragmentUrl(id: string): string {
+  return '#' + id
 }
 
 const UNSAFE_URL_SCHEME =

@@ -1,4 +1,4 @@
-import { escapeHtmlAttrValue, escapeHtmlContent } from './EscapingHelpers'
+import { escapeHtmlAttrValue, escapeHtmlContent } from './HtmlEscapingHelpers'
 
 
 export function htmlElement(tagName: string, unescapedContent: string, attrs: any = {}): string {
@@ -19,17 +19,6 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
   return htmlStartTag(tagName, attrs)
 }
 
-export function classAttrValue(...names: string[]): string {
-  // We always prefix our class names with 'up-' regardless of the provided ID prefix.
-  return names
-    .map(name => 'up-' + name)
-    .join(' ')
-}
-
-export function internalUrl(id: string): string {
-  return '#' + id
-}
-
 // Indicates that an attribute should not specify a value.
 //
 // In the following example, the `reversed` attribute doesn't specify a value:
@@ -44,12 +33,13 @@ export function internalUrl(id: string): string {
 // </ol>
 export const NO_ATTRIBUTE_VALUE: string = null
 
+function htmlAttr(attrs: any, attrName: string): string {
+  const value = attrs[attrName]
 
-function htmlStartTag(tagName: string, attrs: any): string {
-  const tagNameWithAttrs =
-    [tagName, ...htmlAttrs(attrs)].join(' ')
-
-  return `<${tagNameWithAttrs}>`
+  return (
+    value === NO_ATTRIBUTE_VALUE
+      ? attrName
+      : `${attrName}="${escapeHtmlAttrValue(value)}"`)
 }
 
 function htmlAttrs(attrs: any): string[] {
@@ -59,11 +49,10 @@ function htmlAttrs(attrs: any): string[] {
   return alphabetizedAttrNames.map(attrName => htmlAttr(attrs, attrName))
 }
 
-function htmlAttr(attrs: any, attrName: string): string {
-  const value = attrs[attrName]
 
-  return (
-    value === NO_ATTRIBUTE_VALUE
-      ? attrName
-      : `${attrName}="${escapeHtmlAttrValue(value)}"`)
+function htmlStartTag(tagName: string, attrs: any): string {
+  const tagNameWithAttrs =
+    [tagName, ...htmlAttrs(attrs)].join(' ')
+
+  return `<${tagNameWithAttrs}>`
 }
