@@ -437,6 +437,28 @@ context('When a header column cell spans multiple columns', () => {
 })
 
 
+describe('When any table header cell has a numeric value and spans multiple columns, incuding those in the header column of a table,', () => {
+  specify('the <th> produced for that cell has the "up-numeric" class and has a "colspan" attribute whose value is the number of columns spanned', () => {
+    const document = new Up.Document([
+      new Up.Table(
+        new Up.Table.Header([
+          new Up.Table.Header.Cell([]),
+          new Up.Table.Header.Cell([new Up.Text('0.0')], 2)
+        ]),
+        [new Up.Table.Row([], new Up.Table.Header.Cell([new Up.Text('0.0')], 3))],
+        new Up.Table.Caption([new Up.Text('A remarkably bad multiplication table')]))
+    ])
+
+    expect(Up.render(document)).to.equal(
+      '<table>'
+      + '<caption>A remarkably bad multiplication table</caption>'
+      + '<thead><tr><th scope="col"></th><th class="up-numeric" colspan="2" scope="col">0.0</th></tr></thead>'
+      + '<tr><th class="up-numeric" colspan="3" scope="row">0.0</th></tr>'
+      + '</table>')
+  })
+})
+
+
 describe('A line block node', () => {
   it('produces a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
     const document = new Up.Document([
