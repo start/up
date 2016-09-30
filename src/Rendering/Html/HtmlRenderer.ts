@@ -1,39 +1,5 @@
-import { Document } from '../../SyntaxNodes/Document'
-import { InlineDocument } from '../../SyntaxNodes/InlineDocument'
+import * as Up from '../../index'
 import { Renderer } from '.././Renderer'
-import { Link } from '../../SyntaxNodes/Link'
-import { Image } from '../../SyntaxNodes/Image'
-import { Audio } from '../../SyntaxNodes/Audio'
-import { Video } from '../../SyntaxNodes/Video'
-import { Text } from '../../SyntaxNodes/Text'
-import { Emphasis } from '../../SyntaxNodes/Emphasis'
-import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
-import { Stress } from '../../SyntaxNodes/Stress'
-import { Italics } from '../../SyntaxNodes/Italics'
-import { Bold } from '../../SyntaxNodes/Bold'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { SectionLink } from '../../SyntaxNodes/SectionLink'
-import { NormalParenthetical } from '../../SyntaxNodes/NormalParenthetical'
-import { SquareParenthetical } from '../../SyntaxNodes/SquareParenthetical'
-import { Highlight } from '../../SyntaxNodes/Highlight'
-import { InlineRevealable } from '../../SyntaxNodes/InlineRevealable'
-import { RevealableBlock } from '../../SyntaxNodes/RevealableBlock'
-import { InlineQuote } from '../../SyntaxNodes/InlineQuote'
-import { Footnote } from '../../SyntaxNodes/Footnote'
-import { FootnoteBlock } from '../../SyntaxNodes/FootnoteBlock'
-import { Table } from '../../SyntaxNodes/Table'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { Blockquote } from '../../SyntaxNodes/Blockquote'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { Heading } from '../../SyntaxNodes/Heading'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
-import { SyntaxNode } from '../../SyntaxNodes/SyntaxNode'
-import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { ParentheticalSyntaxNode } from '../../SyntaxNodes/ParentheticalSyntaxNode'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, NO_ATTRIBUTE_VALUE } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../../PatternHelpers'
@@ -68,17 +34,17 @@ export class HtmlRenderer extends Renderer {
   //    prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
-  renderDocument(document: Document): string {
+  renderDocument(document: Up.Document): string {
     this.reset()
     return this.renderAll(document.children)
   }
 
-  renderInlineDocument(inlineDocument: InlineDocument): string {
+  renderInlineDocument(inlineDocument: Up.InlineDocument): string {
     this.reset()
     return this.renderAll(inlineDocument.children)
   }
 
-  renderTableOfContents(tableOfContents: Document.TableOfContents): string {
+  renderTableOfContents(tableOfContents: Up.Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -89,18 +55,18 @@ export class HtmlRenderer extends Renderer {
       { class: classHtmlAttrValue("table-of-contents") })
   }
 
-  blockquote(blockquote: Blockquote): string {
+  blockquote(blockquote: Up.Blockquote): string {
     return this.htmlElement('blockquote', blockquote.children, htmlAttrsFor(blockquote))
   }
 
-  unorderedList(list: UnorderedList): string {
+  unorderedList(list: Up.UnorderedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
       list.items.map(listItem => this.unorderedListItem(listItem)),
       htmlAttrsFor(list))
   }
 
-  orderedList(list: OrderedList): string {
+  orderedList(list: Up.OrderedList): string {
     const attrs: { start?: number, reversed?: any } = {}
 
     const start = list.start()
@@ -109,7 +75,7 @@ export class HtmlRenderer extends Renderer {
       attrs.start = start
     }
 
-    if (list.order() === OrderedList.Order.Descending) {
+    if (list.order() === Up.OrderedList.Order.Descending) {
       attrs.reversed = NO_ATTRIBUTE_VALUE
     }
 
@@ -119,14 +85,14 @@ export class HtmlRenderer extends Renderer {
       htmlAttrsFor(list, attrs))
   }
 
-  descriptionList(list: DescriptionList): string {
+  descriptionList(list: Up.DescriptionList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'dl',
       list.items.map(item => this.descriptionListItem(item)),
       htmlAttrsFor(list))
   }
 
-  lineBlock(lineBlock: LineBlock): string {
+  lineBlock(lineBlock: Up.LineBlock): string {
     const attrs =
       htmlAttrsFor(
         lineBlock,
@@ -138,18 +104,18 @@ export class HtmlRenderer extends Renderer {
       attrs)
   }
 
-  codeBlock(codeBlock: CodeBlock): string {
+  codeBlock(codeBlock: Up.CodeBlock): string {
     return htmlElementWithAlreadyEscapedChildren(
       'pre',
       [htmlElement('code', codeBlock.code)],
       htmlAttrsFor(codeBlock))
   }
 
-  paragraph(paragraph: Paragraph): string {
+  paragraph(paragraph: Up.Paragraph): string {
     return this.htmlElement('p', paragraph.children, htmlAttrsFor(paragraph))
   }
 
-  heading(heading: Heading): string {
+  heading(heading: Up.Heading): string {
     const attrs: { id?: string } = {}
 
     if (heading.ordinalInTableOfContents) {
@@ -162,35 +128,35 @@ export class HtmlRenderer extends Renderer {
       htmlAttrsFor(heading, attrs))
   }
 
-  thematicBreak(thematicBreak: ThematicBreak): string {
+  thematicBreak(thematicBreak: Up.ThematicBreak): string {
     return singleTagHtmlElement('hr', htmlAttrsFor(thematicBreak))
   }
 
-  emphasis(emphasis: Emphasis): string {
+  emphasis(emphasis: Up.Emphasis): string {
     return this.htmlElement('em', emphasis.children)
   }
 
-  stress(stress: Stress): string {
+  stress(stress: Up.Stress): string {
     return this.htmlElement('strong', stress.children)
   }
 
-  italics(italics: Italics): string {
+  italics(italics: Up.Italics): string {
     return this.htmlElement('i', italics.children)
   }
 
-  bold(bold: Bold): string {
+  bold(bold: Up.Bold): string {
     return this.htmlElement('b', bold.children)
   }
 
-  inlineCode(inlineCode: InlineCode): string {
+  inlineCode(inlineCode: Up.InlineCode): string {
     return htmlElement('code', inlineCode.code)
   }
 
-  exampleInput(exampleInput: ExampleInput): string {
+  exampleInput(exampleInput: Up.ExampleInput): string {
     return htmlElement('kbd', exampleInput.input)
   }
 
-  sectionLink(sectionLink: SectionLink): string {
+  sectionLink(sectionLink: Up.SectionLink): string {
     const { entry } = sectionLink
 
     const representation =
@@ -199,35 +165,35 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Italics([new Text(sectionLink.sectionTitleSnippet)])
+        : new Up.Italics([new Up.Text(sectionLink.sectionTitleSnippet)])
 
     return representation.render(this)
   }
 
-  normalParenthetical(normalParenthetical: NormalParenthetical): string {
+  normalParenthetical(normalParenthetical: Up.NormalParenthetical): string {
     return this.parenthetical(normalParenthetical)
   }
 
-  squareParenthetical(squareParenthetical: SquareParenthetical): string {
+  squareParenthetical(squareParenthetical: Up.SquareParenthetical): string {
     return this.parenthetical(squareParenthetical, 'square-brackets')
   }
 
-  highlight(highlight: Highlight): string {
+  highlight(highlight: Up.Highlight): string {
     return this.htmlElement('mark', highlight.children)
   }
 
-  inlineQuote(inlineQuote: InlineQuote): string {
+  inlineQuote(inlineQuote: Up.InlineQuote): string {
     return this.htmlElement('q', inlineQuote.children)
   }
 
-  inlineRevealable(inlineRevealable: InlineRevealable): string {
+  inlineRevealable(inlineRevealable: Up.InlineRevealable): string {
     return this.revealable({
       revealableSyntaxNode: inlineRevealable,
       tagNameForGenericContainers: 'span'
     })
   }
 
-  revealableBlock(revealableBlock: RevealableBlock): string {
+  revealableBlock(revealableBlock: Up.RevealableBlock): string {
     return this.revealable({
       revealableSyntaxNode: revealableBlock,
       tagNameForGenericContainers: 'div',
@@ -235,7 +201,7 @@ export class HtmlRenderer extends Renderer {
     })
   }
 
-  referenceToFootnote(footnote: Footnote): string {
+  referenceToFootnote(footnote: Up.Footnote): string {
     if (this.isInsideTableOfContents) {
       // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
       return ''
@@ -249,7 +215,7 @@ export class HtmlRenderer extends Renderer {
       })
   }
 
-  footnoteBlock(footnoteBlock: FootnoteBlock): string {
+  footnoteBlock(footnoteBlock: Up.FootnoteBlock): string {
     const attrs = htmlAttrsFor(
       footnoteBlock, {
         class: classHtmlAttrValue('footnotes')
@@ -261,7 +227,7 @@ export class HtmlRenderer extends Renderer {
       attrs)
   }
 
-  table(table: Table): string {
+  table(table: Up.Table): string {
     return htmlElementWithAlreadyEscapedChildren(
       'table', [
         this.tableCaption(table.caption),
@@ -271,7 +237,7 @@ export class HtmlRenderer extends Renderer {
       htmlAttrsFor(table))
   }
 
-  link(link: Link): string {
+  link(link: Up.Link): string {
     if (this.isInsideLink || !this.isUrlAllowed(link.url)) {
       return this.renderAll(link.children)
     }
@@ -288,7 +254,7 @@ export class HtmlRenderer extends Renderer {
     return html
   }
 
-  image(image: Image): string {
+  image(image: Up.Image): string {
     if (!this.isUrlAllowed(image.url)) {
       return ''
     }
@@ -304,51 +270,51 @@ export class HtmlRenderer extends Renderer {
     return singleTagHtmlElement('img', attrs)
   }
 
-  audio(audio: Audio): string {
+  audio(audio: Up.Audio): string {
     return this.playableMediaElement(audio, 'audio')
   }
 
-  video(video: Video): string {
+  video(video: Up.Video): string {
     return this.playableMediaElement(video, 'video')
   }
 
-  text(text: Text): string {
+  text(text: Up.Text): string {
     return escapeHtmlContent(text.text)
   }
 
   private tableOfContentsTitle(): string {
-    const title = new Heading([
-      new Text(this.settings.terms.tableOfContents)], { level: 1 })
+    const title = new Up.Heading([
+      new Up.Text(this.settings.terms.tableOfContents)], { level: 1 })
 
     return title.render(this)
   }
 
-  private tableOfContentsEntries(entries: Document.TableOfContents.Entry[]): string {
+  private tableOfContentsEntries(entries: Up.Document.TableOfContents.Entry[]): string {
     if (!entries.length) {
       return ''
     }
 
     const listItems =
       entries.map(entry =>
-        new UnorderedList.Item([
+        new Up.UnorderedList.Item([
           this.tableOfContentsEntry(entry)
         ]))
 
-    return new UnorderedList(listItems).render(this)
+    return new Up.UnorderedList(listItems).render(this)
   }
 
-  private tableOfContentsEntry(entry: Document.TableOfContents.Entry): OutlineSyntaxNode {
+  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.OutlineSyntaxNode {
     // Right now, only headings can be table of contents entries, which simplifies this method.
-    return new Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level + 1 })
+    return new Up.Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level + 1 })
   }
 
-  private linkToActualEntryInDocument(entry: Document.TableOfContents.Entry): Link {
-    return new Link(
+  private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {
+    return new Up.Link(
       entry.contentWithinTableOfContents(),
       fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
   }
 
-  private parenthetical(parenthetical: ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
+  private parenthetical(parenthetical: Up.ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
     const attrs = {
       class: classHtmlAttrValue('parenthetical', ...extraCssClassNames)
     }
@@ -356,11 +322,11 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('small', parenthetical.children, attrs)
   }
 
-  private unorderedListItem(listItem: UnorderedList.Item): string {
+  private unorderedListItem(listItem: Up.UnorderedList.Item): string {
     return this.htmlElement('li', listItem.children)
   }
 
-  private orderedListItem(listItem: OrderedList.Item): string {
+  private orderedListItem(listItem: Up.OrderedList.Item): string {
     const attrs: { value?: number } = {}
 
     if (listItem.ordinal != null) {
@@ -370,33 +336,33 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('li', listItem.children, attrs)
   }
 
-  private descriptionListItem(listItem: DescriptionList.Item): string {
+  private descriptionListItem(listItem: Up.DescriptionList.Item): string {
     return (
       listItem.subjects.map(subject => this.descriptionSubject(subject)).join('')
       + this.description(listItem.description))
   }
 
-  private descriptionSubject(subject: DescriptionList.Item.Subject): string {
+  private descriptionSubject(subject: Up.DescriptionList.Item.Subject): string {
     return this.htmlElement('dt', subject.children)
   }
 
-  private description(description: DescriptionList.Item.Description): string {
+  private description(description: Up.DescriptionList.Item.Description): string {
     return this.htmlElement('dd', description.children)
   }
 
-  private line(line: LineBlock.Line): string {
+  private line(line: Up.LineBlock.Line): string {
     return this.htmlElement('div', line.children)
   }
 
-  private footnoteReferenceInnerLink(footnoteReference: Footnote): Link {
+  private footnoteReferenceInnerLink(footnoteReference: Up.Footnote): Up.Link {
     const referenceNumber = footnoteReference.referenceNumber
 
-    return new Link(
-      [new Text(referenceNumber.toString())],
+    return new Up.Link(
+      [new Up.Text(referenceNumber.toString())],
       fragmentUrl(this.footnoteHtmlId(referenceNumber)))
   }
 
-  private footnoteInFootnoteBlock(footnote: Footnote): string {
+  private footnoteInFootnoteBlock(footnote: Up.Footnote): string {
     const linkBackToReferenceContainer =
       this.htmlElement(
         'dt',
@@ -409,15 +375,15 @@ export class HtmlRenderer extends Renderer {
     return linkBackToReferenceContainer + bodyContainer
   }
 
-  private footnoteLinkBackToReference(footnote: Footnote): Link {
+  private footnoteLinkBackToReference(footnote: Up.Footnote): Up.Link {
     const referenceNumber = footnote.referenceNumber
 
-    return new Link(
-      [new Text(referenceNumber.toString())],
+    return new Up.Link(
+      [new Up.Text(referenceNumber.toString())],
       fragmentUrl(this.footnoteReferenceHtmlId(referenceNumber)))
   }
 
-  private playableMediaElement(playableMedia: Audio | Video, tagName: string): string {
+  private playableMediaElement(playableMedia: Up.Audio | Up.Video, tagName: string): string {
     const { url, description } = playableMedia
 
     if (!this.isUrlAllowed(url)) {
@@ -435,13 +401,13 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement(tagName, this.playableMediaFallback(description, url), attrs)
   }
 
-  private playableMediaFallback(content: string, url: string): Link[] {
-    return [new Link([new Text(content)], url)]
+  private playableMediaFallback(content: string, url: string): Up.Link[] {
+    return [new Up.Link([new Up.Text(content)], url)]
   }
 
   private revealable(
     args: {
-      revealableSyntaxNode: InlineRevealable | RevealableBlock
+      revealableSyntaxNode: Up.InlineRevealable | Up.RevealableBlock
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
@@ -487,14 +453,14 @@ export class HtmlRenderer extends Renderer {
       attrsForOuterContainer)
   }
 
-  private tableCaption(caption: Table.Caption): string {
+  private tableCaption(caption: Up.Table.Caption): string {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren('caption', this.renderEach(caption.children))
         : '')
   }
 
-  private tableHeader(header: Table.Header): string {
+  private tableHeader(header: Up.Table.Header): string {
     const headerRow =
       htmlElementWithAlreadyEscapedChildren(
         'tr',
@@ -503,11 +469,11 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren('thead', [headerRow])
   }
 
-  private tableHeaderCell(cell: Table.Header.Cell, scope: 'col' | 'row'): string {
+  private tableHeaderCell(cell: Up.Table.Header.Cell, scope: 'col' | 'row'): string {
     return this.tableCell('th', cell, { scope })
   }
 
-  private tableRow(row: Table.Row): string {
+  private tableRow(row: Up.Table.Row): string {
     const cells =
       row.cells.map(cell => this.tableRowCell(cell))
 
@@ -518,11 +484,11 @@ export class HtmlRenderer extends Renderer {
     return htmlElementWithAlreadyEscapedChildren('tr', cells)
   }
 
-  private tableRowCell(cell: Table.Row.Cell): string {
+  private tableRowCell(cell: Up.Table.Row.Cell): string {
     return this.tableCell('td', cell)
   }
 
-  private tableCell(tagName: string, cell: Table.Cell, attrs: any = {}): string {
+  private tableCell(tagName: string, cell: Up.Table.Cell, attrs: any = {}): string {
     if (cell.isNumeric()) {
       attrs.class = classHtmlAttrValue('numeric')
     }
@@ -538,11 +504,11 @@ export class HtmlRenderer extends Renderer {
     )
   }
 
-  private htmlElement(tagName: string, children: SyntaxNode[], attrs: any = {}): string {
+  private htmlElement(tagName: string, children: Up.SyntaxNode[], attrs: any = {}): string {
     return htmlElementWithAlreadyEscapedChildren(tagName, this.renderEach(children), attrs)
   }
 
-  private htmlIdOfActualEntryInDocument(entry: Document.TableOfContents.Entry): string {
+  private htmlIdOfActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): string {
     return this.idFor(
       this.settings.terms.sectionReferencedByTableOfContents,
       entry.ordinalInTableOfContents)
@@ -568,7 +534,7 @@ export class HtmlRenderer extends Renderer {
 }
 
 
-function htmlAttrsFor(node: OutlineSyntaxNode, attrs: any = {}): any {
+function htmlAttrsFor(node: Up.OutlineSyntaxNode, attrs: any = {}): any {
   if (node.sourceLineNumber) {
     attrs['data-up-source-line'] = node.sourceLineNumber
   }

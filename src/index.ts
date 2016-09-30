@@ -111,6 +111,7 @@ export { RichOutlineSyntaxNode } from './SyntaxNodes/RichOutlineSyntaxNode'
 
 export { InlineSyntaxNode } from './SyntaxNodes/InlineSyntaxNode'
 export { OutlineSyntaxNode } from './SyntaxNodes/OutlineSyntaxNode'
+export { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 
 // This should always match the `version` field in `package.json`.
 export const VERSION = '24.0.0'
