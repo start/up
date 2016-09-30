@@ -87,10 +87,10 @@ export namespace Document {
   export namespace TableOfContents {
     // Document.TableOfContents.Entry
     export interface Entry {
-      // The (1-based!) ordinal in the table of contents
+      // The ordinal of this entry in the table of contents. Starts at `1`, not `0`.
       ordinalInTableOfContents: number
 
-      // Semantically equivalent to a heading level. A level of 1 is most significant
+      // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
 
       // The searchable text of an entry refers to its actual text content *after* any conventions are
@@ -106,10 +106,10 @@ export namespace Document {
       // Section links try to match their `sectionTitleSnippet` with this value.
       searchableText(): string
 
-      // Within the table of contents, the inline syntax nodes that represent this entry's contents.
+      // Within the table of contents, the inline syntax nodes to represent this entry's contents.
       contentWithinTableOfContents(): InlineSyntaxNode[]
 
-      // All inline descendents (children, grandchildren, etc.) of the syntax node represented by this
+      // All inline descendants (children, grandchildren, etc.) of the syntax node represented by this
       // table of contents entry.
       inlineDescendants(): InlineSyntaxNode[]
     }

@@ -5,7 +5,7 @@ export interface InlineSyntaxNode extends SyntaxNode {
   // Represents the text of the syntax node as it should appear inline. Some inline conventions
   // don't have any e.g. (footnotes, images).
   //
-  // This method is ultimately used to help determine whether table cells are numeric.
+  // Ultimately, table cells use this method determine whether their content is numeric.
   textAppearingInline(): string
 
   // Represents the searchable text of the syntax node. In contrast to `textAppearingInline`,
