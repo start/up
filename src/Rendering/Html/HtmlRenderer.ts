@@ -221,15 +221,15 @@ export class HtmlRenderer extends Renderer {
   }
 
   inlineRevealable(inlineRevealable: InlineRevealable): string {
-    return this.Revealable({
-      revealable: inlineRevealable,
+    return this.revealable({
+      revealableSyntaxNode: inlineRevealable,
       tagNameForGenericContainers: 'span'
     })
   }
 
   revealableBlock(revealableBlock: RevealableBlock): string {
-    return this.Revealable({
-      revealable: revealableBlock,
+    return this.revealable({
+      revealableSyntaxNode: revealableBlock,
       tagNameForGenericContainers: 'div',
       attrsForOuterContainer: attrsFor(revealableBlock)
     })
@@ -429,7 +429,7 @@ export class HtmlRenderer extends Renderer {
         playableMedia, {
           src: url,
           title: description,
-          controls: NO_ATTRIBUTE_VALUE,
+          controls: NO_ATTRIBUTE_VALUE
         })
 
     return this.element(tagName, this.playableMediaFallback(description, url), attrs)
@@ -439,14 +439,13 @@ export class HtmlRenderer extends Renderer {
     return [new Link([new Text(content)], url)]
   }
 
-  private Revealable(
+  private revealable(
     args: {
-      revealable: InlineRevealable | RevealableBlock
+      revealableSyntaxNode: InlineRevealable | RevealableBlock
       tagNameForGenericContainers: string
       attrsForOuterContainer?: any
     }
   ): string {
-
     let checkBoxIdParts = ['revealable', ++this.revealableContentCount]
 
     // We use this nasty little hack to prevent the IDs of revealable elements' checkboxes
@@ -471,10 +470,10 @@ export class HtmlRenderer extends Renderer {
     const label =
       htmlElement('label', this.settings.terms.revealContent, { for: checkboxId })
 
-    const Revealable =
+    const revealableContent =
       this.element(
         args.tagNameForGenericContainers,
-        args.revealable.children,
+        args.revealableSyntaxNode.children,
         { role: 'alert' })
 
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
@@ -484,7 +483,7 @@ export class HtmlRenderer extends Renderer {
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainers,
-      [label, checkbox, Revealable],
+      [label, checkbox, revealableContent],
       attrsForOuterContainer)
   }
 
