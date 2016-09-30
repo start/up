@@ -400,7 +400,7 @@ Anyway, none of that matters.`
       ]))
   })
 
-  context('Tables and charts:', () => {
+  context('Tabless:', () => {
     specify('Their header rows', () => {
       const markup = `
 Table:
@@ -575,7 +575,7 @@ Anyway, none of that matters.`
         ]))
     })
 
-    specify("Their header column cells (for charts only)", () => {
+    specify("Their header column cells", () => {
       const markup = `
 Table: Final Fantasy [^ ファイナルファンタジ in Japan] in the 1980s
 

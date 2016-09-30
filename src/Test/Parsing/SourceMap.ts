@@ -130,7 +130,7 @@ Chrono Cross;     1999`
         ]))
     })
 
-    specify('Charts with captions', () => {
+    specify('Tables with a header column and with a caption', () => {
       const markup = `
 Table: \`AND\` operator logic
 
@@ -385,7 +385,7 @@ Chrono Cross;     1999`
         ]))
     })
 
-    specify("Charts without captions", () => {
+    specify("Tables with a header column and without a caption", () => {
       const markup = `
 Table:
 

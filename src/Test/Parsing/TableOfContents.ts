@@ -337,47 +337,6 @@ Chrono Cross;     1999`
       ], tableOfContents))
   })
 
-  specify("Charts", () => {
-    const markup = `
-Boolean logic
-=============
-
-Table: \`AND\` operator logic
-
-        1;      0
-1;      true;   false
-0;      false;  false`
-    const heading =
-      new Up.Heading([new Up.Text('Boolean logic')], { level: 1, ordinalInTableOfContents: 1 })
-
-    const tableOfContents =
-      new Up.Document.TableOfContents([heading])
-
-    expect(Up.parse(markup)).to.deep.equal(
-      new Up.Document([
-        heading,
-        new Up.Table(
-          new Up.Table.Header([
-            new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.Text('1')]),
-            new Up.Table.Header.Cell([new Up.Text('0')])
-          ]), [
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
-            ], new Up.Table.Header.Cell([new Up.Text('1')])),
-            new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('false')]),
-              new Up.Table.Row.Cell([new Up.Text('false')])
-            ], new Up.Table.Header.Cell([new Up.Text('0')]))
-          ],
-          new Up.Table.Caption([
-            new Up.InlineCode('AND'),
-            new Up.Text(' operator logic')
-          ]))
-      ], tableOfContents))
-  })
-
 
   context("Outlined media:", () => {
     specify('Audio', () => {
