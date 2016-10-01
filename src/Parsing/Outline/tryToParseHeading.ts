@@ -16,18 +16,16 @@ import { isUnderlineConsistentWithOverline } from './HeadingLeveler'
 // second-level heading. Unsurprisingly, all subsequent headings with underlines consisting
 // of the same characters are also considered second-level.
 //
-// This process continues eternally. There is no limit to the number of heading levels in
-// a document.
+// This process continues ad infinitum. There is no limit to the number of heading levels
+// in a document.
 //
-// Headings can have an optional overline, too, but the overline must consist of the same
-// characters as its underline!
+// A heading can have an optional "overline", but its overline must consist of the same
+// combination of characters as its underline.
 //
-// For the purposes of determining heading levels, a heading with an overline is always
+// For the purpose of determining heading levels, a heading with an overline is always
 // considered distinct from a heading without one, even if both headings use the same
-// combination of underline characters.
-//
-// Therefore, a heading with an overline will never have the same level as a heading
-// without an overline.
+// combination of underline characters. Therefore, a heading with an overline will never
+// have the same level as a heading without an overline.
 export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
