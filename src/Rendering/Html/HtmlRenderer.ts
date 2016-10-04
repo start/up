@@ -12,8 +12,8 @@ export class HtmlRenderer extends Renderer {
   // For example, here's our HTML for inline revealable content:
   //
   // <span class="up-revealable">
-  //   <label for="up-revealable-1">reveal</label>
-  //   <input id="up-revealable-1" role="button" type="checkbox">
+  //   <label for="up-revealable-1" role="button">reveal</label>
+  //   <input id="up-revealable-1" type="checkbox">
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
@@ -429,12 +429,16 @@ export class HtmlRenderer extends Renderer {
       singleTagHtmlElement(
         'input', {
           id: checkboxId,
-          type: 'checkbox',
-          role: 'button'
+          type: 'checkbox'
         })
 
     const label =
-      htmlElement('label', this.settings.terms.revealContent, { for: checkboxId })
+      htmlElement(
+        'label',
+        this.settings.terms.revealContent, {
+          for: checkboxId,
+          role: 'button'
+        })
 
     const revealableContent =
       this.htmlElement(
