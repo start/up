@@ -908,8 +908,8 @@ describe('An inline revealable node', () => {
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<label for="up-revealable-1">reveal</label>'
-      + '<input id="up-revealable-1" role="button" type="checkbox">'
+      + '<label for="up-revealable-1" role="button">reveal</label>'
+      + '<input id="up-revealable-1" type="checkbox">'
       + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
@@ -931,8 +931,8 @@ describe('A revealable block node', () => {
 
     const html =
       '<div class="up-revealable">'
-      + '<label for="up-revealable-1">reveal</label>'
-      + '<input id="up-revealable-1" role="button" type="checkbox">'
+      + '<label for="up-revealable-1" role="button">reveal</label>'
+      + '<input id="up-revealable-1" type="checkbox">'
       + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
