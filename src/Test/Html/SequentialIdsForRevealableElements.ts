@@ -30,7 +30,9 @@ describe("Both inline revealables and revealable blocks", () => {
       ])
 
     const html =
-      '<div class="up-revealable"><label for="up-revealable-1" role="button" tabindex="0">reveal</label><input id="up-revealable-1" type="checkbox">'
+      '<div class="up-revealable">'
+      + '<input id="up-revealable-1" type="checkbox">'
+      + '<label for="up-revealable-1" role="button" tabindex="0">reveal</label>'
       + '<div role="alert">'
       + '<p>The main character defeats the bad guy.</p>'
       + '<div class="up-revealable">'

@@ -119,8 +119,8 @@ describe("Within an inline revealable's label, all instances of < and &", () => 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-revealable-1" type="checkbox">'
+      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<span role="alert"></span>'
       + '</span>'
       + '</p>'
@@ -144,8 +144,8 @@ describe("Within a revealable block's label, all instances of < and &", () => {
 
     const html =
       '<div class="up-revealable">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<input id="up-revealable-1" type="checkbox">'
+      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
       + '<div role="alert"></div>'
       + '</div>'
 
