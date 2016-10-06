@@ -232,7 +232,7 @@ export namespace Settings {
     export class Terms {
       footnote: Term = 'footnote'
       footnoteReference: Term = 'footnote reference'
-      revealContent: Term = 'reveal'
+      toggleVisibility: Term = 'reveal'
       sectionReferencedByTableOfContents: Term = 'topic'
       tableOfContents: Term = 'Table of Contents'
 
@@ -241,7 +241,7 @@ export namespace Settings {
 
         clone.footnote = this.footnote
         clone.footnoteReference = this.footnoteReference
-        clone.revealContent = this.revealContent
+        clone.toggleVisibility = this.toggleVisibility
         clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
         clone.tableOfContents = this.tableOfContents
 
@@ -259,8 +259,8 @@ export namespace Settings {
         this.footnoteReference =
           coalesce(terms.footnoteReference, this.footnoteReference)
 
-        this.revealContent =
-          coalesce(terms.revealContent, this.revealContent)
+        this.toggleVisibility =
+          coalesce(terms.toggleVisibility, this.toggleVisibility)
 
         this.sectionReferencedByTableOfContents =
           coalesce(terms.sectionReferencedByTableOfContents, this.sectionReferencedByTableOfContents)

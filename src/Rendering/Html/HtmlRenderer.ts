@@ -435,7 +435,7 @@ export class HtmlRenderer extends Renderer {
     const label =
       htmlElement(
         'label',
-        this.settings.terms.revealContent, {
+        this.settings.terms.toggleVisibility, {
           for: checkboxId,
           role: 'button',
           tabindex: 0

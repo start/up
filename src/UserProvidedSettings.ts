@@ -45,7 +45,7 @@ export namespace UserProvidedSettings {
     export interface Terms {
       footnote?: Term
       footnoteReference?: Term
-      revealContent?: Term
+      toggleVisibility?: Term
       sectionReferencedByTableOfContents?: Term
       tableOfContents?: Term
     }

@@ -157,7 +157,7 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
 })
 
 
-describe('The "revealContent" term', () => {
+describe('The "toggleVisibility" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document([
       new Up.Paragraph([
@@ -166,12 +166,12 @@ describe('The "revealContent" term', () => {
     ]),
     change: {
       terms: {
-        revealContent: 'show/hide'
+        toggleVisibility: 'show/hide'
       }
     },
     conflictingChange: {
       terms: {
-        revealContent: 'see'
+        toggleVisibility: 'see'
       }
     }
   })

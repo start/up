@@ -3,10 +3,10 @@ import * as Up from '../../../Up'
 
 
 describe("The text in an inline revealable's label", () => {
-  it("uses the provided term for 'revealContent'", () => {
+  it("uses the provided term for 'toggleVisibility'", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { revealContent: 'show/hide' }
+        terms: { toggleVisibility: 'show/hide' }
       }
     })
 
@@ -31,10 +31,10 @@ describe("The text in an inline revealable's label", () => {
 
 
 describe("The text in a revealable block's label", () => {
-  it("uses the provided term for 'revealContent'", () => {
+  it("uses the provided term for 'toggleVisibility'", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { revealContent: 'show/hide' }
+        terms: { toggleVisibility: 'show/hide' }
       }
     })
 

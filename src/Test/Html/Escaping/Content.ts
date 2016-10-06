@@ -106,7 +106,7 @@ describe("Within an inline revealable's label, all instances of < and &", () => 
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { revealContent: '<_< & show & hide' }
+        terms: { toggleVisibility: '<_< & show & hide' }
       }
     })
 
@@ -134,7 +134,7 @@ describe("Within a revealable block's label, all instances of < and &", () => {
   it("are escaped", () => {
     const up = new Up.Transformer({
       rendering: {
-        terms: { revealContent: '<_< & show & hide' }
+        terms: { toggleVisibility: '<_< & show & hide' }
       }
     })
 
