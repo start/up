@@ -232,7 +232,7 @@ export namespace Settings {
     export class Terms {
       footnote: Term = 'footnote'
       footnoteReference: Term = 'footnote reference'
-      toggleVisibility: Term = 'reveal'
+      toggleVisibility: Term = 'toggle visibility'
       sectionReferencedByTableOfContents: Term = 'topic'
       tableOfContents: Term = 'Table of Contents'
 
