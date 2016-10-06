@@ -172,7 +172,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
       const html =
         '<span class="up-revealable">'
-        + '<label for="up-revealable-1" role="button">reveal</label>'
+        + '<label for="up-revealable-1" role="button" tabindex="0">reveal</label>'
         + '<input id="up-revealable-1" type="checkbox">'
         + '<span role="alert">45.9%</span>'
         + '</span>'
