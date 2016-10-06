@@ -13,7 +13,7 @@ export class HtmlRenderer extends Renderer {
   //
   // <span class="up-revealable">
   //   <input id="up-revealable-1" type="checkbox">
-  //   <label for="up-revealable-1" role="button" tabindex="0">reveal</label>
+  //   <label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //

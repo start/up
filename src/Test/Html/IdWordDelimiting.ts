@@ -96,7 +96,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
         '<p>'
         + '<span class="up-revealable">'
         + '<input id="thread-11-reply-65-revealable-1" type="checkbox">'
-        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">reveal</label>'
+        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">toggle visibility</label>'
         + '<span role="alert">45.9%</span>'
         + '</span>'
         + '</p>'
@@ -114,7 +114,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const html =
         '<div class="up-revealable">'
         + '<input id="thread-11-reply-65-revealable-1" type="checkbox">'
-        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">reveal</label>'
+        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">toggle visibility</label>'
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
