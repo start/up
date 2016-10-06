@@ -313,8 +313,8 @@ context('When an outline syntax node has a source line number, its outermost ele
 
     const html =
       '<div class="up-revealable" data-up-source-line="2">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">reveal</label>'
       + '<input id="up-revealable-1" type="checkbox">'
+      + '<label for="up-revealable-1" role="button" tabindex="0">reveal</label>'
       + '<div role="alert">'
       + '<p data-up-source-line="3">John Carmack is a decent programmer.</p>'
       + '</div>'
