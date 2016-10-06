@@ -12,7 +12,7 @@ export class HtmlRenderer extends Renderer {
   // For example, here's our HTML for inline revealable content:
   //
   // <span class="up-revealable">
-  //   <label for="up-revealable-1" role="button">reveal</label>
+  //   <label for="up-revealable-1" role="button" tabindex="0">reveal</label>
   //   <input id="up-revealable-1" type="checkbox">
   //   <span role="alert">Ash fights Gary</span>
   // </span>
@@ -437,7 +437,8 @@ export class HtmlRenderer extends Renderer {
         'label',
         this.settings.terms.revealContent, {
           for: checkboxId,
-          role: 'button'
+          role: 'button',
+          tabindex: 0
         })
 
     const revealableContent =
