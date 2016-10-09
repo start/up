@@ -12,10 +12,10 @@ export class HtmlRenderer extends Renderer {
   // For example, here's our HTML for inline revealable content:
   //
   // <span class="up-revealable">
-  //   <input class="up-hide" id="up-reveal-button-1" name="up-revealable-1" type="radio" checked>
-  //   <label for="up-reveal-button-1" role="button" tabindex="0">hide</label>
+  //   <input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">
+  //   <label for="up-hide-button-1" role="button" tabindex="0">hide</label>
   //   <input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">
-  //   <label for="up-reveale-button-1" role="button" tabindex="0">reveal</label>
+  //   <label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
@@ -440,29 +440,36 @@ export class HtmlRenderer extends Renderer {
     let revealButtonId =
       revealableIdFor('reveal', 'button', revealableContentOrdinal)
 
-    const radioButtonHtmlElement = (id: string, className: string) =>
+    const radioButtonHide =
       singleTagHtmlElement(
         'input', {
-          id,
-          class: className,
           type: 'radio',
-          name: buttonGroupName
+          id: hideButtonId,
+          name: buttonGroupName,
+          class: classHtmlAttrValue('hide'),
+          checked: NO_ATTRIBUTE_VALUE,
         })
 
-    const radioButtonHide = radioButtonHtmlElement(hideButtonId, 'hide')
-    const radioButtonReveal = radioButtonHtmlElement(revealButtonId, 'reveal')
+    const radioButtonReveal =
+      singleTagHtmlElement(
+        'input', {
+          type: 'radio',
+          id: revealButtonId,
+          name: buttonGroupName,
+          class: classHtmlAttrValue('reveal'),
+        })
 
-    const labelHtmlElement = (id: string) =>
+    const labelHtmlElement = (id: string, text: string) =>
       htmlElement(
         'label',
-        this.settings.terms.toggleVisibility, {
+        text, {
           for: id,
           role: 'button',
           tabindex: 0
         })
 
-    const labelHide = labelHtmlElement(hideButtonId)
-    const labelReveal = labelHtmlElement(revealButtonId)
+    const labelHide = labelHtmlElement(hideButtonId, 'hide')
+    const labelReveal = labelHtmlElement(revealButtonId, 'reveal')
 
     const revealableContent =
       this.htmlElement(

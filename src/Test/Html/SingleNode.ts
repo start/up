@@ -898,7 +898,7 @@ describe('An inline quote node', () => {
 
 
 describe('An inline revealable node', () => {
-  it('produces an outer <span class="up-revealable">, containing a <label> (with the text "toggle visibility"), an associated checkbox (with the "button" role), and a <span role="alert"> containing the spoiler contents', () => {
+  it('produces an outer <span class="up-revealable">, containing hide/reveal radio buttons and a <span role="alert"> containing the spoiler contents', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineRevealable([new Up.Text('45.9%')])
@@ -908,8 +908,10 @@ describe('An inline revealable node', () => {
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+      + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
       + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
