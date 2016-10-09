@@ -12,12 +12,15 @@ export class HtmlRenderer extends Renderer {
   // For example, here's our HTML for inline revealable content:
   //
   // <span class="up-revealable">
-  //   <input id="up-revealable-1" type="checkbox">
-  //   <label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>
+  //   <input class="up-hide" id="up-reveal-button-1" name="up-revealable-1" type="radio" checked>
+  //   <label for="up-reveal-button-1" role="button" tabindex="0">hide</label>
+  //   <input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">
+  //   <label for="up-reveale-button-1" role="button" tabindex="0">reveal</label>
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
-  // This solution requires generating unique IDs to associate each label with its checkbox.
+  // This solution requires generating unique IDs to associate each label with its radio button (and to group
+  // the two radio buttons together).
   //
   // To accomplish this, we increment a counter each time we render revealable content (inline or block),
   // appending the counter's value to the checkbox's ID.
@@ -412,34 +415,54 @@ export class HtmlRenderer extends Renderer {
       attrsForOuterContainer?: any
     }
   ): string {
-    let checkBoxIdParts = ['revealable', ++this.revealableContentCount]
+    const revealableIdFor = (...parts: any[]) => {
+      // We use this hack to prevent the ID/name collisions of revealable elements within the
+      // table of contents from clashing with the IDs of the revealable elements within the
+      // document itself.
+      if (this.isInsideTableOfContents) {
+        parts.unshift('toc')
+      }
 
-    // We use this nasty little hack to prevent the IDs of revealable elements' checkboxes
-    // within the table of contents from clashing with IDs within the document itself.
-    //
-    // More information about the HTML for revealable conventions can be found at the top
-    // of this class.
-    if (this.isInsideTableOfContents) {
-      checkBoxIdParts.unshift('toc')
+      return this.idFor(...parts)
     }
 
-    const checkboxId = this.idFor(...checkBoxIdParts)
+    // In the comment at the top of this class, you can see the HTML this method produces.
 
-    const checkbox =
+    const revealableContentOrdinal =
+      ++this.revealableContentCount;
+
+    let buttonGroupName =
+      revealableIdFor('revealable', revealableContentOrdinal)
+
+    let hideButtonId =
+      revealableIdFor('hide', 'button', revealableContentOrdinal)
+
+    let revealButtonId =
+      revealableIdFor('reveal', 'button', revealableContentOrdinal)
+
+    const radioButtonHtmlElement = (id: string, className: string) =>
       singleTagHtmlElement(
         'input', {
-          id: checkboxId,
-          type: 'checkbox'
+          id,
+          class: className,
+          type: 'radio',
+          name: buttonGroupName
         })
 
-    const label =
+    const radioButtonHide = radioButtonHtmlElement(hideButtonId, 'hide')
+    const radioButtonReveal = radioButtonHtmlElement(revealButtonId, 'reveal')
+
+    const labelHtmlElement = (id: string) =>
       htmlElement(
         'label',
         this.settings.terms.toggleVisibility, {
-          for: checkboxId,
+          for: id,
           role: 'button',
           tabindex: 0
         })
+
+    const labelHide = labelHtmlElement(hideButtonId)
+    const labelReveal = labelHtmlElement(revealButtonId)
 
     const revealableContent =
       this.htmlElement(
@@ -453,8 +476,13 @@ export class HtmlRenderer extends Renderer {
       classHtmlAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
-      args.tagNameForGenericContainers,
-      [checkbox, label, revealableContent],
+      args.tagNameForGenericContainers, [
+        radioButtonHide,
+        labelHide,
+        radioButtonReveal,
+        labelReveal,
+        revealableContent
+      ],
       attrsForOuterContainer)
   }
 
