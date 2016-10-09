@@ -922,7 +922,7 @@ describe('An inline revealable node', () => {
 
 
 describe('A revealable block node', () => {
-  it('produces the same HTML as an inline revealable node, but with <div role="alert"> instead of <span role="alert">', () => {
+  it('produces the same HTML as an inline revealable node, but uses <div>s instead of <span>s', () => {
     const document = new Up.Document([
       new Up.RevealableBlock([
         new Up.Paragraph([
@@ -933,8 +933,10 @@ describe('A revealable block node', () => {
 
     const html =
       '<div class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+      + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
       + '<div role="alert">'
       + '<p>John Carmack is a decent programmer.</p>'
       + '</div>'
