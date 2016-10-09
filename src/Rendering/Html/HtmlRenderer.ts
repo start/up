@@ -468,8 +468,10 @@ export class HtmlRenderer extends Renderer {
           tabindex: 0
         })
 
-    const labelHide = labelHtmlElement(hideButtonId, 'hide')
-    const labelReveal = labelHtmlElement(revealButtonId, 'reveal')
+    const { terms } = this.settings 
+
+    const labelHide = labelHtmlElement(hideButtonId, terms.hide)
+    const labelReveal = labelHtmlElement(revealButtonId, terms.reveal)
 
     const revealableContent =
       this.htmlElement(

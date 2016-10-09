@@ -157,7 +157,7 @@ describe('The "sectionReferencedByTableOfContents" setting', () => {
 })
 
 
-describe('The "toggleVisibility" term', () => {
+describe('The "hide" term', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document([
       new Up.Paragraph([
@@ -166,12 +166,33 @@ describe('The "toggleVisibility" term', () => {
     ]),
     change: {
       terms: {
-        toggleVisibility: 'show/hide'
+        hide: 'collapse'
       }
     },
     conflictingChange: {
       terms: {
-        toggleVisibility: 'see'
+        hide: 'minimize'
+      }
+    }
+  })
+})
+
+
+describe('The "reveal" term', () => {
+  itCanBeProvidedMultipleWaysWithTheSameResult({
+    document: new Up.Document([
+      new Up.Paragraph([
+        new Up.InlineRevealable([])
+      ])
+    ]),
+    change: {
+      terms: {
+        reveal: 'expand'
+      }
+    },
+    conflictingChange: {
+      terms: {
+        reveal: 'show'
       }
     }
   })
