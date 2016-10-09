@@ -21,8 +21,10 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
 
     expect(documentHtml).to.equal(
       '<div class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+      + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
       + '<div role="alert">'
       + '<h1>I enjoy apples</h1>'
       + '</div>'
