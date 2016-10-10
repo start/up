@@ -102,54 +102,122 @@ describe('Within an example input node, >, \', and "', () => {
 })
 
 
-describe("Within an inline revealable's label, all instances of < and &", () => {
-  it("are escaped", () => {
-    const up = new Up.Transformer({
-      rendering: {
-        terms: { toggleVisibility: '<_< & show & hide' }
-      }
-    })
+context('All instances of < and & are escaped on both buttons of revealable elements.', () => {
+  context('Inline revealables:', () => {
+    specify('Hide button', () => {
+      const up = new Up.Transformer({
+        rendering: {
+          terms: { hide: '<_< & hide & vanish' }
+        }
+      })
 
-    const document = new Up.Document([
-      new Up.Paragraph([
-        new Up.InlineRevealable([])
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.InlineRevealable([])
+        ])
       ])
-    ])
 
-    const html =
-      '<p>'
-      + '<span class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
-      + '<span role="alert"></span>'
-      + '</span>'
-      + '</p>'
+      const html =
+        '<p>'
+        + '<span class="up-revealable">'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">&lt;_&lt; &amp; hide &amp; vanish</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
+        + '<span role="alert"></span>'
+        + '</span>'
+        + '</p>'
 
-    expect(up.render(document)).to.equal(html)
-  })
-})
-
-
-describe("Within a revealable block's label, all instances of < and &", () => {
-  it("are escaped", () => {
-    const up = new Up.Transformer({
-      rendering: {
-        terms: { toggleVisibility: '<_< & show & hide' }
-      }
+      expect(up.render(document)).to.equal(html)
     })
 
-    const document = new Up.Document([
-      new Up.RevealableBlock([])
-    ])
+    specify('Reveal button', () => {
+      const up = new Up.Transformer({
+        rendering: {
+          terms: { reveal: '<_< & show & see' }
+        }
+      })
 
-    const html =
-      '<div class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; hide</label>'
-      + '<div role="alert"></div>'
-      + '</div>'
+      const document = new Up.Document([
+        new Up.Paragraph([
+          new Up.InlineRevealable([])
+        ])
+      ])
 
-    expect(up.render(document)).to.equal(html)
+      const html =
+        '<p>'
+        + '<span class="up-revealable">'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; see</label>'
+        + '<span role="alert"></span>'
+        + '</span>'
+        + '</p>'
+
+      expect(up.render(document)).to.equal(html)
+    })
+  })
+
+
+  context('Revealable blocks:', () => {
+    specify('Hide button', () => {
+      const up = new Up.Transformer({
+        rendering: {
+          terms: { hide: '<_< & hide & vanish' }
+        }
+      })
+
+      const document = new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('John Carmack is a decent programmer.')
+          ])
+        ])
+      ])
+
+      const html =
+        '<div class="up-revealable">'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">&lt;_&lt; &amp; hide &amp; vanish</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
+        + '<div role="alert">'
+        + '<p>John Carmack is a decent programmer.</p>'
+        + '</div>'
+        + '</div>'
+
+      expect(up.render(document)).to.equal(html)
+    })
+
+    specify('Reveal button', () => {
+      const up = new Up.Transformer({
+        rendering: {
+          terms: { reveal: '<_< & show & see' }
+        }
+      })
+
+      const document = new Up.Document([
+        new Up.RevealableBlock([
+          new Up.Paragraph([
+            new Up.Text('John Carmack is a decent programmer.')
+          ])
+        ])
+      ])
+
+      const html =
+        '<div class="up-revealable">'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">&lt;_&lt; &amp; show &amp; see</label>'
+        + '<div role="alert">'
+        + '<p>John Carmack is a decent programmer.</p>'
+        + '</div>'
+        + '</div>'
+
+      expect(up.render(document)).to.equal(html)
+    })
   })
 })
 
