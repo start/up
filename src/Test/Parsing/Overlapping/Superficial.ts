@@ -551,7 +551,7 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('A spoiler and a link', () => {
+    specify('Revealable content and a link', () => {
       expect(Up.parse('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([

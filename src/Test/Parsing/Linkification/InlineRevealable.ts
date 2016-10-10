@@ -108,7 +108,7 @@ describe('An otherwise-valid linkified revealable with its URL escaped', () => {
 
 
 context("When an otherwise-valid linkified revealable's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
-  specify('the spoiler convention is not linkified', () => {
+  specify('the revealable convention is not linkified', () => {
     expect(Up.parse('[SPOILER: he called her]( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineRevealable([

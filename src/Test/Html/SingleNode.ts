@@ -898,7 +898,7 @@ describe('An inline quote node', () => {
 
 
 describe('An inline revealable node', () => {
-  it('produces an outer <span class="up-revealable">, containing hide/reveal radio buttons and a <span role="alert"> containing the spoiler contents', () => {
+  it('produces an outer <span class="up-revealable">, containing hide/reveal radio buttons and a <span role="alert"> containing the revealable content', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineRevealable([new Up.Text('45.9%')])

@@ -44,7 +44,7 @@ describe('The default URL scheme ("https://" unless changed via setting)', () =>
       ]))
   })
 
-  it('is prefixed to schemeless linkified spoiler URLs', () => {
+  it('is prefixed to schemeless linkified revealable URLs', () => {
     const markup = 'Walter White produces [SPOILER: Blue Sky meth](localhost/wiki/Blue_Sky)'
 
     expect(Up.parse(markup)).to.deep.equal(

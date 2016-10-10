@@ -3,7 +3,7 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
-describe('Emphasis overlapping a linkified spoiler', () => {
+describe('Emphasis overlapping a linkified revealable convention', () => {
   it('splits the emphasis node', () => {
     expect(Up.parse('After you beat the Elite Four, *only [SPOILER: you* fight Gary] (http://example.com/finalbattle).')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -25,8 +25,8 @@ describe('Emphasis overlapping a linkified spoiler', () => {
 })
 
 
-describe('A linkified spoiler overlapping highlighted text', () => {
-  it('splits the inline quote node', () => {
+describe('A linkified revealable convention overlapping highlighted text', () => {
+  it('splits the highlight node', () => {
     expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary (highlight: Oak][http://example.com/finalbattle] and then the credits roll).')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),

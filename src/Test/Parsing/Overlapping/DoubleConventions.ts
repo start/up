@@ -421,7 +421,7 @@ describe('Emphasis nested with an inline revealable, both of which overlap a lin
 
 
 describe('Emphasis overlapping a linified revealable convention', () => {
-  it('splits the emphasis node, not the NSF: or link nodes', () => {
+  it('splits the emphasis node, not the revealable` or link nodes', () => {
     expect(Up.parse('I do *not [NSFL: care* at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I do '),
@@ -442,8 +442,8 @@ describe('Emphasis overlapping a linified revealable convention', () => {
 })
 
 
-describe('A linkified spoiler overlapping emphasized text', () => {
-  it('splits the emphasis node, not the spoiler or link nodes', () => {
+describe('A linkified revealable convention overlapping emphasized text', () => {
+  it('splits the emphasis node, not the revealable or link nodes', () => {
     expect(Up.parse('This [SPOILER: trash *can][https://en.wikipedia.org/wiki/Waste_container] not* stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This '),

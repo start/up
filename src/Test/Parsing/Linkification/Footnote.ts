@@ -143,7 +143,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
 })
 
 
-describe("When an otherwise-valid linkified spoiler's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+describe("When an otherwise-valid linkified revealable convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
   specify('the footnote is not linkified', () => {
     const markup = "[^He called her.]( \t \\tel:5555555555)"
 

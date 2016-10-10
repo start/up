@@ -125,7 +125,7 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellToBeNumeric('[NSFW: 80085]')
     })
 
-    specify('a linkified spoiler to a non-numeric URL whose content is numeric', () => {
+    specify('a linkified revealable convention to a non-numeric URL whose content is numeric', () => {
       expectTableCellToBeNumeric('[SPOILER: 44.7] (example.com/defense)')
     })
 
@@ -168,7 +168,7 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellNotToBeNumeric('[John] (tel:5555555555)')
     })
 
-    specify('a linkified spoiler to a numeric URL whose content is a non-numeric word', () => {
+    specify('a linkified revealable convention to a numeric URL whose content is a non-numeric word', () => {
       expectTableCellNotToBeNumeric('[SPOILER: John] (tel:5555555555)')
     })
 

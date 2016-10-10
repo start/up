@@ -316,7 +316,7 @@ describe('The "highlight" keyword', () => {
 })
 
 
-describe('The "spoiler" keyword', () => {
+describe('The "revealable" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForKeywordVariations: '[RUINS ENDING: Ash fights Gary]',
     markupForDefaultSettings: '[SPOILER: Ash fights Gary]',
