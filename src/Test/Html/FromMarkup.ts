@@ -123,7 +123,7 @@ SPOILER
         + '</div>')
     })
   })
-  
+
 
   context('The parseAndRenderDocumentAndTableOfContents method', () => {
     specify('can be used with parsing settings', () => {
@@ -250,7 +250,7 @@ LOOK AWAY
         + '</div>')
     })
 
-    specify('can be used witout settings', () => {
+    specify('can be used without settings', () => {
       const markup = `
 Anyway, let us get to the point.
 
