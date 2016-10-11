@@ -155,8 +155,10 @@ LOOK AWAY
         '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
         + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
         + '<div class="up-revealable" data-up-source-line="7">'
-        + '<input id="up-revealable-1" type="checkbox">'
-        + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<div role="alert">'
         + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
         + '</div>'
@@ -176,6 +178,7 @@ SPOILER
       const { tableOfContentsHtml, documentHtml } =
         Up.parseAndRenderDocumentAndTableOfContents(markup, {
           rendering: {
+            idPrefix: 'article',
             terms: { tableOfContents: 'In This Article' }
           }
         })
@@ -184,16 +187,18 @@ SPOILER
         '<nav class="up-table-of-contents">'
         + '<h1>In This Article</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h2><a href="#article-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>')
 
       expect(documentHtml).to.equal(
         '<p>Anyway, let us get to the point.</p>'
-        + '<h1 id="up-topic-1">I enjoy apples</h1>'
+        + '<h1 id="article-topic-1">I enjoy apples</h1>'
         + '<div class="up-revealable">'
-        + '<input id="up-revealable-1" type="checkbox">'
-        + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="article-hide-button-1" name="article-revealable-1" type="radio">'
+        + '<label for="article-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="article-reveal-button-1" name="article-revealable-1" type="radio">'
+        + '<label for="article-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<div role="alert">'
         + '<p>After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
         + '</div>'
@@ -217,6 +222,7 @@ LOOK AWAY
             keywords: { revealable: 'LOOK AWAY' }
           },
           rendering: {
+            idPrefix: 'article',
             terms: { tableOfContents: 'In This Article' }
           }
         })
@@ -225,16 +231,18 @@ LOOK AWAY
         '<nav class="up-table-of-contents">'
         + '<h1>In This Article</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h2><a href="#article-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>')
 
       expect(documentHtml).to.equal(
         '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
-        + '<h1 data-up-source-line="4" id="up-topic-1">I enjoy apples</h1>'
+        + '<h1 data-up-source-line="4" id="article-topic-1">I enjoy apples</h1>'
         + '<div class="up-revealable" data-up-source-line="7">'
-        + '<input id="up-revealable-1" type="checkbox">'
-        + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="article-hide-button-1" name="article-revealable-1" type="radio">'
+        + '<label for="article-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="article-reveal-button-1" name="article-revealable-1" type="radio">'
+        + '<label for="article-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<div role="alert">'
         + '<p data-up-source-line="8">After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
         + '</div>'
@@ -266,8 +274,10 @@ SPOILER
         '<p>Anyway, let us get to the point.</p>'
         + '<h1 id="up-topic-1">I enjoy apples</h1>'
         + '<div class="up-revealable">'
-        + '<input id="up-revealable-1" type="checkbox">'
-        + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<div role="alert">'
         + '<p>After beating the Elite Four, Blue steals a Red Delicious from Red.</p>'
         + '</div>'
