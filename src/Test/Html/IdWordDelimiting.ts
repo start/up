@@ -95,8 +95,10 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const html =
         '<p>'
         + '<span class="up-revealable">'
-        + '<input id="thread-11-reply-65-revealable-1" type="checkbox">'
-        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="thread-11-reply-65-hide-button-1" name="thread-11-reply-65-revealable-1" type="radio">'
+        + '<label for="thread-11-reply-65-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="thread-11-reply-65-reveal-button-1" name="thread-11-reply-65-revealable-1" type="radio">'
+        + '<label for="thread-11-reply-65-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<span role="alert">45.9%</span>'
         + '</span>'
         + '</p>'
@@ -113,8 +115,10 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       const html =
         '<div class="up-revealable">'
-        + '<input id="thread-11-reply-65-revealable-1" type="checkbox">'
-        + '<label for="thread-11-reply-65-revealable-1" role="button" tabindex="0">toggle visibility</label>'
+        + '<input checked class="up-hide" id="thread-11-reply-65-hide-button-1" name="thread-11-reply-65-revealable-1" type="radio">'
+        + '<label for="thread-11-reply-65-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="thread-11-reply-65-reveal-button-1" name="thread-11-reply-65-revealable-1" type="radio">'
+        + '<label for="thread-11-reply-65-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<div role="alert"><p>45.9%</p></div>'
         + '</div>'
 
