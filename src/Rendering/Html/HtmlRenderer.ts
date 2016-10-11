@@ -417,7 +417,7 @@ export class HtmlRenderer extends Renderer {
   ): string {
     const revealableIdFor = (...parts: any[]) => {
       // We use this hack to prevent the ID/name collisions of revealable elements within the
-      // table of contents from clashing with the IDs of the revealable elements within the
+      // table of contents from clashing with the ID/names of the revealable elements within the
       // document itself.
       if (this.isInsideTableOfContents) {
         parts.unshift('toc')
@@ -429,7 +429,7 @@ export class HtmlRenderer extends Renderer {
     // In the comment at the top of this class, you can see the HTML this method produces.
 
     const revealableContentOrdinal =
-      ++this.revealableContentCount;
+      ++this.revealableContentCount
 
     let buttonGroupName =
       revealableIdFor('revealable', revealableContentOrdinal)
@@ -447,7 +447,7 @@ export class HtmlRenderer extends Renderer {
           id: hideButtonId,
           name: buttonGroupName,
           class: classHtmlAttrValue('hide'),
-          checked: NO_ATTRIBUTE_VALUE,
+          checked: NO_ATTRIBUTE_VALUE
         })
 
     const radioButtonReveal =
@@ -456,7 +456,7 @@ export class HtmlRenderer extends Renderer {
           type: 'radio',
           id: revealButtonId,
           name: buttonGroupName,
-          class: classHtmlAttrValue('reveal'),
+          class: classHtmlAttrValue('reveal')
         })
 
     const labelHtmlElement = (id: string, text: string) =>
@@ -468,7 +468,7 @@ export class HtmlRenderer extends Renderer {
           tabindex: 0
         })
 
-    const { terms } = this.settings 
+    const { terms } = this.settings
 
     const labelHide = labelHtmlElement(hideButtonId, terms.hide)
     const labelReveal = labelHtmlElement(revealButtonId, terms.reveal)
