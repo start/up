@@ -123,6 +123,7 @@ SPOILER
         + '</div>')
     })
   })
+  
 
   context('The parseAndRenderDocumentAndTableOfContents method', () => {
     specify('can be used with parsing settings', () => {
@@ -285,6 +286,7 @@ SPOILER
     })
   })
 
+
   context('The parseAndRenderInline method', () => {
     specify('can be used with parsing settings', () => {
       const markup = `After beating the Elite Four, [LOOK AWAY: Blue steals a Red Delicious from Red.]`
@@ -298,11 +300,11 @@ SPOILER
       expect(html).to.equal(
         'After beating the Elite Four, '
         + '<span class="up-revealable">'
-        + '<input id="up-revealable-1" type="checkbox">'
-        + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
-        + '<span role="alert">'
-        + 'Blue steals a Red Delicious from Red.'
-        + '</span>'
+        + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+        + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
+        + '<span role="alert">Blue steals a Red Delicious from Red.</span>'
         + '</span>')
     })
 
@@ -318,11 +320,11 @@ SPOILER
       expect(html).to.equal(
         'After beating the Elite Four, '
         + '<span class="up-revealable">'
-        + '<input id="reply-104-revealable-1" type="checkbox">'
-        + '<label for="reply-104-revealable-1" role="button" tabindex="0">toggle visibility</label>'
-        + '<span role="alert">'
-        + 'Blue steals a Red Delicious from Red.'
-        + '</span>'
+        + '<input checked class="up-hide" id="reply-104-hide-button-1" name="reply-104-revealable-1" type="radio">'
+        + '<label for="reply-104-hide-button-1" role="button" tabindex="0">hide</label>'
+        + '<input class="up-reveal" id="reply-104-reveal-button-1" name="reply-104-revealable-1" type="radio">'
+        + '<label for="reply-104-reveal-button-1" role="button" tabindex="0">reveal</label>'
+        + '<span role="alert">Blue steals a Red Delicious from Red.</span>'
         + '</span>')
     })
 
