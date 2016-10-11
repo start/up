@@ -33,7 +33,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its URL',
         new Up.Link([
           new Up.Text('stackoverflow.com')
         ], 'https://stackoverflow.com'),
-        new Up.Text(').'),        
+        new Up.Text(').'),
       ]))
   })
 })

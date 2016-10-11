@@ -225,7 +225,7 @@ context('When a bare URL consisting only of a hostname is followed by a space th
         new Up.Link([
           new Up.Text('4chan.org')
         ], 'http://4chan.org'),
-        new Up.Text(' /rk9/ is the saddest place ever')        
+        new Up.Text(' /rk9/ is the saddest place ever')
       ]))
   })
 })

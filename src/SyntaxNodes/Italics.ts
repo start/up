@@ -9,6 +9,6 @@ export class Italics extends RichInlineSyntaxNode {
   render(renderer: Renderer): string {
     return renderer.italics(this)
   }
-  
+
   protected ITALICS(): void { }
 }
