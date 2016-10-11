@@ -102,7 +102,7 @@ describe('Within an example input node, >, \', and "', () => {
 })
 
 
-context('All instances of < and & are escaped on both buttons of revealable elements.', () => {
+context('All instances of < and & are escaped on both buttons rendered for revealable conventions.', () => {
   context('Inline revealables:', () => {
     specify('Hide button', () => {
       const up = new Up.Transformer({

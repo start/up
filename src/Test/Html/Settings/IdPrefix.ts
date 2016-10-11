@@ -209,20 +209,24 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
 })
 
 
-describe("The ID of an inline revealable's checkbox (on both the checkbox and the label)", () => {
-  it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
+describe("The IDs and names of elements rendered for inline revealable convnetions", () => {
+  it("are prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineRevealable([])
+        new Up.InlineRevealable([
+          new Up.Text('45.9%')
+        ])
       ])
     ])
 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="up-revealable-1" type="checkbox">'
-      + '<label for="up-revealable-1" role="button" tabindex="0">toggle visibility</label>'
-      + '<span role="alert"></span>'
+      + '<input checked class="up-hide" id="up-hide-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="up-reveal-button-1" name="up-revealable-1" type="radio">'
+      + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
 
@@ -230,69 +234,81 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
   })
 
 
-  it("is prefixed with the ID prefix, if one was provided", () => {
+  it("are prefixed with the ID prefix, if one was provided", () => {
     const up = new Up.Transformer({
       rendering: { idPrefix: 'reply-11' }
     })
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineRevealable([])
+        new Up.InlineRevealable([
+          new Up.Text('45.9%')
+        ])
       ])
     ])
 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="reply-11-revealable-1" type="checkbox">'
-      + '<label for="reply-11-revealable-1" role="button" tabindex="0">toggle visibility</label>'
-      + '<span role="alert"></span>'
+      + '<input checked class="up-hide" id="reply-11-hide-button-1" name="reply-11-revealable-1" type="radio">'
+      + '<label for="reply-11-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="reply-11-reveal-button-1" name="reply-11-revealable-1" type="radio">'
+      + '<label for="reply-11-reveal-button-1" role="button" tabindex="0">reveal</label>'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
 
     expect(up.render(document)).to.equal(html)
   })
 
-  it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
+  it("are not prefixed with a ID prefix if an empty prefix was provided", () => {
     const up = new Up.Transformer({
       rendering: { idPrefix: '' }
     })
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineRevealable([])
+        new Up.InlineRevealable([
+          new Up.Text('45.9%')
+        ])
       ])
     ])
 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="revealable-1" type="checkbox">'
-      + '<label for="revealable-1" role="button" tabindex="0">toggle visibility</label>'
-      + '<span role="alert"></span>'
+      + '<input checked class="up-hide" id="hide-button-1" name="revealable-1" type="radio">'
+      + '<label for="hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="reveal-button-1" name="revealable-1" type="radio">'
+      + '<label for="reveal-button-1" role="button" tabindex="0">reveal</label>'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
 
     expect(up.render(document)).to.equal(html)
   })
 
-  it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
+  it("are not prefixed with a ID prefix if a blank prefix was provided", () => {
     const up = new Up.Transformer({
       rendering: { idPrefix: ' \t' }
     })
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineRevealable([])
+        new Up.InlineRevealable([
+          new Up.Text('45.9%')
+        ])
       ])
     ])
 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="revealable-1" type="checkbox">'
-      + '<label for="revealable-1" role="button" tabindex="0">toggle visibility</label>'
-      + '<span role="alert"></span>'
+      + '<input checked class="up-hide" id="hide-button-1" name="revealable-1" type="radio">'
+      + '<label for="hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="reveal-button-1" name="revealable-1" type="radio">'
+      + '<label for="reveal-button-1" role="button" tabindex="0">reveal</label>'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
 
@@ -300,25 +316,30 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
   })
 
 
-  it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
+  it("are properly escaped if the ID prefix contains any ampersands or double quotes", () => {
     const up = new Up.Transformer({
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.InlineRevealable([])
+        new Up.InlineRevealable([
+          new Up.Text('45.9%')
+        ])
       ])
     ])
 
     const html =
       '<p>'
       + '<span class="up-revealable">'
-      + '<input id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" type="checkbox">'
-      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" role="button" tabindex="0">toggle visibility</label>'
-      + '<span role="alert"></span>'
+      + '<input checked class="up-hide" id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-hide-button-1" name="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" type="radio">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-hide-button-1" role="button" tabindex="0">hide</label>'
+      + '<input class="up-reveal" id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-reveal-button-1" name="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-revealable-1" type="radio">'
+      + '<label for="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-reveal-button-1" role="button" tabindex="0">reveal</label>'
+      + '<span role="alert">45.9%</span>'
       + '</span>'
       + '</p>'
+      
 
     expect(up.render(document)).to.equal(html)
   })
