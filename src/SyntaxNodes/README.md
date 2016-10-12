@@ -20,38 +20,34 @@ These methods are:
 Defaulting optional class fields to `undefined`
 ===============================================
 
-In short, we do this to ensure those fields always exist on their respective objects.
-
-This mimics the default TypeScript behavior, which in turn makes some of our unit tests simpler to write.
+In short, we do this to ensure those fields always exist on their respective objects, which in turn makes some of our unit tests simpler to write.
 
 
 The details
 ----------- 
 
-Our syntax node constructors hide most of their optional fields in an `options` argument. If this argument is provided, we assign the optional fields.
+Our syntax node constructors hide most of their optional fields in an optional `options` argument. If this argument is provided, we assign the optional fields.
 
-Here's an example of one of those optional fields (`ordinal`):
+Here's an example of one of those optional fields (`sourceLineNumber`):
 
 ``````
-public ordinal: number = undefined
+public sourceLineNumber: number = undefined
 
-constructor(public children: OutlineSyntaxNode[], options?: { ordinal: number }) {
+constructor(children: OutlineSyntaxNode[], options?: { sourceLineNumber: number }) {
   super(children)
 
   if (options) {
-    this.ordinal = options.ordinal
+    this.sourceLineNumber = options.sourceLineNumber
   }
 }
 ``````
 
-If we don't default `ordinal` to `undefined`, then the `ordinal` field would only exist on the object if `options` were provided.
+If we don't default `sourceLineNumber` to `undefined`, then `sourceLineNumber` would only exist on the object if `options` were provided.
 
-This is in contrast to the typical TypeScript behavior. If we had declared `ordinal` directly in the constructor signature and made it optional, it would always be assigned.
+This is actually in contrast to the typical TypeScript behavior. If we had declared `sourceLineNumber` directly in the constructor signature and made it optional, it would always be assigned (and thus part of the object).
 
 ``````
-constructor(public children: OutlineSyntaxNode[], public ordinal?: number) {
+constructor(children: OutlineSyntaxNode[], public sourceLineNumber?: number) {
   super(children)
 }
 ``````
-
-In the above example, TypeScript emits JavaScript to *always* set `this.ordinal` to the `ordinal` argument, even when the argument not provided.
