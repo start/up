@@ -25,6 +25,4 @@ export class FootnoteBlock implements OutlineSyntaxNode {
   render(renderer: Renderer): string {
     return renderer.footnoteBlock(this)
   }
-
-  protected FOOTNOTE_BLOCK(): void { }
 }

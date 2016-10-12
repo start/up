@@ -1,7 +1,6 @@
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
-// Represents any parenthetical text.
 export abstract class ParentheticalSyntaxNode extends RichInlineSyntaxNode {
-  protected PARENTHETICAL(): void { }
+  protected PARENTHETICAL_SYNTAX_NODE(): void { }
 }
