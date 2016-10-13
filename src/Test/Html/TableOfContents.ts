@@ -32,7 +32,7 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
   })
 
 
-  context("Following is an <ul> containing a <li> for each entry. In each <li> is a heading that's one level higher than the heading the entry references", () => {
+  context("Following is an <ul> containing a <li> for each entry. In each <li> is a heading that's one level higher than the heading the entry references.", () => {
     specify('A level 1 heading entry is placed in an <h2>', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
@@ -143,8 +143,8 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
         '<h5 id="up-topic-1">I enjoy apples</h5>')
     })
 
-    context("HTML heading levels don't go higher than <h6>, so all subsequent heading levels produce <h6> table of contents entries.", () => {
-      specify('A level 6 heading entry is placed in an <h6>', () => {
+    context('Headings with levels 6 and up are placed into <div role="heading"> elements with their "aria-level" attribute set to one plus their heading level:', () => {
+      specify('Level 6', () => {
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
 
@@ -158,7 +158,7 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
+          + '<li><div aria-level="7" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
@@ -166,9 +166,9 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
           '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
 
-      specify('A level 10 heading entry is placed in an <h6>', () => {
+      specify('Level 7', () => {
         const heading =
-          new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1 })
 
         const document =
           new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -180,12 +180,78 @@ context('A table of contents produces a <nav class="up-table-of-contents"> start
           '<nav class="up-table-of-contents">'
           + '<h1>Table of Contents</h1>'
           + '<ul>'
-          + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
+          + '<li><div aria-level="8" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
         expect(documentHtml).to.equal(
-          '<h6 id="up-topic-1">I enjoy apples</h6>')
+          '<div aria-level="7" id="up-topic-1" role="heading">I enjoy apples</div>')
+      })
+
+      specify('Level 8', () => {
+        const heading =
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 8, ordinalInTableOfContents: 1 })
+
+        const document =
+          new Up.Document([heading], new Up.Document.TableOfContents([heading]))
+
+        const { tableOfContentsHtml, documentHtml } =
+          Up.renderDocumentAndTableOfContents(document)
+
+        expect(tableOfContentsHtml).to.equal(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<ul>'
+          + '<li><div aria-level="9" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '</ul>'
+          + '</nav>')
+
+        expect(documentHtml).to.equal(
+          '<div aria-level="8" id="up-topic-1" role="heading">I enjoy apples</div>')
+      })
+
+      specify('Level 9', () => {
+        const heading =
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 9, ordinalInTableOfContents: 1 })
+
+        const document =
+          new Up.Document([heading], new Up.Document.TableOfContents([heading]))
+
+        const { tableOfContentsHtml, documentHtml } =
+          Up.renderDocumentAndTableOfContents(document)
+
+        expect(tableOfContentsHtml).to.equal(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<ul>'
+          + '<li><div aria-level="10" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '</ul>'
+          + '</nav>')
+
+        expect(documentHtml).to.equal(
+          '<div aria-level="9" id="up-topic-1" role="heading">I enjoy apples</div>')
+      })
+
+      specify('Level 10', () => {
+        const heading =
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 10, ordinalInTableOfContents: 1 })
+
+        const document =
+          new Up.Document([heading], new Up.Document.TableOfContents([heading]))
+
+        const { tableOfContentsHtml, documentHtml } =
+          Up.renderDocumentAndTableOfContents(document)
+
+        expect(tableOfContentsHtml).to.equal(
+          '<nav class="up-table-of-contents">'
+          + '<h1>Table of Contents</h1>'
+          + '<ul>'
+          + '<li><div aria-level="11" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '</ul>'
+          + '</nav>')
+
+        expect(documentHtml).to.equal(
+          '<div aria-level="10" id="up-topic-1" role="heading">I enjoy apples</div>')
       })
     })
   })
