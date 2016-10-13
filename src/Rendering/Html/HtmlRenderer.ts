@@ -52,7 +52,6 @@ export class HtmlRenderer extends Renderer {
 
     return htmlElementWithAlreadyEscapedChildren(
       'nav', [
-        this.tableOfContentsTitle(),
         this.tableOfContentsEntries(tableOfContents.entries)
       ],
       { class: classHtmlAttrValue("table-of-contents") })
@@ -289,13 +288,6 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(text.text)
   }
 
-  private tableOfContentsTitle(): string {
-    const title = new Up.Heading([
-      new Up.Text(this.settings.terms.tableOfContents)], { level: 1 })
-
-    return title.render(this)
-  }
-
   private tableOfContentsEntries(entries: Up.Document.TableOfContents.Entry[]): string {
     if (!entries.length) {
       return ''
@@ -304,15 +296,11 @@ export class HtmlRenderer extends Renderer {
     const listItems =
       entries.map(entry =>
         new Up.UnorderedList.Item([
-          this.tableOfContentsEntry(entry)
+          // Right now, table of contents entries only represent headings, which simplifies this method.
+          entry as Up.Heading
         ]))
 
     return new Up.UnorderedList(listItems).render(this)
-  }
-
-  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.OutlineSyntaxNode {
-    // Right now, only headings can be table of contents entries, which simplifies this method.
-    return new Up.Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level + 1 })
   }
 
   private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {

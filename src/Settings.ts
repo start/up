@@ -235,7 +235,6 @@ export namespace Settings {
       hide: Term = 'hide'
       reveal: Term = 'reveal'
       sectionReferencedByTableOfContents: Term = 'topic'
-      tableOfContents: Term = 'Table of Contents'
 
       clone(): Terms {
         const clone = new Terms()
@@ -245,7 +244,6 @@ export namespace Settings {
         clone.hide = this.hide
         clone.reveal = this.reveal
         clone.sectionReferencedByTableOfContents = this.sectionReferencedByTableOfContents
-        clone.tableOfContents = this.tableOfContents
 
         return clone
       }
@@ -269,9 +267,6 @@ export namespace Settings {
 
         this.sectionReferencedByTableOfContents =
           coalesce(terms.sectionReferencedByTableOfContents, this.sectionReferencedByTableOfContents)
-
-        this.tableOfContents =
-          coalesce(terms.tableOfContents, this.tableOfContents)
       }
     }
 

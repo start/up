@@ -199,27 +199,6 @@ describe('The "reveal" term', () => {
 })
 
 
-describe('The "tableOfContents" setting', () => {
-  const heading = new Up.Heading([], { level: 1 })
-
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    document: new Up.Document(
-      [heading],
-      new Up.Document.TableOfContents([heading])),
-    change: {
-      terms: {
-        tableOfContents: 'In This Article'
-      }
-    },
-    conflictingChange: {
-      terms: {
-        tableOfContents: 'Skip To…'
-      }
-    }
-  })
-})
-
-
 describe('The "renderDangerousContent" setting', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document([

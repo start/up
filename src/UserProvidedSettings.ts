@@ -48,7 +48,6 @@ export namespace UserProvidedSettings {
       hide?: Term
       reveal?: Term
       sectionReferencedByTableOfContents?: Term
-      tableOfContents?: Term
     }
 
     export type Term = string
