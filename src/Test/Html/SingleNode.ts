@@ -541,7 +541,7 @@ describe('A level 3 heading node', () => {
 
 
 describe('A level 4 heading node', () => {
-  it('produces an <h4>', () => {
+  it('produces an <h4> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Charmander')], { level: 4 })
     ])
@@ -573,35 +573,37 @@ describe('A level 6 heading node', () => {
 })
 
 
-describe('A level 7 heading node', () => {
-  it('produces an <h6> element', () => {
+context('Headings with levels 7 and up render as <div role="heading"> elements with the appropriate "aria-level" attribute:', () => {
+  specify('Level 7', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Squirtle')], { level: 7 })
     ])
 
-    expect(Up.render(document)).to.equal('<h6>Squirtle</h6>')
+    expect(Up.render(document)).to.equal('<div aria-level="7" role="heading">Squirtle</div>')
   })
-})
 
-
-describe('A level 8 heading node', () => {
-  it('produces an <h6> element', () => {
+  specify('Level 8', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Wartortle')], { level: 8 })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 8 })
     ])
 
-    expect(Up.render(document)).to.equal('<h6>Wartortle</h6>')
+    expect(Up.render(document)).to.equal('<div aria-level="8" role="heading">Squirtle</div>')
   })
-})
 
-
-describe('A level 9 heading node', () => {
-  it('produces an <h6> element', () => {
+  specify('Level 9', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Blastoise')], { level: 9 })
+      new Up.Heading([new Up.Text('Squirtle')], { level: 9 })
     ])
 
-    expect(Up.render(document)).to.equal('<h6>Blastoise</h6>')
+    expect(Up.render(document)).to.equal('<div aria-level="9" role="heading">Squirtle</div>')
+  })
+
+  specify('Level 10', () => {
+    const document = new Up.Document([
+      new Up.Heading([new Up.Text('Squirtle')], { level: 10 })
+    ])
+
+    expect(Up.render(document)).to.equal('<div aria-level="10" role="heading">Squirtle</div>')
   })
 })
 
