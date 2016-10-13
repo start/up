@@ -573,7 +573,7 @@ describe('A level 6 heading node', () => {
 })
 
 
-context('Headings with levels 7 and up render as <div role="heading"> elements with the appropriate "aria-level" attribute:', () => {
+context('Headings with levels 7 and up render as <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
   specify('Level 7', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Squirtle')], { level: 7 })
