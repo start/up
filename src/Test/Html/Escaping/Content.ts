@@ -302,9 +302,8 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -331,9 +330,8 @@ context('Within a table of contents entry, all instances of < and & are escaped:
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1></li>'
       + '</ul>'
       + '</nav>')
 

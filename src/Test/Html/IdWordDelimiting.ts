@@ -72,9 +72,8 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
@@ -163,9 +162,8 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#thread-11-reply-65-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#thread-11-reply-65-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 

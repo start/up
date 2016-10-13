@@ -47,9 +47,8 @@ context('A link within a table of contents entry does not produce an <a> element
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -74,9 +73,8 @@ context('A link within a table of contents entry does not produce an <a> element
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -142,9 +140,8 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1"><em>I enjoy apples</em></a></h2></li>'
+      + '<li><h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -173,9 +170,8 @@ context("When a link is nested deeply within another link, it doesn't produce an
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1"><em>I enjoy apples</em></a></h2></li>'
+      + '<li><h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
