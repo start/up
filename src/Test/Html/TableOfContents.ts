@@ -44,7 +44,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
@@ -65,7 +65,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h3><a href="#up-topic-1">I enjoy apples</a></h3></li>'
+        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
         + '</ul>'
         + '</nav>')
 
@@ -86,7 +86,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h4><a href="#up-topic-1">I enjoy apples</a></h4></li>'
+        + '<li><h3><a href="#up-topic-1">I enjoy apples</a></h3></li>'
         + '</ul>'
         + '</nav>')
 
@@ -107,7 +107,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h5><a href="#up-topic-1">I enjoy apples</a></h5></li>'
+        + '<li><h4><a href="#up-topic-1">I enjoy apples</a></h4></li>'
         + '</ul>'
         + '</nav>')
 
@@ -128,7 +128,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
+        + '<li><h5><a href="#up-topic-1">I enjoy apples</a></h5></li>'
         + '</ul>'
         + '</nav>')
 
@@ -265,7 +265,7 @@ context("The table of contents has no effect on elements that aren't referenced 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -336,12 +336,12 @@ context('When a table of contents has multiple entries', () => {
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">Vegetables</a></h2></li>'
-      + '<li><h2><a href="#up-topic-2">Fruit</a></h2></li>'
-      + '<li><h3><a href="#up-topic-3">Apples</a></h3></li>'
-      + '<li><h4><a href="#up-topic-4">Green apples</a></h4></li>'
-      + '<li><h2><a href="#up-topic-5">Grains</a></h2></li>'
-      + '<li><h3><a href="#up-topic-6">Rice</a></h3></li>'
+      + '<li><h1><a href="#up-topic-1">Vegetables</a></h1></li>'
+      + '<li><h1><a href="#up-topic-2">Fruit</a></h1></li>'
+      + '<li><h2><a href="#up-topic-3">Apples</a></h2></li>'
+      + '<li><h3><a href="#up-topic-4">Green apples</a></h3></li>'
+      + '<li><h1><a href="#up-topic-5">Grains</a></h1></li>'
+      + '<li><h2><a href="#up-topic-6">Rice</a></h2></li>'
       + '</ul>'
       + '</nav>')
 
@@ -400,7 +400,7 @@ context("Within the table of contents itself", () => {
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I enjoy apples <em>and you should too</em></a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I enjoy apples <em>and you should too</em></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -455,7 +455,7 @@ context("Within the table of contents itself", () => {
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">'
+      + '<li><h1><a href="#up-topic-1">'
       + 'I enjoy apples '
       + '<span class="up-revealable">'
       + '<input checked class="up-hide" id="up-toc-hide-button-1" name="up-toc-revealable-1" type="radio">'
@@ -464,8 +464,8 @@ context("Within the table of contents itself", () => {
       + '<label for="up-toc-reveal-button-1" role="button" tabindex="0">reveal</label>'
       + '<span role="alert">sometimes</span>'
       + '</span>'
-      + '</a></h2></li>'
-      + '<li><h2><a href="#up-topic-2">'
+      + '</a></h1></li>'
+      + '<li><h1><a href="#up-topic-2">'
       + 'I enjoy grapes '
       + '<span class="up-revealable">'
       + '<input checked class="up-hide" id="up-toc-hide-button-2" name="up-toc-revealable-2" type="radio">'
@@ -474,7 +474,7 @@ context("Within the table of contents itself", () => {
       + '<label for="up-toc-reveal-button-2" role="button" tabindex="0">reveal</label>'
       + '<span role="alert">usually</span>'
       + '</span>'
-      + '</a></h2></li>'
+      + '</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -527,7 +527,7 @@ context("When an item referenced by the table of contents has a source line numb
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -568,8 +568,8 @@ context('When a section link node is associated with an entry', () => {
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">I drink soda</a></h2></li>'
-      + '<li><h2><a href="#up-topic-2">I never lie</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">I drink soda</a></h1></li>'
+      + '<li><h1><a href="#up-topic-2">I never lie</a></h1></li>'
       + '</ul>'
       + '</nav>')
 

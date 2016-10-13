@@ -296,11 +296,15 @@ export class HtmlRenderer extends Renderer {
     const listItems =
       entries.map(entry =>
         new Up.UnorderedList.Item([
-          // Right now, table of contents entries only represent headings, which simplifies this method.
-          entry as Up.Heading
+          this.tableOfContentsEntry(entry)
         ]))
 
     return new Up.UnorderedList(listItems).render(this)
+  }
+
+  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.OutlineSyntaxNode {
+    // Right now, tale of contents entries only represent headings, which simplifies this method.
+    return new Up.Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level })
   }
 
   private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {
