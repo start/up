@@ -119,16 +119,20 @@ export class HtmlRenderer extends Renderer {
   }
 
   heading(heading: Up.Heading): string {
-    const attrs: { id?: string } = {}
+    const attrs = htmlAttrsFor(heading)
 
     if (heading.ordinalInTableOfContents) {
       attrs.id = this.htmlIdOfActualEntryInDocument(heading)
     }
 
-    return this.htmlElement(
-      'h' + Math.min(6, heading.level),
-      heading.children,
-      htmlAttrsFor(heading, attrs))
+    if (heading.level <= 6) {
+      return this.htmlElement('h' + heading.level, heading.children, attrs)
+    }
+
+    attrs.role = 'heading'
+    attrs['aria-level'] = heading.level
+
+    return this.htmlElement('div', heading.children, attrs)
   }
 
   thematicBreak(thematicBreak: Up.ThematicBreak): string {
