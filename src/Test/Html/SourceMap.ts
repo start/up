@@ -247,12 +247,12 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal('<h1 data-up-source-line="3">Bulbasaur</h1>')
   })
 
-  specify('Level 2 headings', () => {
+  specify('Level 2 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 2, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 2, ordinalInTableOfContents: 1, sourceLineNumber: 1 })
     ])
 
-    expect(Up.render(document)).to.equal('<h2 data-up-source-line="1">Bulbasaur</h2>')
+    expect(Up.render(document)).to.equal('<h2 data-up-source-line="1" id="up-topic-1">Bulbasaur</h2>')
   })
 
   specify('Level 3 headings', () => {
@@ -263,19 +263,19 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal('<h3 data-up-source-line="3">Bulbasaur</h3>')
   })
 
-  specify('Level 4  headings', () => {
+  specify('Level 4 headings', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
     ])
 
     expect(Up.render(document)).to.equal('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
-  specify('Level 5 headings', () => {
+  specify('Level 5 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 5, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 5, ordinalInTableOfContents: 2, sourceLineNumber: 3 })
     ])
 
-    expect(Up.render(document)).to.equal('<h5 data-up-source-line="3">Bulbasaur</h5>')
+    expect(Up.render(document)).to.equal('<h5 data-up-source-line="3" id="up-topic-2">Bulbasaur</h5>')
   })
 
   specify('Level 6 headings', () => {
@@ -286,12 +286,36 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal('<h6 data-up-source-line="1">Bulbasaur</h6>')
   })
 
-  specify('Level 10 headings', () => {
+  specify('Level 7 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 10, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 7, sourceLineNumber: 5 })
     ])
 
-    expect(Up.render(document)).to.equal('<h6 data-up-source-line="2">Bulbasaur</h6>')
+    expect(Up.render(document)).to.equal('<div aria-level="7" data-up-source-line="5" role="heading">Bulbasaur</div>')
+  })
+
+  specify('Level 8 headings referenced by the table of contents', () => {
+    const document = new Up.Document([
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 8, ordinalInTableOfContents: 2, sourceLineNumber: 3 })
+    ])
+
+    expect(Up.render(document)).to.equal('<div aria-level="8" data-up-source-line="3" id="up-topic-2" role="heading">Bulbasaur</div>')
+  })
+
+  specify('Level 9 headings', () => {
+    const document = new Up.Document([
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 9, sourceLineNumber: 2 })
+    ])
+
+    expect(Up.render(document)).to.equal('<div aria-level="9" data-up-source-line="2" role="heading">Bulbasaur</div>')
+  })
+
+  specify('Level 10 headings referenced by the table of contents', () => {
+    const document = new Up.Document([
+      new Up.Heading([new Up.Text('Bulbasaur')], { level: 10, ordinalInTableOfContents: 7, sourceLineNumber: 3 })
+    ])
+
+    expect(Up.render(document)).to.equal('<div aria-level="10" data-up-source-line="3" id="up-topic-7" role="heading">Bulbasaur</div>')
   })
 
   specify('Thematic breaks', () => {
