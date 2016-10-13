@@ -146,9 +146,8 @@ LOOK AWAY
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
@@ -186,9 +185,8 @@ SPOILER
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>In This Article</h1>'
         + '<ul>'
-        + '<li><h2><a href="#article-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#article-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
@@ -265,9 +263,8 @@ SPOILER
 
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
-        + '<h1>Table of Contents</h1>'
         + '<ul>'
-        + '<li><h2><a href="#up-topic-1">I enjoy apples</a></h2></li>'
+        + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
