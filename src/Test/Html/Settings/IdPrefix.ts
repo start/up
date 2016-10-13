@@ -363,9 +363,8 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1"></a></h2></li>'
+      + '<li><h1><a href="#up-topic-1"></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -389,9 +388,8 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#reply-11-topic-1"></a></h2></li>'
+      + '<li><h1><a href="#reply-11-topic-1"></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -414,9 +412,8 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#topic-1"></a></h2></li>'
+      + '<li><h1><a href="#topic-1"></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -439,9 +436,8 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#topic-1"></a></h2></li>'
+      + '<li><h1><a href="#topic-1"></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -464,9 +460,8 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h2></li>'
+      + '<li><h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -493,9 +488,8 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-topic-1">Howdy there</a></h2></li>'
+      + '<li><h1><a href="#up-topic-1">Howdy there</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -524,9 +518,8 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#reply-11-topic-1">Howdy there</a></h2></li>'
+      + '<li><h1><a href="#reply-11-topic-1">Howdy there</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -555,9 +548,8 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#topic-1">Howdy there</a></h2></li>'
+      + '<li><h1><a href="#topic-1">Howdy there</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -586,9 +578,8 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#topic-1">Howdy there</a></h2></li>'
+      + '<li><h1><a href="#topic-1">Howdy there</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
@@ -617,9 +608,8 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h2></li>'
+      + '<li><h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h1></li>'
       + '</ul>'
       + '</nav>')
 

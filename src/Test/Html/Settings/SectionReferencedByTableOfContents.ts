@@ -21,9 +21,8 @@ describe('The ID of an element referenced by the table of contents', () => {
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 

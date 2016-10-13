@@ -188,9 +188,8 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
-      + '<h1>Table of Contents</h1>'
       + '<ul>'
-      + '<li><h2><a href="#up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</a></h2></li>'
+      + '<li><h1><a href="#up-look-&quot;away&quot;-&amp;-smile-&amp;-forget-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
