@@ -30,7 +30,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
   })
 
 
-  context("Following is an <ul> containing a <li> for each entry. In each <li> is the heading represented by the element.", () => {
+  context("When there are table of contents entries, the <nav> contains an <ul> containing a <li> for each entry. Each <li> contains a heading corresponding to the entry's level.", () => {
     specify('A level 1 heading entry is placed in an <h2>', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
@@ -134,9 +134,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
 
       expect(documentHtml).to.equal(
         '<h5 id="up-topic-1">I enjoy apples</h5>')
-    })
 
-    context('Headings with levels 6 and up are placed into <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
       specify('Level 6', () => {
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
@@ -150,14 +148,17 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<ul>'
-          + '<li><div aria-level="7" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '<li><h6><a href="#up-topic-1">I enjoy apples</a></h6></li>'
           + '</ul>'
           + '</nav>')
 
         expect(documentHtml).to.equal(
           '<h6 id="up-topic-1">I enjoy apples</h6>')
       })
+    })
 
+
+    context('Entries with levels 7 and up are placed into <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
       specify('Level 7', () => {
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1 })
@@ -171,7 +172,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<ul>'
-          + '<li><div aria-level="8" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '<li><div aria-level="7" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
@@ -192,7 +193,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<ul>'
-          + '<li><div aria-level="9" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '<li><div aria-level="8" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
@@ -213,7 +214,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<ul>'
-          + '<li><div aria-level="10" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '<li><div aria-level="9" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
@@ -234,7 +235,7 @@ context('A table of contents produces a <nav class="up-table-of-contents">.', ()
         expect(tableOfContentsHtml).to.equal(
           '<nav class="up-table-of-contents">'
           + '<ul>'
-          + '<li><div aria-level="11" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
+          + '<li><div aria-level="10" role="heading"><a href="#up-topic-1">I enjoy apples</a></div></li>'
           + '</ul>'
           + '</nav>')
 
