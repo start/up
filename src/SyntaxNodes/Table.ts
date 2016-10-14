@@ -28,8 +28,8 @@ export class Table implements OutlineSyntaxNode {
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
-    const captionAndCells = concat<InlineSyntaxNodeContainer>([
-      this.caption ? [this.caption] : [],
+    const captionAndCells = concat([
+      this.caption ? [this.caption] : [] as InlineSyntaxNodeContainer[],
       this.header.cells,
       ...this.rows.map(row => row.allCellsStartingWithHeaderColumnCell)
     ])
