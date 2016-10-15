@@ -28,7 +28,7 @@ describe('Text surrounded by an underscore and an asterisk on each side', () => 
     expect(Up.parse('Koopas! _*Mario is on his way!*_ Grab your shells!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Koopas! '),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Emphasis([
             new Up.Text('Mario is on his way!'),
           ]),

@@ -27,7 +27,7 @@ export abstract class Renderer {
   abstract image(image: Up.Image): string
   abstract inlineCode(inlineCode: Up.InlineCode): string
   abstract inlineQuote(inlineQuote: Up.InlineQuote): string
-  abstract italics(italics: Up.Italics): string
+  abstract italic(italics: Up.Italic): string
   abstract lineBlock(lineBlock: Up.LineBlock): string
   abstract link(link: Up.Link): string
   abstract orderedList(list: Up.OrderedList): string

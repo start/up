@@ -5,10 +5,10 @@ import { Renderer } from '../Rendering/Renderer'
 // Equivalent to the `<i>` HTML element.
 //
 // Not to be confused with `Emphasis`! 
-export class Italics extends RichInlineSyntaxNode {
+export class Italic extends RichInlineSyntaxNode {
   render(renderer: Renderer): string {
-    return renderer.italics(this)
+    return renderer.italic(this)
   }
 
-  protected ITALICS(): void { }
+  protected ITALIC(): void { }
 }

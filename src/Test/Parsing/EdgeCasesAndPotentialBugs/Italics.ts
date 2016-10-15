@@ -9,11 +9,11 @@ context('Within italics, (inner) italics can be the first convention within any 
       expect(Up.parse('Luigi stood up. _Hello, my (_leetle_) Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Hello, my '),
             new Up.NormalParenthetical([
               new Up.Text('('),
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('leetle')
               ]),
               new Up.Text(')')
@@ -27,10 +27,10 @@ context('Within italics, (inner) italics can be the first convention within any 
       expect(Up.parse('Luigi stood up. _Hello, my *_leetle_* Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Hello, my '),
             new Up.Emphasis([
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('leetle')
               ]),
             ]),
@@ -43,10 +43,10 @@ context('Within italics, (inner) italics can be the first convention within any 
       expect(Up.parse('Luigi stood up. _Hello, my "_leetle_" Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Hello, my '),
             new Up.InlineQuote([
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('leetle')
               ]),
             ]),
@@ -59,10 +59,10 @@ context('Within italics, (inner) italics can be the first convention within any 
       expect(Up.parse('Luigi stood up. _Hello, my [highlight:_leetle_] Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Hello, my '),
             new Up.Highlight([
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('leetle')
               ])
             ]),
@@ -77,13 +77,13 @@ context('Within italics, (inner) italics can be the first convention within any 
     expect(Up.parse('Luigi stood up. _Hello, my "(*_leetle_*)" Mario!_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Luigi stood up. '),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text('Hello, my '),
           new Up.InlineQuote([
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.Emphasis([
-                new Up.Italics([
+                new Up.Italic([
                   new Up.Text('leetle')
                 ])
               ]),
@@ -102,9 +102,9 @@ context('Within italics, (inner) italics can close directly after a convention i
     specify('Normal parentheticals', () => {
       expect(Up.parse('_Luigi stood up. _Help me find brother (Mario)_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Luigi stood up. '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.NormalParenthetical([
                 new Up.Text('(Mario)'),
@@ -118,9 +118,9 @@ context('Within italics, (inner) italics can close directly after a convention i
     specify('Emphasis', () => {
       expect(Up.parse('_Luigi stood up. _Help me find brother *Mario*_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Luigi stood up. '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.Emphasis([
                 new Up.Text('Mario'),
@@ -134,9 +134,9 @@ context('Within italics, (inner) italics can close directly after a convention i
     specify('Inline quotes', () => {
       expect(Up.parse('_Luigi stood up. _Help me find brother "Mario"_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Luigi stood up. '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.InlineQuote([
                 new Up.Text('Mario'),
@@ -150,9 +150,9 @@ context('Within italics, (inner) italics can close directly after a convention i
     specify('Highlights (even when there is no space after the colon)', () => {
       expect(Up.parse('_Luigi stood up. _Help me find brother [highlight:Mario]_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Luigi stood up. '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.Highlight([
                 new Up.Text('Mario'),
@@ -177,7 +177,7 @@ describe('An unmatched opening underscore', () => {
   it('does not create an italics node, even when following 2 matching underscores', () => {
     expect(Up.parse('_Hello_, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text('Hello'),
         ]),
         new Up.Text(', _world!')

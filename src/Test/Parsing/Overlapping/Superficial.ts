@@ -9,7 +9,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Stress([
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Hello')
             ]),
             new Up.Text(' good')
@@ -65,7 +65,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
   specify('Quoted text and italics', () => {
     expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italics([
+        new Up.Italic([
           new Up.InlineQuote([
             new Up.Text('Oh')
           ]),
@@ -78,7 +78,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
     expect(Up.parse('_"Oh_ why would you do this?"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Oh')
           ]),
           new Up.Text(' why would you do this?')
@@ -181,7 +181,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('Hello '),
             new Up.Stress([
               new Up.Text('good '),
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('friend!')
               ])
             ]),
@@ -209,7 +209,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Two conventions with continuity priority (e.g. inline revealable, quote) being overlapped by a freely-splittable convention (e.g. italics)', () => {
       expect(Up.parse('_There was another [NSFL: rotten body "squish_"] Hi!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('There was another '),
             new Up.InlineRevealable([
               new Up.Text('rotten body '),
@@ -227,7 +227,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('was '),
               new Up.InlineRevealable([
                 new Up.Text('another '),
@@ -249,7 +249,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('was '),
               new Up.InlineQuote([
                 new Up.Text('another '),
@@ -271,7 +271,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         insideDocumentAndParagraph([
           new Up.Stress([
             new Up.Text('There '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('was '),
               new Up.Bold([
                 new Up.Text('another '),
@@ -354,7 +354,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Italics and parentheses', () => {
       expect(Up.parse('_Oh (why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Oh '),
             new Up.NormalParenthetical([
               new Up.Text('(why would you do this?')
@@ -369,7 +369,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     specify('Italics and square brackets', () => {
       expect(Up.parse('_Oh [why would you do this?_]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Oh '),
             new Up.SquareParenthetical([
               new Up.Text('[why would you do this?')
@@ -408,7 +408,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.parse('_**Why would you do this?_**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Why would you do this?')
             ])
           ])
@@ -441,7 +441,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
   specify('Quoted text and italics', () => {
     expect(Up.parse('"_Why would you do this?"_')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Italics([
+        new Up.Italic([
           new Up.InlineQuote([
             new Up.Text('Why would you do this?')
           ]),
@@ -453,7 +453,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     expect(Up.parse('_"Why would you do this?_"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Why would you do this?')
           ]),
         ])
@@ -467,7 +467,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
             new Up.Text('('),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Why would you do this?)')
             ]),
           ])
@@ -478,7 +478,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.parse('_(Why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('(Why would you do this?')
             ]),
             new Up.Text(')')
@@ -491,7 +491,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
             new Up.Text('['),
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('Why would you do this?]')
             ])
           ])
@@ -502,7 +502,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       expect(Up.parse('_[Why would you do this?_]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('[Why would you do this?')
             ]),
             new Up.Text(']'),
@@ -545,7 +545,7 @@ context("When most conventions overlap by only the first convention's end delimi
           new Up.Highlight([
             new Up.Text('Oh ')
           ]),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('why would you do this?')
           ])
         ]))

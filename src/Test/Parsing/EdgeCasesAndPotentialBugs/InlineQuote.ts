@@ -45,7 +45,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
             new Up.Text('Hello, my '),
-            new Up.Italics([
+            new Up.Italic([
               new Up.InlineQuote([
                 new Up.Text('leetle')
               ]),
@@ -79,7 +79,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         new Up.Text('Luigi stood up. '),
         new Up.InlineQuote([
           new Up.Text('Hello, my '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.NormalParenthetical([
               new Up.Text('('),
               new Up.Emphasis([
@@ -138,7 +138,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
-              new Up.Italics([
+              new Up.Italic([
                 new Up.Text('Mario'),
               ]),
             ]),

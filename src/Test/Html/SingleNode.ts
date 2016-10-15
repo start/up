@@ -649,7 +649,7 @@ describe('An italics node', () => {
   it('produces an <i> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.Italics([new Up.Text('Ness')])
+        new Up.Italic([new Up.Text('Ness')])
       ])
     ])
 

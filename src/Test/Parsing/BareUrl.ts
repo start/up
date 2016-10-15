@@ -464,7 +464,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     specify('Surrounded by 1 underscore on either side', () => {
       expect(Up.parse('_I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('I love '),
             new Up.Link([
               new Up.Text('archive.org/fake')
@@ -477,7 +477,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     specify('Starting with 1 underscore and closed with 3+)', () => {
       expect(Up.parse('_I love https://archive.org/fake___!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('I love '),
             new Up.Link([
               new Up.Text('archive.org/fake')
@@ -490,7 +490,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     specify('Starting with 2 underscores and closing with 1', () => {
       expect(Up.parse('__I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('I love '),
             new Up.Link([
               new Up.Text('archive.org/fake')
@@ -503,7 +503,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     specify('Starting with 3+ underscores and closing with 1', () => {
       expect(Up.parse('___I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('I love '),
             new Up.Link([
               new Up.Text('archive.org/fake')
@@ -561,7 +561,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
     expect(Up.parse('___I love https://archive.org/fake___!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Bold([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('I love '),
             new Up.Link([
               new Up.Text('archive.org/fake')
@@ -753,7 +753,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       specify('Italics', () => {
         expect(Up.parse('_For more info, visit https://archive.org!_')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.Italics([
+            new Up.Italic([
               new Up.Text('For more info, visit '),
               new Up.Link([
                 new Up.Text('archive.org')

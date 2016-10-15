@@ -235,7 +235,7 @@ I love all sorts of fancy stuff.`
       new Up.Document([
         new Up.Paragraph([
           new Up.Text('I have plenty of good traits. '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('See '),
             new Up.SectionLink('interesting', interestingHeading),
             new Up.Text('.')

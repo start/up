@@ -146,7 +146,7 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('strong', stress.children)
   }
 
-  italics(italics: Up.Italics): string {
+  italic(italics: Up.Italic): string {
     return this.htmlElement('i', italics.children)
   }
 
@@ -171,7 +171,7 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Up.Italics([new Up.Text(sectionLink.sectionTitleSnippet)])
+        : new Up.Italic([new Up.Text(sectionLink.sectionTitleSnippet)])
 
     return representation.render(this)
   }

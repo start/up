@@ -99,7 +99,7 @@ context('Except for footnotes and section links, every inline convention is supp
       expect(Up.parseInline('I loved my _Game Boy_, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('Game Boy'),
           ]),
           new Up.Text(', though I never took it with me when I left home.')

@@ -1,4 +1,4 @@
-import { LINK, EMPHASIS, STRESS, ITALICS, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
@@ -39,7 +39,7 @@ export function nestOverlappingConventions(tokens: Token[]): ParseableToken[] {
 const FREELY_SPLITTABLE_CONVENTIONS: RichConvention[] = [
   EMPHASIS,
   STRESS,
-  ITALICS,
+  ITALIC,
   BOLD,
   HIGHLIGHT,
   NORMAL_PARENTHETICAL,

@@ -50,11 +50,11 @@ describe('Italicized text overlapping a link', () => {
     expect(Up.parse('I do _not [care_ at][https://en.wikipedia.org/wiki/Carrot] all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I do '),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text('not ')
         ]),
         new Up.Link([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('care')
           ]),
           new Up.Text(' at'),
@@ -72,11 +72,11 @@ describe('A link overlapping italicized text', () => {
         new Up.Text('This '),
         new Up.Link([
           new Up.Text('trash '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text(' not')
         ]),
         new Up.Text(' stay here.')
@@ -129,11 +129,11 @@ context('When a link overlaps italicized text, the italicized text will always b
         new Up.Text('This '),
         new Up.Link([
           new Up.Text('trash '),
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('can')
           ]),
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text(' not')
         ]),
         new Up.Text(' stay here.')
@@ -144,11 +144,11 @@ context('When a link overlaps italicized text, the italicized text will always b
     expect(Up.parse('I do _not (care_ at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I do '),
-        new Up.Italics([
+        new Up.Italic([
           new Up.Text('not ')
         ]),
         new Up.Link([
-          new Up.Italics([
+          new Up.Italic([
             new Up.Text('care')
           ]),
           new Up.Text(' at'),

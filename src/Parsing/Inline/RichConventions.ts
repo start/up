@@ -1,6 +1,6 @@
 import { Emphasis } from '../../SyntaxNodes/Emphasis'
 import { Stress } from '../../SyntaxNodes/Stress'
-import { Italics } from '../../SyntaxNodes/Italics'
+import { Italic } from '../../SyntaxNodes/Italic'
 import { Bold } from '../../SyntaxNodes/Bold'
 import { Highlight } from '../../SyntaxNodes/Highlight'
 import { InlineRevealable } from '../../SyntaxNodes/InlineRevealable'
@@ -25,10 +25,10 @@ export const STRESS: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.StressEnd
 }
 
-export const ITALICS: RichConventionWithoutExtraFields = {
-  SyntaxNodeType: Italics,
-  startTokenRole: TokenRole.ItalicsStart,
-  endTokenRole: TokenRole.ItalicsEnd
+export const ITALIC: RichConventionWithoutExtraFields = {
+  SyntaxNodeType: Italic,
+  startTokenRole: TokenRole.ItalicStart,
+  endTokenRole: TokenRole.ItalicEnd
 }
 
 export const BOLD: RichConventionWithoutExtraFields = {
