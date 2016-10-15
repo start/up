@@ -1,7 +1,7 @@
 {
   "name": "write-up",
-  "version": "28.0.0",
-  "description": "A lightweight markup language for writing structured documents in plain text",
+  "version": "28.1.0",
+  "description": "A markup language for writing structured documents in plain text",
   "main": "dist/Up.js",
   "typings": "dist/Up.d.ts",
   "files": [
