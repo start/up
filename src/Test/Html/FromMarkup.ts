@@ -147,7 +147,7 @@ LOOK AWAY
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
+        + '<li><h1 data-up-source-line="4"><a href="#up-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 
@@ -227,7 +227,7 @@ LOOK AWAY
       expect(tableOfContentsHtml).to.equal(
         '<nav class="up-table-of-contents">'
         + '<ul>'
-        + '<li><h1><a href="#article-topic-1">I enjoy apples</a></h1></li>'
+        + '<li><h1 data-up-source-line="4"><a href="#article-topic-1">I enjoy apples</a></h1></li>'
         + '</ul>'
         + '</nav>')
 

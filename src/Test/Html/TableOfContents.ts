@@ -549,8 +549,8 @@ context('Like outline syntax nodes in the document, table of contents entries re
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li>' 
-      + '<div aria-level="7" data-up-source-line="13" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>' 
+      + '<li>'
+      + '<div aria-level="7" data-up-source-line="13" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>'
       + '</li>'
       + '</ul>'
       + '</nav>')
