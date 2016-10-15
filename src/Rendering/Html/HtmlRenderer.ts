@@ -303,8 +303,11 @@ export class HtmlRenderer extends Renderer {
   }
 
   private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.OutlineSyntaxNode {
-    // Right now, tale of contents entries only represent headings, which simplifies this method.
-    return new Up.Heading([this.linkToActualEntryInDocument(entry)], { level: entry.level })
+    return new Up.Heading(
+      [this.linkToActualEntryInDocument(entry)], {
+        level: entry.level,
+        sourceLineNumber: entry.sourceLineNumber
+      })
   }
 
   private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {

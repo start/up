@@ -112,6 +112,9 @@ export namespace Document {
       // All inline descendants (children, grandchildren, etc.) of the syntax node represented by this
       // table of contents entry.
       inlineDescendants(): InlineSyntaxNode[]
+
+      // This represents the source line number of the item (i.e. heading) this entry points to.
+      sourceLineNumber: number
     }
   }
 }
