@@ -514,8 +514,8 @@ context("Within the table of contents itself", () => {
 })
 
 
-context("When an item referenced by the table of contents has a source line number", () => {
-  specify("its entry within the <nav> element of the table of contents isn't given a 'data-up-source-line' attribute", () => {
+context('Like outline syntax nodes in the document, table of contents entries render their source line numbers:', () => {
+  specify("Level 1 entries", () => {
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
 
@@ -528,12 +528,35 @@ context("When an item referenced by the table of contents has a source line numb
     expect(tableOfContentsHtml).to.equal(
       '<nav class="up-table-of-contents">'
       + '<ul>'
-      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
+      + '<li><h1 data-up-source-line="2"><a href="#up-topic-1">I enjoy apples</a></h1></li>'
       + '</ul>'
       + '</nav>')
 
     expect(documentHtml).to.equal(
       '<h1 data-up-source-line="2" id="up-topic-1">I enjoy apples</h1>')
+  })
+
+  specify("Level 7 entries", () => {
+    const heading =
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1, sourceLineNumber: 13 })
+
+    const document =
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
+
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderDocumentAndTableOfContents(document)
+
+    expect(tableOfContentsHtml).to.equal(
+      '<nav class="up-table-of-contents">'
+      + '<ul>'
+      + '<li>' 
+      + '<div aria-level="7" data-up-source-line="13" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>' 
+      + '</li>'
+      + '</ul>'
+      + '</nav>')
+
+    expect(documentHtml).to.equal(
+      '<div aria-level="7" data-up-source-line="13" id="up-topic-1" role="heading">I enjoy apples</div>')
   })
 })
 
