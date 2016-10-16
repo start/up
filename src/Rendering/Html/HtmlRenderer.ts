@@ -37,17 +37,17 @@ export class HtmlRenderer extends Renderer {
   //    prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
-  renderDocument(document: Up.Document): string {
+  document(document: Up.Document): string {
     this.reset()
     return this.renderAll(document.children)
   }
 
-  renderInlineDocument(inlineDocument: Up.InlineDocument): string {
+  inlineDocument(inlineDocument: Up.InlineDocument): string {
     this.reset()
     return this.renderAll(inlineDocument.children)
   }
 
-  renderTableOfContents(tableOfContents: Up.Document.TableOfContents): string {
+  tableOfContents(tableOfContents: Up.Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
     return htmlElementWithAlreadyEscapedChildren(

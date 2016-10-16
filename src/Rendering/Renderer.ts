@@ -6,9 +6,9 @@ import { SOME_WHITESPACE } from '../PatternPieces'
 export abstract class Renderer {
   constructor(protected settings: Settings.Rendering) { }
 
-  abstract renderDocument(document: Up.Document): string
-  abstract renderInlineDocument(inlineDocument: Up.InlineDocument): string
-  abstract renderTableOfContents(tableOfContents: Up.Document.TableOfContents): string
+  abstract document(document: Up.Document): string
+  abstract inlineDocument(inlineDocument: Up.InlineDocument): string
+  abstract tableOfContents(tableOfContents: Up.Document.TableOfContents): string
 
   // Ideally, the following abstract methods wouldn't be public! But for the purpose of
   // double dispatch, they need to be exposed to our syntax node classes. 

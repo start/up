@@ -55,7 +55,7 @@ export class Transformer {
   render(document: Document, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
-    return htmlRenderer.renderDocument(document)
+    return htmlRenderer.document(document)
   }
 
   // This method converts a syntax tree into two pieces of HTML, both of which are returned:
@@ -66,8 +66,8 @@ export class Transformer {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return {
-      documentHtml: htmlRenderer.renderDocument(document),
-      tableOfContentsHtml: htmlRenderer.renderTableOfContents(document.tableOfContents)
+      documentHtml: htmlRenderer.document(document),
+      tableOfContentsHtml: htmlRenderer.tableOfContents(document.tableOfContents)
     }
   }
 
@@ -75,7 +75,7 @@ export class Transformer {
   renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
-    return htmlRenderer.renderInlineDocument(inlineDocument)
+    return htmlRenderer.inlineDocument(inlineDocument)
   }
 
   private getParsingSettings(changes?: UserProvidedSettings.Parsing): Settings.Parsing {
