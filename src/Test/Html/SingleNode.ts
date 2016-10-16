@@ -10,7 +10,7 @@ describe('An empty document', () => {
 
 
 describe('A paragraph node', () => {
-  it('produces a <p> element', () => {
+  it('renders a <p> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([new Up.Text('Nimble navigator')])
     ])
@@ -21,7 +21,7 @@ describe('A paragraph node', () => {
 
 
 describe('An unordered list node', () => {
-  it('produces an <ul> element containing an <li> element for each list item', () => {
+  it('renders an <ul> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
       new Up.UnorderedList([
         new Up.UnorderedList.Item([
@@ -47,7 +47,7 @@ describe('An unordered list node', () => {
 
 
 describe('An ordered list node', () => {
-  it('produces an <ol> element containing an <li> element for each list item', () => {
+  it('renders an <ol> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
       new Up.OrderedList([
         new Up.OrderedList.Item([
@@ -151,7 +151,7 @@ describe('When an ordered list node is in descending order', () => {
 
 
 describe('A description list', () => {
-  it('produces a <dl> element containing a <dt> element for each subject, and a <dd> element for each description', () => {
+  it('renders a <dl> element containing a <dt> element for each subject, and a <dd> element for each description', () => {
     const document = new Up.Document([
       new Up.DescriptionList([
         new Up.DescriptionList.Item([
@@ -185,7 +185,7 @@ describe('A description list', () => {
 
 
 describe('A table', () => {
-  it('produces a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
+  it('renders a <table> element containing a <caption> element for its caption, a <thead> element containing a <tr> element containing a <th scope="col"> for each cell in its header, and <tr> for each row containing a <td> element for each cell in that row', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
@@ -247,7 +247,7 @@ context('When a table has rows with cells with numeric values', () => {
 
 
 describe('A table without a caption or any rows', () => {
-  it('produces a <table> element that does not contain a <caption> element or any <tr> outside of its <thead>', () => {
+  it('renders a <table> element that does not contain a <caption> element or any <tr> outside of its <thead>', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
@@ -346,7 +346,7 @@ context('When a table cell has a numeric value and spans multiple columns', () =
 
 
 context('When a table has a header column', () => {
-  specify('each of those header column cells produces a <th scope="row"> at the beginning of the <tr> element of the cell', () => {
+  specify('each of those header column cells renders a <th scope="row"> at the beginning of the <tr> element of the cell', () => {
     const document = new Up.Document([
       new Up.Table(
         new Up.Table.Header([
@@ -460,7 +460,7 @@ describe('When any table header cell has a numeric value and spans multiple colu
 
 
 describe('A line block node', () => {
-  it('produces a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
+  it('renders a <div class="up-lines"> containing a <div role="alert"> element for each line', () => {
     const document = new Up.Document([
       new Up.LineBlock([
         new Up.LineBlock.Line([
@@ -482,7 +482,7 @@ describe('A line block node', () => {
 
 
 describe('A code block node', () => {
-  it('produces a <pre> element containing a <code> element containing the code', () => {
+  it('renders a <pre> element containing a <code> element containing the code', () => {
     const document = new Up.Document([
       new Up.CodeBlock('color = Color.Green')
     ])
@@ -493,7 +493,7 @@ describe('A code block node', () => {
 
 
 describe('A blockquote node', () => {
-  it('produces a <blockquote> element', () => {
+  it('renders a <blockquote> element', () => {
     const document = new Up.Document([
       new Up.Blockquote([
         new Up.Paragraph([
@@ -508,7 +508,7 @@ describe('A blockquote node', () => {
 
 
 describe('A level 1 heading node', () => {
-  it('produces an <h1> element', () => {
+  it('renders an <h1> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], { level: 1 })
     ])
@@ -519,7 +519,7 @@ describe('A level 1 heading node', () => {
 
 
 describe('A level 2 heading node', () => {
-  it('produces an <h2> element', () => {
+  it('renders an <h2> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Ivysaur')], { level: 2 })
     ])
@@ -530,7 +530,7 @@ describe('A level 2 heading node', () => {
 
 
 describe('A level 3 heading node', () => {
-  it('produces an <h3> element', () => {
+  it('renders an <h3> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Venusaur')], { level: 3 })
     ])
@@ -541,7 +541,7 @@ describe('A level 3 heading node', () => {
 
 
 describe('A level 4 heading node', () => {
-  it('produces an <h4> element', () => {
+  it('renders an <h4> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Charmander')], { level: 4 })
     ])
@@ -552,7 +552,7 @@ describe('A level 4 heading node', () => {
 
 
 describe('A level 5 heading node', () => {
-  it('produces an <h5> element', () => {
+  it('renders an <h5> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Charmeleon')], { level: 5 })
     ])
@@ -563,7 +563,7 @@ describe('A level 5 heading node', () => {
 
 
 describe('A level 6 heading node', () => {
-  it('produces an <h6> element', () => {
+  it('renders an <h6> element', () => {
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Charizard')], { level: 6 })
     ])
@@ -609,7 +609,7 @@ context('Headings with levels 7 and up render as <div role="heading"> elements w
 
 
 describe('A thematic break node', () => {
-  it('produces an <hr> element', () => {
+  it('renders an <hr> element', () => {
     const document = new Up.Document([
       new Up.ThematicBreak()
     ])
@@ -620,7 +620,7 @@ describe('A thematic break node', () => {
 
 
 describe('An emphasis node', () => {
-  it('produces an <em> element', () => {
+  it('renders an <em> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Emphasis([new Up.Text('Always')])
@@ -633,7 +633,7 @@ describe('An emphasis node', () => {
 
 
 describe('A stress node', () => {
-  it('produces a <strong> element', () => {
+  it('renders a <strong> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Stress([new Up.Text('Ness')])
@@ -646,7 +646,7 @@ describe('A stress node', () => {
 
 
 describe('An italics node', () => {
-  it('produces an <i> element', () => {
+  it('renders an <i> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Italic([new Up.Text('Ness')])
@@ -659,7 +659,7 @@ describe('An italics node', () => {
 
 
 describe('A bold node', () => {
-  it('produces a <b> element', () => {
+  it('renders a <b> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Bold([new Up.Text('Ness')])
@@ -672,7 +672,7 @@ describe('A bold node', () => {
 
 
 describe('An inline code node', () => {
-  it('produces a <code> element', () => {
+  it('renders a <code> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineCode('then')
@@ -685,7 +685,7 @@ describe('An inline code node', () => {
 
 
 describe('An example input node', () => {
-  it('produces a <kbd> element', () => {
+  it('renders a <kbd> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.ExampleInput('esc')
@@ -698,7 +698,7 @@ describe('An example input node', () => {
 
 
 describe('A normal parenthetical node', () => {
-  it('produces a <small class="up-parenthetical"> element', () => {
+  it('renders a <small class="up-parenthetical"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.NormalParenthetical([new Up.Text('(Koopa Troopa)')])
@@ -711,7 +711,7 @@ describe('A normal parenthetical node', () => {
 
 
 describe('A square parenthetical node', () => {
-  it('produces a <small class="up-parenthetical up-square-brackets"> element', () => {
+  it('renders a <small class="up-parenthetical up-square-brackets"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.SquareParenthetical([new Up.Text('[Koopa Troopa]')])
@@ -724,7 +724,7 @@ describe('A square parenthetical node', () => {
 
 
 describe('A link node', () => {
-  it('produces an <a> element with its href attribute set to its URL', () => {
+  it('renders an <a> element with its href attribute set to its URL', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Link([new Up.Text('Google')], 'https://google.com')
@@ -737,7 +737,7 @@ describe('A link node', () => {
 
 
 describe('A section link node that is not associated with a table of contents entry', () => {
-  it("produces an <i> element containing the unmatched snippet", () => {
+  it("renders an <i> element containing the unmatched snippet", () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.SectionLink('When I became ruler of the world')
@@ -750,7 +750,7 @@ describe('A section link node that is not associated with a table of contents en
 
 
 describe('A section link node that is associated with a table of contents entry', () => {
-  it("produces a link to the entry in the document", () => {
+  it("renders a link to the entry in the document", () => {
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
     ], { level: 1, ordinalInTableOfContents: 1 })
@@ -769,7 +769,7 @@ describe('A section link node that is associated with a table of contents entry'
 
 
 describe('A footnote node', () => {
-  it('produces a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
+  it('renders a <sup class="up-footnote-reference"> (with an ID indicating its reference number) containing a link that contains the reference number and points to the footnote', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Footnote([], { referenceNumber: 3 })
@@ -787,7 +787,7 @@ describe('A footnote node', () => {
 
 
 describe('A footnote block node', () => {
-  it('produces a <dl class="up-footnotes">', () => {
+  it('renders a <dl class="up-footnotes">', () => {
     const document = new Up.Document([
       new Up.FootnoteBlock([])
     ])
@@ -834,7 +834,7 @@ describe('An image node', () => {
 
 
 describe('An audio node', () => {
-  it('produces an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
+  it('renders an <audio controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the audio file', () => {
     const document = new Up.Document([
       new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg')
     ])
@@ -848,7 +848,7 @@ describe('An audio node', () => {
 
 
 describe('A video node', () => {
-  it('produces a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
+  it('renders a <video controls loop> with its "src" attribute set to its URL and its "title" attribute set to its description, containing a fallback link to the video file', () => {
     const document = new Up.Document([
       new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
     ])
@@ -862,7 +862,7 @@ describe('A video node', () => {
 
 
 describe('A highlight node', () => {
-  it('produces a <mark> element', () => {
+  it('renders a <mark> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.Highlight([new Up.Text('45.9%')])
@@ -880,7 +880,7 @@ describe('A highlight node', () => {
 
 
 describe('An inline quote node', () => {
-  it('produces a <q> element', () => {
+  it('renders a <q> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineQuote([
@@ -900,7 +900,7 @@ describe('An inline quote node', () => {
 
 
 describe('An inline revealable node', () => {
-  it('produces an outer <span class="up-revealable">, containing hide/reveal radio buttons and a <span role="alert"> containing the revealable content', () => {
+  it('renders an outer <span class="up-revealable">, containing hide/reveal radio buttons and a <span role="alert"> containing the revealable content', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineRevealable([new Up.Text('45.9%')])
