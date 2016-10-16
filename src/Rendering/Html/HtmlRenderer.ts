@@ -50,11 +50,11 @@ export class HtmlRenderer extends Renderer {
   tableOfContents(tableOfContents: Up.Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
-    return htmlElementWithAlreadyEscapedChildren(
-      'nav', [
-        this.tableOfContentsEntries(tableOfContents.entries)
-      ],
-      { class: classHtmlAttrValue("table-of-contents") })
+    const { entries } = tableOfContents;
+
+    return entries.length
+      ? this.renderAll(entries.map(entry => this.tableOfContentsEntry(entry)))
+      : '';
   }
 
   blockquote(blockquote: Up.Blockquote): string {
@@ -288,21 +288,7 @@ export class HtmlRenderer extends Renderer {
     return escapeHtmlContent(text.text)
   }
 
-  private tableOfContentsEntries(entries: Up.Document.TableOfContents.Entry[]): string {
-    if (!entries.length) {
-      return ''
-    }
-
-    const listItems =
-      entries.map(entry =>
-        new Up.UnorderedList.Item([
-          this.tableOfContentsEntry(entry)
-        ]))
-
-    return new Up.UnorderedList(listItems).render(this)
-  }
-
-  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.OutlineSyntaxNode {
+  private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.Heading {
     return new Up.Heading(
       [this.linkToActualEntryInDocument(entry)], {
         level: entry.level,
