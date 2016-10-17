@@ -34,7 +34,7 @@ function parseAndGetResult(
   const { tokens, until } = args
 
   let tokenIndex = 0
-  let nodes: InlineSyntaxNode[] = []
+  const nodes: InlineSyntaxNode[] = []
 
   function countTokensParsed(): number {
     return tokenIndex + 1
@@ -95,7 +95,7 @@ function parseAndGetResult(
         })
 
         // Our link's URL was in the `LinkEndAndUrl `token, the last token we parsed.
-        let url = tokens[tokenIndex].value.trim()
+        const url = tokens[tokenIndex].value.trim()
 
         if (children.every(isWhitespace)) {
           // As a rule, if link has blank content, we use its URL as its content.
@@ -109,14 +109,14 @@ function parseAndGetResult(
 
     for (const media of [AUDIO, IMAGE, VIDEO]) {
       if (token.role === media.tokenRoleForStartAndDescription) {
-        let description = token.value.trim()
+        const description = token.value.trim()
 
         // The next token will always be a `MediaEndAndUrl` token. All media conventions
         // use the same role for their end tokens.
         const urlToken = tokens[++tokenIndex]
-        let url = urlToken.value.trim()
+        const url = urlToken.value.trim()
 
-        nodes.push(new media.SyntaxNodeType(description, url))
+        nodes.push(new media.SyntaxNodeType(description || url, url))
         continue TokenLoop
       }
     }
@@ -134,7 +134,7 @@ function parseAndGetResult(
       INLINE_QUOTE
     ]) {
       if (token.role === richConvention.startTokenRole) {
-        let children = getChildren({
+        const children = getChildren({
           fromHereUntil: richConvention.endTokenRole
         })
 
