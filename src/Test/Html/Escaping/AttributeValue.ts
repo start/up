@@ -16,56 +16,64 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
 
   specify("src attribute of audio elements (and of their fallback links)", () => {
     const document = new Up.Document([
-      new Up.Audio('', 'https://example.com/?x&y&z="hi"')
+      new Up.Audio('Weird', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></audio>')
+      '<audio controls src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="Weird">'
+      + '<a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;">Weird</a>'
+      + '</audio>')
   })
 
   specify("src attribute of videos (and of their fallback links)", () => {
     const document = new Up.Document([
-      new Up.Video('', 'https://example.com/?x&y&z="hi"')
+      new Up.Video('Weird', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title=""><a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;"></a></video>')
+      '<video controls src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="Weird">'
+      + '<a href="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;">Weird</a>'
+      + '</video>')
   })
 
   specify("src attribute of images", () => {
     const document = new Up.Document([
-      new Up.Image('', 'https://example.com/?x&y&z="hi"')
+      new Up.Image('Weird', 'https://example.com/?x&y&z="hi"')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<img alt="" src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="">')
+      '<img alt="Weird" src="https://example.com/?x&amp;y&amp;z=&quot;hi&quot;" title="Weird">')
   })
 
   specify("title attribute of audio elements", () => {
     const document = new Up.Document([
-      new Up.Audio('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Up.Audio('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<audio controls src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></audio>')
+      '<audio controls src="https://example.com/m" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">'
+      + '<a href="https://example.com/m">John said, "1 and 2 > 0. I can\'t believe it."</a>'
+      + '</audio>')
   })
 
   specify("title attribute of videos", () => {
     const document = new Up.Document([
-      new Up.Video('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Up.Video('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<video controls src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;"><a href="">John said, "1 and 2 > 0. I can\'t believe it."</a></video>')
+      '<video controls src="https://example.com/m" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">'
+      + '<a href="https://example.com/m">John said, "1 and 2 > 0. I can\'t believe it."</a>'
+      + '</video>')
   })
 
   specify("alt and title attributes of images", () => {
     const document = new Up.Document([
-      new Up.Image('John said, "1 and 2 > 0. I can\'t believe it."', '')
+      new Up.Image('John said, "1 and 2 > 0. I can\'t believe it."', 'https://example.com/m')
     ])
 
     expect(Up.render(document)).to.equal(
-      '<img alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" src="" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
+      '<img alt="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;" src="https://example.com/m" title="John said, &quot;1 and 2 > 0. I can\'t believe it.&quot;">')
   })
 
   specify('href attribute of backlinks in footnote blocks', () => {
