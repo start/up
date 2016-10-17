@@ -476,7 +476,7 @@ describe('An otherwise-valid image with a blank URL', () => {
 })
 
 
-describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text, not an image. This applies when the bracketed description is followed by:", () => {
+describe("An otherwise-valid image missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
   specify('Nothing', () => {
     expect(Up.parse('[image: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -556,7 +556,7 @@ describe('An otherwise-valid audio convention with an empty URL', () => {
 })
 
 
-describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text, not An audio convention. This applies when the bracketed description is followed by:", () => {
+describe("An otherwise-valid audio convention missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
   specify('Nothing', () => {
     expect(Up.parse('[audio: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -636,7 +636,7 @@ describe('An otherwise-valid video with a blank URL', () => {
 })
 
 
-context("An otherwise-valid video missing its bracketed URL is treated as bracketed text, not A video. This applies when the bracketed description is followed by:", () => {
+context("An otherwise-valid video missing its bracketed URL is treated as bracketed text. This applies when the bracketed description is followed by:", () => {
   specify('Nothing', () => {
     expect(Up.parse('[video: haunted house]')).to.deep.equal(
       insideDocumentAndParagraph([
