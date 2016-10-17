@@ -3,13 +3,6 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-const up = new Up.Transformer({
-  parsing: {
-    baseForUrlsStartingWithSlash: 'ftp://example.com'
-  }
-})
-
-
 describe('The "baseForUrlsStartingWithSlash" setting', () => {
   it('is prefixed to link URLs that start with a slash', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
@@ -21,6 +14,23 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         ], '/some-page')
       ])
     })
+  })
+
+  const up = new Up.Transformer({
+    parsing: {
+      baseForUrlsStartingWithSlash: 'ftp://example.com'
+    }
+  })
+
+  it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
+    const markup = '[Chrono Cross] (/wiki/Chrono_Chross)'
+
+    expect(up.parse(markup)).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('Chrono Cross')
+        ], 'ftp://example.com/wiki/Chrono_Chross')
+      ]))
   })
 
   it('is prefixed to image URLs that start with a slash', () => {
@@ -47,17 +57,6 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Video('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
-      ]))
-  })
-
-  it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
-    const markup = '[Chrono Cross] (/wiki/Chrono_Chross)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Link([
-          new Up.Text('Chrono Cross')
-        ], 'ftp://example.com/wiki/Chrono_Chross')
       ]))
   })
 

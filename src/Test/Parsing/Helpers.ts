@@ -11,10 +11,11 @@ export function insideDocumentAndParagraph(nodes: Up.InlineSyntaxNode[]): Up.Doc
 
 export function expectEveryPermutationOfBracketsAroundContentAndUrl(
   args: {
-  content: string
+    content: string
     partsBetweenContentAndUrl?: string[]
     url: string
     toProduce: Up.Document
+    settings?: Up.UserProvidedSettings.Parsing
   }
 ): void {
   expectEveryPermutationOfBrackets({
@@ -35,9 +36,10 @@ export function expectEveryPermutationOfBrackets(
     precededBy?: string
     bracketedSegments: BracketedSegment[]
     toProduce: Up.Document
+    settings?: Up.UserProvidedSettings.Parsing
   }
 ): void {
-  const { toProduce } = args
+  const { toProduce, settings } = args
 
   const precededBy = args.precededBy || ''
 
@@ -59,7 +61,7 @@ export function expectEveryPermutationOfBrackets(
             precededBy + segmentPrefix + wrapInBracket(segment.text, bracket)))))
 
   for (const permutation of everyPermutation('', permutationsBySegment)) {
-    expect(Up.parse(permutation)).to.deep.equal(toProduce)
+    expect(Up.parse(permutation, settings)).to.deep.equal(toProduce)
   }
 }
 

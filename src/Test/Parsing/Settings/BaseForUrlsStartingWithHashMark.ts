@@ -3,13 +3,6 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-const up = new Up.Transformer({
-  parsing: {
-    baseForUrlsStartingWithHashMark: 'https://example.com/page'
-  }
-})
-
-
 describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
   it('is prefixed to link URLs that start with a hash mark ("#")', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
@@ -21,6 +14,12 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
         ], '#some-page')
       ])
     })
+  })
+
+  const up = new Up.Transformer({
+    parsing: {
+      baseForUrlsStartingWithHashMark: 'https://example.com/page'
+    }
   })
 
   it('is prefixed to image URLs that start with a hash mark', () => {
