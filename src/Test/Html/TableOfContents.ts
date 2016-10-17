@@ -13,7 +13,7 @@ specify('When a document has no table of contents entries, the table of contents
   const { tableOfContentsHtml, documentHtml } =
     Up.renderDocumentAndTableOfContents(document)
 
-  expect(tableOfContentsHtml).to.be.empty;
+  expect(tableOfContentsHtml).to.be.empty
 
   expect(documentHtml).to.equal(
     '<div class="up-revealable">'

@@ -50,11 +50,11 @@ export class HtmlRenderer extends Renderer {
   tableOfContents(tableOfContents: Up.Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
-    const { entries } = tableOfContents;
+    const { entries } = tableOfContents
 
     return entries.length
       ? this.renderAll(entries.map(entry => this.tableOfContentsEntry(entry)))
-      : '';
+      : ''
   }
 
   blockquote(blockquote: Up.Blockquote): string {
