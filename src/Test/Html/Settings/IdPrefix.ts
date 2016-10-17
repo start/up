@@ -362,11 +362,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1"></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1"></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="up-topic-1"></h1>')
@@ -387,11 +383,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#reply-11-topic-1"></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#reply-11-topic-1"></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="reply-11-topic-1"></h1>')
@@ -411,11 +403,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#topic-1"></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#topic-1"></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="topic-1"></h1>')
@@ -435,11 +423,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#topic-1"></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#topic-1"></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="topic-1"></h1>')
@@ -459,11 +443,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></h1>')
@@ -487,11 +467,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1">Howdy there</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1">Howdy there</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1">Howdy there</a></p>'
@@ -517,11 +493,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#reply-11-topic-1">Howdy there</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#reply-11-topic-1">Howdy there</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#reply-11-topic-1">Howdy there</a></p>'
@@ -547,11 +519,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#topic-1">Howdy there</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#topic-1">Howdy there</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#topic-1">Howdy there</a></p>'
@@ -577,11 +545,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#topic-1">Howdy there</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#topic-1">Howdy there</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#topic-1">Howdy there</a></p>'
@@ -607,11 +571,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></p>'

@@ -46,11 +46,7 @@ context('A link within a table of contents entry does not produce an <a> element
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="up-topic-1"><a href="https://google.com">I enjoy apples</a></h1>')
@@ -72,11 +68,7 @@ context('A link within a table of contents entry does not produce an <a> element
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1">I enjoy apples</a></p>'
@@ -139,11 +131,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="up-topic-1"><a href="https://apple.com"><em>I enjoy apples</em></a></h1>')
@@ -169,11 +157,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1"><em>I enjoy apples</em></a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1"><em>I enjoy apples</em></a></p>'
