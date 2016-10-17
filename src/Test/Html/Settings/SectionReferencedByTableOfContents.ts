@@ -20,11 +20,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="up-table-of-contents-entry-1">I enjoy apples</h1>')

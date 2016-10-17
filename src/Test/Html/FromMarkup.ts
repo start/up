@@ -145,11 +145,7 @@ LOOK AWAY
         })
 
       expect(tableOfContentsHtml).to.equal(
-        '<nav class="up-table-of-contents">'
-        + '<ul>'
-        + '<li><h1 data-up-source-line="4"><a href="#up-topic-1">I enjoy apples</a></h1></li>'
-        + '</ul>'
-        + '</nav>')
+        '<h1 data-up-source-line="4"><a href="#up-topic-1">I enjoy apples</a></h1>')
 
       expect(documentHtml).to.equal(
         '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
@@ -183,11 +179,7 @@ SPOILER
         })
 
       expect(tableOfContentsHtml).to.equal(
-        '<nav class="up-table-of-contents">'
-        + '<ul>'
-        + '<li><h1><a href="#article-topic-1">I enjoy apples</a></h1></li>'
-        + '</ul>'
-        + '</nav>')
+        '<h1><a href="#article-topic-1">I enjoy apples</a></h1>')
 
       expect(documentHtml).to.equal(
         '<p>Anyway, let us get to the point.</p>'
@@ -225,11 +217,7 @@ LOOK AWAY
         })
 
       expect(tableOfContentsHtml).to.equal(
-        '<nav class="up-table-of-contents">'
-        + '<ul>'
-        + '<li><h1 data-up-source-line="4"><a href="#article-topic-1">I enjoy apples</a></h1></li>'
-        + '</ul>'
-        + '</nav>')
+        '<h1 data-up-source-line="4"><a href="#article-topic-1">I enjoy apples</a></h1>')
 
       expect(documentHtml).to.equal(
         '<p data-up-source-line="2">Anyway, let us get to the point.</p>'
@@ -259,11 +247,7 @@ SPOILER
         Up.parseAndRenderDocumentAndTableOfContents(markup)
 
       expect(tableOfContentsHtml).to.equal(
-        '<nav class="up-table-of-contents">'
-        + '<ul>'
-        + '<li><h1><a href="#up-topic-1">I enjoy apples</a></h1></li>'
-        + '</ul>'
-        + '</nav>')
+        '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')
 
       expect(documentHtml).to.equal(
         '<p>Anyway, let us get to the point.</p>'

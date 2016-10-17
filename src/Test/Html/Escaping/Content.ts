@@ -301,11 +301,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1>')
 
     expect(documentHtml).to.equal(
       '<h1 id="up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</h1>')
@@ -329,11 +325,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
       Up.renderDocumentAndTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
-      '<nav class="up-table-of-contents">'
-      + '<ul>'
-      + '<li><h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1></li>'
-      + '</ul>'
-      + '</nav>')
+      '<h1><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></h1>')
 
     expect(documentHtml).to.equal(
       '<p><a href="#up-topic-1">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</a></p>'
