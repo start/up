@@ -112,27 +112,27 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
     expect(documentHtml).to.equal(
       '<h5 id="up-topic-1">I enjoy apples</h5>')
+  })
 
-    specify('A level 6 entry renders an <h6>', () => {
-      const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
+  specify('A level 6 entry renders an <h6>', () => {
+    const heading =
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
 
-      const document =
-        new Up.Document([heading], new Up.Document.TableOfContents([heading]))
+    const document =
+      new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
-      const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document)
+    const { tableOfContentsHtml, documentHtml } =
+      Up.renderDocumentAndTableOfContents(document)
 
-      expect(tableOfContentsHtml).to.equal(
-        '<h6><a href="#up-topic-1">I enjoy apples</a></h6>')
+    expect(tableOfContentsHtml).to.equal(
+      '<h6><a href="#up-topic-1">I enjoy apples</a></h6>')
 
-      expect(documentHtml).to.equal(
-        '<h6 id="up-topic-1">I enjoy apples</h6>')
-    })
+    expect(documentHtml).to.equal(
+      '<h6 id="up-topic-1">I enjoy apples</h6>')
   })
 
 
-  context('Entries with levels 7 and up render <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
+  context('Entries of level 7 and up render <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
     specify('Level 7', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1 })
