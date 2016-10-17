@@ -1,23 +1,30 @@
 import { expect } from 'chai'
 import * as Up from '../../../Up'
-import { insideDocumentAndParagraph } from '../Helpers'
+import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-const up = new Up.Transformer({
-  parsing: { defaultUrlScheme: 'my-app:' }
-})
-
+// TODO: Use bracket helper functions for more tests
 
 describe('The "defaultUrlScheme" setting', () => {
-  it('is prefixed to schemeless link URLs', () => {
-    const markup = '[Chrono Cross](wiki/Chrono_Chross)'
+  const settings = {
+    defaultUrlScheme: 'my-app:'
+  }
 
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
+  it('is prefixed to schemeless link URLs', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'Chrono Cross',
+      url: 'wiki/Chrono_Chross',
+      toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('Chrono Cross')
         ], 'my-app:wiki/Chrono_Chross')
-      ]))
+      ]),
+      settings
+    })
+  })
+
+  const up = new Up.Transformer({
+    parsing: settings
   })
 
   it('is prefixed to schemeless image URLs', () => {
@@ -234,6 +241,20 @@ describe('The "defaultUrlScheme" setting', () => {
         new Up.Link([
           new Up.Text('Chrono Cross')
         ], 'their-app:localhost/wiki/Chrono_Chross')
+      ]))
+  })
+})
+
+
+describe('The default "defaultUrlScheme" setting', () => {
+  it('is "https://"', () => {
+    const markup = '[Chrono Cross](localhost/Chrono_Chross)'
+
+    expect(Up.parse(markup)).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('Chrono Cross')
+        ], 'https://localhost/Chrono_Chross')
       ]))
   })
 })

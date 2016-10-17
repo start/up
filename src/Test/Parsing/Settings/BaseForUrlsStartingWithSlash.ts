@@ -3,7 +3,7 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
-// TODO: Use helper functions for more tests
+// TODO: Use bracket helper functions for more tests
 
 describe('The "baseForUrlsStartingWithSlash" setting', () => {
   const settings = {
