@@ -36,13 +36,12 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
 // The purpose of this constant is to make that behavior a bit clearer. 
 export const EMPTY_ATTRBUTE_VALUE: string = ''
 
-function htmlAttr(attrs: any, attrName: string): string {
-  const value = attrs[attrName]
 
-  return (
-    (value === '') || (value == null)
-      ? attrName
-      : `${attrName}="${escapeHtmlAttrValue(value)}"`)
+function htmlStartTag(tagName: string, attrs: any): string {
+  const tagNameWithAttrs =
+    [tagName, ...htmlAttrs(attrs)].join(' ')
+
+  return `<${tagNameWithAttrs}>`
 }
 
 function htmlAttrs(attrs: any): string[] {
@@ -52,10 +51,10 @@ function htmlAttrs(attrs: any): string[] {
   return alphabetizedAttrNames.map(attrName => htmlAttr(attrs, attrName))
 }
 
+function htmlAttr(attrs: any, attrName: string): string {
+  const value = attrs[attrName]
 
-function htmlStartTag(tagName: string, attrs: any): string {
-  const tagNameWithAttrs =
-    [tagName, ...htmlAttrs(attrs)].join(' ')
-
-  return `<${tagNameWithAttrs}>`
+  return (value === '') || (value == null)
+    ? attrName
+    : `${attrName}="${escapeHtmlAttrValue(value)}"`
 }
