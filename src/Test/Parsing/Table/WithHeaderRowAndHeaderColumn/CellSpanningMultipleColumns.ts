@@ -105,7 +105,7 @@ Friday;;                                Printer had ink`
             ], new Up.Table.Header.Cell([new Up.Text('Thursday')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Printer had ink')])
-            ], new Up.Table.Header.Cell([new Up.Text('Friday')], 2)),
+            ], new Up.Table.Header.Cell([new Up.Text('Friday')], 2))
           ],
           new Up.Table.Caption([
             new Up.Text('Summary of last work week')

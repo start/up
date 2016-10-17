@@ -40,7 +40,7 @@ context('A video that is the only convention on its line is not placed inside a 
         new Up.Document([
           new Up.Link([
             new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-          ], 'https://hauntedhouse.com'),
+          ], 'https://hauntedhouse.com')
         ]))
     })
 
@@ -52,7 +52,7 @@ context('A video that is the only convention on its line is not placed inside a 
         new Up.Document([
           new Up.Link([
             new Up.Video('ghosts eating luggage', 'http://example.com/poltergeists.webm')
-          ], 'https://hauntedhouse.com'),
+          ], 'https://hauntedhouse.com')
         ]))
     })
   })

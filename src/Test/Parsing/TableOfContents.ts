@@ -25,7 +25,7 @@ I enjoy milk
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         appleHeading,
-        milkHeading,
+        milkHeading
       ], tableOfContents))
   })
 })
@@ -265,7 +265,7 @@ const reason = "They are cheap and delicious."
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         heading,
-        new Up.CodeBlock('const reason = "They are cheap and delicious."'),
+        new Up.CodeBlock('const reason = "They are cheap and delicious."')
       ], tableOfContents))
   })
 
