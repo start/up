@@ -92,7 +92,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -187,7 +187,7 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
