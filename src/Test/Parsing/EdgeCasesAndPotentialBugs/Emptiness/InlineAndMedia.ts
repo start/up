@@ -431,18 +431,18 @@ context('An otherwise-valid link:', () => {
 })
 
 
-context('An image can have a blank or empty description:', () => {
+context("When an image's description is empty or blank, its URL serves as its description:", () => {
   specify('Blank', () => {
-    expect(Up.parse('[image:][http://example.com/hauntedhouse.svg]')).to.deep.equal(
+    expect(Up.parse('[image:][example.com/hauntedhouse.svg]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('', 'http://example.com/hauntedhouse.svg')
+        new Up.Image('https://example.com/hauntedhouse.svg', 'https://example.com/hauntedhouse.svg')
       ]))
   })
 
   specify('Empty', () => {
-    expect(Up.parse('[image:\t  ][http://example.com/hauntedhouse.svg]')).to.deep.equal(
+    expect(Up.parse('[image:\t  ][example.com/hauntedhouse.svg]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('', 'http://example.com/hauntedhouse.svg')
+        new Up.Image('https://example.com/hauntedhouse.svg', 'https://example.com/hauntedhouse.svg')
       ]))
   })
 })
@@ -511,18 +511,18 @@ describe("An otherwise-valid image missing its bracketed URL is treated as brack
 })
 
 
-context('Audio can have a blank or empty description:', () => {
+context("When an audio convention's description is empty or blank, its URL serves as its description", () => {
   specify('Blank', () => {
-    expect(Up.parse('[audio:][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
+    expect(Up.parse('[audio:][example.com/hauntedhouse.ogg]')).to.deep.equal(
       new Up.Document([
-        new Up.Audio('', 'http://example.com/hauntedhouse.ogg')
+        new Up.Audio('https://example.com/hauntedhouse.ogg', 'https://example.com/hauntedhouse.ogg')
       ]))
   })
 
   specify('Empty', () => {
-    expect(Up.parse('[audio:\t  ][http://example.com/hauntedhouse.ogg]')).to.deep.equal(
+    expect(Up.parse('[audio:\t  ][example.com/hauntedhouse.ogg]')).to.deep.equal(
       new Up.Document([
-        new Up.Audio('', 'http://example.com/hauntedhouse.ogg')
+        new Up.Audio('https://example.com/hauntedhouse.ogg', 'https://example.com/hauntedhouse.ogg')
       ]))
   })
 })
@@ -591,18 +591,18 @@ describe("An otherwise-valid audio convention missing its bracketed URL is treat
 })
 
 
-context('A video can have a blank or empty description:', () => {
+context("When a video's description is empty or blank, its URL serves as its description:", () => {
   specify('Blank', () => {
-    expect(Up.parse('[video:][http://example.com/hauntedhouse.webm]')).to.deep.equal(
+    expect(Up.parse('[video:][example.com/hauntedhouse.webm]')).to.deep.equal(
       new Up.Document([
-        new Up.Video('', 'http://example.com/hauntedhouse.webm')
+        new Up.Video('https://example.com/hauntedhouse.webm', 'https://example.com/hauntedhouse.webm')
       ]))
   })
 
   specify('Empty', () => {
-    expect(Up.parse('[video:\t  ][http://example.com/hauntedhouse.webm]')).to.deep.equal(
+    expect(Up.parse('[video:\t  ][example.com/hauntedhouse.webm]')).to.deep.equal(
       new Up.Document([
-        new Up.Video('', 'http://example.com/hauntedhouse.webm')
+        new Up.Video('https://example.com/hauntedhouse.webm', 'https://example.com/hauntedhouse.webm')
       ]))
   })
 })
