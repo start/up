@@ -80,7 +80,7 @@ context('A plus sign followed by a hyphen normally produces a plus-minus sign', 
     })
 
     specify('Code blocks', () => {
-        const markup = `
+      const markup = `
 \`\`\`
 for (let i = items.length - 1; i >= 0; i = i+-1) { }
 \`\`\``
