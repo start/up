@@ -13,18 +13,13 @@ export class Link extends RichInlineSyntaxNode implements OutlineSyntaxNode {
   constructor(
     children: InlineSyntaxNode[],
     public url: string,
-    options?: {
-      sourceLineNumber: number
-    }) {
+    options?: { sourceLineNumber: number }
+  ) {
     super(children)
 
     if (options) {
       this.sourceLineNumber = options.sourceLineNumber
     }
-  }
-
-  shouldBeIncludedInTableOfContents(): boolean {
-    return false
   }
 
   descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {

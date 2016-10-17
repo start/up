@@ -17,12 +17,13 @@ export class Document extends OutlineSyntaxNodeContainer {
   // Responsibilities 1 and 3 mutate the `children` argument (and its descendants).
   static create(children: OutlineSyntaxNode[]): Document {
     // Unfortunately, this process of producing a ready-to-use Document has become a tad scattered.
+    //
     // It needs to be revisited.
 
     // First, let's create our table of contents. It's up to each outline syntax node whether to allow
     // its descendants to be referenced by the table of contents. Some don't (e.g. blockquotes).
     const tableOfContents =
-      Document.TableOfContents.createAndAssociateEntriesWithTheirReferences(children)
+      Document.TableOfContents.createThenAssociateSectionLinksWithEntries(children)
 
     // Alright! We now have everything we need to produce our document!
     const document = new Document(children, tableOfContents)
@@ -50,7 +51,7 @@ export namespace Document {
     //
     // This methods also mutates the entries themselves, assigning them their table of contents
     // ordinals.
-    static createAndAssociateEntriesWithTheirReferences(documentChildren: OutlineSyntaxNode[]): TableOfContents {
+    static createThenAssociateSectionLinksWithEntries(documentChildren: OutlineSyntaxNode[]): TableOfContents {
       const entries = TableOfContents.getEntries(documentChildren)
 
       // Let's let each entry know its (1-based!) ordinal within the table of contents 
