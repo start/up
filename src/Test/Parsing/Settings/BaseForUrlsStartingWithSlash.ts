@@ -3,7 +3,13 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
+// TODO: Use helper functions for more tests
+
 describe('The "baseForUrlsStartingWithSlash" setting', () => {
+  const settings = {
+    baseForUrlsStartingWithSlash: 'fun-scheme://example.com'
+  }
+
   it('is prefixed to link URLs that start with a slash', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
@@ -11,15 +17,14 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('this site')
-        ], '/some-page')
-      ])
+        ], 'fun-scheme://example.com/some-page')
+      ]),
+      settings
     })
   })
 
   const up = new Up.Transformer({
-    parsing: {
-      baseForUrlsStartingWithSlash: 'ftp://example.com'
-    }
+    parsing: settings
   })
 
   it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
@@ -29,7 +34,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('Chrono Cross')
-        ], 'ftp://example.com/wiki/Chrono_Chross')
+        ], 'fun-scheme://example.com/wiki/Chrono_Chross')
       ]))
   })
 
@@ -38,7 +43,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Image('Chrono Cross logo', 'ftp://example.com/cc-logo.png')
+        new Up.Image('Chrono Cross logo', 'fun-scheme://example.com/cc-logo.png')
       ]))
   })
 
@@ -47,7 +52,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Audio('Chrono Cross ending theme', 'ftp://example.com/radical dreamers.mp3')
+        new Up.Audio('Chrono Cross ending theme', 'fun-scheme://example.com/radical dreamers.mp3')
       ]))
   })
 
@@ -56,7 +61,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.Video('Chrono Cross ending cinematic', 'ftp://example.com/radical dreamers.webm')
+        new Up.Video('Chrono Cross ending cinematic', 'fun-scheme://example.com/radical dreamers.webm')
       ]))
   })
 
@@ -69,7 +74,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
+          ], 'fun-scheme://example.com/wiki/Blue_Sky')
         ])
       ]))
   })
@@ -83,7 +88,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
+          ], 'fun-scheme://example.com/wiki/Blue_Sky')
         ])
       ]))
   })
@@ -94,7 +99,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
         new Up.Text('Well, I eat one.')
-      ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
+      ], 'fun-scheme://example.com/cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
@@ -116,7 +121,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -128,7 +133,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -140,7 +145,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -153,7 +158,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.InlineRevealable([
           new Up.Link([
             new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
+          ], 'fun-scheme://example.com/wiki/Blue_Sky')
         ])
       ]))
   })
@@ -167,7 +172,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
-          ], 'ftp://example.com/wiki/Blue_Sky')
+          ], 'fun-scheme://example.com/wiki/Blue_Sky')
         ])
       ]))
   })
@@ -178,7 +183,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     const footnote = new Up.Footnote([
       new Up.Link([
         new Up.Text('Well, I eat one.')
-      ], 'ftp://example.com/cereals/lucky-charms?show=nutrition')
+      ], 'fun-scheme://example.com/cereals/lucky-charms?show=nutrition')
     ], { referenceNumber: 1 })
 
     expect(up.parse(markup)).to.deep.equal(
@@ -200,7 +205,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Audio('Blue Sky meth', 'https://blueskymeth/sizzling.ogg')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -212,7 +217,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Image('Blue Sky meth', 'https://blueskymeth/sizzling.png')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -224,7 +229,7 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         new Up.Text('Walter White produces '),
         new Up.Link([
           new Up.Video('Blue Sky meth', 'https://blueskymeth/sizzling.webm')
-        ], 'ftp://example.com/wiki/Blue_Sky')
+        ], 'fun-scheme://example.com/wiki/Blue_Sky')
       ]))
   })
 
@@ -249,4 +254,20 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
         ], 'my-app:localhost/wiki/Chrono_Chross')
       ]))
   })
+})
+
+
+describe('The default "baseForUrlsStartingWithSlash" setting', () => {
+  it('is an empty string', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: '/some-page',
+      toProduce: insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('this site')
+        ], '/some-page')
+      ])
+    })
+  })
+
 })

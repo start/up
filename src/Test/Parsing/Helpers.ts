@@ -27,7 +27,8 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
         prefixes: args.partsBetweenContentAndUrl,
         text: args.url
       }],
-    toProduce: args.toProduce
+    toProduce: args.toProduce,
+    settings:  args.settings
   })
 }
 

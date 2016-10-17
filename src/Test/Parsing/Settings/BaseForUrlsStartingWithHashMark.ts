@@ -3,23 +3,28 @@ import * as Up from '../../../Up'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
+// TODO: Use helper functions for more tests
+
 describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
+  const settings = {
+    baseForUrlsStartingWithHashMark: 'https://example.com/page'
+  }
+
   it('is prefixed to link URLs that start with a hash mark ("#")', () => {
     expectEveryPermutationOfBracketsAroundContentAndUrl({
       content: 'this site',
-      url: '#some-page',
+      url: '#some-fragment',
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('this site')
-        ], '#some-page')
-      ])
+        ], 'https://example.com/page#some-fragment')
+      ]),
+      settings
     })
   })
 
   const up = new Up.Transformer({
-    parsing: {
-      baseForUrlsStartingWithHashMark: 'https://example.com/page'
-    }
+    parsing: settings
   })
 
   it('is prefixed to image URLs that start with a hash mark', () => {
@@ -248,5 +253,20 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
           new Up.Text('Chrono Cross')
         ], 'my-app:localhost/wiki/Chrono_Chross')
       ]))
+  })
+})
+
+
+describe('The default "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
+  it('is an empty string', () => {
+    expectEveryPermutationOfBracketsAroundContentAndUrl({
+      content: 'this site',
+      url: '#some-page',
+      toProduce: insideDocumentAndParagraph([
+        new Up.Link([
+          new Up.Text('this site')
+        ], '#some-page')
+      ])
+    })
   })
 })
