@@ -19,25 +19,28 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
   return htmlStartTag(tagName, attrs)
 }
 
-// Indicates that an attribute should not specify a value.
+// When an attribute value is `null`, `undefined`, or an empty string, its value
+// isn't rendered.
 //
-// In the following example, the `reversed` attribute doesn't specify a value:
+// For example, the `reversed` attribute of ordered lists doesn't render a value:
 //
-// <ol reversed start="2">
-//   <li value="2">
-//     <p>Ivysaur</p>
-//   </li>
-//   <li value="1">
-//     <p>Bulbasaur</p>
-//   </li>
-// </ol>
-export const NO_ATTRIBUTE_VALUE: string = null
+//   <ol reversed start="2">
+//     <li value="2">
+//       <p>Ivysaur</p>
+//     </li>
+//     <li value="1">
+//       <p>Bulbasaur</p>
+//     </li>
+//   </ol>
+//
+// The purpose of this constant is to make that behavior a bit clearer. 
+export const EMPTY_ATTRBUTE_VALUE: string = ''
 
 function htmlAttr(attrs: any, attrName: string): string {
   const value = attrs[attrName]
 
   return (
-    value === NO_ATTRIBUTE_VALUE
+    (value === '') || (value == null)
       ? attrName
       : `${attrName}="${escapeHtmlAttrValue(value)}"`)
 }

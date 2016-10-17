@@ -1,6 +1,6 @@
 import * as Up from '../../Up'
 import { Renderer } from '.././Renderer'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, NO_ATTRIBUTE_VALUE } from './HtmlElementHelpers'
+import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, EMPTY_ATTRBUTE_VALUE } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
 import { patternIgnoringCapitalizationAndStartingWith, either } from '../../PatternHelpers'
 
@@ -78,7 +78,7 @@ export class HtmlRenderer extends Renderer {
     }
 
     if (list.order() === Up.OrderedList.Order.Descending) {
-      attrs.reversed = NO_ATTRIBUTE_VALUE
+      attrs.reversed = EMPTY_ATTRBUTE_VALUE
     }
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -383,7 +383,7 @@ export class HtmlRenderer extends Renderer {
         playableMedia, {
           src: url,
           title: description,
-          controls: NO_ATTRIBUTE_VALUE
+          controls: EMPTY_ATTRBUTE_VALUE
         })
 
     return this.htmlElement(tagName, this.playableMediaFallback(description, url), attrs)
@@ -432,7 +432,7 @@ export class HtmlRenderer extends Renderer {
           id: hideButtonId,
           name: buttonGroupName,
           class: classHtmlAttrValue('hide'),
-          checked: NO_ATTRIBUTE_VALUE
+          checked: EMPTY_ATTRBUTE_VALUE
         })
 
     const radioButtonReveal =
