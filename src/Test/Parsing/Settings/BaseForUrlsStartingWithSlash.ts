@@ -27,17 +27,6 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
     parsing: settings
   })
 
-  it('is prefixed to link URLs that start with a slash when the link content and URL are separated by whitespace', () => {
-    const markup = '[Chrono Cross] (/wiki/Chrono_Chross)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Link([
-          new Up.Text('Chrono Cross')
-        ], 'fun-scheme://example.com/wiki/Chrono_Chross')
-      ]))
-  })
-
   it('is prefixed to image URLs that start with a slash', () => {
     const markup = '[image: Chrono Cross logo](/cc-logo.png)'
 
@@ -269,5 +258,4 @@ describe('The default "baseForUrlsStartingWithSlash" setting', () => {
       ])
     })
   })
-
 })
