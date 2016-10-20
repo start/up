@@ -57,12 +57,12 @@ export namespace Settings {
 
 // This is another hack to work around TypeScript's type system.
 //
-// Both `Settings.Parsing` and `Settings.Rendering` interfaces
-// only have optional fields. This unfortunately means they're satisfied by every type,
-// including the `Settings` interface!
+// Both `Settings.Parsing` and `Settings.Rendering` interfaces only have optional
+// fields. This unfortunately means they're satisfied by every type,  including the
+// `Settings` interface!
 // 
-// We want to prevent users from accidentally passing `Settings` to a method
-// that expects `Settings.Parsing` or `Settings.Rendering`.
+// We want to prevent users from accidentally passing `Settings` to a method that
+// expects `Settings.Parsing` or `Settings.Rendering`.
 //
 // Our solution is to extend the `SpecificSettings` interface, which is incompatible
 // with `Settings`.

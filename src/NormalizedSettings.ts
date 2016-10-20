@@ -4,6 +4,13 @@ import { Settings } from './Settings'
 import { coalesce, distinct } from './CollectionHelpers'
 
 
+// The `Settings` provided by the user are almost always imcomplete.
+//
+// This class:
+//
+// 1. Provides defaults for any missing settings
+// 2. Ensures that the default keyword variations are always supported
+// 3. Provides functionality for merging changes to the user's settings
 export class NormalizedSettings {
   parsing = new NormalizedSettings.Parsing()
   rendering = new NormalizedSettings.Rendering()
@@ -12,7 +19,7 @@ export class NormalizedSettings {
     this.applySettings(settings)
   }
 
-  // Returns a new `Settings` object with the changes applied.
+  // Returns a new `NormalizedSettings` object with the changes applied.
   withChanges(changes: Settings): NormalizedSettings {
     const clone = new NormalizedSettings()
 
