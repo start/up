@@ -1,6 +1,6 @@
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
-import { Settings } from './Settings'
+import { NormalizedSettings } from './NormalizedSettings'
 import { UserProvidedSettings } from './UserProvidedSettings'
 import { parse } from './Parsing/parse'
 import { parseInline } from './Parsing/parseInline'
@@ -8,10 +8,10 @@ import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 
 
 export class Transformer {
-  private settings: Settings
+  private settings: NormalizedSettings
 
   constructor(settings?: UserProvidedSettings) {
-    this.settings = new Settings(settings)
+    this.settings = new NormalizedSettings(settings)
   }
 
   // Converts Up markup into HTML and returns the result.
@@ -78,11 +78,11 @@ export class Transformer {
     return htmlRenderer.inlineDocument(inlineDocument)
   }
 
-  private getParsingSettings(changes?: UserProvidedSettings.Parsing): Settings.Parsing {
+  private getParsingSettings(changes?: UserProvidedSettings.Parsing): NormalizedSettings.Parsing {
     return this.settings.withChanges({ parsing: changes }).parsing
   }
 
-  private getRenderingSettings(changes?: UserProvidedSettings.Rendering): Settings.Rendering {
+  private getRenderingSettings(changes?: UserProvidedSettings.Rendering): NormalizedSettings.Rendering {
     return this.settings.withChanges({ rendering: changes }).rendering
   }
 

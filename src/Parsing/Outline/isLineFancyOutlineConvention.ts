@@ -4,7 +4,7 @@ import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { HeadingLeveler } from './HeadingLeveler'
-import { Settings } from '../../Settings'
+import { NormalizedSettings } from '../../NormalizedSettings'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
@@ -26,7 +26,7 @@ const DUMMY_SOURCE_LINE_NUMBER = 1
 //
 // TODO: Make this method less disastrously wasteful. Currently, if `markupLine` does represent
 // a fancy outline convention, its contents are fully parsed.
-export function isLineFancyOutlineConvention(markupLine: string, settings: Settings.Parsing): boolean {
+export function isLineFancyOutlineConvention(markupLine: string, settings: NormalizedSettings.Parsing): boolean {
   const markupLines = [markupLine]
 
   return OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG.some(

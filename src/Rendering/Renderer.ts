@@ -1,10 +1,10 @@
 import * as Up from '../Up'
-import { Settings } from '../Settings'
+import { NormalizedSettings } from '../NormalizedSettings'
 import { SOME_WHITESPACE } from '../PatternPieces'
 
 
 export abstract class Renderer {
-  constructor(protected settings: Settings.Rendering) { }
+  constructor(protected settings: NormalizedSettings.Rendering) { }
 
   abstract document(document: Up.Document): string
   abstract inlineDocument(inlineDocument: Up.InlineDocument): string

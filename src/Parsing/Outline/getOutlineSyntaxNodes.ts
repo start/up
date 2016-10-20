@@ -15,7 +15,7 @@ import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { NON_BLANK_PATTERN } from '../../Patterns'
 import { last } from '../../CollectionHelpers'
 import { HeadingLeveler } from './HeadingLeveler'
-import { Settings } from '../../Settings'
+import { NormalizedSettings } from '../../NormalizedSettings'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -42,7 +42,7 @@ export function getOutlineSyntaxNodes(
     markupLines: string[],
     sourceLineNumber: number,
     headingLeveler: HeadingLeveler,
-    settings: Settings.Parsing
+    settings: NormalizedSettings.Parsing
   }
 ): OutlineSyntaxNode[] {
   const { markupLines, headingLeveler, settings } = args

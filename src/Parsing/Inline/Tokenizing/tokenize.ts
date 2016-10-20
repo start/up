@@ -4,7 +4,7 @@ import { escapeForRegex, patternStartingWith, solely, everyOptional, either, opt
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { BACKSLASH } from '../../Strings'
-import { Settings } from '../../../Settings'
+import { NormalizedSettings } from '../../../NormalizedSettings'
 import { RichConvention } from './RichConvention'
 import { tryToTokenizeInlineCode } from './tryToTokenizeInlineCode'
 import { nestOverlappingConventions } from './nestOverlappingConventions'
@@ -28,7 +28,7 @@ import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescape
 //
 // Overlapping conventions are split into multiple pieces to ensure each piece has just a single parent.
 // For more information about this process, see the comments in `nestOverlappingConventions.ts`.
-export function tokenize(inlineMarkup: string, settings: Settings.Parsing): ParseableToken[] {
+export function tokenize(inlineMarkup: string, settings: NormalizedSettings.Parsing): ParseableToken[] {
   return new Tokenizer(inlineMarkup, settings).result
 }
 
@@ -37,7 +37,7 @@ export function tokenize(inlineMarkup: string, settings: Settings.Parsing): Pars
 // 1. Footnotes are treated as normal parentheticals
 // 2. Section links are ignored. The markup is instead parsed as a parenthetical of the appropriate
 //    bracket type.
-export function tokenizeForInlineDocument(inlineMarkup: string, settings: Settings.Parsing): ParseableToken[] {
+export function tokenizeForInlineDocument(inlineMarkup: string, settings: NormalizedSettings.Parsing): ParseableToken[] {
   const { result } =
     new Tokenizer(inlineMarkup, settings, { isTokenizingInlineDocument: true })
 
@@ -209,7 +209,7 @@ class Tokenizer {
   //    end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(inlineMarkup: string, private settings: Settings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
+  constructor(inlineMarkup: string, private settings: NormalizedSettings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
     const trimmedMarkup =
       trimEscapedAndUnescapedOuterWhitespace(inlineMarkup)
 
@@ -326,7 +326,7 @@ class Tokenizer {
   private getConventionsForLabeledRichBrackets(
     args: {
       richConvention: RichConvention
-      keyword: Settings.Parsing.Keyword
+      keyword: NormalizedSettings.Parsing.Keyword
     }
   ): ConventionVariation[] {
     const { richConvention, keyword } = args
@@ -1482,7 +1482,7 @@ class Tokenizer {
 }
 
 
-function labeledBracketStartDelimiter(keyword: Settings.Parsing.Keyword, bracket: Bracket): string {
+function labeledBracketStartDelimiter(keyword: NormalizedSettings.Parsing.Keyword, bracket: Bracket): string {
   return bracket.startPattern + either(...keyword.map(escapeForRegex)) + ':' + ANY_WHITESPACE
 }
 

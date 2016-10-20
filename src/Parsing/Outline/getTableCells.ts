@@ -1,7 +1,7 @@
 import { Table } from '../../SyntaxNodes/Table'
 import { patternStartingWith, oneOrMore } from '../../PatternHelpers'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
-import { Settings } from '../../Settings'
+import { NormalizedSettings } from '../../NormalizedSettings'
 import { last } from '../../CollectionHelpers'
 import { BACKSLASH } from '../Strings'
 
@@ -19,7 +19,7 @@ import { BACKSLASH } from '../Strings'
 export class TableCell extends Table.Cell { }
 
 
-export function getTableCells(row: string, settings: Settings.Parsing): Table.Cell[] {
+export function getTableCells(row: string, settings: NormalizedSettings.Parsing): Table.Cell[] {
   // We trim the contents of each cell, which means trimming the whole row isn't strictly
   // necessary. However, doing so (or at least trimming the end of the strimg) makes it a
   // bit easier for us to tell when a row ends with a single unescaped semicolon.

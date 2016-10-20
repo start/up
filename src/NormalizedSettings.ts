@@ -4,17 +4,17 @@ import { UserProvidedSettings } from './UserProvidedSettings'
 import { coalesce, distinct } from './CollectionHelpers'
 
 
-export class Settings {
-  parsing = new Settings.Parsing()
-  rendering = new Settings.Rendering()
+export class NormalizedSettings {
+  parsing = new NormalizedSettings.Parsing()
+  rendering = new NormalizedSettings.Rendering()
 
   constructor(settings?: UserProvidedSettings) {
     this.applyUserProvidedSettings(settings)
   }
 
   // Returns a new `Settings` object with the changes applied.
-  withChanges(changes: UserProvidedSettings): Settings {
-    const clone = new Settings()
+  withChanges(changes: UserProvidedSettings): NormalizedSettings {
+    const clone = new NormalizedSettings()
 
     clone.parsing = this.parsing.clone()
     clone.rendering = this.rendering.clone()
@@ -35,7 +35,7 @@ export class Settings {
 }
 
 
-export namespace Settings {
+export namespace NormalizedSettings {
   export class Parsing {
     createSourceMap = false
     fancyEllipsis = '…'
@@ -284,7 +284,7 @@ export namespace Settings {
 //
 // This function takes the keyword variations provided by the user, cleans them up, and massages
 // them into arrays.
-function sanitizeVariations(variations: UserProvidedSettings.Parsing.Keyword): Settings.Parsing.Keyword {
+function sanitizeVariations(variations: UserProvidedSettings.Parsing.Keyword): NormalizedSettings.Parsing.Keyword {
   if (variations == null) {
     return []
   }
