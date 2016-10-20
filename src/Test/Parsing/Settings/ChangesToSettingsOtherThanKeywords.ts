@@ -12,8 +12,8 @@ function itWorksAsAdvertised(
     markup: string,
     documentWhenChangeIsApplied: Up.Document
     documentWhenSettingIsNotChanged: Up.Document
-    change: Up.UserProvidedSettings.Parsing
-    changeBackToDefault: Up.UserProvidedSettings.Parsing
+    change: Up.Settings.Parsing
+    changeBackToDefault: Up.Settings.Parsing
   }
 ): void {
   const { markup, documentWhenChangeIsApplied, documentWhenSettingIsNotChanged, change, changeBackToDefault } = args

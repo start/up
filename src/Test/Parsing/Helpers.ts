@@ -15,7 +15,7 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
     partsBetweenContentAndUrl?: string[]
     url: string
     toProduce: Up.Document
-    settings?: Up.UserProvidedSettings.Parsing
+    settings?: Up.Settings.Parsing
   }
 ): void {
   expectEveryPermutationOfBrackets({
@@ -37,7 +37,7 @@ export function expectEveryPermutationOfBrackets(
     precededBy?: string
     bracketedSegments: BracketedSegment[]
     toProduce: Up.Document
-    settings?: Up.UserProvidedSettings.Parsing
+    settings?: Up.Settings.Parsing
   }
 ): void {
   const { toProduce, settings } = args

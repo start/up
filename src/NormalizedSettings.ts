@@ -1,6 +1,6 @@
 import { FORWARD_SLASH, HASH_MARK } from './PatternPieces'
 import { URL_SCHEME_PATTERN } from './Patterns'
-import { UserProvidedSettings } from './UserProvidedSettings'
+import { Settings } from './Settings'
 import { coalesce, distinct } from './CollectionHelpers'
 
 
@@ -8,29 +8,29 @@ export class NormalizedSettings {
   parsing = new NormalizedSettings.Parsing()
   rendering = new NormalizedSettings.Rendering()
 
-  constructor(settings?: UserProvidedSettings) {
-    this.applyUserProvidedSettings(settings)
+  constructor(settings?: Settings) {
+    this.applySettings(settings)
   }
 
   // Returns a new `Settings` object with the changes applied.
-  withChanges(changes: UserProvidedSettings): NormalizedSettings {
+  withChanges(changes: Settings): NormalizedSettings {
     const clone = new NormalizedSettings()
 
     clone.parsing = this.parsing.clone()
     clone.rendering = this.rendering.clone()
 
-    clone.applyUserProvidedSettings(changes)
+    clone.applySettings(changes)
 
     return clone
   }
 
-  private applyUserProvidedSettings(settings: UserProvidedSettings): void {
+  private applySettings(settings: Settings): void {
     if (!settings) {
       return
     }
 
-    this.parsing.applyUserProvidedSettings(settings.parsing)
-    this.rendering.applyUserProvidedSettings(settings.rendering)
+    this.parsing.applySettings(settings.parsing)
+    this.rendering.applySettings(settings.rendering)
   }
 }
 
@@ -58,7 +58,7 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applyUserProvidedSettings(settings: UserProvidedSettings.Parsing): void {
+    applySettings(settings: Settings.Parsing): void {
       if (!settings) {
         return
       }
@@ -78,7 +78,7 @@ export namespace NormalizedSettings {
       this.baseForUrlsStartingWithHashMark =
         coalesce(settings.baseForUrlsStartingWithHashMark, this.baseForUrlsStartingWithHashMark)
 
-      this.keywords.applyUserProvidedSettings(settings.keywords)
+      this.keywords.applySettings(settings.keywords)
     }
 
     // Applies the relevant settings settings to `url` and returns the result.
@@ -165,7 +165,7 @@ export namespace NormalizedSettings {
         return clone
       }
 
-      applyUserProvidedSettings(keywords: UserProvidedSettings.Parsing.Keywords): void {
+      applySettings(keywords: Settings.Parsing.Keywords): void {
         if (!keywords) {
           return
         }
@@ -212,7 +212,7 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applyUserProvidedSettings(settings: UserProvidedSettings.Rendering): void {
+    applySettings(settings: Settings.Rendering): void {
       if (!settings) {
         return
       }
@@ -223,7 +223,7 @@ export namespace NormalizedSettings {
       this.renderDangerousContent =
         coalesce(settings.renderDangerousContent, this.renderDangerousContent)
 
-      this.terms.applyUserProvidedSettings(settings.terms)
+      this.terms.applySettings(settings.terms)
     }
   }
 
@@ -248,7 +248,7 @@ export namespace NormalizedSettings {
         return clone
       }
 
-      applyUserProvidedSettings(terms: UserProvidedSettings.Rendering.Terms): void {
+      applySettings(terms: Settings.Rendering.Terms): void {
         if (!terms) {
           return
         }
@@ -284,7 +284,7 @@ export namespace NormalizedSettings {
 //
 // This function takes the keyword variations provided by the user, cleans them up, and massages
 // them into arrays.
-function sanitizeVariations(variations: UserProvidedSettings.Parsing.Keyword): NormalizedSettings.Parsing.Keyword {
+function sanitizeVariations(variations: Settings.Parsing.Keyword): NormalizedSettings.Parsing.Keyword {
   if (variations == null) {
     return []
   }

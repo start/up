@@ -1,7 +1,7 @@
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
 import { NormalizedSettings } from './NormalizedSettings'
-import { UserProvidedSettings } from './UserProvidedSettings'
+import { Settings } from './Settings'
 import { parse } from './Parsing/parse'
 import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
@@ -10,12 +10,12 @@ import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
 export class Transformer {
   private settings: NormalizedSettings
 
-  constructor(settings?: UserProvidedSettings) {
+  constructor(settings?: Settings) {
     this.settings = new NormalizedSettings(settings)
   }
 
   // Converts Up markup into HTML and returns the result.
-  parseAndRender(markup: string, extraSettings: UserProvidedSettings): string {
+  parseAndRender(markup: string, extraSettings: Settings): string {
     const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
@@ -26,7 +26,7 @@ export class Transformer {
   //
   // 1. A table of contents
   // 2. The document itself
-  parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: UserProvidedSettings): RenderedDocumentAndTableOfContents {
+  parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: Settings): RenderedDocumentAndTableOfContents {
     const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
@@ -34,7 +34,7 @@ export class Transformer {
   }
 
   // Converts inline Up markup into inline HTML and returns the result.
-  parseAndRenderInline(inlineMarkup: string, extraSettings?: UserProvidedSettings): string {
+  parseAndRenderInline(inlineMarkup: string, extraSettings?: Settings): string {
     const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
     const inlineDocument = this.parseInline(inlineMarkup, parsing)
 
@@ -42,17 +42,17 @@ export class Transformer {
   }
 
   // Parses Up markup and returns the resulting syntax tree.
-  parse(markup: string, extraParsingSettings?: UserProvidedSettings.Parsing): Document {
+  parse(markup: string, extraParsingSettings?: Settings.Parsing): Document {
     return parse(markup, this.getParsingSettings(extraParsingSettings))
   }
 
   // Parses inline Up markup and returns the resulting inline syntax tree.
-  parseInline(inlineMarkup: string, extraParsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
+  parseInline(inlineMarkup: string, extraParsingSettings?: Settings.Parsing): InlineDocument {
     return parseInline(inlineMarkup, this.getParsingSettings(extraParsingSettings))
   }
 
   // Converts a syntax tree into HTML, then returns the result.
-  render(document: Document, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+  render(document: Document, extraRenderingSettings?: Settings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return htmlRenderer.document(document)
@@ -62,7 +62,7 @@ export class Transformer {
   //
   // 1. A table of contents
   // 2. The document itself
-  renderDocumentAndTableOfContents(document: Document, extraRenderingSettings?: UserProvidedSettings.Rendering): RenderedDocumentAndTableOfContents {
+  renderDocumentAndTableOfContents(document: Document, extraRenderingSettings?: Settings.Rendering): RenderedDocumentAndTableOfContents {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return {
@@ -72,21 +72,21 @@ export class Transformer {
   }
 
   // Converts an inline syntax tree into inline HTML and returns the result.
-  renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: UserProvidedSettings.Rendering): string {
+  renderInline(inlineDocument: InlineDocument, extraRenderingSettings?: Settings.Rendering): string {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return htmlRenderer.inlineDocument(inlineDocument)
   }
 
-  private getParsingSettings(changes?: UserProvidedSettings.Parsing): NormalizedSettings.Parsing {
+  private getParsingSettings(changes?: Settings.Parsing): NormalizedSettings.Parsing {
     return this.settings.withChanges({ parsing: changes }).parsing
   }
 
-  private getRenderingSettings(changes?: UserProvidedSettings.Rendering): NormalizedSettings.Rendering {
+  private getRenderingSettings(changes?: Settings.Rendering): NormalizedSettings.Rendering {
     return this.settings.withChanges({ rendering: changes }).rendering
   }
 
-  private getHtmlRenderer(extraRenderingSettings: UserProvidedSettings.Rendering): HtmlRenderer {
+  private getHtmlRenderer(extraRenderingSettings: Settings.Rendering): HtmlRenderer {
     return new HtmlRenderer(this.getRenderingSettings(extraRenderingSettings))
   }
 }
@@ -98,7 +98,7 @@ export interface RenderedDocumentAndTableOfContents {
 }
 
 
-function getParsingAndRenderingSettings(settings: UserProvidedSettings): UserProvidedSettings {
+function getParsingAndRenderingSettings(settings: Settings): Settings {
   return settings || {
     parsing: null,
     rendering: null

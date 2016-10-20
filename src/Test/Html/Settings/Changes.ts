@@ -5,14 +5,14 @@ import * as Up from '../../../Up'
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: Up.Document
-    change: Up.UserProvidedSettings.Rendering
-    conflictingChange: Up.UserProvidedSettings.Rendering
+    change: Up.Settings.Rendering
+    conflictingChange: Up.Settings.Rendering
   }
 ): void {
   const { document, change, conflictingChange } = args
 
   const settingsFor =
-    (changes: Up.UserProvidedSettings.Rendering): Up.UserProvidedSettings => ({
+    (changes: Up.Settings.Rendering): Up.Settings => ({
       rendering: changes
     })
 

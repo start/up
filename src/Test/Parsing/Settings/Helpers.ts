@@ -1,6 +1,6 @@
-import { UserProvidedSettings } from '../../../UserProvidedSettings'
+import { Settings } from '../../../Settings'
 
 
-export function settingsFor(changes: UserProvidedSettings.Parsing): UserProvidedSettings {
+export function settingsFor(changes: Settings.Parsing): Settings {
   return { parsing: changes }
 }

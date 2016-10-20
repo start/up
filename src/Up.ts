@@ -1,5 +1,5 @@
 import { Transformer, RenderedDocumentAndTableOfContents } from './Transformer'
-import { UserProvidedSettings } from './UserProvidedSettings'
+import { Settings } from './Settings'
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
 
@@ -20,7 +20,7 @@ import { InlineDocument } from './SyntaxNodes/InlineDocument'
 const up = new Transformer()
 
 // Converts Up markup into HTML and returns the result.
-export function parseAndRender(markup: string, settings?: UserProvidedSettings): string {
+export function parseAndRender(markup: string, settings?: Settings): string {
   return up.parseAndRender(markup, settings)
 }
 
@@ -28,27 +28,27 @@ export function parseAndRender(markup: string, settings?: UserProvidedSettings):
 //
 // 1. A table of contents
 // 2. The document itself
-export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: UserProvidedSettings): RenderedDocumentAndTableOfContents {
+export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: Settings): RenderedDocumentAndTableOfContents {
   return up.parseAndRenderDocumentAndTableOfContents(markup, settings)
 }
 
 // Converts inline Up markup into inline HTML and returns the result.
-export function parseAndRenderInline(inlineMarkup: string, settings?: UserProvidedSettings): string {
+export function parseAndRenderInline(inlineMarkup: string, settings?: Settings): string {
   return up.parseAndRenderInline(inlineMarkup, settings)
 }
 
 // Parses Up markup and returns the resulting syntax tree.
-export function parse(markup: string, parsingSettings?: UserProvidedSettings.Parsing): Document {
+export function parse(markup: string, parsingSettings?: Settings.Parsing): Document {
   return up.parse(markup, parsingSettings)
 }
 
 // Parses inline Up markup and returns the resulting inline syntax tree.
-export function parseInline(inlineMarkup: string, parsingSettings?: UserProvidedSettings.Parsing): InlineDocument {
+export function parseInline(inlineMarkup: string, parsingSettings?: Settings.Parsing): InlineDocument {
   return up.parseInline(inlineMarkup, parsingSettings)
 }
 
 // Converts a syntax tree into HTML, then returns the result.
-export function render(document: Document, renderingSettings?: UserProvidedSettings.Rendering): string {
+export function render(document: Document, renderingSettings?: Settings.Rendering): string {
   return up.render(document, renderingSettings)
 }
 
@@ -56,17 +56,17 @@ export function render(document: Document, renderingSettings?: UserProvidedSetti
 //
 // 1. A table of contents
 // 2. The document itself
-export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: UserProvidedSettings.Rendering): RenderedDocumentAndTableOfContents {
+export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: Settings.Rendering): RenderedDocumentAndTableOfContents {
   return up.renderDocumentAndTableOfContents(document, renderingSettings)
 }
 
 // Converts an inline syntax tree into inline HTML and returns the result.
-export function renderInline(inlineDocument: InlineDocument, renderingSettings?: UserProvidedSettings.Rendering): string {
+export function renderInline(inlineDocument: InlineDocument, renderingSettings?: Settings.Rendering): string {
   return up.renderInline(inlineDocument, renderingSettings)
 }
 
 export { Transformer, RenderedDocumentAndTableOfContents } from './Transformer'
-export { UserProvidedSettings } from './UserProvidedSettings'
+export { Settings } from './Settings'
 
 export { Document } from './SyntaxNodes/Document'
 export { InlineDocument } from './SyntaxNodes/InlineDocument'

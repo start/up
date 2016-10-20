@@ -12,13 +12,13 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     markupForDefaultSettings: string
     markupForKeywordVariations: string
-    keywordVariations: Up.UserProvidedSettings.Parsing.Keywords
+    keywordVariations: Up.Settings.Parsing.Keywords
     invalidMarkupForEmptyKeyword: string
     invalidMarkupForBlankKeyword: string
-    equivalentKeywordVariationsPlusEmptyAndBlankVariations: Up.UserProvidedSettings.Parsing.Keywords
-    onlyEmptyAndBlankKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
-    zeroKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
-    conflictingKeywordVariations: Up.UserProvidedSettings.Parsing.Keywords
+    equivalentKeywordVariationsPlusEmptyAndBlankVariations: Up.Settings.Parsing.Keywords
+    onlyEmptyAndBlankKeywordVariations: Up.Settings.Parsing.Keywords
+    zeroKeywordVariations: Up.Settings.Parsing.Keywords
+    conflictingKeywordVariations: Up.Settings.Parsing.Keywords
   }
 ): void {
   const { markupForDefaultSettings, markupForKeywordVariations, invalidMarkupForEmptyKeyword, invalidMarkupForBlankKeyword } = args
@@ -41,7 +41,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   // parsing methods.
 
   const parsingSettingsFor =
-    (changes: Up.UserProvidedSettings.Parsing.Keywords): Up.UserProvidedSettings.Parsing => ({
+    (changes: Up.Settings.Parsing.Keywords): Up.Settings.Parsing => ({
       keywords: changes
     })
 

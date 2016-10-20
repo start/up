@@ -1,16 +1,16 @@
 // The purpose of this unpleasant hack is to make both `parsing` and `rendering`
 // settings optional, while still requiring that at least one of the two be provided.
-export type UserProvidedSettings =
+export type Settings =
   {
-    parsing?: UserProvidedSettings.Parsing
-    rendering: UserProvidedSettings.Rendering
+    parsing?: Settings.Parsing
+    rendering: Settings.Rendering
   } | {
-    parsing: UserProvidedSettings.Parsing
-    rendering?: UserProvidedSettings.Rendering
+    parsing: Settings.Parsing
+    rendering?: Settings.Rendering
   }
 
 
-export namespace UserProvidedSettings {
+export namespace Settings {
   export interface Parsing extends SpecificSettings {
     createSourceMap?: boolean
     defaultUrlScheme?: string
@@ -57,15 +57,15 @@ export namespace UserProvidedSettings {
 
 // This is another hack to work around TypeScript's type system.
 //
-// Both `UserProvidedSettings.Parsing` and `UserProvidedSettings.Rendering` interfaces
+// Both `Settings.Parsing` and `Settings.Rendering` interfaces
 // only have optional fields. This unfortunately means they're satisfied by every type,
-// including the `UserProvidedSettings` interface!
+// including the `Settings` interface!
 // 
-// We want to prevent users from accidentally passing `UserProvidedSettings` to a method
-// that expects `UserProvidedSettings.Parsing` or `UserProvidedSettings.Rendering`.
+// We want to prevent users from accidentally passing `Settings` to a method
+// that expects `Settings.Parsing` or `Settings.Rendering`.
 //
 // Our solution is to extend the `SpecificSettings` interface, which is incompatible
-// with `UserProvidedSettings`.
+// with `Settings`.
 export interface SpecificSettings {
   rendering?: DoNotProvide,
   parsing?: DoNotProvide
