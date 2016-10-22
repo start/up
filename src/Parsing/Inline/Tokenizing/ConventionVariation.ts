@@ -4,8 +4,8 @@ import { TokenRole } from '../TokenRole'
 import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 
-// Represents the rules for a single variation of an inline convention (e.g. an inline revealable
-// convention delimited by square brackets).  
+// Represents the rules for a single variation of an inline writing convention (e.g. an inline
+// revealable convention delimited by square brackets).  
 export class ConventionVariation {
   startsWith: RegExp
   endsWith: RegExp

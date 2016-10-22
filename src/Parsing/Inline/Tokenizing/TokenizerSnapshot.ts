@@ -1,5 +1,5 @@
 import { ConventionContext } from './ConventionContext'
-import { InflectionHandler } from './InflectionHandler'
+import { ForgivingConventionHandler } from './ForgivingConventionHandler'
 import { Token } from './Token'
 
 
@@ -9,5 +9,5 @@ export interface TokenizerSnapshot {
   bufferedContent: string
   tokens: Token[]
   openContexts: ConventionContext[]
-  inflectionHandlers: InflectionHandler[]
+  forgivingConventionHandlers: ForgivingConventionHandler[]
 }

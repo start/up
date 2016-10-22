@@ -20,7 +20,7 @@ import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
-import { InflectionHandler } from './InflectionHandler'
+import { ForgivingConventionHandler } from './ForgivingConventionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 
 
@@ -45,9 +45,9 @@ export function tokenizeForInlineDocument(inlineMarkup: string, settings: Normal
 }
 
 
-// Most of our conventions, including links and inline revealables, incorporate brackets into their syntax.
-// These conventions support both parentheses and square brackets, allowing either kind of bracket to be
-// used interchangeably.
+// Most of our writing conventions, including links and inline revealables, incorporate brackets into
+// their syntax. These conventions support both parentheses and square brackets, allowing either kind of
+// bracket to be used interchangeably.
 //
 // TODO: Now that most of the conventions (handled within the tokenizer class) incorporate brackets, we
 // should consider grouping conventions by their stems.
@@ -104,11 +104,11 @@ class Tokenizer {
   //
   // The conventions not included in this collection are:
   //
-  // 1. Media URL conventions
-  // 2. Link URL conventions
-  // 3. Inflection convections
-  // 4. Raw bracket conventions
-  // 5. Typographical conventions
+  // - Media URL conventions
+  // - Link URL conventions
+  // - Inflection convections
+  // - Raw bracket conventions
+  // = Typographical conventions
   //
   // Typographical conventions are ultimately simple text replacement. For more information, see the
   // `tryToTokenizeTypographicalConvention` method.
@@ -153,12 +153,19 @@ class Tokenizer {
   // bare URL that needs to be manually closed when an outer convention is closing.
   private bareUrlPathConvention = this.getBareUrlPathConvention()
 
-  // Inflection means any change of voice, which includes emphasis, stress, italics, bold, and quotes.
+  // Some of our writing conventions don't require perfectly balanced delimiters on either either side:
   //
-  // We handle inflection in a manner incompatible with the rest of our conventions, so we throw all that
-  // special logic into the InflectionHandler class. More information can be found in comments within that
-  // class.
-  private inflectionHandlers = [
+  // - Emphasis
+  // - Stress
+  // - Italic
+  // - Bold
+  // - Inline quote
+  // - Highlighting
+  //
+  // We handle these conventions in a manner incompatible with the rest of our conventions, so we throw all
+  // that special logic into the InflectionHandler class. More information can be found in comments within
+  // that class.
+  private forgivingConventionHandlers = [
     {
       delimiterChar: '*',
       conventionForMinorInflection: EMPHASIS,
@@ -171,7 +178,7 @@ class Tokenizer {
       delimiterChar: '"',
       conventionForMinorInflection: INLINE_QUOTE
     }
-  ].map(args => this.getInflectionHandler(args))
+  ].map(args => this.getForgivingConventionHandler(args))
 
   // Speaking of inflection conventions...
   //
@@ -752,7 +759,7 @@ class Tokenizer {
     })
   }
 
-  private getInflectionHandler(
+  private getForgivingConventionHandler(
     args: {
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
@@ -760,10 +767,10 @@ class Tokenizer {
       // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
       conventionForMajorInflection?: RichConvention
     }
-  ): InflectionHandler {
+  ): ForgivingConventionHandler {
     const { delimiterChar, conventionForMajorInflection, conventionForMinorInflection } = args
 
-    return new InflectionHandler({
+    return new ForgivingConventionHandler({
       delimiterChar,
       conventionForMinorInflection,
       conventionForMajorInflection,
@@ -818,7 +825,7 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToTextToken()
 
-    for (const inflectionHandler of this.inflectionHandlers) {
+    for (const inflectionHandler of this.forgivingConventionHandlers) {
       inflectionHandler.treatDanglingStartDelimitersAsText()
     }
 
@@ -1038,7 +1045,7 @@ class Tokenizer {
       return false
     }
 
-    return this.inflectionHandlers.some(handler => {
+    return this.forgivingConventionHandlers.some(handler => {
       let didCloseAnyOpenDelimiters = false
 
       this.markupConsumer.consume({
@@ -1197,7 +1204,7 @@ class Tokenizer {
   }
 
   private tryToStartInflectingOrTreatDelimiterAsText(): boolean {
-    const didOpen = this.inflectionHandlers.some(handler =>
+    const didOpen = this.forgivingConventionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
@@ -1351,7 +1358,7 @@ class Tokenizer {
       markupIndexWeLastOpenedAConvention: this.markupIndexWeLastOpenedAConvention,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
-      inflectionHandlers: this.inflectionHandlers.map(handler => handler.clone()),
+      forgivingConventionHandlers: this.forgivingConventionHandlers.map(handler => handler.clone()),
       bufferedContent: this.bufferedContent
     }
   }
@@ -1414,7 +1421,7 @@ class Tokenizer {
     this.markupConsumer.index = snapshot.markupIndex
     this.markupIndexWeLastOpenedAConvention = snapshot.markupIndexWeLastOpenedAConvention
     this.openContexts = snapshot.openContexts
-    this.inflectionHandlers = snapshot.inflectionHandlers
+    this.forgivingConventionHandlers = snapshot.forgivingConventionHandlers
   }
 
   private appendNewToken(role: TokenRole, value?: string): void {
@@ -1455,7 +1462,7 @@ class Tokenizer {
       openContext.registerTokenInsertion({ atIndex })
     }
 
-    for (const inflectionHandler of this.inflectionHandlers) {
+    for (const inflectionHandler of this.forgivingConventionHandlers) {
       inflectionHandler.registerTokenInsertion({ atIndex })
     }
 

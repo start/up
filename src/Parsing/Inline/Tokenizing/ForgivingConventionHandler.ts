@@ -7,7 +7,7 @@ import { remove } from '../../../CollectionHelpers'
 
 // For a given inflection delimiter character (`delimiterChar`), instances of this class match end delimiters with
 // start delimiters. 
-export class InflectionHandler {
+export class ForgivingConventionHandler {
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
@@ -171,8 +171,8 @@ export class InflectionHandler {
   }
 
   // Like the `ConventionContext` class, this class needs to be clonable in order to properly handle backtracking.
-  clone(): InflectionHandler {
-    return new InflectionHandler(
+  clone(): ForgivingConventionHandler {
+    return new ForgivingConventionHandler(
       this.args,
       this.openStartDelimiters.map(delimiter => delimiter.clone()),
       this.delimiterPattern)
