@@ -672,14 +672,14 @@ describe('A bold node', () => {
 
 
 describe('An inline code node', () => {
-  it('renders a <code> element', () => {
+  it('renders a <code class="up-inline-code"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.InlineCode('then')
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><code>then</code></p>')
+    expect(Up.render(document)).to.equal('<p><code class="up-inline-code">then</code></p>')
   })
 })
 

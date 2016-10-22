@@ -56,12 +56,12 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('An inline code node', () => {
-    it('produces a <code> element', () => {
+    it('produces a <code class="up-inline-code"> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.InlineCode('then')
       ])
 
-      expect(Up.renderInline(inlineDocument)).to.equal('<code>then</code>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<code class="up-inline-code">then</code>')
     })
   })
 

@@ -58,7 +58,7 @@ describe('Within an inline code node, all instances of < and &', () => {
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><code>4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></p>')
+    expect(Up.render(document)).to.equal('<p><code class="up-inline-code">4 &amp; 5 &lt; 10, and 6 &amp; 7 &lt; 10. Coincidence?</code></p>')
   })
 })
 
@@ -71,7 +71,7 @@ describe('Within an inline code node, >, \', and "', () => {
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><code>John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
+    expect(Up.render(document)).to.equal('<p><code class="up-inline-code">John\'s friend said, "1 and 2 > 0. I can\'t believe it."</code></p>')
   })
 })
 
