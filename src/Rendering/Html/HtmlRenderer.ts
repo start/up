@@ -155,7 +155,10 @@ export class HtmlRenderer extends Renderer {
   }
 
   inlineCode(inlineCode: Up.InlineCode): string {
-    return htmlElement('code', inlineCode.code)
+    return htmlElement(
+      'code',
+      inlineCode.code,
+      { class: classHtmlAttrValue('inline-code') })
   }
 
   exampleInput(exampleInput: Up.ExampleInput): string {
