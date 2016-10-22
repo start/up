@@ -106,9 +106,9 @@ class Tokenizer {
   //
   // - Media URL conventions
   // - Link URL conventions
-  // - Inflection convections
+  // - "Forgiving" convections (those which don't require balanced delimiters on either side)
   // - Raw bracket conventions
-  // = Typographical conventions
+  // - Typographical conventions
   //
   // Typographical conventions are ultimately simple text replacement. For more information, see the
   // `tryToTokenizeTypographicalConvention` method.
@@ -162,9 +162,11 @@ class Tokenizer {
   // - Inline quote
   // - Highlighting
   //
+  // We'll call these our "forgving" conventions!
+  //
   // We handle these conventions in a manner incompatible with the rest of our conventions, so we throw all
-  // that special logic into the InflectionHandler class. More information can be found in comments within
-  // that class.
+  // that special logic into the `ForgivingConventionHandler` class. More information can be found in
+  // comments within that class.
   private forgivingConventionHandlers = [
     {
       delimiterChar: '*',
@@ -180,10 +182,10 @@ class Tokenizer {
     }
   ].map(args => this.getForgivingConventionHandler(args))
 
-  // Speaking of inflection conventions...
+  // Speaking of forgiving writing conventions...
   //
-  // For a delimiter to close any inflection conventions, it must look like it's touching the end of
-  // the content it's enclosing (i.e. it must be following a non-whitespace character).
+  // For a delimiter to close a forgving convention, it must look like it's touching the end of the content
+  // it's enclosing (i.e. it must be following a non-whitespace character).
   //
   // However, let's look at the following contrived eample:
   //
@@ -193,7 +195,7 @@ class Tokenizer {
   //
   // However, that quotation mark is following a non-whitespace character!
   //
-  // To get around this, we won't allow a delimiter to close an inflection convention if we have just
+  // To get around this, we won't allow a delimiter to close a forgiving writing convention if we have just
   // entered an outer convention.
   private markupIndexWeLastOpenedAConvention: number
 
@@ -825,8 +827,8 @@ class Tokenizer {
 
     this.flushNonEmptyBufferToTextToken()
 
-    for (const inflectionHandler of this.forgivingConventionHandlers) {
-      inflectionHandler.treatDanglingStartDelimitersAsText()
+    for (const handler of this.forgivingConventionHandlers) {
+      handler.treatDanglingStartDelimitersAsText()
     }
 
     return true
@@ -979,7 +981,7 @@ class Tokenizer {
       }
     }
 
-    return this.tryToCloseAnyInflectionConventions()
+    return this.tryToCloseAnyForgivingConventions()
   }
 
   private shouldClose(context: ConventionContext): boolean {
@@ -1040,7 +1042,7 @@ class Tokenizer {
     return false
   }
 
-  private tryToCloseAnyInflectionConventions(): boolean {
+  private tryToCloseAnyForgivingConventions(): boolean {
     if (this.justEnteredAConvention || !this.isPreviousCharacterNonwhitespace()) {
       return false
     }
@@ -1198,25 +1200,25 @@ class Tokenizer {
     return (
       this.conventionVariations.some(convention => this.tryToOpen(convention))
       || this.tryToTokenizeBareUrlSchemeAndHostname()
-      || this.tryToStartInflectingOrTreatDelimiterAsText()
+      || this.tryToOpenForgivingConventionOrTreatDelimiterAsText()
       || this.tryToTokenizeInlineCodeOrUnmatchedDelimiter()
       || this.tryToTokenizeTypographicalConvention())
   }
 
-  private tryToStartInflectingOrTreatDelimiterAsText(): boolean {
+  private tryToOpenForgivingConventionOrTreatDelimiterAsText(): boolean {
     const didOpen = this.forgivingConventionHandlers.some(handler =>
       this.markupConsumer.consume({
         pattern: handler.delimiterPattern,
 
         thenBeforeConsumingText: (delimiter, charAfterMatch) => {
-          // For a delimiter to start "inflecting", it must appear to be touching the beginning of some content
-          // (i.e. it must be followed by a non-whitespace character).
+          // For a delimiter to start a forgiving convention, it must appear to be touching the beginning of
+          // some content (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
             this.flushNonEmptyBufferToTextToken()
             handler.addOpenStartDelimiter(delimiter, this.tokens.length)
           } else {
-            // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as plain
-            // text. We already learned the delimiter wasn't able to close any inflection start delimiters, and we
+            // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as
+            // plain text. We already learned the delimiter wasn't able to close any start delimiters, and we
             // now know it can't open any, either.
             this.bufferedContent += delimiter
           }
@@ -1462,8 +1464,8 @@ class Tokenizer {
       openContext.registerTokenInsertion({ atIndex })
     }
 
-    for (const inflectionHandler of this.forgivingConventionHandlers) {
-      inflectionHandler.registerTokenInsertion({ atIndex })
+    for (const handler of this.forgivingConventionHandlers) {
+      handler.registerTokenInsertion({ atIndex })
     }
 
     this.mostRecentToken = token
