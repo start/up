@@ -11,7 +11,7 @@ import { remove } from '../../../../CollectionHelpers'
 export class ForgivingConventionHandler {
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
-    private args: {
+    private options: {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
       // The convention (if any) indicated by surrounding text with a single delimiter character on either side.
@@ -27,13 +27,13 @@ export class ForgivingConventionHandler {
     private openStartDelimiters: StartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
-    if (!args.minorConvention && !args.majorConvention) {
+    if (!options.minorConvention && !options.majorConvention) {
       throw new Error('No supported writing conventions')
     }
 
     this.delimiterPattern = this.delimiterPattern ||
       patternStartingWith(
-        oneOrMore(escapeForRegex(args.delimiterChar)))
+        oneOrMore(escapeForRegex(options.delimiterChar)))
   }
 
   addStartDelimiter(delimiterText: string, tokenIndex: number) {
@@ -129,13 +129,13 @@ export class ForgivingConventionHandler {
       // Can we afford combined inflection?
       if (endDelimiter.canAfford(this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
         this.encloseWithin({
-          richConvention: this.args.minorConvention,
+          richConvention: this.options.minorConvention,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
         if (supportsMajorConvention) {
           this.encloseWithin({
-            richConvention: this.args.majorConvention,
+            richConvention: this.options.majorConvention,
             startingBackAtTokenIndex: startDelimiter.tokenIndex
           })
         }
@@ -173,7 +173,7 @@ export class ForgivingConventionHandler {
   treatDanglingStartDelimitersAsText(): void {
     for (const startDelimiter of this.openStartDelimiters) {
       if (startDelimiter.isTotallyUnspent) {
-        this.args.insertTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
+        this.options.insertTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }
   }
@@ -181,17 +181,17 @@ export class ForgivingConventionHandler {
   // Like the `ConventionContext` class, this class needs to be clonable in order to properly handle backtracking.
   clone(): ForgivingConventionHandler {
     return new ForgivingConventionHandler(
-      this.args,
+      this.options,
       this.openStartDelimiters.map(delimiter => delimiter.clone()),
       this.delimiterPattern)
   }
 
   private get supportsMinorConvention(): boolean {
-    return (this.args.minorConvention != null)
+    return (this.options.minorConvention != null)
   }
 
   private get supportsMajorConvention(): boolean {
-    return (this.args.majorConvention != null)
+    return (this.options.majorConvention != null)
   }
 
   // When major inflection is supported (i.e. asterisks and underscores)
@@ -220,15 +220,15 @@ export class ForgivingConventionHandler {
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs) {
-    this.args.encloseWithinConvention(args)
+    this.options.encloseWithinConvention(args)
   }
 
   private applyMinorInflection(startDelimiter: StartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.minorConvention, MINOR_CONVENTION_COST)
+    this.applyConvention(startDelimiter, this.options.minorConvention, MINOR_CONVENTION_COST)
   }
 
   private applyMajorInflection(startDelimiter: StartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.majorConvention, MAJOR_CONVENTION_COST)
+    this.applyConvention(startDelimiter, this.options.majorConvention, MAJOR_CONVENTION_COST)
   }
 
   private applyConvention(startDelimiter: StartDelimiter, richConvention: RichConvention, cost: number): void {
