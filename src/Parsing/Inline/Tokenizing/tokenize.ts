@@ -20,7 +20,7 @@ import { Token } from './Token'
 import { ParseableToken } from '../ParseableToken'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
-import { ForgivingConventionHandler } from './ForgivingConventionHandler'
+import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
 
 

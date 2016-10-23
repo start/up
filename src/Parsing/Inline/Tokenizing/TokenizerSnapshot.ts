@@ -1,5 +1,5 @@
 import { ConventionContext } from './ConventionContext'
-import { ForgivingConventionHandler } from './ForgivingConventionHandler'
+import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
 import { Token } from './Token'
 
 

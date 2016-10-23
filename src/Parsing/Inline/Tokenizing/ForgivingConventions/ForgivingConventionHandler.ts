@@ -1,8 +1,8 @@
-import { RichConvention } from './RichConvention'
 import { ForgivingStartDelimiter } from './ForgivingStartDelimiter'
-import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
-import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../PatternHelpers'
-import { remove } from '../../../CollectionHelpers'
+import { RichConvention } from '../RichConvention'
+import { EncloseWithinConventionArgs } from '../EncloseWithinConventionArgs'
+import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
+import { remove } from '../../../../CollectionHelpers'
 
 
 // For a given delimiter character (`delimiterChar`), instances of this class match end delimiters with start

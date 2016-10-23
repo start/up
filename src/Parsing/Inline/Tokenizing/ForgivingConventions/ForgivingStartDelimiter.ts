@@ -2,7 +2,7 @@ export class ForgivingStartDelimiter {
   constructor(
     public delimiterText: string,
     public tokenIndex: number,
-    // This optional parameter is for internal use only. Please see the `clone` method below.
+    // This optional parameter only for use in the `clone` method.
     public unspentLength = delimiterText.length) { }
 
   canAfford(cost: number): boolean {
