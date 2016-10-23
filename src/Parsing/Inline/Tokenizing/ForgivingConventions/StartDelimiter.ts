@@ -5,15 +5,10 @@ export class StartDelimiter extends Delimiter {
   constructor(
     delimiterText: string,
     public tokenIndex: number,
-    // This optional parameter only for use in the `clone` method.
+    // This optional parameter is only for use in the `clone` method.
     unspentLength = delimiterText.length
   ) {
     super(delimiterText, unspentLength)
-  }
-
-  // A start delimiter is considered dangling if it went completely unmatched.
-  isDangling(): boolean {
-    return this.unspentLength === this.delimiterText.length
   }
 
   registerTokenInsertion(atIndex: number) {

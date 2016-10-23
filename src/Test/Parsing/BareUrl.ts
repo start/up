@@ -347,7 +347,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  context('Emphasis', () => {
+  context('Emphasis:', () => {
     specify('Surrounded by 1 asterisk on either side', () => {
       expect(Up.parse('*I love https://archive.org/fake*!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -402,7 +402,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  context('Stress', () => {
+  context('Stress:', () => {
     specify('Surrounded by 2 asterisks on either side', () => {
       expect(Up.parse('**I love https://archive.org/fake**!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -460,7 +460,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  context('Italics', () => {
+  context('Italics:', () => {
     specify('Surrounded by 1 underscore on either side', () => {
       expect(Up.parse('_I love https://archive.org/fake_!')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -515,7 +515,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
 
-  context('Bold', () => {
+  context('Bold:', () => {
     specify('Surrounded by 2 underscores on either side', () => {
       expect(Up.parse('__I love https://archive.org/fake__!')).to.deep.equal(
         insideDocumentAndParagraph([

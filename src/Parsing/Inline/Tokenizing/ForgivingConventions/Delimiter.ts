@@ -3,20 +3,24 @@ export class Delimiter {
     public delimiterText: string,
     public unspentLength = delimiterText.length) { }
 
-  canAfford(cost: number): boolean {
-    return this.unspentLength >= cost
-  }
-
-  canOnlyAfford(cost: number): boolean {
-    return this.unspentLength === cost
-  }
-
-  pay(cost: number): void {
-    this.unspentLength -= cost
-  }
-
-  isFullySpent(): boolean {
+  get isTotallySpent(): boolean {
     return this.unspentLength === 0
+  }
+
+  get isTotallyUnspent(): boolean {
+    return this.unspentLength === this.delimiterText.length
+  }
+
+  canAfford(length: number): boolean {
+    return this.unspentLength >= length
+  }
+
+  canOnlyAfford(length: number): boolean {
+    return this.unspentLength === length
+  }
+
+  pay(length: number): void {
+    this.unspentLength -= length
   }
 
   commonUnspentLength(other: Delimiter): number {

@@ -1,3 +1,4 @@
+import { Delimiter } from './Delimiter'
 import { StartDelimiter } from './StartDelimiter'
 import { RichConvention } from '../RichConvention'
 import { EncloseWithinConventionArgs } from '../EncloseWithinConventionArgs'
@@ -35,9 +36,9 @@ export class ForgivingConventionHandler {
         oneOrMore(escapeForRegex(args.delimiterChar)))
   }
 
-  addStartDelimiter(delimiter: string, tokenIndex: number) {
+  addStartDelimiter(delimiterText: string, tokenIndex: number) {
     this.openStartDelimiters.push(
-      new StartDelimiter(delimiter, tokenIndex))
+      new StartDelimiter(delimiterText, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -46,10 +47,12 @@ export class ForgivingConventionHandler {
     }
   }
 
-  tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
+  tryToCloseAnyOpenDelimiters(delimiterText: string): boolean {
+    const endDelimiter = new Delimiter(delimiterText)
+
     const { supportsMinorConvention, supportsMajorConvention, combinedInflectionMinCost } = this
 
-    if (supportsMinorConvention && (endDelimiter.length === MINOR_CONVENTION_COST)) {
+    if (supportsMinorConvention && endDelimiter.canOnlyAfford(MINOR_CONVENTION_COST)) {
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention,
       // assuming the minor convention is supported.
       //
@@ -74,9 +77,10 @@ export class ForgivingConventionHandler {
       //
       // To be clear, we're perfectly happy to match with the nearest start delimiter that has *more* than 2
       // delimiter characters to spend! We'd simply like to avoid matching with start delimiters with exactly
-      // 2.
-      // That being said, if there aren't any start delimiters ' then we'll
-      // settle for a start delimiter that has 2 characters to spend. But this fallback happens later.
+      // 2 characters.
+      //
+      // That being said, if the every open start delimiter has exactly 2 characters to spend, we'll settle
+      // for one of those. But this fallback happens later.
 
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
@@ -88,7 +92,7 @@ export class ForgivingConventionHandler {
           return true
         }
       }
-    } else if (supportsMajorConvention && (endDelimiter.length === MAJOR_CONVENTION_COST)) {
+    } else if (supportsMajorConvention && endDelimiter.canOnlyAfford(MAJOR_CONVENTION_COST)) {
       // If major inflection is supported, and if an end delimiter is just 2 characters long, it can indicate major
       // inflection, but it can't indicate both major and minor inflection at the same time.
       //
@@ -118,14 +122,12 @@ export class ForgivingConventionHandler {
     //
     // We'll start by checking 
 
-    let unspentEndDelimiterLength = endDelimiter.length
-
     // Once this delimiter has spent all of its characters, it has nothing left to do, so we terminate the loop.
-    for (let i = this.openStartDelimiters.length - 1; (i >= 0) && unspentEndDelimiterLength; i--) {
+    for (let i = this.openStartDelimiters.length - 1; (i >= 0) && !endDelimiter.isTotallySpent; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
       // Can we afford combined inflection?
-      if ((unspentEndDelimiterLength >= this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
+      if (endDelimiter.canAfford(this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
         this.encloseWithin({
           richConvention: this.args.minorConvention,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -138,11 +140,10 @@ export class ForgivingConventionHandler {
           })
         }
 
-        const lengthInCommon =
-          Math.min(startDelimiter.unspentLength, unspentEndDelimiterLength)
+        const unspentLengthInCommon = startDelimiter.commonUnspentLength(endDelimiter)
 
-        this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, lengthInCommon)
-        unspentEndDelimiterLength -= lengthInCommon
+        this.spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter, unspentLengthInCommon)
+        endDelimiter.pay(unspentLengthInCommon)
 
         continue
       }
@@ -150,11 +151,11 @@ export class ForgivingConventionHandler {
       // Assuming we support major inflection, can we afford it?
       if (
         supportsMajorConvention
-        && unspentEndDelimiterLength >= MAJOR_CONVENTION_COST
+        && endDelimiter.canAfford(MAJOR_CONVENTION_COST)
         && startDelimiter.canAfford(MAJOR_CONVENTION_COST)
       ) {
         this.applyMajorInflection(startDelimiter)
-        unspentEndDelimiterLength -= MAJOR_CONVENTION_COST
+        endDelimiter.pay(MAJOR_CONVENTION_COST)
 
         continue
       }
@@ -163,15 +164,15 @@ export class ForgivingConventionHandler {
       // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
       // would have been removed from `startDelimitersFromMostToLeastRecent`.
       this.applyMinorInflection(startDelimiter)
-      unspentEndDelimiterLength -= MINOR_CONVENTION_COST
+      endDelimiter.pay(MINOR_CONVENTION_COST)
     }
 
-    return unspentEndDelimiterLength < endDelimiter.length
+    return !endDelimiter.isTotallyUnspent
   }
 
   treatDanglingStartDelimitersAsText(): void {
     for (const startDelimiter of this.openStartDelimiters) {
-      if (startDelimiter.isDangling()) {
+      if (startDelimiter.isTotallyUnspent) {
         this.args.insertTextToken(startDelimiter.delimiterText, startDelimiter.tokenIndex)
       }
     }
@@ -236,13 +237,13 @@ export class ForgivingConventionHandler {
       startingBackAtTokenIndex: startDelimiter.tokenIndex
     })
 
-    this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
+    this.spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
   }
 
-  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: StartDelimiter, cost: number): void {
+  private spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter: StartDelimiter, cost: number): void {
     startDelimiter.pay(cost)
 
-    if (startDelimiter.isFullySpent()) {
+    if (startDelimiter.isTotallySpent) {
       remove(this.openStartDelimiters, startDelimiter)
     }
   }
