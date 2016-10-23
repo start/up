@@ -52,7 +52,7 @@ export class ForgivingConventionHandler {
 
     const { supportsMinorConvention, supportsMajorConvention, combinedInflectionMinCost } = this
 
-    if (supportsMinorConvention && endDelimiter.canOnlyAfford(MINOR_CONVENTION_COST)) {
+    if (supportsMinorConvention && endDelimiter.canOnlyAffordMinorConvention) {
       // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention,
       // assuming the minor convention is supported.
       //
@@ -85,14 +85,14 @@ export class ForgivingConventionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canOnlyAfford(MINOR_CONVENTION_COST) || startDelimiter.canAfford(combinedInflectionMinCost)) {
+        if (startDelimiter.canOnlyAffordMinorConvention || startDelimiter.canAfford(combinedInflectionMinCost)) {
           this.applyMinorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate minor inflection, we have nothing left to do.
           return true
         }
       }
-    } else if (supportsMajorConvention && endDelimiter.canOnlyAfford(MAJOR_CONVENTION_COST)) {
+    } else if (supportsMajorConvention && endDelimiter.canOnlyAffordMajorConvention) {
       // If major inflection is supported, and if an end delimiter is just 2 characters long, it can indicate major
       // inflection, but it can't indicate both major and minor inflection at the same time.
       //
@@ -107,7 +107,7 @@ export class ForgivingConventionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAfford(MAJOR_CONVENTION_COST)) {
+        if (startDelimiter.canAffordMajorConvention) {
           this.applyMajorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
@@ -151,11 +151,11 @@ export class ForgivingConventionHandler {
       // Assuming we support major inflection, can we afford it?
       if (
         supportsMajorConvention
-        && endDelimiter.canAfford(MAJOR_CONVENTION_COST)
-        && startDelimiter.canAfford(MAJOR_CONVENTION_COST)
+        && endDelimiter.canAffordMajorConvention
+        && startDelimiter.canAffordMajorConvention
       ) {
         this.applyMajorInflection(startDelimiter)
-        endDelimiter.pay(MAJOR_CONVENTION_COST)
+        endDelimiter.payForMajorInflection()
 
         continue
       }
@@ -164,7 +164,7 @@ export class ForgivingConventionHandler {
       // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
       // would have been removed from `startDelimitersFromMostToLeastRecent`.
       this.applyMinorInflection(startDelimiter)
-      endDelimiter.pay(MINOR_CONVENTION_COST)
+      endDelimiter.payForMinorInflection()
     }
 
     return !endDelimiter.isTotallyUnspent
