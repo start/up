@@ -1,4 +1,4 @@
-export class InflectionStartDelimiter {
+export class ForgivingStartDelimiter {
   constructor(
     public delimiterText: string,
     public tokenIndex: number,
@@ -32,7 +32,7 @@ export class InflectionStartDelimiter {
     }
   }
 
-  clone(): InflectionStartDelimiter {
-    return new InflectionStartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
+  clone(): ForgivingStartDelimiter {
+    return new ForgivingStartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
   }
 }

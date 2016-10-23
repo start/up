@@ -47,7 +47,7 @@ export function tokenizeForInlineDocument(inlineMarkup: string, settings: Normal
 
 // Most of our writing conventions, including links and inline revealables, incorporate brackets into
 // their syntax. These conventions support both parentheses and square brackets, allowing either kind of
-// bracket to be used interchangeably.
+// bracket to be used interchangeably (as long each pair matches).
 //
 // TODO: Now that most of the conventions (handled within the tokenizer class) incorporate brackets, we
 // should consider grouping conventions by their stems.
@@ -170,15 +170,15 @@ class Tokenizer {
   private forgivingConventionHandlers = [
     {
       delimiterChar: '*',
-      conventionForMinorInflection: EMPHASIS,
-      conventionForMajorInflection: STRESS
+      minorConvention: EMPHASIS,
+      majorConvention: STRESS
     }, {
       delimiterChar: '_',
-      conventionForMinorInflection: ITALIC,
-      conventionForMajorInflection: BOLD
+      minorConvention: ITALIC,
+      majorConvention: BOLD
     }, {
       delimiterChar: '"',
-      conventionForMinorInflection: INLINE_QUOTE
+      minorConvention: INLINE_QUOTE
     }
   ].map(args => this.getForgivingConventionHandler(args))
 
@@ -765,17 +765,17 @@ class Tokenizer {
     args: {
       delimiterChar: string
       // The convention indicated by surrounding text with a single delimiter character on either side.
-      conventionForMinorInflection: RichConvention
+      minorConvention: RichConvention
       // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
-      conventionForMajorInflection?: RichConvention
+      majorConvention?: RichConvention
     }
   ): ForgivingConventionHandler {
-    const { delimiterChar, conventionForMajorInflection, conventionForMinorInflection } = args
+    const { delimiterChar, majorConvention, minorConvention } = args
 
     return new ForgivingConventionHandler({
       delimiterChar,
-      conventionForMinorInflection,
-      conventionForMajorInflection,
+      minorConvention,
+      majorConvention,
 
       encloseWithinConvention: (args) => {
         this.closeBareUrlContextIfOneIsOpen()
@@ -1215,7 +1215,7 @@ class Tokenizer {
           // some content (i.e. it must be followed by a non-whitespace character).
           if (NON_BLANK_PATTERN.test(charAfterMatch)) {
             this.flushNonEmptyBufferToTextToken()
-            handler.addOpenStartDelimiter(delimiter, this.tokens.length)
+            handler.addStartDelimiter(delimiter, this.tokens.length)
           } else {
             // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as
             // plain text. We already learned the delimiter wasn't able to close any start delimiters, and we

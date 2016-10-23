@@ -1,39 +1,43 @@
 import { RichConvention } from './RichConvention'
-import { InflectionStartDelimiter } from './InflectionStartDelimiter'
+import { ForgivingStartDelimiter } from './ForgivingStartDelimiter'
 import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../PatternHelpers'
 import { remove } from '../../../CollectionHelpers'
 
 
-// For a given inflection delimiter character (`delimiterChar`), instances of this class match end delimiters with
-// start delimiters. 
+// For a given delimiter character (`delimiterChar`), instances of this class match end delimiters with start
+// delimiters. 
 export class ForgivingConventionHandler {
   constructor(
     // We save `args` as a field to make it easier to clone this object. 
     private args: {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
-      // The convention indicated by surrounding text with a single delimiter character on either side.
-      conventionForMinorInflection: RichConvention
+      // The convention (if any) indicated by surrounding text with a single delimiter character on either side.
+      minorConvention?: RichConvention
       // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
-      conventionForMajorInflection?: RichConvention
+      majorConvention?: RichConvention
       // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
       // A callback to invoke whenever it comes time to treat a dangling start delimiter as plain text. 
       insertTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for internal use only. Please see the `clone` method.
-    private openStartDelimiters: InflectionStartDelimiter[] = [],
+    private openStartDelimiters: ForgivingStartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
+    if (!args.minorConvention && !args.majorConvention) {
+      throw new Error('No supported writing conventions')
+    }
+
     this.delimiterPattern = this.delimiterPattern ||
       patternStartingWith(
         oneOrMore(escapeForRegex(args.delimiterChar)))
   }
 
-  addOpenStartDelimiter(delimiter: string, tokenIndex: number) {
+  addStartDelimiter(delimiter: string, tokenIndex: number) {
     this.openStartDelimiters.push(
-      new InflectionStartDelimiter(delimiter, tokenIndex))
+      new ForgivingStartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -43,10 +47,11 @@ export class ForgivingConventionHandler {
   }
 
   tryToCloseAnyOpenDelimiters(endDelimiter: string): boolean {
-    const { supportsMajorInflection, combinedInflectionMinCost } = this
+    const { supportsMinorConvention, supportsMajorConvention, combinedInflectionMinCost } = this
 
-    if (endDelimiter.length === MINOR_INFLECTION_COST) {
-      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) minor inflection.
+    if (supportsMinorConvention && (endDelimiter.length === MINOR_CONVENTION_COST)) {
+      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention,
+      // assuming the minor convention is supported.
       //
       // If major inflection is not supported (i.e. for quotes), then we simply match with the nearest open
       // start delimiter. If that start delimiter has just 1 character to "spend", we subsequently mark that
@@ -76,14 +81,14 @@ export class ForgivingConventionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canOnlyAfford(MINOR_INFLECTION_COST) || startDelimiter.canAfford(combinedInflectionMinCost)) {
+        if (startDelimiter.canOnlyAfford(MINOR_CONVENTION_COST) || startDelimiter.canAfford(combinedInflectionMinCost)) {
           this.applyMinorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate minor inflection, we have nothing left to do.
           return true
         }
       }
-    } else if (supportsMajorInflection && (endDelimiter.length === MAJOR_INFLECTION_COST)) {
+    } else if (supportsMajorConvention && (endDelimiter.length === MAJOR_CONVENTION_COST)) {
       // If major inflection is supported, and if an end delimiter is just 2 characters long, it can indicate major
       // inflection, but it can't indicate both major and minor inflection at the same time.
       //
@@ -98,7 +103,7 @@ export class ForgivingConventionHandler {
       for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
         const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAfford(MAJOR_INFLECTION_COST)) {
+        if (startDelimiter.canAfford(MAJOR_CONVENTION_COST)) {
           this.applyMajorInflection(startDelimiter)
 
           // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
@@ -110,6 +115,8 @@ export class ForgivingConventionHandler {
 
     // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
     // many characters at once as it can.
+    //
+    // We'll start by checking 
 
     let unspentEndDelimiterLength = endDelimiter.length
 
@@ -120,13 +127,13 @@ export class ForgivingConventionHandler {
       // Can we afford combined inflection?
       if ((unspentEndDelimiterLength >= this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
         this.encloseWithin({
-          richConvention: this.args.conventionForMinorInflection,
+          richConvention: this.args.minorConvention,
           startingBackAtTokenIndex: startDelimiter.tokenIndex
         })
 
-        if (supportsMajorInflection) {
+        if (supportsMajorConvention) {
           this.encloseWithin({
-            richConvention: this.args.conventionForMajorInflection,
+            richConvention: this.args.majorConvention,
             startingBackAtTokenIndex: startDelimiter.tokenIndex
           })
         }
@@ -142,12 +149,12 @@ export class ForgivingConventionHandler {
 
       // Assuming we support major inflection, can we afford it?
       if (
-        supportsMajorInflection
-        && unspentEndDelimiterLength >= MAJOR_INFLECTION_COST
-        && startDelimiter.canAfford(MAJOR_INFLECTION_COST)
+        supportsMajorConvention
+        && unspentEndDelimiterLength >= MAJOR_CONVENTION_COST
+        && startDelimiter.canAfford(MAJOR_CONVENTION_COST)
       ) {
         this.applyMajorInflection(startDelimiter)
-        unspentEndDelimiterLength -= MAJOR_INFLECTION_COST
+        unspentEndDelimiterLength -= MAJOR_CONVENTION_COST
 
         continue
       }
@@ -156,7 +163,7 @@ export class ForgivingConventionHandler {
       // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
       // would have been removed from `startDelimitersFromMostToLeastRecent`.
       this.applyMinorInflection(startDelimiter)
-      unspentEndDelimiterLength -= MINOR_INFLECTION_COST
+      unspentEndDelimiterLength -= MINOR_CONVENTION_COST
     }
 
     return unspentEndDelimiterLength < endDelimiter.length
@@ -178,8 +185,12 @@ export class ForgivingConventionHandler {
       this.delimiterPattern)
   }
 
-  private get supportsMajorInflection(): boolean {
-    return (this.args.conventionForMajorInflection != null)
+  private get supportsMinorConvention(): boolean {
+    return (this.args.minorConvention != null)
+  }
+
+  private get supportsMajorConvention(): boolean {
+    return (this.args.majorConvention != null)
   }
 
   // When major inflection is supported (i.e. asterisks and underscores)
@@ -202,24 +213,24 @@ export class ForgivingConventionHandler {
   // Delimiters will always cancel out as many of each other's characters as possible. 
   private get combinedInflectionMinCost(): number {
     return (
-      this.supportsMajorInflection
-        ? MINOR_INFLECTION_COST + MAJOR_INFLECTION_COST
-        : MINOR_INFLECTION_COST * 2)
+      this.supportsMajorConvention
+        ? MINOR_CONVENTION_COST + MAJOR_CONVENTION_COST
+        : MINOR_CONVENTION_COST * 2)
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs) {
     this.args.encloseWithinConvention(args)
   }
 
-  private applyMinorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.conventionForMinorInflection, MINOR_INFLECTION_COST)
+  private applyMinorInflection(startDelimiter: ForgivingStartDelimiter): void {
+    this.applyConvention(startDelimiter, this.args.minorConvention, MINOR_CONVENTION_COST)
   }
 
-  private applyMajorInflection(startDelimiter: InflectionStartDelimiter): void {
-    this.applyConvention(startDelimiter, this.args.conventionForMajorInflection, MAJOR_INFLECTION_COST)
+  private applyMajorInflection(startDelimiter: ForgivingStartDelimiter): void {
+    this.applyConvention(startDelimiter, this.args.majorConvention, MAJOR_CONVENTION_COST)
   }
 
-  private applyConvention(startDelimiter: InflectionStartDelimiter, richConvention: RichConvention, cost: number): void {
+  private applyConvention(startDelimiter: ForgivingStartDelimiter, richConvention: RichConvention, cost: number): void {
     this.encloseWithin({
       richConvention,
       startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -228,7 +239,7 @@ export class ForgivingConventionHandler {
     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
   }
 
-  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: InflectionStartDelimiter, cost: number): void {
+  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: ForgivingStartDelimiter, cost: number): void {
     startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {
@@ -238,5 +249,5 @@ export class ForgivingConventionHandler {
 }
 
 
-const MINOR_INFLECTION_COST = 1
-const MAJOR_INFLECTION_COST = 2
+const MINOR_CONVENTION_COST = 1
+const MAJOR_CONVENTION_COST = 2
