@@ -1,4 +1,4 @@
-import { ForgivingStartDelimiter } from './ForgivingStartDelimiter'
+import { StartDelimiter } from './StartDelimiter'
 import { RichConvention } from '../RichConvention'
 import { EncloseWithinConventionArgs } from '../EncloseWithinConventionArgs'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
@@ -23,7 +23,7 @@ export class ForgivingConventionHandler {
       insertTextToken: (text: string, atIndex: number) => void
     },
     // The two optional parameters below are for internal use only. Please see the `clone` method.
-    private openStartDelimiters: ForgivingStartDelimiter[] = [],
+    private openStartDelimiters: StartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
     if (!args.minorConvention && !args.majorConvention) {
@@ -37,7 +37,7 @@ export class ForgivingConventionHandler {
 
   addStartDelimiter(delimiter: string, tokenIndex: number) {
     this.openStartDelimiters.push(
-      new ForgivingStartDelimiter(delimiter, tokenIndex))
+      new StartDelimiter(delimiter, tokenIndex))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -222,15 +222,15 @@ export class ForgivingConventionHandler {
     this.args.encloseWithinConvention(args)
   }
 
-  private applyMinorInflection(startDelimiter: ForgivingStartDelimiter): void {
+  private applyMinorInflection(startDelimiter: StartDelimiter): void {
     this.applyConvention(startDelimiter, this.args.minorConvention, MINOR_CONVENTION_COST)
   }
 
-  private applyMajorInflection(startDelimiter: ForgivingStartDelimiter): void {
+  private applyMajorInflection(startDelimiter: StartDelimiter): void {
     this.applyConvention(startDelimiter, this.args.majorConvention, MAJOR_CONVENTION_COST)
   }
 
-  private applyConvention(startDelimiter: ForgivingStartDelimiter, richConvention: RichConvention, cost: number): void {
+  private applyConvention(startDelimiter: StartDelimiter, richConvention: RichConvention, cost: number): void {
     this.encloseWithin({
       richConvention,
       startingBackAtTokenIndex: startDelimiter.tokenIndex
@@ -239,7 +239,7 @@ export class ForgivingConventionHandler {
     this.applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
   }
 
-  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: ForgivingStartDelimiter, cost: number): void {
+  private applyCostThenRemoveFromCollectionIfFullySpent(startDelimiter: StartDelimiter, cost: number): void {
     startDelimiter.pay(cost)
 
     if (startDelimiter.isFullySpent()) {
