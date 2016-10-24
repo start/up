@@ -1,13 +1,14 @@
-import { EndDelimiter } from './EndDelimiter'
 import { StartDelimiter } from './StartDelimiter'
+import { EndDelimiter } from './EndDelimiter'
+import { Delimiter } from './Delimiter'
 import { RichConvention } from '../RichConvention'
 import { EncloseWithinConventionArgs } from '../EncloseWithinConventionArgs'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
 import { remove } from '../../../../CollectionHelpers'
 
 
-// For a given delimiter character (`delimiterChar`), instances of this class match end delimiters with start
-// delimiters. 
+// For a given delimiter character (`delimiterChar`), this class matchds end delimiters with start
+// delimiters, even if they aren't perfectly balanced.
 export class ForgivingConventionHandler {
   constructor(
     // We save `options` as a field to make it easier to clone this object. 
@@ -48,6 +49,10 @@ export class ForgivingConventionHandler {
   }
 
   tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
+    if (!this.openStartDelimiters.length) {
+      return false
+    }
+
     const endDelimiter = new EndDelimiter(endDelimiterText)
 
     const supportsMinorConvention = (this.options.minorConvention != null)
@@ -56,11 +61,11 @@ export class ForgivingConventionHandler {
       supportsMinorConvention && supportsMajorConvention
 
     if (supportsBothMinorAndMajorConventions) {
-      if (endDelimiter.canOnlyAffordMinorConvention) {
+      if (canOnlyAffordMinorConvention(endDelimiter)) {
         // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention.
         //
-        // However, we don't blindly match with the closest start delimiter. If possible, we'd rather avoid matching
-        // with a start delimiter that has exactly 2 characters to spend, because the author of the text probably
+        // However, we don't blindly match with the closest start delimiter. If possible, we'd like to avoid matching
+        // with a start delimiter that has exactly 2 unspent characters, because the author of the markup probably
         // intended that start delimiter to be matched with an end delimiter that *also* has 2 characters to spend.
         //
         // For example:
@@ -72,7 +77,7 @@ export class ForgivingConventionHandler {
         // end delimiter with 2 asterisks that follows.
         //
         // To be clear, we're perfectly happy to match with the nearest start delimiter that has *more* than 2
-        // delimiter characters to spend! We'd simply like to avoid matching with start delimiters with exactly
+        // unspent delimiter characters! We'd simply like to avoid matching with start delimiters with exactly
         // 2 characters.
         //
         // That being said, if every open start delimiter has exactly 2 characters to spend, we'll settle for the
@@ -81,14 +86,14 @@ export class ForgivingConventionHandler {
         for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
           const startDelimiter = this.openStartDelimiters[i]
 
-          if (startDelimiter.canOnlyAffordMinorConvention || startDelimiter.canAfford(MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER)) {
+          if (canOnlyAffordMinorConvention(startDelimiter) ||  canAffordMinorAndMajorConventionTogether(startDelimiter)) {
             this.applyMinorConvention(startDelimiter)
 
-            // Considering this end delimiter was only a single character, we have nothing left to do.
+            // Considering the end delimiter was only a single character, we have nothing left to do.
             return true
           }
         }
-      } else if (endDelimiter.canOnlyAffordMajorConvention) {
+      } else if (canOnlyAffordMajorConvention(endDelimiter)) {
         // If an end delimiter is just 2 characters long, it can ebd an instance of the major convention, but it can't
         // end both the major and minor conventions at the same time.
         //
@@ -104,10 +109,10 @@ export class ForgivingConventionHandler {
         for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
           const startDelimiter = this.openStartDelimiters[i]
 
-          if (startDelimiter.canAffordMajorConvention) {
+          if (canAffordMajorConvention(startDelimiter)) {
             this.applyMajorConvention(startDelimiter)
 
-            // Considering this end delimiter was exactly two characters long, we have nothing left to do.
+            // Considering the end delimiter was exactly two characters long, we have nothing left to do.
             return true
           }
         }
@@ -158,9 +163,9 @@ export class ForgivingConventionHandler {
       }
 
       // Assuming we support the major convention, can we afford it?
-      if (supportsMajorConvention && endDelimiter.canAffordMajorConvention && startDelimiter.canAffordMajorConvention) {
+      if (supportsMajorConvention && canAffordMajorConvention(endDelimiter) && canAffordMajorConvention(startDelimiter)) {
         this.applyMajorConvention(startDelimiter)
-        endDelimiter.payForMajorConvention()
+        payForMajorConvention(endDelimiter)
 
         continue
       }
@@ -170,7 +175,7 @@ export class ForgivingConventionHandler {
         // loop. And we know that every start delimiter in our collection has at least 1 character to spend;
         // otherwise, the start delimiter would have been removed from `openStartDelimiters`.
         this.applyMinorConvention(startDelimiter)
-        endDelimiter.payForMinorConvention()
+        payForMinorConvention(endDelimiter)
 
         continue
       }
@@ -188,7 +193,7 @@ export class ForgivingConventionHandler {
     // If it's also touching the beginning of some content (e.g. it's in the middle of a word), then the tokenizer
     // will subequently treat it as a potential start delimiter. Otherwise, the tokenizer will subquently treat it
     // as plain text.
-    return !endDelimiter.isTotallyUnspent
+    return true
   }
 
   treatDanglingStartDelimitersAsText(): void {
@@ -242,3 +247,27 @@ const MINOR_CONVENTION_COST = 1
 const MAJOR_CONVENTION_COST = 2
 const MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER =
   MINOR_CONVENTION_COST + MAJOR_CONVENTION_COST
+
+function canAffordMajorConvention(delimiter: Delimiter): boolean {
+  return delimiter.canAfford(MAJOR_CONVENTION_COST)
+}
+
+function canAffordMinorAndMajorConventionTogether(delimiter: Delimiter): boolean {
+  return delimiter.canAfford(MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER)
+}
+
+function canOnlyAffordMinorConvention(delimiter: Delimiter): boolean {
+  return delimiter.canOnlyAfford(MINOR_CONVENTION_COST)
+}
+
+function canOnlyAffordMajorConvention(delimiter: Delimiter): boolean {
+  return delimiter.canOnlyAfford(MAJOR_CONVENTION_COST)
+}
+
+function payForMinorConvention(delimiter: Delimiter): void {
+  delimiter.pay(MINOR_CONVENTION_COST)
+}
+
+function payForMajorConvention(delimiter: Delimiter): void {
+  delimiter.pay(MAJOR_CONVENTION_COST)
+}
