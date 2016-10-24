@@ -10,13 +10,13 @@ import { remove } from '../../../../CollectionHelpers'
 // delimiters. 
 export class ForgivingConventionHandler {
   constructor(
-    // We save `args` as a field to make it easier to clone this object. 
+    // We save `options]` as a field to make it easier to clone this object. 
     private options: {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
-      // The convention (if any) indicated by surrounding text with a single delimiter character on either side.
+      // The convention (if any) indicated by enclosing text within single delimiter characters.
       minorConvention?: RichConvention
-      // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
+      // The convention (if any) indicated by enclosing text within double delimiter characters.
       majorConvention?: RichConvention
       // A callback to invoke whenever it comes time to wrap content in one of the aforementioned conventions.
       encloseWithinConvention: (args: EncloseWithinConventionArgs) => void
