@@ -1054,7 +1054,7 @@ class Tokenizer {
         pattern: handler.delimiterPattern,
 
         thenBeforeConsumingText: delimiter => {
-          didCloseAnyOpenDelimiters = handler.tryToCloseAnyOpenDelimiters(delimiter)
+          didCloseAnyOpenDelimiters = handler.tryToCloseAnyOpenStartDelimiters(delimiter)
 
           if (!didCloseAnyOpenDelimiters) {
             // The delimiter we found didn't close anything! Let's put it back.

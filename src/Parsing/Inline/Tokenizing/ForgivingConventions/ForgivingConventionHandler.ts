@@ -47,10 +47,13 @@ export class ForgivingConventionHandler {
     }
   }
 
-  tryToCloseAnyOpenDelimiters(delimiterText: string): boolean {
-    const endDelimiter = new EndDelimiter(delimiterText)
+  tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
+    const endDelimiter = new EndDelimiter(endDelimiterText)
 
-    const { supportsMinorConvention, supportsMajorConvention, supportsBothMinorAndMajorConventions } = this
+    const supportsMinorConvention = (this.options.minorConvention != null)
+    const supportsMajorConvention = (this.options.majorConvention != null)
+    const supportsBothMinorAndMajorConventions =
+      supportsMinorConvention && supportsMajorConvention
 
     if (supportsBothMinorAndMajorConventions) {
       if (endDelimiter.canOnlyAffordMinorConvention) {
@@ -204,22 +207,6 @@ export class ForgivingConventionHandler {
       this.delimiterPattern)
   }
 
-  private get supportsMinorConvention(): boolean {
-    return (this.options.minorConvention != null)
-  }
-
-  private get supportsMajorConvention(): boolean {
-    return (this.options.majorConvention != null)
-  }
-
-  private get supportsBothMinorAndMajorConventions(): boolean {
-    return this.supportsMinorConvention && this.supportsMajorConvention
-  }
-
-  private encloseWithin(args: EncloseWithinConventionArgs) {
-    this.options.encloseWithinConvention(args)
-  }
-
   private applyMinorConvention(startDelimiter: StartDelimiter): void {
     this.applyConvention(startDelimiter, this.options.minorConvention, MINOR_CONVENTION_COST)
   }
@@ -235,6 +222,10 @@ export class ForgivingConventionHandler {
     })
 
     this.spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter, cost)
+  }
+
+  private encloseWithin(args: EncloseWithinConventionArgs) {
+    this.options.encloseWithinConvention(args)
   }
 
   private spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter: StartDelimiter, cost: number): void {
