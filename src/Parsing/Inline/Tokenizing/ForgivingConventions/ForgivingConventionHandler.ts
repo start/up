@@ -1,4 +1,4 @@
-import { Delimiter } from './Delimiter'
+import { EndDelimiter } from './EndDelimiter'
 import { StartDelimiter } from './StartDelimiter'
 import { RichConvention } from '../RichConvention'
 import { EncloseWithinConventionArgs } from '../EncloseWithinConventionArgs'
@@ -10,7 +10,7 @@ import { remove } from '../../../../CollectionHelpers'
 // delimiters. 
 export class ForgivingConventionHandler {
   constructor(
-    // We save `options]` as a field to make it easier to clone this object. 
+    // We save `options` as a field to make it easier to clone this object. 
     private options: {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
@@ -38,7 +38,7 @@ export class ForgivingConventionHandler {
 
   addStartDelimiter(delimiterText: string, tokenIndex: number) {
     this.openStartDelimiters.push(
-      new StartDelimiter(delimiterText, tokenIndex))
+      new StartDelimiter(tokenIndex, delimiterText))
   }
 
   registerTokenInsertion(args: { atIndex: number }) {
@@ -48,71 +48,65 @@ export class ForgivingConventionHandler {
   }
 
   tryToCloseAnyOpenDelimiters(delimiterText: string): boolean {
-    const endDelimiter = new Delimiter(delimiterText)
+    const endDelimiter = new EndDelimiter(delimiterText)
 
-    const { supportsMinorConvention, supportsMajorConvention, combinedInflectionMinCost } = this
+    const { supportsMinorConvention, supportsMajorConvention, supportsBothMinorAndMajorConventions } = this
 
-    if (supportsMinorConvention && endDelimiter.canOnlyAffordMinorConvention) {
-      // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention,
-      // assuming the minor convention is supported.
-      //
-      // If major inflection is not supported (i.e. for quotes), then we simply match with the nearest open
-      // start delimiter. If that start delimiter has just 1 character to "spend", we subsequently mark that
-      // start delimiter as closed (by removing it from `openStartDelimiters`).  On the other hand, if that
-      // start delimiter has 2 or more characters to spend, then we merely "spend" 1 of them. The start
-      // delimiter is still considered open, albeit with 1 fewer characters to spend.
-      //
-      // If major inflection is supported (i.e. for asterisks and underscores), we don't blindly match with
-      // the closest start delimiter. If possible, we'd rather avoid matching with a start delimiter that has
-      // exactly 2 characters to spend, because the author of the text probably intended that start delimiter
-      // to be matched with an end delimiter that *also* has 2 characters to spend.
-      //
-      // For example:
-      //
-      //   I *love **drinking* whole** milk.
-      //
-      // The `*` end delimiter after "drinking" should be matched with the `*` start delimiter before "love".
-      // The nearest start delimiter---the `**` before "drinking"---should instead be matched with the `**`
-      // end delimiter with 2 asterisks that follows.
-      //
-      // To be clear, we're perfectly happy to match with the nearest start delimiter that has *more* than 2
-      // delimiter characters to spend! We'd simply like to avoid matching with start delimiters with exactly
-      // 2 characters.
-      //
-      // That being said, if the every open start delimiter has exactly 2 characters to spend, we'll settle
-      // for one of those. But this fallback happens later.
+    if (supportsBothMinorAndMajorConventions) {
+      if (endDelimiter.canOnlyAffordMinorConvention) {
+        // If an end delimiter is just 1 character long, it can only indicate (i.e. afford) the minor convention.
+        //
+        // However, we don't blindly match with the closest start delimiter. If possible, we'd rather avoid matching
+        // with a start delimiter that has exactly 2 characters to spend, because the author of the text probably
+        // intended that start delimiter to be matched with an end delimiter that *also* has 2 characters to spend.
+        //
+        // For example:
+        //
+        //   I *love **drinking* whole** milk.
+        //
+        // The `*` end delimiter after "drinking" should be matched with the `*` start delimiter before "love".
+        // The nearest start delimiter---the `**` before "drinking"---should instead be matched with the `**`
+        // end delimiter with 2 asterisks that follows.
+        //
+        // To be clear, we're perfectly happy to match with the nearest start delimiter that has *more* than 2
+        // delimiter characters to spend! We'd simply like to avoid matching with start delimiters with exactly
+        // 2 characters.
+        //
+        // That being said, if every open start delimiter has exactly 2 characters to spend, we'll settle for the
+        // nearest one. But this fallback happens later.
 
-      for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
-        const startDelimiter = this.openStartDelimiters[i]
+        for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
+          const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canOnlyAffordMinorConvention || startDelimiter.canAfford(combinedInflectionMinCost)) {
-          this.applyMinorInflection(startDelimiter)
+          if (startDelimiter.canOnlyAffordMinorConvention || startDelimiter.canAfford(MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER)) {
+            this.applyMinorConvention(startDelimiter)
 
-          // Considering this end delimiter could only afford to indicate minor inflection, we have nothing left to do.
-          return true
+            // Considering this end delimiter was only a single character, we have nothing left to do.
+            return true
+          }
         }
-      }
-    } else if (supportsMajorConvention && endDelimiter.canOnlyAffordMajorConvention) {
-      // If major inflection is supported, and if an end delimiter is just 2 characters long, it can indicate major
-      // inflection, but it can't indicate both major and minor inflection at the same time.
-      //
-      // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can indicate
-      // major inflection. It's okay if that start delimiter can indicate both major and minor inflection at the same
-      // time! As long as it can indicate major inflection, we're good. 
-      //
-      // If we can't find a start delimiter that can indicate major inflection, then we'll match with a start delimiter
-      // that has just 1 character to spend. But this fallback happens later (and when it does, it only indicates minor
-      // inflection).
+      } else if (endDelimiter.canOnlyAffordMajorConvention) {
+        // If an end delimiter is just 2 characters long, it can ebd an instance of the major convention, but it can't
+        // end both the major and minor conventions at the same time.
+        //
+        // For these end delimiters, we want to prioritize matching with the nearest start delimiter that can start the
+        // major convention (i.e. has two or more unspent characters). It's okay if that start delimiter can start both
+        // the major and minor conventions at the same time (i.e. has 3 or more unspent characters)! As long as it can
+        // start the major convention, we're good. 
+        //
+        // If we can't find a start delimiter that can start the major convention, then we'll match with a start delimiter
+        // that has just 1 character to spend. But this fallback happens later (and when it does, it only represents the
+        // minor convention).
 
-      for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
-        const startDelimiter = this.openStartDelimiters[i]
+        for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
+          const startDelimiter = this.openStartDelimiters[i]
 
-        if (startDelimiter.canAffordMajorConvention) {
-          this.applyMajorInflection(startDelimiter)
+          if (startDelimiter.canAffordMajorConvention) {
+            this.applyMajorConvention(startDelimiter)
 
-          // Considering this end delimiter could only afford to indicate major inflection, we have nothing left to
-          // do.
-          return true
+            // Considering this end delimiter was exactly two characters long, we have nothing left to do.
+            return true
+          }
         }
       }
     }
@@ -120,53 +114,77 @@ export class ForgivingConventionHandler {
     // From here on out, if this end delimiter can match with a start delimiter, it will. It'll try to match as
     // many characters at once as it can.
     //
-    // We'll start by checking 
+    // Once again, we'll check start delimiters from most to least recent.
 
     // Once this delimiter has spent all of its characters, it has nothing left to do, so we terminate the loop.
     for (let i = this.openStartDelimiters.length - 1; (i >= 0) && !endDelimiter.isTotallySpent; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
-      // Can we afford combined inflection?
-      if (endDelimiter.canAfford(this.combinedInflectionMinCost) && startDelimiter.canAfford(combinedInflectionMinCost)) {
-        this.encloseWithin({
-          richConvention: this.options.minorConvention,
-          startingBackAtTokenIndex: startDelimiter.tokenIndex
-        })
+      if (supportsBothMinorAndMajorConventions) {
+        // When matching delimiters each have 3 or more characters to spend:
+        //
+        // 1. The text they enclose becomes nested within both minor and major conventions.
+        // 2. These delimiters cancel out as many of each other's characters as possible.
+        //
+        // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
+        //
+        // 1. This is ***emphasized and stressed***.
+        // 2. This is also **********emphasized and stressed**********.
+        //
+        // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
+        // subsequently matched by other delimiters.
 
-        if (supportsMajorConvention) {
+        const unspentLengthInCommon = startDelimiter.commonUnspentLength(endDelimiter)
+
+        if (unspentLengthInCommon >= MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER) {
+          this.encloseWithin({
+            richConvention: this.options.minorConvention,
+            startingBackAtTokenIndex: startDelimiter.tokenIndex
+          })
+
           this.encloseWithin({
             richConvention: this.options.majorConvention,
             startingBackAtTokenIndex: startDelimiter.tokenIndex
           })
+
+          this.spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter, unspentLengthInCommon)
+          endDelimiter.pay(unspentLengthInCommon)
+
+          continue
         }
+      }
 
-        const unspentLengthInCommon = startDelimiter.commonUnspentLength(endDelimiter)
-
-        this.spendCostThenRemoveFromCollectionIfFullySpent(startDelimiter, unspentLengthInCommon)
-        endDelimiter.pay(unspentLengthInCommon)
+      // Assuming we support the major convention, can we afford it?
+      if (supportsMajorConvention && endDelimiter.canAffordMajorConvention && startDelimiter.canAffordMajorConvention) {
+        this.applyMajorConvention(startDelimiter)
+        endDelimiter.payForMajorConvention()
 
         continue
       }
 
-      // Assuming we support major inflection, can we afford it?
-      if (
-        supportsMajorConvention
-        && endDelimiter.canAffordMajorConvention
-        && startDelimiter.canAffordMajorConvention
-      ) {
-        this.applyMajorInflection(startDelimiter)
-        endDelimiter.payForMajorInflection()
+      if (supportsMinorConvention) {
+        // We know we have at least 1 end delimiter character to spend; otherwise, we would have terminated the
+        // loop. And we know that every start delimiter in our collection has at least 1 character to spend;
+        // otherwise, the start delimiter would have been removed from `openStartDelimiters`.
+        this.applyMinorConvention(startDelimiter)
+        endDelimiter.payForMinorConvention()
 
         continue
       }
 
-      // We know we have at least 1 end delimiter character to spend; otherwise, we would have terminated the loop. And we
-      // know that every start delimiter in our collection has at least 1 character to spend; otherwise, the start delimiter
-      // would have been removed from `startDelimitersFromMostToLeastRecent`.
-      this.applyMinorInflection(startDelimiter)
-      endDelimiter.payForMinorInflection()
+      throw new Error('No supported writing conventions')
     }
 
+    // If our potential end delimiter matched any start delimiters, its duty is served. Even if it still has some
+    // unspent characters, that's okay! Forgiving delimiters don't have to be perfectly balanced.
+    //
+    // However, if our potential end delimiter didn't match with any start delimiters, then we can't exactly call
+    // it an end delimiter.
+    //
+    // Initially, we suspected this delimiter was an end delimiter because it's touching the end of some content.
+    // If it's also touching the beginning of some content (e.g. it's in the middle of a word), then the tokenizer
+    // will subequently treat it as a potential start delimiter. Otherwise, the tokenizer will subquently treat it
+    // as plain text.
     return !endDelimiter.isTotallyUnspent
   }
 
@@ -194,40 +212,19 @@ export class ForgivingConventionHandler {
     return (this.options.majorConvention != null)
   }
 
-  // When major inflection is supported (i.e. asterisks and underscores)
-  // ===================================================================
-  //
-  // When matching delimiters each have 3 or more characters to spend, the text they surround becomes both
-  // major and minor inflected. These delimiters cancel out as many of each other's characters as possible.
-  //
-  // Therefore, surrounding text with 3 delimiter characters has the same effect as surrounding text with 10:
-  //
-  // 1. This is ***emphasized and stressed***.
-  // 2. This is also **********emphasized and stressed**********.
-  //
-  // To be clear, any unmatched delimiter characters are *not* canceled, and they remain available to be
-  // subsequently matched by other delimiters.
-  //
-  // When major inflection is not supported (i.e. quotes)
-  // ====================================================
-  //
-  // Delimiters will always cancel out as many of each other's characters as possible. 
-  private get combinedInflectionMinCost(): number {
-    return (
-      this.supportsMajorConvention
-        ? MINOR_CONVENTION_COST + MAJOR_CONVENTION_COST
-        : MINOR_CONVENTION_COST * 2)
+  private get supportsBothMinorAndMajorConventions(): boolean {
+    return this.supportsMinorConvention && this.supportsMajorConvention
   }
 
   private encloseWithin(args: EncloseWithinConventionArgs) {
     this.options.encloseWithinConvention(args)
   }
 
-  private applyMinorInflection(startDelimiter: StartDelimiter): void {
+  private applyMinorConvention(startDelimiter: StartDelimiter): void {
     this.applyConvention(startDelimiter, this.options.minorConvention, MINOR_CONVENTION_COST)
   }
 
-  private applyMajorInflection(startDelimiter: StartDelimiter): void {
+  private applyMajorConvention(startDelimiter: StartDelimiter): void {
     this.applyConvention(startDelimiter, this.options.majorConvention, MAJOR_CONVENTION_COST)
   }
 
@@ -252,3 +249,5 @@ export class ForgivingConventionHandler {
 
 const MINOR_CONVENTION_COST = 1
 const MAJOR_CONVENTION_COST = 2
+const MIN_COST_FOR_MINOR_AND_MAJOR_CONVENTIONS_TOGETHER =
+  MINOR_CONVENTION_COST + MAJOR_CONVENTION_COST

@@ -153,7 +153,7 @@ class Tokenizer {
   // bare URL that needs to be manually closed when an outer convention is closing.
   private bareUrlPathConvention = this.getBareUrlPathConvention()
 
-  // Some of our writing conventions don't require perfectly balanced delimiters on either either side:
+  // Some of our writing conventions don't require perfectly balanced delimiters on either side:
   //
   // - Emphasis
   // - Stress

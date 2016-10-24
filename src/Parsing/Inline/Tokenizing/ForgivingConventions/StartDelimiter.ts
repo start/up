@@ -3,13 +3,13 @@ import { Delimiter } from './Delimiter'
 
 export class StartDelimiter extends Delimiter {
   constructor(
-    delimiterText: string,
     // Why is `tokenIndex` unique to `StartDelimiter`?
     //
     // End delimiters are fully handled as soon as they are encountered, so there's no need
     // to keep track of their token index. For more information, see the comments in the
     // `ForgivingConventionHandler` class.
     public tokenIndex: number,
+    delimiterText: string,
     // This optional parameter is only for use in the `clone` method.
     unspentLength = delimiterText.length
   ) {
@@ -23,6 +23,6 @@ export class StartDelimiter extends Delimiter {
   }
 
   clone(): StartDelimiter {
-    return new StartDelimiter(this.delimiterText, this.tokenIndex, this.unspentLength)
+    return new StartDelimiter(this.tokenIndex, this.delimiterText, this.unspentLength)
   }
 }

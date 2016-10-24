@@ -1,4 +1,4 @@
-export class Delimiter {
+export abstract class Delimiter {
   constructor(
     public delimiterText: string,
     public unspentLength = delimiterText.length) { }
@@ -27,11 +27,11 @@ export class Delimiter {
     return this.canOnlyAfford(MAJOR_CONVENTION_COST)
   }
 
-  payForMinorInflection(): void {
+  payForMinorConvention(): void {
     this.pay(MINOR_CONVENTION_COST)
   }
 
-  payForMajorInflection(): void {
+  payForMajorConvention(): void {
     this.pay(MAJOR_CONVENTION_COST)
   }
 
