@@ -50,6 +50,18 @@ export class ForgivingConventionHandler {
 
   tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
     if (!this.openStartDelimiters.length) {
+      // If there are any open start delimiters, our potential end delimiter will match at least one of them.
+      //
+      // The start and end delimiters don't have to be the same length! Forgiving convention delimiters don't have
+      // to be perfectly balanced.
+      //
+      // However, if there aren't any open start delimiters, then we can't exactly call this delimiter an "end
+      // delimiter".
+      //
+      // Initially, we suspected this delimiter was an end delimiter because it's touching the end of some content.
+      // If it's *also* touching the beginning of some content (e.g. it's in the middle of a word), then the tokenizer
+      // will subequently treat it as a potential start delimiter. Otherwise, the tokenizer will subquently treat it
+      // as plain text.
       return false
     }
 
@@ -86,7 +98,7 @@ export class ForgivingConventionHandler {
         for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
           const startDelimiter = this.openStartDelimiters[i]
 
-          if (canOnlyAffordMinorConvention(startDelimiter) ||  canAffordMinorAndMajorConventionTogether(startDelimiter)) {
+          if (canOnlyAffordMinorConvention(startDelimiter) || canAffordMinorAndMajorConventionTogether(startDelimiter)) {
             this.applyMinorConvention(startDelimiter)
 
             // Considering the end delimiter was only a single character, we have nothing left to do.
@@ -183,16 +195,6 @@ export class ForgivingConventionHandler {
       throw new Error('No supported writing conventions')
     }
 
-    // If our potential end delimiter matched any start delimiters, its duty is served. Even if it still has some
-    // unspent characters, that's okay! Forgiving delimiters don't have to be perfectly balanced.
-    //
-    // However, if our potential end delimiter didn't match with any start delimiters, then we can't exactly call
-    // it an end delimiter.
-    //
-    // Initially, we suspected this delimiter was an end delimiter because it's touching the end of some content.
-    // If it's also touching the beginning of some content (e.g. it's in the middle of a word), then the tokenizer
-    // will subequently treat it as a potential start delimiter. Otherwise, the tokenizer will subquently treat it
-    // as plain text.
     return true
   }
 
