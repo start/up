@@ -66,24 +66,19 @@ export class ForgivingConventionHandler {
     for (let i = this.openStartDelimiters.length - 1; (i >= 0) && !endDelimiter.isTotallySpent; i--) {
       const startDelimiter = this.openStartDelimiters[i]
 
-      const unspentLengthInCommon = startDelimiter.commonUnspentLength(endDelimiter)
+      const unspentLengthInCommon =
+        startDelimiter.cancelOutAndGetCommonUnspentLength(endDelimiter)
 
       this.options.whenDelimitersMatch(startDelimiter.tokenIndex, unspentLengthInCommon)
-
-      endDelimiter.pay(unspentLengthInCommon)
-      startDelimiter.pay(unspentLengthInCommon)
-
-      if (startDelimiter.isTotallySpent) {
-        this.openStartDelimiters.splice(i, 1)
-      }
     }
+
+    this.removeFullySpentStartDelimiters()
 
     return true
   }
 
   unusedStartDelimiters(): StartDelimiter[] {
-    return this.openStartDelimiters
-      .filter(startDelimiter => startDelimiter.isUnused)
+    return this.openStartDelimiters.filter(startDelimiter => startDelimiter.isUnused)
   }
 
   // Like the `ConventionContext` class, this class needs to be clonable in order to properly
@@ -93,6 +88,11 @@ export class ForgivingConventionHandler {
       this.options,
       this.openStartDelimiters.map(delimiter => delimiter.clone()),
       this.delimiterPattern)
+  }
+
+  private removeFullySpentStartDelimiters(): void {
+    this.openStartDelimiters =
+      this.openStartDelimiters.filter(startDelimiter => !startDelimiter.isTotallySpent)
   }
 }
 

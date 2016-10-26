@@ -1,4 +1,5 @@
 import { Delimiter } from './Delimiter'
+import { EndDelimiter } from './EndDelimiter'
 
 // Why is `tokenIndex` unique to `StartDelimiter`?
 //
@@ -18,6 +19,16 @@ export class StartDelimiter extends Delimiter {
     if (atIndex < this.tokenIndex) {
       this.tokenIndex += 1
     }
+  }
+
+  cancelOutAndGetCommonUnspentLength(endDelimiter: EndDelimiter): number {
+    const commonUnspentLength =
+      Math.min(this.unspentLength, endDelimiter.unspentLength)
+
+    this.pay(commonUnspentLength)
+    endDelimiter.pay(commonUnspentLength)
+
+    return commonUnspentLength
   }
 
   clone(): StartDelimiter {
