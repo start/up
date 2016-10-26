@@ -763,7 +763,7 @@ class Tokenizer {
   private getInlineQuoteHandler(): ForgivingConventionHandler {
     return new ForgivingConventionHandler({
       delimiterChar: '"',
-      onEnclosure: (startingBackAtTokenIndex: number) => {
+      whenDelimitersMatch: (startingBackAtTokenIndex: number) => {
         this.closeBareUrlContextIfOneIsOpen()
         this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
       }
@@ -782,7 +782,9 @@ class Tokenizer {
     return new ForgivingConventionHandler({
       delimiterChar,
 
-      onEnclosure: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => {
+
+
+      whenDelimitersMatch: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => {
         this.closeBareUrlContextIfOneIsOpen()
 
         const encloseWithin = (richConvention: RichConvention) => {
@@ -852,7 +854,7 @@ class Tokenizer {
   }
 
   private treatUnusedForgivingStartDelimitersAsText(handler: ForgivingConventionHandler): void {
-    for (const startDelimiter of handler.openStartDelimiters) {
+    for (const startDelimiter of handler.unusedStartDelimiters()) {
       if (startDelimiter.isUnused) {
         this.insertToken({
           token: new Token(TokenRole.Text, startDelimiter.delimiterText),
