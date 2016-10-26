@@ -47,9 +47,11 @@ export class ForgivingConventionHandler {
       //
       // However, if there aren't any open start delimiters, then we can't exactly call this
       // delimiter an "end delimiter". Initially, we suspected it was an end delimiter because it's
-      // touching the end of some content. If it's *also* touching the beginning of some content
-      // (e.g. it's in the middle of a word), then the tokenizer will subequently treat it as a
-      // potential start delimiter. Otherwise, the tokenizer will subquently treat it as plain text.
+      // touching the end of some content (i.e. it's following a non-whitespace character).
+      //
+      // If this delimiter is *also* touching the beginning of some content  (e.g. it's in the middle
+      // of a word), then the tokenizer will subsequently treat it as a potential start delimiter.
+      // Otherwise, the tokenizer will subsequently treat it as plain text.
       return false
     }
 

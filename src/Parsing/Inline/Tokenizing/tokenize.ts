@@ -463,7 +463,7 @@ class Tokenizer {
     })
   }
 
-  // This convention represents a link to an item referenced by the table of contents.
+  // This convention represents a link to a heading referenced by the table of contents.
   //
   // Usage:
   //
@@ -927,7 +927,7 @@ class Tokenizer {
       && this.tryToAddWhitespaceToContentBuffer())
   }
 
-  // This method exists purely for optimization.
+  // This method exists solely for optimization.
   //
   // Not all whitespace represents regular content! For example, the (optional) whitespace between a link's
   // bracketed content and its bracketed URL doesn't actually represent any content:
