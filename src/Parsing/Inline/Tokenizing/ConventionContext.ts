@@ -41,8 +41,8 @@ export class ConventionContext {
     }
   }
 
-  registerTokenInsertion(args: { atIndex: number }): void {
-    if (args.atIndex < this.startTokenIndex) {
+  registerTokenInsertion(atIndex: number): void {
+    if (atIndex < this.startTokenIndex) {
       this.startTokenIndex += 1
     }
   }

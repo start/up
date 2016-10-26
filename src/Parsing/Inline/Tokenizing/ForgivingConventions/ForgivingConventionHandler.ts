@@ -31,9 +31,9 @@ export class ForgivingConventionHandler {
       new StartDelimiter(tokenIndex, delimiterText))
   }
 
-  registerTokenInsertion(args: { atIndex: number }) {
+  registerTokenInsertion(atIndex: number) {
     for (const startDelimiter of this.openStartDelimiters) {
-      startDelimiter.registerTokenInsertion(args.atIndex)
+      startDelimiter.registerTokenInsertion(atIndex)
     }
   }
 

@@ -782,8 +782,6 @@ class Tokenizer {
     return new ForgivingConventionHandler({
       delimiterChar,
 
-
-
       whenDelimitersMatch: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => {
         this.closeBareUrlContextIfOneIsOpen()
 
@@ -1491,11 +1489,11 @@ class Tokenizer {
     this.tokens.splice(atIndex, 0, token)
 
     for (const openContext of this.openContexts) {
-      openContext.registerTokenInsertion({ atIndex })
+      openContext.registerTokenInsertion(atIndex)
     }
 
     for (const handler of this.forgivingConventionHandlers) {
-      handler.registerTokenInsertion({ atIndex })
+      handler.registerTokenInsertion(atIndex)
     }
 
     this.mostRecentToken = token
