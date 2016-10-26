@@ -39,21 +39,6 @@ export class ForgivingConventionHandler {
 
   tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
     if (!this.openStartDelimiters.length) {
-      // If there *are* any open start delimiters, our potential end delimiter will match at least
-      // one of them.
-      //
-      // The matching delimiters don't have to be the same length! Forgiving convention delimiters
-      // don't have to be perfectly balanced.
-      //
-      // However, if there aren't any open start delimiters, then we can't exactly call this
-      // delimiter an "end delimiter". Initially, we suspected it was an end delimiter because it's
-      // touching the end of some content (i.e. it's following a non-whitespace character). We were
-      // wrong.
-      //
-      // We're not quite done with this delimiter, however! If this delimiter is *also* touching the
-      // beginning of some content  (e.g. it's in the middle of a word), then the tokenizer will
-      // subsequently treat it as a potential start delimiter. Otherwise, the tokenizer will
-      // subsequently treat it as plain text.
       return false
     }
 
