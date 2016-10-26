@@ -4,15 +4,7 @@ export abstract class Delimiter {
     public unspentLength = delimiterText.length) { }
 
   get isTotallySpent(): boolean {
-    return this.unspentLength === 0
-  }
-
-  canAfford(cost: number): boolean {
-    return this.unspentLength >= cost
-  }
-
-  canOnlyAfford(cost: number): boolean {
-    return this.unspentLength === cost
+    return this.unspentLength <= 0
   }
 
   pay(cost: number): void {

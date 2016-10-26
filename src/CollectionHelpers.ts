@@ -15,16 +15,6 @@ export function reversed<T>(collection: T[]): T[] {
   return collection.slice().reverse()
 }
 
-// Removes the last instance of `itemToRemove` from `collection`.
-export function remove<T>(collection: T[], itemToRemove: T): void {
-  for (let i = collection.length - 1; i >= 0; i--) {
-    if (collection[i] === itemToRemove) {
-      collection.splice(i, 1)
-      return
-    }
-  }
-}
-
 // Returns an array containing the distinct values in `values` using strict equality.
 //
 // The values' order is preserved.

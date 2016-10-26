@@ -168,19 +168,18 @@ class Tokenizer {
   // that special logic into the `ForgivingConventionHandler` class. More information can be found in
   // comments within that class.
   private forgivingConventionHandlers = [
-    {
-      delimiterChar: '*',
-      minorConvention: EMPHASIS,
-      majorConvention: STRESS
-    }, {
-      delimiterChar: '_',
-      minorConvention: ITALIC,
-      majorConvention: BOLD
-    }, {
-      delimiterChar: '"',
-      minorConvention: INLINE_QUOTE
-    }
-  ].map(args => this.getForgivingConventionHandler(args))
+    this.getInlineQuoteHandler(),
+    ...[
+      {
+        delimiterChar: '*',
+        whenEnclosedWithinSingleChars: EMPHASIS,
+        whenEnclosedWithinDoubleChars: STRESS
+      }, {
+        delimiterChar: '_',
+        whenEnclosedWithinSingleChars: ITALIC,
+        whenEnclosedWithinDoubleChars: BOLD
+      }
+    ].map(args => this.getHandlerForForgivingConventionPair(args))]
 
   // Speaking of forgiving writing conventions...
   //
@@ -761,32 +760,48 @@ class Tokenizer {
     })
   }
 
-  private getForgivingConventionHandler(
+  private getInlineQuoteHandler(): ForgivingConventionHandler {
+    return new ForgivingConventionHandler({
+      delimiterChar: '"',
+      onEnclosure: (startingBackAtTokenIndex: number) => {
+        this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
+      }
+    })
+  }
+
+  private getHandlerForForgivingConventionPair(
     args: {
       delimiterChar: string
-      // The convention indicated by surrounding text with a single delimiter character on either side.
-      minorConvention: RichConvention
-      // The convention (if any) indicated by surrounding text with double delimiter characters on either side.
-      majorConvention?: RichConvention
+      whenEnclosedWithinSingleChars: RichConvention
+      whenEnclosedWithinDoubleChars: RichConvention
     }
   ): ForgivingConventionHandler {
-    const { delimiterChar, majorConvention, minorConvention } = args
+    const { delimiterChar, whenEnclosedWithinDoubleChars, whenEnclosedWithinSingleChars } = args
 
     return new ForgivingConventionHandler({
       delimiterChar,
-      minorConvention,
-      majorConvention,
 
-      encloseWithinConvention: (args) => {
+      onEnclosure: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => {
         this.closeBareUrlContextIfOneIsOpen()
-        this.encloseWithin(args)
-      },
 
-      insertTextToken: (text, atIndex) => {
-        this.insertToken({
-          token: new Token(TokenRole.Text, text),
-          atIndex: atIndex
-        })
+        const encloseWithin = (richConvention: RichConvention) => {
+          this.encloseWithin({ richConvention, startingBackAtTokenIndex })
+        }
+
+        switch (unspentLengthInCommon) {
+          case 1:
+            encloseWithin(whenEnclosedWithinSingleChars)
+            return
+
+          case 2:
+            encloseWithin(whenEnclosedWithinDoubleChars)
+            return
+
+          case 3:
+            encloseWithin(whenEnclosedWithinSingleChars)
+            encloseWithin(whenEnclosedWithinDoubleChars)
+            return
+        }
       }
     })
   }
@@ -828,10 +843,21 @@ class Tokenizer {
     this.flushNonEmptyBufferToTextToken()
 
     for (const handler of this.forgivingConventionHandlers) {
-      handler.treatDanglingStartDelimitersAsText()
+      this.treatUnusedForgivingStartDelimitersAsText(handler)
     }
 
     return true
+  }
+
+  private treatUnusedForgivingStartDelimitersAsText(handler: ForgivingConventionHandler): void {
+    for (const startDelimiter of handler.openStartDelimiters) {
+      if (startDelimiter.isUnused) {
+        this.insertToken({
+          token: new Token(TokenRole.Text, startDelimiter.delimiterText),
+          atIndex: startDelimiter.tokenIndex
+        })
+      }
+    }
   }
 
   private tryToEscapeCurrentChar(): boolean {

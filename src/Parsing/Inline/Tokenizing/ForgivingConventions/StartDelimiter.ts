@@ -10,7 +10,7 @@ export class StartDelimiter extends Delimiter {
     super(delimiterText, unspentLength)
   }
 
-  get isTotallyUnspent(): boolean {
+  get isUnused(): boolean {
     return this.unspentLength === this.delimiterText.length
   }
 
