@@ -764,6 +764,7 @@ class Tokenizer {
     return new ForgivingConventionHandler({
       delimiterChar: '"',
       onEnclosure: (startingBackAtTokenIndex: number) => {
+        this.closeBareUrlContextIfOneIsOpen()
         this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
       }
     })
@@ -797,7 +798,8 @@ class Tokenizer {
             encloseWithin(whenEnclosedWithinDoubleChars)
             return
 
-          case 3:
+          // 3 or more
+          default:
             encloseWithin(whenEnclosedWithinSingleChars)
             encloseWithin(whenEnclosedWithinDoubleChars)
             return
