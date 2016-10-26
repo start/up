@@ -924,29 +924,21 @@ class Tokenizer {
       canTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
       // we've got to bail, because the current character can't be skipped.     
-      && this.tryToBufferWhitespaceGuaranteedToBeRegularContent())
+      && this.tryToAddWhitespaceToContentBuffer())
   }
 
   // This method exists purely for optimization.
   //
-  // In writing, spaces delimits words. Those spaces are meaningful to the author, but to our tokenizer,
-  // those spaces are just regular content.
-  //
-  // However, not all whitespace represents regular content! For example, the (optional) whitespace between a
-  // link's bracketed content and its bracketed URL doesn't actually represent any content:
+  // Not all whitespace represents regular content! For example, the (optional) whitespace between a link's
+  // bracketed content and its bracketed URL doesn't actually represent any content:
   //
   //   You should try [Typescript] (http://www.typescriptlang.org).
   //
-  // Same with the whitespace before a footnote.
+  // This method adds whitespace to our content buffer only if it's guaranteed to represent regular content.
   //
-  // This method will buffer any regular whitespace content.
-  //
-  // Any special whitespace is left behind to be consumed by the appropriate convention, where it can have
-  // special meaning. Please see the `getLinkUrlConventions` method for more information.
-  private tryToBufferWhitespaceGuaranteedToBeRegularContent(): boolean {
-    // As it turns out, special whitespace is always followed by an open bracket!
-    //
-    // That makes our job easy.
+  // Any (potentially) special whitespace is left behind.
+  private tryToAddWhitespaceToContentBuffer(): boolean {
+    // As it turns out, non-content whitespace is always followed by an open bracket. That makes our job easy.
     //
     // Note: To avoid catastrophic slowdown, we don't use a single regular expression for this. For more
     // information, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
@@ -968,9 +960,8 @@ class Tokenizer {
       return false
     }
 
-    // Phew! Now we know that the leading whitespace is just regular content!
-
-    // Let's buffer it and consume it.
+    // Phew! We now know that the leading whitespace is just regular content. Let's add it to our content
+    // buffer.
     this.bufferedContent += leadingWhitespace
     this.markupConsumer.index += leadingWhitespace.length
 
