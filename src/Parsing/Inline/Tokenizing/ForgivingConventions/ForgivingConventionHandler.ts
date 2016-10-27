@@ -1,15 +1,18 @@
 import { StartDelimiter } from './StartDelimiter'
-import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
-
+import { escapeForRegex, patternStartingWith, atLeast } from '../../../../PatternHelpers'
 
 // For a given delimiter character (`delimiterChar`), this class matchds end delimiters with start
 // delimiters, even if they aren't perfectly balanced.
 export class ForgivingConventionHandler {
+  delimiterPattern: RegExp
+  private startDelimiters: StartDelimiter[] = []
+
   constructor(
     // We save `options` as a field to make it easier to clone this object. 
     private options: {
-      // One or more of thse characters comprise every delimiter.
       delimiterChar: string
+      minDelimiterLength?: number
+
       // The callback to invoke whenever an end delimiter matches with a start delimiter.
       //
       // This can be invoked more than once per end delimiter. For example:
@@ -36,14 +39,13 @@ export class ForgivingConventionHandler {
       // them.  When a perfect matching start delimiter is found, the end delimiter "cancels out"
       // as many of that start delimiter's characters as possible, and then the handler returns.   
       isPerfectMatch?: (startDelimiterLength: number, endDelimiterLength: number) => boolean
-    },
-    // The parameters below are for internal use in the `clone` method.
-    private startDelimiters: StartDelimiter[] = [],
-    public delimiterPattern?: RegExp
+    }
   ) {
-    this.delimiterPattern = this.delimiterPattern ||
-      patternStartingWith(
-        oneOrMore(escapeForRegex(options.delimiterChar)))
+    const delimiterChar = escapeForRegex(options.delimiterChar)
+    const minDelimiterLength = options.minDelimiterLength || 1
+
+    this.delimiterPattern = patternStartingWith(
+      atLeast(minDelimiterLength, delimiterChar))
   }
 
   get unusedStartDelimiters(): StartDelimiter[] {
@@ -113,10 +115,10 @@ export class ForgivingConventionHandler {
   // Like the `ConventionContext` class, this class needs to be clonable in order to properly
   // handle backtracking.
   clone(): ForgivingConventionHandler {
-    return new ForgivingConventionHandler(
-      this.options,
-      this.startDelimiters.map(delimiter => delimiter.clone()),
-      this.delimiterPattern)
+    const clone = new ForgivingConventionHandler(this.options)
+    clone.startDelimiters = this.startDelimiters.map(delimiter => delimiter.clone())
+
+    return clone
   }
 
   // Returns open start delimiters from most-to-least recent.
