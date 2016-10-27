@@ -3,9 +3,9 @@ import * as Up from '../../Up'
 import { insideDocumentAndParagraph } from './Helpers'
 
 
-context('Bracketed text starting with "highlight:" is put inside a highlight node. The brackets can be:', () => {
-  specify('Square brackets', () => {
-    expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary].')).to.deep.equal(
+context('Text enclosed within 2 or more equal signs is highlighted. For example:', () => {
+  specify('2 equal signs', () => {
+    expect(Up.parse('After you beat the Elite Four, ==you fight Gary==.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
@@ -15,8 +15,19 @@ context('Bracketed text starting with "highlight:" is put inside a highlight nod
       ]))
   })
 
-  specify('Parentheses', () => {
-    expect(Up.parse('After you beat the Elite Four, (highlight: you fight Gary).')).to.deep.equal(
+  specify('3 equal signs', () => {
+    expect(Up.parse('After you beat the Elite Four, ===you fight Gary===.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify('4 equal signs', () => {
+    expect(Up.parse('After you beat the Elite Four, ====you fight Gary====.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.Highlight([
