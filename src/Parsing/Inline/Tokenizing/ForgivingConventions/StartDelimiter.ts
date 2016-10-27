@@ -6,15 +6,15 @@ import { Delimiter } from './Delimiter'
 // to keep track of their token index. For more information, see the comments in the
 // `ForgivingConventionHandler` class.
 export class StartDelimiter extends Delimiter {
-  constructor(public tokenIndex: number, delimiterText: string, unspentLength = delimiterText.length) {
-    super(delimiterText, unspentLength)
+  constructor(public tokenIndex: number, delimiterText: string, remainingLength = delimiterText.length) {
+    super(delimiterText, remainingLength)
   }
 
   get isUnused(): boolean {
-    return this.unspentLength === this.delimiterText.length
+    return this.remainingLength === this.delimiterText.length
   }
 
   clone(): StartDelimiter {
-    return new StartDelimiter(this.tokenIndex, this.delimiterText, this.unspentLength)
+    return new StartDelimiter(this.tokenIndex, this.delimiterText, this.remainingLength)
   }
 }

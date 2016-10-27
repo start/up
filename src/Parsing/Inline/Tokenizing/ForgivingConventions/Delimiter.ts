@@ -1,13 +1,13 @@
 export abstract class Delimiter {
   constructor(
     public delimiterText: string,
-    public unspentLength = delimiterText.length) { }
+    public remainingLength = delimiterText.length) { }
 
   get isFullySpent(): boolean {
-    return this.unspentLength <= 0
+    return this.remainingLength <= 0
   }
 
-  pay(cost: number): void {
-    this.unspentLength -= cost
+  pay(length: number): void {
+    this.remainingLength -= length
   }
 }

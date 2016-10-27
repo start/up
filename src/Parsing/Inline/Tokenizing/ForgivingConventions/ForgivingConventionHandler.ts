@@ -2,8 +2,6 @@ import { StartDelimiter } from './StartDelimiter'
 import { EndDelimiter } from './EndDelimiter'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
 
-// TODO: Clean up
-
 
 // For a given delimiter character (`delimiterChar`), this class matchds end delimiters with start
 // delimiters, even if they aren't perfectly balanced.
@@ -14,7 +12,8 @@ export class ForgivingConventionHandler {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
       // TODO: Explain
-      whenDelimitersMatch: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => void
+      whenDelimitersEnclose: (startingBackAtTokenIndex: number, lengthInCommon: number) => void
+      shouldSkipEverythingElseIf?: (startDelimiterLength: number, endDelimiterLength: number) => boolean
     },
 
     // The two optional parameters below are for internal use only. Please see the `clone` method.
@@ -42,33 +41,44 @@ export class ForgivingConventionHandler {
       return false
     }
 
-    const { whenDelimitersMatch } = this.options
+    const { whenDelimitersEnclose, shouldSkipEverythingElseIf } = this.options
 
-    const endDelimiter = new EndDelimiter(endDelimiterText)
+    if (shouldSkipEverythingElseIf) {
+      const endDelimiterLength = endDelimiterText.length
 
-    // TODO: Explain
-    for (const startDelimiter of this.openStartDelimiters) {
-      if (endDelimiter.unspentLength === startDelimiter.unspentLength) {
-        whenDelimitersMatch(startDelimiter.tokenIndex, startDelimiter.unspentLength)
-        startDelimiter.pay(startDelimiter.unspentLength)
+      const shouldMatchThenSkipEverythingElse =
+        (startDelimiter: StartDelimiter) =>
+          shouldSkipEverythingElseIf(startDelimiter.remainingLength, endDelimiterLength)
+
+      const perfectStartDelimiter =
+        first(this.openStartDelimiters, shouldMatchThenSkipEverythingElse)
+
+      if (perfectStartDelimiter) {
+        const lengthInCommon =
+          Math.min(perfectStartDelimiter.remainingLength, endDelimiterLength)
+
+        whenDelimitersEnclose(perfectStartDelimiter.tokenIndex, lengthInCommon)
+        perfectStartDelimiter.pay(lengthInCommon)
 
         return true
       }
     }
 
-    // From here on out, if this end delimiter can match with a start delimiter, it will. With
-    // each start delimiter, it'll "cancel out" as many characters as possible.
+    const endDelimiter = new EndDelimiter(endDelimiterText)
+
+    // From here on out, the end delimiter will "cancel out" as many unspent characters as
+    // possible with each start delimiter.
     for (const startDelimiter of this.openStartDelimiters) {
       if (endDelimiter.isFullySpent) {
         return true
       }
 
-      const unspentLengthInCommon =
-        Math.min(startDelimiter.unspentLength, endDelimiter.unspentLength)
+      const commonUnspentLength =
+        Math.min(startDelimiter.remainingLength, endDelimiter.remainingLength)
 
-      whenDelimitersMatch(startDelimiter.tokenIndex, unspentLengthInCommon)
-      startDelimiter.pay(unspentLengthInCommon)
-      endDelimiter.pay(unspentLengthInCommon)
+      whenDelimitersEnclose(startDelimiter.tokenIndex, commonUnspentLength)
+      startDelimiter.pay(commonUnspentLength)
+      endDelimiter.pay(commonUnspentLength)
     }
 
     return true
@@ -94,4 +104,15 @@ export class ForgivingConventionHandler {
   private get openStartDelimiters(): StartDelimiter[] {
     return this.startDelimiters.filter(delimiter => !delimiter.isFullySpent)
   }
+}
+
+
+function first<T>(items: T[], predicate: (item: T) => boolean): T {
+  for (const item of items) {
+    if (predicate(item)) {
+      return item
+    }
+  }
+
+  return null
 }

@@ -763,7 +763,7 @@ class Tokenizer {
   private getInlineQuoteHandler(): ForgivingConventionHandler {
     return new ForgivingConventionHandler({
       delimiterChar: '"',
-      whenDelimitersMatch: (startingBackAtTokenIndex: number) => {
+      whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
         this.closeBareUrlContextIfOneIsOpen()
         this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
       }
@@ -779,30 +779,46 @@ class Tokenizer {
   ): ForgivingConventionHandler {
     const { delimiterChar, whenEnclosedWithinDoubleChars, whenEnclosedWithinSingleChars } = args
 
+    const SINGLE_CHAR = 1
+    const DOUBLE_CHAR = 2
+    const TRIPLE_CHAR = 3
+
     return new ForgivingConventionHandler({
       delimiterChar,
 
-      whenDelimitersMatch: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => {
+      whenDelimitersEnclose: (startingBackAtTokenIndex: number, lengthInCommon: number) => {
         this.closeBareUrlContextIfOneIsOpen()
 
         const encloseWithin = (richConvention: RichConvention) => {
           this.encloseWithin({ richConvention, startingBackAtTokenIndex })
         }
 
-        switch (unspentLengthInCommon) {
-          case 1:
+        switch (lengthInCommon) {
+          case SINGLE_CHAR:
             encloseWithin(whenEnclosedWithinSingleChars)
             return
 
-          case 2:
+          case DOUBLE_CHAR:
             encloseWithin(whenEnclosedWithinDoubleChars)
             return
 
-          // 3 or more
+          // 3 or more characters
           default:
             encloseWithin(whenEnclosedWithinSingleChars)
             encloseWithin(whenEnclosedWithinDoubleChars)
             return
+        }
+      },
+
+      shouldSkipEverythingElseIf: (startDelimiterLength: number, endDelimiterLength: number): boolean => {
+        switch (endDelimiterLength) {
+          case SINGLE_CHAR:
+          case DOUBLE_CHAR:
+            return (startDelimiterLength === endDelimiterLength) || (startDelimiterLength >= TRIPLE_CHAR)
+
+          // 3 or more characters
+          default:
+            return false
         }
       }
     })
