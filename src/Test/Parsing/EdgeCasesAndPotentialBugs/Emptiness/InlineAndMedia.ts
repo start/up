@@ -5,13 +5,6 @@ import { insideDocumentAndParagraph } from '../../Helpers'
 
 context('Most inline conventions are recognized even when they are empty or blank.', () => {
   context('Empty:', () => {
-    specify('Highlights', () => {
-      expect(Up.parse('[highlight:]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.Highlight([])
-        ]))
-    })
-
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:]')).to.eql(
         insideDocumentAndParagraph([
@@ -64,13 +57,6 @@ context('Most inline conventions are recognized even when they are empty or blan
 
 
   context('Blank:', () => {
-    specify('Highlights', () => {
-      expect(Up.parse('[highlight:  \t  \t ]')).to.eql(
-        insideDocumentAndParagraph([
-          new Up.Highlight([])
-        ]))
-    })
-
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER:  \t  \t ]')).to.eql(
         insideDocumentAndParagraph([
@@ -122,192 +108,252 @@ context('The opening bracket for parenthetical conventions cannot be followed by
 })
 
 
-context("Due to the nature of the inflection syntax, inflection conventions cannot be empty or blank.", () => {
-  context("Delimiters containing only whitespace are preserved as plain text.", () => {
-    context('With asterisks:', () => {
-      specify('Emphasis', () => {
-        // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
-        expect(Up.parse('Stars! * \t \t *')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('Stars! * \t \t *')
-          ]))
-      })
-
-      specify('Stress', () => {
-        expect(Up.parse('**\t  \t**')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('**\t  \t**')
-          ]))
-      })
-
-      specify('Combined inflection', () => {
-        expect(Up.parse('*** \t \t ***')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('*** \t \t ***')
-          ]))
-      })
-
-      specify('Imbalanced delimiters', () => {
-        expect(Up.parse('*****\t  \t***')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('*****\t  \t***')
-          ]))
-      })
-
-
-      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-        specify('1 character', () => {
-          expect(Up.parse('*')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('*')
-            ]))
-        })
-
-        specify('2 characters', () => {
-          expect(Up.parse('**')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('**')
-            ]))
-        })
-
-        specify('3 characters', () => {
-          // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-          expect(Up.parse('Stars! ***')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('Stars! ***')
-            ]))
-        })
-
-        specify('4 characters', () => {
-          // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-          expect(Up.parse('Stars! ****')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('Stars! ****')
-            ]))
-        })
-      })
+context("Due to syntax for forgiving conventions, they cannot be empty or blank.", () => {
+  context('With asterisks:', () => {
+    specify('Emphasis', () => {
+      // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
+      expect(Up.parse('Stars! * \t \t *')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('Stars! * \t \t *')
+        ]))
     })
 
-    context('With underscores:', () => {
-      specify('Italics', () => {
-        expect(Up.parse('_ \t \t _')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('_ \t \t _')
-          ]))
-      })
+    specify('Stress', () => {
+      expect(Up.parse('**\t  \t**')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('**\t  \t**')
+        ]))
+    })
 
-      specify('Bold', () => {
-        expect(Up.parse('__\t  \t__')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('__\t  \t__')
-          ]))
-      })
+    specify('Combined inflection', () => {
+      expect(Up.parse('*** \t \t ***')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('*** \t \t ***')
+        ]))
+    })
 
-      specify('Combined inflection', () => {
-        expect(Up.parse('___ \t \t ___')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('___ \t \t ___')
-          ]))
-      })
-
-      specify('Imbalanced delimiters', () => {
-        expect(Up.parse('_____\t  \t___')).to.eql(
-          insideDocumentAndParagraph([
-            new Up.Text('_____\t  \t___')
-          ]))
-      })
-
-
-      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-        specify('1 character', () => {
-          expect(Up.parse('_')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('_')
-            ]))
-        })
-
-        specify('2 characters', () => {
-          expect(Up.parse('__')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('__')
-            ]))
-        })
-
-        specify('3 characters', () => {
-          expect(Up.parse('___')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('___')
-            ]))
-        })
-
-        specify('4 characters', () => {
-          expect(Up.parse('____')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('____')
-            ]))
-        })
-      })
+    specify('Imbalanced delimiters', () => {
+      expect(Up.parse('*****\t  \t***')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('*****\t  \t***')
+        ]))
     })
 
 
-    context('With doublequotes:', () => {
-      specify('Surrounded by 1', () => {
-        expect(Up.parse('" \t \t "')).to.eql(
+    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+      specify('1 character', () => {
+        expect(Up.parse('*')).to.eql(
           insideDocumentAndParagraph([
-            new Up.Text('" \t \t "')
+            new Up.Text('*')
           ]))
       })
 
-      specify('Surrounded by 2', () => {
-        expect(Up.parse('""\t  \t""')).to.eql(
+      specify('2 characters', () => {
+        expect(Up.parse('**')).to.eql(
           insideDocumentAndParagraph([
-            new Up.Text('""\t  \t""')
+            new Up.Text('**')
           ]))
       })
 
-      specify('Surrounded by 3', () => {
-        expect(Up.parse('""" \t \t """')).to.eql(
+      specify('3 characters', () => {
+        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+        expect(Up.parse('Stars! ***')).to.eql(
           insideDocumentAndParagraph([
-            new Up.Text('""" \t \t """')
+            new Up.Text('Stars! ***')
           ]))
       })
 
-      specify('Surrounded by 5', () => {
-        expect(Up.parse('"""""\t  \t"""')).to.eql(
+      specify('4 characters', () => {
+        // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
+        expect(Up.parse('Stars! ****')).to.eql(
           insideDocumentAndParagraph([
-            new Up.Text('"""""\t  \t"""')
+            new Up.Text('Stars! ****')
+          ]))
+      })
+    })
+  })
+
+  context('With underscores:', () => {
+    specify('Italics', () => {
+      expect(Up.parse('_ \t \t _')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('_ \t \t _')
+        ]))
+    })
+
+    specify('Bold', () => {
+      expect(Up.parse('__\t  \t__')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('__\t  \t__')
+        ]))
+    })
+
+    specify('Combined inflection', () => {
+      expect(Up.parse('___ \t \t ___')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('___ \t \t ___')
+        ]))
+    })
+
+    specify('Imbalanced delimiters', () => {
+      expect(Up.parse('_____\t  \t___')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('_____\t  \t___')
+        ]))
+    })
+
+
+    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+      specify('1 character', () => {
+        expect(Up.parse('_')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('_')
           ]))
       })
 
+      specify('2 characters', () => {
+        expect(Up.parse('__')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('__')
+          ]))
+      })
 
-      context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
-        specify('1 character', () => {
-          expect(Up.parse('"')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('"')
-            ]))
-        })
+      specify('3 characters', () => {
+        expect(Up.parse('___')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('___')
+          ]))
+      })
 
-        specify('2 characters', () => {
-          expect(Up.parse('""')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('""')
-            ]))
-        })
+      specify('4 characters', () => {
+        expect(Up.parse('____')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('____')
+          ]))
+      })
+    })
+  })
 
-        specify('3 characters', () => {
-          expect(Up.parse('"""')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('"""')
-            ]))
-        })
 
-        specify('4 characters', () => {
-          expect(Up.parse('""""')).to.eql(
-            insideDocumentAndParagraph([
-              new Up.Text('""""')
-            ]))
-        })
+  context('With doublequotes (for inline quotes):', () => {
+    specify('Surrounded by 1', () => {
+      expect(Up.parse('" \t \t "')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('" \t \t "')
+        ]))
+    })
+
+    specify('Surrounded by 2', () => {
+      expect(Up.parse('""\t  \t""')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('""\t  \t""')
+        ]))
+    })
+
+    specify('Surrounded by 3', () => {
+      expect(Up.parse('""" \t \t """')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('""" \t \t """')
+        ]))
+    })
+
+    specify('Surrounded by 5', () => {
+      expect(Up.parse('"""""\t  \t"""')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('"""""\t  \t"""')
+        ]))
+    })
+
+
+    context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
+      specify('1 character', () => {
+        expect(Up.parse('"')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('"')
+          ]))
+      })
+
+      specify('2 characters', () => {
+        expect(Up.parse('""')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('""')
+          ]))
+      })
+
+      specify('3 characters', () => {
+        expect(Up.parse('"""')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('"""')
+          ]))
+      })
+
+      specify('4 characters', () => {
+        expect(Up.parse('""""')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('""""')
+          ]))
+      })
+    })
+  })
+
+
+  context('With equal signs (for highlighting):', () => {
+    specify('Surrounded by 2', () => {
+      expect(Up.parse('==\t  \t==')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('==\t  \t==')
+        ]))
+    })
+
+    specify('Surrounded by 3', () => {
+      expect(Up.parse('=== \t \t ===')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('=== \t \t ===')
+        ]))
+    })
+
+    specify('Surrounded by 4', () => {
+      expect(Up.parse('==== \t \t ====')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('==== \t \t ====')
+        ]))
+    })
+
+    specify('Surrounded by 5', () => {
+      expect(Up.parse('=====\t  \t===')).to.eql(
+        insideDocumentAndParagraph([
+          new Up.Text('=====\t  \t===')
+        ]))
+    })
+
+
+    context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
+      specify('2 characters', () => {
+        expect(Up.parse('==')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('==')
+          ]))
+      })
+
+      specify('3 characters', () => {
+        expect(Up.parse('===')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('===')
+          ]))
+      })
+
+      specify('4 characters', () => {
+        expect(Up.parse('====')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('====')
+          ]))
+      })
+
+      specify('5 characters', () => {
+        expect(Up.parse('=====')).to.eql(
+          insideDocumentAndParagraph([
+            new Up.Text('=====')
+          ]))
       })
     })
   })
@@ -673,18 +719,6 @@ context("An otherwise-valid video missing its bracketed URL is treated as bracke
 
 context("Conventions aren't linkified if the bracketed URL is...", () => {
   context('Empty:', () => {
-    specify('Highlights', () => {
-      expect(Up.parse('[highlight: Ash fights Gary]()')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Highlight([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.NormalParenthetical([
-            new Up.Text('()')
-          ])
-        ]))
-    })
-
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary][]')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -747,16 +781,6 @@ context("Conventions aren't linkified if the bracketed URL is...", () => {
 
 
   context('Blank:', () => {
-    specify('Highlights', () => {
-      expect(Up.parse('[highlight: Ash fights Gary](\t \t \t)')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Highlight([
-            new Up.Text('Ash fights Gary')
-          ]),
-          new Up.Text('(\t \t \t)')
-        ]))
-    })
-
     specify('Inline revealables', () => {
       expect(Up.parse('[SPOILER: Ash fights Gary](\t \t \t)')).to.deep.equal(
         insideDocumentAndParagraph([

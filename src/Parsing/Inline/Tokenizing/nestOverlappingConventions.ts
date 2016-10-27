@@ -122,10 +122,10 @@ class ConventionNester {
         //
         // Let's look at this example of one highlight overlapping another:
         //
-        //   This [highlight: does (highlight: not] make) much sense.
+        //   This [SPOILER: does (SPOILER: not] make) much sense.
         //
-        // The end token produced by `]` corresponds to the start token produced by `[highlight:`. By checking
-        // only the `role` fields, we instead match `]` with `(highlight:`, ultimately ignoring that the
+        // The end token produced by `]` corresponds to the start token produced by `[SPOILER:`. By checking
+        // only the `role` fields, we instead match `]` with `(SPOILER:`, ultimately ignoring that the
         // conventions are overlapping. Mission accomplished!
         if (unclosedStartToken.correspondingEnclosingToken.role === endToken.role) {
           // Hooray! We've reached the start token that is closed by the current token.
