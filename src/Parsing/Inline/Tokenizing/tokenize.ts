@@ -576,7 +576,6 @@ class Tokenizer {
   // see `getLinkUrlConventions`.
   private getLinkifyingUrlConventions(): ConventionVariation[] {
     const LINKIFIABLE_RICH_CONVENTIONS = [
-      HIGHLIGHT,
       INLINE_REVEALABLE,
       FOOTNOTE
     ].map(richConvention => richConvention.endTokenRole)
