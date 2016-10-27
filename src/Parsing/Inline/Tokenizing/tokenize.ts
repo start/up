@@ -169,6 +169,7 @@ class Tokenizer {
   // comments within that class.
   private forgivingConventionHandlers = [
     this.getInlineQuoteHandler(),
+    this.getHighlightHandler(),
     ...[
       {
         delimiterChar: '*',
@@ -179,7 +180,8 @@ class Tokenizer {
         whenEnclosedWithinSingleChars: ITALIC,
         whenEnclosedWithinDoubleChars: BOLD
       }
-    ].map(args => this.getHandlerForForgivingConventionPair(args))]
+    ].map(args => this.getHandlerForForgivingConventionPair(args))
+  ]
 
   // Speaking of forgiving writing conventions...
   //
@@ -230,15 +232,10 @@ class Tokenizer {
 
   private configureConventions(isTokenizingInlineDocument: boolean): void {
     this.conventionVariations = [
-      ...concat([
-        {
-          richConvention: HIGHLIGHT,
-          keyword: this.settings.keywords.highlight
-        }, {
-          richConvention: INLINE_REVEALABLE,
-          keyword: this.settings.keywords.revealable
-        }
-      ].map(args => this.getConventionsForLabeledRichBrackets(args))),
+      ...this.getInlineRevealableConventions({
+        richConvention: INLINE_REVEALABLE,
+        keyword: this.settings.keywords.revealable
+      }),
 
       ...this.getMediaDescriptionConventions(),
 
@@ -331,7 +328,7 @@ class Tokenizer {
   // 1. The keyword preceding the colon is case-insensitive
   // 2. Whitespace after the colon is optional
   // 3. Parentheses can be used instead of square brackets
-  private getConventionsForLabeledRichBrackets(
+  private getInlineRevealableConventions(
     args: {
       richConvention: RichConvention
       keyword: NormalizedSettings.Parsing.Keyword
@@ -766,6 +763,17 @@ class Tokenizer {
       whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
         this.closeBareUrlContextIfOneIsOpen()
         this.encloseWithin({ richConvention: INLINE_QUOTE, startingBackAtTokenIndex })
+      }
+    })
+  }
+
+  private getHighlightHandler(): ForgivingConventionHandler {
+    return new ForgivingConventionHandler({
+      delimiterChar: '=',
+      minDelimiterLength: 2,
+      whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
+        this.closeBareUrlContextIfOneIsOpen()
+        this.encloseWithin({ richConvention: HIGHLIGHT, startingBackAtTokenIndex })
       }
     })
   }

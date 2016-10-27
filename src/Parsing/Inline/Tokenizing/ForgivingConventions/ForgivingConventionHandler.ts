@@ -122,8 +122,6 @@ export class ForgivingConventionHandler {
   }
 
   // Returns open start delimiters from most-to-least recent.
-  //
-  // An "open" start delimiter is one that hasn't exhausted all of its delimiter characters.
   private get openStartDelimiters(): StartDelimiter[] {
     return this.startDelimiters.filter(delimiter => !delimiter.isFullyExhausted)
   }
