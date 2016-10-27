@@ -41,7 +41,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its URL',
 
 describe('A link produced by square brackets', () => {
   it('can follow square bracketed text', () => {
-    expect(Up.parse("I [usually] use [Google][https://google.com]!!")).to.eql(
+    expect(Up.parse("I [usually] use [Google][https://google.com]!!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.SquareParenthetical([
@@ -56,7 +56,7 @@ describe('A link produced by square brackets', () => {
   })
 
   it('can be inside square bracketed text', () => {
-    expect(Up.parse("[I use [Google][https://google.com]]")).to.eql(
+    expect(Up.parse("[I use [Google][https://google.com]]")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
           new Up.Text('[I use '),
@@ -69,7 +69,7 @@ describe('A link produced by square brackets', () => {
   })
 
   it('starts with the final of multiple opening square brackets even when there is just one closing square bracket', () => {
-    expect(Up.parse('Go to [this [site][https://stackoverflow.com]!!')).to.eql(
+    expect(Up.parse('Go to [this [site][https://stackoverflow.com]!!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Go to [this '),
         new Up.Link([

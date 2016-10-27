@@ -4,7 +4,7 @@ import * as Up from '../../../../Up'
 
 describe('An empty document', () => {
   it('produces an empty document object', () => {
-    expect(Up.parse('')).to.eql(new Up.Document([]))
+    expect(Up.parse('')).to.deep.equal(new Up.Document([]))
   })
 })
 
@@ -17,7 +17,7 @@ describe('A document with only blank lines', () => {
       
       
 `
-    expect(Up.parse(markup)).to.eql(new Up.Document([]))
+    expect(Up.parse(markup)).to.deep.equal(new Up.Document([]))
   })
 })
 
@@ -30,6 +30,6 @@ describe('A document with only escaped blank lines', () => {
 \\   \\ \\       
 \\\t    \\       
  \\ `
-    expect(Up.parse(markup)).to.eql(new Up.Document([]))
+    expect(Up.parse(markup)).to.deep.equal(new Up.Document([]))
   })
 })

@@ -11,7 +11,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))
@@ -28,7 +28,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))
@@ -42,7 +42,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))
@@ -79,7 +79,7 @@ Goodbye, world!
         new Up.Text(', world!'),
       ], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))
@@ -113,7 +113,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))
@@ -128,7 +128,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
         [heading],
         new Up.Document.TableOfContents([heading])))

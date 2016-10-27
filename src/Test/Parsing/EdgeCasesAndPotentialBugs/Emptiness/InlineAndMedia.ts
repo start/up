@@ -6,14 +6,14 @@ import { insideDocumentAndParagraph } from '../../Helpers'
 context('Most inline conventions are recognized even when they are empty or blank.', () => {
   context('Empty:', () => {
     specify('Inline revealables', () => {
-      expect(Up.parse('[SPOILER:]')).to.eql(
+      expect(Up.parse('[SPOILER:]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([])
         ]))
     })
 
     specify('Section links', () => {
-      expect(Up.parse('[topic:]')).to.eql(
+      expect(Up.parse('[topic:]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('')
         ]))
@@ -22,7 +22,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Footnotes', () => {
       const footnote = new Up.Footnote([], { referenceNumber: 1 })
 
-      expect(Up.parse('(^)')).to.eql(
+      expect(Up.parse('(^)')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([footnote]),
           new Up.FootnoteBlock([footnote])
@@ -30,7 +30,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Parentheses', () => {
-      expect(Up.parse('()')).to.eql(
+      expect(Up.parse('()')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
             new Up.Text('()')
@@ -39,7 +39,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Square brackets', () => {
-      expect(Up.parse('[]')).to.eql(
+      expect(Up.parse('[]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
             new Up.Text('[]')
@@ -48,7 +48,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Example input', () => {
-      expect(Up.parse('{}')).to.eql(
+      expect(Up.parse('{}')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('')
         ]))
@@ -58,14 +58,14 @@ context('Most inline conventions are recognized even when they are empty or blan
 
   context('Blank:', () => {
     specify('Inline revealables', () => {
-      expect(Up.parse('[SPOILER:  \t  \t ]')).to.eql(
+      expect(Up.parse('[SPOILER:  \t  \t ]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([])
         ]))
     })
 
     specify('Section links', () => {
-      expect(Up.parse('[section:  \t  \t ]')).to.eql(
+      expect(Up.parse('[section:  \t  \t ]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SectionLink('')
         ]))
@@ -74,7 +74,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Footnotes', () => {
       const footnote = new Up.Footnote([], { referenceNumber: 1 })
 
-      expect(Up.parse('(^  \t \t )')).to.eql(
+      expect(Up.parse('(^  \t \t )')).to.deep.equal(
         new Up.Document([
           new Up.Paragraph([footnote]),
           new Up.FootnoteBlock([footnote])
@@ -82,7 +82,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     })
 
     specify('Example input', () => {
-      expect(Up.parse('{  \t  \t }')).to.eql(
+      expect(Up.parse('{  \t  \t }')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.ExampleInput('')
         ]))
@@ -93,14 +93,14 @@ context('Most inline conventions are recognized even when they are empty or blan
 
 context('The opening bracket for parenthetical conventions cannot be followed by whitespace:', () => {
   specify('Normal parentheticals', () => {
-    expect(Up.parse('(  \t  \t )')).to.eql(
+    expect(Up.parse('(  \t  \t )')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('(  \t  \t )')
       ]))
   })
 
   specify('Square parentheticals', () => {
-    expect(Up.parse('[  \t  \t ]')).to.eql(
+    expect(Up.parse('[  \t  \t ]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('[  \t  \t ]')
       ]))
@@ -112,28 +112,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
   context('With asterisks:', () => {
     specify('Emphasis', () => {
       // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
-      expect(Up.parse('Stars! * \t \t *')).to.eql(
+      expect(Up.parse('Stars! * \t \t *')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Stars! * \t \t *')
         ]))
     })
 
     specify('Stress', () => {
-      expect(Up.parse('**\t  \t**')).to.eql(
+      expect(Up.parse('**\t  \t**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('**\t  \t**')
         ]))
     })
 
     specify('Combined inflection', () => {
-      expect(Up.parse('*** \t \t ***')).to.eql(
+      expect(Up.parse('*** \t \t ***')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('*** \t \t ***')
         ]))
     })
 
     specify('Imbalanced delimiters', () => {
-      expect(Up.parse('*****\t  \t***')).to.eql(
+      expect(Up.parse('*****\t  \t***')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('*****\t  \t***')
         ]))
@@ -142,14 +142,14 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
     context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
       specify('1 character', () => {
-        expect(Up.parse('*')).to.eql(
+        expect(Up.parse('*')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('*')
           ]))
       })
 
       specify('2 characters', () => {
-        expect(Up.parse('**')).to.eql(
+        expect(Up.parse('**')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('**')
           ]))
@@ -157,7 +157,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
       specify('3 characters', () => {
         // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-        expect(Up.parse('Stars! ***')).to.eql(
+        expect(Up.parse('Stars! ***')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('Stars! ***')
           ]))
@@ -165,7 +165,7 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
       specify('4 characters', () => {
         // If the asterisks were alone on a line, they would be interpreted as a thematic break streak.
-        expect(Up.parse('Stars! ****')).to.eql(
+        expect(Up.parse('Stars! ****')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('Stars! ****')
           ]))
@@ -175,28 +175,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
   context('With underscores:', () => {
     specify('Italics', () => {
-      expect(Up.parse('_ \t \t _')).to.eql(
+      expect(Up.parse('_ \t \t _')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('_ \t \t _')
         ]))
     })
 
     specify('Bold', () => {
-      expect(Up.parse('__\t  \t__')).to.eql(
+      expect(Up.parse('__\t  \t__')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('__\t  \t__')
         ]))
     })
 
     specify('Combined inflection', () => {
-      expect(Up.parse('___ \t \t ___')).to.eql(
+      expect(Up.parse('___ \t \t ___')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('___ \t \t ___')
         ]))
     })
 
     specify('Imbalanced delimiters', () => {
-      expect(Up.parse('_____\t  \t___')).to.eql(
+      expect(Up.parse('_____\t  \t___')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('_____\t  \t___')
         ]))
@@ -205,28 +205,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
     context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
       specify('1 character', () => {
-        expect(Up.parse('_')).to.eql(
+        expect(Up.parse('_')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('_')
           ]))
       })
 
       specify('2 characters', () => {
-        expect(Up.parse('__')).to.eql(
+        expect(Up.parse('__')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('__')
           ]))
       })
 
       specify('3 characters', () => {
-        expect(Up.parse('___')).to.eql(
+        expect(Up.parse('___')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('___')
           ]))
       })
 
       specify('4 characters', () => {
-        expect(Up.parse('____')).to.eql(
+        expect(Up.parse('____')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('____')
           ]))
@@ -237,28 +237,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
   context('With doublequotes (for inline quotes):', () => {
     specify('Surrounded by 1', () => {
-      expect(Up.parse('" \t \t "')).to.eql(
+      expect(Up.parse('" \t \t "')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('" \t \t "')
         ]))
     })
 
     specify('Surrounded by 2', () => {
-      expect(Up.parse('""\t  \t""')).to.eql(
+      expect(Up.parse('""\t  \t""')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('""\t  \t""')
         ]))
     })
 
     specify('Surrounded by 3', () => {
-      expect(Up.parse('""" \t \t """')).to.eql(
+      expect(Up.parse('""" \t \t """')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('""" \t \t """')
         ]))
     })
 
     specify('Surrounded by 5', () => {
-      expect(Up.parse('"""""\t  \t"""')).to.eql(
+      expect(Up.parse('"""""\t  \t"""')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('"""""\t  \t"""')
         ]))
@@ -267,28 +267,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
     context("Umatched delimiters are preserved as plain text. This includes delimiters with a length of...", () => {
       specify('1 character', () => {
-        expect(Up.parse('"')).to.eql(
+        expect(Up.parse('"')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('"')
           ]))
       })
 
       specify('2 characters', () => {
-        expect(Up.parse('""')).to.eql(
+        expect(Up.parse('""')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('""')
           ]))
       })
 
       specify('3 characters', () => {
-        expect(Up.parse('"""')).to.eql(
+        expect(Up.parse('"""')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('"""')
           ]))
       })
 
       specify('4 characters', () => {
-        expect(Up.parse('""""')).to.eql(
+        expect(Up.parse('""""')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('""""')
           ]))
@@ -299,28 +299,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
   context('With equal signs (for highlighting):', () => {
     specify('Surrounded by 2', () => {
-      expect(Up.parse('==\t  \t==')).to.eql(
+      expect(Up.parse('==\t  \t==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('==\t  \t==')
         ]))
     })
 
     specify('Surrounded by 3', () => {
-      expect(Up.parse('=== \t \t ===')).to.eql(
+      expect(Up.parse('=== \t \t ===')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('=== \t \t ===')
         ]))
     })
 
     specify('Surrounded by 4', () => {
-      expect(Up.parse('==== \t \t ====')).to.eql(
+      expect(Up.parse('==== \t \t ====')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('==== \t \t ====')
         ]))
     })
 
     specify('Surrounded by 5', () => {
-      expect(Up.parse('=====\t  \t===')).to.eql(
+      expect(Up.parse('=====\t  \t===')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('=====\t  \t===')
         ]))
@@ -329,28 +329,28 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
 
     context('Umatched delimiters are preserved as plain text. This includes delimiters with a length of...', () => {
       specify('2 characters', () => {
-        expect(Up.parse('==')).to.eql(
+        expect(Up.parse('==')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('==')
           ]))
       })
 
       specify('3 characters', () => {
-        expect(Up.parse('===')).to.eql(
+        expect(Up.parse('===')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('===')
           ]))
       })
 
       specify('4 characters', () => {
-        expect(Up.parse('====')).to.eql(
+        expect(Up.parse('====')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('====')
           ]))
       })
 
       specify('5 characters', () => {
-        expect(Up.parse('=====')).to.eql(
+        expect(Up.parse('=====')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Text('=====')
           ]))

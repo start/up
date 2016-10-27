@@ -109,7 +109,7 @@ describe('A thematic break streak', () => {
 ~-~-~-~-~
 60.4%`
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.ThematicBreak(),
         new Up.Paragraph([
@@ -174,7 +174,7 @@ context('Outline conventions are evaluated before inline conventions. Therefore,
 
 And that's my story.`
 
-      expect(Up.parse(markup)).to.eql(
+      expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
@@ -189,7 +189,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.parse(markup)).to.eql(
+      expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
@@ -207,7 +207,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.parse(markup)).to.eql(
+      expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([
@@ -222,7 +222,7 @@ And that's my story.`
 
 And that's my story.`
 
-      expect(Up.parse(markup)).to.eql(
+      expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.ThematicBreak(),
           new Up.Paragraph([

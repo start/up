@@ -12,7 +12,7 @@ Not me. Us!
     const heading =
       new Up.Heading([new Up.Text('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.ThematicBreak(),
         heading
@@ -29,7 +29,7 @@ Not me. Us!
     const heading =
       new Up.Heading([new Up.Text('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
 
-    expect(Up.parse(markup)).to.eql(
+    expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.ThematicBreak(),
         heading
