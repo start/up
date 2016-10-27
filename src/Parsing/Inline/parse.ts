@@ -1,4 +1,4 @@
-import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
+import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHTING, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
 import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Text } from '../../SyntaxNodes/Text'
@@ -126,7 +126,7 @@ function parseAndGetResult(
       STRESS,
       ITALIC,
       BOLD,
-      HIGHLIGHT,
+      HIGHLIGHTING,
       INLINE_REVEALABLE,
       FOOTNOTE,
       NORMAL_PARENTHETICAL,

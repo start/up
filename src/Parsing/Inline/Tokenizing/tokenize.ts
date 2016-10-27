@@ -1,4 +1,4 @@
-import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHTING, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
@@ -169,7 +169,7 @@ class Tokenizer {
   // comments within that class.
   private forgivingConventionHandlers = [
     this.getInlineQuoteHandler(),
-    this.getHighlightHandler(),
+    this.getHighlightingHandler(),
     ...[
       {
         delimiterChar: '*',
@@ -540,17 +540,17 @@ class Tokenizer {
   // there is whitespace between a link's content and its URL):
   //
   // 1. First, the URL must either:
-  //    * Have a scheme (like "mailto:" or "https://")
-  //    * Start with a slash
-  //    * Start with a hash mark ("#")
-  //    * Have a subdomain and a top-level domain
+  //    - Have a scheme (like "mailto:" or "https://")
+  //    - Start with a slash
+  //    - Start with a hash mark ("#")
+  //    - Have a subdomain and a top-level domain
   //      
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
   // 3. Lastly, if the URL had no scheme but did have a subdomain and a top-level domain:
-  //    * The top-level domain must consist solely of letters
-  //    * The URL must start with a number or a letter
-  //    * There must not be consecutive periods anywhere in the domain part of the URL. However,
+  //    - The top-level domain must consist solely of letters
+  //    - The URL must start with a number or a letter
+  //    - There must not be consecutive periods anywhere in the domain part of the URL. However,
   //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): ConventionVariation[] {
     const whenClosing = (url: string) => {
@@ -766,13 +766,13 @@ class Tokenizer {
     })
   }
 
-  private getHighlightHandler(): ForgivingConventionHandler {
+  private getHighlightingHandler(): ForgivingConventionHandler {
     return new ForgivingConventionHandler({
       delimiterChar: '=',
       minDelimiterLength: 2,
       whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
         this.closeBareUrlContextIfOneIsOpen()
-        this.encloseWithin({ richConvention: HIGHLIGHT, startingBackAtTokenIndex })
+        this.encloseWithin({ richConvention: HIGHLIGHTING, startingBackAtTokenIndex })
       }
     })
   }
@@ -1615,7 +1615,7 @@ const CLOSE_BRACKET_PATTERNS =
 
 const CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING = [
   // The "h" is for the start of bare URLs. 
-  WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '`',
+  WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '=', '`',
   ...OPEN_BRACKET_PATTERNS,
   ...CLOSE_BRACKET_PATTERNS,
   ...[BACKSLASH, '*'].map(escapeForRegex)
