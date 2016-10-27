@@ -1,5 +1,4 @@
 import { StartDelimiter } from './StartDelimiter'
-import { EndDelimiter } from './EndDelimiter'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
 
 
@@ -11,14 +10,34 @@ export class ForgivingConventionHandler {
     private options: {
       // One or more of thse characters comprise every delimiter.
       delimiterChar: string
-      // TODO: Explain
+      // The callback to invoke whenever an end delimiter matches with a start delimiter.
+      //
+      // This can be invoked more than once per end delimiter. For example:
+      //
+      // I *really **love cereal!***
+      //
+      // The end delimiter matches with `**` before "love", then again with `*` before "really".
       whenDelimitersEnclose: (startingBackAtTokenIndex: number, lengthInCommon: number) => void
-      shouldSkipEverythingElseIf?: (startDelimiterLength: number, endDelimiterLength: number) => boolean
-    },
 
-    // The two optional parameters below are for internal use only. Please see the `clone` method.
-    //
-    // We store start delimiters from most-to-least recent.
+      // Defines a perfect start/end delimiter match. This predicate allows conventions using the
+      // same `delimiterChar` to overlap.
+      //
+      // For example. let's look at overlapping stress and emphasis:
+      //
+      //   I *love **drinking* whole** milk.
+      //
+      // Normally, end delimiters will match with the nearest start delimiter, "canceling out"
+      // as many characters as possible, then moving on to the next-nearest start delimiter until
+      // it runs out of characters. This strategy is incapable of recognizing the overlapping
+      // demonstrated above. 
+      //
+      // However, when `isPerfectMatch` is provided, end delimiters will first try to match the
+      // nearest start delimiter satisfying `isPerfectMatch`, ignoring any delimiters in between
+      // them.  When a perfect matching start delimiter is found, the end delimiter "cancels out"
+      // as many of that start delimiter's characters as possible, and then the handler returns.   
+      isPerfectMatch?: (startDelimiterLength: number, endDelimiterLength: number) => boolean
+    },
+    // The parameters below are for internal use in the `clone` method.
     private startDelimiters: StartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
@@ -31,9 +50,10 @@ export class ForgivingConventionHandler {
     return this.startDelimiters.filter(startDelimiter => startDelimiter.isUnused)
   }
 
-  addStartDelimiter(delimiterText: string, tokenIndex: number) {
+  addStartDelimiter(startDelimiterText: string, tokenIndex: number) {
+    // Start delimiters are stored from most-to-least recent!
     this.startDelimiters.unshift(
-      new StartDelimiter(tokenIndex, delimiterText))
+      new StartDelimiter(tokenIndex, startDelimiterText))
   }
 
   tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
@@ -41,44 +61,42 @@ export class ForgivingConventionHandler {
       return false
     }
 
-    const { whenDelimitersEnclose, shouldSkipEverythingElseIf } = this.options
+    const { options } = this
+    let endDelimiterLength = endDelimiterText.length
 
-    if (shouldSkipEverythingElseIf) {
-      const endDelimiterLength = endDelimiterText.length
-
-      const shouldMatchThenSkipEverythingElse =
+    if (options.isPerfectMatch) {
+      const isPerfectMatch =
         (startDelimiter: StartDelimiter) =>
-          shouldSkipEverythingElseIf(startDelimiter.remainingLength, endDelimiterLength)
+          options.isPerfectMatch(startDelimiter.remainingLength, endDelimiterLength)
 
       const perfectStartDelimiter =
-        first(this.openStartDelimiters, shouldMatchThenSkipEverythingElse)
+        first(this.openStartDelimiters, isPerfectMatch)
 
       if (perfectStartDelimiter) {
         const lengthInCommon =
           Math.min(perfectStartDelimiter.remainingLength, endDelimiterLength)
 
-        whenDelimitersEnclose(perfectStartDelimiter.tokenIndex, lengthInCommon)
-        perfectStartDelimiter.pay(lengthInCommon)
+        options.whenDelimitersEnclose(perfectStartDelimiter.tokenIndex, lengthInCommon)
+        perfectStartDelimiter.shortenBy(lengthInCommon)
 
         return true
       }
     }
 
-    const endDelimiter = new EndDelimiter(endDelimiterText)
-
-    // From here on out, the end delimiter will "cancel out" as many unspent characters as
-    // possible with each start delimiter.
+    // From here on out, the end delimiter will "cancel out" as many remaining characters as
+    // it can with each start delimiter.
     for (const startDelimiter of this.openStartDelimiters) {
-      if (endDelimiter.isFullySpent) {
+      if (!endDelimiterLength) {
         return true
       }
 
-      const commonUnspentLength =
-        Math.min(startDelimiter.remainingLength, endDelimiter.remainingLength)
+      const lengthInCommon =
+        Math.min(startDelimiter.remainingLength, endDelimiterLength)
 
-      whenDelimitersEnclose(startDelimiter.tokenIndex, commonUnspentLength)
-      startDelimiter.pay(commonUnspentLength)
-      endDelimiter.pay(commonUnspentLength)
+      options.whenDelimitersEnclose(startDelimiter.tokenIndex, lengthInCommon)
+
+      startDelimiter.shortenBy(lengthInCommon)
+      endDelimiterLength -= lengthInCommon
     }
 
     return true
@@ -101,8 +119,11 @@ export class ForgivingConventionHandler {
       this.delimiterPattern)
   }
 
+  // Returns open start delimiters from most-to-least recent.
+  //
+  // An "open" start delimiter is one that hasn't exhausted all of its delimiter characters.
   private get openStartDelimiters(): StartDelimiter[] {
-    return this.startDelimiters.filter(delimiter => !delimiter.isFullySpent)
+    return this.startDelimiters.filter(delimiter => !delimiter.isFullyExhausted)
   }
 }
 

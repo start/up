@@ -810,7 +810,7 @@ class Tokenizer {
         }
       },
 
-      shouldSkipEverythingElseIf: (startDelimiterLength: number, endDelimiterLength: number): boolean => {
+      isPerfectMatch: (startDelimiterLength: number, endDelimiterLength: number): boolean => {
         switch (endDelimiterLength) {
           case SINGLE_CHAR:
           case DOUBLE_CHAR:
