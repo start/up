@@ -291,31 +291,6 @@ describe('The "video" keyword', () => {
 })
 
 
-describe('The "highlight" keyword', () => {
-  itCanBeProvidedMultipleWaysWithTheSameResult({
-    markupForKeywordVariations: '[paint: Ash fights Gary]',
-    markupForDefaultSettings: '[highlight: Ash fights Gary]',
-    keywordVariations: {
-      highlight: 'paint'
-    },
-    invalidMarkupForEmptyKeyword: '[: Ash fights Gary]',
-    invalidMarkupForBlankKeyword: '[ \t \t : Ash fights Gary]',
-    equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      highlight: [null, 'paint', '', ' \t \t ', undefined]
-    },
-    onlyEmptyAndBlankKeywordVariations: {
-      highlight: [null, '', ' \t \t ', undefined]
-    },
-    zeroKeywordVariations: {
-      highlight: []
-    },
-    conflictingKeywordVariations: {
-      highlight: 'note'
-    }
-  })
-})
-
-
 describe('The "revealable" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForKeywordVariations: '[RUINS ENDING: Ash fights Gary]',

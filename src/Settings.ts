@@ -23,7 +23,6 @@ export namespace Settings {
   export namespace Parsing {
     export interface Keywords {
       audio?: Keyword
-      highlight?: Keyword
       image?: Keyword
       revealable?: Keyword
       sectionLink?: Keyword

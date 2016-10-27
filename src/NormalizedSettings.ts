@@ -123,7 +123,6 @@ export namespace NormalizedSettings {
       // The private fields below represent the (sanitized) variations provided by the user
       // for each keyword.
       private _audio: Keyword = []
-      private _highlight: Keyword = []
       private _image: Keyword = []
       private _revealable: Keyword = []
       private _sectionLink: Keyword = []
@@ -132,10 +131,6 @@ export namespace NormalizedSettings {
 
       get audio(): Keyword {
         return distinct('audio', ...this._audio)
-      }
-
-      get highlight(): Keyword {
-        return distinct('highlight', ...this._highlight)
       }
 
       get image(): Keyword {
@@ -162,7 +157,6 @@ export namespace NormalizedSettings {
         const clone = new Keywords()
 
         clone._audio = this._audio
-        clone._highlight = this._highlight
         clone._image = this._image
         clone._revealable = this._revealable
         clone._sectionLink = this._sectionLink
@@ -179,9 +173,6 @@ export namespace NormalizedSettings {
 
         this._audio =
           sanitizeVariations(keywords.audio)
-
-        this._highlight =
-          sanitizeVariations(keywords.highlight)
 
         this._image =
           sanitizeVariations(keywords.image)
