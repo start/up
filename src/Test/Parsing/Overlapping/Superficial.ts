@@ -5,7 +5,7 @@ import { insideDocumentAndParagraph } from '.././Helpers'
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split. This includes:', () => {
   specify('Two "freely-splittable" conventions (e.g. stress, italics) overlap a third (e.g. highlighting)', () => {
-    expect(Up.parse('**_[highlight: Hello_ good** friend!] Hi!')).to.deep.equal(
+    expect(Up.parse('**_==Hello_ good** friend!== Hi!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Stress([
@@ -325,7 +325,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("A link and highlighted text", () => {
-      expect(Up.parse('[Mario fell off the platform. (highlight: splat][example.com/game-over])')).to.deep.equal(
+      expect(Up.parse('[Mario fell off the platform. ==splat][example.com/game-over]==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
             new Up.Text('Mario fell off the platform. '),
@@ -337,7 +337,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
     })
 
     specify("Highlighted text and a link", () => {
-      expect(Up.parse('(highlight: loud [thwomp)](example.com/thwomp)')).to.deep.equal(
+      expect(Up.parse('==loud [thwomp==](example.com/thwomp)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
             new Up.Text('loud '),
@@ -540,7 +540,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
 context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second.", () => {
   context('This includes:', () => {
     specify('Highlighted text and italics', () => {
-      expect(Up.parse('[highlight: Oh _]why would you do this?_')).to.deep.equal(
+      expect(Up.parse('==Oh _==why would you do this?_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
             new Up.Text('Oh ')
@@ -577,7 +577,7 @@ context("When most conventions overlap by only the first convention's end delimi
   })
 
   specify('Highlight and inline quotes', () => {
-    expect(Up.parse('(highlight: Oh ")why would you do this?"')).to.deep.equal(
+    expect(Up.parse('==Oh "==why would you do this?"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Text('Oh '),
@@ -590,7 +590,7 @@ context("When most conventions overlap by only the first convention's end delimi
 
   context('But not parenthetical conventions:', () => {
     specify('Parentheses and highlights', () => {
-      expect(Up.parse('(Oh [highlight:) why would you do this?]')).to.deep.equal(
+      expect(Up.parse('(Oh ==) why would you do this?==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
             new Up.Text('(Oh '),
@@ -605,7 +605,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Highlighted text and parentheses', () => {
-      expect(Up.parse('[highlight: Oh (]why would you do this?)')).to.deep.equal(
+      expect(Up.parse('==Oh (==why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
             new Up.Text('Oh '),
@@ -620,7 +620,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Square brackets and highlights', () => {
-      expect(Up.parse('[Oh (highlight:] why would you do this?)')).to.deep.equal(
+      expect(Up.parse('[Oh ==] why would you do this?==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
             new Up.Text('[Oh '),
@@ -635,7 +635,7 @@ context("When most conventions overlap by only the first convention's end delimi
     })
 
     specify('Highlighted text and square brackets', () => {
-      expect(Up.parse('(highlight: Oh [)why would you do this?]')).to.deep.equal(
+      expect(Up.parse('==Oh [==why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
             new Up.Text('Oh '),

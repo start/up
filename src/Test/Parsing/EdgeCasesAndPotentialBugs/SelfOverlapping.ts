@@ -150,7 +150,8 @@ context('Up offers no real support for self-overlapping. When a convention overl
     })
   })
 
-
+  
+  // TODO: Add more tests
   context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy. It technically works, but needless splitting occers.', () => {
     specify('Due to a lack of unique end delimiters among conventions with continuity priority, this monstrosity is only possible when the convention overlapping itself has higher continuity priority than the other one', () => {
       expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
