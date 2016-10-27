@@ -68,20 +68,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified highlight URLs that start with a hash mark', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth](#wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'https://example.com/page#wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
   it("is prefixed to linkified footnote URLs that start with a hash mark", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)[#cereals/lucky-charms?show=nutrition] Never have."
 
@@ -156,20 +142,6 @@ describe('The "baseForUrlsStartingWithFragmentIdentifier" setting', () => {
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
         new Up.InlineRevealable([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'https://example.com/page#wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified highlight URLs that start with a hash mark when the highlight and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth] (#wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'https://example.com/page#wiki/Blue_Sky')

@@ -68,20 +68,6 @@ describe('The "defaultUrlScheme" setting', () => {
       ]))
   })
 
-  it('is prefixed to schemeless linkified highlight URLs', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth](wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'my-app:wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
   it("is prefixed to schemeless linkified footnote URLs", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)(cereals/lucky-charms?show=nutrition) Never have."
 
@@ -156,20 +142,6 @@ describe('The "defaultUrlScheme" setting', () => {
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
         new Up.InlineRevealable([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'my-app:example.wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified schemeless highlight URLs when the highlight and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth] (example.wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'my-app:example.wiki/Blue_Sky')

@@ -68,20 +68,6 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       ]))
   })
 
-  it('is prefixed to linkified highlight URLs that start with a slash', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth](/wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'fun-scheme://example.com/wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
   it("is prefixed to linkified footnote URLs that start with a slash", () => {
     const markup = "I don't eat cereal. (^Well, I eat one.)[/cereals/lucky-charms?show=nutrition] Never have."
 
@@ -145,20 +131,6 @@ describe('The "baseForUrlsStartingWithSlash" setting', () => {
       insideDocumentAndParagraph([
         new Up.Text('Walter White produces '),
         new Up.InlineRevealable([
-          new Up.Link([
-            new Up.Text('Blue Sky meth')
-          ], 'fun-scheme://example.com/wiki/Blue_Sky')
-        ])
-      ]))
-  })
-
-  it('is prefixed to linkified highlight URLs that start with a slash when the highlight and the URL are separated by whitespace', () => {
-    const markup = 'Walter White produces [highlight: Blue Sky meth] (/wiki/Blue_Sky)'
-
-    expect(up.parse(markup)).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('Walter White produces '),
-        new Up.Highlight([
           new Up.Link([
             new Up.Text('Blue Sky meth')
           ], 'fun-scheme://example.com/wiki/Blue_Sky')
