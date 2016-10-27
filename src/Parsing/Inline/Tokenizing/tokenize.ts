@@ -852,7 +852,7 @@ class Tokenizer {
   }
 
   private treatUnusedForgivingStartDelimitersAsText(handler: ForgivingConventionHandler): void {
-    for (const startDelimiter of handler.unusedStartDelimiters()) {
+    for (const startDelimiter of handler.unusedStartDelimiters) {
       if (startDelimiter.isUnused) {
         this.insertToken({
           token: new Token(TokenRole.Text, startDelimiter.delimiterText),

@@ -2,7 +2,6 @@ import { StartDelimiter } from './StartDelimiter'
 import { EndDelimiter } from './EndDelimiter'
 import { escapeForRegex, patternStartingWith, oneOrMore } from '../../../../PatternHelpers'
 
-
 // TODO: Clean up
 
 
@@ -17,8 +16,11 @@ export class ForgivingConventionHandler {
       // TODO: Explain
       whenDelimitersMatch: (startingBackAtTokenIndex: number, unspentLengthInCommon: number) => void
     },
+
     // The two optional parameters below are for internal use only. Please see the `clone` method.
-    private openStartDelimiters: StartDelimiter[] = [],
+    //
+    // We store start delimiters from most-to-least recent.
+    private startDelimiters: StartDelimiter[] = [],
     public delimiterPattern?: RegExp
   ) {
     this.delimiterPattern = this.delimiterPattern ||
@@ -26,15 +28,13 @@ export class ForgivingConventionHandler {
         oneOrMore(escapeForRegex(options.delimiterChar)))
   }
 
-  addStartDelimiter(delimiterText: string, tokenIndex: number) {
-    this.openStartDelimiters.push(
-      new StartDelimiter(tokenIndex, delimiterText))
+  get unusedStartDelimiters(): StartDelimiter[] {
+    return this.startDelimiters.filter(startDelimiter => startDelimiter.isUnused)
   }
 
-  registerTokenInsertion(atIndex: number) {
-    for (const startDelimiter of this.openStartDelimiters) {
-      startDelimiter.registerTokenInsertion(atIndex)
-    }
+  addStartDelimiter(delimiterText: string, tokenIndex: number) {
+    this.startDelimiters.unshift(
+      new StartDelimiter(tokenIndex, delimiterText))
   }
 
   tryToCloseAnyOpenStartDelimiters(endDelimiterText: string): boolean {
@@ -42,43 +42,44 @@ export class ForgivingConventionHandler {
       return false
     }
 
+    const { whenDelimitersMatch } = this.options
+
     const endDelimiter = new EndDelimiter(endDelimiterText)
 
     // TODO: Explain
-    for (let i = this.openStartDelimiters.length - 1; i >= 0; i--) {
-      const startDelimiter = this.openStartDelimiters[i]
-
+    for (const startDelimiter of this.openStartDelimiters) {
       if (endDelimiter.unspentLength === startDelimiter.unspentLength) {
-        this.options.whenDelimitersMatch(startDelimiter.tokenIndex, startDelimiter.unspentLength)
-        this.openStartDelimiters.splice(i, 1)
+        whenDelimitersMatch(startDelimiter.tokenIndex, startDelimiter.unspentLength)
+        startDelimiter.pay(startDelimiter.unspentLength)
 
         return true
       }
     }
 
-    // From here on out, if this end delimiter can match with a start delimiter, it will. It'll
-    // try to match as many characters at once as it can.
-    //
-    // Once again, we'll check start delimiters from most to least recent.
-    //
-    // Take notice of the condition for this loop! Once the end delimiter has spent all of its
-    // characters, we have nothing else to do.
-    for (let i = this.openStartDelimiters.length - 1; (i >= 0) && !endDelimiter.isTotallySpent; i--) {
-      const startDelimiter = this.openStartDelimiters[i]
+    // From here on out, if this end delimiter can match with a start delimiter, it will. With
+    // each start delimiter, it'll "cancel out" as many characters as possible.
+    for (const startDelimiter of this.openStartDelimiters) {
+      if (endDelimiter.isFullySpent) {
+        return true
+      }
 
       const unspentLengthInCommon =
-        startDelimiter.cancelOutAndGetCommonUnspentLength(endDelimiter)
+        Math.min(startDelimiter.unspentLength, endDelimiter.unspentLength)
 
-      this.options.whenDelimitersMatch(startDelimiter.tokenIndex, unspentLengthInCommon)
+      whenDelimitersMatch(startDelimiter.tokenIndex, unspentLengthInCommon)
+      startDelimiter.pay(unspentLengthInCommon)
+      endDelimiter.pay(unspentLengthInCommon)
     }
-
-    this.removeFullySpentStartDelimiters()
 
     return true
   }
 
-  unusedStartDelimiters(): StartDelimiter[] {
-    return this.openStartDelimiters.filter(startDelimiter => startDelimiter.isUnused)
+  registerTokenInsertion(atIndex: number) {
+    for (const startDelimiter of this.openStartDelimiters) {
+      if (atIndex < startDelimiter.tokenIndex) {
+        startDelimiter.tokenIndex += 1
+      }
+    }
   }
 
   // Like the `ConventionContext` class, this class needs to be clonable in order to properly
@@ -86,13 +87,11 @@ export class ForgivingConventionHandler {
   clone(): ForgivingConventionHandler {
     return new ForgivingConventionHandler(
       this.options,
-      this.openStartDelimiters.map(delimiter => delimiter.clone()),
+      this.startDelimiters.map(delimiter => delimiter.clone()),
       this.delimiterPattern)
   }
 
-  private removeFullySpentStartDelimiters(): void {
-    this.openStartDelimiters =
-      this.openStartDelimiters.filter(startDelimiter => !startDelimiter.isTotallySpent)
+  private get openStartDelimiters(): StartDelimiter[] {
+    return this.startDelimiters.filter(delimiter => !delimiter.isFullySpent)
   }
 }
-
