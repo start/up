@@ -124,7 +124,7 @@ context('Text separated from (otherwise surrounding) equal signs by whitespace i
 
 
 
-context('Unmatched double equal signs (that would otherwise start highlighting) are preserved as plain text. These unmatched double equal signs:', () => {
+context('Unmatched double equal signs (that would otherwise start a highlight) are preserved as plain text. These unmatched double equal signs:', () => {
   specify('Can be the only double equal signs in a paragraph', () => {
     expect(Up.parse('I said that ==I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -132,7 +132,7 @@ context('Unmatched double equal signs (that would otherwise start highlighting) 
       ]))
   })
 
-  specify('Can follow another unmatched doublequote', () => {
+  specify('Can follow another unmatched instance of double equal signs', () => {
     expect(Up.parse('Bob likes ==eating every ==blueberry')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Bob likes ==eating every ==blueberry'),
@@ -147,6 +147,34 @@ context('Unmatched double equal signs (that would otherwise start highlighting) 
           new Up.Text('blueberries')
         ]),
         new Up.Text('! Yes, I like ==blueberries')
+      ]))
+  })
+})
+
+
+context('Unmatched double equal signs (that would otherwise end a highlight) are preserved as plain text. The unmatched double equal signs:', () => {
+  specify('Can be the only double equal signs in a paragraph', () => {
+    expect(Up.parse('I love lines== a lot.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I love lines== a lot.'),
+      ]))
+  })
+
+  specify('Can follow another unmatched doublequote', () => {
+    expect(Up.parse('I love lines== more than you love lines== and that cannot be disputed.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I love lines== more than you love lines== and that cannot be disputed.'),
+      ]))
+  })
+
+  specify('Can follow a proper inline quote', () => {
+    expect(Up.parse('I love ==cupcakes==, but I also love lines== a lot.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I love '),
+        new Up.Highlight([
+          new Up.Text('cupcakes')
+        ]),
+        new Up.Text(', but I also love lines== a lot.')
       ]))
   })
 })
