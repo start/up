@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from '.././Helpers'
 
 
 context('When most otherwise-nested conventions overlap by only their start delimiters, they nest without being split. This includes:', () => {
-  specify('Two "freely-splittable" conventions (e.g. stress, italics) overlap a third (e.g. highlighting)', () => {
+  specify('Two "freely-splittable" conventions (e.g. stress, italics) overlapping a third (e.g. highlighting)', () => {
     expect(Up.parse('**_==Hello_ good** friend!== Hi!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
@@ -36,7 +36,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify("Emphasis and a link", () => {
+  specify("Emphasis overlapping a link", () => {
     expect(Up.parse("*[Yes*, I watched it live](example.com/replay).")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
@@ -49,7 +49,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify("A link and epmhasis", () => {
+  specify("A link overlapping epmhasis", () => {
     expect(Up.parse("[*Yes, I watched it live](example.com/replay) yesterday*.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
@@ -62,7 +62,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify('Quoted text and italics', () => {
+  specify('Quoted text overlapping italics', () => {
     expect(Up.parse('"_Oh" why would you do this?_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
@@ -74,7 +74,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       ]))
   })
 
-  specify('Italics and quoted text', () => {
+  specify('Italics overlapping quoted text', () => {
     expect(Up.parse('_"Oh_ why would you do this?"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
@@ -88,7 +88,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
 
 
   context('But not parenthetical conventions:', () => {
-    specify('Parentheses and emphasis', () => {
+    specify('Parenthesized text overlapping emphasis', () => {
       expect(Up.parse('(*Oh) why would you do this?*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -103,7 +103,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Emphasis and parentheses', () => {
+    specify('Emphasis overlapping parenthesized text', () => {
       expect(Up.parse('*(Oh* why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -115,7 +115,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Square brackets and emphasis', () => {
+    specify('Square bracketed text overlapping emphasis', () => {
       expect(Up.parse('[*Oh] why would you do this?*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -130,7 +130,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Emphasis and square brackets', () => {
+    specify('Emphasis overlapping square bracketed text', () => {
       expect(Up.parse('*[Oh* why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -142,7 +142,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Quoted text and parentheses', () => {
+    specify('Quoted text overlapping parenthesized text', () => {
       expect(Up.parse('"(Oh" why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -154,7 +154,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         ]))
     })
 
-    specify('Parentheses and quoted text', () => {
+    specify('Parenthesized text overlapping quoted text', () => {
       expect(Up.parse('("Oh) why would you do this?"')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -288,7 +288,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("An inline revealable and a link", () => {
+    specify("An inline revealable overlapping a link", () => {
       expect(Up.parse('[SPOILER: Mario fell off the platform. (splat])(example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -300,7 +300,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A link and an inline revealable", () => {
+    specify("A link overlapping an inline revealable", () => {
       expect(Up.parse("(loudly sings [SPOILER: Jigglypuff's Lullaby)(example.com)]")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -312,7 +312,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("Emphasis and a link", () => {
+    specify("Emphasis overlapping a link", () => {
       expect(Up.parse("*I watched it [live*](example.com/replay)")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
@@ -324,7 +324,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("A link and highlighted text", () => {
+    specify("A link overlapping highlighted text", () => {
       expect(Up.parse('[Mario fell off the platform. ==splat][example.com/game-over]==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -336,7 +336,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify("Highlighted text and a link", () => {
+    specify("Highlighted text overlapping a link", () => {
       expect(Up.parse('==loud [thwomp==](example.com/thwomp)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
@@ -351,7 +351,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
 
   context('But not parenthetical conventions:', () => {
-    specify('Italics and parentheses', () => {
+    specify('Italics overlapping parenthesized text', () => {
       expect(Up.parse('_Oh (why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
@@ -366,7 +366,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
         ]))
     })
 
-    specify('Italics and square brackets', () => {
+    specify('Italics overlapping square bracketed text', () => {
       expect(Up.parse('_Oh [why would you do this?_]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
@@ -410,7 +410,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
 context('When most conventions completely overlap, they nest perfectly, with the conventions closing last becoming outermost.', () => {
   context('This includes:', () => {
-    specify('Italics and stress', () => {
+    specify('Italics overlapping stress', () => {
       expect(Up.parse('_**Why would you do this?_**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Stress([
@@ -421,7 +421,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('An inline revealable and emphasis', () => {
+    specify('An inline revealable overlapping emphasis', () => {
       expect(Up.parse('[SPOILER: *Why would you do this?]*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
@@ -432,7 +432,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Emphasis and an inline revealable', () => {
+    specify('Emphasis overlapping an inline revealable', () => {
       expect(Up.parse('*[SPOILER: Why would you do this?*]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -444,7 +444,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
   })
 
-  specify('Quoted text and italics', () => {
+  specify('Quoted text overlapping italics', () => {
     expect(Up.parse('"_Why would you do this?"_')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
@@ -455,7 +455,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       ]))
   })
 
-  specify('Italics and quoted text', () => {
+  specify('Italics overlapping quoted text', () => {
     expect(Up.parse('_"Why would you do this?_"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.InlineQuote([
@@ -468,7 +468,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
 
 
   context('But not parenthetical conventions:', () => {
-    specify('Parentheses and italics', () => {
+    specify('Parenthesized text overlapping italics', () => {
       expect(Up.parse('(_Why would you do this?)_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -480,7 +480,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Italics and parentheses', () => {
+    specify('Italics overlapping parenthesized text', () => {
       expect(Up.parse('_(Why would you do this?_)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -492,7 +492,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Square brackets and italics', () => {
+    specify('Square bracketed text overlapping italics', () => {
       expect(Up.parse('[_Why would you do this?]_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -504,7 +504,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         ]))
     })
 
-    specify('Italics and square brackets', () => {
+    specify('Italics overlapping square bracketed text', () => {
       expect(Up.parse('_[Why would you do this?_]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -517,7 +517,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
     })
   })
 
-  specify('Quoted text and square brackets', () => {
+  specify('Quoted text overlapping square bracketed text', () => {
     expect(Up.parse('"[Why would you do this?"]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -529,7 +529,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
       ]))
   })
 
-  specify('Square brackets and quoted text', () => {
+  specify('Square bracketed text overlapping quoted text', () => {
     expect(Up.parse('["Why would you do this?]"')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
@@ -543,21 +543,21 @@ context('When most conventions completely overlap, they nest perfectly, with the
 })
 
 
-context("When most conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second.", () => {
+context("When some conventions overlap by only the first convention's end delimiter and the second convention's start delimiter, the conventions are treated as though the first closed before the second.", () => {
   context('This includes:', () => {
-    specify('Highlighted text and italics', () => {
-      expect(Up.parse('==Oh _==why would you do this?_')).to.deep.equal(
+    specify('A link overlapping revealable content', () => {
+      expect(Up.parse('(Oh [SPOILER:) (google.com) why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Highlight([
+          new Up.Link([
             new Up.Text('Oh ')
+          ], 'https://google.com'),
+          new Up.InlineRevealable([
+            new Up.Text(' why would you do this?')
           ]),
-          new Up.Italic([
-            new Up.Text('why would you do this?')
-          ])
         ]))
     })
 
-    specify('Revealable content and a link', () => {
+    specify('Revealable content overlapping a link', () => {
       expect(Up.parse('(SPOILER: Oh [)why would you do this?](example.com)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineRevealable([
@@ -568,8 +568,11 @@ context("When most conventions overlap by only the first convention's end delimi
           ], 'https://example.com')
         ]))
     })
+  })
 
-    specify('A link whose content is wrapped in square brackets and stress', () => {
+
+  context('Forgiving conventions cannot close directly after another convention opens, but other conventions can close directly after forgiving conventions open:', () => {
+    specify('A link overlapping stress', () => {
       expect(Up.parse('[Well, well, **](example.com) why would you do this?**')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Link([
@@ -580,22 +583,23 @@ context("When most conventions overlap by only the first convention's end delimi
           ])
         ]))
     })
+
+    specify('An inline revealable convention overlapping highlighted text', () => {
+      expect(Up.parse('[SPOILER: Well, well, ==] why would you do this?==')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.InlineRevealable([
+            new Up.Text('Well, well, ')
+          ]),
+          new Up.Highlight([
+            new Up.Text(' why would you do this?')
+          ])
+        ]))
+    })
   })
 
-  specify('Highlight and inline quotes', () => {
-    expect(Up.parse('==Oh "==why would you do this?"')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Highlight([
-          new Up.Text('Oh '),
-        ]),
-        new Up.InlineQuote([
-          new Up.Text('why would you do this?')
-        ])
-      ]))
-  })
 
-  context('But not parenthetical conventions:', () => {
-    specify('Parentheses and highlights', () => {
+  context('Parenthetical conventions do not follow this rule:', () => {
+    specify('Parenthesized text overlapping an inline revealable', () => {
       expect(Up.parse('(Oh ==) why would you do this?==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
@@ -610,7 +614,7 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('Highlighted text and parentheses', () => {
+    specify('Highlighted text overlapping parenthesized text', () => {
       expect(Up.parse('==Oh (==why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
@@ -625,7 +629,7 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('Square brackets and highlights', () => {
+    specify('Square bracketed text overlapping highlights', () => {
       expect(Up.parse('[Oh ==] why would you do this?==')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.SquareParenthetical([
@@ -640,7 +644,7 @@ context("When most conventions overlap by only the first convention's end delimi
         ]))
     })
 
-    specify('Highlighted text and square brackets', () => {
+    specify('Highlighted text overlapping square bracketed text', () => {
       expect(Up.parse('==Oh [==why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Highlight([
