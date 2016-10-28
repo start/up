@@ -168,7 +168,7 @@ describe('Overlapped square bracketed and emphasized text', () => {
 
 describe('Overlapped highlighted and stressed text', () => {
   it('splits the stress node because it opened second', () => {
-    expect(Up.parse('I [highlight: love **drinking] whole** milk.')).to.deep.equal(
+    expect(Up.parse('I ==love **drinking== whole** milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.Highlight([
@@ -188,7 +188,7 @@ describe('Overlapped highlighted and stressed text', () => {
 
 describe('Overlapped stressed and highlighted text', () => {
   it('splits the highlight node because it opened second', () => {
-    expect(Up.parse('I **love [highlight: drinking** whole] milk.')).to.deep.equal(
+    expect(Up.parse('I **love ==drinking** whole== milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.Stress([

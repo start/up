@@ -92,18 +92,6 @@ context('An example input convention is not linkified when it is directly follow
       ]))
   })
 
-  specify('Highlights', () => {
-    expect(Up.parse('To view your shopping cart, press { My Cart }[highlight: and then buy me stuff].')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('To view your shopping cart, press '),
-        new Up.ExampleInput('My Cart'),
-        new Up.Highlight([
-          new Up.Text('and then buy me stuff')
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-
   specify('Section links', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([

@@ -287,7 +287,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
   })
 
   specify("Highlights", () => {
-    expect(Up.parse('[highlight: I love https://archive.org/fake]!')).to.deep.equal(
+    expect(Up.parse('==I love https://archive.org/fake==!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Highlight([
           new Up.Text('I love '),
@@ -699,7 +699,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
   })
 
 
-  context('The URL is terminated even when:', () => {
+  context('The URL is even terminated when:', () => {
     specify('The punctuation is immediately followed by a valid URL path', () => {
       expect(Up.parse('https://4chan.org.../r9k/ is a sad place.')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -764,7 +764,7 @@ context('If a bare URL does not have a path, it is terminated by any punctuation
       })
 
       specify('Highlight', () => {
-        expect(Up.parse('[highlight: For more info, visit https://archive.org!]')).to.deep.equal(
+        expect(Up.parse('==For more info, visit https://archive.org!==')).to.deep.equal(
           insideDocumentAndParagraph([
             new Up.Highlight([
               new Up.Text('For more info, visit '),

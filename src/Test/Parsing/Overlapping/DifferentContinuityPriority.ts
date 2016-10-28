@@ -198,7 +198,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
 
 context('When a link overlaps highlighted text, the highlighted text will always be split. This includes when:', () => {
   specify('The link opens first', () => {
-    expect(Up.parse('This [trash (highlight: can](https://en.wikipedia.org/wiki/Waste_container) not) stay here.')).to.deep.equal(
+    expect(Up.parse('This [trash ==can](https://en.wikipedia.org/wiki/Waste_container) not== stay here.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('This '),
         new Up.Link([
@@ -215,7 +215,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
   })
 
   specify('The highlight opens first', () => {
-    expect(Up.parse('I do [highlight: not (care] at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
+    expect(Up.parse('I do ==not (care== at)(https://en.wikipedia.org/wiki/Carrot) all.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I do '),
         new Up.Highlight([
@@ -512,7 +512,7 @@ context('When quoted text overlaps stressed text, the stress node will always be
 
 context('When quoted text overlaps highlighted text, the highlight node will always be split. This includes when:', () => {
   specify('The inline quote opens first', () => {
-    expect(Up.parse('I "love [highlight: drinking" whole] milk.')).to.deep.equal(
+    expect(Up.parse('I "love ==drinking" whole== milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.InlineQuote([
@@ -529,7 +529,7 @@ context('When quoted text overlaps highlighted text, the highlight node will alw
   })
 
   specify('The highlight opens first', () => {
-    expect(Up.parse('I [highlight: love "drinking] whole" milk.')).to.deep.equal(
+    expect(Up.parse('I ==love "drinking== whole" milk.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('I '),
         new Up.Highlight([

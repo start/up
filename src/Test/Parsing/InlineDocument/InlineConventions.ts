@@ -46,7 +46,7 @@ context('Except for footnotes and section links, every inline convention is supp
     })
 
     specify('Highlight', () => {
-      expect(Up.parseInline('I loved my [highlight: Game Boy], though I never took it with me when I left home.')).to.deep.equal(
+      expect(Up.parseInline('I loved my ==Game Boy==, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Highlight([

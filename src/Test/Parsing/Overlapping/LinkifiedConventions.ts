@@ -27,7 +27,7 @@ describe('Emphasis overlapping a linkified revealable convention', () => {
 
 describe('A linkified revealable convention overlapping highlighted text', () => {
   it('splits the highlight node', () => {
-    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary (highlight: Oak][http://example.com/finalbattle] and then the credits roll).')).to.deep.equal(
+    expect(Up.parse('After you beat the Elite Four, [SPOILER: you fight Gary ==Oak][http://example.com/finalbattle] and then the credits roll==.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('After you beat the Elite Four, '),
         new Up.InlineRevealable([

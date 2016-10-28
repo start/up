@@ -342,17 +342,19 @@ context("Due to syntax for forgiving conventions, they cannot be empty or blank.
           ]))
       })
 
-      specify('4 characters', () => {
-        expect(Up.parse('====')).to.deep.equal(
+      specify('3 characters', () => {
+        // If the equal signs were alone on a line, they would be interpreted as a thematic break streak.
+        expect(Up.parse('Lines! ===')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.Text('====')
+            new Up.Text('Lines! ===')
           ]))
       })
 
-      specify('5 characters', () => {
-        expect(Up.parse('=====')).to.deep.equal(
+      specify('4 characters', () => {
+        // If the equal signs were alone on a line, they would be interpreted as a thematic break streak.
+        expect(Up.parse('Lines! ====')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.Text('=====')
+            new Up.Text('Lines! ====')
           ]))
       })
     })

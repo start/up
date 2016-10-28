@@ -25,27 +25,6 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
       ]))
   })
 
-  specify('Highlights', () => {
-    expect(Up.parse('After you beat the Elite Four, [highlight: you fight Gary] (example.com/finalbattle) (https://example.com).')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('After you beat the Elite Four, '),
-        new Up.Highlight([
-          new Up.Link([
-            new Up.Text('you fight Gary')
-          ], 'https://example.com/finalbattle')
-        ]),
-        new Up.Text(' '),
-        new Up.NormalParenthetical([
-          new Up.Text('('),
-          new Up.Link([
-            new Up.Text('example.com')
-          ], 'https://example.com'),
-          new Up.Text(')'),
-        ]),
-        new Up.Text('.')
-      ]))
-  })
-
   specify("Footnotes", () => {
     const markup = "I don't eat cereal (^Well, I do, but I pretend not to.)[http://example.com/luckycharms] (https://example.com/cereal-problems) and I never have."
 

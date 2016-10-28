@@ -237,8 +237,8 @@ I drink soda
 
 Actually, I only drink milk.
 
-I am great. Read the [highlight: full transcript of my greatness]
-==================================================================
+I am great. Read the ==full transcript of my greatness==
+========================================================
 
 Well, maybe I'm not so great.`
 

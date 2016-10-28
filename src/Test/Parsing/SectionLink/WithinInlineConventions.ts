@@ -131,7 +131,7 @@ I love all sorts of fancy stuff.`
 
   specify('Highlights', () => {
     const markup = `
-I have plenty of good traits. [highlight: See [section: interesting].]
+I have plenty of good traits. ==See [section: interesting].==
 
 I drink exotic soda
 =====================
