@@ -73,7 +73,7 @@ context('Within highlighted text, an (inner) highlight can be the first conventi
   })
 
 
-  specify('The inner inline quote can open immediately after several conventions have just opened', () => {
+  specify('The inner highlight can open immediately after several conventions have just opened', () => {
     expect(Up.parse('Luigi stood up. ==Hello, my _(*==leetle==*)_ Mario!==')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Luigi stood up. '),
@@ -97,7 +97,7 @@ context('Within highlighted text, an (inner) highlight can be the first conventi
 })
 
 
-context('Within an inline quote, an (inner) inline quote can close directly after a convention inside of it has closed.', () => {
+context('Within highlighted text, an (inner) highlight can close directly after a convention inside of it has closed.', () => {
   context('The innermost convention can be (but is not limited to):', () => {
     specify('Normal parentheticals', () => {
       expect(Up.parse('==Luigi stood up. ==Help me find brother (Mario)==, I heard Luigi say.==')).to.deep.equal(
