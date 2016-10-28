@@ -178,3 +178,32 @@ context('Unmatched double equal signs (that would otherwise end a highlight) are
       ]))
   })
 })
+
+
+context('One highlight can follow another:', () => {
+  specify('With a space in between them', () => {
+    expect(Up.parse('==Thanks.== ==Okay.==')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Highlight([
+          new Up.Text('Thanks.')
+        ]),
+        new Up.Text(' '),
+        new Up.Highlight([
+          new Up.Text('Okay.')
+        ])
+      ]))
+  })
+
+  specify('With words in between them', () => {
+    expect(Up.parse('==Cupcakes== and ==cake==')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Highlight([
+          new Up.Text('Cupcakes')
+        ]),
+        new Up.Text(' and '),
+        new Up.Highlight([
+          new Up.Text('cake')
+        ])
+      ]))
+  })
+})

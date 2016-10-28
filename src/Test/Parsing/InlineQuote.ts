@@ -140,7 +140,7 @@ context('An unmatched doublequote (that would otherwise end a quote) is preserve
 })
 
 
-context('Inline quotes can follow each other in a paragraph', () => {
+context('Inline quotes can follow each other in a paragraph:', () => {
   specify('With a space in between them', () => {
     expect(Up.parse('"Thanks." "Okay."')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -204,7 +204,7 @@ context('Text surrounded by multiple consecutive doublequotes produces a single 
   })
 
 
-  specify('This inline quote can contain nested inline quotes', () => {
+  specify('The inline quote can contain nested inline quotes', () => {
     expect(Up.parse('Yeah, check the """"new "office" building"""".')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Yeah, check the '),
