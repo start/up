@@ -98,26 +98,28 @@ context('Up offers no real support for self-overlapping. When a convention overl
   })
 
 
-  context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy. It technically works, but needless splitting occers.', () => {
-    expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('This '),
-        new Up.InlineRevealable([
-          new Up.Text('truly '),
-          new Up.Emphasis([
-            new Up.Text('does ')
-          ]),
+  context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy.', () => {
+    specify('It technically works, but needless splitting occers.', () => {
+      expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.Text('This '),
           new Up.InlineRevealable([
+            new Up.Text('truly '),
             new Up.Emphasis([
-              new Up.Text('not')
-            ])
+              new Up.Text('does ')
+            ]),
+            new Up.InlineRevealable([
+              new Up.Emphasis([
+                new Up.Text('not')
+              ])
+            ]),
+            new Up.Emphasis([
+              new Up.Text(' make')
+            ]),
+            new Up.Text(' much')
           ]),
-          new Up.Emphasis([
-            new Up.Text(' make')
-          ]),
-          new Up.Text(' much')
-        ]),
-        new Up.Text(' sense.')
-      ]))
+          new Up.Text(' sense.')
+        ]))
+    })
   })
 })
