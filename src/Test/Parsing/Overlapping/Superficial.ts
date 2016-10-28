@@ -385,17 +385,23 @@ context('When most otherwise-nested conventions overlap by only their end delimi
 
   context('When the convention closing last is linkified, and when the convention overlapping the linkified convention is linkifiable,', () => {
     specify("the convention closing last remains linkified despite being nested inside the linkifiable convention", () => {
-      expect(Up.parse('(SPOILER: There was another [highlight: rotten vegetable)] (example.com/rotten) Hi!')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.InlineRevealable([
-            new Up.Text('There was another '),
-            new Up.Highlight([
-              new Up.Link([
-                new Up.Text('rotten vegetable'),
-              ], 'https://example.com/rotten')
+      const footnote =
+        new Up.Footnote([
+          new Up.Link([
+            new Up.Text('rotten vegetable')
+          ], 'https://example.com/rotten')
+        ], { referenceNumber: 1 })
+
+      expect(Up.parse('(SPOILER: There was another [^ rotten vegetable)] (example.com/rotten) Hi!')).to.deep.equal(
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.InlineRevealable([
+              new Up.Text('There was another'),
+              footnote
             ]),
+            new Up.Text(' Hi!')
           ]),
-          new Up.Text(' Hi!')
+          new Up.FootnoteBlock([footnote])
         ]))
     })
   })
