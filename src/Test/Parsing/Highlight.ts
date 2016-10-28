@@ -94,3 +94,20 @@ describe('Nested highlighting', () => {
       ]))
   })
 })
+
+
+context('Text separated from (otherwise surrounding) equal signs by whitespace is not highlighted:', () => {
+  specify('2 eaqual signs on each side', () => {
+    expect(Up.parse('My favorite lines == are your favorite quote mark == and we all know it.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('My favorite lines == are your favorite quote mark == and we all know it.'),
+      ]))
+  })
+
+  specify('4 eaqual signs on each side', () => {
+    expect(Up.parse('My favorite lines ==== are your favorite quote mark ==== and we all know it.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('My favorite lines ==== are your favorite quote mark ==== and we all know it.'),
+      ]))
+  })
+})
