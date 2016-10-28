@@ -1,26 +1,10 @@
 import { expect } from 'chai'
 import * as Up from '../../../Up'
-import { insideDocumentAndParagraph } from'.././Helpers'
+import { insideDocumentAndParagraph } from '.././Helpers'
 
 
-context('Up offers no real support for self-overlapping. When a convention overlaps itself, its start/end delimiters simply match from innermost to outermost.', () => {
-  specify('This is true for highlights, which have no continuity priority', () => {
-    expect(Up.parse('This [highlight: does (highlight: not] make) much sense.')).to.deep.equal(
-      insideDocumentAndParagraph([
-        new Up.Text('This '),
-        new Up.Highlight([
-          new Up.Text('does '),
-          new Up.Highlight([
-            new Up.Text('not')
-          ]),
-          new Up.Text(' make')
-        ]),
-        new Up.Text(' much sense.')
-      ]))
-  })
-
-
-  context('This is true for conventions with continuity priority:', () => {
+context('Up offers no real support for self-overlapping. When a convention overlaps itself, the start/end delimiters simply match from innermost to outermost.', () => {
+  context('The delimiters of most conventions make self-overlapping impossible. However, the following can self-overlap:', () => {
     specify('Inline revealables', () => {
       expect(Up.parse('This [SPOILER: does (SPOILER: not] make) much sense.')).to.deep.equal(
         insideDocumentAndParagraph([
@@ -76,15 +60,15 @@ context('Up offers no real support for self-overlapping. When a convention overl
 
 
   context('This is also true when a convention overlaps multiple instances of itself.', () => {
-    context('A convention with no continuity priority:', () => {
-      specify('Two highlights overlapping another', () => {
-        expect(Up.parse('[highlight: This [highlight: does (highlight: not]] make) much sense.')).to.deep.equal(
+    context('A convention with continuity priority', () => {
+      specify('Two inline revealable conventions overlapping another', () => {
+        expect(Up.parse('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.Highlight([
+            new Up.InlineRevealable([
               new Up.Text('This '),
-              new Up.Highlight([
+              new Up.InlineRevealable([
                 new Up.Text('does '),
-                new Up.Highlight([
+                new Up.InlineRevealable([
                   new Up.Text('not')
                 ]),
               ]),
@@ -94,14 +78,14 @@ context('Up offers no real support for self-overlapping. When a convention overl
           ]))
       })
 
-      specify('A highlight overlapping two others', () => {
-        expect(Up.parse('[highlight: This (highlight: does (highlight: not] make)) much sense.')).to.deep.equal(
+      specify('An inline revealable overlapping two others', () => {
+        expect(Up.parse('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
           insideDocumentAndParagraph([
-            new Up.Highlight([
+            new Up.InlineRevealable([
               new Up.Text('This '),
-              new Up.Highlight([
+              new Up.InlineRevealable([
                 new Up.Text('does '),
-                new Up.Highlight([
+                new Up.InlineRevealable([
                   new Up.Text('not')
                 ]),
                 new Up.Text(' make')
@@ -109,71 +93,31 @@ context('Up offers no real support for self-overlapping. When a convention overl
             ]),
             new Up.Text(' much sense.')
           ]))
-      })
-
-
-      context('A convention with continuity priority', () => {
-        specify('Two inline revealable conventions overlapping another', () => {
-          expect(Up.parse('[SPOILER: This [SPOILER: does (SPOILER: not]] make) much sense.')).to.deep.equal(
-            insideDocumentAndParagraph([
-              new Up.InlineRevealable([
-                new Up.Text('This '),
-                new Up.InlineRevealable([
-                  new Up.Text('does '),
-                  new Up.InlineRevealable([
-                    new Up.Text('not')
-                  ]),
-                ]),
-                new Up.Text(' make')
-              ]),
-              new Up.Text(' much sense.')
-            ]))
-        })
-
-        specify('An inline revealable overlapping two others', () => {
-          expect(Up.parse('[SPOILER: This (SPOILER: does (SPOILER: not] make)) much sense.')).to.deep.equal(
-            insideDocumentAndParagraph([
-              new Up.InlineRevealable([
-                new Up.Text('This '),
-                new Up.InlineRevealable([
-                  new Up.Text('does '),
-                  new Up.InlineRevealable([
-                    new Up.Text('not')
-                  ]),
-                  new Up.Text(' make')
-                ]),
-              ]),
-              new Up.Text(' much sense.')
-            ]))
-        })
       })
     })
   })
 
-  
-  // TODO: Add more tests
+
   context('When a convention overlaps itself, and both instances are overlapped by another convention, things get messy. It technically works, but needless splitting occers.', () => {
-    specify('Due to a lack of unique end delimiters among conventions with continuity priority, this monstrosity is only possible when the convention overlapping itself has higher continuity priority than the other one', () => {
-      expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
-        insideDocumentAndParagraph([
-          new Up.Text('This '),
-          new Up.InlineRevealable([
-            new Up.Text('truly '),
-            new Up.Emphasis([
-              new Up.Text('does ')
-            ]),
-            new Up.InlineRevealable([
-              new Up.Emphasis([
-                new Up.Text('not')
-              ])
-            ]),
-            new Up.Emphasis([
-              new Up.Text(' make')
-            ]),
-            new Up.Text(' much')
+    expect(Up.parse('This [SPOILER: truly *does (SPOILER: not] make* much) sense.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('This '),
+        new Up.InlineRevealable([
+          new Up.Text('truly '),
+          new Up.Emphasis([
+            new Up.Text('does ')
           ]),
-          new Up.Text(' sense.')
-        ]))
-    })
+          new Up.InlineRevealable([
+            new Up.Emphasis([
+              new Up.Text('not')
+            ])
+          ]),
+          new Up.Emphasis([
+            new Up.Text(' make')
+          ]),
+          new Up.Text(' much')
+        ]),
+        new Up.Text(' sense.')
+      ]))
   })
 })
