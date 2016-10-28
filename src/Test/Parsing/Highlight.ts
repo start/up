@@ -65,3 +65,32 @@ describe('Highlighted text', () => {
       ]))
   })
 })
+
+
+describe('Nested highlighting', () => {
+  it('can open at the same time', () => {
+    expect(Up.parse('I love eating ====gluten-free== blueberry muffins.==')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I love eating '),
+        new Up.Highlight([
+          new Up.Highlight([
+            new Up.Text('gluten-free')
+          ]),
+          new Up.Text(' blueberry muffins.')
+        ])
+      ]))
+  })
+
+  it('can close at the same time', () => {
+    expect(Up.parse('==Integrated ==GPUs==== are all the rage.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Highlight([
+          new Up.Text('Integrated '),
+          new Up.Highlight([
+            new Up.Text('GPUs'),
+          ]),
+        ]),
+        new Up.Text(' are all the rage.')
+      ]))
+  })
+})
