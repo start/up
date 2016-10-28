@@ -55,13 +55,13 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('Luigi stood up. "Hello, my [highlight:"leetle"] Mario!"')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('Luigi stood up. "Hello, my [spoiler:"leetle"] Mario!"')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.InlineQuote([
             new Up.Text('Hello, my '),
-            new Up.Highlight([
+            new Up.InlineRevealable([
               new Up.InlineQuote([
                 new Up.Text('leetle')
               ])
@@ -147,8 +147,8 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('"Luigi stood up. "Help me find brother [highlight:Mario]", I heard Luigi say."')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('"Luigi stood up. "Help me find brother [spoiler:Mario]", I heard Luigi say."')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.InlineQuote([
             new Up.Text('Luigi stood up. '),

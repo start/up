@@ -55,13 +55,13 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('Luigi stood up. *Hello, my [highlight:*leetle*] Mario!*')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('Luigi stood up. *Hello, my [spoiler:*leetle*] Mario!*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.Emphasis([
             new Up.Text('Hello, my '),
-            new Up.Highlight([
+            new Up.InlineRevealable([
               new Up.Emphasis([
                 new Up.Text('leetle')
               ])
@@ -147,14 +147,14 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('*Luigi stood up. *Help me find brother [highlight:Mario]*, I heard Luigi say.*')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('*Luigi stood up. *Help me find brother [spoiler:Mario]*, I heard Luigi say.*')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Emphasis([
             new Up.Text('Luigi stood up. '),
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
-              new Up.Highlight([
+              new Up.InlineRevealable([
                 new Up.Text('Mario'),
               ]),
             ]),

@@ -55,13 +55,13 @@ context('Within italics, (inner) italics can be the first convention within any 
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('Luigi stood up. _Hello, my [highlight:_leetle_] Mario!_')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('Luigi stood up. _Hello, my [spoiler:_leetle_] Mario!_')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Luigi stood up. '),
           new Up.Italic([
             new Up.Text('Hello, my '),
-            new Up.Highlight([
+            new Up.InlineRevealable([
               new Up.Italic([
                 new Up.Text('leetle')
               ])
@@ -147,14 +147,14 @@ context('Within italics, (inner) italics can close directly after a convention i
         ]))
     })
 
-    specify('Highlights (even when there is no space after the colon)', () => {
-      expect(Up.parse('_Luigi stood up. _Help me find brother [highlight:Mario]_, I heard Luigi say._')).to.deep.equal(
+    specify('Inline revealables (even when there is no space after the colon)', () => {
+      expect(Up.parse('_Luigi stood up. _Help me find brother [spoiler:Mario]_, I heard Luigi say._')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Italic([
             new Up.Text('Luigi stood up. '),
             new Up.Italic([
               new Up.Text('Help me find brother '),
-              new Up.Highlight([
+              new Up.InlineRevealable([
                 new Up.Text('Mario'),
               ]),
             ]),
