@@ -207,3 +207,50 @@ context('One highlight can follow another:', () => {
       ]))
   })
 })
+
+
+context("Highlight delimiters don't have to be perfectly balanced.", () => {
+  specify('Starting with 2 and ending with 3', () => {
+    expect(Up.parse('After you beat the Elite Four, ==you fight Gary===.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify('Starting with 2 and ending with 4', () => {
+    expect(Up.parse('After you beat the Elite Four, ==you fight Gary====.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify('Starting with 3 and ending with 2', () => {
+    expect(Up.parse('After you beat the Elite Four, ===you fight Gary==.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+
+  specify('Starting with 4 and ending with 2', () => {
+    expect(Up.parse('After you beat the Elite Four, ====you fight Gary==.')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('After you beat the Elite Four, '),
+        new Up.Highlight([
+          new Up.Text('you fight Gary')
+        ]),
+        new Up.Text('.')
+      ]))
+  })
+})
