@@ -39,6 +39,16 @@ context('Text enclosed within 2 or more equal signs is highlighted. For example:
 })
 
 
+describe('Text enclosed within 1 equal sign on each side ', () => {
+  it('is not highlighted', () => {
+    expect(Up.parse('x=1 and y=2')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('x=1 and y=2'),
+      ]))
+  })
+})
+
+
 describe('Highlighted text', () => {
   it('is evaluated for inline conventions', () => {
     expect(Up.parse('==You should always use `<font>` elements.==')).to.deep.equal(
