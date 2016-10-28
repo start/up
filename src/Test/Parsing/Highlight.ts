@@ -121,3 +121,32 @@ context('Text separated from (otherwise surrounding) equal signs by whitespace i
       ]))
   })
 })
+
+
+
+context('Unmatched double equal signs (that would otherwise start highlighting) are preserved as plain text. These unmatched double equal signs:', () => {
+  specify('Can be the only double equal signs in a paragraph', () => {
+    expect(Up.parse('I said that ==I am still typi')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I said that ==I am still typi'),
+      ]))
+  })
+
+  specify('Can follow another unmatched doublequote', () => {
+    expect(Up.parse('Bob likes ==eating every ==blueberry')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('Bob likes ==eating every ==blueberry'),
+      ]))
+  })
+
+  specify('Can follow proper highlighted text', () => {
+    expect(Up.parse('I like ==blueberries==! Yes, I like ==blueberries')).to.deep.equal(
+      insideDocumentAndParagraph([
+        new Up.Text('I like '),
+        new Up.Highlight([
+          new Up.Text('blueberries')
+        ]),
+        new Up.Text('! Yes, I like ==blueberries')
+      ]))
+  })
+})
