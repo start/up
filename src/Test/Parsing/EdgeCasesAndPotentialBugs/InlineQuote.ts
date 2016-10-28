@@ -154,7 +154,7 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.Text('Luigi stood up. '),
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
-              new Up.Highlight([
+              new Up.InlineRevealable([
                 new Up.Text('Mario'),
               ]),
             ]),
