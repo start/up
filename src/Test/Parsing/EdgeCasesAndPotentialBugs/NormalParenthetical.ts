@@ -36,6 +36,7 @@ context('A normal parenthetical can be directly followed by whitespace followed 
     })
   })
 
+
   context('a footnote', () => {
     specify('that only contains whitespace directly after the caret', () => {
       const markup = "I don't eat cereal (or oatmeal) (^ Lying.) on Mondays."
