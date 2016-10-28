@@ -615,9 +615,9 @@ context("When some conventions overlap by only the first convention's end delimi
     })
 
     specify('Highlighted text overlapping parenthesized text', () => {
-      expect(Up.parse('==Oh (==why would you do this?)')).to.deep.equal(
+      expect(Up.parse('[SPOILER: Oh (]why would you do this?)')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Highlight([
+          new Up.InlineRevealable([
             new Up.Text('Oh '),
             new Up.NormalParenthetical([
               new Up.Text('(')
@@ -645,9 +645,9 @@ context("When some conventions overlap by only the first convention's end delimi
     })
 
     specify('Highlighted text overlapping square bracketed text', () => {
-      expect(Up.parse('==Oh [==why would you do this?]')).to.deep.equal(
+      expect(Up.parse('(SPOILER: Oh [)why would you do this?]')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.Highlight([
+          new Up.InlineRevealable([
             new Up.Text('Oh '),
             new Up.SquareParenthetical([
               new Up.Text('[')
