@@ -253,4 +253,35 @@ context("Highlight delimiters don't have to be perfectly balanced.", () => {
         new Up.Text('.')
       ]))
   })
+
+
+  context("A delimiter with 3 characters can be matched by two with 2 characters each.", () => {
+    specify('An opening delimiter with 3 characters can be closed by two closing delimiters with 2 characters each', () => {
+      expect(Up.parse('Yeah, I agree. Everyone should eat ===expensive blueberry== cereal== frequently.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.Text('Yeah, I agree. Everyone should eat '),
+          new Up.Highlight([
+            new Up.Highlight([
+              new Up.Text('expensive blueberry')
+            ]),
+            new Up.Text(' cereal')
+          ]),
+          new Up.Text(' frequently.')
+        ]))
+    })
+
+    specify('A closing delimiter with 3 characters can be closed by two opening delimiters with 2 characters each', () => {
+      expect(Up.parse('Yeah, I agree. Everyone should eat ==expensive ==blueberry cereal=== frequently.')).to.deep.equal(
+        insideDocumentAndParagraph([
+          new Up.Text('Yeah, I agree. Everyone should eat '),
+          new Up.Highlight([
+            new Up.Text('expensive '),
+            new Up.Highlight([
+              new Up.Text('blueberry cereal')
+            ]),
+          ]),
+          new Up.Text(' frequently.')
+        ]))
+    })
+  })
 })
