@@ -113,7 +113,7 @@ context("You can italicize/bold text at the same time when you're already within
 })
 
 
-context('An inflection start delimiter consisting of 3 underscores with its italics ended first', () => {
+context('A start delimiter consisting of 3 underscores with its italics ended first', () => {
   it('can have its bold convention closed with 3 underscores', () => {
     expect(Up.parse('Well, ___Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -130,7 +130,7 @@ context('An inflection start delimiter consisting of 3 underscores with its ital
 })
 
 
-describe('An inflection start delimiter consisting of 3 underscores with its bold ended first', () => {
+describe('A start delimiter consisting of 3 underscores with its bold ended first', () => {
   it('can have its italics convention closed with 3 underscores', () => {
     expect(Up.parse('Well, ___Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -271,7 +271,7 @@ context('Doubly bolded text can be closed together by', () => {
 })
 
 
-describe('Two inflection start delimiters, both consisting of 2 underscores,', () => {
+describe('Two start delimiters, both consisting of 2 underscores,', () => {
   it('can be closed by 3 underscores, bolding the inner text and italicizing the outer text', () => {
     expect(Up.parse('__He has won __six in a row!___')).to.deep.equal(
       insideDocumentAndParagraph([

@@ -60,7 +60,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
 })
 
 
-describe('An inflection start delimiter consisting of 3 underscores', () => {
+describe('A start delimiter consisting of 3 underscores', () => {
   it('can be closed by a single underscore if no other subsequent underscores close it, resulting in italiczed text and no stray underscores in the document', () => {
     expect(Up.parse('A ___bread_ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -85,7 +85,7 @@ describe('An inflection start delimiter consisting of 3 underscores', () => {
 })
 
 
-describe('An inflection start delimiter consisting of 1 underscore', () => {
+describe('A start delimiter consisting of 1 underscore', () => {
   it('can be closed by 3+ underscores, producing an italics node (if there are no other underscores to close) and no stray underscores in the document', () => {
     expect(Up.parse('A _bread___ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -99,7 +99,7 @@ describe('An inflection start delimiter consisting of 1 underscore', () => {
 })
 
 
-describe('An inflection start delimiter consisting of 2 underscores', () => {
+describe('A start delimiter consisting of 2 underscores', () => {
   it('can be closed by 3+ underscores, producing an italics node (if there are no other underscores to close) and no stray underscores in the document', () => {
     expect(Up.parse('A __bread___ to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -248,7 +248,7 @@ describe('Matching clusters of 3+ underscores each surrounded by whitespce', () 
 })
 
 
-describe('An inflection start delimiter consisting of 4+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
+describe('A start delimiter consisting of 4+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces an italics node nested within bold and italics nodes', () => {
     expect(Up.parse('Well, ____Xamarin_ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -267,7 +267,7 @@ describe('An inflection start delimiter consisting of 4+ underscores, with an it
 })
 
 
-describe('An inflection start delimiter consisting of 4+ underscores, with a bold convention ended first, subsequently ending in 3 additional underscores', () => {
+describe('A start delimiter consisting of 4+ underscores, with a bold convention ended first, subsequently ending in 3 additional underscores', () => {
   it('produces nested bold nodes', () => {
     expect(Up.parse('Well, ____Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -284,7 +284,7 @@ describe('An inflection start delimiter consisting of 4+ underscores, with a bol
 })
 
 
-describe('An inflection start delimiter consisting of 5+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
+describe('A start delimiter consisting of 5+ underscores, with an italics convention ended first, subsequently ending in 3+ additional underscores', () => {
   it('produces a bold node nested within bold and italics nodes', () => {
     expect(Up.parse('Well, _____Xamarin__ is now free___!')).to.deep.equal(
       insideDocumentAndParagraph([

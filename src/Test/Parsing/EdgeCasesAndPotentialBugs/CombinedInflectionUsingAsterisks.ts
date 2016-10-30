@@ -60,7 +60,7 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
 })
 
 
-describe('An inflection start delimiter consisting of 3 asterisks', () => {
+describe('A start delimiter consisting of 3 asterisks', () => {
   it('can be closed by a single asterisk if no other subsequent asterisks close it, resulting in emphasized text and no stray asterisks in the document', () => {
     expect(Up.parse('A ***bread* to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -85,7 +85,7 @@ describe('An inflection start delimiter consisting of 3 asterisks', () => {
 })
 
 
-describe('An inflection start delimiter consisting of 1 asterisk', () => {
+describe('A start delimiter consisting of 1 asterisk', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.parse('A *bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -99,7 +99,7 @@ describe('An inflection start delimiter consisting of 1 asterisk', () => {
 })
 
 
-describe('An inflection start delimiter consisting of 2 asterisks', () => {
+describe('A start delimiter consisting of 2 asterisks', () => {
   it('can be closed by 3+ asterisks, producing an emphasis node (if there are no other asterisks to close) and no stray asterisks in the document', () => {
     expect(Up.parse('A **bread*** to believe in')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -248,7 +248,7 @@ describe('Matching clusters of 3+ asterisks each surrounded by whitespce', () =>
 })
 
 
-describe('An inflection start delimiter consisting of 4+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
+describe('A start delimiter consisting of 4+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
   it('produces an emphasis node nested within stress and emphasis nodes', () => {
     expect(Up.parse('Well, ****Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -267,7 +267,7 @@ describe('An inflection start delimiter consisting of 4+ asterisks, with an emph
 })
 
 
-describe('An inflection start delimiter consisting of 4+ asterisks, with a stress convention ended first, subsequently ending in 3 additional asterisks', () => {
+describe('A start delimiter consisting of 4+ asterisks, with a stress convention ended first, subsequently ending in 3 additional asterisks', () => {
   it('produces nested stress nodes', () => {
     expect(Up.parse('Well, ****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -284,7 +284,7 @@ describe('An inflection start delimiter consisting of 4+ asterisks, with a stres
 })
 
 
-describe('An inflection start delimiter consisting of 5+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
+describe('A start delimiter consisting of 5+ asterisks, with an emphasis convention ended first, subsequently ending in 3+ additional asterisks', () => {
   it('produces a stress node nested within stress and emphasis nodes', () => {
     expect(Up.parse('Well, *****Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([

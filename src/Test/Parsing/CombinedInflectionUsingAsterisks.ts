@@ -113,7 +113,7 @@ context("You can emphasize/stress text at the same time when you're already with
 })
 
 
-context('An inflection start delimiter consisting of 3 asterisks with its emphasis ended first', () => {
+context('A start delimiter consisting of 3 asterisks with its emphasis ended first', () => {
   it('can have its stress conventionclosed with 3 asterisks', () => {
     expect(Up.parse('Well, ***Xamarin* is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -130,7 +130,7 @@ context('An inflection start delimiter consisting of 3 asterisks with its emphas
 })
 
 
-describe('An inflection start delimiter consisting of 3 asterisks with its stress ended first', () => {
+describe('A start delimiter consisting of 3 asterisks with its stress ended first', () => {
   it('can have its emphasis convention closed with 3 asterisks', () => {
     expect(Up.parse('Well, ***Xamarin** is now free***!')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -271,7 +271,7 @@ context('Doubly stressed text can be closed together by', () => {
 })
 
 
-describe('Two inflection start delimiters, both consisting of 2 asterisks,', () => {
+describe('Two start delimiters, both consisting of 2 asterisks,', () => {
   it('can be closed by 3 asterisks, stressing the inner text and emphasizing the outer text', () => {
     expect(Up.parse('**He has won **six in a row!***')).to.deep.equal(
       insideDocumentAndParagraph([
