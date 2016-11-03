@@ -894,11 +894,57 @@ That's what the internet told me.`
         ])
       ], new Up.Document.TableOfContents([prepareHeading, surviveHeading])))
   })
+
+  specify("However, any outer whitespace around the heading's content itself is trimmed away and ignored.", () => {
+    const markup = `
+I'm a helpful guy. For more information, skip to [section: drama]. 
+
+Please prepare
+==============
+
+The zombies could arrive at any moment.
+
+ Those who prep are superdramaticallly more likely to survive\t \t \t \t  
+============================================================
+
+That's what the internet told me.`
+
+    const prepareHeading =
+      new Up.Heading([new Up.Text('Please prepare')], {
+        level: 1,
+        searchableMarkup: "Please prepare",
+        ordinalInTableOfContents: 1
+      })
+
+    const surviveHeading =
+      new Up.Heading([new Up.Text('Those who prep are superdramaticallly more likely to survive')], {
+        level: 1,
+        searchableMarkup: "Those who prep are superdramaticallly more likely to survive",
+        ordinalInTableOfContents: 2
+      })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.Text("I'm a helpful guy. For more information, skip to "),
+          new Up.SectionLink('drama', surviveHeading),
+          new Up.Text('.')
+        ]),
+        prepareHeading,
+        new Up.Paragraph([
+          new Up.Text('The zombies could arrive at any moment.')
+        ]),
+        surviveHeading,
+        new Up.Paragraph([
+          new Up.Text("That's what the internet told me.")
+        ])
+      ], new Up.Document.TableOfContents([prepareHeading, surviveHeading])))
+  })
 })
 
 
 describe('Capitalization', () => {
-  it('is totally ignored when matching a table of contents entry to a reference', () => {
+  it('is totally ignored', () => {
     const markup = `
 Stress and emphasis are commonly used in writing
 ================================================
@@ -1034,175 +1080,6 @@ context('The snippet belonging to a section link can contain the same type of br
             new Up.SectionLink('I miss :( apples')
           ])
         ]))
-    })
-  })
-})
-
-
-context("The markup snippet of a section link isn't evaluated for writing conventions. It's simply matched against the original markup of each heading's content.", () => {
-  describe('Naturally, typographical writing conventions are not evaluated:', () => {
-    specify('En dashes', () => {
-      const markup = `
-I drink soda--exclusively
-=========================
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true. For example, see [section: I drink soda--exclusively].`
-
-      const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda–exclusively')], {
-          level: 1,
-          searchableMarkup: "I drink soda--exclusively",
-          ordinalInTableOfContents: 1
-        })
-
-      const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], {
-          level: 1,
-          searchableMarkup: "I never lie",
-          ordinalInTableOfContents: 2
-        })
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          sodaHeading,
-          new Up.Paragraph([
-            new Up.Text('Actually, I only drink milk.')
-          ]),
-          neverLieHeading,
-          new Up.Paragraph([
-            new Up.Text('Not quite true. For example, see '),
-            new Up.SectionLink('I drink soda--exclusively', sodaHeading),
-            new Up.Text('.')
-          ])
-        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
-    })
-
-    specify('Em dashes', () => {
-      const markup = `
-I drink soda---exclusively
-=========================
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true. For example, see [section: I drink soda---exclusively].`
-
-      const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda—exclusively')], {
-          level: 1,
-          searchableMarkup: "I drink soda---exclusively",
-          ordinalInTableOfContents: 1
-        })
-
-      const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], {
-          level: 1,
-          searchableMarkup: "I never lie",
-          ordinalInTableOfContents: 2
-        })
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          sodaHeading,
-          new Up.Paragraph([
-            new Up.Text('Actually, I only drink milk.')
-          ]),
-          neverLieHeading,
-          new Up.Paragraph([
-            new Up.Text('Not quite true. For example, see '),
-            new Up.SectionLink('I drink soda---exclusively', sodaHeading),
-            new Up.Text('.')
-          ])
-        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
-    })
-
-    specify('Plus-minus signs', () => {
-      const markup = `
-Daily, I drink 9 cans of soda +-2
-======================================
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true. For example, see [section: I drink 9 cans of soda +-2].`
-
-      const sodaHeading =
-        new Up.Heading([new Up.Text('Daily, I drink 9 cans of soda ±2')], {
-          level: 1,
-          searchableMarkup: "Daily, I drink 9 cans of soda +-2",
-          ordinalInTableOfContents: 1
-        })
-
-      const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], {
-          level: 1,
-          searchableMarkup: "I never lie",
-          ordinalInTableOfContents: 2
-        })
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          sodaHeading,
-          new Up.Paragraph([
-            new Up.Text('Actually, I only drink milk.')
-          ]),
-          neverLieHeading,
-          new Up.Paragraph([
-            new Up.Text('Not quite true. For example, see '),
-            new Up.SectionLink('I drink 9 cans of soda +-2', sodaHeading),
-            new Up.Text('.')
-          ])
-        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
-    })
-
-    specify('Ellipses', () => {
-      const markup = `
-Daily, I drink 9 cans of soda... hourly
-=======================================
-
-Actually, I only drink milk.
-
-I never lie
-===========
-
-Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
-
-      const sodaHeading =
-        new Up.Heading([new Up.Text('Daily, I drink 9 cans of soda… hourly')], {
-          level: 1,
-          searchableMarkup: "Daily, I drink 9 cans of soda... hourly",
-          ordinalInTableOfContents: 1
-        })
-
-      const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], {
-          level: 1,
-          searchableMarkup: "I never lie",
-          ordinalInTableOfContents: 2
-        })
-
-      expect(Up.parse(markup)).to.deep.equal(
-        new Up.Document([
-          sodaHeading,
-          new Up.Paragraph([
-            new Up.Text('Actually, I only drink milk.')
-          ]),
-          neverLieHeading,
-          new Up.Paragraph([
-            new Up.Text('Not quite true. For example, see '),
-            new Up.SectionLink('I drink 9 cans of soda... hourly', sodaHeading),
-            new Up.Text('.')
-          ])
-        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
 })
