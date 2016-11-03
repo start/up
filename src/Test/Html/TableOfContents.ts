@@ -2,11 +2,13 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
+const NOT_USED: string = null
+
 specify('When a document has no table of contents entries, the table of contents renders a blank string', () => {
   const document =
     new Up.Document([
       new Up.RevealableBlock([
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED })
       ])
     ])
 
@@ -31,7 +33,11 @@ specify('When a document has no table of contents entries, the table of contents
 context("Each table of contents entry renders a heading corresponding to the entry's level.", () => {
   specify('A level 1 entry renders an <h1>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -48,7 +54,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
   specify('A level 2 entry renders an <h2>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 2, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -65,7 +75,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
   specify('A level 3 entry renders an <h3>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 3, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 3,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -82,7 +96,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
   specify('A level 4 entry renders an <h4>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 4, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 4,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -99,7 +117,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
   specify('A level 5 entry renders an <h5>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 5, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 5,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -116,7 +138,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
   specify('A level 6 entry renders an <h6>', () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 6, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 6,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -135,7 +161,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
   context('Entries of level 7 and up render <div role="heading"> elements with an "aria-level" attribute equal to their level:', () => {
     specify('Level 7', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 7,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -152,7 +182,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
     specify('Level 8', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 8, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 8,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -169,7 +203,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
     specify('Level 9', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 9, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 9,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -186,7 +224,11 @@ context("Each table of contents entry renders a heading corresponding to the ent
 
     specify('Level 10', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 10, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 10,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -207,13 +249,17 @@ context("Each table of contents entry renders a heading corresponding to the ent
 context("The table of contents has no effect on elements that aren't referenced by it", () => {
   specify("even when syntax nodes represented by those elements are otherwise identical", () => {
     const headingInTableOfContents =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([
         headingInTableOfContents,
         new Up.RevealableBlock([
-          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 })
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED })
         ])
       ], new Up.Document.TableOfContents([headingInTableOfContents]))
 
@@ -241,22 +287,46 @@ context("The table of contents has no effect on elements that aren't referenced 
 context('When a table of contents has multiple entries', () => {
   specify('the ID of each element referenced by the table of contents ends with a number corresponding to its ordinal (1-based) in the table of contents', () => {
     const heading1 =
-      new Up.Heading([new Up.Text('Vegetables')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Vegetables')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const heading2 =
-      new Up.Heading([new Up.Text('Fruit')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Fruit')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2
+      })
 
     const heading3 =
-      new Up.Heading([new Up.Text('Apples')], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text('Apples')], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 3
+      })
 
     const heading4 =
-      new Up.Heading([new Up.Text('Green apples')], { level: 3, ordinalInTableOfContents: 4 })
+      new Up.Heading([new Up.Text('Green apples')], {
+        level: 3,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 4
+      })
 
     const heading5 =
-      new Up.Heading([new Up.Text('Grains')], { level: 1, ordinalInTableOfContents: 5 })
+      new Up.Heading([new Up.Text('Grains')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 5
+      })
 
     const heading6 =
-      new Up.Heading([new Up.Text('Rice')], { level: 2, ordinalInTableOfContents: 6 })
+      new Up.Heading([new Up.Text('Rice')], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 6
+      })
 
     const tableOfContents =
       new Up.Document.TableOfContents([heading1, heading2, heading3, heading4, heading5, heading6])
@@ -336,7 +406,11 @@ context("Within the table of contents itself", () => {
           new Up.Text('and you should too'),
           nestedFootnote
         ])
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([
@@ -377,13 +451,21 @@ context("Within the table of contents itself", () => {
       new Up.Heading([
         new Up.Text('I enjoy apples '),
         new Up.InlineRevealable([new Up.Text('sometimes')])
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const grapesHeading =
       new Up.Heading([
         new Up.Text('I enjoy grapes '),
         new Up.InlineRevealable([new Up.Text('usually')])
-      ], { level: 1, ordinalInTableOfContents: 2 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 2
+        })
 
     const document =
       new Up.Document([
@@ -461,7 +543,11 @@ context("Within the table of contents itself", () => {
 context('Like outline syntax nodes in the document, table of contents entries render their source line numbers:', () => {
   specify("Level 1 entries", () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1, sourceLineNumber: 2
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -478,7 +564,11 @@ context('Like outline syntax nodes in the document, table of contents entries re
 
   specify("Level 7 entries", () => {
     const heading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 7, ordinalInTableOfContents: 1, sourceLineNumber: 13 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 7,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1, sourceLineNumber: 13
+      })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -498,10 +588,18 @@ context('Like outline syntax nodes in the document, table of contents entries re
 context('When a section link node is associated with an entry', () => {
   specify("it produces a link to the actual entry in the document. The link's contents are the same as the entry's contents within the table of contents itself", () => {
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2
+      })
 
     const document =
       new Up.Document([

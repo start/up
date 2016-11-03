@@ -2,17 +2,19 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
+const NOT_USED: string = null
+
 context("The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:", () => {
   specify("A table of contents", () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1 }),
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED }),
       new Up.OrderedList([
         new Up.OrderedList.Item([
-          new Up.Heading([new Up.Text("They're cheap")], { level: 2 }),
+          new Up.Heading([new Up.Text("They're cheap")], { level: 2, searchableMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very cheap.")])
         ]),
         new Up.OrderedList.Item([
-          new Up.Heading([new Up.Text("They're delicious")], { level: 2 }),
+          new Up.Heading([new Up.Text("They're delicious")], { level: 2, searchableMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very delicious.")])
         ])
       ])
@@ -22,13 +24,25 @@ context("The `Document.create` method is automatically used during the normal pa
       Up.Document.create(documentChildren)
 
     const enjoyHeading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const cheapHeading =
-      new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text("They're cheap")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2
+      })
 
     const deliciousHeading =
-      new Up.Heading([new Up.Text("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text("They're delicious")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 3
+      })
 
     expect(document).to.deep.equal(
       new Up.Document([
@@ -48,11 +62,11 @@ context("The `Document.create` method is automatically used during the normal pa
 
   specify("Section links matched with the appropriate table of contents entries", () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1 }),
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, searchableMarkup: NOT_USED }),
       new Up.Paragraph([
         new Up.Text('Actually, I only drink milk.')
       ]),
-      new Up.Heading([new Up.Text('I never lie')], { level: 1 }),
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, searchableMarkup: NOT_USED }),
       new Up.Paragraph([
         new Up.Text('Not quite true. For example, see '),
         new Up.SectionLink('soda'),
@@ -64,10 +78,18 @@ context("The `Document.create` method is automatically used during the normal pa
       Up.Document.create(documentChildren)
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2
+      })
 
     expect(document).to.deep.equal(
       new Up.Document([
