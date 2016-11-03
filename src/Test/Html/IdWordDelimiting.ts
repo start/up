@@ -2,6 +2,8 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
+const NOT_USED: string = null
+
 context('Words within HTML IDs are delimited by hyphens.', () => {
   context('This applies to terms appearing in IDs:', () => {
     specify('The "footnote" term', () => {
@@ -58,7 +60,11 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The "sectionReferencedByTableOfContents" term', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -144,7 +150,11 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
 
     specify('The ID of elements referenced by the table of contents', () => {
       const heading =
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I enjoy apples')], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
       const document =
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))

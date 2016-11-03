@@ -2,6 +2,8 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
+const NOT_USED: string = null
+
 context('Inside a link', () => {
   specify("a footnote does not produce another <a> element. The footnote's <sup> directly contains the footnote's reference number", () => {
     const document = new Up.Document([
@@ -37,7 +39,11 @@ context('A link within a table of contents entry does not produce an <a> element
     const heading =
       new Up.Heading([
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -56,7 +62,11 @@ context('A link within a table of contents entry does not produce an <a> element
     const heading =
       new Up.Heading([
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([
@@ -122,7 +132,11 @@ context("When a link is nested deeply within another link, it doesn't produce an
             new Up.Link([new Up.Text('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -145,7 +159,11 @@ context("When a link is nested deeply within another link, it doesn't produce an
             new Up.Link([new Up.Text('I enjoy apples')], 'https://bing.com')
           ])
         ], 'https://apple.com')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([

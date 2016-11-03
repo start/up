@@ -292,11 +292,17 @@ describe("Within an audio convention's fallback link content, all instances of <
 
 
 context('Within a table of contents entry, all instances of < and & are escaped:', () => {
+  const NOT_USED: string = null
+
   specify('In the table of contents itself', () => {
     const heading =
       new Up.Heading([
         new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -315,7 +321,11 @@ context('Within a table of contents entry, all instances of < and & are escaped:
     const heading =
       new Up.Heading([
         new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: NOT_USED,
+          ordinalInTableOfContents: 1
+        })
 
     const document =
       new Up.Document([
