@@ -115,7 +115,7 @@ Anyway, none of that matters.`
         footnotes[1]
       ], {
           level: 1,
-          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
+          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)",
           ordinalInTableOfContents: 1
         })
 

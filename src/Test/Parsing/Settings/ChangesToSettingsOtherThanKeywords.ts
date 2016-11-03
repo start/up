@@ -77,12 +77,10 @@ function itWorksAsAdvertised(
 
 
 describe('The "createSourceMap" setting', () => {
-  const NOT_USED: string = null
-
   const headingWithSourceMap =
     new Up.Heading([new Up.Text('Very important')], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      searchableMarkup: "Very important",
       ordinalInTableOfContents: 1,
       sourceLineNumber: 2
     })
@@ -90,7 +88,7 @@ describe('The "createSourceMap" setting', () => {
   const headingWithoutSourceMap =
     new Up.Heading([new Up.Text('Very important')], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      searchableMarkup: "Very important",
       ordinalInTableOfContents: 1
     })
 

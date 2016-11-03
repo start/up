@@ -789,7 +789,7 @@ I enjoy apples
       const costHeading =
         new Up.Heading([new Up.Text("Cost")], {
           level: 2,
-          searchableMarkup: "",
+        searchableMarkup: "Cost",
           ordinalInTableOfContents: 3
         })
 

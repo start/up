@@ -311,7 +311,7 @@ I enjoy apples
     const deliciousHeading =
       new Up.Heading([new Up.Text("They're delicious")], {
         level: 2,
-        searchableMarkup: "They're cheap",
+        searchableMarkup: "They're delicious",
         ordinalInTableOfContents: 3
       })
 

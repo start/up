@@ -73,7 +73,7 @@ Goodbye, world!
     const heading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        searchableMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 1
       })
 

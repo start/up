@@ -62,11 +62,11 @@ context("The `Document.create` method is automatically used during the normal pa
 
   specify("Section links matched with the appropriate table of contents entries", () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, searchableMarkup: NOT_USED }),
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, searchableMarkup: 'I drink soda' }),
       new Up.Paragraph([
         new Up.Text('Actually, I only drink milk.')
       ]),
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, searchableMarkup: NOT_USED }),
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, searchableMarkup: 'I never lie' }),
       new Up.Paragraph([
         new Up.Text('Not quite true. For example, see '),
         new Up.SectionLink('soda'),
@@ -80,14 +80,14 @@ context("The `Document.create` method is automatically used during the normal pa
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        searchableMarkup: 'I drink soda',
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        searchableMarkup: 'I never lie',
         ordinalInTableOfContents: 2
       })
 

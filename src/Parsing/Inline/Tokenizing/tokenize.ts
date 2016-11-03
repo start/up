@@ -480,7 +480,7 @@ class Tokenizer {
 
         beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
 
-        insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
+        insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
         whenClosing: () => {
           const matchingMarkupSnippet = this.flushBufferedContent().trim()

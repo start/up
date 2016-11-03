@@ -817,7 +817,7 @@ My least favorite drink.`
       const sodaHeading =
         new Up.Heading([new Up.Text('Soda')], {
           level: 1,
-          searchableMarkup: "I never lie. See [topic: soda]",
+          searchableMarkup: "Soda",
           ordinalInTableOfContents: 3
         })
 
@@ -827,7 +827,7 @@ My least favorite drink.`
           new Up.SectionLink('soda', sodaHeading)
         ], {
             level: 1,
-            searchableMarkup: "",
+            searchableMarkup: "I never lie. See [topic: soda]",
             ordinalInTableOfContents: 2
           })
 
