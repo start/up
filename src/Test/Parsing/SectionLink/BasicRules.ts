@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-context('Bracketed text starting with "section:" or "topic:" produces a section link. The terms are interchangeable, as are the brackets:', () => {
+context('Bracketed markup starting with "section:" or "topic:" produces a section link. The terms are interchangeable, as are the brackets:', () => {
   const markupUsingSectionTermAndSquareBrackets = `
 I drink soda
 ============
@@ -94,7 +94,7 @@ Not quite true. For example, see (topic: soda).`
 })
 
 
-context('A section link will try to match the first entry whose text exactly matches its own snippet.', () => {
+context('A section link will try to match the first entry whose searchable markup exactly matches its markup snippet.', () => {
   context('The exact match can come:', () => {
     specify('Before the section link', () => {
       const markup = `
@@ -462,7 +462,7 @@ I love all sorts of fancy stuff.`
 })
 
 
-context("A reference will match the first applicable entry based on its text content alone.", () => {
+context("A reference will match the first applicable entry based on its searchable markup alone.", () => {
   specify("The entries' outline (heading) levels do not matter", () => {
     const markup = `
 If I ever say I drink soda, I'm lying

@@ -170,10 +170,13 @@ export class HtmlRenderer extends Renderer {
 
     const representation =
       entry
-        // If this section link is associated with a table of contents entry, let's link to
-        // the actual entry in the document.
+        // If this section link is associated with a table of contents entry, let's link
+        // to the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
-        // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
+        // Otherwise, we'll distinguish its markup snippet from the surrounding text by
+        // italicizing it.
+        //
+        // TODO: Consider parsing the non-snippet markup before rendering it.
         : new Up.Italic([new Up.Text(sectionLink.matchingMarkupSnippet)])
 
     return representation.render(this)
