@@ -94,18 +94,12 @@ export namespace Document {
       // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
 
-      // The searchable text of an entry refers to its actual text content *after* any conventions are
-      // applied. For example, if an entry was originally produced by the following markup:
-      // 
-      //    Why documents should consist *solely* of `<font>` elements
-      //    ----------------------------------------------------------
+      // Section links try to match their `matchingMarkupSnippet` with this value.
       //
-      // ... Then the entry's' text would be:
-      //
-      //    Why documents should consist solely of <font> elements
-      //
-      // Section links try to match their `sectionTitleSnippet` with this value.
-      searchableText(): string
+      // Currently, headings are the only outline writing conventions that produce table of contents
+      // entries, so `searchableMarkup` represents the line of markup containing the heading's actual
+      // content. 
+      searchableMarkup: string
 
       // Within the table of contents, the inline syntax nodes to represent this entry's contents.
       contentWithinTableOfContents(): InlineSyntaxNode[]

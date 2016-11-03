@@ -9,10 +9,6 @@ export class Text implements InlineSyntaxNode {
     return this.text
   }
 
-  searchableText(): string {
-    return this.text
-  }
-
   inlineDescendants(): InlineSyntaxNode[] {
     return []
   }

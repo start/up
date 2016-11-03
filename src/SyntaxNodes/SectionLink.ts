@@ -2,26 +2,27 @@ import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
+import { getTextAppearingInline } from './getTextAppearingInline'
 
 
 // A section link is essentially a reference to an item referenced by the table of contents.
 export class SectionLink implements InlineSyntaxNode {
   constructor(
-    public sectionTitleSnippet: string,
+    public matchingMarkupSnippet: string,
     public entry?: Document.TableOfContents.Entry) { }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: Document.TableOfContents): void {
-    // We'll use `sectionTitleSnippet` to try to match this section link with the most appropriate
-    // item referenced by the table of contents.
+    // We'll use `matchingMarkupSnippet` to try to match this section link with the most appropriate
+    // table of contents entry.
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this section link with the first entry whose text exactly
-    // equals `sectionTitleSnippet`. We don't care about capitalization, but the text otherwise has
+    // First, we'll try to associate this section link with the first entry whose `searchableMarkup` exactly
+    // equals `matchingMarkupSnippet`. We don't care about capitalization, but the two otherwise have
     // to be an exact match. 
     //
     // If there are no exact matches, then we'll try to associate this section link with the first
-    // entry whose text contains `sectionTitleSnippet`.
+    // entry whose `searchableMarkup` contains `matchingMarkupSnippet`.
     //
     // If we still don't have a match after that, then we're out of luck. We give up.
     //
@@ -31,17 +32,16 @@ export class SectionLink implements InlineSyntaxNode {
     // "Outer" entries are those that conceptually enclose a given an entry. For example, a level-3
     // heading is enclosed by a level-2 and a level-1 heading.
 
-    // As a rule, section links with empty title snippets are never matched to a table of contents
-    // entry.
-    if (!this.sectionTitleSnippet) {
+    // As a rule, section links with empty snippets are never matched to a table of contents entry.
+    if (!this.matchingMarkupSnippet) {
       return
     }
 
     for (const entry of tableOfContents.entries) {
-      const textOfEntry = entry.searchableText()
-      const { sectionTitleSnippet } = this
+      const textOfEntry = entry.searchableMarkup
+      const { matchingMarkupSnippet } = this
 
-      if (isEqualIgnoringCapitalization(textOfEntry, sectionTitleSnippet) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(textOfEntry, matchingMarkupSnippet) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
@@ -49,7 +49,7 @@ export class SectionLink implements InlineSyntaxNode {
 
       if (!this.entry) {
         if (
-          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: sectionTitleSnippet })
+          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: matchingMarkupSnippet })
           && this.canMatch(entry)
         ) {
           // We've found non-perfect match. We'll keep searching in case there's a perfect match
@@ -63,21 +63,8 @@ export class SectionLink implements InlineSyntaxNode {
   textAppearingInline(): string {
     return (
       this.entry
-        ? this.entry.searchableText()
-        : this.sectionTitleSnippet)
-  }
-
-  // Right now, searchable text is only used for one thing: to determine whether a given table of
-  // contents entry (i.e. a heading) contains the `sectionTitleSnippet` of a section link.
-  //
-  // Therefore, this method will only be called if a heading were to inexplicably contain this
-  // syntax node.
-  //
-  // Why do we expose only `sectionTitleSnippet` as searchable? Why not instead expose our entry's 
-  // searchable text? Because if a heading *were* to contain this syntax node, we don't want that
-  // heading to be "matchable" using text from the heading this syntax node is referencing.
-  searchableText(): string {
-    return this.sectionTitleSnippet
+        ? getTextAppearingInline(this.entry.contentWithinTableOfContents())
+        : this.matchingMarkupSnippet)
   }
 
   inlineDescendants(): InlineSyntaxNode[] {

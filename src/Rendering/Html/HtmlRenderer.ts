@@ -174,7 +174,7 @@ export class HtmlRenderer extends Renderer {
         // the actual entry in the document.
         ? this.linkToActualEntryInDocument(entry)
         // Otherwise, we'll distinguish its snippet text from the surrounding text by italicizing it.
-        : new Up.Italic([new Up.Text(sectionLink.sectionTitleSnippet)])
+        : new Up.Italic([new Up.Text(sectionLink.matchingMarkupSnippet)])
 
     return representation.render(this)
   }
