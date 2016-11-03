@@ -20,10 +20,18 @@ Not quite true.
 > Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -69,10 +77,18 @@ Minor reason
   I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -131,10 +147,18 @@ Minor reason
   I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -191,10 +215,18 @@ See [section: soda]
 I've been alive for hundreds of years. I'm bound to have lied at some point`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -240,10 +272,18 @@ Not quite true.
 #) Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -290,10 +330,18 @@ SPOILER:
   Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -338,10 +386,18 @@ Reason;           Validity
 I get hungry;     Very valid`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -391,10 +447,18 @@ Reason (see [section: soda]);     Validity
 I get hungry;                     Very valid`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -446,10 +510,18 @@ Reason;                                 Validity
 I get hungry (see [section: soda]);     Very valid`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -505,10 +577,18 @@ I don't want to get in trouble;           Moderately valid
 I get hungry (see [section: soda]);       Very valid`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
-        new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+        new Up.Heading([new Up.Text('I never lie')], {
+          level: 1,
+          searchableMarkup: "I never lie",
+          ordinalInTableOfContents: 2
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -567,10 +647,18 @@ Not quite true.
 * Second, I've been alive for hundreds of years. I'm bound to have lied at some point.`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
 
     const neverLieHeading =
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -614,13 +702,21 @@ I never lie. See [topic: soda]
 Not quite true.`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
         new Up.Heading([
           new Up.Text('I never lie. See '),
           new Up.SectionLink('soda', sodaHeading),
-        ], { level: 1, ordinalInTableOfContents: 2 })
+        ], {
+            level: 1,
+            searchableMarkup: "I never lie. See [topic: soda]",
+            ordinalInTableOfContents: 2
+          })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -653,16 +749,28 @@ My lies
 I never drink soda.`
 
       const drinkSodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const liesHeading =
-        new Up.Heading([new Up.Text('My lies')], { level: 1, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text('My lies')], {
+          level: 1,
+          searchableMarkup: "My lies",
+          ordinalInTableOfContents: 3
+        })
 
       const neverLieHeading =
         new Up.Heading([
           new Up.Text('I never lie. See '),
           new Up.SectionLink('lies', liesHeading)
-        ], { level: 1, ordinalInTableOfContents: 2 })
+        ], {
+            level: 1,
+            searchableMarkup: "I never lie. See [topic: lies]",
+            ordinalInTableOfContents: 2
+          })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -699,17 +807,29 @@ Soda
 My least favorite drink.`
 
       const drinkSodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('Soda')], { level: 1, ordinalInTableOfContents: 3 })
+        new Up.Heading([new Up.Text('Soda')], {
+          level: 1,
+          searchableMarkup: "I never lie. See [topic: soda]",
+          ordinalInTableOfContents: 3
+        })
 
       const neverLieHeading =
         new Up.Heading([
           new Up.Text('I never lie. See '),
           new Up.SectionLink('soda', sodaHeading)
-        ], { level: 1, ordinalInTableOfContents: 2 })
+        ], {
+            level: 1,
+            searchableMarkup: "",
+            ordinalInTableOfContents: 2
+          })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -741,13 +861,21 @@ I never lie. See [topic: lies]
 Not quite true.`
 
       const sodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
       const neverLieHeading =
         new Up.Heading([
           new Up.Text('I never lie. See '),
           new Up.SectionLink('lies')
-        ], { level: 1, ordinalInTableOfContents: 2 })
+        ], {
+            level: 1,
+            searchableMarkup: "I never lie. See [topic: lies]",
+            ordinalInTableOfContents: 2
+          })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -780,15 +908,27 @@ My lies
 I never drink soda.`
 
       const drinkSodaHeading =
-        new Up.Heading([new Up.Text('I drink soda')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
 
-      const liesHeading =
-        new Up.Heading([new Up.Text('My lies')], { level: 1, ordinalInTableOfContents: 3 })
+      const headingContainingSectionLink =
+        new Up.Heading([new Up.Text('My lies')], {
+          level: 1,
+          searchableMarkup: "My lies",
+          ordinalInTableOfContents: 3
+        })
 
-      const neverLieHeading =
+      const myLiesHeading =
         new Up.Heading([
-          new Up.SectionLink('My lies', liesHeading)
-        ], { level: 1, ordinalInTableOfContents: 2 })
+          new Up.SectionLink('My lies', headingContainingSectionLink)
+        ], {
+            level: 1,
+            searchableMarkup: "[topic: My lies]",
+            ordinalInTableOfContents: 2
+          })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -796,15 +936,15 @@ I never drink soda.`
           new Up.Paragraph([
             new Up.Text('Actually, I only drink milk.')
           ]),
-          neverLieHeading,
+          myLiesHeading,
           new Up.Paragraph([
             new Up.Text('Not quite true.')
           ]),
-          liesHeading,
+          headingContainingSectionLink,
           new Up.Paragraph([
             new Up.Text('I never drink soda.')
           ])
-        ], new Up.Document.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
+        ], new Up.Document.TableOfContents([drinkSodaHeading, myLiesHeading, headingContainingSectionLink])))
     })
   })
 })
