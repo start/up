@@ -272,3 +272,72 @@ Not quite true.`
     })
   })
 })
+
+
+describe('A section link', () => {
+  it('can match with a heading containing another section link', () => {
+    const markup = `
+I'm a great guy. For more information, skip to [section: full transcript]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I am great. Read the [topic: full transcript of my greatness]
+=============================================================
+
+Well, maybe I'm not so great.
+
+Full transcript of my greatness
+=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+
+Uhhh...`
+
+    const sodaHeading =
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
+
+    const transcriptHeading =
+      new Up.Heading([new Up.Text('Full transcript of my greatness')], {
+        level: 2,
+        searchableMarkup: "Full transcript of my greatness",
+        ordinalInTableOfContents: 3
+      })
+
+    const greatnessHeading =
+      new Up.Heading([
+        new Up.Text("I am great. Read the "),
+        new Up.SectionLink("full transcript of my greatness", transcriptHeading)
+      ], {
+          level: 1,
+          searchableMarkup: "I am great. Read the [topic: full transcript of my greatness]",
+          ordinalInTableOfContents: 2
+        })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Paragraph([
+          new Up.Text("I'm a great guy. For more information, skip to "),
+          new Up.SectionLink('full transcript', greatnessHeading),
+          new Up.Text('.')
+        ]),
+        sodaHeading,
+        new Up.Paragraph([
+          new Up.Text('Actually, I only drink milk.')
+        ]),
+        greatnessHeading,
+        new Up.Paragraph([
+          new Up.Text("Well, maybe I'm not so great.")
+        ]),
+        transcriptHeading,
+        new Up.Paragraph([
+          new Up.Text('Uhhh…')
+        ])
+      ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
+  })
+
+})
