@@ -9,7 +9,11 @@ Hello, world!
 #=-+~*@:+**###=~=~=~--~~~~`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -26,7 +30,11 @@ Hello, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -40,7 +48,11 @@ Hello, world!
 ###`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -59,7 +71,11 @@ Goodbye, world!
 ~~~~~~~~~~~~`
 
     const heading =
-      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -77,7 +93,11 @@ Goodbye, world!
       new Up.Heading([
         new Up.Stress([new Up.Text('Hello')]),
         new Up.Text(', world!'),
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: '**Hello**, world!',
+          ordinalInTableOfContents: 1
+        })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -92,7 +112,11 @@ Hello, world!
 #=-+~*@:`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -111,7 +135,11 @@ Hello, world!
 ----------`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(
@@ -126,7 +154,11 @@ Hello, world!
 --==~~~~~==--`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: 'Hello, world!',
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document(

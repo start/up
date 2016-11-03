@@ -5,7 +5,7 @@ import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } f
 import { getTextAppearingInline } from './getTextAppearingInline'
 
 
-// A section link is essentially a reference to an item referenced by the table of contents.
+// A section link is essentially a reference to a table of contents entry.
 export class SectionLink implements InlineSyntaxNode {
   constructor(
     public matchingMarkupSnippet: string,
