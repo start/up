@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 describe('Within a text node, all instances of < and &', () => {
@@ -105,7 +105,7 @@ describe('Within an example input node, >, \', and "', () => {
 context('All instances of < and & are escaped on both buttons rendered for revealable conventions.', () => {
   context('Inline revealables:', () => {
     specify('Hide button', () => {
-      const up = new Up.Transformer({
+      const up = new Up.Up({
         rendering: {
           terms: { hide: '<_< & hide & vanish' }
         }
@@ -132,7 +132,7 @@ context('All instances of < and & are escaped on both buttons rendered for revea
     })
 
     specify('Reveal button', () => {
-      const up = new Up.Transformer({
+      const up = new Up.Up({
         rendering: {
           terms: { reveal: '<_< & show & see' }
         }
@@ -162,7 +162,7 @@ context('All instances of < and & are escaped on both buttons rendered for revea
 
   context('Revealable blocks:', () => {
     specify('Hide button', () => {
-      const up = new Up.Transformer({
+      const up = new Up.Up({
         rendering: {
           terms: { hide: '<_< & hide & vanish' }
         }
@@ -191,7 +191,7 @@ context('All instances of < and & are escaped on both buttons rendered for revea
     })
 
     specify('Reveal button', () => {
-      const up = new Up.Transformer({
+      const up = new Up.Up({
         rendering: {
           terms: { reveal: '<_< & show & see' }
         }

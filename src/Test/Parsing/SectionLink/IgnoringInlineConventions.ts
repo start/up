@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context("A section link's snippet ignores inline conventions. It only cares about matching literal text.", () => {

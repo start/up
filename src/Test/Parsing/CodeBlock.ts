@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 describe('Text surrounded (underlined and overlined) by matching streaks of backticks (of at least 3 characters long)', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('Section links can appear within any outline convention that contains inline conventions:', () => {

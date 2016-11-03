@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
@@ -35,12 +35,12 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
 
   const whenProvidingSettingsAtCreation =
-    new Up.Transformer(changedSettings).renderDocumentAndTableOfContents(document)
+    new Up.Up(changedSettings).renderDocumentAndTableOfContents(document)
 
 
-  describe("when provided to a Transformer object's renderDocumentAndTableOfContents method", () => {
-    it("does not alter the Transformer object's original settings", () => {
-      const up = new Up.Transformer(changedSettings)
+  describe("when provided to an Up object's renderDocumentAndTableOfContents method", () => {
+    it("does not alter the Up object's original settings", () => {
+      const up = new Up.Up(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
       expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
@@ -55,22 +55,22 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     Up.renderDocumentAndTableOfContents(document, change)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up.Transformer().renderDocumentAndTableOfContents(document, change)
+    new Up.Up().renderDocumentAndTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up.Transformer(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
+    new Up.Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
 
 
-  describe('when provided to a Transformer object at creation', () => {
+  describe('when provided to an Up object at creation', () => {
     it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents function', () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
-    it("has the same result as providing the setting when calling the Transformer object's renderDocumentAndTableOfContents method", () => {
+    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the setting when calling the Transformer object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
+    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })

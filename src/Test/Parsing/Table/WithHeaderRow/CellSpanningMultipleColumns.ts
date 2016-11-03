@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../Up'
+import * as Up from '../../../../Main'
 
 
 describe('All table header cells and table row cells', () => {

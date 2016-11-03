@@ -1,9 +1,9 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 describe('The "sectionLink" keyword', () => {
-  const up = new Up.Transformer({
+  const up = new Up.Up({
     parsing: {
       keywords: { sectionLink: 'heading' }
     }

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 import { settingsFor } from './Helpers'
 import { distinct } from '../../../CollectionHelpers'
 
@@ -61,7 +61,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     parsingSettingsFor(args.conflictingKeywordVariations)
 
   // Next, we'll produce "overall" settings (which cover both parsing and rendering
-  // settings). The `Transformer` class's constructor accepts these settings. 
+  // settings). The `Up` class's constructor accepts these settings. 
 
   const changedSettings =
     settingsFor(changedParsingSettings)
@@ -125,10 +125,10 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
 
-  describe("when provided to a Transformer object's parse method", () => {
-    const up = new Up.Transformer()
+  describe("when provided to an Up object's parse method", () => {
+    const up = new Up.Up()
 
-    it("does not alter the Transformer object's original settings", () => {
+    it("does not alter the Up object's original settings", () => {
       expectConventiontoProperlyParse(up.parse(markupForKeywordVariations, changedParsingSettings))
     })
 
@@ -159,8 +159,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   })
 
 
-  describe('when provided to a Transformer object at creation', () => {
-    const up = new Up.Transformer(changedSettings)
+  describe('when provided to an Up object at creation', () => {
+    const up = new Up.Up(changedSettings)
 
     const whenProvidingChangesAtCreation =
       up.parse(markupForKeywordVariations)
@@ -169,21 +169,21 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
       expect(whenProvidingChangesAtCreation).to.deep.equal(Up.parse(markupForKeywordVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the keyword when calling the Transformer object's parse method", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer().parse(markupForKeywordVariations, changedParsingSettings))
+    it("has the same result as providing the keyword when calling the Up object's parse method", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Up().parse(markupForKeywordVariations, changedParsingSettings))
     })
 
-    it("has the same result as providing the keyword when calling the Transformer object's parse method, overwriting the keyword provided at creation", () => {
-      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Transformer(conflictingSettings).parse(markupForKeywordVariations, changedParsingSettings))
+    it("has the same result as providing the keyword when calling the Up object's parse method, overwriting the keyword provided at creation", () => {
+      expect(whenProvidingChangesAtCreation).to.deep.equal(new Up.Up(conflictingSettings).parse(markupForKeywordVariations, changedParsingSettings))
     })
 
     it("does not replace the default variations", () => {
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
 
-      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Transformer(settingWithZeroVariations).parse(markupForDefaultSettings))
-      expectConventiontoProperlyParse(new Up.Transformer(conflictingSettings).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Up(settingWithZeroVariations).parse(markupForDefaultSettings))
+      expectConventiontoProperlyParse(new Up.Up(conflictingSettings).parse(markupForDefaultSettings))
     })
 
     it("can be overwritten by providing different custom keywords to the parse method", () => {
@@ -194,21 +194,21 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 
     it("has any blank variations ignored", () => {
       // First, let's make sure the empty or blank variations are not supported
-      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyKeyword))
-      expectConventionFailToParse(new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankKeyword))
+      expectConventionFailToParse(new Up.Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForEmptyKeyword))
+      expectConventionFailToParse(new Up.Up(equivalentSettingsWithOnlyEmptyAndBlankVariations).parse(invalidMarkupForBlankKeyword))
 
       // Now, let's'make sure empty or blank variations don't interfere with valid variations
-      expectConventiontoProperlyParse(new Up.Transformer(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForKeywordVariations))
+      expectConventiontoProperlyParse(new Up.Up(equivalentSettingsWithEmptyAndBlankVariations).parse(markupForKeywordVariations))
     })
 
     it("has no effect if all variations are empty or blank", () => {
-      const up = new Up.Transformer(equivalentSettingsWithOnlyEmptyAndBlankVariations)
+      const up = new Up.Up(equivalentSettingsWithOnlyEmptyAndBlankVariations)
 
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })
 
     it("has no effect if there are no variations", () => {
-      const up = new Up.Transformer(settingWithZeroVariations)
+      const up = new Up.Up(settingWithZeroVariations)
 
       expectConventiontoProperlyParse(up.parse(markupForDefaultSettings))
     })

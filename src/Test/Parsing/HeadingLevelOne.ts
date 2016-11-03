@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 describe("The first line in a document underlined by any combination or arrangement of: # = - + ~ * @ :", () => {

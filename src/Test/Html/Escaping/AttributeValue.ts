@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('Within any attribute value, all instances of " and & are escaped. Specifically, within the', () => {
@@ -77,7 +77,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('href attribute of backlinks in footnote blocks', () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: {
           footnoteReference: 'look "up" & read & remember'
@@ -102,7 +102,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('id attribute of footntoes in a footnote block', () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: {
           footnote: 'look "down" & read & learn'
@@ -127,7 +127,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify("href attribute of a footnote reference's link", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: {
           footnote: 'look "down" & read & learn'
@@ -152,7 +152,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('id attribute of footnote references', () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: {
           footnoteReference: 'look "up" & read & remember'
@@ -177,7 +177,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
   })
 
   specify('the id attribute of elements referenced by the table of contents', () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: {
           sectionReferencedByTableOfContents: 'look "away" & smile & forget'

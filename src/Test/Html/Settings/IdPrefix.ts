@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -15,7 +15,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
   })
 
   it("is prefixed with the ID prefix, if one was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
 
@@ -30,7 +30,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
 
@@ -45,7 +45,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
 
@@ -60,7 +60,7 @@ describe("A footnote reference's ID (as well as the ID of the footnote it points
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
@@ -104,7 +104,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
   })
 
   it("is prefixed with the provided ID prefix", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
 
@@ -130,7 +130,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
 
@@ -156,7 +156,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
 
@@ -182,7 +182,7 @@ describe("A footnote's ID (as well as the ID of the footnote reference pointing 
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
@@ -370,7 +370,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 
 
   it("is prefixed with the ID prefix, if one was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
 
@@ -390,7 +390,7 @@ describe("The ID of an element referenced by the table of contents", () => {
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
 
@@ -410,7 +410,7 @@ describe("The ID of an element referenced by the table of contents", () => {
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
 
@@ -430,7 +430,7 @@ describe("The ID of an element referenced by the table of contents", () => {
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
@@ -475,7 +475,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
   })
 
   it("is prefixed with the ID prefix, if one was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: 'reply-11' }
     })
 
@@ -501,7 +501,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
   })
 
   it("is not prefixed with a ID prefix if an empty prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '' }
     })
 
@@ -527,7 +527,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
   })
 
   it("is not prefixed with a ID prefix if a blank prefix was provided", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: ' \t' }
     })
 
@@ -553,7 +553,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
   })
 
   it("is properly escaped if the ID prefix contains any ampersands or double quotes", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: { idPrefix: '"reply" && "response"' }
     })
 

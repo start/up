@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
 
 
@@ -23,7 +23,7 @@ describe('The "defaultUrlScheme" setting', () => {
     })
   })
 
-  const up = new Up.Transformer({
+  const up = new Up.Up({
     parsing: settings
   })
 

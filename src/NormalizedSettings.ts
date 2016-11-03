@@ -116,9 +116,8 @@ export namespace NormalizedSettings {
       // default variations.
       //
       // However, users *can* overwrite their own custom variations! If the user creates
-      // a `Transformer` object and provides custom keywords to its constructor, those
-      // keywords can be overwritten by providing the `parse` method with a different set
-      // of keywords.
+      // an `Up` object and provides custom keywords to its constructor, those keywords can
+      // be overwritten by providing the `parse` method with a different set of keywords.
       //
       // The private fields below represent the (sanitized) variations provided by the user
       // for each keyword.

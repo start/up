@@ -1,11 +1,11 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context("When the custom keyword for an inline convention starts with a caret, the fact that it happens to start with the start delimiter for footnotes doesn't affect anything.", () => {
   context("When the custom keyword for 'revealable' starts with a caret", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       parsing: {
         keywords: {
           revealable: '^lookaway^'
@@ -32,7 +32,7 @@ context("When the custom keyword for an inline convention starts with a caret, t
 
 
   context("When the custom keyword for 'audio' starts with a caret", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       parsing: {
         keywords: {
           audio: '^listen^'
@@ -73,7 +73,7 @@ context("When the custom keyword for an inline convention starts with a caret, t
 
 
   context("When the custom keyword for 'image' starts with a caret", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       parsing: {
         keywords: {
           image: '^look^'
@@ -114,7 +114,7 @@ context("When the custom keyword for an inline convention starts with a caret, t
 
 
   context("When the custom keyword for 'video' starts with a caret", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       parsing: {
         keywords: {
           video: '^watch^'

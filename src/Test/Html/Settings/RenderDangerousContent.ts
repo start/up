@@ -1,9 +1,9 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('When the "renderDangerousContent" setting is enabled, links/media with dangerous URL schemes produce their regular HTML elements.', () => {
-  const up = new Up.Transformer({
+  const up = new Up.Up({
     rendering: {
       renderDangerousContent: true
     }

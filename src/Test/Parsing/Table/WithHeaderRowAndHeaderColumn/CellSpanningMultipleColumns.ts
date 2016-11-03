@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../Up'
+import * as Up from '../../../../Main'
 
 
 context('Just like in a normal table, cells in a table with a header column can span multiple columns. The syntax is the same, and any cell can span multiple columns:', () => {

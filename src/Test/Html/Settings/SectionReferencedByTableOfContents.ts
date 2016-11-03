@@ -1,10 +1,10 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 describe('The ID of an element referenced by the table of contents', () => {
   it('uses the term for "sectionReferencedByTableOfContents"', () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: { sectionReferencedByTableOfContents: 'table of contents entry' }
       }

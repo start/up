@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 specify('When a document has no table of contents entries, the table of contents renders a blank string', () => {

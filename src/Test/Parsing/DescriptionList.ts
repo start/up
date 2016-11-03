@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 describe('A non-indented line followed by an indented line', () => {

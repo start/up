@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 context('When an outline syntax node has a source line number, its outermost element is given an "data-up-source-line" attribute whose value is the line number. This is true for:', () => {

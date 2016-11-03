@@ -1,10 +1,10 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('The "reveal" term is used on the reveal button of revealable content:', () => {
   specify("Inline revealables", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: { reveal: 'expand' }
       }
@@ -33,7 +33,7 @@ context('The "reveal" term is used on the reveal button of revealable content:',
   })
 
   specify("Revealable blocks", () => {
-    const up = new Up.Transformer({
+    const up = new Up.Up({
       rendering: {
         terms: { reveal: 'show' }
       }

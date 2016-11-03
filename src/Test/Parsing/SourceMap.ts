@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 import { Table } from '../../SyntaxNodes/Table'
 
 
@@ -14,7 +14,7 @@ context('When the "createSourceMap" setting is not enabled', () => {
 
 
 context('When the "createSourceMap" setting is enabled, outline nodes are given a source line number.', () => {
-  const up = new Up.Transformer({
+  const up = new Up.Up({
     parsing: {
       createSourceMap: true
     }

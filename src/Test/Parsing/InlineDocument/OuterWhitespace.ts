@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context("In inline documents, all outer whitespace is considered meaningless, even when it's escaped. This includes:", () => {

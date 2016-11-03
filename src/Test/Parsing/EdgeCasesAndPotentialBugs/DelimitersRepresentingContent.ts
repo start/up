@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { insideDocumentAndParagraph } from '../Helpers'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('An unmatched left parenthesis within quotation marks produces an inline quote containing the parenthesis:', () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {

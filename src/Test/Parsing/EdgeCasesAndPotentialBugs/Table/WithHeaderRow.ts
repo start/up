@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../Up'
+import * as Up from '../../../../Main'
 
 
 context("When a table doesn't have a caption, its first line can still have trailing whitespace.", () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('Bracketed text starting with "section:" or "topic:" produces a section link. The terms are interchangeable, as are the brackets:', () => {

@@ -1,10 +1,10 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 import { insideDocumentAndParagraph } from '../Helpers'
 
 
 context('The "revealable" keyword is used by both inline revealables and revealable blocks.', () => {
-  const up = new Up.Transformer({
+  const up = new Up.Up({
     parsing: {
       keywords: { revealable: 'ruins ending' }
     }

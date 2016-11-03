@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../../Up'
+import * as Up from '../../../../Main'
 
 
 describe('A line consisting solely of "Table:", followed by any number of rows of semicolon-delimited row values,', () => {

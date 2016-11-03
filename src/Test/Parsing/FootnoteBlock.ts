@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 context('Within most top-level outline conventions, footnotes produce a footnote block appearing after that convention. Specifically:', () => {

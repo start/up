@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 
 
 context('When a line consisting solely of a revealable keyword is followed by an indented block of text, it produces a revealable block. The keyword can be:', () => {

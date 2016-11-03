@@ -1,4 +1,4 @@
-import * as Up from '../Up'
+import * as Up from '../Main'
 import { NormalizedSettings } from '../NormalizedSettings'
 import { SOME_WHITESPACE } from '../PatternPieces'
 

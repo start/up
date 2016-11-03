@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import * as Up from '../../../Up'
+import * as Up from '../../../Main'
 
 
 context('Except for footnotes and section links, every inline convention is supported in inline documents.', () => {

@@ -1,4 +1,4 @@
-import * as Up from '../../Up'
+import * as Up from '../../Main'
 import { Renderer } from '.././Renderer'
 import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, EMPTY_ATTRBUTE_VALUE } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
