@@ -447,11 +447,10 @@ class Tokenizer {
 
       beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
 
-      insteadOfOpeningRegularConventionsWhileOpen: () => {
+      insteadOfOpeningRegularConventionsWhileOpen: () =>
         this.tryToOpen(this.rawCurlyBracketConvention)
-          || this.tryToTokenizeTypographicalConvention()
-          || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
-      },
+        || this.tryToTokenizeTypographicalConvention()
+        || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer(),
 
       whenClosing: () => {
         const exampleInput = this.flushBufferedContent().trim()
@@ -501,7 +500,11 @@ class Tokenizer {
             endsWith: bracket.endPattern,
 
             beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
-            insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfTypographyAndRawParentheticalBrackets(),
+
+            insteadOfClosingOuterConventionsWhileOpen: () =>
+              this.tryToOpenRawParentheticalBracketConvention()
+              || this.tryToTokenizeTypographicalConvention()
+              || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer(),
 
             beforeClosingItAlwaysFlushesBufferTo: media.tokenRoleForStartAndDescription,
             whenClosingItAlsoClosesInnerConventions: true,
@@ -1519,12 +1522,6 @@ class Tokenizer {
 
   private handleTextAwareOfRawBrackets(): void {
     this.tryToOpenRawParentheticalBracketConvention() || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
-  }
-
-  private handleTextAwareOfTypographyAndRawParentheticalBrackets(): void {
-    this.tryToOpenRawParentheticalBracketConvention()
-      || this.tryToTokenizeTypographicalConvention()
-      || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer()
   }
 
   private tryToOpenRawParentheticalBracketConvention(): boolean {
