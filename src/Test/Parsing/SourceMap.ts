@@ -3,6 +3,8 @@ import * as Up from '../../Main'
 import { Table } from '../../SyntaxNodes/Table'
 
 
+const NOT_USED: string = null
+
 context('When the "createSourceMap" setting is not enabled', () => {
   specify('no source maps are produced', () => {
     expect(Up.parse("I enjoy apples.")).to.deep.equal(
@@ -75,7 +77,12 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+          new Up.Heading([new Up.Text('I enjoy apples')], {
+            level: 1,
+            searchableMarkup: NOT_USED,
+            ordinalInTableOfContents: 1,
+            sourceLineNumber: 2
+          })
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document(
@@ -90,7 +97,12 @@ I enjoy apples
 ==============`
 
         const heading =
-          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+          new Up.Heading([new Up.Text('I enjoy apples')], {
+            level: 1,
+            searchableMarkup: NOT_USED,
+            ordinalInTableOfContents: 1,
+            sourceLineNumber: 2
+          })
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document(
@@ -519,13 +531,28 @@ The best apple
 Pink lady.`
 
     const enjoyApplesHeading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1,
+        sourceLineNumber: 2
+      })
 
     const bestFruitHeading =
-      new Up.Heading([new Up.Text("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 12 })
+      new Up.Heading([new Up.Text("The best fruit")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2,
+        sourceLineNumber: 12
+      })
 
     const bestAppleHeading =
-      new Up.Heading([new Up.Text("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 18 })
+      new Up.Heading([new Up.Text("The best apple")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 3,
+        sourceLineNumber: 18
+      })
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
       new Up.Document([
@@ -568,13 +595,28 @@ Pink lady
 
 
     const enjoyApplesHeading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1,
+        sourceLineNumber: 2
+      })
 
     const bestFruitHeading =
-      new Up.Heading([new Up.Text("The best fruit")], { level: 2, ordinalInTableOfContents: 2, sourceLineNumber: 9 })
+      new Up.Heading([new Up.Text("The best fruit")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2,
+        sourceLineNumber: 9
+      })
 
     const bestAppleHeading =
-      new Up.Heading([new Up.Text("The best apple")], { level: 2, ordinalInTableOfContents: 3, sourceLineNumber: 16 })
+      new Up.Heading([new Up.Text("The best apple")], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 3,
+        sourceLineNumber: 16
+      })
 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
       new Up.Document([

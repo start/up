@@ -137,7 +137,9 @@ describe('The "footnote" term', () => {
 
 
 describe('The "sectionReferencedByTableOfContents" setting', () => {
-  const heading = new Up.Heading([], { level: 1 })
+  const NOT_USED: string = null
+
+  const heading = new Up.Heading([], { level: 1, searchableMarkup: NOT_USED })
 
   itCanBeProvidedMultipleWaysWithTheSameResult({
     document: new Up.Document(

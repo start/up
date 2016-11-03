@@ -351,9 +351,15 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
 })
 
 
+const NOT_USED: string = null
+
 describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
-    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], {
+      level: 1,
+      searchableMarkup: NOT_USED,
+      ordinalInTableOfContents: 1
+    })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -374,7 +380,11 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: 'reply-11' }
     })
 
-    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], {
+      level: 1,
+      searchableMarkup: NOT_USED,
+      ordinalInTableOfContents: 1
+    })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -394,7 +404,11 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: '' }
     })
 
-    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], {
+      level: 1,
+      searchableMarkup: NOT_USED,
+      ordinalInTableOfContents: 1
+    })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -414,7 +428,11 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: ' \t' }
     })
 
-    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], {
+      level: 1,
+      searchableMarkup: NOT_USED,
+      ordinalInTableOfContents: 1
+    })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -434,7 +452,11 @@ describe("The ID of an element referenced by the table of contents", () => {
       rendering: { idPrefix: '"reply" && "response"' }
     })
 
-    const heading = new Up.Heading([], { level: 1, ordinalInTableOfContents: 1 })
+    const heading = new Up.Heading([], {
+      level: 1,
+      searchableMarkup: NOT_USED,
+      ordinalInTableOfContents: 1
+    })
 
     const document =
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
@@ -455,7 +477,11 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, ordinalInTableOfContents: 1 })
+    ], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([
@@ -481,7 +507,11 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, ordinalInTableOfContents: 1 })
+    ], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([
@@ -507,7 +537,11 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, ordinalInTableOfContents: 1 })
+    ], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([
@@ -533,7 +567,11 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, ordinalInTableOfContents: 1 })
+    ], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([
@@ -559,7 +597,11 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
 
     const heading = new Up.Heading([
       new Up.Text('Howdy there')
-    ], { level: 1, ordinalInTableOfContents: 1 })
+    ], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1
+      })
 
     const document =
       new Up.Document([

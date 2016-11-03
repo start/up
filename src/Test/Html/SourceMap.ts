@@ -238,10 +238,15 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</blockquote>')
   })
 
+  const NOT_USED: string = null
 
   specify('Level 1 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 1, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 1,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 3
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h1 data-up-source-line="3">Bulbasaur</h1>')
@@ -249,7 +254,12 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 2 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 2, ordinalInTableOfContents: 1, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 2,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 1,
+        sourceLineNumber: 1
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h2 data-up-source-line="1" id="up-topic-1">Bulbasaur</h2>')
@@ -257,7 +267,11 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 3 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 3, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 3,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 3
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h3 data-up-source-line="3">Bulbasaur</h3>')
@@ -265,14 +279,23 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 4 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 4, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 4,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 1
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h4 data-up-source-line="1">Bulbasaur</h4>')
   })
   specify('Level 5 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 5, ordinalInTableOfContents: 2, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 5,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2,
+        sourceLineNumber: 3
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h5 data-up-source-line="3" id="up-topic-2">Bulbasaur</h5>')
@@ -280,7 +303,11 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 6 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 6, sourceLineNumber: 1 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 6,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 1
+      })
     ])
 
     expect(Up.render(document)).to.equal('<h6 data-up-source-line="1">Bulbasaur</h6>')
@@ -288,7 +315,11 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 7 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 7, sourceLineNumber: 5 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 7,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 5
+      })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="7" data-up-source-line="5" role="heading">Bulbasaur</div>')
@@ -296,7 +327,12 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 8 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 8, ordinalInTableOfContents: 2, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 8,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 2,
+        sourceLineNumber: 3
+      })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="8" data-up-source-line="3" id="up-topic-2" role="heading">Bulbasaur</div>')
@@ -304,7 +340,11 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 9 headings', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 9, sourceLineNumber: 2 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 9,
+        searchableMarkup: NOT_USED,
+        sourceLineNumber: 2
+      })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="9" data-up-source-line="2" role="heading">Bulbasaur</div>')
@@ -312,7 +352,12 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Level 10 headings referenced by the table of contents', () => {
     const document = new Up.Document([
-      new Up.Heading([new Up.Text('Bulbasaur')], { level: 10, ordinalInTableOfContents: 7, sourceLineNumber: 3 })
+      new Up.Heading([new Up.Text('Bulbasaur')], {
+        level: 10,
+        searchableMarkup: NOT_USED,
+        ordinalInTableOfContents: 7,
+        sourceLineNumber: 3
+      })
     ])
 
     expect(Up.render(document)).to.equal('<div aria-level="10" data-up-source-line="3" id="up-topic-7" role="heading">Bulbasaur</div>')

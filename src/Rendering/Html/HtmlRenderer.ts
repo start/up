@@ -295,6 +295,7 @@ export class HtmlRenderer extends Renderer {
     return new Up.Heading(
       [this.linkToActualEntryInDocument(entry)], {
         level: entry.level,
+        searchableMarkup: entry.searchableMarkup,
         sourceLineNumber: entry.sourceLineNumber
       })
   }
