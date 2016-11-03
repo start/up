@@ -29,13 +29,16 @@ Table
 Dummy Header Cell
 ${cellMarkup};`
 
+  expect(isCellNumeric({
+    documentStartingWithTable: Up.parse(markup)
+  })).to.equal(toBeNumeric)
+}
+
+function isCellNumeric(args: { documentStartingWithTable: Up.Document }): boolean {
   const table =
-    Up.parse(markup).children[0] as Up.Table
+    args.documentStartingWithTable.children[0] as Up.Table
 
-  const isCellNumeric =
-    table.rows[0].cells[0].isNumeric()
-
-  expect(isCellNumeric).to.equal(toBeNumeric)
+  return table.rows[0].cells[0].isNumeric()
 }
 
 
@@ -228,7 +231,9 @@ Year
         ordinalInTableOfContents: 1
       })
 
-    expect(Up.parse(markup)).to.deep.equal(
+    const document = Up.parse(markup)
+
+    expect(document).to.deep.equal(
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
@@ -240,6 +245,10 @@ Year
           ]),
         heading
       ], new Up.Document.TableOfContents([heading])))
+
+    expect(isCellNumeric({
+      documentStartingWithTable: Up.parse(markup)
+    })).to.true
   })
 
   specify('When the entry is non-numeric, the cell cannot be numeric', () => {
@@ -258,7 +267,9 @@ Chrono Cross
         ordinalInTableOfContents: 1
       })
 
-    expect(Up.parse(markup)).to.deep.equal(
+    const document = Up.parse(markup)
+
+    expect(document).to.deep.equal(
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
@@ -270,6 +281,10 @@ Chrono Cross
           ]),
         heading
       ], new Up.Document.TableOfContents([heading])))
+
+    expect(isCellNumeric({
+      documentStartingWithTable: Up.parse(markup)
+    })).to.false
   })
 
 
@@ -294,7 +309,9 @@ Year
             ordinalInTableOfContents: 1
           })
 
-      expect(Up.parse(markup)).to.deep.equal(
+      const document = Up.parse(markup)
+
+      expect(document).to.deep.equal(
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
@@ -306,6 +323,10 @@ Year
             ]),
           heading
         ], new Up.Document.TableOfContents([heading])))
+
+      expect(isCellNumeric({
+        documentStartingWithTable: Up.parse(markup)
+      })).to.true
     })
 
     specify('A numeric snippet can match a non-numeric heading', () => {
@@ -324,7 +345,9 @@ Chrono Cross, released in 1999
           ordinalInTableOfContents: 1
         })
 
-      expect(Up.parse(markup)).to.deep.equal(
+      const document = Up.parse(markup)
+
+      expect(document).to.deep.equal(
         new Up.Document([
           new Up.Table(
             new Up.Table.Header([
@@ -336,6 +359,10 @@ Chrono Cross, released in 1999
             ]),
           heading
         ], new Up.Document.TableOfContents([heading])))
+
+      expect(isCellNumeric({
+        documentStartingWithTable: Up.parse(markup)
+      })).to.false
     })
   })
 })
