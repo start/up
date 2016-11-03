@@ -4,10 +4,11 @@ import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
 
 
-// These functions allow developers to use Up without having to create any instances of
+// The functions below allow developers to use Up without having to create any instances of
 // the `Up` class.
 //
-// Though it's never necessary to create instances of `Up`, it's sometimes more convenient.
+// Thanks to these functions, it's never necessary to create instances of `Up`, though it's
+// still sometimes more convenient.
 //
 // For example, let's say you're parsing an article and its comments. For each comment,
 // you want to specify a unique ID prefix; for both the article and its comments, you
