@@ -551,6 +551,49 @@ And you'll believe it.`
       ])))
   })
 
+  specify('The heading can have an overline', () => {
+    const markup = `
+============
+I drink soda
+============
+
+Actually, I only drink milk.
+
+===========
+I never lie
+===========
+
+Not quite true. For example, see [section: I drink soda].`
+
+    const sodaHeading =
+      new Up.Heading([new Up.Text('I drink soda')], {
+        level: 1,
+        searchableMarkup: "I drink soda",
+        ordinalInTableOfContents: 1
+      })
+
+    const neverLieHeading =
+      new Up.Heading([new Up.Text('I never lie')], {
+        level: 1,
+        searchableMarkup: "I never lie",
+        ordinalInTableOfContents: 2
+      })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        sodaHeading,
+        new Up.Paragraph([
+          new Up.Text('Actually, I only drink milk.')
+        ]),
+        neverLieHeading,
+        new Up.Paragraph([
+          new Up.Text('Not quite true. For example, see '),
+          new Up.SectionLink('I drink soda', sodaHeading),
+          new Up.Text('.')
+        ])
+      ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+  })
+
 
   context("The entries' nesting levels do not matter.", () => {
     specify("A section link can match an entry at an outer nesting level", () => {
