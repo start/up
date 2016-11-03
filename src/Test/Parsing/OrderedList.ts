@@ -314,7 +314,11 @@ describe('An indented line immediately following an ordered list item line', () 
   Violets are blue`
 
     const heading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: "Hello, world!",
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -352,10 +356,18 @@ describe('Multiple indented or blank lines immediately following an ordered list
   ===============`
 
     const helloHeading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: "Hello, world!",
+        ordinalInTableOfContents: 1
+      })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], {
+        level: 1,
+        searchableMarkup: "Goodbye, world!",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -413,10 +425,18 @@ describe('An ordered list item containing multiple indented lines', () => {
   ===============`
 
     const helloHeading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: "Hello, world!",
+        ordinalInTableOfContents: 1
+      })
 
     const goodbyeHeading =
-      new Up.Heading([new Up.Text('Goodbye, world!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Goodbye, world!')], {
+        level: 1,
+        searchableMarkup: "Goodbye, world!",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

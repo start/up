@@ -54,7 +54,11 @@ describe('An ordered list with a single item can be sandwched by identical thema
 ----------------------------------------`
 
       const heading =
-        new Up.Heading([new Up.Text('1783. Not a good year for Great Britain.')], { level: 1, ordinalInTableOfContents: 1 })
+        new Up.Heading([new Up.Text('1783. Not a good year for Great Britain.')], {
+          level: 1,
+          searchableMarkup: "1783. Not a good year for Great Britain.",
+          ordinalInTableOfContents: 1
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document(
@@ -291,13 +295,25 @@ I enjoy apples
    Very delicious.`
 
     const enjoyHeading =
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I enjoy apples')], {
+        level: 1,
+        searchableMarkup: 'I enjoy apples',
+        ordinalInTableOfContents: 1
+      })
 
     const cheapHeading =
-      new Up.Heading([new Up.Text("They're cheap")], { level: 2, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text("They're cheap")], {
+        level: 2,
+        searchableMarkup: "They're cheap",
+        ordinalInTableOfContents: 2
+      })
 
     const deliciousHeading =
-      new Up.Heading([new Up.Text("They're delicious")], { level: 2, ordinalInTableOfContents: 3 })
+      new Up.Heading([new Up.Text("They're delicious")], {
+        level: 2,
+        searchableMarkup: "They're cheap",
+        ordinalInTableOfContents: 3
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

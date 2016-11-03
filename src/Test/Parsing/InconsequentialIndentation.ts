@@ -387,10 +387,18 @@ Hello, world!
  \t ~~~~~~~~~~~~~~~`
 
     const worldHeading =
-      new Up.Heading([new Up.Text('Hello, world!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Hello, world!')], {
+        level: 1,
+        searchableMarkup: "Hello, world!",
+        ordinalInTableOfContents: 1
+      })
 
     const coreHeading =
-      new Up.Heading([new Up.Text('Hello, core!')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('Hello, core!')], {
+        level: 1,
+        searchableMarkup: "Hello, core!",
+        ordinalInTableOfContents: 2
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

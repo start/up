@@ -149,7 +149,11 @@ describe('A blockquote', () => {
     const heading =
       new Up.Heading([
         new Up.Text('Hello, world!')
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: "Hello, world!",
+          ordinalInTableOfContents: 1
+        })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

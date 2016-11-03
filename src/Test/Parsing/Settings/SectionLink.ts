@@ -22,10 +22,18 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [heading: exotic].`
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], {
+        level: 1,
+        searchableMarkup: "I drink exotic soda",
+        ordinalInTableOfContents: 1
+      })
 
     const interestingHeading =
-      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], {
+        level: 1,
+        searchableMarkup: "I am interesting",
+        ordinalInTableOfContents: 2
+      })
 
     expect(up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -87,10 +95,18 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     })
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], {
+        level: 1,
+        searchableMarkup: "I drink exotic soda",
+        ordinalInTableOfContents: 1
+      })
 
     const interestingHeading =
-      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], {
+        level: 1,
+        searchableMarkup: "I am interesting",
+        ordinalInTableOfContents: 2
+      })
 
     expect(document).to.deep.equal(
       new Up.Document([
@@ -126,10 +142,18 @@ I love all sorts of fancy stuff. For example, see [*heading*: exotic].`
     })
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], {
+        level: 1,
+        searchableMarkup: "I drink exotic soda",
+        ordinalInTableOfContents: 1
+      })
 
     const interestingHeading =
-      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], {
+        level: 1,
+        searchableMarkup: "I am interesting",
+        ordinalInTableOfContents: 2
+      })
 
     expect(document).to.deep.equal(
       new Up.Document([
@@ -165,10 +189,18 @@ I love all sorts of fancy stuff. For example, see [heading: exotic].`
     })
 
     const sodaHeading =
-      new Up.Heading([new Up.Text('I drink exotic soda')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('I drink exotic soda')], {
+        level: 1,
+        searchableMarkup: "I drink exotic soda",
+        ordinalInTableOfContents: 1
+      })
 
     const interestingHeading =
-      new Up.Heading([new Up.Text('I am interesting')], { level: 1, ordinalInTableOfContents: 2 })
+      new Up.Heading([new Up.Text('I am interesting')], {
+        level: 1,
+        searchableMarkup: "I am interesting",
+        ordinalInTableOfContents: 2
+      })
 
     expect(document).to.deep.equal(
       new Up.Document([

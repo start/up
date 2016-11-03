@@ -10,7 +10,11 @@ Not me. Us!
 @---------@`
 
     const heading =
-      new Up.Heading([new Up.Text('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Not me. Us!')], {
+        level: 1,
+        searchableMarkup: "Not me. Us!",
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
@@ -27,7 +31,11 @@ Not me. Us!
 -----------`
 
     const heading =
-      new Up.Heading([new Up.Text('Not me. Us!')], { level: 1, ordinalInTableOfContents: 1 })
+      new Up.Heading([new Up.Text('Not me. Us!')], {
+        level: 1,
+        searchableMarkup: "Not me. Us!",
+        ordinalInTableOfContents: 1
+      })
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([

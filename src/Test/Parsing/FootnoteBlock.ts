@@ -76,7 +76,11 @@ Anyway, none of that matters.`
         new Up.Text("I don't eat cereal."),
         footnote,
         new Up.Text(" Never have.")
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
+          ordinalInTableOfContents: 1
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -109,7 +113,11 @@ Anyway, none of that matters.`
         footnotes[0],
         new Up.Text(" Never have."),
         footnotes[1]
-      ], { level: 1, ordinalInTableOfContents: 1 })
+      ], {
+          level: 1,
+          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
+          ordinalInTableOfContents: 1
+        })
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
