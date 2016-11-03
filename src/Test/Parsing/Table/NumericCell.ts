@@ -209,3 +209,66 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
     })
   })
 })
+
+
+context("When a section link within a table cell is matched with a table of contents entry, the cell can only be numeric if the entry's content is numeric.", () => {
+  specify('When the entry is numeric, the cell can be numeric, too', () => {
+    const markup = `
+Table
+Year
+[topic: 1999]
+
+1999
+====`
+
+    const heading =
+      new Up.Heading([new Up.Text('1999')], {
+        level: 1,
+        searchableMarkup: '1999',
+        ordinalInTableOfContents: 1
+      })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Year')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.SectionLink('1999', heading)])
+            ])
+          ]),
+        heading
+      ], new Up.Document.TableOfContents([heading])))
+  })
+
+  specify('When the entry is non-numeric, the cell cannot be numeric', () => {
+    const markup = `
+Table
+Game
+[topic: Chrono Cross]
+
+Chrono Cross
+============`
+
+    const heading =
+      new Up.Heading([new Up.Text('Chrono Cross')], {
+        level: 1,
+        searchableMarkup: 'Chrono Cross',
+        ordinalInTableOfContents: 1
+      })
+
+    expect(Up.parse(markup)).to.deep.equal(
+      new Up.Document([
+        new Up.Table(
+          new Up.Table.Header([
+            new Up.Table.Header.Cell([new Up.Text('Game')])
+          ]), [
+            new Up.Table.Row([
+              new Up.Table.Row.Cell([new Up.SectionLink('Chrono Cross', heading)])
+            ])
+          ]),
+        heading
+      ], new Up.Document.TableOfContents([heading])))
+  })
+})
