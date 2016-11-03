@@ -339,5 +339,4 @@ Uhhh...`
         ])
       ], new Up.Document.TableOfContents([sodaHeading, greatnessHeading, transcriptHeading])))
   })
-
 })

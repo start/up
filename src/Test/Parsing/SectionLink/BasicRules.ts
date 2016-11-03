@@ -462,7 +462,7 @@ I love all sorts of fancy stuff.`
 })
 
 
-context("A reference will match the first applicable entry based on its searchable markup alone.", () => {
+context("A section link will match the first applicable entry based on its searchable markup alone.", () => {
   specify("The entries' outline (heading) levels do not matter", () => {
     const markup = `
 If I ever say I drink soda, I'm lying
@@ -553,7 +553,7 @@ And you'll believe it.`
 
 
   context("The entries' nesting levels do not matter.", () => {
-    specify("A reference can match an entry at an outer nesting level", () => {
+    specify("A section link can match an entry at an outer nesting level", () => {
       const markup = `
 I drink soda
 ============
@@ -610,7 +610,7 @@ Not quite true.
     })
   })
 
-  specify('A reference can match an entry at an inner nesting level', () => {
+  specify('A section link can match an entry at an inner nesting level', () => {
     const markup = `
 There are plenty of important facts about me. For my favorite, skip to [section: honest].
 
@@ -664,7 +664,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
 })
 
 
-context("If there are no matching table of contents entries for a given reference", () => {
+context("If there are no matching table of contents entries for a given section link", () => {
   specify("the section link simply won't be associated with an entry", () => {
     const markup = `
 I'm a great guy. For more information, skip to [section: I became a world leader]. 
