@@ -273,7 +273,7 @@ Chrono Cross
   })
 
 
-  context("It doesn't strictly matter whether or not the section link's snippet is numeric", () => {
+  context("It doesn't strictly matter whether or not the section link's snippet is numeric.", () => {
     specify('A non-numeric snippet can match a numeric heading', () => {
       const markup = `
 Table
