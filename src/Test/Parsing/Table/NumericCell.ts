@@ -136,6 +136,10 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
     specify('an emphasized and stressed integer followed by a non-numeric footnote', () => {
       expectTableCellToBeNumeric('****2018**** [^ It had been delayed since 2016]')
     })
+
+    specify('a numeric section link that is not associated with a table of contents entry', () => {
+      expectTableCellToBeNumeric('[topic: 1999]')
+    })
   })
 
 
@@ -190,6 +194,10 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
 
     specify('multiple footnotes on their own, even if all have numeric content', () => {
       expectTableCellNotToBeNumeric('[^ 2017][^ 2018]')
+    })
+
+    specify('a non-numeric section link that is not associated with a table of contents entry', () => {
+      expectTableCellNotToBeNumeric('[topic: StarCraft]')
     })
 
     specify('pure whitespace', () => {
