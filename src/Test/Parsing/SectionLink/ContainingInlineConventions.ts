@@ -168,4 +168,107 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
   })
+
+
+  context('When a heading contains an inline writing convention, the markup snippet can contain:', () => {
+    specify('The entire writing convention', () => {
+      const markup = `
+I'm a great guy. For more information, skip to [section: I *never* lie]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I *never* lie
+===========
+
+Not quite true.`
+
+      const sodaHeading =
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
+
+      const neverLieHeading =
+        new Up.Heading([
+          new Up.Text('I '),
+          new Up.Emphasis([new Up.Text('never')]),
+          new Up.Text(' lie'),
+        ], {
+            level: 1,
+            searchableMarkup: "I *never* lie",
+            ordinalInTableOfContents: 2
+          })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.Text("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('I *never* lie', neverLieHeading),
+            new Up.Text('.')
+          ]),
+          sodaHeading,
+          new Up.Paragraph([
+            new Up.Text('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Up.Paragraph([
+            new Up.Text('Not quite true.')
+          ])
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+
+    specify('A fragment of the writing convention', () => {
+      const markup = `
+I'm a great guy. For more information, skip to [section: *never]. 
+
+I drink soda
+============
+
+Actually, I only drink milk.
+
+I *never* lie
+===========
+
+Not quite true.`
+
+      const sodaHeading =
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          searchableMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
+
+      const neverLieHeading =
+        new Up.Heading([
+          new Up.Text('I '),
+          new Up.Emphasis([new Up.Text('never')]),
+          new Up.Text(' lie'),
+        ], {
+            level: 1,
+            searchableMarkup: "I *never* lie",
+            ordinalInTableOfContents: 2
+          })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Paragraph([
+            new Up.Text("I'm a great guy. For more information, skip to "),
+            new Up.SectionLink('*never', neverLieHeading),
+            new Up.Text('.')
+          ]),
+          sodaHeading,
+          new Up.Paragraph([
+            new Up.Text('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Up.Paragraph([
+            new Up.Text('Not quite true.')
+          ])
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+  })
 })
