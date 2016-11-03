@@ -271,4 +271,71 @@ Chrono Cross
         heading
       ], new Up.Document.TableOfContents([heading])))
   })
+
+
+  context("It doesn't strictly matter whether or not the section link's snippet is numeric", () => {
+    specify('A non-numeric snippet can match a numeric heading', () => {
+      const markup = `
+Table
+Year
+[topic: *]
+
+*1999*
+======`
+
+      const heading =
+        new Up.Heading([
+          new Up.Emphasis([
+            new Up.Text('1999')
+          ])
+        ], {
+            level: 1,
+            searchableMarkup: '*1999*',
+            ordinalInTableOfContents: 1
+          })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.Text('Year')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.SectionLink('*', heading)])
+              ])
+            ]),
+          heading
+        ], new Up.Document.TableOfContents([heading])))
+    })
+
+    specify('A numeric snippet can match a non-numeric heading', () => {
+      const markup = `
+Table
+Game
+[topic: 1999]
+
+Chrono Cross, released in 1999
+==============================`
+
+      const heading =
+        new Up.Heading([new Up.Text('Chrono Cross, released in 1999')], {
+          level: 1,
+          searchableMarkup: 'Chrono Cross, released in 1999',
+          ordinalInTableOfContents: 1
+        })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          new Up.Table(
+            new Up.Table.Header([
+              new Up.Table.Header.Cell([new Up.Text('Game')])
+            ]), [
+              new Up.Table.Row([
+                new Up.Table.Row.Cell([new Up.SectionLink('1999', heading)])
+              ])
+            ]),
+          heading
+        ], new Up.Document.TableOfContents([heading])))
+    })
+  })
 })
