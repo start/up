@@ -1,6 +1,4 @@
-// We currently support (and test on Travis CI) every officially maintained version
-// of Node.js. Unfortunately, that includes v0.12, which requires the `harmony` flag
-// if you want to use `const` in strict mode.
+"use strict";
 
 const expect = require('chai').expect
 const path = require('path');
