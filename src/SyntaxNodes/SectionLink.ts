@@ -8,21 +8,21 @@ import { getTextAppearingInline } from './getTextAppearingInline'
 // A section link is essentially a reference to a table of contents entry.
 export class SectionLink implements InlineSyntaxNode {
   constructor(
-    public matchingMarkupSnippet: string,
+    public markupSnippetFromSectionTitle: string,
     public entry?: Document.TableOfContents.Entry) { }
 
   referenceMostAppropriateTableOfContentsEntry(tableOfContents: Document.TableOfContents): void {
-    // We'll use `matchingMarkupSnippet` to try to match this section link with the most appropriate
-    // table of contents entry.
+    // We'll use `markupSnippetFromSectionTitle` to try to match this section link with the most
+    // appropriate table of contents entry.
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this section link with the first entry whose `searchableMarkup` exactly
-    // equals `matchingMarkupSnippet`. We don't care about capitalization, but the two otherwise have
-    // to be an exact match. 
+    // First, we'll try to associate this section link with the first entry whose `searchableMarkup`
+    // exactly equals `markupSnippetFromSectionTitle`. We don't care about capitalization, but the
+    // two otherwise have to be an exact match. 
     //
     // If there are no exact matches, then we'll try to associate this section link with the first
-    // entry whose `searchableMarkup` contains `matchingMarkupSnippet`.
+    // entry whose `searchableMarkup` contains `markupSnippetFromSectionTitle`.
     //
     // If we still don't have a match after that, then we're out of luck. We give up.
     //
@@ -33,15 +33,15 @@ export class SectionLink implements InlineSyntaxNode {
     // heading is enclosed by a level-2 and a level-1 heading.
 
     // As a rule, section links with empty snippets are never matched to a table of contents entry.
-    if (!this.matchingMarkupSnippet) {
+    if (!this.markupSnippetFromSectionTitle) {
       return
     }
 
     for (const entry of tableOfContents.entries) {
-      const textOfEntry = entry.searchableMarkup
-      const { matchingMarkupSnippet } = this
+      const { searchableMarkup } = entry
+      const { markupSnippetFromSectionTitle } = this
 
-      if (isEqualIgnoringCapitalization(textOfEntry, matchingMarkupSnippet) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(searchableMarkup, markupSnippetFromSectionTitle) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
@@ -49,10 +49,10 @@ export class SectionLink implements InlineSyntaxNode {
 
       if (!this.entry) {
         if (
-          containsStringIgnoringCapitalization({ haystack: textOfEntry, needle: matchingMarkupSnippet })
+          containsStringIgnoringCapitalization({ haystack: searchableMarkup, needle: markupSnippetFromSectionTitle })
           && this.canMatch(entry)
         ) {
-          // We've found non-perfect match. We'll keep searching in case there's a perfect match
+          // We've found a non-perfect match. We'll keep searching in case there's a perfect match
           // further in the table of contents.
           this.entry = entry
         }
@@ -64,7 +64,7 @@ export class SectionLink implements InlineSyntaxNode {
     return (
       this.entry
         ? getTextAppearingInline(this.entry.contentWithinTableOfContents())
-        : this.matchingMarkupSnippet)
+        : this.markupSnippetFromSectionTitle)
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
@@ -76,7 +76,7 @@ export class SectionLink implements InlineSyntaxNode {
   }
 
   private canMatch(entry: Document.TableOfContents.Entry): boolean {
-    // Right now, we have only one rule: We will not match an entry if it contains this syntax node.
+    // We won't match an entry if it contains this section link.
     return (entry.inlineDescendants().indexOf(this) === -1)
   }
 }

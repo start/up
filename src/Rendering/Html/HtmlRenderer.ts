@@ -176,8 +176,8 @@ export class HtmlRenderer extends Renderer {
         // Otherwise, we'll distinguish its markup snippet from the surrounding text by
         // italicizing it.
         //
-        // TODO: Consider parsing the non-snippet markup before rendering it.
-        : new Up.Italic([new Up.Text(sectionLink.matchingMarkupSnippet)])
+        // TODO: Consider parsing the markup of "entryless snippets before rendering it.
+        : new Up.Italic([new Up.Text(sectionLink.markupSnippetFromSectionTitle)])
 
     return representation.render(this)
   }

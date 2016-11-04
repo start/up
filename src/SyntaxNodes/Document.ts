@@ -94,14 +94,15 @@ export namespace Document {
       // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
 
-      // Section links try to match their `matchingMarkupSnippet` with this value.
+      // Section links try to match their `markupSnippetFromSectionTitle` with this field.
       //
       // Currently, headings are the only outline writing conventions that produce table of contents
       // entries, so `searchableMarkup` represents the line of markup containing the heading's actual
-      // content. 
+      // content.
       searchableMarkup: string
 
-      // Within the table of contents, the inline syntax nodes to represent this entry's contents.
+      // The inline syntax nodes that should represent this entry's contents within the table of
+      // contents.
       contentWithinTableOfContents(): InlineSyntaxNode[]
 
       // All inline descendants (children, grandchildren, etc.) of the syntax node represented by this
