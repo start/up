@@ -300,7 +300,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
         new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -323,7 +323,7 @@ context('Within a table of contents entry, all instances of < and & are escaped:
         new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 

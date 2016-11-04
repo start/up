@@ -244,7 +244,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 3
       })
     ])
@@ -256,7 +256,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1,
         sourceLineNumber: 1
       })
@@ -269,7 +269,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 3,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 3
       })
     ])
@@ -281,7 +281,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 4,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 1
       })
     ])
@@ -292,7 +292,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 5,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 2,
         sourceLineNumber: 3
       })
@@ -305,7 +305,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 6,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 1
       })
     ])
@@ -317,7 +317,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 7,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 5
       })
     ])
@@ -329,7 +329,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 8,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 2,
         sourceLineNumber: 3
       })
@@ -342,7 +342,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 9,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         sourceLineNumber: 2
       })
     ])
@@ -354,7 +354,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     const document = new Up.Document([
       new Up.Heading([new Up.Text('Bulbasaur')], {
         level: 10,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 7,
         sourceLineNumber: 3
       })

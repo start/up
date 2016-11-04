@@ -357,7 +357,7 @@ describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
     const heading = new Up.Heading([], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      titleMarkup: NOT_USED,
       ordinalInTableOfContents: 1
     })
 
@@ -382,7 +382,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     const heading = new Up.Heading([], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      titleMarkup: NOT_USED,
       ordinalInTableOfContents: 1
     })
 
@@ -406,7 +406,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     const heading = new Up.Heading([], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      titleMarkup: NOT_USED,
       ordinalInTableOfContents: 1
     })
 
@@ -430,7 +430,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     const heading = new Up.Heading([], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      titleMarkup: NOT_USED,
       ordinalInTableOfContents: 1
     })
 
@@ -454,7 +454,7 @@ describe("The ID of an element referenced by the table of contents", () => {
 
     const heading = new Up.Heading([], {
       level: 1,
-      searchableMarkup: NOT_USED,
+      titleMarkup: NOT_USED,
       ordinalInTableOfContents: 1
     })
 
@@ -479,7 +479,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       new Up.Text('Howdy there')
     ], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -509,7 +509,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       new Up.Text('Howdy there')
     ], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -539,7 +539,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       new Up.Text('Howdy there')
     ], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -569,7 +569,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       new Up.Text('Howdy there')
     ], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -599,7 +599,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       new Up.Text('Howdy there')
     ], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 

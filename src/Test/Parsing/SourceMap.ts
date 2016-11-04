@@ -77,7 +77,7 @@ I enjoy apples
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], {
             level: 1,
-            searchableMarkup: "I enjoy apples",
+            titleMarkup: "I enjoy apples",
             ordinalInTableOfContents: 1,
             sourceLineNumber: 2
           })
@@ -97,7 +97,7 @@ I enjoy apples
         const heading =
           new Up.Heading([new Up.Text('I enjoy apples')], {
             level: 1,
-            searchableMarkup: "I enjoy apples",
+            titleMarkup: "I enjoy apples",
             ordinalInTableOfContents: 1,
             sourceLineNumber: 2
           })
@@ -531,7 +531,7 @@ Pink lady.`
     const enjoyApplesHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: "I enjoy apples",
+        titleMarkup: "I enjoy apples",
         ordinalInTableOfContents: 1,
         sourceLineNumber: 2
       })
@@ -539,7 +539,7 @@ Pink lady.`
     const bestFruitHeading =
       new Up.Heading([new Up.Text("The best fruit")], {
         level: 2,
-        searchableMarkup: "The best fruit",
+        titleMarkup: "The best fruit",
         ordinalInTableOfContents: 2,
         sourceLineNumber: 12
       })
@@ -547,7 +547,7 @@ Pink lady.`
     const bestAppleHeading =
       new Up.Heading([new Up.Text("The best apple")], {
         level: 2,
-        searchableMarkup: "The best apple",
+        titleMarkup: "The best apple",
         ordinalInTableOfContents: 3,
         sourceLineNumber: 18
       })
@@ -595,7 +595,7 @@ Pink lady
     const enjoyApplesHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: "I enjoy apples",
+        titleMarkup: "I enjoy apples",
         ordinalInTableOfContents: 1,
         sourceLineNumber: 2
       })
@@ -603,7 +603,7 @@ Pink lady
     const bestFruitHeading =
       new Up.Heading([new Up.Text("The best fruit")], {
         level: 2,
-        searchableMarkup: "The best fruit",
+        titleMarkup: "The best fruit",
         ordinalInTableOfContents: 2,
         sourceLineNumber: 9
       })
@@ -611,7 +611,7 @@ Pink lady
     const bestAppleHeading =
       new Up.Heading([new Up.Text("The best apple")], {
         level: 2,
-        searchableMarkup: "The best apple",
+        titleMarkup: "The best apple",
         ordinalInTableOfContents: 3,
         sourceLineNumber: 16
       })

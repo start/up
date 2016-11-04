@@ -41,7 +41,7 @@ context('A link within a table of contents entry does not produce an <a> element
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -64,7 +64,7 @@ context('A link within a table of contents entry does not produce an <a> element
         new Up.Link([new Up.Text('I enjoy apples')], 'https://google.com')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -134,7 +134,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
         ], 'https://apple.com')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -161,7 +161,7 @@ context("When a link is nested deeply within another link, it doesn't produce an
         ], 'https://apple.com')
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 

@@ -227,7 +227,7 @@ Year
     const heading =
       new Up.Heading([new Up.Text('1999')], {
         level: 1,
-        searchableMarkup: '1999',
+        titleMarkup: '1999',
         ordinalInTableOfContents: 1
       })
 
@@ -263,7 +263,7 @@ Chrono Cross
     const heading =
       new Up.Heading([new Up.Text('Chrono Cross')], {
         level: 1,
-        searchableMarkup: 'Chrono Cross',
+        titleMarkup: 'Chrono Cross',
         ordinalInTableOfContents: 1
       })
 
@@ -305,7 +305,7 @@ Year
           ])
         ], {
             level: 1,
-            searchableMarkup: '*1999*',
+            titleMarkup: '*1999*',
             ordinalInTableOfContents: 1
           })
 
@@ -341,7 +341,7 @@ Chrono Cross, released in 1999
       const heading =
         new Up.Heading([new Up.Text('Chrono Cross, released in 1999')], {
           level: 1,
-          searchableMarkup: 'Chrono Cross, released in 1999',
+          titleMarkup: 'Chrono Cross, released in 1999',
           ordinalInTableOfContents: 1
         })
 

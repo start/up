@@ -78,7 +78,7 @@ Anyway, none of that matters.`
         new Up.Text(" Never have.")
       ], {
           level: 1,
-          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
+          titleMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.",
           ordinalInTableOfContents: 1
         })
 
@@ -115,7 +115,7 @@ Anyway, none of that matters.`
         footnotes[1]
       ], {
           level: 1,
-          searchableMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)",
+          titleMarkup: "I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)",
           ordinalInTableOfContents: 1
         })
 

@@ -88,7 +88,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     args.headingLeveler.registerHeadingAndGetLevel(underline, optionalOverline)
 
   args.then(
-    [new Heading(children, { level, searchableMarkup: contentMarkup.trim() })],
+    [new Heading(children, { level, titleMarkup: contentMarkup.trim() })],
     markupLineConsumer.countLinesConsumed)
 
   return true

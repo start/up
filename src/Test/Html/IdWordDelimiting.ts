@@ -62,7 +62,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -152,7 +152,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 

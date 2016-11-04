@@ -15,7 +15,7 @@ describe('The ID of an element referenced by the table of contents', () => {
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 

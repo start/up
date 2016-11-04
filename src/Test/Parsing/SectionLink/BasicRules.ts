@@ -21,14 +21,14 @@ Not quite true. For example, see [section: soda].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -111,14 +111,14 @@ Not quite true. For example, see [section: I drink soda].`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -154,14 +154,14 @@ Not quite true.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -205,21 +205,21 @@ That's what I tell 'em.`
       const firstSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
       const secondSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 3
         })
 
@@ -267,21 +267,21 @@ Oops.`
       const firstSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
       const secondSodaHeading =
         new Up.Heading([new Up.Text('I lied when I said I drink soda')], {
           level: 1,
-          searchableMarkup: "I lied when I said I drink soda",
+          titleMarkup: "I lied when I said I drink soda",
           ordinalInTableOfContents: 3
         })
 
@@ -329,21 +329,21 @@ That's what I tell 'em.`
       const firstSodaHeading =
         new Up.Heading([new Up.Text("If I ever say I drink soda, I'm lying")], {
           level: 1,
-          searchableMarkup: "If I ever say I drink soda, I'm lying",
+          titleMarkup: "If I ever say I drink soda, I'm lying",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
       const secondSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 3
         })
 
@@ -387,14 +387,14 @@ I love all sorts of fancy stuff. For example, see [section: exotic].`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink exotic soda')], {
           level: 1,
-          searchableMarkup: "I drink exotic soda",
+          titleMarkup: "I drink exotic soda",
           ordinalInTableOfContents: 1
         })
 
       const interestingHeading =
         new Up.Heading([new Up.Text('I am interesting')], {
           level: 1,
-          searchableMarkup: "I am interesting",
+          titleMarkup: "I am interesting",
           ordinalInTableOfContents: 2
         })
 
@@ -430,14 +430,14 @@ I love all sorts of fancy stuff.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink exotic soda')], {
           level: 1,
-          searchableMarkup: "I drink exotic soda",
+          titleMarkup: "I drink exotic soda",
           ordinalInTableOfContents: 1
         })
 
       const interestingHeading =
         new Up.Heading([new Up.Text('I am interesting')], {
           level: 1,
-          searchableMarkup: "I am interesting",
+          titleMarkup: "I am interesting",
           ordinalInTableOfContents: 2
         })
 
@@ -492,28 +492,28 @@ And you'll believe it.`
     const firstSodaHeading =
       new Up.Heading([new Up.Text("If I ever say I drink soda, I'm lying")], {
         level: 1,
-        searchableMarkup: "If I ever say I drink soda, I'm lying",
+        titleMarkup: "If I ever say I drink soda, I'm lying",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
     const secondSodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 2,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 3
       })
 
     const thirdSodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 4
       })
 
@@ -568,14 +568,14 @@ Not quite true. For example, see [section: I drink soda].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -614,14 +614,14 @@ Not quite true.
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -670,14 +670,14 @@ There are plenty of important facts about me. For my favorite, skip to [section:
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const honestHeading =
       new Up.Heading([new Up.Text('I am honest')], {
         level: 1,
-        searchableMarkup: "I am honest",
+        titleMarkup: "I am honest",
         ordinalInTableOfContents: 2
       })
 
@@ -725,14 +725,14 @@ Not quite true.`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -772,14 +772,14 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -818,14 +818,14 @@ The zombies could arrive at any moment.`
     const surviveHeading =
       new Up.Heading([new Up.Text('Those who prep are more likely to survive')], {
         level: 1,
-        searchableMarkup: "Those who prep are more likely to survive",
+        titleMarkup: "Those who prep are more likely to survive",
         ordinalInTableOfContents: 1
       })
 
     const prepareHeading =
       new Up.Heading([new Up.Text('Please prepare')], {
         level: 1,
-        searchableMarkup: "Please prepare",
+        titleMarkup: "Please prepare",
         ordinalInTableOfContents: 2
       })
 
@@ -864,14 +864,14 @@ That's what the internet told me.`
     const prepareHeading =
       new Up.Heading([new Up.Text('Please prepare')], {
         level: 1,
-        searchableMarkup: "Please prepare",
+        titleMarkup: "Please prepare",
         ordinalInTableOfContents: 1
       })
 
     const surviveHeading =
       new Up.Heading([new Up.Text('Those who prep are more likely to survive')], {
         level: 1,
-        searchableMarkup: "Those who prep are more likely to survive",
+        titleMarkup: "Those who prep are more likely to survive",
         ordinalInTableOfContents: 2
       })
 
@@ -910,14 +910,14 @@ That's what the internet told me.`
     const prepareHeading =
       new Up.Heading([new Up.Text('Please prepare')], {
         level: 1,
-        searchableMarkup: "Please prepare",
+        titleMarkup: "Please prepare",
         ordinalInTableOfContents: 1
       })
 
     const surviveHeading =
       new Up.Heading([new Up.Text('Those who prep are superdramaticallly more likely to survive')], {
         level: 1,
-        searchableMarkup: "Those who prep are superdramaticallly more likely to survive",
+        titleMarkup: "Those who prep are superdramaticallly more likely to survive",
         ordinalInTableOfContents: 2
       })
 
@@ -956,14 +956,14 @@ That's what the internet told me.`
     const prepareHeading =
       new Up.Heading([new Up.Text('Please prepare')], {
         level: 1,
-        searchableMarkup: "Please prepare",
+        titleMarkup: "Please prepare",
         ordinalInTableOfContents: 1
       })
 
     const surviveHeading =
       new Up.Heading([new Up.Text('Those who prep are superdramaticallly more likely to survive')], {
         level: 1,
-        searchableMarkup: "Those who prep are superdramaticallly more likely to survive",
+        titleMarkup: "Those who prep are superdramaticallly more likely to survive",
         ordinalInTableOfContents: 2
       })
 
@@ -1010,21 +1010,21 @@ Not quite true. For example, see [section: emphasis].`
     const stressAndEmphasisHeading =
       new Up.Heading([new Up.Text('Stress and emphasis are commonly used in writing')], {
         level: 1,
-        searchableMarkup: "Stress and emphasis are commonly used in writing",
+        titleMarkup: "Stress and emphasis are commonly used in writing",
         ordinalInTableOfContents: 1
       })
 
     const emphasisSubHeading =
       new Up.Heading([new Up.Text('Emphasis')], {
         level: 2,
-        searchableMarkup: "Emphasis",
+        titleMarkup: "Emphasis",
         ordinalInTableOfContents: 2
       })
 
     const stayOnTopicHeading =
       new Up.Heading([new Up.Text('I always stay on topic')], {
         level: 1,
-        searchableMarkup: "I always stay on topic",
+        titleMarkup: "I always stay on topic",
         ordinalInTableOfContents: 3
       })
 
@@ -1145,14 +1145,14 @@ Not quite true. For example, see [topic:  \t  \t  ].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -1186,14 +1186,14 @@ Not quite true. For example, see [topic:].`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 

@@ -7,7 +7,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, Document.TableOfContents.Entry {
   level: number
-  searchableMarkup: string
+  titleMarkup: string
   ordinalInTableOfContents: number = undefined
   sourceLineNumber: number = undefined
 
@@ -15,7 +15,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     children: InlineSyntaxNode[],
     options: {
       level: number
-      searchableMarkup: string
+      titleMarkup: string
       ordinalInTableOfContents?: number
       sourceLineNumber?: number
     }
@@ -23,7 +23,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     super(children)
 
     this.level = options.level
-    this.searchableMarkup = options.searchableMarkup
+    this.titleMarkup = options.titleMarkup
     this.ordinalInTableOfContents = options.ordinalInTableOfContents
     this.sourceLineNumber = options.sourceLineNumber
   }
@@ -32,7 +32,7 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     return []
   }
 
-  contentWithinTableOfContents(): InlineSyntaxNode[] {
+  titleSyntaxNodes(): InlineSyntaxNode[] {
     return this.children
   }
 

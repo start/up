@@ -298,14 +298,14 @@ export class HtmlRenderer extends Renderer {
     return new Up.Heading(
       [this.linkToActualEntryInDocument(entry)], {
         level: entry.level,
-        searchableMarkup: entry.searchableMarkup,
+        titleMarkup: entry.titleMarkup,
         sourceLineNumber: entry.sourceLineNumber
       })
   }
 
   private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {
     return new Up.Link(
-      entry.contentWithinTableOfContents(),
+      entry.titleSyntaxNodes(),
       fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
   }
 

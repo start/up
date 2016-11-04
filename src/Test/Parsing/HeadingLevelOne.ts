@@ -11,7 +11,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -32,7 +32,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -50,7 +50,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -73,7 +73,7 @@ Goodbye, world!
     const heading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        searchableMarkup: 'Goodbye, world!',
+        titleMarkup: 'Goodbye, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -95,7 +95,7 @@ Goodbye, world!
         new Up.Text(', world!'),
       ], {
           level: 1,
-          searchableMarkup: '**Hello**, world!',
+          titleMarkup: '**Hello**, world!',
           ordinalInTableOfContents: 1
         })
 
@@ -114,7 +114,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -137,7 +137,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 
@@ -156,7 +156,7 @@ Hello, world!
     const heading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: 'Hello, world!',
+        titleMarkup: 'Hello, world!',
         ordinalInTableOfContents: 1
       })
 

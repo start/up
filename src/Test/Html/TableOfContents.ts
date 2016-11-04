@@ -8,7 +8,7 @@ specify('When a document has no table of contents entries, the table of contents
   const document =
     new Up.Document([
       new Up.RevealableBlock([
-        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED })
+        new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: NOT_USED })
       ])
     ])
 
@@ -35,7 +35,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -56,7 +56,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -77,7 +77,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 3,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -98,7 +98,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 4,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -119,7 +119,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 5,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -140,7 +140,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 6,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -163,7 +163,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 7,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -184,7 +184,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 8,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -205,7 +205,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 9,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -226,7 +226,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       const heading =
         new Up.Heading([new Up.Text('I enjoy apples')], {
           level: 10,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -251,7 +251,7 @@ context("The table of contents has no effect on elements that aren't referenced 
     const headingInTableOfContents =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
@@ -259,7 +259,7 @@ context("The table of contents has no effect on elements that aren't referenced 
       new Up.Document([
         headingInTableOfContents,
         new Up.RevealableBlock([
-          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED })
+          new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: NOT_USED })
         ])
       ], new Up.Document.TableOfContents([headingInTableOfContents]))
 
@@ -289,42 +289,42 @@ context('When a table of contents has multiple entries', () => {
     const heading1 =
       new Up.Heading([new Up.Text('Vegetables')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
     const heading2 =
       new Up.Heading([new Up.Text('Fruit')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 2
       })
 
     const heading3 =
       new Up.Heading([new Up.Text('Apples')], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 3
       })
 
     const heading4 =
       new Up.Heading([new Up.Text('Green apples')], {
         level: 3,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 4
       })
 
     const heading5 =
       new Up.Heading([new Up.Text('Grains')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 5
       })
 
     const heading6 =
       new Up.Heading([new Up.Text('Rice')], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 6
       })
 
@@ -408,7 +408,7 @@ context("Within the table of contents itself", () => {
         ])
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -453,7 +453,7 @@ context("Within the table of contents itself", () => {
         new Up.InlineRevealable([new Up.Text('sometimes')])
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 1
         })
 
@@ -463,7 +463,7 @@ context("Within the table of contents itself", () => {
         new Up.InlineRevealable([new Up.Text('usually')])
       ], {
           level: 1,
-          searchableMarkup: NOT_USED,
+          titleMarkup: NOT_USED,
           ordinalInTableOfContents: 2
         })
 
@@ -545,7 +545,7 @@ context('Like outline syntax nodes in the document, table of contents entries re
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1, sourceLineNumber: 2
       })
 
@@ -566,7 +566,7 @@ context('Like outline syntax nodes in the document, table of contents entries re
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 7,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1, sourceLineNumber: 13
       })
 
@@ -590,14 +590,14 @@ context('When a section link node is associated with an entry', () => {
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 2
       })
 

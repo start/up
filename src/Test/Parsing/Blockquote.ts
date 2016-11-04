@@ -151,7 +151,7 @@ describe('A blockquote', () => {
         new Up.Text('Hello, world!')
       ], {
           level: 1,
-          searchableMarkup: "Hello, world!",
+          titleMarkup: "Hello, world!",
           ordinalInTableOfContents: 1
         })
 

@@ -389,14 +389,14 @@ Hello, world!
     const worldHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const coreHeading =
       new Up.Heading([new Up.Text('Hello, core!')], {
         level: 1,
-        searchableMarkup: "Hello, core!",
+        titleMarkup: "Hello, core!",
         ordinalInTableOfContents: 2
       })
 

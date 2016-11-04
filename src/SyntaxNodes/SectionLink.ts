@@ -17,12 +17,12 @@ export class SectionLink implements InlineSyntaxNode {
     //
     // Here's our strategy:
     //
-    // First, we'll try to associate this section link with the first entry whose `searchableMarkup`
+    // First, we'll try to associate this section link with the first entry whose `titleMarkup`
     // exactly equals `markupSnippetFromSectionTitle`. We don't care about capitalization, but the
     // two otherwise have to be an exact match. 
     //
     // If there are no exact matches, then we'll try to associate this section link with the first
-    // entry whose `searchableMarkup` contains `markupSnippetFromSectionTitle`.
+    // entry whose `titleMarkup` contains `markupSnippetFromSectionTitle`.
     //
     // If we still don't have a match after that, then we're out of luck. We give up.
     //
@@ -38,10 +38,10 @@ export class SectionLink implements InlineSyntaxNode {
     }
 
     for (const entry of tableOfContents.entries) {
-      const { searchableMarkup } = entry
+      const { titleMarkup } = entry
       const { markupSnippetFromSectionTitle } = this
 
-      if (isEqualIgnoringCapitalization(searchableMarkup, markupSnippetFromSectionTitle) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(titleMarkup, markupSnippetFromSectionTitle) && this.canMatch(entry)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
@@ -49,7 +49,7 @@ export class SectionLink implements InlineSyntaxNode {
 
       if (!this.entry) {
         if (
-          containsStringIgnoringCapitalization({ haystack: searchableMarkup, needle: markupSnippetFromSectionTitle })
+          containsStringIgnoringCapitalization({ haystack: titleMarkup, needle: markupSnippetFromSectionTitle })
           && this.canMatch(entry)
         ) {
           // We've found a non-perfect match. We'll keep searching in case there's a perfect match
@@ -63,7 +63,7 @@ export class SectionLink implements InlineSyntaxNode {
   textAppearingInline(): string {
     return (
       this.entry
-        ? getTextAppearingInline(this.entry.contentWithinTableOfContents())
+        ? getTextAppearingInline(this.entry.titleSyntaxNodes())
         : this.markupSnippetFromSectionTitle)
   }
 

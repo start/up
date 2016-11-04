@@ -97,13 +97,12 @@ export namespace Document {
       // Section links try to match their `markupSnippetFromSectionTitle` with this field.
       //
       // Currently, headings are the only outline writing conventions that produce table of contents
-      // entries, so `searchableMarkup` represents the line of markup containing the heading's actual
+      // entries, so `titleMarkup` represents the line of markup containing the heading's actual
       // content.
-      searchableMarkup: string
+      titleMarkup: string
 
-      // The inline syntax nodes that should represent this entry's contents within the table of
-      // contents.
-      contentWithinTableOfContents(): InlineSyntaxNode[]
+      // The inline syntax nodes that should represent this entry within the table of contents itself.
+      titleSyntaxNodes(): InlineSyntaxNode[]
 
       // All inline descendants (children, grandchildren, etc.) of the syntax node represented by this
       // table of contents entry.

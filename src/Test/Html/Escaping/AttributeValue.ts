@@ -190,7 +190,7 @@ context('Within any attribute value, all instances of " and & are escaped. Speci
     const heading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 

@@ -56,7 +56,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
       const heading =
         new Up.Heading([new Up.Text('1783. Not a good year for Great Britain.')], {
           level: 1,
-          searchableMarkup: "1783. Not a good year for Great Britain.",
+          titleMarkup: "1783. Not a good year for Great Britain.",
           ordinalInTableOfContents: 1
         })
 
@@ -297,21 +297,21 @@ I enjoy apples
     const enjoyHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: 'I enjoy apples',
+        titleMarkup: 'I enjoy apples',
         ordinalInTableOfContents: 1
       })
 
     const cheapHeading =
       new Up.Heading([new Up.Text("They're cheap")], {
         level: 2,
-        searchableMarkup: "They're cheap",
+        titleMarkup: "They're cheap",
         ordinalInTableOfContents: 2
       })
 
     const deliciousHeading =
       new Up.Heading([new Up.Text("They're delicious")], {
         level: 2,
-        searchableMarkup: "They're delicious",
+        titleMarkup: "They're delicious",
         ordinalInTableOfContents: 3
       })
 

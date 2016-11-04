@@ -22,14 +22,14 @@ Not quite true.
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -79,14 +79,14 @@ Minor reason
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -149,14 +149,14 @@ Minor reason
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -217,14 +217,14 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -274,14 +274,14 @@ Not quite true.
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -332,14 +332,14 @@ SPOILER:
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -388,14 +388,14 @@ I get hungry;     Very valid`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -449,14 +449,14 @@ I get hungry;                     Very valid`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -512,14 +512,14 @@ I get hungry (see [section: soda]);     Very valid`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -579,14 +579,14 @@ I get hungry (see [section: soda]);       Very valid`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const neverLieHeading =
         new Up.Heading([new Up.Text('I never lie')], {
           level: 1,
-          searchableMarkup: "I never lie",
+          titleMarkup: "I never lie",
           ordinalInTableOfContents: 2
         })
 
@@ -649,14 +649,14 @@ Not quite true.
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: "I drink soda",
+        titleMarkup: "I drink soda",
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: "I never lie",
+        titleMarkup: "I never lie",
         ordinalInTableOfContents: 2
       })
 
@@ -704,7 +704,7 @@ Not quite true.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
@@ -714,7 +714,7 @@ Not quite true.`
           new Up.SectionLink('soda', sodaHeading),
         ], {
             level: 1,
-            searchableMarkup: "I never lie. See [topic: soda]",
+            titleMarkup: "I never lie. See [topic: soda]",
             ordinalInTableOfContents: 2
           })
 
@@ -751,14 +751,14 @@ I never drink soda.`
       const drinkSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const liesHeading =
         new Up.Heading([new Up.Text('My lies')], {
           level: 1,
-          searchableMarkup: "My lies",
+          titleMarkup: "My lies",
           ordinalInTableOfContents: 3
         })
 
@@ -768,7 +768,7 @@ I never drink soda.`
           new Up.SectionLink('lies', liesHeading)
         ], {
             level: 1,
-            searchableMarkup: "I never lie. See [topic: lies]",
+            titleMarkup: "I never lie. See [topic: lies]",
             ordinalInTableOfContents: 2
           })
 
@@ -809,7 +809,7 @@ My least favorite drink.`
       const drinkSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
@@ -817,7 +817,7 @@ My least favorite drink.`
       const sodaHeading =
         new Up.Heading([new Up.Text('Soda')], {
           level: 1,
-          searchableMarkup: "Soda",
+          titleMarkup: "Soda",
           ordinalInTableOfContents: 3
         })
 
@@ -827,7 +827,7 @@ My least favorite drink.`
           new Up.SectionLink('soda', sodaHeading)
         ], {
             level: 1,
-            searchableMarkup: "I never lie. See [topic: soda]",
+            titleMarkup: "I never lie. See [topic: soda]",
             ordinalInTableOfContents: 2
           })
 
@@ -863,7 +863,7 @@ Not quite true.`
       const sodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
@@ -873,7 +873,7 @@ Not quite true.`
           new Up.SectionLink('lies')
         ], {
             level: 1,
-            searchableMarkup: "I never lie. See [topic: lies]",
+            titleMarkup: "I never lie. See [topic: lies]",
             ordinalInTableOfContents: 2
           })
 
@@ -910,14 +910,14 @@ I never drink soda.`
       const drinkSodaHeading =
         new Up.Heading([new Up.Text('I drink soda')], {
           level: 1,
-          searchableMarkup: "I drink soda",
+          titleMarkup: "I drink soda",
           ordinalInTableOfContents: 1
         })
 
       const headingContainingSectionLink =
         new Up.Heading([new Up.Text('My lies')], {
           level: 1,
-          searchableMarkup: "My lies",
+          titleMarkup: "My lies",
           ordinalInTableOfContents: 3
         })
 
@@ -926,7 +926,7 @@ I never drink soda.`
           new Up.SectionLink('My lies', headingContainingSectionLink)
         ], {
             level: 1,
-            searchableMarkup: "[topic: My lies]",
+            titleMarkup: "[topic: My lies]",
             ordinalInTableOfContents: 2
           })
 

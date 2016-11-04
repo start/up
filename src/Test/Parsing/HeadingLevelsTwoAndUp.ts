@@ -14,12 +14,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
     ]
@@ -48,17 +48,17 @@ Goodbye again, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 1,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       }),
       new Up.Heading([new Up.Text('Goodbye again, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye again, world!",
+        titleMarkup: "Goodbye again, world!",
         ordinalInTableOfContents: 3
       })
     ]
@@ -85,12 +85,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
     ]
@@ -114,12 +114,12 @@ Goodbye, world!
     const headings = [
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
     ]
@@ -169,37 +169,37 @@ Warlocked
     const headings = [
       new Up.Heading([new Up.Text('Interactive Software')], {
         level: 1,
-        searchableMarkup: "Interactive Software",
+        titleMarkup: "Interactive Software",
         ordinalInTableOfContents: 1
       }),
       new Up.Heading([new Up.Text('Video Games')], {
         level: 2,
-        searchableMarkup: "Video Games",
+        titleMarkup: "Video Games",
         ordinalInTableOfContents: 2
       }),
       new Up.Heading([new Up.Text('Handheld Video Games')], {
         level: 3,
-        searchableMarkup: "Handheld Video Games",
+        titleMarkup: "Handheld Video Games",
         ordinalInTableOfContents: 3
       }),
       new Up.Heading([new Up.Text('Game Boy Games')], {
         level: 4,
-        searchableMarkup: "Game Boy Games",
+        titleMarkup: "Game Boy Games",
         ordinalInTableOfContents: 4
       }),
       new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games')], {
         level: 5,
-        searchableMarkup: "Real-Time Strategy Game Boy Games",
+        titleMarkup: "Real-Time Strategy Game Boy Games",
         ordinalInTableOfContents: 5
       }),
       new Up.Heading([new Up.Text('Real-Time Strategy Game Boy Games Published By Nintendo')], {
         level: 6,
-        searchableMarkup: "Real-Time Strategy Game Boy Games Published By Nintendo",
+        titleMarkup: "Real-Time Strategy Game Boy Games Published By Nintendo",
         ordinalInTableOfContents: 6
       }),
       new Up.Heading([new Up.Text('Warlocked')], {
         level: 7,
-        searchableMarkup: "Warlocked",
+        titleMarkup: "Warlocked",
         ordinalInTableOfContents: 7
       })
     ]
@@ -227,21 +227,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -278,21 +278,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -330,21 +330,21 @@ Awkward
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -383,21 +383,21 @@ Goodbye, world!
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -432,21 +432,21 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -485,21 +485,21 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 
@@ -537,21 +537,21 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
     const helloHeading =
       new Up.Heading([new Up.Text('Hello, world!')], {
         level: 1,
-        searchableMarkup: "Hello, world!",
+        titleMarkup: "Hello, world!",
         ordinalInTableOfContents: 1
       })
 
     const goodbyeHeading =
       new Up.Heading([new Up.Text('Goodbye, world!')], {
         level: 2,
-        searchableMarkup: "Goodbye, world!",
+        titleMarkup: "Goodbye, world!",
         ordinalInTableOfContents: 2
       })
 
     const keysHeading =
       new Up.Heading([new Up.Text('Umm, I forgot my keys.')], {
         level: 2,
-        searchableMarkup: "Umm, I forgot my keys.",
+        titleMarkup: "Umm, I forgot my keys.",
         ordinalInTableOfContents: 3
       })
 

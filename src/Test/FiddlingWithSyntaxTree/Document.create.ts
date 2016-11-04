@@ -7,14 +7,14 @@ const NOT_USED: string = null
 context("The `Document.create` method is automatically used during the normal parsing process. It returns a document object with:", () => {
   specify("A table of contents", () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, searchableMarkup: NOT_USED }),
+      new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: NOT_USED }),
       new Up.OrderedList([
         new Up.OrderedList.Item([
-          new Up.Heading([new Up.Text("They're cheap")], { level: 2, searchableMarkup: NOT_USED }),
+          new Up.Heading([new Up.Text("They're cheap")], { level: 2, titleMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very cheap.")])
         ]),
         new Up.OrderedList.Item([
-          new Up.Heading([new Up.Text("They're delicious")], { level: 2, searchableMarkup: NOT_USED }),
+          new Up.Heading([new Up.Text("They're delicious")], { level: 2, titleMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very delicious.")])
         ])
       ])
@@ -26,21 +26,21 @@ context("The `Document.create` method is automatically used during the normal pa
     const enjoyHeading =
       new Up.Heading([new Up.Text('I enjoy apples')], {
         level: 1,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 1
       })
 
     const cheapHeading =
       new Up.Heading([new Up.Text("They're cheap")], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 2
       })
 
     const deliciousHeading =
       new Up.Heading([new Up.Text("They're delicious")], {
         level: 2,
-        searchableMarkup: NOT_USED,
+        titleMarkup: NOT_USED,
         ordinalInTableOfContents: 3
       })
 
@@ -62,11 +62,11 @@ context("The `Document.create` method is automatically used during the normal pa
 
   specify("Section links matched with the appropriate table of contents entries", () => {
     const documentChildren = [
-      new Up.Heading([new Up.Text('I drink soda')], { level: 1, searchableMarkup: 'I drink soda' }),
+      new Up.Heading([new Up.Text('I drink soda')], { level: 1, titleMarkup: 'I drink soda' }),
       new Up.Paragraph([
         new Up.Text('Actually, I only drink milk.')
       ]),
-      new Up.Heading([new Up.Text('I never lie')], { level: 1, searchableMarkup: 'I never lie' }),
+      new Up.Heading([new Up.Text('I never lie')], { level: 1, titleMarkup: 'I never lie' }),
       new Up.Paragraph([
         new Up.Text('Not quite true. For example, see '),
         new Up.SectionLink('soda'),
@@ -80,14 +80,14 @@ context("The `Document.create` method is automatically used during the normal pa
     const sodaHeading =
       new Up.Heading([new Up.Text('I drink soda')], {
         level: 1,
-        searchableMarkup: 'I drink soda',
+        titleMarkup: 'I drink soda',
         ordinalInTableOfContents: 1
       })
 
     const neverLieHeading =
       new Up.Heading([new Up.Text('I never lie')], {
         level: 1,
-        searchableMarkup: 'I never lie',
+        titleMarkup: 'I never lie',
         ordinalInTableOfContents: 2
       })
 
