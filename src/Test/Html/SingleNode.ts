@@ -739,7 +739,7 @@ describe('A link node', () => {
 
 
 describe('A section link node that is not associated with a table of contents entry', () => {
-  it("renders an <i> element containing the unmatched snippet", () => {
+  it("renders an <i> element containing its snippet", () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.SectionLink('When I became ruler of the world')
