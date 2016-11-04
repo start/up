@@ -2,7 +2,7 @@
   "name": "write-up",
   "version": "32.0.0",
   "description": "A markup language for writing structured documents in plain text",
-  "main": "dist/Up.js",
+  "main": "dist/Main.js",
   "typings": "dist/Up.d.ts",
   "files": [
     "dist"
