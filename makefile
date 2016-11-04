@@ -47,9 +47,7 @@ test: compile
 	$(local_mocha) $(mocha_args_for_behavioral_tests)
 
 # Verify package.json settings.
-#
-# These tests have timed out on Travis CI before, so we specify a larger timeout.
-	$(local_mocha) ./verify-package-settings.js --timeout 3000
+	$(local_mocha) ./verify-package-settings.js
 
 
 .PHONY: coverage
