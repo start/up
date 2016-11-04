@@ -8,7 +8,7 @@ const Up = require('./' + packageSettings.main)
 
 describe('The `main` field in package.json', () => {
   it('points to the entry point of the library', () => {
-    expect(Up.toHtml('It *actually* worked?')).to.equal('<p>It <em>actually</em> worked?</p>')
+    expect(Up.parseAndRender('It *actually* worked?')).to.equal('<p>It <em>actually</em> worked?</p>')
   })
 })
 
