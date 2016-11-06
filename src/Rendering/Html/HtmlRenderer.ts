@@ -19,11 +19,11 @@ export class HtmlRenderer extends Renderer {
   //   <span role="alert">Ash fights Gary</span>
   // </span>
   //
-  // This solution requires generating unique IDs to associate each label with its radio button (and to group
-  // the two radio buttons together).
+  // This solution requires generating unique IDs to associate each label with its radio button (and a unique
+  // name to group the two radio buttons together).
   //
   // To accomplish this, we increment a counter each time we render revealable content (inline or block),
-  // appending the counter's value to the checkbox's ID.
+  // appending the counter's value to the IDs/names of the radio buttons.
   private revealableContentCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -33,8 +33,8 @@ export class HtmlRenderer extends Renderer {
   // One last hack! Within the table of contents itself:
   //
   // 1. No HTML is produced for footnotes. They're ignored.
-  // 2. The IDs for inline revealable elements' checkboxes (described above) are given an additional prefix to
-  //    prevent clashes with IDs in the document.   
+  // 2. The IDs/names for inline revealable elements' radio buttons (described above) are given an additional
+  //    prefix to prevent clashes with IDs in the document.   
   private isInsideTableOfContents: boolean
 
   document(document: Up.Document): string {
@@ -50,11 +50,8 @@ export class HtmlRenderer extends Renderer {
   tableOfContents(tableOfContents: Up.Document.TableOfContents): string {
     this.reset({ isInsideTableOfContents: true })
 
-    const { entries } = tableOfContents
-
-    return entries.length
-      ? this.renderAll(entries.map(entry => this.tableOfContentsEntry(entry)))
-      : ''
+    return this.renderAll(
+      tableOfContents.entries.map(entry => this.tableOfContentsEntry(entry)))
   }
 
   blockquote(blockquote: Up.Blockquote): string {
@@ -64,7 +61,7 @@ export class HtmlRenderer extends Renderer {
   unorderedList(list: Up.UnorderedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
-      list.items.map(listItem => this.unorderedListItem(listItem)),
+      list.items.map(item => this.unorderedListItem(item)),
       htmlAttrsFor(list))
   }
 
@@ -83,7 +80,7 @@ export class HtmlRenderer extends Renderer {
 
     return htmlElementWithAlreadyEscapedChildren(
       'ol',
-      list.items.map(listItem => this.orderedListItem(listItem)),
+      list.items.map(item => this.orderedListItem(item)),
       htmlAttrsFor(list, attrs))
   }
 
@@ -95,10 +92,9 @@ export class HtmlRenderer extends Renderer {
   }
 
   lineBlock(lineBlock: Up.LineBlock): string {
-    const attrs =
-      htmlAttrsFor(
-        lineBlock,
-        { class: classHtmlAttrValue('lines') })
+    const attrs = htmlAttrsFor(
+      lineBlock,
+      { class: classHtmlAttrValue('lines') })
 
     return htmlElementWithAlreadyEscapedChildren(
       'div',
@@ -201,14 +197,14 @@ export class HtmlRenderer extends Renderer {
   inlineRevealable(inlineRevealable: Up.InlineRevealable): string {
     return this.revealable({
       revealableSyntaxNode: inlineRevealable,
-      tagNameForGenericContainers: 'span'
+      tagNameForGenericContainer: 'span'
     })
   }
 
   revealableBlock(revealableBlock: Up.RevealableBlock): string {
     return this.revealable({
       revealableSyntaxNode: revealableBlock,
-      tagNameForGenericContainers: 'div',
+      tagNameForGenericContainer: 'div',
       attrsForOuterContainer: htmlAttrsFor(revealableBlock)
     })
   }
@@ -267,19 +263,14 @@ export class HtmlRenderer extends Renderer {
   }
 
   image(image: Up.Image): string {
-    if (!this.isUrlAllowed(image.url)) {
-      return ''
-    }
-
-    const attrs =
-      htmlAttrsFor(
+    return this.isUrlAllowed(image.url)
+      ? singleTagHtmlElement('img', htmlAttrsFor(
         image, {
           src: image.url,
           alt: image.description,
           title: image.description
-        })
-
-    return singleTagHtmlElement('img', attrs)
+        }))
+      : ''
   }
 
   audio(audio: Up.Audio): string {
@@ -333,11 +324,11 @@ export class HtmlRenderer extends Renderer {
 
   private descriptionListItem(listItem: Up.DescriptionList.Item): string {
     return (
-      listItem.subjects.map(subject => this.descriptionSubject(subject)).join('')
+      listItem.subjects.map(subject => this.subject(subject)).join('')
       + this.description(listItem.description))
   }
 
-  private descriptionSubject(subject: Up.DescriptionList.Item.Subject): string {
+  private subject(subject: Up.DescriptionList.Item.Subject): string {
     return this.htmlElement('dt', subject.children)
   }
 
@@ -349,8 +340,8 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('div', line.children)
   }
 
-  private footnoteReferenceInnerLink(footnoteReference: Up.Footnote): Up.Link {
-    const referenceNumber = footnoteReference.referenceNumber
+  private footnoteReferenceInnerLink(footnote: Up.Footnote): Up.Link {
+    const { referenceNumber } = footnote
 
     return new Up.Link(
       [new Up.Text(referenceNumber.toString())],
@@ -371,39 +362,34 @@ export class HtmlRenderer extends Renderer {
   }
 
   private footnoteLinkBackToReference(footnote: Up.Footnote): Up.Link {
-    const referenceNumber = footnote.referenceNumber
+    const { referenceNumber } = footnote
 
     return new Up.Link(
       [new Up.Text(referenceNumber.toString())],
       fragmentUrl(this.footnoteReferenceHtmlId(referenceNumber)))
   }
 
-  private playableMediaElement(playableMedia: Up.Audio | Up.Video, tagName: string): string {
+  private playableMediaElement(playableMedia: Up.Audio | Up.Video, mediaTagName: string): string {
     const { url, description } = playableMedia
 
-    if (!this.isUrlAllowed(url)) {
-      return ''
-    }
-
-    const attrs =
-      htmlAttrsFor(
+    return this.isUrlAllowed(url)
+      ? this.htmlElement(mediaTagName, [this.playableMediaFallback(description, url)], htmlAttrsFor(
         playableMedia, {
           src: url,
           title: description,
           controls: EMPTY_ATTRBUTE_VALUE
-        })
-
-    return this.htmlElement(tagName, this.playableMediaFallback(description, url), attrs)
+        }))
+      : ''
   }
 
-  private playableMediaFallback(content: string, url: string): Up.Link[] {
-    return [new Up.Link([new Up.Text(content)], url)]
+  private playableMediaFallback(content: string, url: string): Up.Link {
+    return new Up.Link([new Up.Text(content)], url)
   }
 
   private revealable(
     args: {
       revealableSyntaxNode: Up.InlineRevealable | Up.RevealableBlock
-      tagNameForGenericContainers: string
+      tagNameForGenericContainer: string
       attrsForOuterContainer?: any
     }
   ): string {
@@ -432,24 +418,22 @@ export class HtmlRenderer extends Renderer {
     let revealButtonId =
       revealableIdFor('reveal', 'button', revealableContentOrdinal)
 
-    const radioButtonHide =
-      singleTagHtmlElement(
-        'input', {
-          type: 'radio',
-          id: hideButtonId,
-          name: buttonGroupName,
-          class: classHtmlAttrValue('hide'),
-          checked: EMPTY_ATTRBUTE_VALUE
-        })
+    const radioButtonHide = singleTagHtmlElement(
+      'input', {
+        type: 'radio',
+        id: hideButtonId,
+        name: buttonGroupName,
+        class: classHtmlAttrValue('hide'),
+        checked: EMPTY_ATTRBUTE_VALUE
+      })
 
-    const radioButtonReveal =
-      singleTagHtmlElement(
-        'input', {
-          type: 'radio',
-          id: revealButtonId,
-          name: buttonGroupName,
-          class: classHtmlAttrValue('reveal')
-        })
+    const radioButtonReveal = singleTagHtmlElement(
+      'input', {
+        type: 'radio',
+        id: revealButtonId,
+        name: buttonGroupName,
+        class: classHtmlAttrValue('reveal')
+      })
 
     const labelHtmlElement = (id: string, text: string) =>
       htmlElement(
@@ -467,7 +451,7 @@ export class HtmlRenderer extends Renderer {
 
     const revealableContent =
       this.htmlElement(
-        args.tagNameForGenericContainers,
+        args.tagNameForGenericContainer,
         args.revealableSyntaxNode.children,
         { role: 'alert' })
 
@@ -477,7 +461,7 @@ export class HtmlRenderer extends Renderer {
       classHtmlAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
-      args.tagNameForGenericContainers, [
+      args.tagNameForGenericContainer, [
         radioButtonHide,
         labelHide,
         radioButtonReveal,
