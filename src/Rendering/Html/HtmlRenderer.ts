@@ -20,10 +20,8 @@ export class HtmlRenderer extends Renderer {
   // </span>
   //
   // This solution requires generating unique IDs to associate each label with its radio button (and a unique
-  // name to group the two radio buttons together).
-  //
-  // To accomplish this, we increment a counter each time we render revealable content (inline or block),
-  // appending the counter's value to the IDs/names of the radio buttons.
+  // name to group the two radio buttons together). To fascilitate this, we increment a counter each time we
+  // render revealable content, appending the counter's value to the radio buttons' IDs/names.
   private revealableContentCount: number
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
@@ -140,8 +138,8 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('strong', stress.children)
   }
 
-  italic(italics: Up.Italic): string {
-    return this.htmlElement('i', italics.children)
+  italic(italic: Up.Italic): string {
+    return this.htmlElement('i', italic.children)
   }
 
   bold(bold: Up.Bold): string {
