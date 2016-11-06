@@ -38,13 +38,11 @@ export class HtmlRenderer extends Renderer {
   private isInsideTableOfContents: boolean
 
   document(document: Up.Document): string {
-    this.reset()
-    return this.renderAll(document.children)
+    return this.anyDocument(document)
   }
 
   inlineDocument(inlineDocument: Up.InlineDocument): string {
-    this.reset()
-    return this.renderAll(inlineDocument.children)
+    return this.anyDocument(inlineDocument)
   }
 
   tableOfContents(tableOfContents: Up.Document.TableOfContents): string {
@@ -283,6 +281,12 @@ export class HtmlRenderer extends Renderer {
 
   text(text: Up.Text): string {
     return escapeHtmlContent(text.text)
+  }
+
+  private anyDocument(document: Up.Document | Up.InlineDocument): string {
+    this.reset()
+
+    return this.renderAll(document.children)
   }
 
   private tableOfContentsEntry(entry: Up.Document.TableOfContents.Entry): Up.Heading {
