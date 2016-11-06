@@ -1,4 +1,4 @@
-import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHTING, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
 import { WHITESPACE, ANY_OPTIONAL_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
@@ -775,7 +775,7 @@ class Tokenizer {
       minDelimiterLength: 2,
       whenDelimitersEnclose: (startingBackAtTokenIndex: number) => {
         this.closeBareUrlContextIfOneIsOpen()
-        this.encloseWithin({ richConvention: HIGHLIGHTING, startingBackAtTokenIndex })
+        this.encloseWithin({ richConvention: HIGHLIGHT, startingBackAtTokenIndex })
       }
     })
   }

@@ -37,7 +37,7 @@ export const BOLD: RichConventionWithoutExtraFields = {
   endTokenRole: TokenRole.BoldEnd
 }
 
-export const HIGHLIGHTING: RichConventionWithoutExtraFields = {
+export const HIGHLIGHT: RichConventionWithoutExtraFields = {
   SyntaxNodeType: Highlight,
   startTokenRole: TokenRole.HighlightStart,
   endTokenRole: TokenRole.HighlightEnd
