@@ -23,7 +23,7 @@ describe('The ID of an element referenced by the table of contents', () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1>')

@@ -1,4 +1,4 @@
-import { Up, RenderedDocumentAndTableOfContents } from './Up'
+import { Up, DocumentAndTableOfContentsHtml } from './Up'
 import { Settings } from './Settings'
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
@@ -28,8 +28,8 @@ export function parseAndRender(markup: string, settings?: Settings): string {
 //
 // 1. A table of contents
 // 2. The document itself
-export function parseAndRenderDocumentAndTableOfContents(markup: string, settings?: Settings): RenderedDocumentAndTableOfContents {
-  return up.parseAndRenderDocumentAndTableOfContents(markup, settings)
+export function parseAndRenderWithTableOfContents(markup: string, settings?: Settings): DocumentAndTableOfContentsHtml {
+  return up.parseAndRenderWithTableOfContents(markup, settings)
 }
 
 // Converts inline Up markup into inline HTML and returns the result.
@@ -56,8 +56,8 @@ export function render(document: Document, renderingSettings?: Settings.Renderin
 //
 // 1. A table of contents
 // 2. The document itself
-export function renderDocumentAndTableOfContents(document: Document, renderingSettings?: Settings.Rendering): RenderedDocumentAndTableOfContents {
-  return up.renderDocumentAndTableOfContents(document, renderingSettings)
+export function renderWithTableOfContents(document: Document, renderingSettings?: Settings.Rendering): DocumentAndTableOfContentsHtml {
+  return up.renderWithTableOfContents(document, renderingSettings)
 }
 
 // Converts an inline syntax tree into inline HTML and returns the result.
@@ -65,7 +65,7 @@ export function renderInline(inlineDocument: InlineDocument, renderingSettings?:
   return up.renderInline(inlineDocument, renderingSettings)
 }
 
-export { Up, RenderedDocumentAndTableOfContents } from './Up'
+export { Up, DocumentAndTableOfContentsHtml } from './Up'
 export { Settings } from './Settings'
 
 export { Document } from './SyntaxNodes/Document'

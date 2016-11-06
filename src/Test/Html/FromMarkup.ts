@@ -125,7 +125,7 @@ SPOILER
   })
 
 
-  context('The parseAndRenderDocumentAndTableOfContents method', () => {
+  context('The parseAndRenderWithTableOfContents method', () => {
     specify('can be used with parsing settings', () => {
       const markup = `
 Anyway, let us get to the point.
@@ -137,7 +137,7 @@ LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.parseAndRenderDocumentAndTableOfContents(markup, {
+        Up.parseAndRenderWithTableOfContents(markup, {
           parsing: {
             createSourceMap: true,
             keywords: { revealable: 'LOOK AWAY' }
@@ -172,7 +172,7 @@ SPOILER
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.parseAndRenderDocumentAndTableOfContents(markup, {
+        Up.parseAndRenderWithTableOfContents(markup, {
           rendering: {
             idPrefix: 'article'
           }
@@ -206,7 +206,7 @@ LOOK AWAY
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.parseAndRenderDocumentAndTableOfContents(markup, {
+        Up.parseAndRenderWithTableOfContents(markup, {
           parsing: {
             createSourceMap: true,
             keywords: { revealable: 'LOOK AWAY' }
@@ -244,7 +244,7 @@ SPOILER
   After beating the Elite Four, Blue steals a Red Delicious from Red.`
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.parseAndRenderDocumentAndTableOfContents(markup)
+        Up.parseAndRenderWithTableOfContents(markup)
 
       expect(tableOfContentsHtml).to.equal(
         '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')

@@ -15,8 +15,8 @@ export class Up {
   }
 
   // Converts Up markup into HTML and returns the result.
-  parseAndRender(markup: string, extraSettings: Settings): string {
-    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
+  parseAndRender(markup: string, extraSettings?: Settings): string {
+    const { parsing, rendering } = getNonNullSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
     return this.render(document, rendering)
@@ -26,16 +26,16 @@ export class Up {
   //
   // 1. A table of contents
   // 2. The document itself
-  parseAndRenderDocumentAndTableOfContents(markup: string, extraSettings?: Settings): RenderedDocumentAndTableOfContents {
-    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
+  parseAndRenderWithTableOfContents(markup: string, extraSettings?: Settings): DocumentAndTableOfContentsHtml {
+    const { parsing, rendering } = getNonNullSettings(extraSettings)
     const document = this.parse(markup, parsing)
 
-    return this.renderDocumentAndTableOfContents(document, rendering)
+    return this.renderWithTableOfContents(document, rendering)
   }
 
   // Converts inline Up markup into inline HTML and returns the result.
   parseAndRenderInline(inlineMarkup: string, extraSettings?: Settings): string {
-    const { parsing, rendering } = getParsingAndRenderingSettings(extraSettings)
+    const { parsing, rendering } = getNonNullSettings(extraSettings)
     const inlineDocument = this.parseInline(inlineMarkup, parsing)
 
     return this.renderInline(inlineDocument, rendering)
@@ -62,7 +62,7 @@ export class Up {
   //
   // 1. A table of contents
   // 2. The document itself
-  renderDocumentAndTableOfContents(document: Document, extraRenderingSettings?: Settings.Rendering): RenderedDocumentAndTableOfContents {
+  renderWithTableOfContents(document: Document, extraRenderingSettings?: Settings.Rendering): DocumentAndTableOfContentsHtml {
     const htmlRenderer = this.getHtmlRenderer(extraRenderingSettings)
 
     return {
@@ -92,13 +92,12 @@ export class Up {
 }
 
 
-export interface RenderedDocumentAndTableOfContents {
+export interface DocumentAndTableOfContentsHtml {
   documentHtml: string,
   tableOfContentsHtml: string
 }
 
-
-function getParsingAndRenderingSettings(settings: Settings): Settings {
+function getNonNullSettings(settings: Settings): Settings {
   return settings || {
     parsing: null,
     rendering: null

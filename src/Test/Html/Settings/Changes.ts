@@ -20,57 +20,57 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const conflictingChangedSettings = settingsFor(conflictingChange)
 
   const htmlFromDefaultSettings =
-    Up.renderDocumentAndTableOfContents(document)
+    Up.renderWithTableOfContents(document)
 
 
-  describe("when provided to the default renderDocumentAndTableOfContents function", () => {
+  describe("when provided to the default renderWithTableOfContents function", () => {
     it("does not alter subsequent calls to the default method", () => {
       // Let's make sure the changed settings would actually change the HTML
-      expect(Up.renderDocumentAndTableOfContents(document, change)).to.not.equal(htmlFromDefaultSettings)
+      expect(Up.renderWithTableOfContents(document, change)).to.not.equal(htmlFromDefaultSettings)
 
       // Now, let's make sure the changed settings don't alter subsequent calls
-      expect(Up.renderDocumentAndTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
+      expect(Up.renderWithTableOfContents(document)).to.deep.equal(htmlFromDefaultSettings)
     })
   })
 
 
   const whenProvidingSettingsAtCreation =
-    new Up.Up(changedSettings).renderDocumentAndTableOfContents(document)
+    new Up.Up(changedSettings).renderWithTableOfContents(document)
 
 
-  describe("when provided to an Up object's renderDocumentAndTableOfContents method", () => {
+  describe("when provided to an Up object's renderWithTableOfContents method", () => {
     it("does not alter the Up object's original settings", () => {
       const up = new Up.Up(changedSettings)
 
       // Let's make sure the provided conflicting changes are actually conflicting
-      expect(up.renderDocumentAndTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
+      expect(up.renderWithTableOfContents(document, change)).to.not.equal(whenProvidingSettingsAtCreation)
 
       // Now, let's make sure they didn't alter any subsequent calls
-      expect(up.renderDocumentAndTableOfContents(document, change)).to.deep.equal(whenProvidingSettingsAtCreation)
+      expect(up.renderWithTableOfContents(document, change)).to.deep.equal(whenProvidingSettingsAtCreation)
     })
   })
 
 
   const whenProvidingChangesWhenCallingDefaultMethod =
-    Up.renderDocumentAndTableOfContents(document, change)
+    Up.renderWithTableOfContents(document, change)
 
   const whenProvidingChangesWhenCallingtMethodOnObject =
-    new Up.Up().renderDocumentAndTableOfContents(document, change)
+    new Up.Up().renderWithTableOfContents(document, change)
 
   const whenOverwritingChangesProvidedAtCreation =
-    new Up.Up(conflictingChangedSettings).renderDocumentAndTableOfContents(document, change)
+    new Up.Up(conflictingChangedSettings).renderWithTableOfContents(document, change)
 
 
   describe('when provided to an Up object at creation', () => {
-    it('has the same result as providing the setting when calling the default renderDocumentAndTableOfContents function', () => {
+    it('has the same result as providing the setting when calling the default renderWithTableOfContents function', () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingDefaultMethod)
     })
 
-    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method", () => {
+    it("has the same result as providing the setting when calling the Up object's renderWithTableOfContents method", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenProvidingChangesWhenCallingtMethodOnObject)
     })
 
-    it("has the same result as providing the setting when calling the Up object's renderDocumentAndTableOfContents method, overwriting the setting provided at creation", () => {
+    it("has the same result as providing the setting when calling the Up object's renderWithTableOfContents method, overwriting the setting provided at creation", () => {
       expect(whenProvidingSettingsAtCreation).to.deep.equal(whenOverwritingChangesProvidedAtCreation)
     })
   })

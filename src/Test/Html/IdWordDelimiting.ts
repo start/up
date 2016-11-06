@@ -74,7 +74,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       }
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document, settings)
+        Up.renderWithTableOfContents(document, settings)
 
       expect(tableOfContentsHtml).to.equal(
         '<h1><a href="#up-table-of-contents-entry-1">I enjoy apples</a></h1>')
@@ -164,7 +164,7 @@ context('Words within HTML IDs are delimited by hyphens.', () => {
       }
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document, settings)
+        Up.renderWithTableOfContents(document, settings)
 
       expect(tableOfContentsHtml).to.equal(
         '<h1><a href="#thread-11-reply-65-topic-1">I enjoy apples</a></h1>')

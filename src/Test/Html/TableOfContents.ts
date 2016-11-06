@@ -13,7 +13,7 @@ specify('When a document has no table of contents entries, the table of contents
     ])
 
   const { tableOfContentsHtml, documentHtml } =
-    Up.renderDocumentAndTableOfContents(document)
+    Up.renderWithTableOfContents(document)
 
   expect(tableOfContentsHtml).to.be.empty
 
@@ -43,7 +43,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')
@@ -64,7 +64,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h2><a href="#up-topic-1">I enjoy apples</a></h2>')
@@ -85,7 +85,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h3><a href="#up-topic-1">I enjoy apples</a></h3>')
@@ -106,7 +106,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h4><a href="#up-topic-1">I enjoy apples</a></h4>')
@@ -127,7 +127,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h5><a href="#up-topic-1">I enjoy apples</a></h5>')
@@ -148,7 +148,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h6><a href="#up-topic-1">I enjoy apples</a></h6>')
@@ -171,7 +171,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document)
+        Up.renderWithTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<div aria-level="7" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>')
@@ -192,7 +192,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document)
+        Up.renderWithTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<div aria-level="8" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>')
@@ -213,7 +213,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document)
+        Up.renderWithTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<div aria-level="9" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>')
@@ -234,7 +234,7 @@ context("Each table of contents entry renders a heading corresponding to the ent
         new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
       const { tableOfContentsHtml, documentHtml } =
-        Up.renderDocumentAndTableOfContents(document)
+        Up.renderWithTableOfContents(document)
 
       expect(tableOfContentsHtml).to.equal(
         '<div aria-level="10" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>')
@@ -264,7 +264,7 @@ context("The table of contents has no effect on elements that aren't referenced 
       ], new Up.Document.TableOfContents([headingInTableOfContents]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">I enjoy apples</a></h1>')
@@ -355,7 +355,7 @@ context('When a table of contents has multiple entries', () => {
     ], tableOfContents)
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">Vegetables</a></h1>'
@@ -419,7 +419,7 @@ context("Within the table of contents itself", () => {
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">I enjoy apples <em>and you should too</em></a></h1>')
@@ -478,7 +478,7 @@ context("Within the table of contents itself", () => {
       ], new Up.Document.TableOfContents([applesHeading, grapesHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1>'
@@ -553,7 +553,7 @@ context('Like outline syntax nodes in the document, table of contents entries re
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1 data-up-source-line="2"><a href="#up-topic-1">I enjoy apples</a></h1>')
@@ -574,7 +574,7 @@ context('Like outline syntax nodes in the document, table of contents entries re
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<div aria-level="7" data-up-source-line="13" role="heading"><a href="#up-topic-1">I enjoy apples</a></div>')
@@ -619,7 +619,7 @@ context('When a section link node is associated with an entry', () => {
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">I drink soda</a></h1>'

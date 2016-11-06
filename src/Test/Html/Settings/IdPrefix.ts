@@ -365,7 +365,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1"></a></h1>')
@@ -390,7 +390,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#reply-11-topic-1"></a></h1>')
@@ -414,7 +414,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#topic-1"></a></h1>')
@@ -438,7 +438,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#topic-1"></a></h1>')
@@ -462,7 +462,7 @@ describe("The ID of an element referenced by the table of contents", () => {
       new Up.Document([heading], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1"></a></h1>')
@@ -490,7 +490,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      Up.renderDocumentAndTableOfContents(document)
+      Up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#up-topic-1">Howdy there</a></h1>')
@@ -520,7 +520,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#reply-11-topic-1">Howdy there</a></h1>')
@@ -550,7 +550,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#topic-1">Howdy there</a></h1>')
@@ -580,7 +580,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#topic-1">Howdy there</a></h1>')
@@ -610,7 +610,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
-      up.renderDocumentAndTableOfContents(document)
+      up.renderWithTableOfContents(document)
 
     expect(tableOfContentsHtml).to.equal(
       '<h1><a href="#&quot;reply&quot;-&amp;&amp;-&quot;response&quot;-topic-1">Howdy there</a></h1>')
