@@ -91,11 +91,11 @@ export function patternEndingWith(pattern: string): RegExp {
 }
 
 
-import { ANY_WHITESPACE } from './PatternPieces'
+import { ANY_OPTIONAL_WHITESPACE } from './PatternPieces'
 
 function getRegExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
   return new RegExp(
-    '^' + ANY_WHITESPACE + args.pattern + ANY_WHITESPACE + '$',
+    '^' + ANY_OPTIONAL_WHITESPACE + args.pattern + ANY_OPTIONAL_WHITESPACE + '$',
     getRegExpFlags(args.isCaseInsensitive))
 }
 

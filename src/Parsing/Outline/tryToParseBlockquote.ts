@@ -2,7 +2,7 @@ import { LineConsumer } from './LineConsumer'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { patternStartingWith, optional } from '../../PatternHelpers'
-import { ANY_WHITESPACE } from '../../PatternPieces'
+import { ANY_OPTIONAL_WHITESPACE } from '../../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -45,4 +45,4 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
 
 
 const BLOCKQUOTE_DELIMITER_PATTERN =
-  patternStartingWith(ANY_WHITESPACE + '>' + optional(' '))
+  patternStartingWith(ANY_OPTIONAL_WHITESPACE + '>' + optional(' '))

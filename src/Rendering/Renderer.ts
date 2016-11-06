@@ -1,6 +1,6 @@
 import * as Up from '../Main'
 import { NormalizedSettings } from '../NormalizedSettings'
-import { SOME_WHITESPACE } from '../PatternPieces'
+import { WHITESPACE } from '../PatternPieces'
 
 
 export abstract class Renderer {
@@ -63,4 +63,4 @@ export abstract class Renderer {
 }
 
 
-const WHITESPACE_PATTERN = new RegExp(SOME_WHITESPACE, 'g')
+const WHITESPACE_PATTERN = new RegExp(WHITESPACE, 'g')

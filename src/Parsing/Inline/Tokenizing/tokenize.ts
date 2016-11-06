@@ -1,7 +1,7 @@
 import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHTING, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
 import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
-import { SOME_WHITESPACE, ANY_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
+import { WHITESPACE, ANY_OPTIONAL_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
 import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { BACKSLASH } from '../../Strings'
 import { NormalizedSettings } from '../../../NormalizedSettings'
@@ -280,7 +280,7 @@ class Tokenizer {
         //
         // We don't do this for footnotes in inline documents, however. For more information about footnotes
         // in inline documents, see the `getFootnoteConventionsForInlineDocuments` method.
-        startsWith: ANY_WHITESPACE + this.getFootnoteStartDelimiter(bracket),
+        startsWith: ANY_OPTIONAL_WHITESPACE + this.getFootnoteStartDelimiter(bracket),
         endsWith: this.getFootnotEndDelimiter(bracket)
       }))
   }
@@ -302,7 +302,7 @@ class Tokenizer {
   }
 
   private getFootnoteStartDelimiter(bracket: Bracket): string {
-    return bracket.startPattern + escapeForRegex('^') + ANY_WHITESPACE
+    return bracket.startPattern + escapeForRegex('^') + ANY_OPTIONAL_WHITESPACE
   }
 
   private getFootnotEndDelimiter(bracket: Bracket): string {
@@ -515,7 +515,7 @@ class Tokenizer {
 
   private getMediaUrlConventions(): ConventionVariation[] {
     return PARENTHETICAL_BRACKETS.map(bracket => new ConventionVariation({
-      startsWith: ANY_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
+      startsWith: ANY_OPTIONAL_WHITESPACE + this.startPatternForBracketedUrlAssumedToBeAUrl(bracket),
       endsWith: bracket.endPattern,
 
       beforeOpeningItFlushesNonEmptyBufferToTextToken: true,
@@ -644,7 +644,7 @@ class Tokenizer {
   private startPatternForBracketedUrlAssumedToBeAUrl(bracket: Bracket): string {
     // The URL must not be blank, and its first character must not be escaped.
     return bracket.startPattern + notFollowedBy(
-      ANY_WHITESPACE
+      ANY_OPTIONAL_WHITESPACE
       + anyCharMatching(
         bracket.endPattern,
         escapeForRegex(BACKSLASH)))
@@ -662,7 +662,7 @@ class Tokenizer {
     return new ConventionVariation({
       canOnlyOpenIfDirectlyFollowing,
 
-      startsWith: SOME_WHITESPACE + bracket.startPattern + capture(
+      startsWith: WHITESPACE + bracket.startPattern + capture(
         either(
           EXPLICIT_URL_PREFIX,
           TOP_LEVEL_DOMAIN_WITH_AT_LEAST_ONE_SUBDOMAIN + either(
@@ -1531,7 +1531,7 @@ class Tokenizer {
 
 
 function labeledBracketStartDelimiter(keyword: NormalizedSettings.Parsing.Keyword, bracket: Bracket): string {
-  return bracket.startPattern + either(...keyword.map(escapeForRegex)) + ':' + ANY_WHITESPACE
+  return bracket.startPattern + either(...keyword.map(escapeForRegex)) + ':' + ANY_OPTIONAL_WHITESPACE
 }
 
 
@@ -1635,4 +1635,4 @@ const CONTENT_WITH_NO_SPECIAL_MEANING =
       )))
 
 const LEADING_WHITESPACE =
-  patternStartingWith(SOME_WHITESPACE)
+  patternStartingWith(WHITESPACE)

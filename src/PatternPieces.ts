@@ -7,10 +7,10 @@ export const INLINE_WHITESPACE_CHAR =
 export const WHITESPACE_CHAR =
   '\\s'
 
-export const ANY_WHITESPACE =
+export const ANY_OPTIONAL_WHITESPACE =
   everyOptional(WHITESPACE_CHAR)
 
-export const SOME_WHITESPACE =
+export const WHITESPACE =
   oneOrMore(WHITESPACE_CHAR)
 
 export const LETTER_CLASS =
