@@ -482,8 +482,8 @@ class Tokenizer {
         insteadOfOpeningRegularConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
 
         whenClosing: () => {
-          const sectionTitleMarkupSnippet = this.flushBufferedContent().trim()
-          this.appendNewToken(TokenRole.SectionLink, sectionTitleMarkupSnippet)
+          const markupSnippetFromSectionTitle = this.flushBufferedContent().trim()
+          this.appendNewToken(TokenRole.SectionLink, markupSnippetFromSectionTitle)
         }
       }))
   }

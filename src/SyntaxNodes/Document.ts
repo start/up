@@ -94,7 +94,7 @@ export namespace Document {
       // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
 
-      // Section links compare their `sectionTitleMarkupSnippet` against this field.
+      // Section links compare their `markupSnippetFromSectionTitle` against this field.
       //
       // Currently, headings are the only outline writing conventions that produce table of contents
       // entries, so `titleMarkup` will always represent the line of markup containing the heading's

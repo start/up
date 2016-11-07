@@ -169,7 +169,7 @@ export class HtmlRenderer extends Renderer {
         // text by italicizing it.
         //
         // TODO: Consider parsing the snippet's markup.
-        : new Up.Italic([new Up.Text(sectionLink.sectionTitleMarkupSnippet)])
+        : new Up.Italic([new Up.Text(sectionLink.markupSnippetFromSectionTitle)])
 
     return bestRepresentation.render(this)
   }
