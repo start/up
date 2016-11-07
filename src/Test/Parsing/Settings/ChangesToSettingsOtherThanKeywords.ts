@@ -65,12 +65,12 @@ function itWorksAsAdvertised(
 
   context('does not affect subsequent calls when provided', () => {
     specify('when calling the default parse function', () => {
-      expect(Up.parse(markup, change)).to.be.not.eql(Up.parse(markup))
+      expect(Up.parse(markup, change)).to.not.deep.equal(Up.parse(markup))
     })
 
     specify('when calling the parse method on an Up object', () => {
       const up = new Up.Up()
-      expect(up.parse(markup, change)).to.be.not.eql(up.parse(markup))
+      expect(up.parse(markup, change)).to.not.deep.equal(up.parse(markup))
     })
   })
 }
