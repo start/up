@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/start/up.svg?branch=master)](https://travis-ci.org/start/up)
 
-Write Up!
-=========
+What's up?
+==========
 
 Up is a markup language for writing structured documents in plain text.
 
