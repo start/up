@@ -24,6 +24,7 @@
   "bugs": {
     "url": "https://github.com/start/up/issues"
   },
+  "homepage": "https://tryup.org",
   "license": "MIT",
   "devDependencies": {
     "chai": "latest",
