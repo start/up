@@ -689,7 +689,7 @@ Not quite true.
 
 
   context('Headings:', () => {
-    specify('When a previous heading contains the snippet', () => {
+    specify("When a previous heading contains the section link's snippet", () => {
       const markup = `
 I drink soda
 ============
@@ -731,7 +731,7 @@ Not quite true.`
         ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
     })
 
-    specify('When a subsquent heading contains the snippet (and a previous one does not)', () => {
+    specify("When a subsquent heading contains the section link's snippet (and a previous heading does not)", () => {
       const markup = `
 I drink soda
 ============
@@ -789,7 +789,7 @@ I never drink soda.`
         ], new Up.Document.TableOfContents([drinkSodaHeading, neverLieHeading, liesHeading])))
     })
 
-    specify('When a subsquent heading perfectly matches the snippet', () => {
+    specify("When a subsquent heading perfectly matches the section link's snippet (and a previous heading merely contains the snippet)", () => {
       const markup = `
 I drink soda
 ============
@@ -848,7 +848,7 @@ My least favorite drink.`
         ], new Up.Document.TableOfContents([drinkSodaHeading, neverLieHeading, sodaHeading])))
     })
 
-    specify('When no other heading matches the snippet', () => {
+    specify("When no other heading matches the section link's snippet", () => {
       const markup = `
 I drink soda
 ============
@@ -871,6 +871,53 @@ Not quite true.`
         new Up.Heading([
           new Up.Text('I never lie. See '),
           new Up.SectionLink('lies')
+        ], {
+            level: 1,
+            titleMarkup: "I never lie. See [topic: lies]",
+            ordinalInTableOfContents: 2
+          })
+
+      expect(Up.parse(markup)).to.deep.equal(
+        new Up.Document([
+          sodaHeading,
+          new Up.Paragraph([
+            new Up.Text('Actually, I only drink milk.')
+          ]),
+          neverLieHeading,
+          new Up.Paragraph([
+            new Up.Text('Not quite true.')
+          ])
+        ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
+    })
+
+    specify("When the section link is deeply nested within the heading, and no other heading matches the section link's snippet", () => {
+      const markup = `
+I drink soda
+============
+
+Actually, I only drink milk.
+
+*I never lie. ==See [topic: lies]==*
+====================================
+
+Not quite true.`
+
+      const sodaHeading =
+        new Up.Heading([new Up.Text('I drink soda')], {
+          level: 1,
+          titleMarkup: "I drink soda",
+          ordinalInTableOfContents: 1
+        })
+
+      const neverLieHeading =
+        new Up.Heading([
+          new Up.Emphasis([
+            new Up.Text('I never lie. '),
+            new Up.Highlight([
+              new Up.Text('See '),
+              new Up.SectionLink('lies')
+            ])
+          ])
         ], {
             level: 1,
             titleMarkup: "I never lie. See [topic: lies]",
