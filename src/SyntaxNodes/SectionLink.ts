@@ -62,7 +62,7 @@ export class SectionLink implements InlineSyntaxNode {
   textAppearingInline(): string {
     return (
       this.entry
-        ? getTextAppearingInline(this.entry.titleSyntaxNodes())
+        ? getTextAppearingInline(this.entry.children)
         : this.markupSnippetFromSectionTitle)
   }
 
@@ -76,6 +76,6 @@ export class SectionLink implements InlineSyntaxNode {
 
   private canMatch(entry: Document.TableOfContents.Entry): boolean {
     // We won't match an entry if it contains this section link.
-    return (entry.inlineDescendants().indexOf(this) === -1)
+    return (entry.children.indexOf(this) === -1)
   }
 }

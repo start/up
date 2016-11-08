@@ -32,10 +32,6 @@ export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxN
     return []
   }
 
-  titleSyntaxNodes(): InlineSyntaxNode[] {
-    return this.children
-  }
-
   render(renderer: Renderer): string {
     return renderer.heading(this)
   }

@@ -94,19 +94,15 @@ export namespace Document {
       // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
 
+      // The inline syntax nodes representing this entry in the table of contents.
+      children: InlineSyntaxNode[]
+
       // Section links compare their `markupSnippetFromSectionTitle` against this field.
       //
       // Currently, headings are the only outline writing conventions that produce table of contents
       // entries, so `titleMarkup` will always represent the line of markup containing the heading's
       // actual content.
       titleMarkup: string
-
-      // The inline syntax nodes that should represent this entry within the table of contents itself.
-      titleSyntaxNodes(): InlineSyntaxNode[]
-
-      // All inline descendants (children, grandchildren, etc.) of the syntax node represented by this
-      // table of contents entry.
-      inlineDescendants(): InlineSyntaxNode[]
 
       // This represents the source line number of the item (i.e. heading) this entry points to.
       sourceLineNumber: number

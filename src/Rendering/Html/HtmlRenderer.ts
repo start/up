@@ -298,7 +298,7 @@ export class HtmlRenderer extends Renderer {
 
   private linkToActualEntryInDocument(entry: Up.Document.TableOfContents.Entry): Up.Link {
     return new Up.Link(
-      entry.titleSyntaxNodes(),
+      entry.children,
       fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
   }
 
