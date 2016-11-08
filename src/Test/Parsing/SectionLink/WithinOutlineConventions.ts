@@ -920,7 +920,7 @@ Not quite true.`
           ])
         ], {
             level: 1,
-            titleMarkup: "I never lie. See [topic: lies]",
+            titleMarkup: "*I never lie. ==See [topic: lies]==*",
             ordinalInTableOfContents: 2
           })
 

@@ -3,6 +3,7 @@ import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
 import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
 import { getTextAppearingInline } from './getTextAppearingInline'
+import { getInlineDescendants } from './getInlineDescendants'
 
 
 // A section link is essentially a reference to a table of contents entry.
@@ -37,20 +38,21 @@ export class SectionLink implements InlineSyntaxNode {
     }
 
     for (const entry of tableOfContents.entries) {
+      if (!this.canMatch(entry)) {
+        continue
+      }
+
       const { titleMarkup } = entry
       const { markupSnippetFromSectionTitle } = this
 
-      if (isEqualIgnoringCapitalization(titleMarkup, markupSnippetFromSectionTitle) && this.canMatch(entry)) {
+      if (isEqualIgnoringCapitalization(titleMarkup, markupSnippetFromSectionTitle)) {
         // We found a perfect match! We're done.
         this.entry = entry
         return
       }
 
       if (!this.entry) {
-        if (
-          containsStringIgnoringCapitalization({ haystack: titleMarkup, needle: markupSnippetFromSectionTitle })
-          && this.canMatch(entry)
-        ) {
+        if (containsStringIgnoringCapitalization({ haystack: titleMarkup, needle: markupSnippetFromSectionTitle })) {
           // We've found a non-perfect match. We'll keep searching in case there's a perfect match
           // further in the table of contents.
           this.entry = entry
@@ -75,7 +77,7 @@ export class SectionLink implements InlineSyntaxNode {
   }
 
   private canMatch(entry: Document.TableOfContents.Entry): boolean {
-    // We won't match an entry if it contains this section link.
-    return (entry.children.indexOf(this) === -1)
+    // We won't match a table of contents entry if it contains this section link.
+    return getInlineDescendants(entry.children).indexOf(this) === -1
   }
 }
