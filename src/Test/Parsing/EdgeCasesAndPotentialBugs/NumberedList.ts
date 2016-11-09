@@ -46,7 +46,7 @@ describe('A numbered list with a single item can be sandwched by identical thema
   })
 
 
-  context("If an ordered list has just one item, that item's bullet can't be a numeral followed by a period.", () => {
+  context("If a numbered list has just one item, that item's bullet can't be a numeral followed by a period.", () => {
     specify('Therefore, such a line produces a heading when sandwiched by identical streaks', () => {
       const markup = `
 ----------------------------------------
@@ -112,7 +112,7 @@ describe('A numbered list followed by 2 blank lines followed by another ordered 
 
 
 describe('A numbered list followed by 3 blank lines followed by another ordered list', () => {
-  it('produce an ordered list, a thematic break, and another ordered list', () => {
+  it('produce a numbered list, a thematic break, and another ordered list', () => {
     const markup = `
 # Iowa
 # New Hampshire
@@ -223,7 +223,7 @@ context('A numbered list item ordinal can have leading 0 digits without affectin
 })
 
 
-context("When an ordered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
+context("When a numbered list has just one item, that item can start with an integer followed by a period. The single item can be bulleted by:", () => {
   specify('An integer followed by a closing parenthesis', () => {
     expect(Up.parse('1) 1783. Not a good year for Great Britain.')).to.deep.equal(
       new Up.Document([

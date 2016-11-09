@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 
 
 describe('Consecutive bulleted lines', () => {
-  it('produce an unordered list node containing unordered list items', () => {
+  it('produce a bulleted list node containing unordered list items', () => {
     const markup = `
 * Buy milk
 * Buy bread
@@ -131,7 +131,7 @@ context('Unordered list bullets can be:', () => {
 
 
 
-describe('List items in an unordered list', () => {
+describe('List items in a bulleted list', () => {
   it('can be separated by 1 blank line', () => {
     const withSeparation = `
 * Hello, world!
@@ -148,7 +148,7 @@ describe('List items in an unordered list', () => {
 
 
 describe('A single bulleted line', () => {
-  it('produces an unordered list node containing a single unordered list item', () => {
+  it('produces a bulleted list node containing a single unordered list item', () => {
     expect(Up.parse('* Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.BulletedList([
@@ -163,7 +163,7 @@ describe('A single bulleted line', () => {
 })
 
 
-describe('An indented line immediately following an ordered list item line', () => {
+describe('An indented line immediately following a numbered list item line', () => {
   it('is part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
     const markup = `
 * Hello, world!
@@ -200,7 +200,7 @@ describe('An indented line immediately following an ordered list item line', () 
 })
 
 
-describe('Multiple indented or blank lines immediately following an unordered list item line', () => {
+describe('Multiple indented or blank lines immediately following a bulleted list item line', () => {
   it('are part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
     const markup = `
 * Hello, world!
@@ -326,7 +326,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
 })
 
 
-context('Subsequent lines in an unordered list item must be indented.', () => {
+context('Subsequent lines in a bulleted list item must be indented.', () => {
   context('The indentation must be at least:', () => {
     specify('Two spaces', () => {
       const markup = `
@@ -395,7 +395,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
     })
   })
 
-  specify('Different lines in an unordered list can use different indentation', () => {
+  specify('Different lines in a bulleted list can use different indentation', () => {
     const withMixedIndentation = `
 * Roses are red
   Violets are blue

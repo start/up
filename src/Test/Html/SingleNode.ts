@@ -74,7 +74,7 @@ describe('A numbered list node', () => {
 })
 
 
-context('When an ordered list node contains an item with an explicit ordinal', () => {
+context('When a numbered list node contains an item with an explicit ordinal', () => {
   specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const document = new Up.Document([
       new Up.NumberedList([
@@ -100,7 +100,7 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 })
 
 
-context('When an ordered list node has an explicit starting ordinal', () => {
+context('When a numbered list node has an explicit starting ordinal', () => {
   specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
     const document = new Up.Document([
       new Up.NumberedList([
@@ -126,7 +126,7 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 })
 
 
-describe('When an ordered list node is in descending order', () => {
+describe('When a numbered list node is in descending order', () => {
   specify('the <ol> element is given the "reversed" attribute', () => {
     const document = new Up.Document([
       new Up.NumberedList([

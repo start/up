@@ -30,7 +30,7 @@ import { Table } from '../SyntaxNodes/Table'
 //
 //
 // 1. Any footnotes within a top-level outline convention are placed into a footnote block directly following
-//    that top-level outline convention. Even if a footnote is inside a paragraph inside an ordered list
+//    that top-level outline convention. Even if a footnote is inside a paragraph inside a numbered list
 //    inside a description list, it's placed into a block after the description list, because the description
 //    list is the outermost, top-level outline convention.
 //
@@ -40,7 +40,7 @@ import { Table } from '../SyntaxNodes/Table'
 //    hidden-away inside them. Therefore, for the purpose of producing footnote blocks, revealable block
 //    conventions are essentially treated like mini-documents.
 //
-//    For example, a footnote inside a paragraph inside an ordered list inside a revealable block is placed
+//    For example, a footnote inside a paragraph inside a numbered list inside a revealable block is placed
 //    a footnote block after the ordered list, but still inside the revealable block, because the ordered list
 //    is the outermost, top-level convention within the revealable block.
 //

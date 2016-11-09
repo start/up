@@ -84,7 +84,7 @@ SPOILER:
   })
 
 
-  context('within an ordered list item', () => {
+  context('within a numbered list item', () => {
     specify('using 2 spaces for indentation', () => {
       const markup = `
 # \`\`\`
@@ -150,7 +150,7 @@ SPOILER:
   })
 
 
-  context('within an unordered list item', () => {
+  context('within a bulleted list item', () => {
     specify('using 2 spaces for indentation', () => {
       const markup = `
 * \`\`\`

@@ -111,7 +111,7 @@ describe('A bulleted list followed by 2 blank lines followed by another unordere
 
 
 describe('A bulleted list followed by 3 blank lines followed by another unordered list', () => {
-  it('produce an unordered list, a thematic break, and another unordered list', () => {
+  it('produce a bulleted list, a thematic break, and another unordered list', () => {
     const markup = `
 - Iowa
 - New Hampshire

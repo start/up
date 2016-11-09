@@ -106,10 +106,10 @@ function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
   const { length } = unparsedListItems
 
   return (
-    // If there aren't any list items, we're not dealing with an ordered list.
+    // If there aren't any list items, we're not dealing with a numbered list.
     length > 0
     && (
-      // There are five ways to bullet an ordered list:
+      // There are five ways to bullet a numbered list:
       //
       // 1. An integer followed by a period
       // 2) An integer followed by a closing parenthesis 
@@ -121,7 +121,7 @@ function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
       //
       //   1783. Not a good year for Great Britain.
       // 
-      // Did the author intend the paragraph be an ordered list with a single item? Probably not.
+      // Did the author intend the paragraph be a numbered list with a single item? Probably not.
       //
       // Therefore, if the first bullet style is used, we require more than one list item.
       length > 1

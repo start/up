@@ -3,7 +3,7 @@ import * as Up from '../../Main'
 
 
 describe('Consecutive lines each bulleted by a number sign', () => {
-  it('produce an ordered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing ordered list item nodes', () => {
     const markup = `
 # Hello, world!
 # Goodbye, world!`
@@ -28,7 +28,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
 
 
 describe('Consecutive lines each bulleted by a number sign followed by a period', () => {
-  it('produce an ordered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing ordered list item nodes', () => {
     const markup = `
 #. Hello, Lavender Town!
 #. Goodbye, Lavender Town!`
@@ -53,7 +53,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 
 
 describe('Consecutive lines each bulleted by a number sign followed by a closing parenthesis', () => {
-  it('produce an ordered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing ordered list item nodes', () => {
     const markup = `
 #) Hello, Celadon City!
 #) Goodbye, Celadon City!`
@@ -78,7 +78,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
 
 
 describe('Consecutive lines each bulleted by an integer followed by a period', () => {
-  it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
+  it('produce a numbered list node containing ordered list item nodes with explicit ordinals', () => {
     const markup = `
 1. Hello, Celadon City!
 2. Goodbye, Celadon City!`
@@ -103,7 +103,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 
 
 describe('Consecutive lines each bulleted by an integer followed by a closing parenthesis', () => {
-  it('produce an ordered list node containing ordered list item nodes with explicit ordinals', () => {
+  it('produce a numbered list node containing ordered list item nodes with explicit ordinals', () => {
     const markup = `
 1) Hello, Celadon City!
 2) Goodbye, Celadon City!`
@@ -128,7 +128,7 @@ describe('Consecutive lines each bulleted by an integer followed by a closing pa
 
 
 describe('A single line bulleted by an integer followed by a period', () => {
-  it('does not produce an ordered list', () => {
+  it('does not produce a numbered list', () => {
     expect(Up.parse('1783. Not a good year for Great Britain.')).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
@@ -140,7 +140,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 
 
 describe('A single line bulleted by a number sign', () => {
-  it('produces an ordered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing ordered list item nodes', () => {
     expect(Up.parse('# Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -156,7 +156,7 @@ describe('A single line bulleted by a number sign', () => {
 
 
 describe('A single line bulleted by a number sign followed by a period', () => {
-  it('produces an ordered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing ordered list item nodes', () => {
     expect(Up.parse('#. Hello, Lavender Town!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -172,7 +172,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 
 
 describe('A single line bulleted by a number sign followed by a closing parenthesis', () => {
-  it('produces an ordered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing ordered list item nodes', () => {
     expect(Up.parse('#) Hello, Celadon City!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -188,7 +188,7 @@ describe('A single line bulleted by a number sign followed by a closing parenthe
 
 
 describe('A single line bulleted by an integer followed by a closing parenthesis', () => {
-  it('produces an ordered list node containing an ordered list item node with an explicit ordinal', () => {
+  it('produces a numbered list node containing a numbered list item node with an explicit ordinal', () => {
     expect(Up.parse('1) Hello, Celadon City!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -305,7 +305,7 @@ Hello, World 1-2!`
 })
 
 
-describe('An indented line immediately following an ordered list item line', () => {
+describe('An indented line immediately following a numbered list item line', () => {
   it('is part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
     const markup = `
 # Hello, world!
@@ -342,7 +342,7 @@ describe('An indented line immediately following an ordered list item line', () 
 })
 
 
-describe('Multiple indented or blank lines immediately following an ordered list item line', () => {
+describe('Multiple indented or blank lines immediately following a numbered list item line', () => {
   it('are part of the that list item, and the list item as a whole is evaluated for outline conventions', () => {
     const markup = `
 # Hello, world!
@@ -468,7 +468,7 @@ describe('A numbered list item containing multiple indented lines', () => {
 })
 
 
-context('Subsequent lines in an ordered list item must be indented.', () => {
+context('Subsequent lines in a numbered list item must be indented.', () => {
   context('The indentation must be at least:', () => {
     specify('Two spaces', () => {
       const markup = `
@@ -537,7 +537,7 @@ context('Subsequent lines in an ordered list item must be indented.', () => {
     })
   })
 
-  specify('Different lines in an ordered list can use different indentation', () => {
+  specify('Different lines in a numbered list can use different indentation', () => {
     const withMixedIndentation = `
 # Roses are red
   Violets are blue
