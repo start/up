@@ -1,6 +1,4 @@
-// Instances of this class incrementally consume `entireText` from start to finish.
-//
-// Pieces from the start of `entireText` are consumed when they match regular expression patterns.
+// This class helps incrementally consume text using regular expression patterns.
 export class TextConsumer {
   private _remaining: string
   private _index: number
@@ -36,9 +34,11 @@ export class TextConsumer {
     return this._index >= this.entireText.length
   }
 
-  // Consumes text matching `pattern`.
+  // This method consumes any text from the start of `remaining` if it matches `pattern`.
   //
-  // This method assumes `pattern` only matches the beginning of a string.  
+  // Before actually consuming the text, `thenBeforeConsumingText` is invoked.
+  //
+  // NOTE: This method assumes `pattern` only matches the beginning of a string!  
   consume(
     args: {
       pattern: RegExp

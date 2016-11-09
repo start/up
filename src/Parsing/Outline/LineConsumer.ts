@@ -1,6 +1,5 @@
-// Instances of this class incrementally consume `lines` from start to finish.
-//
-// Lines from the start of `lines` are consumed when they match regular expression patterns.
+// This class helps incrementally consume a collection of lines (from start to finish)
+// using regular expression patterns and predicates.
 export class LineConsumer {
   private _countLinesConsumed = 0
 
@@ -22,6 +21,12 @@ export class LineConsumer {
     return this._countLinesConsumed >= this.lines.length
   }
 
+  // This method consumes the next remaining line if it:
+  //
+  // 1. Matches `linePattern`
+  // 2. Satisfies the `if` predicate
+  //
+  // Before actually consuming the line, `thenBeforeConsumingLine` is invoked.
   consume(
     args: {
       linePattern?: RegExp
@@ -57,7 +62,6 @@ export class LineConsumer {
     }
 
     this.skipLines(1)
-
     return true
   }
 }
