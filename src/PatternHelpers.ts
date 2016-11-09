@@ -49,11 +49,6 @@ export function anyCharFrom(...chars: string[]): string {
   return anyCharMatching(...chars.map(escapeForRegex))
 }
 
-// Matches any character from the set of `chars`. Does not support patterns.
-export function anyCharBut(...chars: string[]): string {
-  return anyCharNotMatching(...chars.map(escapeForRegex))
-}
-
 export function followedBy(pattern: string): string {
   return `(?=${pattern})`
 }
