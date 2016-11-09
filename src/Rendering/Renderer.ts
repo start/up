@@ -30,7 +30,7 @@ export abstract class Renderer {
   abstract italic(italic: Up.Italic): string
   abstract lineBlock(lineBlock: Up.LineBlock): string
   abstract link(link: Up.Link): string
-  abstract orderedList(list: Up.OrderedList): string
+  abstract orderedList(list: Up.NumberedList): string
   abstract thematicBreak(thematicBreak: Up.ThematicBreak): string
   abstract paragraph(paragraph: Up.Paragraph): string
   abstract normalParenthetical(normalParenthetical: Up.NormalParenthetical): string
@@ -41,7 +41,7 @@ export abstract class Renderer {
   abstract squareParenthetical(squareParenthetical: Up.SquareParenthetical): string
   abstract stress(stress: Up.Stress): string
   abstract table(table: Up.Table): string
-  abstract unorderedList(list: Up.UnorderedList): string
+  abstract unorderedList(list: Up.BulletedList): string
   abstract video(video: Up.Video): string
 
   protected renderEach(nodes: Up.SyntaxNode[]): string[] {

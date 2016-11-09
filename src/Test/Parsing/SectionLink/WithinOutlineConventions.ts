@@ -295,15 +295,15 @@ Not quite true.
         new Up.Paragraph([
           new Up.Text('Not quite true.')
         ]),
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text('First of all, see '),
               new Up.SectionLink('soda', sodaHeading),
               new Up.Text('.')
             ])
           ]),
-          new Up.OrderedList.Item([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
             ])
@@ -670,15 +670,15 @@ Not quite true.
         new Up.Paragraph([
           new Up.Text('Not quite true.')
         ]),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('First of all, see '),
               new Up.SectionLink('soda', sodaHeading),
               new Up.Text('.')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
             ])

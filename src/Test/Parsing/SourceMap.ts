@@ -180,11 +180,11 @@ Table: \`AND\` operator logic
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               new Up.Paragraph([new Up.Text("They're cheap")], { sourceLineNumber: 2 })
             ], { ordinal: 1 }),
-            new Up.OrderedList.Item([
+            new Up.NumberedList.Item([
               new Up.Paragraph([new Up.Text("They're delicious")], { sourceLineNumber: 4 })
             ], { ordinal: 2 })
           ], { sourceLineNumber: 2 })
@@ -199,11 +199,11 @@ Table: \`AND\` operator logic
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.Paragraph([new Up.Text("They're cheap")], { sourceLineNumber: 2 })
             ]),
-            new Up.UnorderedList.Item([
+            new Up.BulletedList.Item([
               new Up.Paragraph([new Up.Text("They're delicious")], { sourceLineNumber: 4 })
             ])
           ], { sourceLineNumber: 2 })

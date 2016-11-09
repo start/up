@@ -9,9 +9,9 @@ import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
 import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
 import { RevealableBlock } from '../SyntaxNodes/RevealableBlock'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
-import { OrderedList } from '../SyntaxNodes/OrderedList'
+import { NumberedList } from '../SyntaxNodes/NumberedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { UnorderedList } from '../SyntaxNodes/UnorderedList'
+import { BulletedList } from '../SyntaxNodes/BulletedList'
 import { Table } from '../SyntaxNodes/Table'
 
 
@@ -113,7 +113,7 @@ class FootnoteBlockInserter {
       return this.getBlocklessFootnotesFromOutlineNodes(node.children)
     }
 
-    if ((node instanceof UnorderedList) || (node instanceof OrderedList)) {
+    if ((node instanceof BulletedList) || (node instanceof NumberedList)) {
       return this.getBlocklessFootnotesFromOutlineContainers(node.items)
     }
 

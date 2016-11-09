@@ -25,13 +25,13 @@ describe('A paragraph node', () => {
 describe('An unordered list node', () => {
   it('renders an <ul> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
-      new Up.UnorderedList([
-        new Up.UnorderedList.Item([
+      new Up.BulletedList([
+        new Up.BulletedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ])
         ]),
-        new Up.UnorderedList.Item([
+        new Up.BulletedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ])
@@ -51,13 +51,13 @@ describe('An unordered list node', () => {
 describe('An ordered list node', () => {
   it('renders an <ol> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ])
         ]),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ])
@@ -77,13 +77,13 @@ describe('An ordered list node', () => {
 context('When an ordered list node contains an item with an explicit ordinal', () => {
   specify('the <li> element for the appropriate list item is given a "value" attribute set to the appropriate ordinal', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ])
         ]),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ])
@@ -103,13 +103,13 @@ context('When an ordered list node contains an item with an explicit ordinal', (
 context('When an ordered list node has an explicit starting ordinal', () => {
   specify('the <ol> element is given a "start" attribute set to the appropriate starting ordinal', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ])
         ], { ordinal: 3 }),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ])
@@ -129,13 +129,13 @@ context('When an ordered list node has an explicit starting ordinal', () => {
 describe('When an ordered list node is in descending order', () => {
   specify('the <ol> element is given the "reversed" attribute', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ])
         ], { ordinal: 0 }),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ])

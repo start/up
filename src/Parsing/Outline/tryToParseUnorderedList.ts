@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { BulletedList } from '../../SyntaxNodes/BulletedList'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
 import { optional, patternStartingWith, anyCharFrom } from '../../PatternHelpers'
@@ -16,7 +16,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // blank lines terminates the whole list.
 export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
-  const listItems: UnorderedList.Item[] = []
+  const listItems: BulletedList.Item[] = []
 
   while (!markupLineConsumer.done()) {
     const linesOfMarkupInCurrentListItem: string[] = []
@@ -48,7 +48,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
     })
 
     listItems.push(
-      new UnorderedList.Item(
+      new BulletedList.Item(
         getOutlineSyntaxNodes({
           markupLines: linesOfMarkupInCurrentListItem,
           sourceLineNumber: sourceLineNumberForCurrentListItem,
@@ -66,7 +66,7 @@ export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
   }
 
   args.then(
-    [new UnorderedList(listItems)],
+    [new BulletedList(listItems)],
     markupLineConsumer.countLinesConsumed)
 
   return true

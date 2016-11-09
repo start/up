@@ -635,15 +635,15 @@ Not quite true.
           new Up.Paragraph([
             new Up.Text('Not quite true.')
           ]),
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               new Up.Paragraph([
                 new Up.Text('First, see '),
                 new Up.SectionLink('soda', sodaHeading),
                 new Up.Text('.')
               ])
             ], { ordinal: 1 }),
-            new Up.OrderedList.Item([
+            new Up.NumberedList.Item([
               new Up.Paragraph([
                 new Up.Text("Second, I've been alive for hundreds of years. I'm bound to have lied at some point.")
               ])
@@ -688,14 +688,14 @@ There are plenty of important facts about me. For my favorite, skip to [section:
           new Up.SectionLink('honest', honestHeading),
           new Up.Text('.')
         ]),
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             sodaHeading,
             new Up.Paragraph([
               new Up.Text('Actually, I only drink milk.')
             ])
           ], { ordinal: 1 }),
-          new Up.OrderedList.Item([
+          new Up.NumberedList.Item([
             honestHeading,
             new Up.Paragraph([
               new Up.Text('Not quite true.')

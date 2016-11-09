@@ -196,9 +196,9 @@ Anyway, none of that matters.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
+        new Up.BulletedList([
 
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotes[0],
@@ -209,7 +209,7 @@ Anyway, none of that matters.`
             ])
           ]),
 
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotes[1],
@@ -217,7 +217,7 @@ Anyway, none of that matters.`
             ])
           ]),
 
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
                 new Up.Text("Roses are red"),
@@ -260,8 +260,8 @@ Anyway, none of that matters.`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotes[0],
@@ -271,7 +271,7 @@ Anyway, none of that matters.`
               new Up.Text("It's too expensive.")
             ])
           ], { ordinal: 1 }),
-          new Up.OrderedList.Item([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotes[1],
@@ -735,8 +735,8 @@ SPOILER:
         new Up.Document([
           new Up.RevealableBlock([
 
-            new Up.UnorderedList([
-              new Up.UnorderedList.Item([
+            new Up.BulletedList([
+              new Up.BulletedList.Item([
                 new Up.Paragraph([
                   new Up.Text("I don't eat cereal."),
                   footnotes[0],
@@ -746,7 +746,7 @@ SPOILER:
                   new Up.Text("It's too expensive.")
                 ])
               ]),
-              new Up.UnorderedList.Item([
+              new Up.BulletedList.Item([
                 new Up.Paragraph([
                   new Up.Text("I don't eat"),
                   footnotes[1],
@@ -796,8 +796,8 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnotesInUnorderedList[0],
@@ -807,7 +807,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
               new Up.Text("It's too expensive.")
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
               footnotesInUnorderedList[1],
@@ -856,8 +856,8 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
               footnoteInUnorderedList,
@@ -867,7 +867,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
               new Up.Text("It's too expensive.")
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text("I don't eat"),

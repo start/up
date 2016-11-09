@@ -6,11 +6,11 @@ import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
 
 
-export class UnorderedList implements OutlineSyntaxNode {
+export class BulletedList implements OutlineSyntaxNode {
   public sourceLineNumber: number = undefined
 
   constructor(
-    public items: UnorderedList.Item[], options?: { sourceLineNumber: number }) {
+    public items: BulletedList.Item[], options?: { sourceLineNumber: number }) {
     if (options) {
       this.sourceLineNumber = options.sourceLineNumber
     }
@@ -32,7 +32,7 @@ export class UnorderedList implements OutlineSyntaxNode {
 }
 
 
-export namespace UnorderedList {
+export namespace BulletedList {
   export class Item extends OutlineSyntaxNodeContainer {
     protected UNORDERED_LIST_ITEM(): void { }
   }

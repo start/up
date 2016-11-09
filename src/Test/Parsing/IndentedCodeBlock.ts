@@ -95,8 +95,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -116,8 +116,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -137,8 +137,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -161,8 +161,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -182,8 +182,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
@@ -203,8 +203,8 @@ SPOILER:
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false

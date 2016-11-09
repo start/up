@@ -334,11 +334,11 @@ context('When a table of contents has multiple entries', () => {
     const document = new Up.Document([
       heading1,
 
-      new Up.UnorderedList([
-        new Up.UnorderedList.Item([
+      new Up.BulletedList([
+        new Up.BulletedList.Item([
 
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               heading2,
 
               new Up.DescriptionList([

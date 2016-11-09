@@ -1,5 +1,5 @@
 import { LineConsumer } from './LineConsumer'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
+import { NumberedList } from '../../SyntaxNodes/NumberedList'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { optional, patternStartingWith, escapeForRegex, oneOrMore, either, anyCharFrom, capture } from '../../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
@@ -72,11 +72,11 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
 
     const ordinal = getExplicitOrdinal(unparsedListItem)
 
-    return new OrderedList.Item(itemChildren, { ordinal })
+    return new NumberedList.Item(itemChildren, { ordinal })
   })
 
   args.then(
-    [new OrderedList(listItems)],
+    [new NumberedList(listItems)],
     markupLineConsumer.countLinesConsumed)
 
   return true

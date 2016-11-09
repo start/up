@@ -248,8 +248,8 @@ describe('Inside a text node itself nested within several outline nodes, all ins
   it('are escaped once', () => {
     const document = new Up.Document([
       new Up.Blockquote([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
             ])

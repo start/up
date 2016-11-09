@@ -224,8 +224,8 @@ You're in for a fright`
             new Up.Text('Pepe, PA 17101')
           ])
         ]),
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text('Never post your address unless you subsequently post poetry.')
             ])
@@ -268,8 +268,8 @@ You're in for a fright`
             new Up.Text('Pepe, PA 17101')
           ])
         ]),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Never post your address unless you subsequently post poetry.')
             ])

@@ -6,10 +6,10 @@ import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
 
 
-export class OrderedList implements OutlineSyntaxNode {
+export class NumberedList implements OutlineSyntaxNode {
   public sourceLineNumber: number = undefined
 
-  constructor(public items: OrderedList.Item[], options?: { sourceLineNumber: number }) {
+  constructor(public items: NumberedList.Item[], options?: { sourceLineNumber: number }) {
     if (options) {
       this.sourceLineNumber = options.sourceLineNumber
     }
@@ -19,18 +19,18 @@ export class OrderedList implements OutlineSyntaxNode {
     return this.items[0].ordinal
   }
 
-  order(): OrderedList.Order {
+  order(): NumberedList.Order {
     const withExplicitOrdinals =
       this.items.filter(item => item.ordinal != null)
 
     if (withExplicitOrdinals.length < 2) {
-      return OrderedList.Order.Ascending
+      return NumberedList.Order.Ascending
     }
 
     return (
       withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? OrderedList.Order.Descending
-        : OrderedList.Order.Ascending)
+        ? NumberedList.Order.Descending
+        : NumberedList.Order.Ascending)
   }
 
   descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {
@@ -49,7 +49,7 @@ export class OrderedList implements OutlineSyntaxNode {
 }
 
 
-export namespace OrderedList {
+export namespace NumberedList {
   export class Item extends OutlineSyntaxNodeContainer {
     public ordinal: number = undefined
 

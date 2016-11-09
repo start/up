@@ -8,12 +8,12 @@ context("The `Document.create` method is automatically used during the normal pa
   specify("A table of contents", () => {
     const documentChildren = [
       new Up.Heading([new Up.Text('I enjoy apples')], { level: 1, titleMarkup: NOT_USED }),
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Heading([new Up.Text("They're cheap")], { level: 2, titleMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very cheap.")])
         ]),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Heading([new Up.Text("They're delicious")], { level: 2, titleMarkup: NOT_USED }),
           new Up.Paragraph([new Up.Text("Very delicious.")])
         ])
@@ -47,12 +47,12 @@ context("The `Document.create` method is automatically used during the normal pa
     expect(document).to.deep.equal(
       new Up.Document([
         enjoyHeading,
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             cheapHeading,
             new Up.Paragraph([new Up.Text("Very cheap.")])
           ]),
-          new Up.OrderedList.Item([
+          new Up.NumberedList.Item([
             deliciousHeading,
             new Up.Paragraph([new Up.Text("Very delicious.")])
           ])

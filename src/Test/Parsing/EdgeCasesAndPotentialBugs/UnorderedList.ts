@@ -12,8 +12,8 @@ describe('An unordered list with a single item', () => {
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.ThematicBreak(),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Mittens')
             ])
@@ -45,13 +45,13 @@ And addresses do, too`
             new Up.Text('Violets are blue')
           ])
         ]),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Kansas')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Nebraska')
             ])
@@ -81,25 +81,25 @@ describe('An unordered list followed by 2 blank lines followed by another unorde
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Iowa')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('New Hampshire')
             ])
           ])
         ]),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Clinton')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Sanders')
             ])
@@ -123,26 +123,26 @@ describe('An unordered list followed by 3 blank lines followed by another unorde
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Iowa')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('New Hampshire')
             ])
           ])
         ]),
         new Up.ThematicBreak(),
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Clinton')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Sanders')
             ])
@@ -162,8 +162,8 @@ describe('A code block in a list item', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.CodeBlock('const x = 0')
           ])
         ])
@@ -182,8 +182,8 @@ describe('A code block in a list item', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.CodeBlock('const x = 0\n\n\n\nconst y = 0')
           ])
         ])

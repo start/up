@@ -249,8 +249,8 @@ Goodbye, world!
       new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             keysHeading
           ])
         ])
@@ -300,8 +300,8 @@ Goodbye, world!
       new Up.Document([
         helloHeading,
         goodbyeHeading,
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             keysHeading
           ])
         ])
@@ -455,8 +455,8 @@ describe("A level-2 heading underline defined inside a blockquote but outside an
         new Up.Blockquote([
           helloHeading,
           goodbyeHeading,
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               keysHeading
             ])
           ])

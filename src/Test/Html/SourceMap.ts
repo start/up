@@ -13,13 +13,13 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Unordered list', () => {
     const document = new Up.Document([
-      new Up.UnorderedList([
-        new Up.UnorderedList.Item([
+      new Up.BulletedList([
+        new Up.BulletedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ], { sourceLineNumber: 3 })
         ]),
-        new Up.UnorderedList.Item([
+        new Up.BulletedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ], { sourceLineNumber: 4 })
@@ -36,13 +36,13 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Ordered lists without start ordinals', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ]),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ], { sourceLineNumber: 3 })
@@ -59,13 +59,13 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Ordered lists with start ordinals', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 3 }),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ], { sourceLineNumber: 3 })
@@ -82,13 +82,13 @@ context('When an outline syntax node has a source line number, its outermost ele
 
   specify('Reversed ordered lists with start ordinals', () => {
     const document = new Up.Document([
-      new Up.OrderedList([
-        new Up.OrderedList.Item([
+      new Up.NumberedList([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Tropical')
           ], { sourceLineNumber: 1 })
         ], { ordinal: 2 }),
-        new Up.OrderedList.Item([
+        new Up.NumberedList.Item([
           new Up.Paragraph([
             new Up.Text('Territories')
           ], { sourceLineNumber: 2 })

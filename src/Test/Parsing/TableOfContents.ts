@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { OrderedList } from '../../SyntaxNodes/OrderedList'
-import { UnorderedList } from '../../SyntaxNodes/UnorderedList'
+import { NumberedList } from '../../SyntaxNodes/NumberedList'
+import { BulletedList } from '../../SyntaxNodes/BulletedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
 
 
@@ -88,11 +88,11 @@ I enjoy apples
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         heading,
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             new Up.Paragraph([new Up.Text("They're cheap")])
           ], { ordinal: 1 }),
-          new Up.OrderedList.Item([
+          new Up.NumberedList.Item([
             new Up.Paragraph([new Up.Text("They're delicious")])
           ], { ordinal: 2 })
         ])
@@ -120,11 +120,11 @@ I enjoy apples
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         heading,
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([new Up.Text("They're cheap")])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([new Up.Text("They're delicious")])
           ])
         ])
@@ -538,12 +538,12 @@ I enjoy apples
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           applesHeading,
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               cheapHeading,
               new Up.Paragraph([new Up.Text("Very cheap.")])
             ], { ordinal: 1 }),
-            new Up.OrderedList.Item([
+            new Up.NumberedList.Item([
               deliciousHeading,
               new Up.Paragraph([new Up.Text("Very delicious.")])
             ], { ordinal: 2 })
@@ -593,12 +593,12 @@ I enjoy apples
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           applesHeading,
-          new Up.OrderedList([
-            new Up.OrderedList.Item([
+          new Up.NumberedList([
+            new Up.NumberedList.Item([
               cheapHeading,
               new Up.Paragraph([new Up.Text("Very cheap.")]),
-              new Up.OrderedList([
-                new Up.OrderedList.Item([
+              new Up.NumberedList([
+                new Up.NumberedList.Item([
                   costHeading,
                   new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
                 ])
@@ -650,12 +650,12 @@ I enjoy apples
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           applesHeading,
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               cheapHeading,
               new Up.Paragraph([new Up.Text("Very cheap.")])
             ]),
-            new Up.UnorderedList.Item([
+            new Up.BulletedList.Item([
               deliciousHeading,
               new Up.Paragraph([new Up.Text("Very delicious.")])
             ])
@@ -705,12 +705,12 @@ I enjoy apples
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           applesHeading,
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               cheapHeading,
               new Up.Paragraph([new Up.Text("Very cheap.")]),
-              new Up.UnorderedList([
-                new Up.UnorderedList.Item([
+              new Up.BulletedList([
+                new Up.BulletedList.Item([
                   costHeading,
                   new Up.Paragraph([new Up.Text("Typically, apples cost twenty dolloars per pound.")])
                 ])
@@ -967,12 +967,12 @@ Apple
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([new Up.Text('I like apples.')]),
 
-            new Up.OrderedList([
-              new Up.OrderedList.Item([
+            new Up.NumberedList([
+              new Up.NumberedList.Item([
                 new Up.Paragraph([new Up.Text('Really.')]),
 
                 new Up.DescriptionList([
@@ -1043,8 +1043,8 @@ Purchasing
 
     const document = Up.parse(markup)
 
-    const unorderedList = document.children[0] as UnorderedList
-    const orderedList = unorderedList.items[0].children[1] as OrderedList
+    const unorderedList = document.children[0] as BulletedList
+    const orderedList = unorderedList.items[0].children[1] as NumberedList
     const descriptionList = orderedList.items[0].children[1] as DescriptionList
 
     const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children as any[]

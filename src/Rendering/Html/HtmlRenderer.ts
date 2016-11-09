@@ -54,14 +54,14 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('blockquote', blockquote.children, htmlAttrsFor(blockquote))
   }
 
-  unorderedList(list: Up.UnorderedList): string {
+  unorderedList(list: Up.BulletedList): string {
     return htmlElementWithAlreadyEscapedChildren(
       'ul',
       list.items.map(item => this.unorderedListItem(item)),
       htmlAttrsFor(list))
   }
 
-  orderedList(list: Up.OrderedList): string {
+  orderedList(list: Up.NumberedList): string {
     const attrs: { start?: number, reversed?: any } = {}
 
     const start = list.start()
@@ -70,7 +70,7 @@ export class HtmlRenderer extends Renderer {
       attrs.start = start
     }
 
-    if (list.order() === Up.OrderedList.Order.Descending) {
+    if (list.order() === Up.NumberedList.Order.Descending) {
       attrs.reversed = EMPTY_ATTRBUTE_VALUE
     }
 
@@ -310,11 +310,11 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement('small', parenthetical.children, attrs)
   }
 
-  private unorderedListItem(listItem: Up.UnorderedList.Item): string {
+  private unorderedListItem(listItem: Up.BulletedList.Item): string {
     return this.htmlElement('li', listItem.children)
   }
 
-  private orderedListItem(listItem: Up.OrderedList.Item): string {
+  private orderedListItem(listItem: Up.NumberedList.Item): string {
     const attrs: { value?: number } = {}
 
     if (listItem.ordinal != null) {

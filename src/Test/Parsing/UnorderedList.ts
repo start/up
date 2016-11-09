@@ -11,18 +11,18 @@ describe('Consecutive bulleted lines', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy milk')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy bread')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy tendies')
             ])
@@ -41,13 +41,13 @@ context('Unordered list bullets can be:', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, world!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, world!')
             ])
@@ -63,13 +63,13 @@ context('Unordered list bullets can be:', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, world!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, world!')
             ])
@@ -85,13 +85,13 @@ context('Unordered list bullets can be:', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, world!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, world!')
             ])
@@ -108,18 +108,18 @@ context('Unordered list bullets can be:', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy milk')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy bread')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy happiness')
             ])
@@ -151,8 +151,8 @@ describe('A single bulleted line', () => {
   it('produces an unordered list node containing a single unordered list item', () => {
     expect(Up.parse('* Hello, world!')).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, world!')
             ])
@@ -180,11 +180,11 @@ describe('An indented line immediately following an ordered list item line', () 
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             heading
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
                 new Up.Text('Roses are red')
@@ -229,8 +229,8 @@ describe('Multiple indented or blank lines immediately following an unordered li
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             hellodHeading,
             new Up.Paragraph([
               new Up.Text('It is really late, and I am really tired.')
@@ -239,7 +239,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
               new Up.Text('Really.')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             goodbyeHeading
           ])
         ])
@@ -298,26 +298,26 @@ describe('An unordered list item containing multiple indented lines', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             hellodHeading,
             new Up.Paragraph([
               new Up.Text('Upcoming features:')
             ]),
-            new Up.UnorderedList([
-              new Up.UnorderedList.Item([
+            new Up.BulletedList([
+              new Up.BulletedList.Item([
                 new Up.Paragraph([
                   new Up.Text('Code blocks in list items')
                 ])
               ]),
-              new Up.UnorderedList.Item([
+              new Up.BulletedList.Item([
                 new Up.Paragraph([
                   new Up.Text('Definition lists')
                 ])
               ])
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             goodbyeHeading
           ])
         ])
@@ -335,8 +335,8 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
                   new Up.Text('Roses are red'),
@@ -357,8 +357,8 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
                   new Up.Text('Roses are red'),
@@ -379,8 +379,8 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.UnorderedList([
-            new Up.UnorderedList.Item([
+          new Up.BulletedList([
+            new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
                   new Up.Text('Roses are red'),
@@ -411,8 +411,8 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 
     expect(Up.parse(withMixedIndentation)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
                 new Up.Text('Roses are red')
@@ -428,7 +428,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
               new Up.Text("I think it's my favorite.")
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.LineBlock([
               new Up.LineBlock.Line([
                 new Up.Text('1234 Spooky Street')
@@ -451,8 +451,8 @@ describe('An unordered list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     expect(Up.parse('* *Hello*, world!')).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Emphasis([
                 new Up.Text('Hello')
@@ -474,8 +474,8 @@ describe('An unordered list', () => {
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, World '),
               new Up.Emphasis([
@@ -484,7 +484,7 @@ describe('An unordered list', () => {
               new Up.Text('!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, World '),
               new Up.Emphasis([
@@ -505,13 +505,13 @@ Hello, World 1-2!`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, world!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, world!')
             ])

@@ -127,8 +127,8 @@ describe('Within an outline convention, footnotes within a revealable outline co
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.RevealableBlock([
               new Up.Paragraph([
                 new Up.Text("I don't eat cereal."),

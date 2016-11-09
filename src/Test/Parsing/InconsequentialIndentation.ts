@@ -10,13 +10,13 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
@@ -32,13 +32,13 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
@@ -55,18 +55,18 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('No, really. Goodbye.')
             ])
@@ -83,18 +83,18 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('No, really. Goodbye.')
             ])
@@ -113,13 +113,13 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
@@ -135,13 +135,13 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
@@ -158,18 +158,18 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('No, really. Goodbye.')
             ])
@@ -186,18 +186,18 @@ context('Ordered list item bullets can have a single leading space. This include
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Goodbye, Celadon City!')
             ])
           ]),
-          new Up.UnorderedList.Item([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('No, really. Goodbye.')
             ])
@@ -590,8 +590,8 @@ context("Within list items, extra indentation for outline conventions is ignored
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.OrderedList([
-          new Up.OrderedList.Item([
+        new Up.NumberedList([
+          new Up.NumberedList.Item([
             new Up.Paragraph([
               new Up.Text('Hello, Lavender Town!')
             ]),
@@ -611,8 +611,8 @@ context("Within list items, extra indentation for outline conventions is ignored
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.UnorderedList([
-          new Up.UnorderedList.Item([
+        new Up.BulletedList([
+          new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text('Buy milk.')
             ]),
