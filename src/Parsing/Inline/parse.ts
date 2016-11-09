@@ -7,7 +7,7 @@ import { last } from '../../CollectionHelpers'
 import { ParseableToken } from './ParseableToken'
 import { TokenRole } from './TokenRole'
 import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { ExampleInput } from '../../SyntaxNodes/ExampleInput'
+import { ExampleUserInput } from '../../SyntaxNodes/ExampleUserInput'
 import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { Link } from '../../SyntaxNodes/Link'
 import { URL_SCHEME_PATTERN } from '../../Patterns'
@@ -68,8 +68,8 @@ function parseAndGetResult(
         continue
       }
 
-      case TokenRole.ExampleInput: {
-        nodes.push(new ExampleInput(token.value))
+      case TokenRole.ExampleUserInput: {
+        nodes.push(new ExampleUserInput(token.value))
         continue
       }
 

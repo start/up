@@ -80,7 +80,7 @@ describe('Within an example input node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.ExampleInput('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
+        new Up.ExampleUserInput('4 & 5 < 10, and 6 & 7 < 10. Coincidence?')
       ])
     ])
 
@@ -93,7 +93,7 @@ describe('Within an example input node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.ExampleInput('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
+        new Up.ExampleUserInput('John\'s friend said, "1 and 2 > 0. I can\'t believe it."')
       ])
     ])
 

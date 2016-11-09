@@ -20,7 +20,7 @@ export abstract class Renderer {
   abstract codeBlock(codeBlock: Up.CodeBlock): string
   abstract descriptionList(list: Up.DescriptionList): string
   abstract emphasis(emphasis: Up.Emphasis): string
-  abstract exampleInput(exampleInput: Up.ExampleInput): string
+  abstract exampleUserInput(exampleInput: Up.ExampleUserInput): string
   abstract footnoteBlock(footnoteBlock: Up.FootnoteBlock): string
   abstract referenceToFootnote(footnote: Up.Footnote): string
   abstract heading(heading: Up.Heading): string

@@ -9,7 +9,7 @@ describe('An example input convention followed by a parenthesized/bracketd URL',
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),
         new Up.Link([
-          new Up.ExampleInput('My Cart')
+          new Up.ExampleUserInput('My Cart')
         ], 'https://example.com/my-cart'),
         new Up.Text(' and scroll down.')
       ]))
@@ -26,7 +26,7 @@ context('Any example input convention followed immediately by a (second) parenth
       ],
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.ExampleInput('My Cart')
+          new Up.ExampleUserInput('My Cart')
         ], 'https://example.com/my-cart'),
       ])
     })
@@ -43,7 +43,7 @@ context("As long as there is no whitespace between the example input and the lin
       }],
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.ExampleInput('My Cart')
+          new Up.ExampleUserInput('My Cart')
         ], 'https://example.com/my-cart'),
       ])
     })
@@ -57,7 +57,7 @@ context("As long as there is no whitespace between the example input and the lin
       }],
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.ExampleInput('My Cart')
+          new Up.ExampleUserInput('My Cart')
         ], 'https://example.com/my cart'),
       ])
     })
@@ -71,7 +71,7 @@ context("As long as there is no whitespace between the example input and the lin
       }],
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
-          new Up.ExampleInput('My Cart')
+          new Up.ExampleUserInput('My Cart')
         ], 'https://example.com/my cart'),
       ])
     })
@@ -84,7 +84,7 @@ context('An example input convention is not linkified when it is directly follow
     expect(Up.parse('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),
-        new Up.ExampleInput('My Cart'),
+        new Up.ExampleUserInput('My Cart'),
         new Up.InlineRevealable([
           new Up.Text('and then buy me stuff')
         ]),
@@ -96,7 +96,7 @@ context('An example input convention is not linkified when it is directly follow
     expect(Up.parse('To view your shopping cart, press { My Cart }[topic: shopping cart]')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),
-        new Up.ExampleInput('My Cart'),
+        new Up.ExampleUserInput('My Cart'),
         new Up.SectionLink('shopping cart')
       ]))
   })
@@ -114,7 +114,7 @@ context('An example input convention is not linkified when it is directly follow
       new Up.Document([
         new Up.Paragraph([
           new Up.Text("To view your shopping cart, press "),
-          new Up.ExampleInput('My Cart'),
+          new Up.ExampleUserInput('My Cart'),
           footnotes[0],
           new Up.Text('.')
         ]),
@@ -128,7 +128,7 @@ describe('An otherwise-valid linkified example input convention with its linkify
   it('is not linkified', () => {
     expect(Up.parse('{ Call }(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.ExampleInput('Call'),
+        new Up.ExampleUserInput('Call'),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
         ]),
@@ -141,7 +141,7 @@ context("When an otherwise-valid linkified example input convention's URL starts
   specify('the example input convention is not linkified', () => {
     expect(Up.parse('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.ExampleInput('Call'),
+        new Up.ExampleUserInput('Call'),
         new Up.Text('( \t tel:5555555555)')
       ]))
   })

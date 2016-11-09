@@ -3,11 +3,11 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 // Its HTML equivalent is the `<kbd>` element.
-export class ExampleInput implements InlineSyntaxNode {
-  constructor(public input: string) { }
+export class ExampleUserInput implements InlineSyntaxNode {
+  constructor(public userInput: string) { }
 
   textAppearingInline(): string {
-    return this.input
+    return this.userInput
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
@@ -15,6 +15,6 @@ export class ExampleInput implements InlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.exampleInput(this)
+    return renderer.exampleUserInput(this)
   }
 }

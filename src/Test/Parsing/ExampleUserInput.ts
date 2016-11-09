@@ -8,7 +8,7 @@ describe('Text surrounded by curly brackets', () => {
     expect(Up.parse('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Press '),
-        new Up.ExampleInput('esc'),
+        new Up.ExampleUserInput('esc'),
         new Up.Text(' to quit.'),
       ]))
   })
@@ -20,7 +20,7 @@ describe('Example input', () => {
     expect(Up.parse("Select the {Start Game(s)} menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Select the '),
-        new Up.ExampleInput('Start Game(s)'),
+        new Up.ExampleUserInput('Start Game(s)'),
         new Up.Text(' menu item.')
       ]))
   })
@@ -29,7 +29,7 @@ describe('Example input', () => {
     expect(Up.parse("Select the {  \t Start Game(s) \t  } menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Select the '),
-        new Up.ExampleInput('Start Game(s)'),
+        new Up.ExampleUserInput('Start Game(s)'),
         new Up.Text(' menu item.')
       ]))
   })
@@ -40,7 +40,7 @@ describe('Example input', () => {
       expect(Up.parse("Press {\\}} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Press '),
-          new Up.ExampleInput('}'),
+          new Up.ExampleUserInput('}'),
           new Up.Text(' to view paths.')
         ]))
     })
@@ -49,7 +49,7 @@ describe('Example input', () => {
       expect(Up.parse("Press { \\} } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Press '),
-          new Up.ExampleInput('}'),
+          new Up.ExampleUserInput('}'),
           new Up.Text(' to view paths.')
         ]))
     })
@@ -61,7 +61,7 @@ describe('Example input', () => {
       expect(Up.parse("Press {\\{} to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Press '),
-          new Up.ExampleInput('{'),
+          new Up.ExampleUserInput('{'),
           new Up.Text(' to view paths.')
         ]))
     })
@@ -70,7 +70,7 @@ describe('Example input', () => {
       expect(Up.parse("Press { \\{ } to view paths.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Press '),
-          new Up.ExampleInput('{'),
+          new Up.ExampleUserInput('{'),
           new Up.Text(' to view paths.')
         ]))
     })
@@ -82,7 +82,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the {Start Game{s}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('Start Game{s}'),
+          new Up.ExampleUserInput('Start Game{s}'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -91,7 +91,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the { Start Game{s} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('Start Game{s}'),
+          new Up.ExampleUserInput('Start Game{s}'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -103,7 +103,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the {{Start Game{s}}} menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('{Start Game{s}}'),
+          new Up.ExampleUserInput('{Start Game{s}}'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -112,7 +112,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the { {Start Game{s}} } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('{Start Game{s}}'),
+          new Up.ExampleUserInput('{Start Game{s}}'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -123,8 +123,8 @@ describe('Example input', () => {
     expect(Up.parse("Press {ctrl}{q} to quit.")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Press '),
-        new Up.ExampleInput('ctrl'),
-        new Up.ExampleInput('q'),
+        new Up.ExampleUserInput('ctrl'),
+        new Up.ExampleUserInput('q'),
         new Up.Text(' to quit.')
       ]))
   })
@@ -135,7 +135,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the { Start Game -- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('Start Game – Single Player'),
+          new Up.ExampleUserInput('Start Game – Single Player'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -144,7 +144,7 @@ describe('Example input', () => {
       expect(Up.parse("Select the { Start Game --- Single Player } menu item.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Select the '),
-          new Up.ExampleInput('Start Game — Single Player'),
+          new Up.ExampleUserInput('Start Game — Single Player'),
           new Up.Text(' menu item.')
         ]))
     })
@@ -153,7 +153,7 @@ describe('Example input', () => {
       expect(Up.parse("Click the {+-5 minutes} button.")).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Click the '),
-          new Up.ExampleInput('±5 minutes'),
+          new Up.ExampleUserInput('±5 minutes'),
           new Up.Text(' button.')
         ]))
     })

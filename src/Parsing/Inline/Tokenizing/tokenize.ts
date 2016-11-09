@@ -64,8 +64,8 @@ const PARENTHETICAL_BRACKETS = [
 ]
 
 
-// The example input convention is the only convention enclosed within curly brackets. For more information
-// about that convention, see the `getExampleInputConvention` method.
+// The example user input convention is the only convention enclosed within curly brackets. For more
+// information about that convention, see the `getExampleUserInputConvention` method.
 const CURLY_BRACKET =
   new Bracket('{', '}')
 
@@ -124,7 +124,7 @@ class Tokenizer {
   private rawParentheticalBracketConventions = this.getRawParentheticalBracketConventions()
 
   // This convention is similar to `parentheticalRawBracketConventions`, but raw curly brackets are only
-  // relevant inside of the example input convention.
+  // relevant inside of the example user input convention.
   private rawCurlyBracketConvention = this.getRawCurlyBracketConvention()
 
   // When tokenizing media (i.e. audio, image, or video), we open a context for the description. Once the
@@ -266,7 +266,7 @@ class Tokenizer {
         }
       ].map(args => this.getParentheticalConvention(args)),
 
-      this.getExampleInputConvention(),
+      this.getExampleUserInputConvention(),
 
       this.bareUrlPathConvention
     ]
@@ -440,7 +440,7 @@ class Tokenizer {
   // Usage:
   //
   //   Press {esc} to quit.
-  private getExampleInputConvention(): ConventionVariation {
+  private getExampleUserInputConvention(): ConventionVariation {
     return new ConventionVariation({
       startsWith: CURLY_BRACKET.startPattern,
       endsWith: CURLY_BRACKET.endPattern,
@@ -453,8 +453,8 @@ class Tokenizer {
         || this.addCurrentCharOrStreakOfWhitespaceToContentBuffer(),
 
       whenClosing: () => {
-        const exampleInput = this.flushBufferedContent().trim()
-        this.appendNewToken(TokenRole.ExampleInput, exampleInput)
+        const exampleUserInput = this.flushBufferedContent().trim()
+        this.appendNewToken(TokenRole.ExampleUserInput, exampleUserInput)
       }
     })
   }
@@ -557,8 +557,8 @@ class Tokenizer {
   //      consecutive periods are allowed in the resource path.
   private getLinkUrlConventions(): ConventionVariation[] {
     const whenClosing = (url: string) => {
-      // When closing a link URL, we're (correctly) going to assume that the most recent token is a
-      // `LinkEnd` token.
+      // When closing a link URL, we're (correctly) going to assume that the most recent token is
+      // a `LinkEnd` token.
       this.mostRecentToken.value = url
     }
 
@@ -571,8 +571,8 @@ class Tokenizer {
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
   // 
   // When a rich convention is linkified, its content gets wrapped in a link. On the other hand,
-  // when a media convention or example input convention is linkified, it gets placed inside a
-  // link.
+  // when a media convention or example user input convention is linkified, it gets placed inside
+  // a link.
   //
   // Like with link URLs, if we're sure the author intends to linkfiy a convention, we allow
   // whitespace between the linkifying URL and the original convention. For more information,
@@ -596,16 +596,16 @@ class Tokenizer {
         whenClosing: (url: string) => this.closeLinkifyingUrlForMediaConventions(url)
       }
 
-      const argsForExampleInput = {
+      const argsForExampleUserInput = {
         bracket,
-        canOnlyOpenIfDirectlyFollowing: [TokenRole.ExampleInput],
-        whenClosing: (url: string) => this.closeLinkifyingUrlForExampleInputConvention(url)
+        canOnlyOpenIfDirectlyFollowing: [TokenRole.ExampleUserInput],
+        whenClosing: (url: string) => this.closeLinkifyingUrlForExampleUserInputConvention(url)
       }
 
       const allArgs = [
         argsForRichConventions,
         argsForMediaConentions,
-        argsForExampleInput
+        argsForExampleUserInput
       ]
 
       return concat(allArgs.map(args => ([
@@ -720,11 +720,11 @@ class Tokenizer {
     this.encloseWithinLink({ startingBackAtTokenIndex: indexOfMediaStartToken, url })
   }
 
-  private closeLinkifyingUrlForExampleInputConvention(url: string): void {
-    // We're going to (corretly) assume that the last token is `ExampleInput` 
-    const indexOfExampleInputToken = this.tokens.length - 1
+  private closeLinkifyingUrlForExampleUserInputConvention(url: string): void {
+    // We're going to (corretly) assume that the last token is `ExampleUserInput` 
+    const indexOfExampleUserInputToken = this.tokens.length - 1
 
-    this.encloseWithinLink({ startingBackAtTokenIndex: indexOfExampleInputToken, url })
+    this.encloseWithinLink({ startingBackAtTokenIndex: indexOfExampleUserInputToken, url })
   }
 
   private encloseWithinLink(args: { startingBackAtTokenIndex: number, url: string }): void {

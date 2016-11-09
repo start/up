@@ -38,9 +38,9 @@ context('Except for footnotes and section links, every inline convention is supp
       expect(Up.parseInline('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved pressing '),
-          new Up.ExampleInput('A'),
+          new Up.ExampleUserInput('A'),
           new Up.Text(' and '),
-          new Up.ExampleInput('B'),
+          new Up.ExampleUserInput('B'),
           new Up.Text(' on my Game Boy, though I never took it with me when I left home.')
         ]))
     })

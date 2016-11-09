@@ -50,7 +50,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Example input', () => {
       expect(Up.parse('{}')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.ExampleInput('')
+          new Up.ExampleUserInput('')
         ]))
     })
   })
@@ -84,7 +84,7 @@ context('Most inline conventions are recognized even when they are empty or blan
     specify('Example input', () => {
       expect(Up.parse('{  \t  \t }')).to.deep.equal(
         insideDocumentAndParagraph([
-          new Up.ExampleInput('')
+          new Up.ExampleUserInput('')
         ]))
     })
   })

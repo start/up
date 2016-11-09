@@ -5,7 +5,7 @@ export enum TokenRole {
   BoldStart,
   EmphasisEnd,
   EmphasisStart,
-  ExampleInput,
+  ExampleUserInput,
   FootnoteEnd,
   FootnoteStart,
   HighlightEnd,

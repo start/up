@@ -690,7 +690,7 @@ describe('An example input node', () => {
   it('renders a <kbd> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
-        new Up.ExampleInput('esc')
+        new Up.ExampleUserInput('esc')
       ])
     ])
 
