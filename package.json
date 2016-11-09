@@ -11,9 +11,10 @@
     "test": "make test"
   },
   "keywords": [
+    "formatting",
+    "language",
     "markup",
-    "writing",
-    "formatting"
+    "writing"
   ],
   "author": "Daniel Miller <daniel@wants.email>",
   "repository": {
