@@ -22,7 +22,7 @@ describe('A paragraph node', () => {
 })
 
 
-describe('An unordered list node', () => {
+describe('A bulleted list node', () => {
   it('renders an <ul> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
       new Up.BulletedList([
@@ -48,7 +48,7 @@ describe('An unordered list node', () => {
 })
 
 
-describe('An ordered list node', () => {
+describe('A numbered list node', () => {
   it('renders an <ol> element containing an <li> element for each list item', () => {
     const document = new Up.Document([
       new Up.NumberedList([

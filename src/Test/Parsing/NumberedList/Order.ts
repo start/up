@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-describe('An ordered list with non-numeral bullets', () => {
+describe('A numbered list with non-numeral bullets', () => {
   it('is automatically in ascending order', () => {
     const markup = `
 # Hello, world!
@@ -14,7 +14,7 @@ describe('An ordered list with non-numeral bullets', () => {
 })
 
 
-describe('An ordered list with non-numeral bullets and a single numeral bullet', () => {
+describe('A numbered list with non-numeral bullets and a single numeral bullet', () => {
   it('is automatically in ascending order', () => {
     const markup = `
 # Hello, world!
@@ -26,7 +26,7 @@ describe('An ordered list with non-numeral bullets and a single numeral bullet',
 })
 
 
-describe('An ordered list with non-bullets bullets between the 2 numeral bullets', () => {
+describe('A numbered list with non-bullets bullets between the 2 numeral bullets', () => {
   it('is ascending if the 2 numeral bullets are ascending', () => {
     const markup = `
 # Hello, world!
@@ -51,7 +51,7 @@ describe('An ordered list with non-bullets bullets between the 2 numeral bullets
 })
 
 
-context('An ordered list with 2 non-numeral bullets', () => {
+context('A numbered list with 2 non-numeral bullets', () => {
   context('is ascending when', () => {
     specify('the 2 numeral bullets are positive and ascending', () => {
       const markup = `
@@ -106,7 +106,7 @@ context('An ordered list with 2 non-numeral bullets', () => {
 })
 
 
-describe('An ordered list with more than 2 numeral bullets', () => {
+describe('A numbered list with more than 2 numeral bullets', () => {
   it('is ascending if the first 2 numeral bullets are ascending', () => {
     const markup = `
 2. Hello, world!

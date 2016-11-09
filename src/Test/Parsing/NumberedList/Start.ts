@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-describe('An ordered list that does not start with a numeral bullet', () => {
+describe('A numbered list that does not start with a numeral bullet', () => {
   it('does not have an explicit starting ordinal', () => {
     const markup = `
 #. Hello, world!
@@ -23,7 +23,7 @@ describe('An ordered list that does not start with a numeral bullet', () => {
 })
 
 
-describe('An ordered list that starts with a numeral bullet', () => {
+describe('A numbered list that starts with a numeral bullet', () => {
   it('has an explicit starting ordinal equal to the numeral value', () => {
     const markup = `
 10) Hello, world!
@@ -35,7 +35,7 @@ describe('An ordered list that starts with a numeral bullet', () => {
 })
 
 
-describe('An ordered list starting ordinal', () => {
+describe('A numbered list starting ordinal', () => {
   it('can be very high', () => {
     const markup = `
 9999) Hello, world!

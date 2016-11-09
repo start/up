@@ -246,7 +246,7 @@ describe('The 5 different bullet types', () => {
 })
 
 
-describe('An ordered list', () => {
+describe('A numbered list', () => {
   it('is evaluated for inline conventions', () => {
     const markup = `
 # Hello, World *1-2*!
@@ -390,7 +390,7 @@ describe('Multiple indented or blank lines immediately following an ordered list
 })
 
 
-describe('An ordered list item containing multiple indented lines', () => {
+describe('A numbered list item containing multiple indented lines', () => {
   it('does not need a blank line to separate it from the following list item', () => {
     const withoutSeparation = `
 # Hello, world!

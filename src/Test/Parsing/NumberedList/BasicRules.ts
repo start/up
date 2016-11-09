@@ -248,7 +248,7 @@ describe('Multiple indented or blank lines immediately following an unordered li
 })
 
 
-describe('An unordered list item containing multiple indented lines', () => {
+describe('A bulleted list item containing multiple indented lines', () => {
   it('does not need a blank line to separate it from the following list item', () => {
     const withoutSeparation = `
 * Hello, world!
@@ -447,7 +447,7 @@ context('Subsequent lines in an unordered list item must be indented.', () => {
 })
 
 
-describe('An unordered list item with an asterisk bullet', () => {
+describe('A bulleted list item with an asterisk bullet', () => {
   it('Can start with emphasized text', () => {
     expect(Up.parse('* *Hello*, world!')).to.deep.equal(
       new Up.Document([
@@ -466,7 +466,7 @@ describe('An unordered list item with an asterisk bullet', () => {
 })
 
 
-describe('An unordered list', () => {
+describe('A bulleted list', () => {
   it('is evaluated for inline conventions', () => {
     const markup = `
 * Hello, World *1-2*!

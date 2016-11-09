@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 
 
-describe('An ordered list with a single item can be sandwched by identical thematic break streaks without producing a heading.', () => {
+describe('A numbered list with a single item can be sandwched by identical thematic break streaks without producing a heading.', () => {
   context('This includes when the bullet is:', () => {
     specify('A number sign', () => {
       const markup = `
@@ -70,7 +70,7 @@ describe('An ordered list with a single item can be sandwched by identical thema
 })
 
 
-describe('An ordered list followed by 2 blank lines followed by another ordered list', () => {
+describe('A numbered list followed by 2 blank lines followed by another ordered list', () => {
   it('produce two separate ordered lists', () => {
     const markup = `
 # Iowa
@@ -111,7 +111,7 @@ describe('An ordered list followed by 2 blank lines followed by another ordered 
 })
 
 
-describe('An ordered list followed by 3 blank lines followed by another ordered list', () => {
+describe('A numbered list followed by 3 blank lines followed by another ordered list', () => {
   it('produce an ordered list, a thematic break, and another ordered list', () => {
     const markup = `
 # Iowa
@@ -154,7 +154,7 @@ describe('An ordered list followed by 3 blank lines followed by another ordered 
 })
 
 
-context('An ordered list item ordinal can have leading 0 digits without affecting the ordinal itself', () => {
+context('A numbered list item ordinal can have leading 0 digits without affecting the ordinal itself', () => {
   specify('when positive', () => {
     const markup = `
 0010) Hello, world!
@@ -278,7 +278,7 @@ context("When an ordered list has just one item, that item can start with an int
 })
 
 
-describe('An ordered list item with a numeral followed by a bullet', () => {
+describe('A numbered list item with a numeral followed by a bullet', () => {
   it('can start with a heading', () => {
     const markup = `
 I enjoy apples
