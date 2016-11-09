@@ -76,7 +76,7 @@ describe('Within an inline code node, >, \', and "', () => {
 })
 
 
-describe('Within an example input node, all instances of < and &', () => {
+describe('Within an example user input node, all instances of < and &', () => {
   it('are escaped by replacing them with &lt; and &amp;', () => {
     const document = new Up.Document([
       new Up.Paragraph([
@@ -89,7 +89,7 @@ describe('Within an example input node, all instances of < and &', () => {
 })
 
 
-describe('Within an example input node, >, \', and "', () => {
+describe('Within an example user input node, >, \', and "', () => {
   it('are preserved', () => {
     const document = new Up.Document([
       new Up.Paragraph([

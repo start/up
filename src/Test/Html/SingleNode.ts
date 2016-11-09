@@ -686,7 +686,7 @@ describe('An inline code node', () => {
 })
 
 
-describe('An example input node', () => {
+describe('An example user input node', () => {
   it('renders a <kbd> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([

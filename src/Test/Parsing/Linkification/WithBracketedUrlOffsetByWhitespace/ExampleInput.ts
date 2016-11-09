@@ -6,7 +6,7 @@ import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '..
 const WITH_AND_WITHOUT_WHITESPACE = ['', ' \t\t ']
 
 
-context('A linkified example input convention can have whitespace between itself and its linkifying URL, but only if the linkifying URL satisfies one of the following conditions:', () => {
+context('A linkified example user input convention can have whitespace between itself and its linkifying URL, but only if the linkifying URL satisfies one of the following conditions:', () => {
   specify('It has a scheme', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ Something Terrible }',

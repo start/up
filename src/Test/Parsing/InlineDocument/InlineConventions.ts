@@ -34,7 +34,7 @@ context('Except for footnotes and section links, every inline convention is supp
         ]))
     })
 
-    specify('Example input', () => {
+    specify('Example user input', () => {
       expect(Up.parseInline('I loved pressing {A} and {B} on my Game Boy, though I never took it with me when I left home.')).to.deep.equal(
         new Up.InlineDocument([
           new Up.Text('I loved pressing '),

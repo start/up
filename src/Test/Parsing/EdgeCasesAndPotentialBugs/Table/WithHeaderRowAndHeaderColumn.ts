@@ -317,7 +317,7 @@ Square\s Chrono Cross;        Playstation;      1990\`s`
   })
 
 
-  context('Delimiters for example input do not interfere with', () => {
+  context('Delimiters for example user input do not interfere with', () => {
     specify('Header cells', () => {
       const markup = `
 Table:

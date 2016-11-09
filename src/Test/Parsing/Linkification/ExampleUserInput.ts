@@ -3,8 +3,8 @@ import * as Up from '../../../Main'
 import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
 
 
-describe('An example input convention followed by a parenthesized/bracketd URL', () => {
-  it('produces an example input node within a link pointing to the URL', () => {
+describe('An example user input convention followed by a parenthesized/bracketd URL', () => {
+  it('produces an example user input node within a link pointing to the URL', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart } (https://example.com/my-cart) and scroll down.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('To view your shopping cart, press '),
@@ -17,7 +17,7 @@ describe('An example input convention followed by a parenthesized/bracketd URL',
 })
 
 
-context('Any example input convention followed immediately by a (second) parenthesized/bracketed URL produces an audio node within a link pointing to that second URL.', () => {
+context('Any example user input convention followed immediately by a (second) parenthesized/bracketed URL produces an audio node within a link pointing to that second URL.', () => {
   specify('The "linkifying" URL can be enclosed within parentheses or square brackets', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
@@ -34,7 +34,7 @@ context('Any example input convention followed immediately by a (second) parenth
 })
 
 
-context("As long as there is no whitespace between the example input and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
+context("As long as there is no whitespace between the example user input and the linkifying URL, there are no restrictions on the linkifying URL.", () => {
   specify('The linkifying URL can start with whitespace', () => {
     expectEveryPermutationOfBrackets({
       precededBy: '{ My Cart }',
@@ -79,7 +79,7 @@ context("As long as there is no whitespace between the example input and the lin
 })
 
 
-context('An example input convention is not linkified when it is directly followed by another bracketed convention, including (but not limited to):', () => {
+context('An example user input convention is not linkified when it is directly followed by another bracketed convention, including (but not limited to):', () => {
   specify('Inline revealables', () => {
     expect(Up.parse('To view your shopping cart, press { My Cart }[SPOILER: and then buy me stuff].')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -124,7 +124,7 @@ context('An example input convention is not linkified when it is directly follow
 })
 
 
-describe('An otherwise-valid linkified example input convention with its linkifying URL escaped', () => {
+describe('An otherwise-valid linkified example user input convention with its linkifying URL escaped', () => {
   it('is not linkified', () => {
     expect(Up.parse('{ Call }(\\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
@@ -137,8 +137,8 @@ describe('An otherwise-valid linkified example input convention with its linkify
 })
 
 
-context("When an otherwise-valid linkified example input convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
-  specify('the example input convention is not linkified', () => {
+context("When an otherwise-valid linkified example user input convention's URL starts with whitespace, and the first character in the actual URL is escaped,", () => {
+  specify('the example user input convention is not linkified', () => {
     expect(Up.parse('{ Call }( \t \\tel:5555555555)')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.ExampleUserInput('Call'),

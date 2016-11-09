@@ -66,7 +66,7 @@ context('In an inline document, every inline syntax node produces the same HTML 
   })
 
 
-  describe('An example input node', () => {
+  describe('An example user input node', () => {
     it('produces a <kbd> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.ExampleUserInput('esc')

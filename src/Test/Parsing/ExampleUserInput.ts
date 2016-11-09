@@ -4,7 +4,7 @@ import { insideDocumentAndParagraph } from './Helpers'
 
 
 describe('Text surrounded by curly brackets', () => {
-  it('is put into an example input node', () => {
+  it('is put into an example user input node', () => {
     expect(Up.parse('Press {esc} to quit.')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Text('Press '),
@@ -15,7 +15,7 @@ describe('Text surrounded by curly brackets', () => {
 })
 
 
-describe('Example input', () => {
+describe('Example user input', () => {
   it('is not evaluated for other (non-typographical) conventions', () => {
     expect(Up.parse("Select the {Start Game(s)} menu item.")).to.deep.equal(
       insideDocumentAndParagraph([
