@@ -14,7 +14,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
-export function tryToParseUnorderedList(args: OutlineParserArgs): boolean {
+export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: BulletedList.Item[] = []
 

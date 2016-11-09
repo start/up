@@ -6,8 +6,8 @@ import { tryToParseHeading } from './tryToParseHeading'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
-import { tryToParseUnorderedList } from './tryToParseUnorderedList'
-import { trytoParseOrderedList } from './tryToParseOrderedList'
+import { tryToParseBulletedList } from './tryToParseBulletedList'
+import { trytoParseNumberedList } from './trytoParseNumberedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { tryToParseTable } from './tryToParseTable'
 import { tryToParseRevealableBlock } from './tryToParseRevealableBlock'
@@ -25,8 +25,8 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // Paragraphs and line blocks serve as a last resort if none of these conventions apply.
 const OUTLINE_CONVENTION_PARSERS = [
   tryToParseBlankLineSeparation,
-  tryToParseUnorderedList,
-  trytoParseOrderedList,
+  tryToParseBulletedList,
+  trytoParseNumberedList,
   tryToParseHeading,
   tryToParseThematicBreakStreak,
   tryToParseCodeBlock,

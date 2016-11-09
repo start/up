@@ -1,5 +1,5 @@
-import { tryToParseUnorderedList } from './tryToParseUnorderedList'
-import { trytoParseOrderedList } from './tryToParseOrderedList'
+import { tryToParseBulletedList } from './tryToParseBulletedList'
+import { trytoParseNumberedList } from './trytoParseNumberedList'
 import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
@@ -8,8 +8,8 @@ import { NormalizedSettings } from '../../NormalizedSettings'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
-  tryToParseUnorderedList,
-  trytoParseOrderedList,
+  tryToParseBulletedList,
+  trytoParseNumberedList,
   tryToParseThematicBreakStreak,
   tryToParseBlockquote,
   tryToParseCodeBlock

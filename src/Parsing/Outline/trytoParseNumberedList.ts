@@ -8,14 +8,14 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 import { getIndentedBlock } from './getIndentedBlock'
 
 
-// Ordered lists are simply collections of ordered list items.
+// Numbered lists are simply collections of numbered list items.
 //
 // List items can contain any outline convention, even other lists!  In list items with
 // multiple lines, all subsequent lines are indented.
 //
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
-export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
+export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const unparsedListItems: UnparsedListItem[] = []
 
@@ -58,7 +58,7 @@ export function trytoParseOrderedList(args: OutlineParserArgs): boolean {
     }
   }
 
-  if (!isAnOrderedList(unparsedListItems)) {
+  if (!isANumberedList(unparsedListItems)) {
     return false
   }
 
@@ -102,7 +102,7 @@ class UnparsedListItem {
 }
 
 
-function isAnOrderedList(unparsedListItems: UnparsedListItem[]): boolean {
+function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
   const { length } = unparsedListItems
 
   return (
