@@ -111,7 +111,7 @@ context('The opening bracket for parenthetical conventions cannot be followed by
 context("Due to syntax for forgiving conventions, they cannot be empty or blank.", () => {
   context('With asterisks:', () => {
     specify('Emphasis', () => {
-      // If the asterisks were alone on a line, they would be interpreted as a nested unordered list.
+      // If the asterisks were alone on a line, they would be interpreted as a nested bulleted list.
       expect(Up.parse('Stars! * \t \t *')).to.deep.equal(
         insideDocumentAndParagraph([
           new Up.Text('Stars! * \t \t *')

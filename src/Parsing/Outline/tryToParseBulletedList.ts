@@ -7,7 +7,7 @@ import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
-// Unordered lists are simply collections of bulleted list items.
+// Bulleted lists are simply collections of bulleted list items.
 //
 // List items can contain any outline convention, even other lists! In list items with
 // multiple lines, all subsequent lines are indented.

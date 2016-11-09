@@ -204,7 +204,7 @@ You're in for a fright`
       ]))
   })
 
-  specify('a single-line ordered list', () => {
+  specify('a single-line numbered list', () => {
     const markup = `
 1234 Spooky Street
 Pepe, PA 17101
@@ -248,7 +248,7 @@ You're in for a fright`
       ]))
   })
 
-  specify('a single-line unordered list', () => {
+  specify('a single-line bulleted list', () => {
     const markup = `
 1234 Spooky Street
 Pepe, PA 17101

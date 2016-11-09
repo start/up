@@ -12,7 +12,7 @@ To work around this, syntax node classes that would otherwise be considered equi
 
 These methods are:
 
-1. Named in screaming case after their class (e.g. `EMPHASIS`) and their parent classes if there are any (e.g. `ORDERED_LIST_ITEM`)
+1. Named in screaming case after their class (e.g. `EMPHASIS`) and their parent classes if there are any (e.g. `NUMBERED_LIST_ITEM`)
 2. Totally empty
 3. Protected, because unused private methods are disallowed by the `noUnusedLocals` compiler option
 

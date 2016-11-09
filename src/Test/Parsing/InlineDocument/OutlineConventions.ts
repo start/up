@@ -10,14 +10,14 @@ context('Inline documents completely ignore outline conventions. This includes:'
       ]))
   })
 
-  specify('Ordered lists', () => {
+  specify('Numbered lists', () => {
     expect(Up.parseInline('1) I agree.')).to.deep.equal(
       new Up.InlineDocument([
         new Up.Text('1) I agree.')
       ]))
   })
 
-  specify('Unordered lists', () => {
+  specify('Bulleted lists', () => {
     expect(Up.parseInline('* Prices and participation may vary')).to.deep.equal(
       new Up.InlineDocument([
         new Up.Text('* Prices and participation may vary')

@@ -34,6 +34,6 @@ export class BulletedList implements OutlineSyntaxNode {
 
 export namespace BulletedList {
   export class Item extends OutlineSyntaxNodeContainer {
-    protected UNORDERED_LIST_ITEM(): void { }
+    protected BULLETED_LIST_ITEM(): void { }
   }
 }

@@ -172,7 +172,7 @@ Table: \`AND\` operator logic
         ]))
     })
 
-    specify('Ordered lists (and the outline nodes they contain)', () => {
+    specify('Numbered lists (and the outline nodes they contain)', () => {
       const markup = `
 1. They're cheap
 
@@ -191,7 +191,7 @@ Table: \`AND\` operator logic
         ]))
     })
 
-    specify('Unordered lists (and the outline nodes they contain)', () => {
+    specify('Bulleted lists (and the outline nodes they contain)', () => {
       const markup = `
 * They're cheap
 

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {
+context('Numbered list item bullets can have a single leading space. This includes the bullet for:', () => {
   specify('The first item', () => {
     const markup = `
  * Hello, Celadon City!
@@ -105,7 +105,7 @@ context('Ordered list item bullets can have a single leading space. This include
 })
 
 
-context('Ordered list item bullets can have a single leading space. This includes the bullet for:', () => {
+context('Numbered list item bullets can have a single leading space. This includes the bullet for:', () => {
   specify('The first item', () => {
     const markup = `
  * Hello, Celadon City!
@@ -582,7 +582,7 @@ Hello, world!
 
 
 context("Within list items, extra indentation for outline conventions is ignored, just as it would be at the top-level of the document", () => {
-  specify('Ordered list items', () => {
+  specify('Numbered list items', () => {
     const markup = `
 1)  \t Hello, Lavender Town!
 
@@ -603,7 +603,7 @@ context("Within list items, extra indentation for outline conventions is ignored
       ]))
   })
 
-  specify('Unordered list items', () => {
+  specify('Bulleted list items', () => {
     const markup = `
 *  \t Buy milk.
 

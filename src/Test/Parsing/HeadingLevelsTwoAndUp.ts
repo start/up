@@ -213,7 +213,7 @@ Warlocked
 
 
 describe("A level-2 heading underline defined outside of a bulleted list", () => {
-  it('produces a level-2 heading node inside the unordered list', () => {
+  it('produces a level-2 heading node inside the bulleted list', () => {
     const markup = `
 Hello, world!
 =============
@@ -264,7 +264,7 @@ Goodbye, world!
 
 
 describe("A level-2 heading underline defined outside of a numbered list", () => {
-  it('produces a level-2 heading node inside the ordered list', () => {
+  it('produces a level-2 heading node inside the numbered list', () => {
     const markup = `
 Hello, world!
 =============
@@ -418,7 +418,7 @@ Goodbye, world!
 
 
 describe("A level-2 heading underline defined inside a blockquote but outside a bulleted list in the same blockquote", () => {
-  it('produces a level-2 heading node inside the ordered list', () => {
+  it('produces a level-2 heading node inside the numbered list', () => {
     const markup = `
 > Hello, world!
 > =============

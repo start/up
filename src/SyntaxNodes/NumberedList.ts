@@ -61,7 +61,7 @@ export namespace NumberedList {
       }
     }
 
-    protected ORDERED_LIST_ITEM(): void { }
+    protected NUMBERED_LIST_ITEM(): void { }
   }
 
   export enum Order {

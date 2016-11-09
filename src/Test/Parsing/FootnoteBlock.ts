@@ -166,7 +166,7 @@ Anyway, none of that matters.`
       ]))
   })
 
-  specify('Unordered lists', () => {
+  specify('Bulleted lists', () => {
     const markup = `
 * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
@@ -239,7 +239,7 @@ Anyway, none of that matters.`
       ]))
   })
 
-  specify('Ordered lists', () => {
+  specify('Numbered lists', () => {
     const markup = `
 1) I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 
@@ -780,7 +780,7 @@ describe("Footnotes' reference numbers", () => {
 
 I wear glasses (^It's actually been a dream of mine ever since I was young.) even while working out.`
 
-    const footnotesInUnorderedList = [
+    const footnotesInBulletedList = [
       new Up.Footnote([
         new Up.Text("Well, I do, but I pretend not to."),
       ], { referenceNumber: 1 }),
@@ -800,7 +800,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
-              footnotesInUnorderedList[0],
+              footnotesInBulletedList[0],
               new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
@@ -810,12 +810,12 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
           new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat"),
-              footnotesInUnorderedList[1],
+              footnotesInBulletedList[1],
               new Up.Text(" pumpkins.")
             ])
           ])
         ]),
-        new Up.FootnoteBlock(footnotesInUnorderedList),
+        new Up.FootnoteBlock(footnotesInBulletedList),
         new Up.ThematicBreak(),
         new Up.Paragraph([
           new Up.Text("I wear glasses"),
@@ -842,7 +842,7 @@ describe("Within an outline convention, a footnote within an (inner) revealable 
 
 I wear glasses (^ It's actually been a dream of mine ever since I was young.) even while working out.`
 
-    const footnoteInUnorderedList = new Up.Footnote([
+    const footnoteInBulletedList = new Up.Footnote([
       new Up.Text("Well, I do, but I pretend not to.")
     ], { referenceNumber: 1 })
 
@@ -850,7 +850,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
       new Up.Text("Or touch.")
     ], { referenceNumber: 2 })
 
-    const footnoteAfterUnorderedList = new Up.Footnote([
+    const footnoteAfterBulletedList = new Up.Footnote([
       new Up.Text("It's actually been a dream of mine ever since I was young.")
     ], { referenceNumber: 3 })
 
@@ -860,7 +860,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
           new Up.BulletedList.Item([
             new Up.Paragraph([
               new Up.Text("I don't eat cereal."),
-              footnoteInUnorderedList,
+              footnoteInBulletedList,
               new Up.Text(" Never have.")
             ]),
             new Up.Paragraph([
@@ -878,14 +878,14 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
             ])
           ])
         ]),
-        new Up.FootnoteBlock([footnoteInUnorderedList]),
+        new Up.FootnoteBlock([footnoteInBulletedList]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
           new Up.Text("I wear glasses"),
-          footnoteAfterUnorderedList,
+          footnoteAfterBulletedList,
           new Up.Text(" even while working out."),
         ]),
-        new Up.FootnoteBlock([footnoteAfterUnorderedList])
+        new Up.FootnoteBlock([footnoteAfterBulletedList])
       ]))
   })
 })

@@ -41,7 +41,7 @@ import { Table } from '../SyntaxNodes/Table'
 //    conventions are essentially treated like mini-documents.
 //
 //    For example, a footnote inside a paragraph inside a numbered list inside a revealable block is placed
-//    a footnote block after the ordered list, but still inside the revealable block, because the ordered list
+//    a footnote block after the numbered list, but still inside the revealable block, because the numbered list
 //    is the outermost, top-level convention within the revealable block.
 //
 // 3. It's contrived, but footnotes can reference other footnotes. For example:

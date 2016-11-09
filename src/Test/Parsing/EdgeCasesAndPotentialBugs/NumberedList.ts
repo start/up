@@ -70,8 +70,8 @@ describe('A numbered list with a single item can be sandwched by identical thema
 })
 
 
-describe('A numbered list followed by 2 blank lines followed by another ordered list', () => {
-  it('produce two separate ordered lists', () => {
+describe('A numbered list followed by 2 blank lines followed by another numbered list', () => {
+  it('produce two separate numbered lists', () => {
     const markup = `
 # Iowa
 # New Hampshire
@@ -111,8 +111,8 @@ describe('A numbered list followed by 2 blank lines followed by another ordered 
 })
 
 
-describe('A numbered list followed by 3 blank lines followed by another ordered list', () => {
-  it('produce a numbered list, a thematic break, and another ordered list', () => {
+describe('A numbered list followed by 3 blank lines followed by another numbered list', () => {
+  it('produce a numbered list, a thematic break, and another numbered list', () => {
     const markup = `
 # Iowa
 # New Hampshire

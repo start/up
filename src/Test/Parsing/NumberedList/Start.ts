@@ -65,9 +65,9 @@ describe('A numbered list starting ordinal', () => {
 })
 
 
-function listStart(orderedListMarkup: string): number {
+function listStart(numberedListMarkup: string): number {
   const list =
-    Up.parse(orderedListMarkup).children[0] as Up.NumberedList
+    Up.parse(numberedListMarkup).children[0] as Up.NumberedList
 
   return list.start()
 }

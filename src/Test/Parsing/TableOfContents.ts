@@ -67,7 +67,7 @@ Who doesn't?`
       ], tableOfContents))
   })
 
-  specify('Ordered lists', () => {
+  specify('Numbered lists', () => {
     const markup = `
 I enjoy apples
 ==============
@@ -99,7 +99,7 @@ I enjoy apples
       ], tableOfContents))
   })
 
-  specify('Unordered lists', () => {
+  specify('Bulleted lists', () => {
     const markup = `
 I enjoy apples
 ==============
@@ -496,7 +496,7 @@ Haunted houses
 
 context("Headings don't have to be at the top level of the document to be included in the table of contents.", () => {
   context('Instead, they can be inside:', () => {
-    specify('Ordered lists', () => {
+    specify('Numbered lists', () => {
       const markup = `
 I enjoy apples
 ==============
@@ -551,7 +551,7 @@ I enjoy apples
         ], tableOfContents))
     })
 
-    specify('Nested ordered lists', () => {
+    specify('Nested numbered lists', () => {
       const markup = `
 I enjoy apples
 ==============
@@ -608,7 +608,7 @@ I enjoy apples
         ], tableOfContents))
     })
 
-    specify('Unordered lists', () => {
+    specify('Bulleted lists', () => {
       const markup = `
 I enjoy apples
 ==============
@@ -663,7 +663,7 @@ I enjoy apples
         ], tableOfContents))
     })
 
-    specify('Nested unordered lists', () => {
+    specify('Nested bulleted lists', () => {
       const markup = `
 I enjoy apples
 ==============
@@ -935,7 +935,7 @@ Apple
     })
   })
 
-  specify('They can be nested arbitrarily deep within ordered lists, unordered lists, description lists, and blockquotes', () => {
+  specify('They can be nested arbitrarily deep within numbered lists, bulleted lists, description lists, and blockquotes', () => {
     const markup = `
 * I like apples.
 
@@ -1043,9 +1043,9 @@ Purchasing
 
     const document = Up.parse(markup)
 
-    const unorderedList = document.children[0] as BulletedList
-    const orderedList = unorderedList.items[0].children[1] as NumberedList
-    const descriptionList = orderedList.items[0].children[1] as DescriptionList
+    const bulletedList = document.children[0] as BulletedList
+    const numberedList = bulletedList.items[0].children[1] as NumberedList
+    const descriptionList = numberedList.items[0].children[1] as DescriptionList
 
     const [bestFruitHeading, purchasingHeading] = descriptionList.items[0].description.children as any[]
     const entries = document.tableOfContents.entries as any[]

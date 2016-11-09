@@ -256,7 +256,7 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
   })
 
-  specify("Ordered lists", () => {
+  specify("Numbered lists", () => {
     const markup = `
 I drink soda
 ============
@@ -631,7 +631,7 @@ I get hungry (see [section: soda]);       Very valid`
   })
 
 
-  specify("Unordered lists", () => {
+  specify("Bulleted lists", () => {
     const markup = `
 I drink soda
 ============

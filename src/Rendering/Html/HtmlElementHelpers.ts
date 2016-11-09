@@ -22,7 +22,7 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
 // When an attribute value is `null`, `undefined`, or an empty string, its value
 // isn't rendered.
 //
-// For example, the `reversed` attribute of ordered lists doesn't render a value:
+// For example, the `reversed` attribute of numbered lists doesn't render a value:
 //
 //   <ol reversed start="2">
 //     <li value="2">

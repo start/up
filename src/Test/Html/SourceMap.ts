@@ -11,7 +11,7 @@ context('When an outline syntax node has a source line number, its outermost ele
     expect(Up.render(document)).to.equal('<p data-up-source-line="5">Nimble navigator</p>')
   })
 
-  specify('Unordered list', () => {
+  specify('Bulleted list', () => {
     const document = new Up.Document([
       new Up.BulletedList([
         new Up.BulletedList.Item([
@@ -34,7 +34,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</ul>')
   })
 
-  specify('Ordered lists without start ordinals', () => {
+  specify('Numbered lists without start ordinals', () => {
     const document = new Up.Document([
       new Up.NumberedList([
         new Up.NumberedList.Item([
@@ -57,7 +57,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</ol>')
   })
 
-  specify('Ordered lists with start ordinals', () => {
+  specify('Numbered lists with start ordinals', () => {
     const document = new Up.Document([
       new Up.NumberedList([
         new Up.NumberedList.Item([
@@ -80,7 +80,7 @@ context('When an outline syntax node has a source line number, its outermost ele
       + '</ol>')
   })
 
-  specify('Reversed ordered lists with start ordinals', () => {
+  specify('Reversed numbered lists with start ordinals', () => {
     const document = new Up.Document([
       new Up.NumberedList([
         new Up.NumberedList.Item([

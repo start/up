@@ -69,8 +69,8 @@ And addresses do, too`
   })
 })
 
-describe('A bulleted list followed by 2 blank lines followed by another unordered list', () => {
-  it('produce 2 separate unordered lists', () => {
+describe('A bulleted list followed by 2 blank lines followed by another bulleted list', () => {
+  it('produce 2 separate bulleted lists', () => {
     const markup = `
 - Iowa
 - New Hampshire
@@ -110,8 +110,8 @@ describe('A bulleted list followed by 2 blank lines followed by another unordere
 })
 
 
-describe('A bulleted list followed by 3 blank lines followed by another unordered list', () => {
-  it('produce a bulleted list, a thematic break, and another unordered list', () => {
+describe('A bulleted list followed by 3 blank lines followed by another bulleted list', () => {
+  it('produce a bulleted list, a thematic break, and another bulleted list', () => {
     const markup = `
 - Iowa
 - New Hampshire

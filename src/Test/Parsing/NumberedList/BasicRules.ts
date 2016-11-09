@@ -3,7 +3,7 @@ import * as Up from '../../../Main'
 
 
 describe('Consecutive bulleted lines', () => {
-  it('produce a bulleted list node containing unordered list items', () => {
+  it('produce a bulleted list node containing bulleted list items', () => {
     const markup = `
 * Buy milk
 * Buy bread
@@ -33,7 +33,7 @@ describe('Consecutive bulleted lines', () => {
 })
 
 
-context('Unordered list bullets can be:', () => {
+context('Bulleted list bullets can be:', () => {
   specify('Asterisks', () => {
     const markup = `
 * Hello, world!
@@ -148,7 +148,7 @@ describe('List items in a bulleted list', () => {
 
 
 describe('A single bulleted line', () => {
-  it('produces a bulleted list node containing a single unordered list item', () => {
+  it('produces a bulleted list node containing a single bulleted list item', () => {
     expect(Up.parse('* Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.BulletedList([
@@ -269,7 +269,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
     expect(Up.parse(withSeparation)).to.deep.equal(Up.parse(withoutSeparation))
   })
 
-  it('can contain a nested unordered list that uses the same type of bullet used by its containing list item', () => {
+  it('can contain a nested bulleted list that uses the same type of bullet used by its containing list item', () => {
     const markup = `
 * Hello, world!
   =============

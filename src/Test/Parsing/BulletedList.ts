@@ -3,7 +3,7 @@ import * as Up from '../../Main'
 
 
 describe('Consecutive lines each bulleted by a number sign', () => {
-  it('produce a numbered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing numbered list item nodes', () => {
     const markup = `
 # Hello, world!
 # Goodbye, world!`
@@ -28,7 +28,7 @@ describe('Consecutive lines each bulleted by a number sign', () => {
 
 
 describe('Consecutive lines each bulleted by a number sign followed by a period', () => {
-  it('produce a numbered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing numbered list item nodes', () => {
     const markup = `
 #. Hello, Lavender Town!
 #. Goodbye, Lavender Town!`
@@ -53,7 +53,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a period'
 
 
 describe('Consecutive lines each bulleted by a number sign followed by a closing parenthesis', () => {
-  it('produce a numbered list node containing ordered list item nodes', () => {
+  it('produce a numbered list node containing numbered list item nodes', () => {
     const markup = `
 #) Hello, Celadon City!
 #) Goodbye, Celadon City!`
@@ -78,7 +78,7 @@ describe('Consecutive lines each bulleted by a number sign followed by a closing
 
 
 describe('Consecutive lines each bulleted by an integer followed by a period', () => {
-  it('produce a numbered list node containing ordered list item nodes with explicit ordinals', () => {
+  it('produce a numbered list node containing numbered list item nodes with explicit ordinals', () => {
     const markup = `
 1. Hello, Celadon City!
 2. Goodbye, Celadon City!`
@@ -103,7 +103,7 @@ describe('Consecutive lines each bulleted by an integer followed by a period', (
 
 
 describe('Consecutive lines each bulleted by an integer followed by a closing parenthesis', () => {
-  it('produce a numbered list node containing ordered list item nodes with explicit ordinals', () => {
+  it('produce a numbered list node containing numbered list item nodes with explicit ordinals', () => {
     const markup = `
 1) Hello, Celadon City!
 2) Goodbye, Celadon City!`
@@ -140,7 +140,7 @@ describe('A single line bulleted by an integer followed by a period', () => {
 
 
 describe('A single line bulleted by a number sign', () => {
-  it('produces a numbered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing numbered list item nodes', () => {
     expect(Up.parse('# Hello, world!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -156,7 +156,7 @@ describe('A single line bulleted by a number sign', () => {
 
 
 describe('A single line bulleted by a number sign followed by a period', () => {
-  it('produces a numbered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing numbered list item nodes', () => {
     expect(Up.parse('#. Hello, Lavender Town!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -172,7 +172,7 @@ describe('A single line bulleted by a number sign followed by a period', () => {
 
 
 describe('A single line bulleted by a number sign followed by a closing parenthesis', () => {
-  it('produces a numbered list node containing ordered list item nodes', () => {
+  it('produces a numbered list node containing numbered list item nodes', () => {
     expect(Up.parse('#) Hello, Celadon City!')).to.deep.equal(
       new Up.Document([
         new Up.NumberedList([
@@ -204,7 +204,7 @@ describe('A single line bulleted by an integer followed by a closing parenthesis
 
 
 describe('The 5 different bullet types', () => {
-  it('can be combined in the same ordered list', () => {
+  it('can be combined in the same numbered list', () => {
     const markup = `
 1. Hello, Celadon City!
 2) Hello, Couriway Town!
@@ -411,7 +411,7 @@ describe('A numbered list item containing multiple indented lines', () => {
     expect(Up.parse(withSeparation)).to.deep.equal(Up.parse(withoutSeparation))
   })
 
-  it('can contain a nested ordered list that uses the same type of bullet used by its containing list item', () => {
+  it('can contain a nested numbered list that uses the same type of bullet used by its containing list item', () => {
     const markup = `
 # Hello, world!
   =============
