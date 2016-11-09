@@ -153,8 +153,8 @@ export class HtmlRenderer extends Renderer {
       { class: classHtmlAttrValue('inline-code') })
   }
 
-  exampleUserInput(exampleInput: Up.ExampleUserInput): string {
-    return htmlElement('kbd', exampleInput.userInput)
+  exampleUserInput(exampleUserInput: Up.ExampleUserInput): string {
+    return htmlElement('kbd', exampleUserInput.userInput)
   }
 
   sectionLink(sectionLink: Up.SectionLink): string {
