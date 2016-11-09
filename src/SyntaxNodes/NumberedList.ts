@@ -44,7 +44,7 @@ export class NumberedList implements OutlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.orderedList(this)
+    return renderer.numberedList(this)
   }
 }
 

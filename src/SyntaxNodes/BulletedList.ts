@@ -27,7 +27,7 @@ export class BulletedList implements OutlineSyntaxNode {
   }
 
   render(renderer: Renderer): string {
-    return renderer.unorderedList(this)
+    return renderer.bulletedList(this)
   }
 }
 
