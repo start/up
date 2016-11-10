@@ -7,7 +7,7 @@ export function last<T>(collection: T[]): T {
 //
 // The items' order is preserved.
 export function concat<T>(collections: T[][]): T[] {
-  return [].concat(...collections)
+  return ([] as T[]).concat(...collections)
 }
 
 // Returns a reversed shallow copy of `collection`. 
@@ -23,10 +23,11 @@ export function distinct<T>(...values: T[]): T[] {
     (distinctValues.indexOf(value) !== -1)
       ? distinctValues
       : distinctValues.concat([value])
-    , [])
+    , [] as T[])
 }
 
-// Returns the first non-null value in `values`, if one exists. Otherwise, returns null.
+// Returns the first non-null value in `values`. If `values` does not contain a
+// non-null value, this function throws an exception.
 export function coalesce<T>(...values: T[]): T {
   for (const value of values) {
     if (value != null) {
@@ -34,5 +35,5 @@ export function coalesce<T>(...values: T[]): T {
     }
   }
 
-  return null
+  throw new Error('Every value in `values` was null.')
 }

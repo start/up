@@ -1,5 +1,4 @@
 {
-  // We'll delay enabling `strictNullChecks` until its associated syntax features have better editor support 
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
@@ -9,6 +8,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "outDir": "compiled",
