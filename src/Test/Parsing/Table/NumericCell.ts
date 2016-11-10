@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
 
+
 function expectTableCellToBeNumeric(cellMarkup: string): void {
   expectTableCell({
     cellMarkup,

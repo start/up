@@ -7,9 +7,9 @@ Up is a markup language for writing structured documents in plain text. For more
 
 Up supports:
 
-- Description lists
-- Revealable content (e.g. spoilers)
 - Super easy tables
+- Revealable content (e.g. spoilers)
+- Description lists
 - Overlapping inline writing conventions
 - So much more!
 
