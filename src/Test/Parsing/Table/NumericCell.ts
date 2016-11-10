@@ -116,6 +116,10 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellToBeNumeric('`10.0`')
     })
 
+    specify('example user input containing a numeric value', () => {
+      expectTableCellToBeNumeric('`10800.0`')
+    })
+
     specify('emphasized and stressed inline code containing a numeric value', () => {
       expectTableCellToBeNumeric('***`10.0`***')
     })
@@ -151,7 +155,7 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellNotToBeNumeric('StarCraft')
     })
 
-    specify('a word conaining digits and regular word characters', () => {
+    specify('a word conaining digits and letters', () => {
       expectTableCellNotToBeNumeric('3D')
     })
 
@@ -167,15 +171,19 @@ context('A table cell is numeric if its text content (ignoring footnotes) contai
       expectTableCellNotToBeNumeric('0_0')
     })
 
-    specify('inline code containing a non-numeric word', () => {
+    specify('inline code containing a non-numeric value', () => {
       expectTableCellNotToBeNumeric('`<div role="alert">`')
     })
 
-    specify('a link to a numeric URL whose content is a non-numeric word', () => {
+    specify('example user input containing a non-numeric value', () => {
+      expectTableCellNotToBeNumeric('{Start}')
+    })
+
+    specify('a link to a numeric URL whose content is a non-numeric value', () => {
       expectTableCellNotToBeNumeric('[John] (tel:5555555555)')
     })
 
-    specify('a linkified revealable convention to a numeric URL whose content is a non-numeric word', () => {
+    specify('a linkified revealable convention to a numeric URL whose content is a non-numeric value', () => {
       expectTableCellNotToBeNumeric('[SPOILER: John] (tel:5555555555)')
     })
 
