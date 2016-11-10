@@ -28,7 +28,7 @@ export function distinct<T>(...values: T[]): T[] {
 
 // Returns the first non-null value in `values`. If `values` does not contain a
 // non-null value, this function throws an exception.
-export function coalesce<T>(...values: T[]): T {
+export function coalesce<T>(...values: (T | undefined)[]): T {
   for (const value of values) {
     if (value != null) {
       return value

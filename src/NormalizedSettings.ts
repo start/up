@@ -31,7 +31,7 @@ export class NormalizedSettings {
     return clone
   }
 
-  private applySettings(settings: Settings): void {
+  private applySettings(settings: Settings | undefined): void {
     if (!settings) {
       return
     }
@@ -65,7 +65,7 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applySettings(settings: Settings.Parsing): void {
+    applySettings(settings: Settings.Parsing | undefined): void {
       if (!settings) {
         return
       }
@@ -165,7 +165,7 @@ export namespace NormalizedSettings {
         return clone
       }
 
-      applySettings(keywords: Settings.Parsing.Keywords): void {
+      applySettings(keywords: Settings.Parsing.Keywords | undefined): void {
         if (!keywords) {
           return
         }
@@ -209,7 +209,7 @@ export namespace NormalizedSettings {
       return clone
     }
 
-    applySettings(settings: Settings.Rendering): void {
+    applySettings(settings: Settings.Rendering | undefined): void {
       if (!settings) {
         return
       }
@@ -245,7 +245,7 @@ export namespace NormalizedSettings {
         return clone
       }
 
-      applySettings(terms: Settings.Rendering.Terms): void {
+      applySettings(terms: Settings.Rendering.Terms | undefined): void {
         if (!terms) {
           return
         }
@@ -281,7 +281,7 @@ export namespace NormalizedSettings {
 //
 // This function takes the keyword variations provided by the user, cleans them up, and massages
 // them into arrays.
-function sanitizeVariations(variations: Settings.Parsing.Keyword): NormalizedSettings.Parsing.Keyword {
+function sanitizeVariations(variations: Settings.Parsing.Keyword | undefined): NormalizedSettings.Parsing.Keyword {
   if (variations == null) {
     return []
   }
