@@ -219,12 +219,16 @@ class Tokenizer {
   //    end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken: Token
 
-  constructor(inlineMarkup: string, private settings: NormalizedSettings.Parsing, options?: { isTokenizingInlineDocument: boolean }) {
+  constructor(
+    inlineMarkup: string,
+    private settings: NormalizedSettings.Parsing,
+    options?: { isTokenizingInlineDocument: boolean }
+  ) {
     const trimmedMarkup =
       trimEscapedAndUnescapedOuterWhitespace(inlineMarkup)
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
-    this.configureConventions(options && options.isTokenizingInlineDocument)
+    this.configureConventions((options != null) && options.isTokenizingInlineDocument)
 
     this.tokenize()
     this.result = nestOverlappingConventions(this.tokens)
@@ -859,9 +863,9 @@ class Tokenizer {
   }
 
   private tryToResolveUnclosedContexts(): boolean {
-    while (this.openContexts.length) {
-      const context = this.openContexts.pop()
+    let context: ConventionContext | undefined
 
+    while (context = this.openContexts.pop()) {
       if (!context.doInsteadOfFailingWhenLeftUnclosed()) {
         this.backtrackToBeforeContext(context)
         return false
@@ -1064,18 +1068,27 @@ class Tokenizer {
       this.openContexts.splice(contextIndex)
     }
 
-    return (
-      !convention.mustBeDirectlyFollowedBy
-      || this.tryToOpenSubsequentConventionRequiredBy(context))
+    return this.tryToOpenASubsequentRequiredConventionIfThereAreAny(context)
   }
 
   private isCurrentCharWhitespace(): boolean {
     return WHITESPACE_CHAR_PATTERN.test(this.markupConsumer.currentChar)
   }
 
-  private tryToOpenSubsequentConventionRequiredBy(closedContext: ConventionContext): boolean {
+  // If a convention must be followed by one of a set of specific conventions, then we'll try to open one
+  // of those here. If we can't open one of those conventions, this method returns false.
+  //
+  // If there aren't any subsequent required conventions, or if we *are* aren't to open one of them, this
+  // method retuns true.
+  private tryToOpenASubsequentRequiredConventionIfThereAreAny(closedContext: ConventionContext): boolean {
+    const subsequentRequiredConventions = closedContext.convention.mustBeDirectlyFollowedBy
+
+    if (!subsequentRequiredConventions) {
+      return true
+    }
+
     const didOpenSubsequentRequiredConvention =
-      closedContext.convention.mustBeDirectlyFollowedBy.some(convention => this.tryToOpen(convention))
+      subsequentRequiredConventions.some(convention => this.tryToOpen(convention))
 
     if (didOpenSubsequentRequiredConvention) {
       // If this new convention eventually fails, we need to backtrack to before the one we just closed.
