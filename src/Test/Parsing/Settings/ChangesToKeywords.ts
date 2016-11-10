@@ -216,6 +216,9 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
+const NULL_KEYWORD = null as any as string
+const UNDEFINED_KEYWORD = undefined as any as string
+
 describe('The "audio" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({
     markupForDefaultSettings: '[audio: chanting at Nevada caucus][https://example.com/audio.ogg]',
@@ -226,10 +229,10 @@ describe('The "audio" keyword', () => {
     invalidMarkupForEmptyKeyword: '[: chanting at Nevada caucus][https://example.com/audio.ogg]',
     invalidMarkupForBlankKeyword: '[ \t \t : chanting at Nevada caucus][https://example.com/audio.ogg]',
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      audio: [null, 'listen', '', ' \t \t ', undefined]
+      audio: [NULL_KEYWORD, 'listen', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      audio: [null, '', ' \t \t ', undefined]
+      audio: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       audio: []
@@ -251,10 +254,10 @@ describe('The "image" keyword', () => {
     invalidMarkupForEmptyKeyword: '[: Chrono Cross logo][https://example.com/cc.png]',
     invalidMarkupForBlankKeyword: '[ \t \t : Chrono Cross logo][https://example.com/cc.png]',
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      image: [null, 'see', '', ' \t \t ', undefined]
+      image: [NULL_KEYWORD, 'see', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      image: [null, '', ' \t \t ', undefined]
+      image: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       image: []
@@ -276,10 +279,10 @@ describe('The "video" keyword', () => {
     invalidMarkupForEmptyKeyword: '[: Nevada caucus footage][https://example.com/video.webm]',
     invalidMarkupForBlankKeyword: '[ \t \t : Nevada caucus footage][https://example.com/video.webm]',
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      video: [null, 'watch', '', ' \t \t ', undefined]
+      video: [NULL_KEYWORD, 'watch', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      video: [null, '', ' \t \t ', undefined]
+      video: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       video: []
@@ -301,10 +304,10 @@ describe('The "revealable" keyword', () => {
     invalidMarkupForEmptyKeyword: '[: Ash fights Gary]',
     invalidMarkupForBlankKeyword: '[ \t \t : Ash fights Gary]',
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      revealable: [null, 'ruins ending', '', ' \t \t ', undefined]
+      revealable: [NULL_KEYWORD, 'ruins ending', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      revealable: [null, '', ' \t \t ', undefined]
+      revealable: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       revealable: []
@@ -351,10 +354,10 @@ Chrono Trigger;   1995
 Chrono Cross;     1999`,
 
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      table: [null, 'data', '', ' \t \t ', undefined]
+      table: [NULL_KEYWORD, 'data', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      table: [null, '', ' \t \t ', undefined]
+      table: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       table: []
@@ -417,10 +420,10 @@ I am interesting
 I love all sorts of fancy stuff. For example, see [ \t \t : exotic].`,
 
     equivalentKeywordVariationsPlusEmptyAndBlankVariations: {
-      sectionLink: [null, 'heading', '', ' \t \t ', undefined]
+      sectionLink: [NULL_KEYWORD, 'heading', '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     onlyEmptyAndBlankKeywordVariations: {
-      sectionLink: [null, '', ' \t \t ', undefined]
+      sectionLink: [NULL_KEYWORD, '', ' \t \t ', UNDEFINED_KEYWORD]
     },
     zeroKeywordVariations: {
       sectionLink: []

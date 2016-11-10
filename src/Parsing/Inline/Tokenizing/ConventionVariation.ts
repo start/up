@@ -9,20 +9,20 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 export class ConventionVariation {
   startsWith: RegExp
   endsWith: RegExp
-  canOnlyOpenIfDirectlyFollowing: TokenRole[]
-  isCutShortByWhitespace: boolean
-  canConsistSolelyOfWhitespace: boolean
-  flushesBufferToTextTokenBeforeOpening: boolean
-  whenOpening: OnTextMatch
-  insteadOfClosingOuterConventionsWhileOpen: OnConventionEvent
-  insteadOfOpeningRegularConventionsWhileOpen: OnConventionEvent
-  failsIfWhitespaceIsEnounteredBeforeClosing: boolean
-  beforeClosingItFlushesNonEmptyBufferTo: TokenRole
-  beforeClosingItAlwaysFlushesBufferTo: TokenRole
-  whenClosingItAlsoClosesInnerConventions: boolean
-  mustBeDirectlyFollowedBy: ConventionVariation[]
-  whenClosing: OnConventionEvent
-  insteadOfFailingWhenLeftUnclosed: OnConventionEvent
+  canOnlyOpenIfDirectlyFollowing?: TokenRole[]
+  isCutShortByWhitespace?: boolean
+  canConsistSolelyOfWhitespace?: boolean
+  flushesBufferToTextTokenBeforeOpening?: boolean
+  whenOpening?: OnTextMatch
+  insteadOfClosingOuterConventionsWhileOpen?: OnConventionEvent
+  insteadOfOpeningRegularConventionsWhileOpen?: OnConventionEvent
+  failsIfWhitespaceIsEnounteredBeforeClosing?: boolean
+  beforeClosingItFlushesNonEmptyBufferTo?: TokenRole
+  beforeClosingItAlwaysFlushesBufferTo?: TokenRole
+  whenClosingItAlsoClosesInnerConventions?: boolean
+  mustBeDirectlyFollowedBy?: ConventionVariation[]
+  whenClosing?: OnConventionEvent
+  insteadOfFailingWhenLeftUnclosed?: OnConventionEvent
 
   constructor(
     args: {
