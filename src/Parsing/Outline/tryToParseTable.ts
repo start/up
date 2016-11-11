@@ -142,7 +142,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
         const headerColumnCell =
           alsoHasHeaderColumn
-            ? toHeaderCell(cells.shift())
+            ? toHeaderCell(cells.shift() as Table.Cell)
             : undefined
 
         rows.push(new Table.Row(cells.map(toRowCell), headerColumnCell))

@@ -7,7 +7,7 @@ export class Token implements ParseableToken {
 
   constructor(
     public role: TokenRole,
-    public value: string | undefined) { }
+    public value: string | undefined = undefined) { }
 
   // Associates a start token with an end token.
   //
