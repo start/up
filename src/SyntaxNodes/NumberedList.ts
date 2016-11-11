@@ -7,7 +7,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class NumberedList implements OutlineSyntaxNode {
-  public sourceLineNumber: number = undefined
+  public sourceLineNumber: number | undefined = undefined
 
   constructor(public items: NumberedList.Item[], options?: { sourceLineNumber: number }) {
     if (options) {

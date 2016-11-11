@@ -78,16 +78,16 @@ export class Up {
     return htmlRenderer.inlineDocument(inlineDocument)
   }
 
-  private getParsingSettings(changes?: Settings.Parsing): NormalizedSettings.Parsing {
-    return this.settings.withChanges({ parsing: changes }).parsing
-  }
-
-  private getRenderingSettings(changes?: Settings.Rendering): NormalizedSettings.Rendering {
-    return this.settings.withChanges({ rendering: changes }).rendering
-  }
-
-  private getHtmlRenderer(extraRenderingSettings: Settings.Rendering): HtmlRenderer {
+  private getHtmlRenderer(extraRenderingSettings: Settings.Rendering | undefined): HtmlRenderer {
     return new HtmlRenderer(this.getRenderingSettings(extraRenderingSettings))
+  }
+
+  private getParsingSettings(changes: Settings.Parsing | undefined): NormalizedSettings.Parsing {
+    return this.settings.withChanges({ parsing: changes || {} }).parsing
+  }
+
+  private getRenderingSettings(changes: Settings.Rendering | undefined): NormalizedSettings.Rendering {
+    return this.settings.withChanges({ rendering: changes || {} }).rendering
   }
 }
 
@@ -97,9 +97,9 @@ export interface DocumentAndTableOfContentsHtml {
   tableOfContentsHtml: string
 }
 
-function getNonNullSettings(settings: Settings): Settings {
+function getNonNullSettings(settings: Settings | undefined): Settings {
   return settings || {
-    parsing: null,
-    rendering: null
+    parsing: {},
+    rendering: {}
   }
 }

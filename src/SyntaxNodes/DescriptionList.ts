@@ -8,7 +8,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class DescriptionList implements OutlineSyntaxNode {
-  public sourceLineNumber: number = undefined
+  public sourceLineNumber: number | undefined = undefined
 
   constructor(public items: DescriptionList.Item[], options?: { sourceLineNumber: number }) {
     if (options) {

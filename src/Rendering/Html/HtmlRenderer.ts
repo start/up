@@ -473,7 +473,7 @@ export class HtmlRenderer extends Renderer {
       attrsForOuterContainer)
   }
 
-  private tableCaption(caption: Up.Table.Caption): string {
+  private tableCaption(caption: Up.Table.Caption | undefined): string {
     return (
       caption
         ? htmlElementWithAlreadyEscapedChildren('caption', this.renderEach(caption.children))
@@ -549,7 +549,7 @@ export class HtmlRenderer extends Renderer {
   private reset(args?: { isInsideTableOfContents: boolean }): void {
     this.revealableContentCount = 0
     this.isInsideLink = false
-    this.isInsideTableOfContents = args && args.isInsideTableOfContents
+    this.isInsideTableOfContents = (args != null) && args.isInsideTableOfContents
   }
 }
 

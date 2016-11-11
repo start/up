@@ -7,7 +7,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class BulletedList implements OutlineSyntaxNode {
-  public sourceLineNumber: number = undefined
+  public sourceLineNumber: number | undefined = undefined
 
   constructor(
     public items: BulletedList.Item[], options?: { sourceLineNumber: number }) {

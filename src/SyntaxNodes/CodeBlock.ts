@@ -5,7 +5,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class CodeBlock implements OutlineSyntaxNode {
-  public sourceLineNumber: number = undefined
+  public sourceLineNumber: number | undefined = undefined
 
   constructor(public code: string, options?: { sourceLineNumber: number }) {
     if (options) {

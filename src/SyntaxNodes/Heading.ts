@@ -8,8 +8,8 @@ import { Renderer } from '../Rendering/Renderer'
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, Document.TableOfContents.Entry {
   level: number
   titleMarkup: string
-  ordinalInTableOfContents: number = undefined
-  sourceLineNumber: number = undefined
+  ordinalInTableOfContents: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(
     children: InlineSyntaxNode[],

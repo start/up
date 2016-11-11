@@ -9,7 +9,6 @@ export type Settings =
     rendering?: Settings.Rendering
   }
 
-
 export namespace Settings {
   export interface Parsing extends SpecializedSettings {
     createSourceMap?: boolean

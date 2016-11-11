@@ -89,7 +89,7 @@ export namespace Document {
     // Document.TableOfContents.Entry
     export interface Entry {
       // The ordinal of this entry in the table of contents. Starts at `1`, not `0`.
-      ordinalInTableOfContents: number
+      ordinalInTableOfContents: number | undefined
 
       // Semantically equivalent to a heading level. A level of 1 is most significant.
       level: number
@@ -105,7 +105,7 @@ export namespace Document {
       titleMarkup: string
 
       // This represents the source line number of the item (i.e. heading) this entry points to.
-      sourceLineNumber: number
+      sourceLineNumber: number | undefined
     }
   }
 }
