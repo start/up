@@ -53,7 +53,8 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
     // ... and the underline.
     && markupLineConsumer.consume({
-      if: line => DIVIDER_STREAK_PATTERN.test(line) && isUnderlineConsistentWithOverline(optionalOverline, line),
+      linePattern: DIVIDER_STREAK_PATTERN,
+      if: line => isUnderlineConsistentWithOverline(optionalOverline, line),
       thenBeforeConsumingLine: line => {
         underline = line
       }
