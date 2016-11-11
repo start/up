@@ -66,13 +66,15 @@ export class ForgivingConventionHandler {
     const { options } = this
     let endDelimiterLength = endDelimiterText.length
 
-    if (options.isPerfectMatch) {
-      const isPerfectMatch =
+    const { isPerfectMatch } = options
+
+    if (isPerfectMatch) {
+      const isDelimiterPerfectMatch =
         (startDelimiter: StartDelimiter) =>
-          options.isPerfectMatch(startDelimiter.remainingLength, endDelimiterLength)
+          isPerfectMatch(startDelimiter.remainingLength, endDelimiterLength)
 
       const perfectStartDelimiter =
-        first(this.openStartDelimiters, isPerfectMatch)
+        first(this.openStartDelimiters, isDelimiterPerfectMatch)
 
       if (perfectStartDelimiter) {
         const lengthInCommon =
@@ -128,12 +130,12 @@ export class ForgivingConventionHandler {
 }
 
 
-function first<T>(items: T[], predicate: (item: T) => boolean): T {
+function first<T>(items: T[], predicate: (item: T) => boolean): T | undefined {
   for (const item of items) {
     if (predicate(item)) {
       return item
     }
   }
 
-  return null
+  return undefined
 }

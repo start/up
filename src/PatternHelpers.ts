@@ -91,15 +91,15 @@ import { ANY_OPTIONAL_WHITESPACE } from './PatternPieces'
 function getRegExpSolelyConsistingOf(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
   return new RegExp(
     '^' + ANY_OPTIONAL_WHITESPACE + args.pattern + ANY_OPTIONAL_WHITESPACE + '$',
-    getRegExpFlags(args.isCaseInsensitive))
+    getRegExpFlags(args.isCaseInsensitive === true))
 }
 
 function getRegExpStartingWith(args: { pattern: string, isCaseInsensitive?: boolean }): RegExp {
   return new RegExp(
     '^' + args.pattern,
-    getRegExpFlags(args.isCaseInsensitive))
+    getRegExpFlags(args.isCaseInsensitive === true))
 }
 
-function getRegExpFlags(isCaseInsensitive: boolean): string {
+function getRegExpFlags(isCaseInsensitive: boolean): string | undefined {
   return isCaseInsensitive ? 'i' : undefined
 }

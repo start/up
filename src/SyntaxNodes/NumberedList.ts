@@ -53,7 +53,7 @@ export namespace NumberedList {
   export class Item extends OutlineSyntaxNodeContainer {
     public ordinal: number | undefined = undefined
 
-    constructor(public children: OutlineSyntaxNode[], options?: { ordinal: number }) {
+    constructor(public children: OutlineSyntaxNode[], options?: { ordinal?: number }) {
       super(children)
 
       if (options) {

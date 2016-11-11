@@ -129,13 +129,12 @@ function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
 }
 
 
-function getExplicitOrdinal(unparsedListItem: UnparsedListItem): number {
+function getExplicitOrdinal(unparsedListItem: UnparsedListItem): number | undefined {
   const result = FIRST_INTEGER_PATTERN.exec(unparsedListItem.bullet)
 
-  return (
-    result
-      ? parseInt(result[0], 10)
-      : undefined)
+  return result
+    ? parseInt(result[0], 10)
+    : undefined
 }
 
 

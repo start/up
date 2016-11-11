@@ -53,35 +53,43 @@ function parseAndGetResult(
   TokenLoop: for (; tokenIndex < tokens.length; tokenIndex++) {
     const token = tokens[tokenIndex]
 
+    // Not all tokens have a value, so the `value` field of `ParseableToken` can
+    // be undefined. However, tokens of certain `role`s will never have always
+    // have a value, which we rely upon below.
+    //
+    // TODO: Implement a more type-safe solution than casting `string | undefined`
+    // to `string`.
+    const tokenValue = token.value as string
+
     switch (token.role) {
       case until: {
         break TokenLoop
       }
 
       case TokenRole.Text: {
-        nodes.push(new Text(token.value))
+        nodes.push(new Text(tokenValue))
         continue
       }
 
       case TokenRole.InlineCode: {
-        nodes.push(new InlineCode(token.value))
+        nodes.push(new InlineCode(tokenValue))
         continue
       }
 
       case TokenRole.ExampleUserInput: {
-        nodes.push(new ExampleUserInput(token.value))
+        nodes.push(new ExampleUserInput(tokenValue))
         continue
       }
 
       case TokenRole.SectionLink: {
-        nodes.push(new SectionLink(token.value))
+        nodes.push(new SectionLink(tokenValue))
         continue
       }
-
+ 
       case TokenRole.BareUrl: {
-        const url = token.value
+        const url = tokenValue
 
-        const [urlScheme] = URL_SCHEME_PATTERN.exec(url)
+        const [urlScheme] = URL_SCHEME_PATTERN.exec(url) as string[]
         const urlAfterScheme = url.substr(urlScheme.length)
 
         nodes.push(new LINK.SyntaxNodeType([new Text(urlAfterScheme)], url))
@@ -95,7 +103,7 @@ function parseAndGetResult(
         })
 
         // Our link's URL was in the `LinkEndAndUrl `token, the last token we parsed.
-        const url = tokens[tokenIndex].value.trim()
+        const url = (tokens[tokenIndex].value as string).trim()
 
         if (children.every(isWhitespace)) {
           // As a rule, if link has blank content, we use its URL as its content.
@@ -109,12 +117,12 @@ function parseAndGetResult(
 
     for (const media of [AUDIO, IMAGE, VIDEO]) {
       if (token.role === media.tokenRoleForStartAndDescription) {
-        const description = token.value.trim()
+        const description = tokenValue.trim()
 
         // The next token will always be a `MediaEndAndUrl` token. All media conventions
         // use the same role for their end tokens.
         const urlToken = tokens[++tokenIndex]
-        const url = urlToken.value.trim()
+        const url = (urlToken.value as string).trim()
 
         nodes.push(new media.SyntaxNodeType(description || url, url))
         continue TokenLoop
