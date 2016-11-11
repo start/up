@@ -24,7 +24,8 @@ export function getIndentedBlock(
     if (blankLineResult) {
       // The line was blank, so we don't yet know whether the author intended for the line to be
       // included in the indented block or not (it could be trailin). We'll move onto the next
-      // line without updating `contentLineCount`.
+      // line without updating `indentedBlockLineCount`.
+      indentedLines.push(blankLineResult.line)
       continue
     }
 

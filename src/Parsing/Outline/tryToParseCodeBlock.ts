@@ -22,25 +22,24 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   }
 
   const startStreak = startStreakResult.line.trim()
-
   const codeLines: string[] = []
 
   // Let's keep consuming lines until we find a streak that matches the first one.
   while (!markupLineConsumer.done()) {
-    let possibleEndStreak: string
-
     const endStreakResult =
       markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
 
     if (endStreakResult) {
+      const endStreak = endStreakResult.line
+
       // Alright, we have a possible end streak!
-      if (endStreakResult.line.length === startStreak.length) {
+      if (endStreak.length === startStreak.length) {
         // It matches the start streak! Let's bail.
         break
       }
 
       // The streak didn't match the start streak, so let's include it in the code block.
-      codeLines.push(possibleEndStreak)
+      codeLines.push(endStreak)
       continue
     }
 

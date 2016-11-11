@@ -222,7 +222,7 @@ Do you?`
 })
 
 
-context("An unmatched streak of backticks produces a code block that extends to the end of the code block's container", () => {
+context("An unmatched streak of backticks produces a code block that extends to the end of the code block's container.", () => {
   specify("If the code block isn't nested within another convention, it extends to the end of the document", () => {
     const markup = `
 Check out the code below!
