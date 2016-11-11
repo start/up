@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
+import { cast } from '../../Helpers'
 
 
 describe('Within a text node, all instances of < and &', () => {
@@ -292,7 +293,7 @@ describe("Within an audio convention's fallback link content, all instances of <
 
 
 context('Within a table of contents entry, all instances of < and & are escaped:', () => {
-  const NOT_USED: string = null
+  const NOT_USED = cast<string>(null)
 
   specify('In the table of contents itself', () => {
     const heading =

@@ -1,16 +1,7 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
 import { Table } from '../../SyntaxNodes/Table'
-
-
-context('When the "createSourceMap" setting is not enabled', () => {
-  specify('no source maps are produced', () => {
-    expect(Up.parse("I enjoy apples.")).to.deep.equal(
-      new Up.Document([
-        new Up.Paragraph([new Up.Text('I enjoy apples.')], { sourceLineNumber: undefined }),
-      ]))
-  })
-})
+import { cast } from '../Helpers'
 
 
 context('When the "createSourceMap" setting is enabled, outline nodes are given a source line number.', () => {
@@ -354,6 +345,8 @@ No, really. That was it.`
       })
     })
 
+    const NO_CAPTION = cast<Table.Caption>(undefined)
+
     specify('Code blocks', () => {
       const markup = `
 \`\`\`
@@ -373,8 +366,6 @@ Table:
 Game;             Release Date
 Chrono Trigger;   1995
 Chrono Cross;     1999`
-
-      const NO_CAPTION: Table.Caption = undefined
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
@@ -402,8 +393,6 @@ Table:
         1;      0
 1;      true;   false
 0;      false;  false`
-
-      const NO_CAPTION: Table.Caption = undefined
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([

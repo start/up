@@ -47,7 +47,7 @@ export function expectEveryPermutationOfBrackets(
   const segments = args.bracketedSegments.map(segment => ({
     prefixes: segment.prefixes || [''],
     text: segment.text
-  }) as BracketedSegment)
+  }))
 
   const BRACKETS = [
     { open: '(', close: ')' },

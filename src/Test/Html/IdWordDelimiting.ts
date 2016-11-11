@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { coerce } from '../../Helpers'
+import { cast } from '../Helpers'
 
 
-const NOT_USED = coerce<string>(null)
+const NOT_USED = cast<string>(null)
 
 context('Words within HTML IDs are delimited by hyphens.', () => {
   context('This applies to terms appearing in IDs:', () => {

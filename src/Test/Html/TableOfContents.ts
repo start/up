@@ -1,8 +1,9 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
+import { cast } from '../Helpers'
 
 
-const NOT_USED: string = null
+const NOT_USED = cast<string>(null)
 
 specify('When a document has no table of contents entries, the table of contents renders a blank string', () => {
   const document =

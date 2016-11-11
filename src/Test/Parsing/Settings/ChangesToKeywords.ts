@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 import { settingsFor } from './Helpers'
 import { distinct } from '../../../CollectionHelpers'
-import { coerce } from '../../Helpers'
+import { cast } from '../../Helpers'
 
 
 // Elsewhere, we verify that these keywords work.
@@ -217,8 +217,8 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
 }
 
 
-const NULL_KEYWORD = coerce<string>(null)
-const UNDEFINED_KEYWORD = coerce<string>(undefined)
+const NULL_KEYWORD = cast<string>(null)
+const UNDEFINED_KEYWORD = cast<string>(undefined)
 
 describe('The "audio" keyword', () => {
   itCanBeProvidedMultipleWaysWithTheSameResult({

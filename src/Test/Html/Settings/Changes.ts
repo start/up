@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { coerce } from '../../Helpers'
+import { cast } from '../../Helpers'
 
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
@@ -137,7 +137,7 @@ describe('The "footnote" term', () => {
 
 
 describe('The "sectionReferencedByTableOfContents" setting', () => {
-  const NOT_USED = coerce<string>(null)
+  const NOT_USED = cast<string>(null)
 
   const heading = new Up.Heading([], { level: 1, titleMarkup: NOT_USED })
 

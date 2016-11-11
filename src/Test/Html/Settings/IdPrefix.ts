@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
+import { cast } from '../../Helpers'
 
 
 describe("A footnote reference's ID (as well as the ID of the footnote it points to)", () => {
@@ -351,7 +352,7 @@ describe("The IDs and names of elements rendered for revealable blocks", () => {
 })
 
 
-const NOT_USED: string = null
+const NOT_USED = cast<string>(null)
 
 describe("The ID of an element referenced by the table of contents", () => {
   it("is prefixed with the default ID prefix 'up' if one wasn't provided", () => {
