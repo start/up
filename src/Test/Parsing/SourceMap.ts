@@ -1,7 +1,5 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { Table } from '../../SyntaxNodes/Table'
-import { cast } from '../Helpers'
 
 
 context('When the "createSourceMap" setting is enabled, outline nodes are given a source line number.', () => {
@@ -345,7 +343,7 @@ No, really. That was it.`
       })
     })
 
-    const NO_CAPTION = cast<Table.Caption>(undefined)
+    const NO_CAPTION = undefined
 
     specify('Code blocks', () => {
       const markup = `

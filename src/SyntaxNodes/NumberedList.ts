@@ -15,7 +15,7 @@ export class NumberedList implements OutlineSyntaxNode {
     }
   }
 
-  start(): number {
+  start(): number | undefined {
     return this.items[0].ordinal
   }
 
@@ -51,7 +51,7 @@ export class NumberedList implements OutlineSyntaxNode {
 
 export namespace NumberedList {
   export class Item extends OutlineSyntaxNodeContainer {
-    public ordinal: number = undefined
+    public ordinal: number | undefined = undefined
 
     constructor(public children: OutlineSyntaxNode[], options?: { ordinal: number }) {
       super(children)

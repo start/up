@@ -9,7 +9,7 @@ import { Renderer } from '../Rendering/Renderer'
 export class FootnoteBlock implements OutlineSyntaxNode {
   constructor(public footnotes: Footnote[]) { }
 
-  get sourceLineNumber(): number {
+  get sourceLineNumber(): number | undefined {
     // The source line number of a footnote block wouldn't be particulalry meaninful.
     return undefined
   }
