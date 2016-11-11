@@ -16,12 +16,15 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   const blockquotedLines: string[] = []
 
   // Collect all consecutive blockquoted lines
-  while (markupLineConsumer.consumeLineIfMatches({
-    linePattern: BLOCKQUOTE_DELIMITER_PATTERN,
-    thenBeforeConsumingLine: line => {
-      blockquotedLines.push(line.replace(BLOCKQUOTE_DELIMITER_PATTERN, ''))
+  while (true) {
+    const result = markupLineConsumer.consumeLineIfMatches(BLOCKQUOTE_DELIMITER_PATTERN)
+
+    if (!result) {
+      return false
     }
-  })) { }
+
+    blockquotedLines.push(result.line.replace(BLOCKQUOTE_DELIMITER_PATTERN, ''))
+  }
 
   if (!blockquotedLines.length) {
     return false

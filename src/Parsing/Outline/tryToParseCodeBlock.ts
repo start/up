@@ -13,18 +13,15 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
-  let startStreak: string
 
-  markupLineConsumer.consumeLineIfMatches({
-    linePattern: CODE_BLOCK_STREAK_PATTERN,
-    thenBeforeConsumingLine: line => {
-      startStreak = line.trim()
-    }
-  })
+  const startStreakResult =
+    markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
 
-  if (!startStreak) {
+  if (!startStreakResult) {
     return false
   }
+
+  const startStreak = startStreakResult.line.trim()
 
   const codeLines: string[] = []
 
@@ -32,34 +29,24 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   while (!markupLineConsumer.done()) {
     let possibleEndStreak: string
 
-    markupLineConsumer.consumeLineIfMatches({
-      linePattern: CODE_BLOCK_STREAK_PATTERN,
-      thenBeforeConsumingLine: line => {
-        possibleEndStreak = line.trim()
+    const endStreakResult =
+      markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
+
+    if (endStreakResult) {
+      // Alright, we have a possible end streak!
+      if (endStreakResult.line.length === startStreak.length) {
+        // It matches the start streak! Let's bail.
+        break
       }
-    })
 
-    if (!possibleEndStreak) {
-      // Since we don't have a possible end streak, we'll just treat this line as code and move
-      // on to the next one.
-      markupLineConsumer.consumeLineIfMatches({
-        thenBeforeConsumingLine: line => {
-          codeLines.push(line)
-        }
-      })
-
+      // The streak didn't match the start streak, so let's include it in the code block.
+      codeLines.push(possibleEndStreak)
       continue
     }
 
-    // Alright, we have a possible end streak!
-
-    if (possibleEndStreak.length === startStreak.length) {
-      // It matches the start streak! Let's bail.
-      break
-    }
-
-    // The streak didn't match the start streak, so let's include it in the code block.
-    codeLines.push(possibleEndStreak)
+      // Since we don't have a possible end streak, we'll just treat this line as code and move
+      // on to the next one.
+      codeLines.push(markupLineConsumer.consumeLine())
   }
 
   args.then(

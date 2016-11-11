@@ -21,10 +21,8 @@ export class LineConsumer {
     return this._countLinesConsumed >= this.lines.length
   }
 
-  // This method consumes the next remaining line if it matches `linePattern`, then
-  // returns the result of `RegExp.exec`. If the line doesn't match `linePattern`,
-  // this method returns null.
-  consumeLineIfMatches(linePattern: RegExp): string[] | null {
+  // This method consumes the next remaining line if it matches `linePattern`.
+  consumeLineIfMatches(linePattern: RegExp): LineMatchResult | null {
     const line = this.nextRemainingLine
     const result = linePattern.exec(line)
 
@@ -33,7 +31,11 @@ export class LineConsumer {
     }
 
     this.skipLines(1)
-    return result
+
+    return {
+      line: result[0],
+      captures: result.slice(1)
+    }
   }
 
 
@@ -50,4 +52,10 @@ export class LineConsumer {
   private get nextRemainingLine(): string {
     return this.lines[this._countLinesConsumed]
   }
+}
+
+
+interface LineMatchResult {
+  line: string
+  captures: string[]
 }

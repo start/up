@@ -24,16 +24,14 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
     const sourceLineNumberForCurrentListItem =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
 
-    const isLineBulleted = markupLineConsumer.consumeLineIfMatches({
-      linePattern: BULLETED_LINE_PATTERN,
-      thenBeforeConsumingLine: line => {
-        linesOfMarkupInCurrentListItem.push(line.replace(BULLETED_LINE_PATTERN, ''))
-      }
-    })
+    const bulletedLineResult = markupLineConsumer.consumeLineIfMatches(BULLETED_LINE_PATTERN)
 
-    if (!isLineBulleted) {
+    if (!bulletedLineResult) {
       break
     }
+
+    linesOfMarkupInCurrentListItem.push(
+      bulletedLineResult.line.replace(BULLETED_LINE_PATTERN, ''))
 
     let shouldTerminateList = false
 

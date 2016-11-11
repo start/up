@@ -18,32 +18,28 @@ export function getIndentedBlock(
   let indentedBlockLineCount = 0
 
   while (!markupLineConsumer.done()) {
-    const wasLineBlank = markupLineConsumer.consumeLineIfMatches({
-      linePattern: BLANK_PATTERN,
-      thenBeforeConsumingLine: line => {
-        indentedLines.push(line)
-      }
-    })
+    const blankLineResult =
+      markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
-    if (wasLineBlank) {
+    if (!blankLineResult) {
       // The line was blank, so we don't yet know whether the author intended for the line to be
       // included in the indented block or not (it could be trailin). We'll move onto the next
       // line without updating `contentLineCount`.
       continue
     }
 
-    const wasLineIndented = markupLineConsumer.consumeLineIfMatches({
-      linePattern: INDENTED_PATTERN,
-      thenBeforeConsumingLine: line => {
-        indentedLines.push(line)
-        indentedBlockLineCount = indentedLines.length
-      }
-    })
+    indentedLines.push(blankLineResult.line)
 
-    if (!wasLineIndented) {
+    const indentedLineResult=
+     markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN)
+
+    if (!indentedLineResult) {
       // The current line is neither blank nor indented. We're done!
       break
     }
+
+    indentedLines.push(indentedLineResult.line)
+        indentedBlockLineCount = indentedLines.length
   }
 
   if (!indentedLines.length) {
