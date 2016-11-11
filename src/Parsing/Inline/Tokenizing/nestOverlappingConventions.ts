@@ -179,7 +179,6 @@ class ConventionNester {
       }
 
       const heroStartIndex = tokenIndex
-      let heroEndIndex: number
 
       for (let i = heroStartIndex + 1; i < this.tokens.length; i++) {
         const potentialHeroEndToken = this.tokens[i]
@@ -188,56 +187,57 @@ class ConventionNester {
           potentialHeroEndToken === potentialHeroStartToken.correspondingEnclosingToken
 
         if (isEndTokenForHeroConvention) {
-          heroEndIndex = i
+          let heroEndIndex = i
+
+          // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions will
+          // either:
+          //
+          // 1. Start before and end inside
+          // 2. Start inside and end after
+          //
+          // We'll keep track of both. However, we need to store tokens, not conventions, because link end tokens have
+          // a URL that must be copied whenever links are split in half.
+          //
+          // Both collections contain end tokens in the order they appear in the original token collection (from inner
+          // to outer). 
+          const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
+          const endTokensOfOverlappingConventionsStartingInside: Token[] = []
+
+          for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
+            const innerToken = this.tokens[indexInsideHero]
+
+            if (doesTokenStartAnyConvention(innerToken, splittableConventions)) {
+              // Until we encounter the end token, we'll assume this start token's convention overlaps.
+              //
+              // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
+              // end tokens appear in the opposite order of start tokens.
+              endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondingEnclosingToken)
+              continue
+            }
+
+            if (doesTokenEndAnyConvention(innerToken, splittableConventions)) {
+              // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
+              // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
+              // end token we've found must end the most recent one. We `unshift` items into this collection, so the
+              // most recent item is the first.
+              if (endTokensOfOverlappingConventionsStartingInside.length) {
+                endTokensOfOverlappingConventionsStartingInside.shift()
+                continue
+              }
+
+              // Well, there were no unclosed conventions started inside this `conventionNotToSplit`. That means the
+              // current end token's corresponding start token appeared before the hero's start token (and thus is
+              // overlapping).
+              endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
+            }
+          }
+
+          this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, endTokensOfOverlappingConventionsStartingInside)
+          this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, endTokensOfOverlappingConventionsStartingBefore)
+
           break
         }
       }
-
-      // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions will
-      // either:
-      //
-      // 1. Start before and end inside
-      // 2. Start inside and end after
-      //
-      // We'll keep track of both. However, we need to store tokens, not conventions, because link end tokens have
-      // a URL that must be copied whenever links are split in half.
-      //
-      // Both collections contain end tokens in the order they appear in the original token collection (from inner
-      // to outer). 
-      const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
-      const endTokensOfOverlappingConventionsStartingInside: Token[] = []
-
-      for (let indexInsideHero = heroStartIndex + 1; indexInsideHero < heroEndIndex; indexInsideHero++) {
-        const innerToken = this.tokens[indexInsideHero]
-
-        if (doesTokenStartAnyConvention(innerToken, splittableConventions)) {
-          // Until we encounter the end token, we'll assume this start token's convention overlaps.
-          //
-          // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
-          // end tokens appear in the opposite order of start tokens.
-          endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondingEnclosingToken)
-          continue
-        }
-
-        if (doesTokenEndAnyConvention(innerToken, splittableConventions)) {
-          // Because this function requires any conventions in `conventionsToSplit` to already be properly nested
-          // into a treee structure, if there are any conventions that started inside `conventionNotToSplit`, the
-          // end token we've found must end the most recent one. We `unshift` items into this collection, so the
-          // most recent item is the first.
-          if (endTokensOfOverlappingConventionsStartingInside.length) {
-            endTokensOfOverlappingConventionsStartingInside.shift()
-            continue
-          }
-
-          // Well, there were no unclosed conventions started inside this `conventionNotToSplit`. That means the
-          // current end token's corresponding start token appeared before the hero's start token (and thus is
-          // overlapping).
-          endTokensOfOverlappingConventionsStartingBefore.push(innerToken)
-        }
-      }
-
-      this.closeAndReopenConventionsAroundTokenAtIndex(heroEndIndex, endTokensOfOverlappingConventionsStartingInside)
-      this.closeAndReopenConventionsAroundTokenAtIndex(heroStartIndex, endTokensOfOverlappingConventionsStartingBefore)
     }
   }
 

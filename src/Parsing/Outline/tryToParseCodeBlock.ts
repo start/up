@@ -40,7 +40,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     })
 
     if (!possibleEndStreak) {
-      // If we don't have a possible end streak, we'll just treat this line as code and move
+      // Since we don't have a possible end streak, we'll just treat this line as code and move
       // on to the next one.
       markupLineConsumer.consume({
         thenBeforeConsumingLine: line => {
