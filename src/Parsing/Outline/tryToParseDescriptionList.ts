@@ -27,31 +27,32 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   let countLinesConsumed = 0
 
   while (!markupLineConsumer.done()) {
-    let markupPerSubject: string[] = []
+    let markupLinesForSubjects: string[] = []
 
     // First, let's collect the subjects described by the upcoming description.
     while (!markupLineConsumer.done()) {
-      const isSubject = markupLineConsumer.consumeLineIfMatches({
-        linePattern: NON_BLANK_PATTERN,
-        if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.settings),
-        thenBeforeConsumingLine: line => {
-          markupPerSubject.push(line)
-        }
-      })
+      const subjectResult =
+        markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
 
-      if (!isSubject) {
+      if (
+        !subjectResult
+        || INDENTED_PATTERN.test(subjectResult.line)
+        || isLineFancyOutlineConvention(subjectResult.line, args.settings)
+      ) {
         break
       }
+
+      markupLinesForSubjects.push(subjectResult.line)
     }
 
-    if (!markupPerSubject.length) {
+    if (!markupLinesForSubjects.length) {
       break
     }
 
     // Alright! We have our subjects! Next up is the subjects' description.
     //
     // First, let's skip the optional leading blank line.
-    markupLineConsumer.consumeLineIfMatches({ linePattern: BLANK_PATTERN })
+    markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
     const sourceLineNumberForDescription =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
@@ -59,19 +60,16 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
-    const hasDescription = markupLineConsumer.consumeLineIfMatches({
-      linePattern: INDENTED_PATTERN,
-      if: line => !BLANK_PATTERN.test(line),
-      thenBeforeConsumingLine: line => {
-        descriptionLines.push(line.replace(INDENTED_PATTERN, ''))
-      }
-    })
+    const descriptionResult =
+      markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN)
 
-    if (!hasDescription) {
+    if (!descriptionResult) {
       // There wasn't a description, so the latest "subjects" we found were actually just regular
       // lines not part of any description list.
       break
     }
+
+    descriptionLines.push(descriptionResult.line.replace(INDENTED_PATTERN, ''))
 
     let shouldTerminateList = false
 
@@ -89,7 +87,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
 
     const subjects =
-      markupPerSubject.map(subject =>
+      markupLinesForSubjects.map(subject =>
         new DescriptionList.Item.Subject(getInlineSyntaxNodes(subject, args.settings)))
 
     const description =

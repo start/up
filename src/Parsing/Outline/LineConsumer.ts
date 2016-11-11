@@ -22,7 +22,13 @@ export class LineConsumer {
   }
 
   // This method consumes the next remaining line if it matches `linePattern`.
+  // If the line doesn't match, or if there are no more lines, this method
+  // returns null.
   consumeLineIfMatches(linePattern: RegExp): LineMatchResult | null {
+    if (this.done()) {
+      return null
+    }
+
     const line = this.nextRemainingLine
     const result = linePattern.exec(line)
 
@@ -33,17 +39,19 @@ export class LineConsumer {
     this.skipLines(1)
 
     return {
-      line: result[0],
+      line,
       captures: result.slice(1)
     }
   }
 
-
-  // This method consumes the next remaining line if it matches `linePattern`, then
-  // returns the result of `RegExp.exec`. If the line doesn't match `linePattern`,
-  // this method returns null.
+  // This method consumes and returns the next remaining line. If there are
+  // no remaining lines, this method throws an exception.
   consumeLine(): string {
-    const line = this.nextRemainingLine    
+    if (this.done()) {
+      throw new Error('No remaining lines')
+    }
+
+    const line = this.nextRemainingLine
     this.skipLines(1)
 
     return line
@@ -55,7 +63,7 @@ export class LineConsumer {
 }
 
 
-interface LineMatchResult {
+export interface LineMatchResult {
   line: string
   captures: string[]
 }

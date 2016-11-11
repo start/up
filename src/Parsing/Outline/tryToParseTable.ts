@@ -66,7 +66,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const labelLineResult =
     markupLineConsumer.consumeLineIfMatches(labelPattern)
 
-  if (labelLineResult) {
+  if (!labelLineResult) {
     return false
   }
 
@@ -88,10 +88,10 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     return false
   }
 
-  const [headerMarkup] = headerRowResult.captures
-
-  const alsoHasHeaderColumn = INDENTED_PATTERN.test(headerMarkup)
-  const headerCells = getTableCells(headerMarkup, settings).map(toHeaderCell)
+  // As a rule, if a table's header row is indented, it indicates the table should
+  // also have a header column (in addition to its header row).
+  const alsoHasHeaderColumn = INDENTED_PATTERN.test(headerRowResult.line)
+  const headerCells = getTableCells(headerRowResult.line, settings).map(toHeaderCell)
 
   // Okay! Now that we've found a label line (with an optional caption) and have a header,
   // we know we're dealing with a table.
