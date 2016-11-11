@@ -63,44 +63,35 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   const labelPattern = solelyAndIgnoringCapitalization(
     either(...settings.keywords.table.map(escapeForRegex)) + optional(':' + capture(REST_OF_TEXT)))
 
-  let captionMarkup: string
+  const labelLineResult =
+    markupLineConsumer.consumeLineIfMatches(labelPattern)
 
-  const isTable =
-    markupLineConsumer.consumeLineIfMatches({
-      linePattern: labelPattern,
-      thenBeforeConsumingLine: (_, caption) => {
-        captionMarkup = (caption || '').trim()
-      }
-    })
-
-  if (!isTable) {
+  if (labelLineResult) {
     return false
   }
+
+  const [captionPart] = labelLineResult.captures
+
+  const captionMarkup = captionPart
+    ? captionPart.trim()
+    : ''
 
   // We have our label line (with an optional caption).
   //
   // Let's consume the optional blank line before the header row. 
-  consumeBlankLine(markupLineConsumer)
+  markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
-  let alsoHasHeaderColumn: boolean
+  const headerRowResult =
+    markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
 
-  let headerCells: Table.Header.Cell[]
-
-  const hasHeader =
-    markupLineConsumer.consumeLineIfMatches({
-      linePattern: NON_BLANK_PATTERN,
-      thenBeforeConsumingLine: headerMarkup => {
-        // As a rule, if a table's header row is indented, it indicates the table should
-        // also have a header column (in addition to its header row).
-        alsoHasHeaderColumn = INDENTED_PATTERN.test(headerMarkup)
-
-        headerCells = getTableCells(headerMarkup, settings).map(toHeaderCell)
-      }
-    })
-
-  if (!hasHeader) {
+  if (!headerRowResult) {
     return false
   }
+
+  const [headerMarkup] = headerRowResult.captures
+
+  const alsoHasHeaderColumn = INDENTED_PATTERN.test(headerMarkup)
+  const headerCells = getTableCells(headerMarkup, settings).map(toHeaderCell)
 
   // Okay! Now that we've found a label line (with an optional caption) and have a header,
   // we know we're dealing with a table.
@@ -131,24 +122,25 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   let countLinesConsumed = markupLineConsumer.countLinesConsumed
 
   // Let's consume the optional blank line after the header row. 
-  consumeBlankLine(markupLineConsumer)
+  markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
   // Phew! We're finally ready to start consuming any rows!
-  while (
-    markupLineConsumer.consumeLineIfMatches({
-      linePattern: NON_BLANK_PATTERN,
-      thenBeforeConsumingLine: line => {
-        const cells = getTableCells(line, settings)
+  while (true) {
+    const tableRowResult =
+      markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
 
-        const headerColumnCell =
-          alsoHasHeaderColumn
-            ? toHeaderCell(cells.shift() as Table.Cell)
-            : undefined
+    if (!tableRowResult) {
+      break
+    }
 
-        rows.push(new Table.Row(cells.map(toRowCell), headerColumnCell))
-      }
-    })
-  ) {
+    const cells = getTableCells(tableRowResult.line, settings)
+
+    const headerColumnCell =
+      alsoHasHeaderColumn
+        ? toHeaderCell(cells.shift() as Table.Cell)
+        : undefined
+
+    rows.push(new Table.Row(cells.map(toRowCell), headerColumnCell))
     countLinesConsumed = markupLineConsumer.countLinesConsumed
   }
 
@@ -159,10 +151,6 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   return true
 }
 
-
-function consumeBlankLine(markupLineConsumer: LineConsumer): boolean {
-  return markupLineConsumer.consumeLineIfMatches({ linePattern: BLANK_PATTERN })
-}
 
 const toHeaderCell = (cell: Table.Cell) =>
   new Table.Header.Cell(cell.children, cell.countColumnsSpanned)
