@@ -343,7 +343,8 @@ No, really. That was it.`
       })
     })
 
-    const NO_CAPTION = undefined
+    // TODO: Remove explicit type once `strictNullChecks` is re-enabled.
+    const NO_CAPTION: Up.Table.Caption = undefined
 
     specify('Code blocks', () => {
       const markup = `
