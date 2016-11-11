@@ -30,8 +30,8 @@ export function getIndentedBlock(
 
     indentedLines.push(blankLineResult.line)
 
-    const indentedLineResult=
-     markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN)
+    const indentedLineResult =
+      markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN)
 
     if (!indentedLineResult) {
       // The current line is neither blank nor indented. We're done!
@@ -39,7 +39,7 @@ export function getIndentedBlock(
     }
 
     indentedLines.push(indentedLineResult.line)
-        indentedBlockLineCount = indentedLines.length
+    indentedBlockLineCount = indentedLines.length
   }
 
   if (!indentedLines.length) {

@@ -20,24 +20,21 @@ export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
   const unparsedListItems: UnparsedListItem[] = []
 
   while (!markupLineConsumer.done()) {
-    let unparsedListItem: UnparsedListItem
+    const numberedLineResult =
+      markupLineConsumer.consumeLineIfMatches(LINE_WITH_NUMERIC_BULLET_PATTERN)
 
-    const isLineBulleted = markupLineConsumer.consumeLineIfMatches({
-      linePattern: LINE_WITH_NUMERIC_BULLET_PATTERN,
-      if: line => !DIVIDER_STREAK_PATTERN.test(line),
-      thenBeforeConsumingLine: (line, bullet) => {
-        unparsedListItem =
-          new UnparsedListItem({
-            bullet,
-            firstLineOfMarkup: line.replace(LINE_WITH_NUMERIC_BULLET_PATTERN, ''),
-            sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed
-          })
-      }
-    })
-
-    if (!isLineBulleted) {
-      break
+    if (!numberedLineResult || DIVIDER_STREAK_PATTERN.test(numberedLineResult.line)) {
+      return false
     }
+
+    const [bullet] = numberedLineResult.captures
+
+    const unparsedListItem =
+      new UnparsedListItem({
+        bullet,
+        firstLineOfMarkup: numberedLineResult.line.replace(LINE_WITH_NUMERIC_BULLET_PATTERN, ''),
+        sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+      })
 
     let shouldTerminateList = false
 

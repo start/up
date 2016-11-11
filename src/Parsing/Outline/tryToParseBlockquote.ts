@@ -20,7 +20,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
     const result = markupLineConsumer.consumeLineIfMatches(BLOCKQUOTE_DELIMITER_PATTERN)
 
     if (!result) {
-      return false
+      break
     }
 
     blockquotedLines.push(result.line.replace(BLOCKQUOTE_DELIMITER_PATTERN, ''))

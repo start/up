@@ -30,55 +30,54 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // First, let's try to consume the optional overline...
-  let optionalOverline: string
+  const overlineResult =
+    markupLineConsumer.consumeLineIfMatches(DIVIDER_STREAK_PATTERN)
 
-  markupLineConsumer.consumeLineIfMatches({
-    linePattern: DIVIDER_STREAK_PATTERN,
-    thenBeforeConsumingLine: line => {
-      optionalOverline = line
-    }
-  })
+  let optionalOverline = overlineResult
+    ? overlineResult.line
+    : null
 
-  let contentMarkup: string
-  let underline: string
+  // Next, the heading's content...
+  const contentResult =
+    markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
 
-  const hasContentAndUnderline = (
-    // Now, let's consume the content...
-    markupLineConsumer.consumeLineIfMatches({
-      linePattern: NON_BLANK_PATTERN,
-      thenBeforeConsumingLine: line => {
-        contentMarkup = line
-      }
-    })
+  if (!contentResult) {
+    return false
+  }
 
-    // ... and the underline.
-    && markupLineConsumer.consumeLineIfMatches({
-      linePattern: DIVIDER_STREAK_PATTERN,
-      if: line => isUnderlineConsistentWithOverline(optionalOverline, line),
-      thenBeforeConsumingLine: line => {
-        underline = line
-      }
-    })
+  const contentMarkup = contentResult.line
 
-    // We're still not convinced this is actually a heading. Why's that?
-    //
-    // Well, what if the content is a streak? For example:
-    //
-    // =============================================
-    // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
-    // =============================================
-    //
-    // Or what if the content is a list with a single item? For example:
-    //
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // * Buy milk
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //
-    // Neither of those should be parsed as headings. We only accept the heading's content if it would
-    // would otherwise be parsed as a regular paragraph.
-    && !isLineFancyOutlineConvention(contentMarkup, args.settings))
+  /// And finally its underline!
+  const underlineResult =
+    markupLineConsumer.consumeLineIfMatches(DIVIDER_STREAK_PATTERN)
 
-  if (!hasContentAndUnderline) {
+  if (!underlineResult) {
+    return false
+  }
+
+  const underline = underlineResult.line
+
+  if (!isUnderlineConsistentWithOverline(optionalOverline, underline)) {
+    return false
+  }
+
+  // We're still not convinced this is actually a heading. Why's that?
+  //
+  // Well, what if the content is a streak? For example:
+  //
+  // =============================================
+  // #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+  // =============================================
+  //
+  // Or what if the content is a list with a single item? For example:
+  //
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // * Buy milk
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // Neither of those should be parsed as headings. We only accept the heading's content if it would
+  // would otherwise be parsed as a regular paragraph.
+  if (isLineFancyOutlineConvention(contentMarkup, args.settings)) {
     return false
   }
 
