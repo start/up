@@ -15,7 +15,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
   let startStreak: string
 
-  markupLineConsumer.consume({
+  markupLineConsumer.consumeLineIfMatches({
     linePattern: CODE_BLOCK_STREAK_PATTERN,
     thenBeforeConsumingLine: line => {
       startStreak = line.trim()
@@ -32,7 +32,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   while (!markupLineConsumer.done()) {
     let possibleEndStreak: string
 
-    markupLineConsumer.consume({
+    markupLineConsumer.consumeLineIfMatches({
       linePattern: CODE_BLOCK_STREAK_PATTERN,
       thenBeforeConsumingLine: line => {
         possibleEndStreak = line.trim()
@@ -42,7 +42,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
     if (!possibleEndStreak) {
       // Since we don't have a possible end streak, we'll just treat this line as code and move
       // on to the next one.
-      markupLineConsumer.consume({
+      markupLineConsumer.consumeLineIfMatches({
         thenBeforeConsumingLine: line => {
           codeLines.push(line)
         }

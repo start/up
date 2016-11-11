@@ -24,7 +24,7 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
     const sourceLineNumberForCurrentListItem =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
 
-    const isLineBulleted = markupLineConsumer.consume({
+    const isLineBulleted = markupLineConsumer.consumeLineIfMatches({
       linePattern: BULLETED_LINE_PATTERN,
       thenBeforeConsumingLine: line => {
         linesOfMarkupInCurrentListItem.push(line.replace(BULLETED_LINE_PATTERN, ''))

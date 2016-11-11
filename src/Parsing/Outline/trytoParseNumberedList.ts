@@ -22,7 +22,7 @@ export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
   while (!markupLineConsumer.done()) {
     let unparsedListItem: UnparsedListItem
 
-    const isLineBulleted = markupLineConsumer.consume({
+    const isLineBulleted = markupLineConsumer.consumeLineIfMatches({
       linePattern: LINE_WITH_NUMERIC_BULLET_PATTERN,
       if: line => !DIVIDER_STREAK_PATTERN.test(line),
       thenBeforeConsumingLine: (line, bullet) => {

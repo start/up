@@ -18,7 +18,7 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
     solelyAndIgnoringCapitalization(
       either(...keywords.revealable.map(escapeForRegex)) + optional(':'))
 
-  if (!markupLineConsumer.consume({ linePattern: labelLinePattern })) {
+  if (!markupLineConsumer.consumeLineIfMatches({ linePattern: labelLinePattern })) {
     return false
   }
 

@@ -18,7 +18,7 @@ export function getIndentedBlock(
   let indentedBlockLineCount = 0
 
   while (!markupLineConsumer.done()) {
-    const wasLineBlank = markupLineConsumer.consume({
+    const wasLineBlank = markupLineConsumer.consumeLineIfMatches({
       linePattern: BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
         indentedLines.push(line)
@@ -32,7 +32,7 @@ export function getIndentedBlock(
       continue
     }
 
-    const wasLineIndented = markupLineConsumer.consume({
+    const wasLineIndented = markupLineConsumer.consumeLineIfMatches({
       linePattern: INDENTED_PATTERN,
       thenBeforeConsumingLine: line => {
         indentedLines.push(line)

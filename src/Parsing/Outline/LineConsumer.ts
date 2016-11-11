@@ -21,56 +21,33 @@ export class LineConsumer {
     return this._countLinesConsumed >= this.lines.length
   }
 
-  // This method consumes the next remaining line if it:
-  //
-  // 1. Matches `linePattern`
-  // 2. Satisfies the `if` predicate
-  //
-  // Before actually consuming the line, `thenBeforeConsumingLine` is invoked.
-  consume(
-    args: {
-      linePattern?: RegExp
-      if?: ShouldConsumeLine
-      thenBeforeConsumingLine?: OnConsume
-    }
-  ): boolean {
-    if (this.done()) {
-      return false
-    }
+  // This method consumes the next remaining line if it matches `linePattern`, then
+  // returns the result of `RegExp.exec`. If the line doesn't match `linePattern`,
+  // this method returns null.
+  consumeLineIfMatches(linePattern: RegExp): string[] | null {
+    const line = this.nextRemainingLine
+    const result = linePattern.exec(line)
 
-    const { linePattern, thenBeforeConsumingLine } = args
-    let captures: string[] = []
-
-    const line = this.lines[this._countLinesConsumed]
-
-    if (linePattern) {
-      const results = linePattern.exec(line)
-
-      if (!results) {
-        return false
-      }
-
-      [, ...captures] = results
-    }
-
-    if (args.if && !args.if(line, ...captures)) {
-      return false
-    }
-
-    if (thenBeforeConsumingLine) {
-      thenBeforeConsumingLine(line, ...captures)
+    if (!result) {
+      return null
     }
 
     this.skipLines(1)
-    return true
+    return result
   }
-}
 
 
-export interface ShouldConsumeLine {
-  (line: string, ...captures: string[]): boolean
-}
+  // This method consumes the next remaining line if it matches `linePattern`, then
+  // returns the result of `RegExp.exec`. If the line doesn't match `linePattern`,
+  // this method returns null.
+  consumeLine(): string {
+    const line = this.nextRemainingLine    
+    this.skipLines(1)
 
-export interface OnConsume {
-  (line: string, ...captures: string[]): void
+    return line
+  }
+
+  private get nextRemainingLine(): string {
+    return this.lines[this._countLinesConsumed]
+  }
 }

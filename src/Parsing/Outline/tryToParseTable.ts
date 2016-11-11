@@ -66,7 +66,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   let captionMarkup: string
 
   const isTable =
-    markupLineConsumer.consume({
+    markupLineConsumer.consumeLineIfMatches({
       linePattern: labelPattern,
       thenBeforeConsumingLine: (_, caption) => {
         captionMarkup = (caption || '').trim()
@@ -87,7 +87,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   let headerCells: Table.Header.Cell[]
 
   const hasHeader =
-    markupLineConsumer.consume({
+    markupLineConsumer.consumeLineIfMatches({
       linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: headerMarkup => {
         // As a rule, if a table's header row is indented, it indicates the table should
@@ -135,7 +135,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
   // Phew! We're finally ready to start consuming any rows!
   while (
-    markupLineConsumer.consume({
+    markupLineConsumer.consumeLineIfMatches({
       linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
         const cells = getTableCells(line, settings)
@@ -161,7 +161,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
 
 function consumeBlankLine(markupLineConsumer: LineConsumer): boolean {
-  return markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
+  return markupLineConsumer.consumeLineIfMatches({ linePattern: BLANK_PATTERN })
 }
 
 const toHeaderCell = (cell: Table.Cell) =>

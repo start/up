@@ -32,7 +32,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
   // First, let's try to consume the optional overline...
   let optionalOverline: string
 
-  markupLineConsumer.consume({
+  markupLineConsumer.consumeLineIfMatches({
     linePattern: DIVIDER_STREAK_PATTERN,
     thenBeforeConsumingLine: line => {
       optionalOverline = line
@@ -44,7 +44,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
 
   const hasContentAndUnderline = (
     // Now, let's consume the content...
-    markupLineConsumer.consume({
+    markupLineConsumer.consumeLineIfMatches({
       linePattern: NON_BLANK_PATTERN,
       thenBeforeConsumingLine: line => {
         contentMarkup = line
@@ -52,7 +52,7 @@ export function tryToParseHeading(args: OutlineParserArgs): boolean {
     })
 
     // ... and the underline.
-    && markupLineConsumer.consume({
+    && markupLineConsumer.consumeLineIfMatches({
       linePattern: DIVIDER_STREAK_PATTERN,
       if: line => isUnderlineConsistentWithOverline(optionalOverline, line),
       thenBeforeConsumingLine: line => {

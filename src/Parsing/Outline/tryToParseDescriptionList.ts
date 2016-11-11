@@ -31,7 +31,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     // First, let's collect the subjects described by the upcoming description.
     while (!markupLineConsumer.done()) {
-      const isSubject = markupLineConsumer.consume({
+      const isSubject = markupLineConsumer.consumeLineIfMatches({
         linePattern: NON_BLANK_PATTERN,
         if: line => !INDENTED_PATTERN.test(line) && !isLineFancyOutlineConvention(line, args.settings),
         thenBeforeConsumingLine: line => {
@@ -51,7 +51,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     // Alright! We have our subjects! Next up is the subjects' description.
     //
     // First, let's skip the optional leading blank line.
-    markupLineConsumer.consume({ linePattern: BLANK_PATTERN })
+    markupLineConsumer.consumeLineIfMatches({ linePattern: BLANK_PATTERN })
 
     const sourceLineNumberForDescription =
       args.sourceLineNumber + markupLineConsumer.countLinesConsumed
@@ -59,7 +59,7 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     const descriptionLines: string[] = []
 
     // Let's parse the desription's first line.
-    const hasDescription = markupLineConsumer.consume({
+    const hasDescription = markupLineConsumer.consumeLineIfMatches({
       linePattern: INDENTED_PATTERN,
       if: line => !BLANK_PATTERN.test(line),
       thenBeforeConsumingLine: line => {

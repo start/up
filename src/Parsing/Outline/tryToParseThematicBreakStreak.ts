@@ -8,7 +8,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function tryToParseThematicBreakStreak(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
-  if (!markupLineConsumer.consume({ linePattern: DIVIDER_STREAK_PATTERN })) {
+  if (!markupLineConsumer.consumeLineIfMatches(DIVIDER_STREAK_PATTERN)) {
     return false
   }
 

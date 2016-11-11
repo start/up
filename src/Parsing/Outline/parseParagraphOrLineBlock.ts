@@ -72,7 +72,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   while (true) {
     let inlineSyntaxNodes: InlineSyntaxNode[]
 
-    const wasLineConsumed = markupLineConsumer.consume({
+    const wasLineConsumed = markupLineConsumer.consumeLineIfMatches({
       linePattern: NON_BLANK_PATTERN,
       if: line => isOnFirstLine || !isLineFancyOutlineConvention(line, args.settings),
       thenBeforeConsumingLine: line => {
