@@ -13,7 +13,6 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
-
   const startStreakResult =
     markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
 
@@ -30,7 +29,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
       markupLineConsumer.consumeLineIfMatches(CODE_BLOCK_STREAK_PATTERN)
 
     if (endStreakResult) {
-      const endStreak = endStreakResult.line
+      const endStreak = endStreakResult.line.trim()
 
       // Alright, we have a possible end streak!
       if (endStreak.length === startStreak.length) {

@@ -21,9 +21,11 @@ export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
 
   while (!markupLineConsumer.done()) {
     const numberedLineResult =
-      markupLineConsumer.consumeLineIfMatches(LINE_WITH_NUMERIC_BULLET_PATTERN)
+      markupLineConsumer.consumeLineIfMatches(LINE_WITH_NUMERIC_BULLET_PATTERN, {
+        andIf: result => !DIVIDER_STREAK_PATTERN.test(result.line)
+      })
 
-    if (!numberedLineResult || DIVIDER_STREAK_PATTERN.test(numberedLineResult.line)) {
+    if (!numberedLineResult) {
       return false
     }
 

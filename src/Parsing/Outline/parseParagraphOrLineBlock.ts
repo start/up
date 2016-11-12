@@ -70,12 +70,12 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   let isOnFirstLine = true
 
   while (!markupLineConsumer.done()) {
-    let inlineSyntaxNodes: InlineSyntaxNode[]
-
     const lineResult =
-      markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
+      markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN, {
+        andIf: result => isOnFirstLine || !isLineFancyOutlineConvention(result.line, args.settings)
+      })
 
-    if (!lineResult || (!isOnFirstLine && isLineFancyOutlineConvention(lineResult.line, args.settings))) {
+    if (!lineResult) {
       // The current line is blank, or it should be interpreted as another outline convention.
       //
       // Let's bail!
@@ -83,7 +83,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
     }
 
     isOnFirstLine = false
-    inlineSyntaxNodes = getInlineSyntaxNodes(lineResult.line, args.settings)
+    const inlineSyntaxNodes = getInlineSyntaxNodes(lineResult.line, args.settings)
 
     // If a line consists solely of escaped whitespace, it doesn't generate any syntax nodes. We
     // ignore these lines, but they don't terminate anything.

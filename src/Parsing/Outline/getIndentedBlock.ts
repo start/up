@@ -23,7 +23,7 @@ export function getIndentedBlock(
 
     if (blankLineResult) {
       // The line was blank, so we don't yet know whether the author intended for the line to be
-      // included in the indented block or not (it could be trailin). We'll move onto the next
+      // included in the indented block or not (it could be trailing). We'll move onto the next
       // line without updating `indentedBlockLineCount`.
       indentedLines.push(blankLineResult.line)
       continue
@@ -45,8 +45,8 @@ export function getIndentedBlock(
     return
   }
 
-  const countTrailingBlankLines = indentedLines.length - indentedBlockLineCount
-  const hasMultipleTrailingBlankLines = countTrailingBlankLines >= 2
+  const countTrailingBlankLines = (indentedLines.length - indentedBlockLineCount)
+  const hasMultipleTrailingBlankLines = (countTrailingBlankLines >= 2)
 
   // If an indented block has a single trailing blank line, its trailing line is consumed but not
   // included as content.
