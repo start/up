@@ -25,7 +25,7 @@ Goodbye, world!`
 
   specify('6 or more empty or blank lines produces only a single thematic break node', () => {
     const markup = `
-Hello, world!
+Nexcare
 
  \t
 
@@ -33,16 +33,16 @@ Hello, world!
 
 
  \t
-Goodbye, world!`
+Nexcare!`
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([
-          new Up.Text('Hello, world!')
+          new Up.Text('Nexcare')
         ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
-          new Up.Text('Goodbye, world!')
+          new Up.Text('Nexcare!')
         ])
       ]))
   })

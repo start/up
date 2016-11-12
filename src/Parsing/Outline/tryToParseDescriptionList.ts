@@ -57,7 +57,9 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
 
     // Let's parse the desription's first line.
     const descriptionResult =
-      markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN)
+      markupLineConsumer.consumeLineIfMatches(INDENTED_PATTERN, {
+        andIf: result => !BLANK_PATTERN.test(result.line)
+      })
 
     if (!descriptionResult) {
       // There wasn't a description, so the latest "subjects" we found were actually just regular

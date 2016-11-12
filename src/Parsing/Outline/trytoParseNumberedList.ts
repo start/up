@@ -26,7 +26,7 @@ export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
       })
 
     if (!numberedLineResult) {
-      return false
+      break
     }
 
     const [bullet] = numberedLineResult.captures
