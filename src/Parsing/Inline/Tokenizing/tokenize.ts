@@ -1271,11 +1271,10 @@ class Tokenizer {
       }
 
       const delimiter = result.match
-      const { charAfterMatch} = result
 
       // For a delimiter to start a forgiving convention, it must appear to be touching the beginning of
       // some content (i.e. it must be followed by a non-whitespace character).
-      if (NON_BLANK_PATTERN.test(charAfterMatch)) {
+      if (NON_BLANK_PATTERN.test(result.charAfterMatch)) {
         this.flushNonEmptyBufferToTextToken()
         handler.addStartDelimiter(delimiter, this.tokens.length)
         return true
@@ -1315,42 +1314,46 @@ class Tokenizer {
   }
 
   private tryToTokenizeEnOrEmDash(): boolean {
+    const result = this.markupConsumer.consume(EN_OR_EM_DASH_PATTERN)
+
+    if (!result) {
+      return false
+    }
+
+    const dashes = result.match
+
+    const COUNT_DASHES_PER_EM_DASH = 3
     const EN_DASH = '–'
     const EM_DASH = '—'
 
-    const COUNT_DASHES_PER_EM_DASH = 3
+    this.bufferedContent +=
+      dashes.length >= COUNT_DASHES_PER_EM_DASH
+        ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
+        : EN_DASH
 
-    return this.markupConsumer.consume({
-      pattern: EN_OR_EM_DASH_PATTERN,
-      thenBeforeConsumingText: dashes => {
-        // 2 consecutive hyphens produce an en dash; 3 produce an em dash.
-        //
-        // 4 or more consecutive hyphens produce as many em dashes as they can "afford" (at 3 hyphens per em dash).
-        // Any extra hyphens (naturally either 1 or 2) are ignored.
-        this.bufferedContent +=
-          dashes.length >= COUNT_DASHES_PER_EM_DASH
-            ? repeat(EM_DASH, Math.floor(dashes.length / COUNT_DASHES_PER_EM_DASH))
-            : EN_DASH
-      }
-    })
+    return true
   }
 
   private tryToTokenizePlusMinusSign(): boolean {
-    return this.markupConsumer.consume({
-      pattern: PLUS_MINUS_SIGN_PATTERN,
-      thenBeforeConsumingText: () => {
-        this.bufferedContent += '±'
-      }
-    })
+    const result = this.markupConsumer.consume(PLUS_MINUS_SIGN_PATTERN)
+
+    if (!result) {
+      return false
+    }
+
+    this.bufferedContent += '±'
+    return true
   }
 
   private tryToTokenizeEllipsis(): boolean {
-    return this.markupConsumer.consume({
-      pattern: ELLIPSIS_PATTERN,
-      thenBeforeConsumingText: () => {
-        this.bufferedContent += this.settings.fancyEllipsis
-      }
-    })
+    const result = this.markupConsumer.consume(ELLIPSIS_PATTERN)
+
+    if (!result) {
+      return false
+    }
+
+    this.bufferedContent += this.settings.fancyEllipsis
+    return true
   }
 
   private appendToken(token: Token): void {
@@ -1390,35 +1393,35 @@ class Tokenizer {
   private tryToOpen(convention: ConventionVariation): boolean {
     const { startsWith, flushesBufferToTextTokenBeforeOpening, whenOpening } = convention
 
-    const didOpen = (
-      this.canTry(convention)
-
-      && this.markupConsumer.consume({
-        pattern: startsWith,
-
-        thenBeforeConsumingText: (match, charAfterMatch, ...captures) => {
-          if (flushesBufferToTextTokenBeforeOpening) {
-            this.flushNonEmptyBufferToTextToken()
-          }
-
-          this.openContexts.push(new ConventionContext(convention, this.getCurrentSnapshot()))
-
-          if (whenOpening) {
-            whenOpening(match, charAfterMatch, ...captures)
-          }
-        }
-      }))
-
-    if (didOpen) {
-      this.indicateWeJustOpenedAConvention()
+    if (!this.canTry(convention)) {
+      return false
     }
 
-    return didOpen
+    const markupIndexBeforeConvention = this.markupConsumer.index
+
+    const result = this.markupConsumer.consume(startsWith)
+
+    if (!result) {
+      return false
+    }
+
+    if (flushesBufferToTextTokenBeforeOpening) {
+      this.flushNonEmptyBufferToTextToken()
+    }
+
+    this.openContexts.push(new ConventionContext(convention, this.getSnapshot(markupIndexBeforeConvention)))
+
+    if (whenOpening) {
+      whenOpening(result.match, result.charAfterMatch, ...result.captures)
+    }
+
+    this.indicateWeJustOpenedAConvention()
+    return true
   }
 
-  private getCurrentSnapshot(): TokenizerSnapshot {
+  private getSnapshot(markupIndex: number): TokenizerSnapshot {
     return {
-      markupIndex: this.markupConsumer.index,
+      markupIndex,
       markupIndexWeLastOpenedAConvention: this.markupIndexWeLastOpenedAConvention,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
@@ -1428,7 +1431,7 @@ class Tokenizer {
   }
 
   private canTry(conventionToOpen: ConventionVariation): boolean {
-    const textIndex = this.markupConsumer.index
+    const markupIndex = this.markupConsumer.index
 
     // If a convention must be followed by one of a set of specific conventions, then there are really
     // three ways that convention can fail:
@@ -1455,7 +1458,7 @@ class Tokenizer {
 
     const hasSubsequentRequiredConventionFailed =
       subsequentRequiredConventions
-      && subsequentRequiredConventions.some(convention => this.backtrackedConventionHelper.hasFailed(convention, textIndex))
+      && subsequentRequiredConventions.some(convention => this.backtrackedConventionHelper.hasFailed(convention, markupIndex))
 
     if (hasSubsequentRequiredConventionFailed) {
       return false
@@ -1464,7 +1467,7 @@ class Tokenizer {
     const { canOnlyOpenIfDirectlyFollowing } = conventionToOpen
 
     return (
-      !this.backtrackedConventionHelper.hasFailed(conventionToOpen, textIndex)
+      !this.backtrackedConventionHelper.hasFailed(conventionToOpen, markupIndex)
       && (!canOnlyOpenIfDirectlyFollowing || this.isDirectlyFollowing(canOnlyOpenIfDirectlyFollowing)))
   }
 

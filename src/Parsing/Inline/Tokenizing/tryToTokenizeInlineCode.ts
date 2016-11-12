@@ -1,6 +1,6 @@
 import { patternStartingWith, patternEndingWith, oneOrMore } from '../../../PatternHelpers'
 import { BACKSLASH } from '../../Strings'
-import { TextConsumer } from './TextConsumer'
+import { TextConsumer, MatchResult } from './TextConsumer'
 import { TokenRole } from '../TokenRole'
 import { Token } from './Token'
 
@@ -50,19 +50,13 @@ export function tryToTokenizeInlineCode(
   const { markup, then } = args
   const markupConsumer = new TextConsumer(markup)
 
-  let startDelimiter: string
+  const startDelimiterResult = markupConsumer.consume(DELIMITER_PATTERN)
 
-  markupConsumer.consume({
-    pattern: DELIMITER_PATTERN,
-    thenBeforeConsumingText: delimiter => {
-      startDelimiter = delimiter
-    }
-  })
-
-  if (!startDelimiter) {
+  if (!startDelimiterResult) {
     return false
   }
 
+  const startDelimiter = startDelimiterResult.match
   let inlineCode = ''
 
   COLLECT_INLINE_CODE: while (!markupConsumer.done()) {
@@ -83,16 +77,14 @@ export function tryToTokenizeInlineCode(
 
     // We're up against a possible end delimiter. If it doesn't match our start delimiter, we'll
     // simply include it in our inline code.
-    let possibleEndDelimiter: string
+    //
+    // We can safely cast to a non-nullable `MatchResult` because we know we must be up against a
+    // backtick (thanks to the fact that the above loop terminated). Therefore, `DELIMITER_PATTERN`
+    // is guaranteed to find a match. 
+    const possibleEndDelimiter =
+      (markupConsumer.consume(DELIMITER_PATTERN) as MatchResult).match
 
-    markupConsumer.consume({
-      pattern: DELIMITER_PATTERN,
-      thenBeforeConsumingText: delimiter => {
-        possibleEndDelimiter = delimiter
-      }
-    })
-
-    if (possibleEndDelimiter === startDelimiter) {
+    if (startDelimiter === possibleEndDelimiter) {
       then(new Token(TokenRole.InlineCode, trimCode(inlineCode)), markupConsumer.index)
       return true
     }
