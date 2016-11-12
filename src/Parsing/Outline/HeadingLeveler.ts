@@ -6,7 +6,7 @@ import { distinct } from '../../CollectionHelpers'
 export class HeadingLeveler {
   private headingSignatures: string[] = []
 
-  registerHeadingAndGetLevel(underline: string, overline: string): number {
+  registerHeadingAndGetLevel(underline: string, overline: string | null): number {
     // Alright, this requires some explanation.
     //
     // First of all, we're going to assume that `underline` and `overline` obey the
@@ -47,7 +47,7 @@ export class HeadingLeveler {
 }
 
 
-export function isUnderlineConsistentWithOverline(overline: string, underline: string): boolean {
+export function isUnderlineConsistentWithOverline(overline: string | null, underline: string): boolean {
   return !overline || (fingerprint(overline) === fingerprint(underline))
 }
 

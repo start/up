@@ -8,6 +8,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "outDir": "compiled",
