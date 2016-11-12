@@ -61,11 +61,6 @@ export class TextConsumer {
   }
 }
 
-
-export interface OnTextMatch {
-  (match: string, charAfterMatch: string, ...captures: string[]): void
-}
-
 export interface MatchResult {
   match: string
   charAfterMatch: string
