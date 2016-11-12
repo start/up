@@ -19,7 +19,7 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const unparsedListItems: UnparsedListItem[] = []
 
-  while (!markupLineConsumer.done()) {
+  while (!markupLineConsumer.done) {
     const countLinesConsumedBeforeListItem = markupLineConsumer.countLinesConsumed
 
     const numberedLineResult =

@@ -862,7 +862,7 @@ class Tokenizer {
   }
 
   private isDone(): boolean {
-    return this.markupConsumer.done() && this.tryToResolveUnclosedContexts()
+    return this.markupConsumer.done && this.tryToResolveUnclosedContexts()
   }
 
   private tryToResolveUnclosedContexts(): boolean {
@@ -907,7 +907,7 @@ class Tokenizer {
 
     this.markupConsumer.index += 1
 
-    if (!this.markupConsumer.done()) {
+    if (!this.markupConsumer.done) {
       this.addCurrentCharToContentBuffer()
     }
 

@@ -9,16 +9,16 @@ export class LineConsumer {
     return this._countLinesConsumed
   }
 
+  get done(): boolean {
+    return this._countLinesConsumed >= this.lines.length
+  }
+
   remaining(): string[] {
     return this.lines.slice(this._countLinesConsumed)
   }
 
   skipLines(count: number): void {
     this._countLinesConsumed += count
-  }
-
-  done(): boolean {
-    return this._countLinesConsumed >= this.lines.length
   }
 
   // If the line doesn't satisfy the provided conditions, or if there are no more
@@ -29,7 +29,7 @@ export class LineConsumer {
       andIf: (result: LineMatchResult) => boolean
     }
   ): LineMatchResult | null {
-    if (this.done()) {
+    if (this.done) {
       return null
     }
 
@@ -54,7 +54,7 @@ export class LineConsumer {
   // This method consumes and returns the next remaining line. If there are
   // no remaining lines, this method throws an exception.
   consumeLine(): string {
-    if (this.done()) {
+    if (this.done) {
       throw new Error('No remaining lines')
     }
 

@@ -17,7 +17,7 @@ export function getIndentedBlock(
   const indentedLines: string[] = []
   let indentedBlockLineCount = 0
 
-  while (!markupLineConsumer.done()) {
+  while (!markupLineConsumer.done) {
     const blankLineResult =
       markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 

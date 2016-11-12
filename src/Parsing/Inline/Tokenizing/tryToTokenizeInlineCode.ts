@@ -59,7 +59,7 @@ export function tryToTokenizeInlineCode(
   const startDelimiter = startDelimiterResult.match
   let inlineCode = ''
 
-  COLLECT_INLINE_CODE: while (!markupConsumer.done()) {
+  COLLECT_INLINE_CODE: while (!markupConsumer.done) {
     // First, lets collect all inline code up to the first unescaped backtick. That backtick might
     // not terminate our inline code, but we'll find that out later!
     while (markupConsumer.currentChar !== BACKTICK) {
@@ -67,7 +67,7 @@ export function tryToTokenizeInlineCode(
         markupConsumer.index += 1
       }
 
-      if (markupConsumer.done()) {
+      if (markupConsumer.done) {
         break COLLECT_INLINE_CODE
       }
 

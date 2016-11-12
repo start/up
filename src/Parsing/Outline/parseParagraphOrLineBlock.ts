@@ -69,7 +69,7 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
   // another outline convention, another parser would have already consumed it!
   let isOnFirstLine = true
 
-  while (!markupLineConsumer.done()) {
+  while (!markupLineConsumer.done) {
     const lineResult =
       markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN, {
         andIf: result => isOnFirstLine || !isLineFancyOutlineConvention(result.line, args.settings)

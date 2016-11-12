@@ -18,7 +18,7 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: BulletedList.Item[] = []
 
-  while (!markupLineConsumer.done()) {
+  while (!markupLineConsumer.done) {
     const linesOfMarkupInCurrentListItem: string[] = []
 
     const sourceLineNumberForCurrentListItem =

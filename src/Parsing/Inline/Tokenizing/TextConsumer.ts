@@ -30,7 +30,7 @@ export class TextConsumer {
     return this._previousChar
   }
 
-  done(): boolean {
+  get done(): boolean {
     return this._index >= this.entireText.length
   }
 

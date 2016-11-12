@@ -62,7 +62,7 @@ export function getOutlineSyntaxNodes(
   const markupLineConsumer = new LineConsumer(markupWithoutOuterBlankLines)
   const nodes: OutlineSyntaxNode[] = []
 
-  while (!markupLineConsumer.done()) {
+  while (!markupLineConsumer.done) {
     const sourceLineNumber =
       initialSourceLineNumber + markupLineConsumer.countLinesConsumed
 
