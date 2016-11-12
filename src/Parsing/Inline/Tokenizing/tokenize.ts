@@ -1335,24 +1335,21 @@ class Tokenizer {
   }
 
   private tryToTokenizePlusMinusSign(): boolean {
-    const result = this.markupConsumer.consume(PLUS_MINUS_SIGN_PATTERN)
-
-    if (!result) {
-      return false
-    }
-
-    this.bufferedContent += '±'
-    return true
+    return this.tryToTokenizeSimpleTypographicalConvention(PLUS_MINUS_SIGN_PATTERN, '±')
   }
 
   private tryToTokenizeEllipsis(): boolean {
-    const result = this.markupConsumer.consume(ELLIPSIS_PATTERN)
+    return this.tryToTokenizeSimpleTypographicalConvention(ELLIPSIS_PATTERN, this.settings.fancyEllipsis)
+  }
+
+  private tryToTokenizeSimpleTypographicalConvention(pattern: RegExp, replacement: string): boolean {
+    const result = this.markupConsumer.consume(pattern)
 
     if (!result) {
       return false
     }
 
-    this.bufferedContent += this.settings.fancyEllipsis
+    this.bufferedContent += replacement
     return true
   }
 
