@@ -33,17 +33,16 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
     linesOfMarkupInCurrentListItem.push(
       bulletedLineResult.line.replace(BULLETED_LINE_PATTERN, ''))
 
+    // Let's collect the rest of the lines in the current list item (if there are any)  
+    const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
+
     let shouldTerminateList = false
 
-    // Let's collect the rest of the lines in the current list item (if there are any)  
-    getIndentedBlock({
-      lines: markupLineConsumer.remaining(),
-      then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        linesOfMarkupInCurrentListItem.push(...indentedLines)
-        markupLineConsumer.skipLines(countLinesConsumed)
-        shouldTerminateList = hasMultipleTrailingBlankLines
-      }
-    })
+    if (indentedBlockResult) {
+      linesOfMarkupInCurrentListItem.push(...indentedBlockResult.lines)
+      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
+    }
 
     listItems.push(
       new BulletedList.Item(

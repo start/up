@@ -40,17 +40,18 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
         sourceLineNumber: args.sourceLineNumber + countLinesConsumedBeforeListItem
       })
 
-    let shouldTerminateList = false
 
     // Let's collect the rest of the lines in the current list item (if there are any). 
-    getIndentedBlock({
-      lines: markupLineConsumer.remaining(),
-      then: (indentedLines, countLinesConsumed, hasMultipleTrailingBlankLines) => {
-        unparsedListItem.markupLines.push(...indentedLines)
-        markupLineConsumer.skipLines(countLinesConsumed)
-        shouldTerminateList = hasMultipleTrailingBlankLines
-      }
-    })
+    const indentedBlockResult =
+      getIndentedBlock(markupLineConsumer.remaining())
+
+    let shouldTerminateList = false
+
+    if (indentedBlockResult) {
+      unparsedListItem.markupLines.push(...indentedBlockResult.lines)
+      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
+    }
 
     unparsedListItems.push(unparsedListItem)
 

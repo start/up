@@ -22,15 +22,14 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
     return false
   }
 
+  const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
+  
   const contentLines: string[] = []
 
-  getIndentedBlock({
-    lines: markupLineConsumer.remaining(),
-    then: (indentedLines, countLinesConsumed) => {
-      contentLines.push(...indentedLines)
-      markupLineConsumer.skipLines(countLinesConsumed)
-    }
-  })
+  if (indentedBlockResult) {
+    contentLines.push(...indentedBlockResult.lines)
+    markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+  }
 
   if (!contentLines.length) {
     return false

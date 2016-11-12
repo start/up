@@ -68,17 +68,17 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
     }
 
     const descriptionLines = [descriptionResult.line.replace(INDENTED_PATTERN, '')]
-    let shouldTerminateList = false
 
     // Let's collect the rest of the lines in the description (if there are any).
-    getIndentedBlock({
-      lines: markupLineConsumer.remaining(),
-      then: (indentedLines, countLinesConsumedByIndentedBlock, hasMultipleTrailingBlankLines) => {
-        descriptionLines.push(...indentedLines)
-        markupLineConsumer.skipLines(countLinesConsumedByIndentedBlock)
-        shouldTerminateList = hasMultipleTrailingBlankLines
-      }
-    })
+    const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
+
+    let shouldTerminateList = false
+
+    if (indentedBlockResult) {
+      descriptionLines.push(...indentedBlockResult.lines)
+      markupLineConsumer.skipLines(indentedBlockResult.countLinesConsumed)
+      shouldTerminateList = indentedBlockResult.hasMultipleTrailingBlankLines
+    }
 
     // Alright, we have our description! Let's update our number of lines consumed.
     countLinesConsumed = markupLineConsumer.countLinesConsumed

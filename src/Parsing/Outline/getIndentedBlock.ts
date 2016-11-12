@@ -3,19 +3,10 @@ import { INDENTED_PATTERN, BLANK_PATTERN } from '../../Patterns'
 
 
 // Indented blocks include indented and blank lines.
-export function getIndentedBlock(
-  args: {
-    lines: string[],
-    then: (
-      indentedLines: string[],
-      countLinesConsumed: number,
-      hasMultipleTrailingBlankLines: boolean
-    ) => void
-  }
-): void {
-  const markupLineConsumer = new LineConsumer(args.lines)
+export function getIndentedBlock(lines: string[]): IndentedBlockResult | null {
+  const markupLineConsumer = new LineConsumer(lines)
   const indentedLines: string[] = []
-  let indentedBlockLineCount = 0
+  let countLinesWithoutTrailingBlankLines = 0
 
   while (!markupLineConsumer.done) {
     const blankLineResult =
@@ -38,14 +29,14 @@ export function getIndentedBlock(
     }
 
     indentedLines.push(indentedLineResult.line)
-    indentedBlockLineCount = indentedLines.length
+    countLinesWithoutTrailingBlankLines = indentedLines.length
   }
 
   if (!indentedLines.length) {
-    return
+    return null
   }
 
-  const countTrailingBlankLines = (indentedLines.length - indentedBlockLineCount)
+  const countTrailingBlankLines = (indentedLines.length - countLinesWithoutTrailingBlankLines)
   const hasMultipleTrailingBlankLines = (countTrailingBlankLines >= 2)
 
   // If an indented block has a single trailing blank line, its trailing line is consumed but not
@@ -55,12 +46,23 @@ export function getIndentedBlock(
   // nor included. They're instead left behind for another outline convention to deal with.
   let countLinesConsumed =
     hasMultipleTrailingBlankLines
-      ? indentedBlockLineCount
+      ? countLinesWithoutTrailingBlankLines
       : indentedLines.length
 
-  const indentedBlockLines = indentedLines
-    .slice(0, indentedBlockLineCount)
+  const linesWithoutIndentation = indentedLines
+    .slice(0, countLinesWithoutTrailingBlankLines)
     .map(line => line.replace(INDENTED_PATTERN, ''))
 
-  args.then(indentedBlockLines, countLinesConsumed, hasMultipleTrailingBlankLines)
+  return {
+    lines: linesWithoutIndentation,
+    countLinesConsumed,
+    hasMultipleTrailingBlankLines
+  }
+}
+
+
+export interface IndentedBlockResult {
+  lines: string[]
+  countLinesConsumed: number
+  hasMultipleTrailingBlankLines: boolean
 }
