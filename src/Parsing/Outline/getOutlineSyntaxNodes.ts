@@ -7,7 +7,7 @@ import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseBulletedList } from './tryToParseBulletedList'
-import { trytoParseNumberedList } from './trytoParseNumberedList'
+import { tryToParseNumberedList } from './tryToParseNumberedList'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
 import { tryToParseTable } from './tryToParseTable'
 import { tryToParseRevealableBlock } from './tryToParseRevealableBlock'
@@ -26,7 +26,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 const OUTLINE_CONVENTION_PARSERS = [
   tryToParseBlankLineSeparation,
   tryToParseBulletedList,
-  trytoParseNumberedList,
+  tryToParseNumberedList,
   tryToParseHeading,
   tryToParseThematicBreakStreak,
   tryToParseCodeBlock,

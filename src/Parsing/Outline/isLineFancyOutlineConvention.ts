@@ -1,5 +1,5 @@
 import { tryToParseBulletedList } from './tryToParseBulletedList'
-import { trytoParseNumberedList } from './trytoParseNumberedList'
+import { tryToParseNumberedList } from './tryToParseNumberedList'
 import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseCodeBlock } from './tryToParseCodeBlock'
@@ -9,7 +9,7 @@ import { NormalizedSettings } from '../../NormalizedSettings'
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [
   tryToParseBulletedList,
-  trytoParseNumberedList,
+  tryToParseNumberedList,
   tryToParseThematicBreakStreak,
   tryToParseBlockquote,
   tryToParseCodeBlock

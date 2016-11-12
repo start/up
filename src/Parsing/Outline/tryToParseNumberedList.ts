@@ -15,11 +15,13 @@ import { getIndentedBlock } from './getIndentedBlock'
 //
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
-export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
+export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const unparsedListItems: UnparsedListItem[] = []
 
   while (!markupLineConsumer.done()) {
+    const countLinesConsumedBeforeListItem = markupLineConsumer.countLinesConsumed
+
     const numberedLineResult =
       markupLineConsumer.consumeLineIfMatches(LINE_WITH_NUMERIC_BULLET_PATTERN, {
         andIf: result => !DIVIDER_STREAK_PATTERN.test(result.line)
@@ -35,7 +37,7 @@ export function trytoParseNumberedList(args: OutlineParserArgs): boolean {
       new UnparsedListItem({
         bullet,
         firstLineOfMarkup: numberedLineResult.line.replace(LINE_WITH_NUMERIC_BULLET_PATTERN, ''),
-        sourceLineNumber: args.sourceLineNumber + markupLineConsumer.countLinesConsumed
+        sourceLineNumber: args.sourceLineNumber + countLinesConsumedBeforeListItem
       })
 
     let shouldTerminateList = false
