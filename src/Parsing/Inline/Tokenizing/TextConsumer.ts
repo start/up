@@ -39,28 +39,19 @@ export class TextConsumer {
   // Before actually consuming the text, `thenBeforeConsumingText` is invoked.
   //
   // NOTE: This method assumes `pattern` only matches the beginning of a string!  
-  consume(
-    args: {
-      pattern: RegExp
-      thenBeforeConsumingText?: OnTextMatch
-    }
-  ): boolean {
-    const { pattern, thenBeforeConsumingText } = args
+  consume(pattern: RegExp): MatchResult | null {
     const result = pattern.exec(this._remaining)
 
     if (!result) {
-      return false
+      return null
     }
 
     const [match, ...captures] = result
     const charAfterMatch = this.entireText[this._index + match.length]
 
-    if (thenBeforeConsumingText) {
-      thenBeforeConsumingText(match, charAfterMatch, ...captures)
-    }
-
     this.index += match.length
-    return true
+
+    return { match, charAfterMatch, captures }
   }
 
   private updateComputedTextFields(): void {
@@ -73,4 +64,10 @@ export class TextConsumer {
 
 export interface OnTextMatch {
   (match: string, charAfterMatch: string, ...captures: string[]): void
+}
+
+export interface MatchResult {
+  match: string
+  charAfterMatch: string
+  captures: string[]
 }

@@ -406,13 +406,16 @@ class Tokenizer {
   }
 
   private tryToTokenizeBareUrlSchemeAndHostname(): boolean {
-    return this.markupConsumer.consume({
-      pattern: BARE_URL_SCHEME_AND_HOSTNAME,
-      thenBeforeConsumingText: url => {
-        this.flushNonEmptyBufferToTextToken()
-        this.appendNewToken(TokenRole.BareUrl, url)
-      }
-    })
+    const result = this.markupConsumer.consume(BARE_URL_SCHEME_AND_HOSTNAME)
+
+    if (!result) {
+      return false
+    }
+
+    this.flushNonEmptyBufferToTextToken()
+    this.appendNewToken(TokenRole.BareUrl, result.match)
+
+    return true
   }
 
   // In the following url:
@@ -1036,11 +1039,8 @@ class Tokenizer {
   private shouldClose(context: ConventionContext): boolean {
     const { convention } = context
 
-    return (
-      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-      || (
-        convention.endsWith
-        && this.markupConsumer.consume({ pattern: convention.endsWith })))
+    return (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+      || (convention.endsWith && (this.markupConsumer.consume(convention.endsWith) != null))
   }
 
   private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {
@@ -1106,22 +1106,21 @@ class Tokenizer {
     }
 
     return this.forgivingConventionHandlers.some(handler => {
-      let didCloseAnyOpenDelimiters = false
+      const result = this.markupConsumer.consume(handler.delimiterPattern)
 
-      this.markupConsumer.consume({
-        pattern: handler.delimiterPattern,
+      if (!result) {
+        return false
+      }
 
-        thenBeforeConsumingText: delimiter => {
-          didCloseAnyOpenDelimiters = handler.tryToCloseAnyOpenStartDelimiters(delimiter)
+      const delimiter = result.match
 
-          if (!didCloseAnyOpenDelimiters) {
-            // The delimiter we found didn't close anything! Let's put it back.
-            this.markupConsumer.index -= delimiter.length
-          }
-        }
-      })
+      if (handler.tryToCloseAnyOpenStartDelimiters(delimiter)) {
+        return true
+      }
 
-      return didCloseAnyOpenDelimiters
+      // The delimiter we found didn't close anything! Let's put it back.
+      this.markupConsumer.index -= delimiter.length
+      return false
     })
   }
 
@@ -1264,30 +1263,36 @@ class Tokenizer {
   }
 
   private tryToOpenForgivingConventionOrTreatDelimiterAsText(): boolean {
-    const didOpen = this.forgivingConventionHandlers.some(handler =>
-      this.markupConsumer.consume({
-        pattern: handler.delimiterPattern,
+    const didOpenAForgivingConvention = this.forgivingConventionHandlers.some(handler => {
+      const result = this.markupConsumer.consume(handler.delimiterPattern)
 
-        thenBeforeConsumingText: (delimiter, charAfterMatch) => {
-          // For a delimiter to start a forgiving convention, it must appear to be touching the beginning of
-          // some content (i.e. it must be followed by a non-whitespace character).
-          if (NON_BLANK_PATTERN.test(charAfterMatch)) {
-            this.flushNonEmptyBufferToTextToken()
-            handler.addStartDelimiter(delimiter, this.tokens.length)
-          } else {
-            // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as
-            // plain text. We already learned the delimiter wasn't able to close any start delimiters, and we
-            // now know it can't open any, either.
-            this.bufferedContent += delimiter
-          }
-        }
-      }))
+      if (!result) {
+        return false
+      }
 
-    if (didOpen) {
+      const delimiter = result.match
+      const { charAfterMatch} = result
+
+      // For a delimiter to start a forgiving convention, it must appear to be touching the beginning of
+      // some content (i.e. it must be followed by a non-whitespace character).
+      if (NON_BLANK_PATTERN.test(charAfterMatch)) {
+        this.flushNonEmptyBufferToTextToken()
+        handler.addStartDelimiter(delimiter, this.tokens.length)
+        return true
+      }
+
+      // Well, this delimiter wasn't followed by a non-whitespace character, so we'll just treat it as
+      // plain text. We already learned the delimiter wasn't able to close any start delimiters, and we
+      // now know it can't open any, either.
+      this.bufferedContent += delimiter
+      return false
+    })
+
+    if (didOpenAForgivingConvention) {
       this.indicateWeJustOpenedAConvention()
     }
 
-    return didOpen
+    return didOpenAForgivingConvention
   }
 
   // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
@@ -1370,12 +1375,11 @@ class Tokenizer {
   }
 
   private buffer(pattern: RegExp): void {
-    this.markupConsumer.consume({
-      pattern,
-      thenBeforeConsumingText: match => {
-        this.bufferedContent += match
-      }
-    })
+    const result = this.markupConsumer.consume(pattern)
+
+    if (result) {
+      this.bufferedContent += result.match
+    }
   }
 
   private addCurrentCharToContentBuffer(): void {
