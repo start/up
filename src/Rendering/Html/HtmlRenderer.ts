@@ -175,7 +175,7 @@ export class HtmlRenderer extends Renderer {
   }
 
   normalParenthetical(normalParenthetical: Up.NormalParenthetical): string {
-    return this.parenthetical(normalParenthetical)
+    return this.parenthetical(normalParenthetical, 'parentheses')
   }
 
   squareParenthetical(squareParenthetical: Up.SquareParenthetical): string {
@@ -302,9 +302,9 @@ export class HtmlRenderer extends Renderer {
       fragmentUrl(this.htmlIdOfActualEntryInDocument(entry)))
   }
 
-  private parenthetical(parenthetical: Up.ParentheticalSyntaxNode, ...extraCssClassNames: string[]): string {
+  private parenthetical(parenthetical: Up.ParentheticalSyntaxNode, cssClassName: string): string {
     const attrs = {
-      class: classHtmlAttrValue('parenthetical', ...extraCssClassNames)
+      class: classHtmlAttrValue(cssClassName)
     }
 
     return this.htmlElement('small', parenthetical.children, attrs)
