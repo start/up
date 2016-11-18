@@ -114,4 +114,4 @@ export { OutlineSyntaxNode } from './SyntaxNodes/OutlineSyntaxNode'
 export { SyntaxNode } from './SyntaxNodes/SyntaxNode'
 
 // This must always match the `version` field in `package.json`.
-export const VERSION = '37.0.1'
+export const VERSION = '38.0.0'

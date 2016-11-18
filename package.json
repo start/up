@@ -1,6 +1,6 @@
 {
   "name": "up-lang",
-  "version": "37.0.1",
+  "version": "38.0.0",
   "description": "A markup language for writing structured documents in plain text",
   "main": "dist/Main.js",
   "typings": "dist/Main.d.ts",
