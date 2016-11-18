@@ -90,7 +90,7 @@ export class HtmlRenderer extends Renderer {
   lineBlock(lineBlock: Up.LineBlock): string {
     const attrs = htmlAttrsFor(
       lineBlock,
-      { class: classHtmlAttrValue('lines') })
+      { class: cssClassAttrValue('lines') })
 
     return htmlElementWithAlreadyEscapedChildren(
       'div',
@@ -150,7 +150,7 @@ export class HtmlRenderer extends Renderer {
     return htmlElement(
       'code',
       inlineCode.code,
-      { class: classHtmlAttrValue('inline-code') })
+      { class: cssClassAttrValue('inline-code') })
   }
 
   exampleUserInput(exampleUserInput: Up.ExampleUserInput): string {
@@ -215,14 +215,14 @@ export class HtmlRenderer extends Renderer {
       'sup',
       [this.footnoteReferenceInnerLink(footnote)], {
         id: this.footnoteReferenceHtmlId(footnote.referenceNumber),
-        class: classHtmlAttrValue('footnote-reference')
+        class: cssClassAttrValue('footnote-reference')
       })
   }
 
   footnoteBlock(footnoteBlock: Up.FootnoteBlock): string {
     const attrs = htmlAttrsFor(
       footnoteBlock, {
-        class: classHtmlAttrValue('footnotes')
+        class: cssClassAttrValue('footnotes')
       })
 
     return htmlElementWithAlreadyEscapedChildren(
@@ -303,11 +303,11 @@ export class HtmlRenderer extends Renderer {
   }
 
   private parenthetical(parenthetical: Up.ParentheticalSyntaxNode, cssClassName: string): string {
-    const attrs = {
-      class: classHtmlAttrValue(cssClassName)
-    }
-
-    return this.htmlElement('small', parenthetical.children, attrs)
+    return this.htmlElement(
+      'small',
+      parenthetical.children, {
+        class: cssClassAttrValue(cssClassName)
+      })
   }
 
   private bulletedListItem(listItem: Up.BulletedList.Item): string {
@@ -425,7 +425,7 @@ export class HtmlRenderer extends Renderer {
         type: 'radio',
         id: hideButtonId,
         name: buttonGroupName,
-        class: classHtmlAttrValue('hide'),
+        class: cssClassAttrValue('hide'),
         checked: EMPTY_ATTRBUTE_VALUE
       })
 
@@ -434,7 +434,7 @@ export class HtmlRenderer extends Renderer {
         type: 'radio',
         id: revealButtonId,
         name: buttonGroupName,
-        class: classHtmlAttrValue('reveal')
+        class: cssClassAttrValue('reveal')
       })
 
     const labelHtmlElement = (id: string, text: string) =>
@@ -460,7 +460,7 @@ export class HtmlRenderer extends Renderer {
     const attrsForOuterContainer = args.attrsForOuterContainer || {}
 
     attrsForOuterContainer.class =
-      classHtmlAttrValue('revealable')
+      cssClassAttrValue('revealable')
 
     return htmlElementWithAlreadyEscapedChildren(
       args.tagNameForGenericContainer, [
@@ -510,7 +510,7 @@ export class HtmlRenderer extends Renderer {
 
   private tableCell(tagName: string, cell: Up.Table.Cell, attrs: any = {}): string {
     if (cell.isNumeric()) {
-      attrs.class = classHtmlAttrValue('numeric')
+      attrs.class = cssClassAttrValue('numeric')
     }
 
     if (cell.countColumnsSpanned > 1) {
@@ -562,10 +562,14 @@ function htmlAttrsFor(node: Up.OutlineSyntaxNode, attrs: any = {}): any {
   return attrs
 }
 
-// We always prefix our CSS class names with `up-`, regardless of the `idPrefix` setting.
-function classHtmlAttrValue(...classNames: string[]): string {
-  return classNames
-    .map(className => 'up-' + className)
+// Given a list of CSS class names, this function returns a space-delimited
+// value for the `class` HTML attribute.
+//
+// Every CSS class name is automatically prefixed with `up-`, regardless of
+// the `idPrefix` setting.
+function cssClassAttrValue(...cssClassNames: string[]): string {
+  return cssClassNames
+    .map(name => 'up-' + name)
     .join(' ')
 }
 
