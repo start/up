@@ -701,27 +701,27 @@ describe('An example user input node', () => {
 
 
 describe('A normal parenthetical node', () => {
-  it('renders a <small class="up-parenthetical"> element', () => {
+  it('renders a <small class="up-parentheses"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.NormalParenthetical([new Up.Text('(Koopa Troopa)')])
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><small class="up-parenthetical">(Koopa Troopa)</small></p>')
+    expect(Up.render(document)).to.equal('<p><small class="up-parentheses">(Koopa Troopa)</small></p>')
   })
 })
 
 
 describe('A square parenthetical node', () => {
-  it('renders a <small class="up-parenthetical up-square-brackets"> element', () => {
+  it('renders a <small class="up-square-brackets"> element', () => {
     const document = new Up.Document([
       new Up.Paragraph([
         new Up.SquareParenthetical([new Up.Text('[Koopa Troopa]')])
       ])
     ])
 
-    expect(Up.render(document)).to.equal('<p><small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small></p>')
+    expect(Up.render(document)).to.equal('<p><small class="up-square-brackets">[Koopa Troopa]</small></p>')
   })
 })
 

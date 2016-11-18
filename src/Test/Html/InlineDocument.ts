@@ -78,23 +78,23 @@ context('In an inline document, every inline syntax node produces the same HTML 
 
 
   describe('A normal parenthetical node', () => {
-    it('produces a <small class="up-parenthetical"> element', () => {
+    it('produces a <small class="up-parentheses"> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.NormalParenthetical([new Up.Text('(Koopa Troopa)')])
       ])
 
-      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical">(Koopa Troopa)</small>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parentheses">(Koopa Troopa)</small>')
     })
   })
 
 
   describe('A square parenthetical node', () => {
-    it('produces a <small class="up-parenthetical up-square-brackets"> element', () => {
+    it('produces a <small class="up-square-brackets"> element', () => {
       const inlineDocument = new Up.InlineDocument([
         new Up.SquareParenthetical([new Up.Text('[Koopa Troopa]')])
       ])
 
-      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-parenthetical up-square-brackets">[Koopa Troopa]</small>')
+      expect(Up.renderInline(inlineDocument)).to.equal('<small class="up-square-brackets">[Koopa Troopa]</small>')
     })
   })
 
