@@ -65,7 +65,7 @@ export namespace Settings {
 // Our solution is to extend the `SpecializedSettings` interface, which is incompatible
 // with `Settings`.
 export interface SpecializedSettings {
-  rendering?: DoNotProvide,
+  rendering?: DoNotProvide
   parsing?: DoNotProvide
 }
 

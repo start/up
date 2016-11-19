@@ -93,7 +93,7 @@ export class Up {
 
 
 export interface DocumentAndTableOfContentsHtml {
-  documentHtml: string,
+  documentHtml: string
   tableOfContentsHtml: string
 }
 

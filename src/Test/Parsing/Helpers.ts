@@ -108,7 +108,7 @@ function everyPermutation(prefix: string, valuesBySegment: string[][]): string[]
 
 
 export interface BracketedSegment {
-  prefixes?: string[],
+  prefixes?: string[]
   text: string
 }
 
