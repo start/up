@@ -27,10 +27,9 @@ export class NumberedList implements OutlineSyntaxNode {
       return NumberedList.Order.Ascending
     }
 
-    return (
-      withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
-        ? NumberedList.Order.Descending
-        : NumberedList.Order.Ascending)
+    return withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
+      ? NumberedList.Order.Descending
+      : NumberedList.Order.Ascending
   }
 
   descendantsToIncludeInTableOfContents(): Document.TableOfContents.Entry[] {

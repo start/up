@@ -1040,8 +1040,9 @@ class Tokenizer {
   private shouldClose(context: ConventionContext): boolean {
     const { convention } = context
 
-    return (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-      || (convention.endsWith && (this.markupConsumer.consume(convention.endsWith) != null))
+    return (
+      (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
+      || (convention.endsWith && (this.markupConsumer.consume(convention.endsWith) != null)))
   }
 
   private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {

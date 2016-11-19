@@ -28,7 +28,7 @@ export function expectEveryPermutationOfBracketsAroundContentAndUrl(
         text: args.url
       }],
     toProduce: args.toProduce,
-    settings:  args.settings
+    settings: args.settings
   })
 }
 
@@ -89,22 +89,21 @@ export function expectEveryPermutationOfBrackets(
 //   '(image: puppy)[dog.gif] \t [pets.com/gallery]',
 // ]
 function everyPermutation(prefix: string, valuesBySegment: string[][]): string[] {
-  return (
-    valuesBySegment.length === 1
-      // There's just one segment. This is easy! Let's just add the `prefix` to all values in the segment and
-      // return the result.
-      ? valuesBySegment[0].map(permutation => prefix + permutation)
-      // Well, there's more than one segment.
-      //
-      // Let's add the `prefix` to all values in the first segment, and then let's treat each of those prefixed
-      // values as the `prefix` for another call to this function, passing only the values from the remaining
-      // segments.
-      //
-      // This produces separate arrays of permutations, one for each value in the first segment. So let's combine
-      // those arrays into one and return the result.
-      : concat(
-        valuesBySegment[0].map(permutation =>
-          everyPermutation(prefix + permutation, valuesBySegment.slice(1)))))
+  return valuesBySegment.length === 1
+    // There's just one segment. This is easy! Let's just add the `prefix` to all values in the segment and
+    // return the result.
+    ? valuesBySegment[0].map(permutation => prefix + permutation)
+    // Well, there's more than one segment.
+    //
+    // Let's add the `prefix` to all values in the first segment, and then let's treat each of those prefixed
+    // values as the `prefix` for another call to this function, passing only the values from the remaining
+    // segments.
+    //
+    // This produces separate arrays of permutations, one for each value in the first segment. So let's combine
+    // those arrays into one and return the result.
+    : concat(
+      valuesBySegment[0].map(permutation =>
+        everyPermutation(prefix + permutation, valuesBySegment.slice(1))))
 }
 
 

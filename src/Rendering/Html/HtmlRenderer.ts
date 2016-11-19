@@ -474,10 +474,9 @@ export class HtmlRenderer extends Renderer {
   }
 
   private tableCaption(caption: Up.Table.Caption | undefined): string {
-    return (
-      caption
-        ? htmlElementWithAlreadyEscapedChildren('caption', this.renderEach(caption.children))
-        : '')
+    return caption
+      ? htmlElementWithAlreadyEscapedChildren('caption', this.renderEach(caption.children))
+      : ''
   }
 
   private tableHeader(header: Up.Table.Header): string {

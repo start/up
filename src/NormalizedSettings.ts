@@ -102,10 +102,9 @@ export namespace NormalizedSettings {
           return this.baseForUrlsStartingWithHashMark + url
       }
 
-      return (
-        URL_SCHEME_PATTERN.test(url)
-          ? url
-          : this.defaultUrlScheme + url)
+      return URL_SCHEME_PATTERN.test(url)
+        ? url
+        : this.defaultUrlScheme + url
     }
   }
 

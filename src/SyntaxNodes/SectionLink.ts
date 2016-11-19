@@ -62,10 +62,9 @@ export class SectionLink implements InlineSyntaxNode {
   }
 
   textAppearingInline(): string {
-    return (
-      this.entry
-        ? getTextAppearingInline(this.entry.children)
-        : this.markupSnippetFromSectionTitle)
+    return this.entry
+      ? getTextAppearingInline(this.entry.children)
+      : this.markupSnippetFromSectionTitle
   }
 
   inlineDescendants(): InlineSyntaxNode[] {
