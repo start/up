@@ -54,7 +54,7 @@ function htmlAttrs(attrs: any): string[] {
 function htmlAttr(attrs: any, attrName: string): string {
   const value = attrs[attrName]
 
-  return (value === '') || (value == null)
+  return (value === EMPTY_ATTRBUTE_VALUE) || (value == null)
     ? attrName
     : `${attrName}="${escapeHtmlAttrValue(value)}"`
 }
