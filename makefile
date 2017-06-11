@@ -1,4 +1,6 @@
 local_modules_dir = ./node_modules/.bin
+
+# TODO: Rethink directory structure.
 all_our_build_dirs = compiled dist
 
 local_mocha = $(local_modules_dir)/mocha

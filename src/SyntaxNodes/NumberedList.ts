@@ -20,14 +20,17 @@ export class NumberedList implements OutlineSyntaxNode {
   }
 
   order(): NumberedList.Order {
-    const withExplicitOrdinals =
-      this.items.filter(item => item.ordinal != null)
+    const [firstOrdinal, secondOrdinal] =
+      this.items
+        .filter(item => item.ordinal != null)
+        .map(item => item.ordinal)
 
-    if (withExplicitOrdinals.length < 2) {
-      return NumberedList.Order.Ascending
-    }
+    const firstTwoOrdinalsAreDescending =
+      firstOrdinal != null
+      && secondOrdinal != null
+      && firstOrdinal > secondOrdinal
 
-    return withExplicitOrdinals[0].ordinal > withExplicitOrdinals[1].ordinal
+    return firstTwoOrdinalsAreDescending
       ? NumberedList.Order.Descending
       : NumberedList.Order.Ascending
   }
