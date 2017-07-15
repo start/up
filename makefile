@@ -19,7 +19,7 @@ all: install test
 
 .PHONY: install
 install:
-	npm update
+	npm install
 
 
 .PHONY: clean
