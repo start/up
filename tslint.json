@@ -5,10 +5,14 @@
       true,
       "never-prefix"
     ],
-    "member-access": false,
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-return-shorthand": true,
+    "member-access": [true, "no-public"],
     "no-consecutive-blank-lines": false,
     "no-namespace": false,
+    "object-literal-shorthand": true,
     "object-literal-sort-keys": false,
+    "quotemark": false,
     "semicolon": [
       true,
       "never"
@@ -21,7 +25,6 @@
         "multiline": "never"
       }
     ],
-    "quotemark": false,
     "variable-name": [
       true,
       "ban-keywords",
