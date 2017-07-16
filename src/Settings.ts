@@ -10,7 +10,7 @@ export type Settings =
   }
 
 export namespace Settings {
-  export interface Parsing extends SpecializedSettings {
+  export interface Parsing {
     createSourceMap?: boolean
     defaultUrlScheme?: string
     baseForUrlsStartingWithSlash?: string
@@ -33,7 +33,7 @@ export namespace Settings {
   }
 
 
-  export interface Rendering extends SpecializedSettings {
+  export interface Rendering {
     idPrefix?: string
     renderDangerousContent?: boolean
     terms?: Rendering.Terms
@@ -50,25 +50,4 @@ export namespace Settings {
 
     export type Term = string
   }
-}
-
-
-// This is another hack to work around TypeScript's type system.
-//
-// Both `Settings.Parsing` and `Settings.Rendering` interfaces only have optional
-// fields. This unfortunately means they're satisfied by every type, including the
-// `Settings` interface!
-// 
-// We want to prevent users from accidentally passing `Settings` to a method that
-// expects `Settings.Parsing` or `Settings.Rendering`.
-//
-// Our solution is to extend the `SpecializedSettings` interface, which is incompatible
-// with `Settings`.
-export interface SpecializedSettings {
-  rendering?: DoNotProvide
-  parsing?: DoNotProvide
-}
-
-export interface DoNotProvide {
-  DO_NOT_PROVIDE(): void
 }
