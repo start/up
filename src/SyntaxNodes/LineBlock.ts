@@ -7,7 +7,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class LineBlock implements OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(public lines: LineBlock.Line[], options?: { sourceLineNumber: number }) {
     if (options) {

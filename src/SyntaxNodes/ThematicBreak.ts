@@ -5,7 +5,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class ThematicBreak implements OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(options?: { sourceLineNumber: number }) {
     if (options) {

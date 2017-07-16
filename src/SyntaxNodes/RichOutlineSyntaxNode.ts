@@ -4,7 +4,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(children: OutlineSyntaxNode[], options?: { sourceLineNumber: number }) {
     super(children)

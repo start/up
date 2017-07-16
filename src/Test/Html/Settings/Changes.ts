@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../../Main'
 import { cast } from '../../Helpers'
 
+
 function itCanBeProvidedMultipleWaysWithTheSameResult(
   args: {
     document: Up.Document

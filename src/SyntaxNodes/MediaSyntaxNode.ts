@@ -7,7 +7,7 @@ import { Renderer } from '../Rendering/Renderer'
 // If a line consists solely of media conventions (or media conventions within links),
 // those media conventions are placed directly into the outline.
 export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(
     public description: string,

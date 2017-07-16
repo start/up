@@ -4,7 +4,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Footnote extends RichInlineSyntaxNode {
-  public referenceNumber: number
+  referenceNumber: number
 
   constructor(
     children: InlineSyntaxNode[],

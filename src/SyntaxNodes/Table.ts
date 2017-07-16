@@ -10,7 +10,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Table implements OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(
     public header: Table.Header,

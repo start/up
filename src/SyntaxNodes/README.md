@@ -31,7 +31,7 @@ Our syntax node constructors hide most of their optional fields in an optional `
 Here's an example of one of those optional fields (`sourceLineNumber`):
 
 ``````
-public sourceLineNumber: number = undefined
+sourceLineNumber: number | undefined = undefined
 
 constructor(children: OutlineSyntaxNode[], options?: { sourceLineNumber: number }) {
   super(children)

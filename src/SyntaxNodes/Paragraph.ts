@@ -6,7 +6,7 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Paragraph extends InlineSyntaxNodeContainer implements OutlineSyntaxNode {
-  public sourceLineNumber: number | undefined = undefined
+  sourceLineNumber: number | undefined = undefined
 
   constructor(children: InlineSyntaxNode[], options?: { sourceLineNumber: number }) {
     super(children)
