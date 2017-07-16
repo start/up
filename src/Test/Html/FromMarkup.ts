@@ -262,6 +262,25 @@ SPOILER
         + '</div>'
         + '</div>')
     })
+
+    specify('can be used with empty settings', () => {
+      const markup = `
+Anyway, let us get to the point.
+
+I enjoy apples
+==============
+
+SPOILER
+  After beating the Elite Four, Blue steals a Red Delicious from Red.`
+
+      const withoutSettings =
+        Up.parseAndRenderWithTableOfContents(markup)
+
+      const withEmptySettings =
+        Up.parseAndRenderWithTableOfContents(markup, {})
+
+      expect(withoutSettings).to.deep.equal(withEmptySettings);
+    })
   })
 
 
@@ -341,6 +360,15 @@ SPOILER
         + '<label for="up-reveal-button-1" role="button" tabindex="0">reveal</label>'
         + '<span role="alert">Blue steals a Red Delicious from Red.</span>'
         + '</span>')
+    })
+
+    specify('can be used with empty settings', () => {
+      const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
+
+      const withoutSettings = Up.parseAndRenderInline(markup);
+      const withEmptySettings = Up.parseAndRenderInline(markup, {});
+
+      expect(withoutSettings).to.equal(withEmptySettings);
     })
   })
 })

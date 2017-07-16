@@ -1,13 +1,7 @@
-// The purpose of this unpleasant hack is to make both `parsing` and `rendering`
-// settings optional, while still requiring that at least one of the two be provided.
-export type Settings =
-  {
-    parsing?: Settings.Parsing
-    rendering: Settings.Rendering
-  } | {
-    parsing: Settings.Parsing
-    rendering?: Settings.Rendering
-  }
+export interface Settings {
+  parsing?: Settings.Parsing
+  rendering?: Settings.Rendering
+}
 
 export namespace Settings {
   export interface Parsing {
