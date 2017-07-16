@@ -4,7 +4,12 @@ import { Renderer } from '../Rendering/Renderer'
 
 
 export class Footnote extends RichInlineSyntaxNode {
-  referenceNumber: number
+  // Before the document is finalized, this field will always be undefined. Afterward, it will
+  // never be null.
+  //
+  // TODO: Research the best way to represent this using the type system. Should we create two
+  // versions of this class: One pre-finalization and one post-finalization?
+  referenceNumber?: number
 
   constructor(
     children: InlineSyntaxNode[],

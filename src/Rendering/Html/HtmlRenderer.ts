@@ -214,7 +214,7 @@ export class HtmlRenderer extends Renderer {
     return this.htmlElement(
       'sup',
       [this.footnoteReferenceInnerLink(footnote)], {
-        id: this.footnoteReferenceHtmlId(footnote.referenceNumber),
+        id: this.footnoteReferenceHtmlId(footnote.referenceNumber!),
         class: cssClassAttrValue('footnote-reference')
       })
   }
@@ -346,8 +346,8 @@ export class HtmlRenderer extends Renderer {
     const { referenceNumber } = footnote
 
     return new Up.Link(
-      [new Up.Text(referenceNumber.toString())],
-      fragmentUrl(this.footnoteHtmlId(referenceNumber)))
+      [new Up.Text(referenceNumber!.toString())],
+      fragmentUrl(this.footnoteHtmlId(referenceNumber!)))
   }
 
   private footnoteInFootnoteBlock(footnote: Up.Footnote): string {
@@ -355,7 +355,7 @@ export class HtmlRenderer extends Renderer {
       this.htmlElement(
         'dt',
         [this.footnoteLinkBackToReference(footnote)],
-        { id: this.footnoteHtmlId(footnote.referenceNumber) })
+        { id: this.footnoteHtmlId(footnote.referenceNumber!) })
 
     const bodyContainer =
       this.htmlElement('dd', footnote.children)
@@ -367,8 +367,8 @@ export class HtmlRenderer extends Renderer {
     const { referenceNumber } = footnote
 
     return new Up.Link(
-      [new Up.Text(referenceNumber.toString())],
-      fragmentUrl(this.footnoteReferenceHtmlId(referenceNumber)))
+      [new Up.Text(referenceNumber!.toString())],
+      fragmentUrl(this.footnoteReferenceHtmlId(referenceNumber!)))
   }
 
   private playableMediaElement(playableMedia: Up.Audio | Up.Video, mediaTagName: string): string {
