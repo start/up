@@ -107,7 +107,7 @@ class ConventionNester {
       // Link end tokens have a URL that needs to be copied when links are split in half. Right now, links aren't 
       // split using this method (and none of the conventions split using this method have any values in their end
       // tokens), but this method uses the same helper method used to split links.
-      let endTokensOfOverlappingConventions: Token[] = []
+      const endTokensOfOverlappingConventions: Token[] = []
 
       // We'll check the unclosed start tokens from most recently opened to least recently opened (from inner to
       // outer).
@@ -187,7 +187,7 @@ class ConventionNester {
           potentialHeroEndToken === potentialHeroStartToken.correspondingEnclosingToken
 
         if (isEndTokenForHeroConvention) {
-          let heroEndIndex = i
+          const heroEndIndex = i
 
           // Alright, we now know where this `conventionNotToSplit` starts and ends. Any overlapping conventions will
           // either:

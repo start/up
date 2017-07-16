@@ -34,7 +34,6 @@ ERROR: src/Parsing/Inline/RichConventions.ts[10, 1]: Import sources within a gro
 ERROR: src/Parsing/Inline/RichConventions.ts[11, 1]: Import sources within a group must be alphabetized.
 ERROR: src/Parsing/Inline/RichConventions.ts[13, 1]: Import sources within a group must be alphabetized.
 ERROR: src/Parsing/Inline/Tokenizing/BacktrackedConventionHelper.ts[2, 1]: Import sources within a group must be alphabetized.
-ERROR: src/Parsing/Inline/Tokenizing/ConventionVariation.ts[78, 3]: Interface has only a call signature — use `type OnConventionEvent = (context: ConventionContext) => void` instead.
 ERROR: src/Parsing/Inline/Tokenizing/ConventionVariation.ts[8, 56]: trailing whitespace
 ERROR: src/Parsing/Inline/Tokenizing/ConventionVariation.ts[3, 1]: Import sources within a group must be alphabetized.
 ERROR: src/Parsing/Inline/Tokenizing/ConventionVariation.ts[4, 1]: Import sources within a group must be alphabetized.
@@ -55,8 +54,6 @@ ERROR: src/Parsing/Inline/Tokenizing/nestOverlappingConventions.ts[1, 10]: Named
 ERROR: src/Parsing/Inline/Tokenizing/nestOverlappingConventions.ts[4, 1]: Import sources within a group must be alphabetized.
 ERROR: src/Parsing/Inline/Tokenizing/nestOverlappingConventions.ts[110, 11]: Identifier 'endTokensOfOverlappingConventions' is never reassigned; use 'const' instead of 'let'.
 ERROR: src/Parsing/Inline/Tokenizing/nestOverlappingConventions.ts[190, 15]: Identifier 'heroEndIndex' is never reassigned; use 'const' instead of 'let'.
-ERROR: src/Parsing/Inline/Tokenizing/OnTextMatch.ts[2, 3]: Interface has only a call signature — use `type OnTextMatch = (match: string, charAfterMatch: string, ...captures: string[]) => void` instead.
-ERROR: src/Parsing/Inline/Tokenizing/OnTextMatch.ts[3, 2]: file should end with a newline
 ERROR: src/Parsing/Inline/Tokenizing/TextConsumer.ts[41, 81]: trailing whitespace
 ERROR: src/Parsing/Inline/Tokenizing/Token.ts[10, 5]: Use an optional parameter instead of initializing to 'undefined'. Also, the type declaration does not need to include '| undefined'.
 ERROR: src/Parsing/Inline/Tokenizing/Token.ts[2, 1]: Import sources within a group must be alphabetized.

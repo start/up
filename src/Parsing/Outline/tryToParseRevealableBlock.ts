@@ -9,7 +9,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // A revealable block consists of a "label line" (a keyword followed by an optional colon) followed by
 // an indented block.
 //
-// A revealable block can contain any outline convention, and its label's keyword is case-insensitive. 
+// A revealable block can contain any outline convention, and its label's keyword is case-insensitive.
 export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const { keywords } = args.settings
@@ -23,7 +23,7 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
   }
 
   const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
-  
+
   const contentLines: string[] = []
 
   if (indentedBlockResult) {

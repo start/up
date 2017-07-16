@@ -74,6 +74,5 @@ export class ConventionVariation {
 }
 
 
-export interface OnConventionEvent {
-  (context: ConventionContext): void
-}
+export type OnConventionEvent =
+  (context: ConventionContext) => void

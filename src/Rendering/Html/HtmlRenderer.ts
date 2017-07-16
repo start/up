@@ -411,13 +411,13 @@ export class HtmlRenderer extends Renderer {
     const revealableContentOrdinal =
       ++this.revealableContentCount
 
-    let buttonGroupName =
+    const buttonGroupName =
       revealableIdFor('revealable', revealableContentOrdinal)
 
-    let hideButtonId =
+    const hideButtonId =
       revealableIdFor('hide', 'button', revealableContentOrdinal)
 
-    let revealButtonId =
+    const revealButtonId =
       revealableIdFor('reveal', 'button', revealableContentOrdinal)
 
     const radioButtonHide = singleTagHtmlElement(
