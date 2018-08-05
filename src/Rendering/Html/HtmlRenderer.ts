@@ -22,18 +22,18 @@ export class HtmlRenderer extends Renderer {
   // This solution requires generating unique IDs to associate each label with its radio button (and a unique
   // name to group the two radio buttons together). To fascilitate this, we increment a counter each time we
   // render revealable content, appending the counter's value to the radio buttons' IDs/names.
-  private revealableContentCount: number
+  private revealableContentCount = 0
 
   // If a link is nested within another link, we include the inner link's contents directly in the outer link.
   // We don't create an <a> element for the inner link.
-  private isInsideLink: boolean
+  private isInsideLink = false
 
   // One last hack! Within the table of contents itself:
   //
   // 1. No HTML is produced for footnotes. They're ignored.
   // 2. The IDs/names for inline revealable elements' radio buttons (described above) are given an additional
   //    prefix to prevent clashes with IDs in the document.   
-  private isInsideTableOfContents: boolean
+  private isInsideTableOfContents = false
 
   document(document: Up.Document): string {
     return this.anyDocument(document)

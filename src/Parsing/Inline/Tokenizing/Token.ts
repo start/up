@@ -3,7 +3,8 @@ import { ParseableToken } from '../ParseableToken'
 
 
 export class Token implements ParseableToken {
-  correspondingEnclosingToken: Token
+  // TODO: Use separate types for start/end tokens?
+  correspondingEnclosingToken?: Token
 
   constructor(
     public role: TokenRole,

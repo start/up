@@ -8,7 +8,7 @@ import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } fro
 // revealable convention delimited by square brackets).  
 export class ConventionVariation {
   startsWith: RegExp
-  endsWith: RegExp
+  endsWith?: RegExp
   canOnlyOpenIfDirectlyFollowing?: TokenRole[]
   isCutShortByWhitespace?: boolean
   canConsistSolelyOfWhitespace?: boolean

@@ -199,14 +199,14 @@ class Tokenizer {
   //
   // To get around this, we won't allow a delimiter to close a forgiving writing convention if we have just
   // entered an outer convention.
-  private markupIndexWeLastOpenedAConvention: number
+  private markupIndexThatLastOpenedAConvention?: number
 
   private get justEnteredAConvention(): boolean {
-    return this.markupIndexWeLastOpenedAConvention === this.markupConsumer.index
+    return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index
   }
 
   private indicateWeJustOpenedAConvention(): void {
-    this.markupIndexWeLastOpenedAConvention = this.markupConsumer.index
+    this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index
   }
 
   // The most recent token isn't necessarily the last token in the `tokens` collection.
@@ -218,7 +218,7 @@ class Tokenizer {
   //    
   // 2. When a rich convention closes, we move its end token before any superficially overlapping
   //    end tokens. For more information, please see the `encloseWithin` method.
-  private mostRecentToken: Token
+  private mostRecentToken?: Token
 
   constructor(
     inlineMarkup: string,
@@ -229,13 +229,7 @@ class Tokenizer {
       trimEscapedAndUnescapedOuterWhitespace(inlineMarkup)
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
-    this.configureConventions((options != null) && options.isTokenizingInlineDocument)
-
-    this.tokenize()
-    this.result = nestOverlappingConventions(this.tokens)
-  }
-
-  private configureConventions(isTokenizingInlineDocument: boolean): void {
+    
     this.conventionVariations = [
       ...this.getInlineRevealableConventions({
         richConvention: INLINE_REVEALABLE,
@@ -246,7 +240,7 @@ class Tokenizer {
 
       ...(
         // If we're tokenizing an inline document...
-        isTokenizingInlineDocument
+        (options != null) && options.isTokenizingInlineDocument
           // We'll treat footnotes differently, because they don't really make sense in an inline document
           ? this.getFootnoteConventionsForInlineDocuments()
           // Otherwise, if we're tokenizing a regular document...
@@ -275,6 +269,9 @@ class Tokenizer {
 
       this.bareUrlPathConvention
     ]
+
+    this.tokenize()
+    this.result = nestOverlappingConventions(this.tokens)
   }
 
   private getFootnoteConventions(): ConventionVariation[] {
@@ -567,7 +564,7 @@ class Tokenizer {
     const whenClosing = (url: string) => {
       // When closing a link URL, we're (correctly) going to assume that the most recent token is
       // a `LinkEnd` token.
-      this.mostRecentToken.value = url
+      this.mostRecentToken!.value = url
     }
 
     return concat(PARENTHETICAL_BRACKETS.map(bracket => [
@@ -713,10 +710,10 @@ class Tokenizer {
     // We'll insert our new link end token right before the original end token, and we'll insert our new link
     // start token right after the original end token's corresponding start token.
 
-    const originalEndToken = this.mostRecentToken
+    const originalEndToken = this.mostRecentToken!
     this.insertToken({ token: linkEndToken, atIndex: this.tokens.indexOf(originalEndToken) })
 
-    const originalStartToken = originalEndToken.correspondingEnclosingToken
+    const originalStartToken = originalEndToken.correspondingEnclosingToken!
     const indexAfterOriginalStartToken = this.tokens.indexOf(originalStartToken) + 1
     this.insertToken({ token: linkStartToken, atIndex: indexAfterOriginalStartToken })
   }
@@ -1042,7 +1039,7 @@ class Tokenizer {
 
     return (
       (convention.isCutShortByWhitespace && this.isCurrentCharWhitespace())
-      || (convention.endsWith && (this.markupConsumer.consume(convention.endsWith) != null)))
+      || ((convention.endsWith != null) && (this.markupConsumer.consume(convention.endsWith) != null)))
   }
 
   private tryToCloseConventionWhoseEndDelimiterWeAlreadyFound(args: { belongingToContextAtIndex: number }): boolean {
@@ -1080,7 +1077,7 @@ class Tokenizer {
   // If a convention must be followed by one of a set of specific conventions, then we'll try to open one
   // of those here. If we can't open one of those conventions, this method returns false.
   //
-  // If there aren't any subsequent required conventions, or if we *are* aren't to open one of them, this
+  // If there aren't any subsequent required conventions, or if we *are* able to open one of them, this
   // method retuns true.
   private tryToOpenASubsequentRequiredConventionIfThereAreAny(closedContext: ConventionContext): boolean {
     const subsequentRequiredConventions = closedContext.convention.mustBeDirectlyFollowedBy
@@ -1094,7 +1091,8 @@ class Tokenizer {
 
     if (didOpenSubsequentRequiredConvention) {
       // If this new convention eventually fails, we need to backtrack to before the one we just closed.
-      // To make that process easier, we give the snapshot of the old context to the new context.
+      // To make that process easier, we give the snapshot of the previous convention's context to the
+      // new context.
       last(this.openContexts).snapshot = closedContext.snapshot
       return true
     }
@@ -1216,30 +1214,27 @@ class Tokenizer {
 
       // We should insert our new end token before the current end token if...
       const shouldEndTokenAppearBeforeCurrentToken =
-        // ...the current token belongs to a rich convention (we aren't sure whether this is an end token yet,
-        // but we'll find out soon)...
+        // ...the current token belongs to a rich convention (which actually means the current token is
+        // an end token, as explained below)...
         token.correspondingEnclosingToken != null
-        // ...and our start token (that we just added) comes after the corresponding token for the current
-        // token.
+        // ...and our start token (that we just inserted) comes after the corresponding (start) token!
         //
-        // This guarantees that the current token is an end token, not a start token. How?
+        // How do we know that `token` is an end token rather than a start token? Well...
         //
-        // 1. We are looping backwards, and we naturally break from the loop once we find we aren't able to
-        //    insert our end token before the current token.
+        // 1. Rich conventions' start tokens are only added once the convention closes, along with their end
+        //    tokens (as explained above). If a start token exists, a corresponding end token must exist,
+        //    too.
         //
-        // 2. Rich conventions' start tokens are only added once the convention closes, along with their end
-        //    tokens (as explained above). If our token collection has a start token, it has an end token, too.
+        // 2. End tokens always come after start tokens. Since we're looping backward, if the current token
+        //    were a start token, we would have already looped past its end token.
         //
-        // 3. End tokens always come after start tokens. Since we're looping backward, if the current token is
-        //    a start token, we would have already looped past the end token.
-        //
-        // Therefore, if the current token is a start token, the only way for *our* start token to be after the
-        // current token's end token is for us to have already looped past our own start token. That's not
-        // possble, because we haven't even inserted our end token yet.
+        // Therefore, if the current token were a start token (it isn't), the only way for *our* start token
+        // to be after the corresponding end token is for us to have already looped past our own start token
+        // token! That's not possble, because we break from the loop once we reach our start token's index.
         && startTokenIndex > this.tokens.indexOf(token.correspondingEnclosingToken)
 
       if (shouldEndTokenAppearBeforeCurrentToken) {
-        // If all that applies, our end token should *also* be inside the current end token's convention.
+        // If all that applies, our end token should be inside the current end token's convention.
         endTokenIndex -= 1
       } else {
         // We've hit a token that we can't swap with! Let's add our end token. 
@@ -1421,7 +1416,7 @@ class Tokenizer {
   private getSnapshot(markupIndex: number): TokenizerSnapshot {
     return {
       markupIndex,
-      markupIndexWeLastOpenedAConvention: this.markupIndexWeLastOpenedAConvention,
+      markupIndexThatLastOpenedAConvention: this.markupIndexThatLastOpenedAConvention,
       tokens: this.tokens.slice(),
       openContexts: this.openContexts.map(context => context.clone()),
       forgivingConventionHandlers: this.forgivingConventionHandlers.map(handler => handler.clone()),
@@ -1473,8 +1468,8 @@ class Tokenizer {
   private isDirectlyFollowing(tokenRoles: TokenRole[]): boolean {
     return (
       !this.bufferedContent
-      && this.mostRecentToken
-      && tokenRoles.some(tokenRole => this.mostRecentToken.role === tokenRole))
+      && this.mostRecentToken != null
+      && tokenRoles.some(tokenRole => this.mostRecentToken!.role === tokenRole))
   }
 
   private backtrackToBeforeContext(context: ConventionContext): void {
@@ -1485,7 +1480,7 @@ class Tokenizer {
     this.tokens = snapshot.tokens
     this.bufferedContent = snapshot.bufferedContent
     this.markupConsumer.index = snapshot.markupIndex
-    this.markupIndexWeLastOpenedAConvention = snapshot.markupIndexWeLastOpenedAConvention
+    this.markupIndexThatLastOpenedAConvention = snapshot.markupIndexThatLastOpenedAConvention
     this.openContexts = snapshot.openContexts
     this.forgivingConventionHandlers = snapshot.forgivingConventionHandlers
   }
@@ -1495,11 +1490,11 @@ class Tokenizer {
   }
 
   private appendBufferedUrlPathToCurrentBareUrl(): void {
-    if (this.mostRecentToken.role !== TokenRole.BareUrl) {
+    if (this.mostRecentToken!.role !== TokenRole.BareUrl) {
       throw new Error('Most recent token is not a bare URL token')
     }
 
-    this.mostRecentToken.value += this.flushBufferedContent()
+    this.mostRecentToken!.value += this.flushBufferedContent()
   }
 
   private flushBufferedContent(): string {

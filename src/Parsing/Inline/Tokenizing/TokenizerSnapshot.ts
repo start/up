@@ -5,7 +5,7 @@ import { Token } from './Token'
 
 export interface TokenizerSnapshot {
   markupIndex: number
-  markupIndexWeLastOpenedAConvention: number
+  markupIndexThatLastOpenedAConvention?: number
   bufferedContent: string
   tokens: Token[]
   openContexts: ConventionContext[]

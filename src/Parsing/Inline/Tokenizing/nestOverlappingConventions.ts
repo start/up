@@ -118,7 +118,7 @@ class ConventionNester {
         // `unclosedStartToken.correspondingEnclosingToken === endToken`?
         //
         // Well, as explained in the comments above this class, we ignore self-overlapping conventions, instead
-        // matching their start/end tokens from innermost to outermost.
+        // choosing to match their start/end tokens from innermost to outermost.
         //
         // Let's look at this example of one highlight overlapping another:
         //
@@ -127,7 +127,7 @@ class ConventionNester {
         // The end token produced by `]` corresponds to the start token produced by `[SPOILER:`. By checking
         // only the `role` fields, we instead match `]` with `(SPOILER:`, ultimately ignoring that the
         // conventions are overlapping. Mission accomplished!
-        if (unclosedStartToken.correspondingEnclosingToken.role === endToken.role) {
+        if (unclosedStartToken.correspondingEnclosingToken!.role === endToken.role) {
           // Hooray! We've reached the start token that is closed by the current token.
           unclosedStartTokens.splice(i, 1)
 
@@ -136,7 +136,7 @@ class ConventionNester {
         }
 
         // Uh-oh. This start token belongs to an overlapping convention.
-        endTokensOfOverlappingConventions.push(unclosedStartToken.correspondingEnclosingToken)
+        endTokensOfOverlappingConventions.push(unclosedStartToken.correspondingEnclosingToken!)
       }
 
       // Okay, now we know which conventions overlap the one that's about to close. To preserve overlapping
@@ -211,7 +211,7 @@ class ConventionNester {
               //
               // We `unshift`, not `push`, because the collection represents end tokens in the order they appear, and
               // end tokens appear in the opposite order of start tokens.
-              endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondingEnclosingToken)
+              endTokensOfOverlappingConventionsStartingInside.unshift(innerToken.correspondingEnclosingToken!)
               continue
             }
 
@@ -262,7 +262,7 @@ class ConventionNester {
     const { tokens } = this
 
     for (const endToken of endTokensInTheirOriginalOrder) {
-      const startToken = endToken.correspondingEnclosingToken
+      const startToken = endToken.correspondingEnclosingToken!
 
       // First, let's try to add the end token before the splitting token.
       const indexBeforeSplittingToken = index - 1

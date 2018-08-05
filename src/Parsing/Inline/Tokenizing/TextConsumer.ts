@@ -1,9 +1,10 @@
 // This class helps incrementally consume text using regular expression patterns.
 export class TextConsumer {
-  private _remaining: string
-  private _index: number
-  private _currentChar: string
-  private _previousChar: string
+  // These four fields are all indirectly set in the constructor
+  private _remaining!: string
+  private _index!: number
+  private _currentChar!: string
+  private _previousChar!: string
 
   constructor(private entireText: string) {
     this.index = 0
