@@ -104,9 +104,10 @@ class ConventionNester {
 
       // Why do we store a collection of end tokens rather than a collection of conventions?
       //
-      // Link end tokens have a URL that needs to be copied when links are split in half. Right now, links aren't 
-      // split using this method (and none of the conventions split using this method have any values in their end
-      // tokens), but this method uses the same helper method used to split links.
+      // Because link end tokens have a URL that needs to be copied when links are split in half, and we need to
+      // preserve that URL.
+      //
+      // Links aren't split using this method, but this method uses the same helper method used to split links.
       const endTokensOfOverlappingConventions: Token[] = []
 
       // We'll check the unclosed start tokens from most recently opened to least recently opened (from inner to
@@ -151,7 +152,7 @@ class ConventionNester {
 
       const countOverlapping = endTokensOfOverlappingConventions.length
 
-      // Let's advance our token index to reflect the fact that we just added tokens. We aded `countOverlapping`
+      // Let's advance our token index to reflect the fact that we just added tokens. We added `countOverlapping`
       // end tokens before `endToken`, and `countOverlapping` start tokens after `endToken`.
       //
       // Before we added those tokens, `endToken` was sitting at `tokenIndex`. We don't need to revisit any of
