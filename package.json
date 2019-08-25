@@ -28,7 +28,6 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "latest",
-    "istanbul": "latest",
     "mocha": "latest",
     "tslint": "latest",
     "typescript": "latest"
