@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
+import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('A video convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
@@ -112,7 +112,7 @@ describe('A video directly followed by a footnote', () => {
         new Up.Paragraph([
           new Up.Text("After you beat the Elite Four, "),
           new Up.Video('you fight Gary', 'https://example.com/fight.webm'),
-          footnotes[0],
+          footnotes[0]
         ]),
         new Up.FootnoteBlock(footnotes)
       ]))
@@ -127,7 +127,7 @@ describe('An otherwise-valid linkified video convention with its linkifying URL 
         new Up.Video('phone call', 'https://example.com/phonecall.webm'),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
-        ]),
+        ])
       ]))
   })
 })

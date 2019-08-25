@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from './Helpers'
 
 
 describe('Bracketed (square bracketed or parenthesized) text, followed immediately by another instance of bracketed text,', () => {
@@ -68,7 +68,7 @@ describe('An otherwise-valid link with its URL escaped', () => {
         ]),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
-        ]),
+        ])
       ]))
   })
 })

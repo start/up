@@ -1,5 +1,5 @@
-import { TokenRole } from '../TokenRole'
 import { ParseableToken } from '../ParseableToken'
+import { TokenRole } from '../TokenRole'
 
 
 export class Token implements ParseableToken {

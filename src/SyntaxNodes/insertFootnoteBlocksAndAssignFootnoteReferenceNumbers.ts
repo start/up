@@ -1,17 +1,17 @@
 import { concat } from '../CollectionHelpers'
-import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
-import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
+import { BulletedList } from '../SyntaxNodes/BulletedList'
 import { DescriptionList } from '../SyntaxNodes/DescriptionList'
 import { Document } from '../SyntaxNodes/Document'
-import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { Footnote } from '../SyntaxNodes/Footnote'
+import { FootnoteBlock } from '../SyntaxNodes/FootnoteBlock'
 import { InlineSyntaxNode } from '../SyntaxNodes/InlineSyntaxNode'
-import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
-import { RevealableBlock } from '../SyntaxNodes/RevealableBlock'
+import { InlineSyntaxNodeContainer } from '../SyntaxNodes/InlineSyntaxNodeContainer'
 import { LineBlock } from '../SyntaxNodes/LineBlock'
 import { NumberedList } from '../SyntaxNodes/NumberedList'
 import { OutlineSyntaxNode } from '../SyntaxNodes/OutlineSyntaxNode'
-import { BulletedList } from '../SyntaxNodes/BulletedList'
+import { OutlineSyntaxNodeContainer } from '../SyntaxNodes/OutlineSyntaxNodeContainer'
+import { RevealableBlock } from '../SyntaxNodes/RevealableBlock'
+import { RichInlineSyntaxNode } from '../SyntaxNodes/RichInlineSyntaxNode'
 import { Table } from '../SyntaxNodes/Table'
 
 
@@ -19,7 +19,7 @@ import { Table } from '../SyntaxNodes/Table'
 //
 // Footnotes are written inline, but they aren't meant to appear inline in the final document. That would
 // defeat the purpose of footnotes! Instead, footnotes are extracted and placed in footnote blocks.
-// 
+//
 // Right now, Up only supports one output format: HTML. In the HTML output format, the original inline
 // footnote is replaced by its reference number, which links to the content of the footnote in the
 // appropriate footnote block. If you're ever seen a Wikipedia article, you're familiar with this setup.
@@ -129,7 +129,7 @@ class FootnoteBlockInserter {
       return this.getBlocklessFootnotesFromTable(node)
     }
 
-    // The rest of our outline conventions cannot contain footnotes.  
+    // The rest of our outline conventions cannot contain footnotes.
     return []
   }
 

@@ -11,7 +11,7 @@ const pie = 3.5
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.CodeBlock('const pie = 3.5'),
+        new Up.CodeBlock('const pie = 3.5')
       ]))
   })
 })
@@ -29,7 +29,7 @@ describe('A code block', () => {
       new Up.Document([
         new Up.CodeBlock(
           `// Escaping backticks in typescript...
-// Such a pain!`),
+// Such a pain!`)
       ]))
   })
 
@@ -41,7 +41,7 @@ const lineBreak = "\\n"
 
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.CodeBlock('const lineBreak = "\\n"'),
+        new Up.CodeBlock('const lineBreak = "\\n"')
       ]))
   })
 
@@ -63,7 +63,7 @@ const lineBreak = "\\n"
 // Such a pain!`),
         new Up.CodeBlock(
           `// Escaping backticks in typescript...
-// Wait. Have I already said this?`),
+// Wait. Have I already said this?`)
       ]))
   })
 
@@ -151,7 +151,7 @@ function factorial(n: number): number {
     specify("not touching the code block's streaks", () => {
       const markup = `
 \`\`\`\`\`
-Wrap code in streaks of backticks! 
+Wrap code in streaks of backticks!
 
 \`\`\`
 function factorial(n: number): number {
@@ -168,7 +168,7 @@ It's easy!
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.CodeBlock(
-            `Wrap code in streaks of backticks! 
+            `Wrap code in streaks of backticks!
 
 \`\`\`
 function factorial(n: number): number {
@@ -189,7 +189,7 @@ It's easy!`)
 context('Any leading or trailing whitespace is ignored when matching code block fences.', () => {
   specify('Whitespace around the opening fence is ignored', () => {
     const markup = `
- \t \`\`\` \t 
+ \t \`\`\` \t
 const pie = 3.5
 \`\`\`
 
@@ -206,7 +206,7 @@ Do your pies ever turn out wrong?`
     const markup = `
 I enjoy baking.
 
-\`\`\` 
+\`\`\`
 const pie = 3.5
  \t \`\`\` \t
 
@@ -262,10 +262,10 @@ SPOILER:
   function nthFibonacci(n: number): number {
     return (
       n <= 2
-        ? n - 1 
+        ? n - 1
         : nthFibonacci(n - 1) + nthFibonacci(n - 2))
   }
-  
+
 I hope you were able to find a solution without cheating.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -275,7 +275,7 @@ I hope you were able to find a solution without cheating.`
             `function nthFibonacci(n: number): number {
   return (
     n <= 2
-      ? n - 1 
+      ? n - 1
       : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
         ]),

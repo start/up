@@ -67,7 +67,7 @@ describe('Double asterisks followed by two separate single closing asterisks', (
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.Text('Warning:'),
+            new Up.Text('Warning:')
           ]),
           new Up.Text(' never feed this tarantula')
         ])
@@ -80,7 +80,7 @@ describe('Text separated from (otherwise surrounding) single asterisks by whites
   it('is not put inside an emphasis node', () => {
     expect(Up.parse('Birdie Sanders * won * Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('Birdie Sanders * won * Wisconsin'),
+        new Up.Text('Birdie Sanders * won * Wisconsin')
       ]))
   })
 })

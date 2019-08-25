@@ -1,12 +1,12 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Document } from './Document'
-import { WHITESPACE_CHAR, LETTER_CLASS, DIGIT } from '../PatternPieces'
-import { anyCharMatching } from '../PatternHelpers'
 import { concat } from '../CollectionHelpers'
-import { getInlineDescendants } from './getInlineDescendants'
+import { anyCharMatching } from '../PatternHelpers'
+import { DIGIT, LETTER_CLASS, WHITESPACE_CHAR } from '../PatternPieces'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { getInlineDescendants } from './getInlineDescendants'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class Table implements OutlineSyntaxNode {

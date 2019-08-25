@@ -1,10 +1,10 @@
+import { concat } from '../CollectionHelpers'
+import { Heading } from './Heading'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Heading } from './Heading'
 import { SectionLink } from './SectionLink'
-import { insertFootnoteBlocksAndAssignFootnoteReferenceNumbers } from './insertFootnoteBlocksAndAssignFootnoteReferenceNumbers'
-import { concat } from '../CollectionHelpers'
 
 
 export class Document extends OutlineSyntaxNodeContainer {
@@ -54,7 +54,7 @@ export namespace Document {
     static createThenAssociateSectionLinksWithEntries(documentChildren: OutlineSyntaxNode[]): TableOfContents {
       const entries = TableOfContents.getEntries(documentChildren)
 
-      // Let's let each entry know its (1-based!) ordinal within the table of contents 
+      // Let's let each entry know its (1-based!) ordinal within the table of contents
       for (let i = 0; i < entries.length; i++) {
         entries[i].ordinalInTableOfContents = i + 1
       }

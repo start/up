@@ -116,7 +116,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ])),
         new Up.DescriptionList.Item([
           new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
-          new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+          new Up.DescriptionList.Item.Subject([new Up.Text('Lick')])
         ], new Up.DescriptionList.Item.Description([
           new Up.Paragraph([
             new Up.Text('Ghost type moves')
@@ -175,7 +175,7 @@ context('When an outline syntax node has a source line number, its outermost ele
         ]), [
           new Up.Table.Row([
             new Up.Table.Row.Cell([new Up.Text('true')]),
-            new Up.Table.Row.Cell([new Up.Text('false')]),
+            new Up.Table.Row.Cell([new Up.Text('false')])
           ], new Up.Table.Header.Cell([new Up.Text('1')])),
           new Up.Table.Row([
             new Up.Table.Row.Cell([new Up.Text('false')]),

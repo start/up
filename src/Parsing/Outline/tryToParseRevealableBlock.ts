@@ -1,8 +1,8 @@
-import { LineConsumer } from './LineConsumer'
+import { either, escapeForRegex, optional, solelyAndIgnoringCapitalization } from '../../PatternHelpers'
 import { RevealableBlock } from '../../SyntaxNodes/RevealableBlock'
-import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { getIndentedBlock } from './getIndentedBlock'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either } from '../../PatternHelpers'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

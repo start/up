@@ -5,7 +5,7 @@ import { settingsFor } from './Helpers'
 
 // Elsewhere, we verify that these settings work.
 //
-// Here, we simply make sure they work as advertised no matter how they are supplied. 
+// Here, we simply make sure they work as advertised no matter how they are supplied.
 
 function itWorksAsAdvertised(
   args: {

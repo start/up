@@ -10,7 +10,7 @@ export function concat<T>(collections: T[][]): T[] {
   return ([] as T[]).concat(...collections)
 }
 
-// Returns a reversed shallow copy of `collection`. 
+// Returns a reversed shallow copy of `collection`.
 export function reversed<T>(collection: T[]): T[] {
   return collection.slice().reverse()
 }
@@ -28,7 +28,7 @@ export function distinct<T>(...values: T[]): T[] {
 
 // Returns the first non-null value in `values`. If `values` does not contain a
 // non-null value, this function throws an exception.
-export function coalesce<T>(...values: (T | undefined)[]): T {
+export function coalesce<T>(...values: Array<T | undefined>): T {
   for (const value of values) {
     if (value != null) {
       return value

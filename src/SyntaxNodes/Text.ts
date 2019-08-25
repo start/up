@@ -1,5 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export class Text implements InlineSyntaxNode {

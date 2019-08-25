@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from '../Helpers'
 
 
 // TODO: Use bracket helper functions for more tests
@@ -82,7 +82,7 @@ describe('The "defaultUrlScheme" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -163,7 +163,7 @@ describe('The "defaultUrlScheme" setting', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

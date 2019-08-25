@@ -1,11 +1,11 @@
-import { LineConsumer } from './LineConsumer'
-import { NumberedList } from '../../SyntaxNodes/NumberedList'
-import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
-import { optional, patternStartingWith, escapeForRegex, oneOrMore, either, anyCharFrom, capture } from '../../PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, DIGIT } from '../../PatternPieces'
+import { anyCharFrom, capture, either, escapeForRegex, oneOrMore, optional, patternStartingWith } from '../../PatternHelpers'
+import { DIGIT, INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
 import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
-import { OutlineParserArgs } from './OutlineParserArgs'
+import { NumberedList } from '../../SyntaxNodes/NumberedList'
 import { getIndentedBlock } from './getIndentedBlock'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
+import { LineConsumer } from './LineConsumer'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Numbered lists are simply collections of numbered list items.
@@ -41,7 +41,7 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
       })
 
 
-    // Let's collect the rest of the lines in the current list item (if there are any). 
+    // Let's collect the rest of the lines in the current list item (if there are any).
     const indentedBlockResult =
       getIndentedBlock(markupLineConsumer.remaining())
 
@@ -64,7 +64,7 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
     return false
   }
 
-  let listItems = unparsedListItems.map(unparsedListItem => {
+  const listItems = unparsedListItems.map(unparsedListItem => {
     const itemChildren = getOutlineSyntaxNodes({
       markupLines: unparsedListItem.markupLines,
       sourceLineNumber: unparsedListItem.sourceLineNumber,
@@ -114,7 +114,7 @@ function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
       // There are five ways to bullet a numbered list:
       //
       // 1. An integer followed by a period
-      // 2) An integer followed by a closing parenthesis 
+      // 2) An integer followed by a closing parenthesis
       // # A number sign (this and all other bullets must be followed by a space)
       // #. A number sign followed by a period
       // #) A number sign followed by a closing parenthesis
@@ -122,7 +122,7 @@ function isANumberedList(unparsedListItems: UnparsedListItem[]): boolean {
       // The first one is potentially unclear. Look at the following paragraph:
       //
       //   1783. Not a good year for Great Britain.
-      // 
+      //
       // Did the author intend the paragraph be a numbered list with a single item? Probably not.
       //
       // Therefore, if the first bullet style is used, we require more than one list item.

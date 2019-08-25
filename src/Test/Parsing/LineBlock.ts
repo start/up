@@ -16,8 +16,8 @@ Violets are blue`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 })
@@ -49,8 +49,8 @@ And addresses do, too`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('And addresses do, too')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 })
@@ -61,7 +61,7 @@ context('A line block can be split in two by', () => {
     const markup = `
 1234 Spooky Street
 Pepe, PA 17101
- \t 
+ \t
 Roses are red
 Skeltals are white
 If you stay here
@@ -89,7 +89,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -127,7 +127,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -148,7 +148,7 @@ And addresses do, too`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
+          ])
         ]),
         new Up.ThematicBreak(),
         new Up.LineBlock([
@@ -157,8 +157,8 @@ And addresses do, too`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('And addresses do, too')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 
@@ -199,7 +199,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -243,7 +243,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -287,7 +287,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -327,7 +327,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -336,7 +336,7 @@ You're in for a fright`
     const markup = `
 1234 Spooky Street
 Pepe, PA 17101
- [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t 
+ [audio: ghostly howling] (http://example.com/ghosts.ogg) \t [image: haunted house] (http://example.com/hauntedhouse.svg) \t [video: ghosts eating luggage] (http://example.com/poltergeists.webm) \t
 Roses are red
 Skeltals are white
 If you stay here
@@ -377,7 +377,7 @@ You're in for a fright`
 context('Trailing whitespace in a line block is completely inconsequential. This is true when the trailing whitespace is:', () => {
   specify('Not escaped', () => {
     const markup = `
-Roses are red  \t  \t 
+Roses are red  \t  \t
 Violets are blue  \t  `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -388,14 +388,14 @@ Violets are blue  \t  `
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 
   specify('Escaped', () => {
     const markup = `
-Roses are red\\ \t   
+Roses are red\\ \t
 Violets are blue\\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -406,14 +406,14 @@ Violets are blue\\\t   `
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 
   specify('Both escaped and not escaped', () => {
     const markup = `
-Roses are red   \\ \t  \\  
+Roses are red   \\ \t  \\
 Violets are blue\t  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -424,14 +424,14 @@ Violets are blue\t  \\   \\\t   `
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 
   specify('Both escaped and not escaped, all following a backslash itself following an escaped backslash', () => {
     const markup = `
-Roses are red\\\\\\\t    \\  \\ \t  \\  
+Roses are red\\\\\\\t    \\  \\ \t  \\
 Violets are blue\\\\\\\\\\  \\   \\\t   `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -442,8 +442,8 @@ Violets are blue\\\\\\\\\\  \\   \\\t   `
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue\\\\')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 })

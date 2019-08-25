@@ -1,5 +1,5 @@
-import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
+import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 
 
 export class Blockquote extends RichOutlineSyntaxNode {

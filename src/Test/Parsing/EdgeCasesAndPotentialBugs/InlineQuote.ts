@@ -32,7 +32,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
             new Up.Emphasis([
               new Up.InlineQuote([
                 new Up.Text('leetle')
-              ]),
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -48,7 +48,7 @@ context('Within an inline quote, an (inner) inline quote can be the first conven
             new Up.Italic([
               new Up.InlineQuote([
                 new Up.Text('leetle')
-              ]),
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -107,8 +107,8 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
               new Up.NormalParenthetical([
-                new Up.Text('(Mario)'),
-              ]),
+                new Up.Text('(Mario)')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -123,8 +123,8 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
               new Up.Emphasis([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -139,8 +139,8 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
               new Up.Italic([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -155,8 +155,8 @@ context('Within an inline quote, an (inner) inline quote can close directly afte
             new Up.InlineQuote([
               new Up.Text('Help me find brother '),
               new Up.InlineRevealable([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])

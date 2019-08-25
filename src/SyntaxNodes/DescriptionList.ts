@@ -1,10 +1,10 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Document } from './Document'
 import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class DescriptionList implements OutlineSyntaxNode {

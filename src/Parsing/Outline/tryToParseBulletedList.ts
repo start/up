@@ -1,9 +1,9 @@
-import { LineConsumer } from './LineConsumer'
-import { BulletedList } from '../../SyntaxNodes/BulletedList'
-import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
-import { getIndentedBlock } from './getIndentedBlock'
-import { optional, patternStartingWith, anyCharFrom } from '../../PatternHelpers'
+import { anyCharFrom, optional, patternStartingWith } from '../../PatternHelpers'
 import { INLINE_WHITESPACE_CHAR } from '../../PatternPieces'
+import { BulletedList } from '../../SyntaxNodes/BulletedList'
+import { getIndentedBlock } from './getIndentedBlock'
+import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -33,7 +33,7 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
     linesOfMarkupInCurrentListItem.push(
       bulletedLineResult.line.replace(BULLETED_LINE_PATTERN, ''))
 
-    // Let's collect the rest of the lines in the current list item (if there are any)  
+    // Let's collect the rest of the lines in the current list item (if there are any)
     const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
 
     let shouldTerminateList = false

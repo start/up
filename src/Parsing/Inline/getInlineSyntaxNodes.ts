@@ -1,7 +1,7 @@
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { tokenize, tokenizeForInlineDocument } from './Tokenizing/tokenize'
-import { parse } from './parse'
 import { NormalizedSettings } from '../../NormalizedSettings'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { parse } from './parse'
+import { tokenize, tokenizeForInlineDocument } from './Tokenizing/tokenize'
 
 
 export function getInlineSyntaxNodes(inlineMarkup: string, settings: NormalizedSettings.Parsing): InlineSyntaxNode[] {

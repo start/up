@@ -15,8 +15,8 @@ Violets are blue`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 
@@ -32,8 +32,8 @@ Roses are red
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Violets are blue')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 })
@@ -64,8 +64,8 @@ And addresses do, too`
           ]),
           new Up.LineBlock.Line([
             new Up.Text('And addresses do, too')
-          ]),
-        ]),
+          ])
+        ])
       ]))
   })
 ])
@@ -82,17 +82,17 @@ And addresses do, too`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text('Roses are red'),
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.Text('Violets are blue'),
+            new Up.Text('Violets are blue')
           ]),
           new Up.LineBlock.Line([
             new Up.Text('Lyrics have lines')
           ]),
           new Up.LineBlock.Line([
             new Up.Text('And addresses do, too')
-          ]),
+          ])
         ])
       ]))
   })
@@ -110,10 +110,10 @@ Violets are blue`
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text('Roses are red'),
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.Text('Violets are blue'),
+            new Up.Text('Violets are blue')
           ])
         ])
       ]))
@@ -123,16 +123,16 @@ Violets are blue`
     const markup =
       `
 Roses are red
- \\   \\  \\\t  \t   
+ \\   \\  \\\t  \t
 Violets are blue`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text('Roses are red'),
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.Text('Violets are blue'),
+            new Up.Text('Violets are blue')
           ])
         ])
       ]))

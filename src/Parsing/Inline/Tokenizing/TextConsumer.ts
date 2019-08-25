@@ -39,7 +39,7 @@ export class TextConsumer {
   //
   // Before actually consuming the text, `thenBeforeConsumingText` is invoked.
   //
-  // NOTE: This method assumes `pattern` only matches the beginning of a string!  
+  // NOTE: This method assumes `pattern` only matches the beginning of a string!
   consume(pattern: RegExp): MatchResult | null {
     const result = pattern.exec(this._remaining)
 

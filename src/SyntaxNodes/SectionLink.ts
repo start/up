@@ -1,9 +1,9 @@
-import { Document } from './Document'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
-import { isEqualIgnoringCapitalization, containsStringIgnoringCapitalization } from '../StringHelpers'
-import { getTextAppearingInline } from './getTextAppearingInline'
+import { containsStringIgnoringCapitalization, isEqualIgnoringCapitalization } from '../StringHelpers'
+import { Document } from './Document'
 import { getInlineDescendants } from './getInlineDescendants'
+import { getTextAppearingInline } from './getTextAppearingInline'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 // A section link is essentially a reference to a table of contents entry.
@@ -20,7 +20,7 @@ export class SectionLink implements InlineSyntaxNode {
     //
     // First, we'll try to associate this section link with the first entry whose `titleMarkup`
     // exactly equals `markupSnippetFromSectionTitle`. We don't care about capitalization, but the
-    // two otherwise have to be an exact match. 
+    // two otherwise have to be an exact match.
     //
     // If there are no exact matches, then we'll try to associate this section link with the first
     // entry whose `titleMarkup` contains `markupSnippetFromSectionTitle`.

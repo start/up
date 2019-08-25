@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { NumberedList } from '../../SyntaxNodes/NumberedList'
 import { BulletedList } from '../../SyntaxNodes/BulletedList'
 import { DescriptionList } from '../../SyntaxNodes/DescriptionList'
+import { NumberedList } from '../../SyntaxNodes/NumberedList'
 
 
 describe('The table of contents', () => {
@@ -508,7 +508,7 @@ I enjoy apples
 
 2. They're delicious
    -----------------
-   
+
    Very delicious.`
 
       const applesHeading =
@@ -563,7 +563,7 @@ I enjoy apples
 
   # Cost
     ----
-   
+
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
@@ -620,7 +620,7 @@ I enjoy apples
 
 * They're delicious
   -----------------
-   
+
   Very delicious.`
 
       const applesHeading =
@@ -675,7 +675,7 @@ I enjoy apples
 
   * Cost
     -----------------
-   
+
     Typically, apples cost twenty dolloars per pound.`
 
       const applesHeading =
@@ -824,7 +824,7 @@ Apple
 Pink lady
   The best apple
   --------------
-  
+
   Really.`
 
       const applesHeading =
@@ -885,7 +885,7 @@ Apple
   Pink lady
     The best apple
     --------------
-    
+
     Really.`
 
       const applesHeading =
@@ -940,11 +940,11 @@ Apple
 * I like apples.
 
   #) Really.
-  
+
     Apple
       The best fruit
       ==============
-      
+
       > Purchasing
       > ----------`
 
@@ -1033,7 +1033,7 @@ Purchasing
 * I like apples.
 
   # Really.
-  
+
     Apple
       The best fruit
       ==============

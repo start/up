@@ -1,7 +1,7 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class CodeBlock implements OutlineSyntaxNode {

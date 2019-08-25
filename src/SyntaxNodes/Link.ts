@@ -1,8 +1,8 @@
-import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
+import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Document } from './Document'
-import { Renderer } from '../Rendering/Renderer'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 // If a line consists solely of media conventions *or media conventions within links*,

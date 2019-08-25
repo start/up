@@ -1,5 +1,5 @@
+import { BLANK_PATTERN, INDENTED_PATTERN } from '../../Patterns'
 import { LineConsumer } from './LineConsumer'
-import { INDENTED_PATTERN, BLANK_PATTERN } from '../../Patterns'
 
 
 // Indented blocks include indented and blank lines.
@@ -44,7 +44,7 @@ export function getIndentedBlock(lines: string[]): IndentedBlockResult | null {
   //
   // If there are two or more trailing blank lines, those trailing blank lines are neither consumed
   // nor included. They're instead left behind for another outline convention to deal with.
-  let countLinesConsumed =
+  const countLinesConsumed =
     hasMultipleTrailingBlankLines
       ? countLinesWithoutTrailingBlankLines
       : indentedLines.length

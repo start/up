@@ -1,7 +1,7 @@
-import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
+import { ParseableToken } from '../ParseableToken'
+import { BOLD, EMPHASIS, FOOTNOTE, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, ITALIC, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL, STRESS } from '../RichConventions'
 import { RichConvention } from './RichConvention'
 import { Token } from './Token'
-import { ParseableToken } from '../ParseableToken'
 
 
 // Rich conventions can overlap, which makes it painful to produce an abstract syntax tree. This function
@@ -70,7 +70,7 @@ class ConventionNester {
     for (const conventionNotToSplit of CONVENTIONS_TO_AVOID_SPLITTING_FROM_LEAST_TO_MOST_IMPORTANT) {
       this.resolveOverlapping(splittableConventions, conventionNotToSplit)
 
-      // We'd rather split the current convention than the ones that follow. 
+      // We'd rather split the current convention than the ones that follow.
       splittableConventions.push(conventionNotToSplit)
     }
   }
@@ -145,7 +145,7 @@ class ConventionNester {
       //
       // 1. Just before the end token of the current convention, we add a closing token for each unclosed
       //    convention. To preserve proper nesting, we close the conventions in order of most to least recent.
-      //  
+      //
       // 2. Just after the end token of the current convention, we add a start token for each unclosed convention.
       //    To avoid producing a surprising syntax tree, we re-open the conventions in their original order.
       this.closeAndReopenConventionsAroundTokenAtIndex(tokenIndex, endTokensOfOverlappingConventions)
@@ -200,7 +200,7 @@ class ConventionNester {
           // a URL that must be copied whenever links are split in half.
           //
           // Both collections contain end tokens in the order they appear in the original token collection (from inner
-          // to outer). 
+          // to outer).
           const endTokensOfOverlappingConventionsStartingBefore: Token[] = []
           const endTokensOfOverlappingConventionsStartingInside: Token[] = []
 

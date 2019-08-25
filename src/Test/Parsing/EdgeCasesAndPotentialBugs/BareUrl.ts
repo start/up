@@ -80,7 +80,7 @@ describe("Unmatched opening parentheses in a bare URL", () => {
       new Up.Text(' is better than '),
       new Up.Link([
         new Up.Text('w3.org')
-      ], 'https://w3.org'),
+      ], 'https://w3.org')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -105,12 +105,12 @@ describe("Unmatched opening parentheses in a bare URL closed by another conventi
       new Up.Emphasis([
         new Up.Link([
           new Up.Text('www.example.com/a(normal(url')
-        ], 'https://www.example.com/a(normal(url'),
+        ], 'https://www.example.com/a(normal(url')
       ]),
       new Up.Text("'s better than "),
       new Up.Link([
         new Up.Text('w3.org')
-      ], 'https://w3.org'),
+      ], 'https://w3.org')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(

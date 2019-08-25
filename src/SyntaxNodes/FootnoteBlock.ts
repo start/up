@@ -1,9 +1,9 @@
-import { Footnote } from './Footnote'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Document } from './Document'
-import { getInlineDescendants } from './getInlineDescendants'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { Footnote } from './Footnote'
+import { getInlineDescendants } from './getInlineDescendants'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class FootnoteBlock implements OutlineSyntaxNode {

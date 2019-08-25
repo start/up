@@ -487,7 +487,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
@@ -517,7 +517,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
@@ -547,7 +547,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
@@ -577,7 +577,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =
@@ -607,7 +607,7 @@ describe("The URL of a section link (which is the ID of the actual entry in the 
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     const { tableOfContentsHtml, documentHtml } =

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('An inline revealable followed immediately by a parenthesized/bracketd URL', () => {
@@ -29,7 +29,7 @@ describe('Any inline revealable followed immediately by a parenthesized/brackete
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
-        ]),
+        ])
       ])
     })
   })
@@ -61,7 +61,7 @@ describe('An inline revealable directly followed by a media convention', () => {
         new Up.InlineRevealable([
           new Up.Text('you fight Gary')
         ]),
-        new Up.Audio('final battle theme', 'https://example.com/songs/123.ogg'),
+        new Up.Audio('final battle theme', 'https://example.com/songs/123.ogg')
       ]))
   })
 })
@@ -84,7 +84,7 @@ describe('An inline revealable directly followed by a footnote', () => {
           new Up.InlineRevealable([
             new Up.Text('you fight Gary')
           ]),
-          footnotes[0],
+          footnotes[0]
         ]),
         new Up.FootnoteBlock(footnotes)
       ]))
@@ -101,7 +101,7 @@ describe('An otherwise-valid linkified revealable with its URL escaped', () => {
         ]),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
-        ]),
+        ])
       ]))
   })
 })
@@ -130,7 +130,7 @@ context("If there's no whitespace between an inline revealable and its bracketed
           new Up.Link([
             new Up.Text('you fight Gary')
           ], 'http://example.com/finalbattle')
-        ]),
+        ])
       ])
     })
   })

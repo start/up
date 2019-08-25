@@ -472,10 +472,10 @@ context("Within the table of contents itself", () => {
       new Up.Document([
         new Up.Paragraph([
           new Up.InlineRevealable([new Up.Text('Never')]),
-          new Up.Text(' eat apples.'),
+          new Up.Text(' eat apples.')
         ]),
         applesHeading,
-        grapesHeading,
+        grapesHeading
       ], new Up.Document.TableOfContents([applesHeading, grapesHeading]))
 
     const { tableOfContentsHtml, documentHtml } =

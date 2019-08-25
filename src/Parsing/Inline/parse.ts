@@ -1,16 +1,16 @@
-import { LINK, EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from './RichConventions'
-import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
+import { last } from '../../CollectionHelpers'
+import { URL_SCHEME_PATTERN } from '../../Patterns'
+import { ExampleUserInput } from '../../SyntaxNodes/ExampleUserInput'
+import { InlineCode } from '../../SyntaxNodes/InlineCode'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { Link } from '../../SyntaxNodes/Link'
+import { SectionLink } from '../../SyntaxNodes/SectionLink'
 import { Text } from '../../SyntaxNodes/Text'
 import { isWhitespace } from '../isWhitespace'
-import { last } from '../../CollectionHelpers'
+import { AUDIO, IMAGE, VIDEO } from './MediaConventions'
 import { ParseableToken } from './ParseableToken'
+import { BOLD, EMPHASIS, FOOTNOTE, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, ITALIC, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL, STRESS } from './RichConventions'
 import { TokenRole } from './TokenRole'
-import { InlineCode } from '../../SyntaxNodes/InlineCode'
-import { ExampleUserInput } from '../../SyntaxNodes/ExampleUserInput'
-import { SectionLink } from '../../SyntaxNodes/SectionLink'
-import { Link } from '../../SyntaxNodes/Link'
-import { URL_SCHEME_PATTERN } from '../../Patterns'
 
 
 // Returns a collection of inline syntax nodes representing inline conventions.
@@ -85,7 +85,7 @@ function parseAndGetResult(
         nodes.push(new SectionLink(tokenValue))
         continue
       }
- 
+
       case TokenRole.BareUrl: {
         const url = tokenValue
 

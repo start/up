@@ -273,7 +273,7 @@ describe('A numbered list', () => {
               new Up.Text('!')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 
@@ -417,7 +417,7 @@ describe('A numbered list item containing multiple indented lines', () => {
   =============
 
   Upcoming features:
-  
+
   # Code blocks in list items
   # Definition lists
 
@@ -481,7 +481,7 @@ context('Subsequent lines in a numbered list item must be indented.', () => {
             new Up.NumberedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -503,7 +503,7 @@ context('Subsequent lines in a numbered list item must be indented.', () => {
             new Up.NumberedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -525,7 +525,7 @@ context('Subsequent lines in a numbered list item must be indented.', () => {
             new Up.NumberedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -541,7 +541,7 @@ context('Subsequent lines in a numbered list item must be indented.', () => {
     const withMixedIndentation = `
 # Roses are red
   Violets are blue
- 
+
 \tI really like that poem.
 
  \tI think it's my favorite.

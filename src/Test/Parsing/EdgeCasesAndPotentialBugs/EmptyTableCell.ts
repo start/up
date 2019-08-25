@@ -19,10 +19,10 @@ Starcraft`
               new Up.Table.Header.Cell([])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')])
             ])
           ])
       ]))
@@ -48,13 +48,13 @@ Starcraft`
             new Up.Table.Header.Cell([new Up.Text('Game')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')]),
+              new Up.Table.Row.Cell([new Up.Text('Chrono Trigger')])
             ]),
             new Up.Table.Row([
               new Up.Table.Row.Cell([])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('Starcraft')]),
+              new Up.Table.Row.Cell([new Up.Text('Starcraft')])
             ])
           ])
       ]))

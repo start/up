@@ -173,7 +173,7 @@ Not quite true. For example, see [section: I drink 9 cans of soda... hourly].`
   context('When a heading contains an inline writing convention, the markup snippet can contain:', () => {
     specify('The entire writing convention', () => {
       const markup = `
-I'm a great guy. For more information, skip to [section: I *never* lie]. 
+I'm a great guy. For more information, skip to [section: I *never* lie].
 
 I drink soda
 ============
@@ -196,7 +196,7 @@ Not quite true.`
         new Up.Heading([
           new Up.Text('I '),
           new Up.Emphasis([new Up.Text('never')]),
-          new Up.Text(' lie'),
+          new Up.Text(' lie')
         ], {
             level: 1,
             titleMarkup: "I *never* lie",
@@ -223,7 +223,7 @@ Not quite true.`
 
     specify('A fragment of the writing convention', () => {
       const markup = `
-I'm a great guy. For more information, skip to [section: *never]. 
+I'm a great guy. For more information, skip to [section: *never].
 
 I drink soda
 ============
@@ -246,7 +246,7 @@ Not quite true.`
         new Up.Heading([
           new Up.Text('I '),
           new Up.Emphasis([new Up.Text('never')]),
-          new Up.Text(' lie'),
+          new Up.Text(' lie')
         ], {
             level: 1,
             titleMarkup: "I *never* lie",
@@ -277,7 +277,7 @@ Not quite true.`
 describe('A section link', () => {
   it('can match with a heading containing another section link', () => {
     const markup = `
-I'm a great guy. For more information, skip to [section: full transcript]. 
+I'm a great guy. For more information, skip to [section: full transcript].
 
 I drink soda
 ============

@@ -1,5 +1,5 @@
+import { atLeast, escapeForRegex, patternStartingWith } from '../../../../PatternHelpers'
 import { StartDelimiter } from './StartDelimiter'
-import { escapeForRegex, patternStartingWith, atLeast } from '../../../../PatternHelpers'
 
 // For a given delimiter character (`delimiterChar`), this class matchds end delimiters with start
 // delimiters, even if they aren't perfectly balanced.
@@ -8,7 +8,7 @@ export class ForgivingConventionHandler {
   private startDelimiters: StartDelimiter[] = []
 
   constructor(
-    // We save `options` as a field to make it easier to clone this object. 
+    // We save `options` as a field to make it easier to clone this object.
     private options: {
       delimiterChar: string
       minDelimiterLength?: number
@@ -32,12 +32,12 @@ export class ForgivingConventionHandler {
       // Normally, end delimiters will match with the nearest start delimiter, "canceling out"
       // as many characters as possible, then moving on to the next-nearest start delimiter until
       // it runs out of characters. This strategy is incapable of recognizing the overlapping
-      // demonstrated above. 
+      // demonstrated above.
       //
       // However, when `isPerfectMatch` is provided, end delimiters will first try to match the
       // nearest start delimiter satisfying `isPerfectMatch`, ignoring any delimiters in between
       // them.  When a perfect matching start delimiter is found, the end delimiter "cancels out"
-      // as many of that start delimiter's characters as possible, and then the handler returns.   
+      // as many of that start delimiter's characters as possible, and then the handler returns.
       isPerfectMatch?: (startDelimiterLength: number, endDelimiterLength: number) => boolean
     }
   ) {

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from './Helpers'
 
 
 context('A link can have whitespace between its bracketed content and bracketed URL, but only if the URL satisfies one of the following conditions:', () => {

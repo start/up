@@ -1,11 +1,11 @@
+import { patternIgnoringCapitalizationAndStartingWith, patternStartingWith } from '../../../PatternHelpers'
+import { TokenRole } from '../TokenRole'
 import { ConventionContext } from './ConventionContext'
 import { OnTextMatch } from './OnTextMatch'
-import { TokenRole } from '../TokenRole'
-import { patternStartingWith, patternIgnoringCapitalizationAndStartingWith } from '../../../PatternHelpers'
 
 
 // Represents the rules for a single variation of an inline writing convention (e.g. an inline
-// revealable convention delimited by square brackets).  
+// revealable convention delimited by square brackets).
 export class ConventionVariation {
   startsWith: RegExp
   endsWith?: RegExp

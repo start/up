@@ -32,7 +32,7 @@ Chrono Cross;       1999`
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -47,7 +47,7 @@ Table:
                     Release Date
 
 Final Fantasy;      1987
-Final Fantasy II; \t \t 
+Final Fantasy II; \t \t
 Chrono Trigger;     1995
 Chrono Cross;       1999`
 
@@ -69,7 +69,7 @@ Chrono Cross;       1999`
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -83,7 +83,7 @@ Table:
 
                     Release Date;
 
-Final Fantasy;      1987;             This game has some interesting bugs.     
+Final Fantasy;      1987;             This game has some interesting bugs.
 Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
@@ -109,7 +109,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('1999')]),
               new Up.Table.Row.Cell([new Up.Text("Though not a proper sequel, it's my favorite game.")])
-            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })
@@ -121,9 +121,9 @@ describe('The header row of a table (with a header column) ending with an unesca
     const markup = `
 Table:
 
-                    Release Date; \t \t 
+                    Release Date; \t \t
 
-Final Fantasy;      1987;             This game has some interesting bugs.     
+Final Fantasy;      1987;             This game has some interesting bugs.
 Final Fantasy II;
 Chrono Trigger;     1995
 Chrono Cross;       1999;             Though not a proper sequel, it's my favorite game.`
@@ -149,7 +149,7 @@ Chrono Cross;       1999;             Though not a proper sequel, it's my favori
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('1999')]),
               new Up.Table.Row.Cell([new Up.Text("Though not a proper sequel, it's my favorite game.")])
-            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+            ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
   })

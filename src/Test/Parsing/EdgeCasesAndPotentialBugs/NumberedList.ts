@@ -105,7 +105,7 @@ describe('A numbered list followed by 2 blank lines followed by another numbered
               new Up.Text('Sanders')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 })
@@ -148,7 +148,7 @@ describe('A numbered list followed by 3 blank lines followed by another numbered
               new Up.Text('Sanders')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 })
@@ -291,7 +291,7 @@ I enjoy apples
 
 2. They're delicious
    -----------------
-   
+
    Very delicious.`
 
     const enjoyHeading =

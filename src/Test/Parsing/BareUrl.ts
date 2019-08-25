@@ -319,7 +319,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
           new Up.Text('I love '),
           new Up.Link([
             new Up.Text('archive.org/fake')
-          ], 'https://archive.org/fake'),
+          ], 'https://archive.org/fake')
         ], 'https://example.com/outer'),
         new Up.Text(' and you should too!')
       ]))
@@ -332,7 +332,7 @@ context('Bare URLs are terminated when any outer convention closes. This include
       new Up.Text('Well, I do: '),
       new Up.Link([
         new Up.Text('example.com/cereal')
-      ], 'https://example.com/cereal'),
+      ], 'https://example.com/cereal')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(

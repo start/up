@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from './Helpers'
 
 
 context('Bracketed (square bracketed or parenthesized) text starting with "audio:" immediately followed by another instance of bracketed text', () => {
@@ -39,8 +39,8 @@ context('An audio convention that is the only convention on its line is not plac
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Link([
-            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-          ], 'https://hauntedhouse.com'),
+            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg')
+          ], 'https://hauntedhouse.com')
         ]))
     })
 
@@ -51,8 +51,8 @@ context('An audio convention that is the only convention on its line is not plac
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Link([
-            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg'),
-          ], 'https://hauntedhouse.com'),
+            new Up.Audio('ghostly howling', 'http://example.com/ghosts.ogg')
+          ], 'https://hauntedhouse.com')
         ]))
     })
   })
@@ -205,7 +205,7 @@ describe('An audio description (enclosed in square brackets)', () => {
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('[audio: [[ghostly] howling]](http://example.com/?state=NE)')).to.deep.equal(
       new Up.Document([
-        new Up.Audio('[[ghostly] howling]', 'http://example.com/?state=NE'),
+        new Up.Audio('[[ghostly] howling]', 'http://example.com/?state=NE')
       ]))
   })
 })

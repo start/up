@@ -51,7 +51,7 @@ describe('A footnote produced by parentheses that contains nested parenthesized 
       new Up.NormalParenthetical([
         new Up.Text("(I don't eat cereal. "),
         new Up.NormalParenthetical([
-          new Up.Text("(Well, I do, but I pretend not to.)"),
+          new Up.Text("(Well, I do, but I pretend not to.)")
         ]),
         new Up.Text(')')
       ]),
@@ -78,7 +78,7 @@ describe('A footnote produced by square brackets that contains nested square bra
       new Up.SquareParenthetical([
         new Up.Text("[I don't eat cereal. "),
         new Up.SquareParenthetical([
-          new Up.Text("[Well, I do, but I pretend not to.]"),
+          new Up.Text("[Well, I do, but I pretend not to.]")
         ]),
         new Up.Text(']')
       ]),
@@ -104,7 +104,7 @@ describe('Within an outline convention, footnotes within a revealable outline co
 
     Roses are red [^ This is not my line.]
     Violets are blue [^ Neither is this line. I think my mom made it up.]
-    
+
     Anyway, none of that matters.`
 
     const paragraphFootnotes = [
@@ -140,7 +140,7 @@ describe('Within an outline convention, footnotes within a revealable outline co
               new Up.LineBlock([
                 new Up.LineBlock.Line([
                   new Up.Text("Roses are red"),
-                  lineBlockFootnotes[0],
+                  lineBlockFootnotes[0]
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text("Violets are blue"),
@@ -169,17 +169,17 @@ describe('A footnote with inner footnotes followed by another footnote with inne
       new Up.Emphasis([
         new Up.Text('do')
       ]),
-      new Up.Text(', but I pretend not to.'),
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 3 })
 
     const firstFootnote = new Up.Footnote([
       new Up.Text("That said, I don't eat cereal."),
       footnoteInsideFirstFootnote,
-      new Up.Text(" Never have."),
+      new Up.Text(" Never have.")
     ], { referenceNumber: 1 })
 
     const footnoteInsideSecondFootnote = new Up.Footnote([
-      new Up.Text("No."),
+      new Up.Text("No.")
     ], { referenceNumber: 4 })
 
     const secondFootnote = new Up.Footnote([
@@ -193,7 +193,7 @@ describe('A footnote with inner footnotes followed by another footnote with inne
           new Up.Text("Me? I'm totally normal."),
           firstFootnote,
           new Up.Text(" Really."),
-          secondFootnote,
+          secondFootnote
         ]),
         new Up.FootnoteBlock([
           firstFootnote,

@@ -55,7 +55,7 @@ Chrono Cross;       1999;               Though not a proper sequel, it's my favo
         new Up.Table(
           new Up.Table.Header([
             new Up.Table.Header.Cell([]),
-            new Up.Table.Header.Cell([new Up.Text('Release Date')]),
+            new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('1987')]),

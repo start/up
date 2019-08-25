@@ -1,9 +1,9 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Document } from './Document'
 import { concat } from '../CollectionHelpers'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
+import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
 
 
 export class NumberedList implements OutlineSyntaxNode {
@@ -53,7 +53,7 @@ export class NumberedList implements OutlineSyntaxNode {
 
 export namespace NumberedList {
   export class Item extends OutlineSyntaxNodeContainer {
-    public ordinal: number | undefined = undefined
+    ordinal: number | undefined = undefined
 
     constructor(public children: OutlineSyntaxNode[], options?: { ordinal?: number }) {
       super(children)

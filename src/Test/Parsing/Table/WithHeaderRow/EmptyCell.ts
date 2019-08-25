@@ -36,7 +36,7 @@ Chrono Cross;       1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })
@@ -77,7 +77,7 @@ Chrono Cross;       1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })
@@ -121,7 +121,7 @@ Chrono Cross;       1999;               Though not a proper sequel, it's my favo
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')]),
               new Up.Table.Row.Cell([new Up.Text("Though not a proper sequel, it's my favorite game.")])
-            ]),
+            ])
           ])
       ]))
   })
@@ -133,7 +133,7 @@ describe('A table header ending with an unescaped semicolon followed by whitespa
     const markup = `
 Table:
 
-Game;               Release Date; \t \t 
+Game;               Release Date; \t \t
 
 Final Fantasy;      1987
 Final Fantasy II;   1988
@@ -163,7 +163,7 @@ Chrono Cross;       1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })

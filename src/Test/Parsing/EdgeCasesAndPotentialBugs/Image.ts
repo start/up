@@ -13,7 +13,7 @@ Do not pour the spiders into your sister's cereal.
         new Up.Paragraph([
           new Up.Text("Do not pour the spiders into your sister's cereal.")
         ]),
-        new Up.Image('sister arraigned on charges', 'http://example.com/court.jpg'),
+        new Up.Image('sister arraigned on charges', 'http://example.com/court.jpg')
       ]))
   })
 })
@@ -29,7 +29,7 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
           new Up.Link([
             new Up.Text('example.com/ghosts.svg')
           ], 'http://example.com/ghosts.svg'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -48,7 +48,7 @@ describe('An otherwise-valid image convention with mismatched brackets surroundi
         new Up.Text('['),
         new Up.Link([
           new Up.Text('example.com/ghosts.svg).')
-        ], 'http://example.com/ghosts.svg).'),
+        ], 'http://example.com/ghosts.svg).')
       ]))
   })
 })
@@ -58,7 +58,7 @@ context('Unmatched opening parentheses in an image description have no affect on
   specify('parentheses surounding the URL', () => {
     expect(Up.parse('[image: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
       new Up.Document([
-        new Up.Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+        new Up.Image('sad :( sad :( sounds', 'http://example.com/sad.ogg')
       ]))
   })
 
@@ -69,7 +69,7 @@ context('Unmatched opening parentheses in an image description have no affect on
           new Up.NormalParenthetical([
             new Up.Text('('),
             new Up.Image('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new Up.Text(')'),
+            new Up.Text(')')
           ])
         ])
       ]))
@@ -82,7 +82,7 @@ describe("Unmatched opening parentheses in an image URL", () => {
     const markup = '(^[image: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new Up.Footnote([
-      new Up.Image('West Virginia exit polling', 'https://example.com/a(normal(url'),
+      new Up.Image('West Virginia exit polling', 'https://example.com/a(normal(url')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(

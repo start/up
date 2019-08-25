@@ -1,6 +1,6 @@
-import { LineConsumer } from './LineConsumer'
-import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { streakOf } from '../../PatternHelpers'
+import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -44,7 +44,7 @@ export function tryToParseCodeBlock(args: OutlineParserArgs): boolean {
 
       // Since we don't have a possible end streak, we'll just treat this line as code and move
       // on to the next one.
-      codeLines.push(markupLineConsumer.consumeLine())
+    codeLines.push(markupLineConsumer.consumeLine())
   }
 
   args.then(

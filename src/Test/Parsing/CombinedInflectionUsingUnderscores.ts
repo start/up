@@ -14,7 +14,7 @@ describe('Text surrounded by 3 underscores', () => {
         new Up.Text('Xamarin is now '),
         new Up.Bold([
           new Up.Italic([
-            new Up.Text('free'),
+            new Up.Text('free')
           ])
         ]),
         new Up.Text('!')
@@ -30,7 +30,7 @@ describe('Text that is italicized/bolded at the same time', () => {
         new Up.Text('Koopas! '),
         new Up.Bold([
           new Up.Italic([
-            new Up.Text('Mario is on his way!'),
+            new Up.Text('Mario is on his way!')
           ])
         ]),
         new Up.Text(' Grab your shells!')
@@ -43,7 +43,7 @@ describe('Text that is italicized/bolded at the same time', () => {
         new Up.Text('Koopas! '),
         new Up.Bold([
           new Up.Italic([
-            new Up.Text('Mario is on his way!'),
+            new Up.Text('Mario is on his way!')
           ])
         ]),
         new Up.Text(' Grab your shells!')
@@ -56,7 +56,7 @@ describe('Text that is italicized/bolded at the same time', () => {
         new Up.Text('Hello, '),
         new Up.Bold([
           new Up.Italic([
-            new Up.Text('my'),
+            new Up.Text('my')
           ]),
           new Up.Text(' world')
         ]),
@@ -70,7 +70,7 @@ describe('Text that is italicized/bolded at the same time', () => {
         new Up.Text('Hello, '),
         new Up.Italic([
           new Up.Bold([
-            new Up.Text('my'),
+            new Up.Text('my')
           ]),
           new Up.Text(' world')
         ]),
@@ -88,7 +88,7 @@ context("You can italicize/bold text at the same time when you're already within
           new Up.Text('Please '),
           new Up.Bold([
             new Up.Italic([
-              new Up.Text('stop eating the cardboard'),
+              new Up.Text('stop eating the cardboard')
             ])
           ]),
           new Up.Text(' immediately')
@@ -103,7 +103,7 @@ context("You can italicize/bold text at the same time when you're already within
           new Up.Text('Please '),
           new Up.Bold([
             new Up.Italic([
-              new Up.Text('stop eating the cardboard'),
+              new Up.Text('stop eating the cardboard')
             ])
           ]),
           new Up.Text(' immediately')
@@ -327,7 +327,7 @@ describe('Quadruple underscores followed by 4 separate single closing underscore
           new Up.Italic([
             new Up.Italic([
               new Up.Italic([
-                new Up.Text('Warning:'),
+                new Up.Text('Warning:')
               ]),
               new Up.Text(' never')
             ]),

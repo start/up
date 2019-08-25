@@ -116,7 +116,7 @@ Confuse Ray
 Lick
 Night Shade
   Ghost type moves.
-  
+
 Gary
   A young man with a great sense of smell.`
 
@@ -204,14 +204,14 @@ Poem
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.Text('Roses are red'),
+                    new Up.Text('Roses are red')
                   ]),
                   new Up.LineBlock.Line([
                     new Up.Text('Violets are blue')
                   ])
                 ])
               ]))
-          ]),
+          ])
         ]))
     })
 
@@ -232,7 +232,7 @@ Poem
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.Text('Roses are red'),
+                    new Up.Text('Roses are red')
                   ]),
                   new Up.LineBlock.Line([
                     new Up.Text('Violets are blue')
@@ -260,7 +260,7 @@ Poem
               new Up.DescriptionList.Item.Description([
                 new Up.LineBlock([
                   new Up.LineBlock.Line([
-                    new Up.Text('Roses are red'),
+                    new Up.Text('Roses are red')
                   ]),
                   new Up.LineBlock.Line([
                     new Up.Text('Violets are blue')
@@ -278,15 +278,15 @@ specify('Different lines in a description list can use different indentation', (
 Poem
   Roses are red
  \tViolets are blue
- 
+
 \tI really like this one.
-   
+
   I think it's my favorite.
 
 Address
 \t1234 Spooky Street
   Pepe, PA 17101
- 
+
  \tI used to live there.`
 
   expect(Up.parse(markup)).to.deep.equal(
@@ -496,7 +496,7 @@ Charmander
     const markup = `
 Charmander
   Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
-  
+
 Bulbasaur
 
   A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.`
@@ -505,7 +505,7 @@ Bulbasaur
       new Up.Document([
         new Up.DescriptionList([
           new Up.DescriptionList.Item([
-            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')]),
+            new Up.DescriptionList.Item.Subject([new Up.Text('Charmander')])
           ],
             new Up.DescriptionList.Item.Description([
               new Up.Paragraph([

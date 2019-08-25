@@ -166,7 +166,7 @@ describe('A description list', () => {
         ])),
         new Up.DescriptionList.Item([
           new Up.DescriptionList.Item.Subject([new Up.Text('Confuse Ray')]),
-          new Up.DescriptionList.Item.Subject([new Up.Text('Lick')]),
+          new Up.DescriptionList.Item.Subject([new Up.Text('Lick')])
         ], new Up.DescriptionList.Item.Description([
           new Up.Paragraph([
             new Up.Text('Ghost type moves')
@@ -388,7 +388,7 @@ describe('When any table header cell has a numeric value, incuding those in the 
         ]), [
           new Up.Table.Row([
             new Up.Table.Row.Cell([new Up.Text('true')]),
-            new Up.Table.Row.Cell([new Up.Text('false')]),
+            new Up.Table.Row.Cell([new Up.Text('false')])
           ], new Up.Table.Header.Cell([new Up.Text('1')])),
           new Up.Table.Row([
             new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -421,9 +421,9 @@ context('When a header column cell spans multiple columns', () => {
           new Up.Table.Row([], new Up.Table.Header.Cell([new Up.Text('Tuesday')], 2)),
           new Up.Table.Row([], new Up.Table.Header.Cell([new Up.Text('Wednesday')], 2)),
           new Up.Table.Row([
-            new Up.Table.Row.Cell([new Up.Text('Really')]),
+            new Up.Table.Row.Cell([new Up.Text('Really')])
           ], new Up.Table.Header.Cell([new Up.Text('Thursday')])),
-          new Up.Table.Row([], new Up.Table.Header.Cell([new Up.Text('Friday')], 2)),
+          new Up.Table.Row([], new Up.Table.Header.Cell([new Up.Text('Friday')], 2))
         ])
     ])
 
@@ -761,7 +761,7 @@ describe('A section link node that is associated with a table of contents entry'
     const document =
       new Up.Document([
         new Up.Paragraph([new Up.SectionLink('howdy', heading)]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading]))
 
     expect(Up.render(document)).to.equal(
@@ -805,11 +805,11 @@ describe("Each footnote in a footnote block", () => {
     const document = new Up.Document([
       new Up.FootnoteBlock([
         new Up.Footnote([
-          new Up.Text("Arwings"),
+          new Up.Text("Arwings")
         ], { referenceNumber: 2 }),
         new Up.Footnote([
-          new Up.Text("Killer Bees"),
-        ], { referenceNumber: 3 }),
+          new Up.Text("Killer Bees")
+        ], { referenceNumber: 3 })
       ])
     ])
 

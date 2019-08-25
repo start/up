@@ -98,7 +98,7 @@ describe('A linified revealable convention that overlaps a footnote', () => {
         new Up.Paragraph([
           new Up.InlineRevealable([
             new Up.Link([
-              new Up.Text('Gary loses to Ash'),
+              new Up.Text('Gary loses to Ash')
             ], 'https://example.com')
           ]),
           footnote

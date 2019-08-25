@@ -1,11 +1,11 @@
-import { LineConsumer } from './LineConsumer'
-import { Table } from '../../SyntaxNodes/Table'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { solelyAndIgnoringCapitalization, escapeForRegex, optional, either, capture } from '../../PatternHelpers'
-import { BLANK_PATTERN, NON_BLANK_PATTERN, INDENTED_PATTERN } from '../../Patterns'
+import { capture, either, escapeForRegex, optional, solelyAndIgnoringCapitalization } from '../../PatternHelpers'
 import { REST_OF_TEXT } from '../../PatternPieces'
+import { BLANK_PATTERN, INDENTED_PATTERN, NON_BLANK_PATTERN } from '../../Patterns'
+import { Table } from '../../SyntaxNodes/Table'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
+import { LineConsumer } from './LineConsumer'
+import { OutlineParserArgs } from './OutlineParserArgs'
 
 
 // Tables start with a "label line". The label line consists of the configurable
@@ -47,9 +47,9 @@ import { getTableCells } from './getTableCells'
 //
 //         1;      0
 // 1;      true;   false
-// 0;      false;  false 
+// 0;      false;  false
 //
-// Specifically, when the header row is indented: 
+// Specifically, when the header row is indented:
 //
 // 1. The first cell of each row in the table is treated as a header for that row.
 // 2. An empty cell is automatically added to the beginning of the table's header
@@ -78,7 +78,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
 
   // We have our label line (with an optional caption).
   //
-  // Let's consume the optional blank line before the header row. 
+  // Let's consume the optional blank line before the header row.
   markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
   const headerRowResult =
@@ -108,7 +108,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   // found header, but we'd have to throw away our work if:
   //
   // * The header was missing
-  // * The label line (with the caption) was followed by 2 or more blank lines  
+  // * The label line (with the caption) was followed by 2 or more blank lines
   const caption =
     captionMarkup
       ? new Table.Caption(getInlineSyntaxNodes(captionMarkup, settings))
@@ -121,7 +121,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
   // the table ends here.
   let countLinesConsumed = markupLineConsumer.countLinesConsumed
 
-  // Let's consume the optional blank line after the header row. 
+  // Let's consume the optional blank line after the header row.
   markupLineConsumer.consumeLineIfMatches(BLANK_PATTERN)
 
   // Phew! We're finally ready to start consuming any rows!

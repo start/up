@@ -1,7 +1,7 @@
+import { coalesce, distinct } from './CollectionHelpers'
 import { FORWARD_SLASH, HASH_MARK } from './PatternPieces'
 import { URL_SCHEME_PATTERN } from './Patterns'
 import { Settings } from './Settings'
-import { coalesce, distinct } from './CollectionHelpers'
 
 
 // The `Settings` provided by the user are almost always imcomplete.

@@ -1,6 +1,6 @@
-import { TokenRole } from './TokenRole'
 import { NormalizedSettings } from '../../NormalizedSettings'
 import { MediaSyntaxNodeType } from '../../SyntaxNodes/MediaSyntaxNode'
+import { TokenRole } from './TokenRole'
 
 
 export interface MediaConvention {

@@ -21,7 +21,7 @@ Roses don't glow!`
         new Up.LineBlock([
           new Up.LineBlock.Line([new Up.Text('Spoiler:')]),
           new Up.LineBlock.Line([new Up.Text('No!')]),
-          new Up.LineBlock.Line([new Up.Text("Roses don't glow!")]),
+          new Up.LineBlock.Line([new Up.Text("Roses don't glow!")])
         ])
       ]))
   })

@@ -1,8 +1,8 @@
+import { Renderer } from '../Rendering/Renderer'
 import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { InlineSyntaxNodeContainer } from './InlineSyntaxNodeContainer'
-import { Renderer } from '../Rendering/Renderer'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export class Heading extends InlineSyntaxNodeContainer implements OutlineSyntaxNode, Document.TableOfContents.Entry {

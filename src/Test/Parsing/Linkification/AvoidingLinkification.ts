@@ -19,7 +19,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -46,9 +46,9 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
             new Up.Link([
               new Up.Text('example.com/cereal-problems')
             ], 'https://example.com/cereal-problems'),
-            new Up.Text(')'),
+            new Up.Text(')')
           ]),
-          new Up.Text(" and I never have."),
+          new Up.Text(" and I never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -67,7 +67,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -86,7 +86,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -105,7 +105,7 @@ context('Once a convention has been linkified, it cannot be linkified again. Thi
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -127,7 +127,7 @@ context('The following conventions cannot be linkified:', () => {
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -144,7 +144,7 @@ context('The following conventions cannot be linkified:', () => {
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -163,7 +163,7 @@ context('The following conventions cannot be linkified:', () => {
           new Up.Link([
             new Up.Text('example.com')
           ], 'https://example.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -182,7 +182,7 @@ context('The following conventions cannot be linkified:', () => {
           new Up.Link([
             new Up.Text("github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript")
           ], "https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript"),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))

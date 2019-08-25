@@ -74,14 +74,14 @@ context('A code block with containing zero lines of code produces an empty code 
 \`\`\``
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.CodeBlock(''),
+        new Up.CodeBlock('')
       ]))
   })
 
   specify('when it lacks a closing streak', () => {
     expect(Up.parse('```')).to.deep.equal(
       new Up.Document([
-        new Up.CodeBlock(''),
+        new Up.CodeBlock('')
       ]))
   })
 })
@@ -146,7 +146,7 @@ That's what the robot wrote!`
 "\`\`\`"`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
-        new Up.CodeBlock('"```"'),
+        new Up.CodeBlock('"```"')
       ]))
   })
 })

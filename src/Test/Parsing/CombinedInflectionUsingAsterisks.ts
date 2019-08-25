@@ -14,7 +14,7 @@ describe('Text surrounded by 3 asterisks', () => {
         new Up.Text('Xamarin is now '),
         new Up.Stress([
           new Up.Emphasis([
-            new Up.Text('free'),
+            new Up.Text('free')
           ])
         ]),
         new Up.Text('!')
@@ -30,7 +30,7 @@ describe('Text that is emphasized/stressed at the same time', () => {
         new Up.Text('Koopas! '),
         new Up.Stress([
           new Up.Emphasis([
-            new Up.Text('Mario is on his way!'),
+            new Up.Text('Mario is on his way!')
           ])
         ]),
         new Up.Text(' Grab your shells!')
@@ -43,7 +43,7 @@ describe('Text that is emphasized/stressed at the same time', () => {
         new Up.Text('Koopas! '),
         new Up.Stress([
           new Up.Emphasis([
-            new Up.Text('Mario is on his way!'),
+            new Up.Text('Mario is on his way!')
           ])
         ]),
         new Up.Text(' Grab your shells!')
@@ -56,7 +56,7 @@ describe('Text that is emphasized/stressed at the same time', () => {
         new Up.Text('Hello, '),
         new Up.Stress([
           new Up.Emphasis([
-            new Up.Text('my'),
+            new Up.Text('my')
           ]),
           new Up.Text(' world')
         ]),
@@ -70,7 +70,7 @@ describe('Text that is emphasized/stressed at the same time', () => {
         new Up.Text('Hello, '),
         new Up.Emphasis([
           new Up.Stress([
-            new Up.Text('my'),
+            new Up.Text('my')
           ]),
           new Up.Text(' world')
         ]),
@@ -88,7 +88,7 @@ context("You can emphasize/stress text at the same time when you're already with
           new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.Text('stop eating the cardboard'),
+              new Up.Text('stop eating the cardboard')
             ])
           ]),
           new Up.Text(' immediately')
@@ -103,7 +103,7 @@ context("You can emphasize/stress text at the same time when you're already with
           new Up.Text('Please '),
           new Up.Stress([
             new Up.Emphasis([
-              new Up.Text('stop eating the cardboard'),
+              new Up.Text('stop eating the cardboard')
             ])
           ]),
           new Up.Text(' immediately')
@@ -327,7 +327,7 @@ describe('Quadruple asterisks followed by 4 separate single closing asterisks', 
           new Up.Emphasis([
             new Up.Emphasis([
               new Up.Emphasis([
-                new Up.Text('Warning:'),
+                new Up.Text('Warning:')
               ]),
               new Up.Text(' never')
             ]),

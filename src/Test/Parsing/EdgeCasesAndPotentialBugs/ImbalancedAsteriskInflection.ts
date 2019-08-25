@@ -9,7 +9,7 @@ describe('Text surrounded by 2 asterisks to its left and 1 asterisk to its right
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Emphasis([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -23,7 +23,7 @@ describe('Text surrounded by 1 asterisk to its left and 2 asterisks to its right
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Emphasis([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -37,7 +37,7 @@ describe('Text surrounded by 3 asterisks to its left and 1 asterisk to its right
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Emphasis([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -51,7 +51,7 @@ describe('Text surrounded by 3 asterisks to its left and 2 asterisks to its righ
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Stress([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -65,7 +65,7 @@ describe('Text surrounded by 1 asterisk to its left and 3 asterisks to its right
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Emphasis([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -79,7 +79,7 @@ describe('Text surrounded by 2 asterisk to its left and 3 asterisks to its right
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Stress([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))

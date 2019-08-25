@@ -67,7 +67,7 @@ describe('Double underscores followed by two separate single closing underscores
       insideDocumentAndParagraph([
         new Up.Italic([
           new Up.Italic([
-            new Up.Text('Warning:'),
+            new Up.Text('Warning:')
           ]),
           new Up.Text(' never feed this tarantula')
         ])
@@ -80,7 +80,7 @@ describe('Text separated from (otherwise surrounding) underscores by whitespace'
   it('is not put inside an italics node', () => {
     expect(Up.parse('Birdie Sanders _ won _ Wisconsin')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('Birdie Sanders _ won _ Wisconsin'),
+        new Up.Text('Birdie Sanders _ won _ Wisconsin')
       ]))
   })
 })

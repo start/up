@@ -41,7 +41,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Emphasis([
-            new Up.Text('Yes'),
+            new Up.Text('Yes')
           ]),
           new Up.Text(", I watched it live")
         ], 'https://example.com/replay'),
@@ -54,7 +54,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
       insideDocumentAndParagraph([
         new Up.Emphasis([
           new Up.Link([
-            new Up.Text('Yes, I watched it live'),
+            new Up.Text('Yes, I watched it live')
           ], 'https://example.com/replay'),
           new Up.Text(' yesterday')
         ]),
@@ -95,7 +95,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
             new Up.Text('('),
             new Up.Emphasis([
               new Up.Text('Oh)')
-            ]),
+            ])
           ]),
           new Up.Emphasis([
             new Up.Text(' why would you do this?')
@@ -122,7 +122,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
             new Up.Text('['),
             new Up.Emphasis([
               new Up.Text('Oh]')
-            ]),
+            ])
           ]),
           new Up.Emphasis([
             new Up.Text(' why would you do this?')
@@ -147,7 +147,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
         insideDocumentAndParagraph([
           new Up.NormalParenthetical([
             new Up.InlineQuote([
-              new Up.Text('(Oh'),
+              new Up.Text('(Oh')
             ]),
             new Up.Text(' why would you do this?)')
           ])
@@ -162,7 +162,7 @@ context('When most otherwise-nested conventions overlap by only their start deli
           ]),
           new Up.InlineQuote([
             new Up.NormalParenthetical([
-              new Up.Text('Oh)'),
+              new Up.Text('Oh)')
             ]),
             new Up.Text(' why would you do this?')
           ])
@@ -184,7 +184,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Italic([
                 new Up.Text('friend!')
               ])
-            ]),
+            ])
           ]),
           new Up.Text(' Hi!')
         ]))
@@ -199,8 +199,8 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Text('rotten '),
               new Up.Bold([
                 new Up.Text('body')
-              ]),
-            ]),
+              ])
+            ])
           ]),
           new Up.Text(' Hi!')
         ]))
@@ -215,8 +215,8 @@ context('When most otherwise-nested conventions overlap by only their end delimi
               new Up.Text('rotten body '),
               new Up.InlineQuote([
                 new Up.Text('squish')
-              ]),
-            ]),
+              ])
+            ])
           ]),
           new Up.Text(' Hi!')
         ]))
@@ -358,7 +358,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('Oh '),
             new Up.NormalParenthetical([
               new Up.Text('(why would you do this?')
-            ]),
+            ])
           ]),
           new Up.NormalParenthetical([
             new Up.Text(')')
@@ -373,7 +373,7 @@ context('When most otherwise-nested conventions overlap by only their end delimi
             new Up.Text('Oh '),
             new Up.SquareParenthetical([
               new Up.Text('[why would you do this?')
-            ]),
+            ])
           ]),
           new Up.SquareParenthetical([
             new Up.Text(']')
@@ -450,7 +450,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         new Up.Italic([
           new Up.InlineQuote([
             new Up.Text('Why would you do this?')
-          ]),
+          ])
         ])
       ]))
   })
@@ -461,7 +461,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
         new Up.InlineQuote([
           new Up.Italic([
             new Up.Text('Why would you do this?')
-          ]),
+          ])
         ])
       ]))
   })
@@ -475,7 +475,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
             new Up.Text('('),
             new Up.Italic([
               new Up.Text('Why would you do this?)')
-            ]),
+            ])
           ])
         ]))
     })
@@ -511,7 +511,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
             new Up.Italic([
               new Up.Text('[Why would you do this?')
             ]),
-            new Up.Text(']'),
+            new Up.Text(']')
           ])
         ]))
     })
@@ -536,7 +536,7 @@ context('When most conventions completely overlap, they nest perfectly, with the
           new Up.Text('['),
           new Up.InlineQuote([
             new Up.Text('Why would you do this?]')
-          ]),
+          ])
         ])
       ]))
   })
@@ -553,7 +553,7 @@ context("When some conventions overlap by only the first convention's end delimi
           ], 'https://google.com'),
           new Up.InlineRevealable([
             new Up.Text(' why would you do this?')
-          ]),
+          ])
         ]))
     })
 
@@ -606,7 +606,7 @@ context("When some conventions overlap by only the first convention's end delimi
             new Up.Text('(Oh '),
             new Up.Highlight([
               new Up.Text(')')
-            ]),
+            ])
           ]),
           new Up.Highlight([
             new Up.Text(' why would you do this?')
@@ -621,7 +621,7 @@ context("When some conventions overlap by only the first convention's end delimi
             new Up.Text('Oh '),
             new Up.NormalParenthetical([
               new Up.Text('(')
-            ]),
+            ])
           ]),
           new Up.NormalParenthetical([
             new Up.Text('why would you do this?)')
@@ -636,7 +636,7 @@ context("When some conventions overlap by only the first convention's end delimi
             new Up.Text('[Oh '),
             new Up.Highlight([
               new Up.Text(']')
-            ]),
+            ])
           ]),
           new Up.Highlight([
             new Up.Text(' why would you do this?')
@@ -651,7 +651,7 @@ context("When some conventions overlap by only the first convention's end delimi
             new Up.Text('Oh '),
             new Up.SquareParenthetical([
               new Up.Text('[')
-            ]),
+            ])
           ]),
           new Up.SquareParenthetical([
             new Up.Text('why would you do this?]')

@@ -24,8 +24,8 @@ describe('Inline quotes', () => {
         new Up.InlineQuote([
           new Up.Text('You should always use '),
           new Up.InlineCode('<font>'),
-          new Up.Text(' elements.'),
-        ]),
+          new Up.Text(' elements.')
+        ])
       ]))
   })
 
@@ -52,7 +52,7 @@ describe('Nested inline quotes', () => {
         new Up.Text('Bob recounted, '),
         new Up.InlineQuote([
           new Up.InlineQuote([
-            new Up.Text('Come here right now!'),
+            new Up.Text('Come here right now!')
           ]),
           new Up.Text(', she said. But I walked away.')
         ])
@@ -65,8 +65,8 @@ describe('Nested inline quotes', () => {
         new Up.InlineQuote([
           new Up.Text('I walked away while she screamed '),
           new Up.InlineQuote([
-            new Up.Text('come here right now!'),
-          ]),
+            new Up.Text('come here right now!')
+          ])
         ]),
         new Up.Text(', Bob recounted.')
       ]))
@@ -78,7 +78,7 @@ describe('Text separated from (otherwise surrounding) doublequotes by whitespace
   it('is not put inside an inline quote node', () => {
     expect(Up.parse('My favorite quote mark " is your favorite quote mark " and we all know it.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('My favorite quote mark " is your favorite quote mark " and we all know it.'),
+        new Up.Text('My favorite quote mark " is your favorite quote mark " and we all know it.')
       ]))
   })
 })
@@ -88,14 +88,14 @@ context('An unmatched doublequote (that would otherwise start a quote) is preser
   specify('Can be the only doublequote in a paragraph', () => {
     expect(Up.parse('I said, "I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('I said, "I am still typi'),
+        new Up.Text('I said, "I am still typi')
       ]))
   })
 
   specify('Can follow another unmatched doublequote', () => {
     expect(Up.parse('Bob said, "I said, "I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('Bob said, "I said, "I am still typi'),
+        new Up.Text('Bob said, "I said, "I am still typi')
       ]))
   })
 
@@ -116,14 +116,14 @@ context('An unmatched doublequote (that would otherwise end a quote) is preserve
   specify('Can be the only doublequote in a paragraph', () => {
     expect(Up.parse('My model airplane has a 30" wingspan.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('My model airplane has a 30" wingspan.'),
+        new Up.Text('My model airplane has a 30" wingspan.')
       ]))
   })
 
   specify('Can follow another unmatched doublequote', () => {
     expect(Up.parse('My model airplane has a 30" wingspan and is 20" long')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('My model airplane has a 30" wingspan and is 20" long'),
+        new Up.Text('My model airplane has a 30" wingspan and is 20" long')
       ]))
   })
 

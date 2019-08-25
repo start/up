@@ -17,7 +17,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Bold([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -28,7 +28,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Emphasis([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -50,7 +50,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Highlight([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -69,7 +69,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved '),
           new Up.InlineCode('<dl>'),
-          new Up.Text(' elements, though I never used them.'),
+          new Up.Text(' elements, though I never used them.')
         ]))
     })
 
@@ -78,7 +78,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.InlineRevealable([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -89,7 +89,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.InlineQuote([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -100,7 +100,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Italic([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -111,7 +111,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Link([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ], 'https://example.com/gb'),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -122,7 +122,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I went to '),
           new Up.Link([
-            new Up.Text('nintendo.com'),
+            new Up.Text('nintendo.com')
           ], 'https://nintendo.com'),
           new Up.Text(' and read everything I could find.')
         ]))
@@ -133,7 +133,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.NormalParenthetical([
-            new Up.Text('(Nintendo)'),
+            new Up.Text('(Nintendo)')
           ]),
           new Up.Text(' Game Boy, though I never took it with me when I left home.')
         ]))
@@ -144,7 +144,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.SquareParenthetical([
-            new Up.Text('[Nintendo]'),
+            new Up.Text('[Nintendo]')
           ]),
           new Up.Text(' Game Boy, though I never took it with me when I left home.')
         ]))
@@ -155,7 +155,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('I loved my '),
           new Up.Stress([
-            new Up.Text('Game Boy'),
+            new Up.Text('Game Boy')
           ]),
           new Up.Text(', though I never took it with me when I left home.')
         ]))
@@ -284,7 +284,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('My favorite section of the textbook '),
           new Up.SquareParenthetical([
-            new Up.Text('[Section: Why Math Is Great]'),
+            new Up.Text('[Section: Why Math Is Great]')
           ]),
           new Up.Text(' was damaged by water.')
         ]))
@@ -295,7 +295,7 @@ context('Except for footnotes and section links, every inline convention is supp
         new Up.InlineDocument([
           new Up.Text('My favorite section of the textbook '),
           new Up.NormalParenthetical([
-            new Up.Text('(Section: Why Math Is Great)'),
+            new Up.Text('(Section: Why Math Is Great)')
           ]),
           new Up.Text(' was damaged by water.')
         ]))
@@ -308,7 +308,7 @@ context('Except for footnotes and section links, every inline convention is supp
           new Up.SquareParenthetical([
             new Up.Text('[topic: why math '),
             new Up.Emphasis([new Up.Text('is')]),
-            new Up.Text(' great]'),
+            new Up.Text(' great]')
           ]),
           new Up.Text(' is no longer allowed.')
         ]))

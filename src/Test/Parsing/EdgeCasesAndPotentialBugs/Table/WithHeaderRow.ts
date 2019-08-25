@@ -5,7 +5,7 @@ import * as Up from '../../../../Main'
 context("When a table doesn't have a caption, its first line can still have trailing whitespace.", () => {
   specify('When "Table" is followed by a colon', () => {
     const markup = `
-Table:  \t \t 
+Table:  \t \t
 
 Game;           Release Date
 Chrono Trigger; 1995
@@ -32,7 +32,7 @@ Chrono Cross;   1999`
 
   specify('When "Table" is not followed by a colon', () => {
     const markup = `
-Table  \t \t 
+Table  \t \t
 
 Game;           Release Date
 Chrono Trigger; 1995
@@ -183,7 +183,7 @@ I almost didn't include them; however, I realized tables are too useful to leave
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Table: my favorite outline convention.')]),
-        new Up.Paragraph([new Up.Text("I almost didn't include them; however, I realized tables are too useful to leave out.")]),
+        new Up.Paragraph([new Up.Text("I almost didn't include them; however, I realized tables are too useful to leave out.")])
       ]))
   })
 })
@@ -233,16 +233,16 @@ Underline
       new Up.Document([
         new Up.Table(
           new Up.Table.Header([
-            new Up.Table.Header.Cell([new Up.Text('Underline')]),
+            new Up.Table.Header.Cell([new Up.Text('Underline')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('====')]),
+              new Up.Table.Row.Cell([new Up.Text('====')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('####')]),
+              new Up.Table.Row.Cell([new Up.Text('####')])
             ]),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('****')]),
+              new Up.Table.Row.Cell([new Up.Text('****')])
             ])
           ],
           new Up.Table.Caption([

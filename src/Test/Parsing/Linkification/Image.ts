@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
+import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('An image convention (with its URL) followed immediately by a (second) parenthesized/bracketd URL', () => {
@@ -113,7 +113,7 @@ describe('An image directly followed by a footnote', () => {
         new Up.Paragraph([
           new Up.Text("After you beat the Elite Four, "),
           new Up.Image('you fight Gary', 'https://example.com/fight.svg'),
-          footnotes[0],
+          footnotes[0]
         ]),
         new Up.FootnoteBlock(footnotes)
       ]))
@@ -128,7 +128,7 @@ describe('An otherwise-valid linkified image convention with its linkifying URL 
         new Up.Image('phone call', 'https://example.com/phonecall.svg'),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
-        ]),
+        ])
       ]))
   })
 })

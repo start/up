@@ -1,6 +1,6 @@
-import { LineConsumer } from './LineConsumer'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 

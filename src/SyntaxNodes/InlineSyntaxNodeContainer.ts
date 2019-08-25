@@ -1,5 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { getInlineDescendants } from './getInlineDescendants'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export abstract class InlineSyntaxNodeContainer {

@@ -1,10 +1,10 @@
+import { NormalizedSettings } from '../../NormalizedSettings'
+import { HeadingLeveler } from './HeadingLeveler'
+import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseBulletedList } from './tryToParseBulletedList'
+import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { tryToParseNumberedList } from './tryToParseNumberedList'
 import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
-import { tryToParseBlockquote } from './tryToParseBlockquote'
-import { tryToParseCodeBlock } from './tryToParseCodeBlock'
-import { HeadingLeveler } from './HeadingLeveler'
-import { NormalizedSettings } from '../../NormalizedSettings'
 
 
 const OUTLINE_CONVENTIONS_POSSIBLY_ONE_LINE_LONG = [

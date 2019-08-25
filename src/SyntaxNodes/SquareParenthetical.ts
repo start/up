@@ -1,5 +1,5 @@
-import { ParentheticalSyntaxNode } from './ParentheticalSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
+import { ParentheticalSyntaxNode } from './ParentheticalSyntaxNode'
 
 
 export class SquareParenthetical extends ParentheticalSyntaxNode {

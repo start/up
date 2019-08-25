@@ -1,7 +1,7 @@
-import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { InlineSyntaxNode } from './InlineSyntaxNode'
-import { Document } from './Document'
 import { concat } from '../CollectionHelpers'
+import { Document } from './Document'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
+import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 
 
 export abstract class OutlineSyntaxNodeContainer {

@@ -1,7 +1,7 @@
-import { Up, DocumentAndTableOfContentsHtml } from './Up'
 import { Settings } from './Settings'
 import { Document } from './SyntaxNodes/Document'
 import { InlineDocument } from './SyntaxNodes/InlineDocument'
+import { DocumentAndTableOfContentsHtml, Up } from './Up'
 
 
 // The functions below allow developers to use Up without having to create any instances of
@@ -12,7 +12,7 @@ import { InlineDocument } from './SyntaxNodes/InlineDocument'
 //
 // For example, let's say you're parsing an article and its comments. For each comment,
 // you want to specify a unique ID prefix; for both the article and its comments, you
-// want to use custom Japanese keywords. 
+// want to use custom Japanese keywords.
 //
 // By creating an instance of `Up`, you can specify those custom Japanese keywords just once
 // (in the constructor). Then, when parsing each comment, you only need to provide a unique

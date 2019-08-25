@@ -1,5 +1,5 @@
-import { InlineRevealable } from './InlineRevealable'
 import { Renderer } from '../Rendering/Renderer'
+import { InlineRevealable } from './InlineRevealable'
 
 
 export class InlineQuote extends InlineRevealable {

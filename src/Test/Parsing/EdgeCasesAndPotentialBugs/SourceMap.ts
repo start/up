@@ -28,7 +28,7 @@ context('When a single line of markup produces multiple "outlined" media nodes, 
     expect(Up.parse(markup, { createSourceMap: true })).to.deep.equal(
       new Up.Document([
         new Up.Link([
-          new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg'),
+          new Up.Image('haunted house', 'https://example.com/hauntedhouse.svg')
         ], 'https://example.com/gallery', { sourceLineNumber: 1 }),
         new Up.Audio('haunted house', 'https://example.com/hauntedhouse.ogg', { sourceLineNumber: 1 }),
         new Up.Video('haunted house', 'https://example.com/hauntedhouse.webm', { sourceLineNumber: 1 })

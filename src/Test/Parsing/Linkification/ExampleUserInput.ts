@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../Helpers'
+import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../Helpers'
 
 
 describe('An example user input convention followed by a parenthesized/bracketd URL', () => {
@@ -27,7 +27,7 @@ context('Any example user input convention followed immediately by a (second) pa
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.ExampleUserInput('My Cart')
-        ], 'https://example.com/my-cart'),
+        ], 'https://example.com/my-cart')
       ])
     })
   })
@@ -44,7 +44,7 @@ context("As long as there is no whitespace between the example user input and th
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.ExampleUserInput('My Cart')
-        ], 'https://example.com/my-cart'),
+        ], 'https://example.com/my-cart')
       ])
     })
   })
@@ -58,7 +58,7 @@ context("As long as there is no whitespace between the example user input and th
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.ExampleUserInput('My Cart')
-        ], 'https://example.com/my cart'),
+        ], 'https://example.com/my cart')
       ])
     })
   })
@@ -72,7 +72,7 @@ context("As long as there is no whitespace between the example user input and th
       toProduce: insideDocumentAndParagraph([
         new Up.Link([
           new Up.ExampleUserInput('My Cart')
-        ], 'https://example.com/my cart'),
+        ], 'https://example.com/my cart')
       ])
     })
   })
@@ -131,7 +131,7 @@ describe('An otherwise-valid linkified example user input convention with its li
         new Up.ExampleUserInput('Call'),
         new Up.NormalParenthetical([
           new Up.Text('(tel:5555555555)')
-        ]),
+        ])
       ]))
   })
 })

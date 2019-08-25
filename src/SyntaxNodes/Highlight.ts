@@ -1,5 +1,5 @@
-import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
+import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
 
 
 export class Highlight extends RichInlineSyntaxNode {

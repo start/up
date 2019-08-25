@@ -1,5 +1,5 @@
-import { anyCharFrom, solely, either, exactly, streakOf, patternStartingWith } from './PatternHelpers'
-import { INLINE_WHITESPACE_CHAR, WHITESPACE_CHAR, URL_SCHEME } from './PatternPieces'
+import { anyCharFrom, either, exactly, patternStartingWith, solely, streakOf } from './PatternHelpers'
+import { INLINE_WHITESPACE_CHAR, URL_SCHEME, WHITESPACE_CHAR } from './PatternPieces'
 
 
 const INDENT =

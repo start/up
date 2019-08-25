@@ -24,7 +24,7 @@ Chrono Cross;        1999`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })
@@ -49,7 +49,7 @@ Chrono Cross;         1999`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })
@@ -77,7 +77,7 @@ Chrono Cross;        1999 [\\;`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999 [;')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })
@@ -102,7 +102,7 @@ Chrono Cross;         1999 :\\\\`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999 :\\')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })
@@ -130,7 +130,7 @@ Chrono Cross;        1999`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger [;')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })
@@ -155,7 +155,7 @@ Chrono Cross;         1999`
               ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger :\\')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('1999')])
-              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')])),
+              ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
             ])
         ]))
     })

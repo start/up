@@ -1,7 +1,7 @@
-import { isWhitespace } from '../isWhitespace'
 import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
 import { Link } from '../../SyntaxNodes/Link'
 import { MediaSyntaxNode } from '../../SyntaxNodes/MediaSyntaxNode'
+import { isWhitespace } from '../isWhitespace'
 
 
 // If a line consists solely of media conventions (and/or whitespace), those media conventions are

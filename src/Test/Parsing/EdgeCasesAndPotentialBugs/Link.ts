@@ -13,7 +13,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its descr
           new Up.Link([
             new Up.Text('stackoverflow.com')
           ], 'https://stackoverflow.com'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -33,7 +33,7 @@ describe('An otherwise-valid link with mismatched brackets surrounding its URL',
         new Up.Link([
           new Up.Text('stackoverflow.com')
         ], 'https://stackoverflow.com'),
-        new Up.Text(').'),
+        new Up.Text(').')
       ]))
   })
 })
@@ -136,7 +136,7 @@ describe('A link missing its final closing bracket', () => {
     expect(Up.parse('[: Do this :][: smile! Anyway, why is *everyone* greeting mother earth?')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.SquareParenthetical([
-          new Up.Text('[: Do this :]'),
+          new Up.Text('[: Do this :]')
         ]),
         new Up.Text('[: smile! Anyway, why is '),
         new Up.Emphasis([
@@ -165,7 +165,7 @@ describe("An almost-link (with whitespace between its content and URL) terminate
         ]),
         new Up.Text(' … '),
         new Up.Link([
-          new Up.Text('anyway, go here instead'),
+          new Up.Text('anyway, go here instead')
         ], 'https://example.com/happy')
       ]))
   })

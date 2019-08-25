@@ -21,7 +21,7 @@ describe('Overlapped doubly parenthesized text (closing at the same time) and st
         ]),
         new Up.Stress([
           new Up.Text(' Ha!')
-        ]),
+        ])
       ]))
   })
 })
@@ -45,7 +45,7 @@ describe('Overlapped doubly parenthesized text (closing at different times) and 
         ]),
         new Up.Stress([
           new Up.Text(' Ha!')
-        ]),
+        ])
       ]))
   })
 })
@@ -60,16 +60,16 @@ describe('Overlapped stress and doubly parenthesized text (opening at the same t
           new Up.NormalParenthetical([
             new Up.Text('('),
             new Up.NormalParenthetical([
-              new Up.Text("(So"),
+              new Up.Text("(So")
             ])
           ])
         ]),
         new Up.NormalParenthetical([
           new Up.NormalParenthetical([
-            new Up.Text(" what?)"),
+            new Up.Text(" what?)")
           ]),
           new Up.Text(" It's late.)")
-        ]),
+        ])
       ]))
   })
 })
@@ -84,16 +84,16 @@ describe('Overlapped stress and doubly parenthesized text (opening at different 
           new Up.NormalParenthetical([
             new Up.Text('(I know. '),
             new Up.NormalParenthetical([
-              new Up.Text("(Well"),
+              new Up.Text("(Well")
             ])
           ])
         ]),
         new Up.NormalParenthetical([
           new Up.NormalParenthetical([
-            new Up.Text(", I don't really.)"),
+            new Up.Text(", I don't really.)")
           ]),
           new Up.Text(')')
-        ]),
+        ])
       ]))
   })
 })

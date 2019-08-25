@@ -32,7 +32,7 @@ context('Within italics, (inner) italics can be the first convention within any 
             new Up.Emphasis([
               new Up.Italic([
                 new Up.Text('leetle')
-              ]),
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -48,7 +48,7 @@ context('Within italics, (inner) italics can be the first convention within any 
             new Up.InlineQuote([
               new Up.Italic([
                 new Up.Text('leetle')
-              ]),
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -107,8 +107,8 @@ context('Within italics, (inner) italics can close directly after a convention i
             new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.NormalParenthetical([
-                new Up.Text('(Mario)'),
-              ]),
+                new Up.Text('(Mario)')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -123,8 +123,8 @@ context('Within italics, (inner) italics can close directly after a convention i
             new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.Emphasis([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -139,8 +139,8 @@ context('Within italics, (inner) italics can close directly after a convention i
             new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.InlineQuote([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -155,8 +155,8 @@ context('Within italics, (inner) italics can close directly after a convention i
             new Up.Italic([
               new Up.Text('Help me find brother '),
               new Up.InlineRevealable([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -178,7 +178,7 @@ describe('An unmatched opening underscore', () => {
     expect(Up.parse('_Hello_, _world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Italic([
-          new Up.Text('Hello'),
+          new Up.Text('Hello')
         ]),
         new Up.Text(', _world!')
       ]))

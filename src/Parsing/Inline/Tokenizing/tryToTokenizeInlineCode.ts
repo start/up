@@ -1,12 +1,12 @@
-import { patternStartingWith, patternEndingWith, oneOrMore } from '../../../PatternHelpers'
+import { oneOrMore, patternEndingWith, patternStartingWith } from '../../../PatternHelpers'
 import { BACKSLASH } from '../../Strings'
-import { TextConsumer, MatchResult } from './TextConsumer'
 import { TokenRole } from '../TokenRole'
+import { MatchResult, TextConsumer } from './TextConsumer'
 import { Token } from './Token'
 
 
 // Text surrounded on either side by an equal number of backticks is treated as inline code.
-// 
+//
 // If `markup` starts with inline code, this function tokenizes it, ultimately producing an
 // `InlineCode` token. If `markup` instead starts with an unmatched inline code start delimiter
 // (i.e. streak of backticks), this function produces a text token for that unmatched delimiter.
@@ -40,7 +40,7 @@ import { Token } from './Token'
 //
 // Furthermore, that single space is only trimmed away when it's used to separate a delimiter from
 // backticks in the inline code. If a given "side" of inline code has any non-whitespace characters
-// between the delimiter and the first backtick, nothing gets trimmed from that side.    
+// between the delimiter and the first backtick, nothing gets trimmed from that side.
 export function tryToTokenizeInlineCode(
   args: {
     markup: string
@@ -80,7 +80,7 @@ export function tryToTokenizeInlineCode(
     //
     // We can safely cast to a non-nullable `MatchResult` because we know we must be up against a
     // backtick (thanks to the fact that the above loop terminated). Therefore, `DELIMITER_PATTERN`
-    // is guaranteed to find a match. 
+    // is guaranteed to find a match.
     const possibleEndDelimiter =
       (markupConsumer.consume(DELIMITER_PATTERN) as MatchResult).match
 

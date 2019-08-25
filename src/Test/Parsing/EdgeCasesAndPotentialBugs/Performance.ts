@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import * as Up from '../../../Main'
-import { insideDocumentAndParagraph } from '../Helpers'
 import { repeat } from '../../../StringHelpers'
+import { insideDocumentAndParagraph } from '../Helpers'
 
 
 // For context, please see: http://stackstatus.net/post/147710624694/outage-postmortem-july-20-2016
@@ -156,7 +156,7 @@ context('A long string of whitespace should never cause cause the parser to hang
     specify("Before an open bracket", () => {
       expect(Up.parse('[image: haunted' + lotsOfSpaces + '[house]](http://example.com/?state=NE)')).to.deep.equal(
         new Up.Document([
-          new Up.Image('haunted' + lotsOfSpaces + '[house]', 'http://example.com/?state=NE'),
+          new Up.Image('haunted' + lotsOfSpaces + '[house]', 'http://example.com/?state=NE')
         ]))
     })
   })

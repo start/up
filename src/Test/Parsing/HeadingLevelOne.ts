@@ -66,7 +66,7 @@ describe("A heading", () => {
   it('does not need to be the first convention in the document', () => {
     const markup = `
 Hello, world!
-      
+
 Goodbye, world!
 ~~~~~~~~~~~~`
 
@@ -80,7 +80,7 @@ Goodbye, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Hello, world!')]),
-        heading,
+        heading
       ], new Up.Document.TableOfContents([heading])))
   })
 
@@ -92,7 +92,7 @@ Goodbye, world!
     const heading =
       new Up.Heading([
         new Up.Stress([new Up.Text('Hello')]),
-        new Up.Text(', world!'),
+        new Up.Text(', world!')
       ], {
           level: 1,
           titleMarkup: '**Hello**, world!',

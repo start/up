@@ -17,7 +17,7 @@ describe('In a paragraph, parenthesized text starting with a caret', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -71,7 +71,7 @@ describe('A footnote', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -92,7 +92,7 @@ describe('A footnote', () => {
           new Up.Stress([
             new Up.Text("I don't eat cereal."),
             footnote,
-            new Up.Text(" Never have."),
+            new Up.Text(" Never have.")
           ])
         ]),
         new Up.FootnoteBlock([footnote])
@@ -115,7 +115,7 @@ describe('A footnote', () => {
             new Up.Emphasis([
               new Up.Text("I don't eat cereal."),
               footnote,
-              new Up.Text(" Never have."),
+              new Up.Text(" Never have.")
             ])
           ])
         ]),
@@ -131,13 +131,13 @@ describe('A footnote', () => {
       new Up.Emphasis([
         new Up.Text('do')
       ]),
-      new Up.Text(', but I pretend not to.'),
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 2 })
 
     const outerFootnote = new Up.Footnote([
       new Up.Text("That said, I don't eat cereal."),
       innerFootnote,
-      new Up.Text(" Never have."),
+      new Up.Text(" Never have.")
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -145,7 +145,7 @@ describe('A footnote', () => {
         new Up.Paragraph([
           new Up.Text("Me? I'm totally normal."),
           outerFootnote,
-          new Up.Text(" Really."),
+          new Up.Text(" Really.")
         ]),
         new Up.FootnoteBlock([
           outerFootnote,
@@ -167,7 +167,7 @@ describe('Any whitespace after the caret in a footnote start delimiter', () => {
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

@@ -169,7 +169,7 @@ context('A linkified footnote can have whitespace between itself and its bracket
             footnote,
             new Up.Text(' '),
             new Up.NormalParenthetical([
-              new Up.Text('(/r9k/ was talking about it)'),
+              new Up.Text('(/r9k/ was talking about it)')
             ])
           ]),
           new Up.FootnoteBlock([footnote])

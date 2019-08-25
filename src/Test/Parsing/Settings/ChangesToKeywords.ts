@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import * as Up from '../../../Main'
-import { settingsFor } from './Helpers'
 import { distinct } from '../../../CollectionHelpers'
+import * as Up from '../../../Main'
 import { cast } from '../../Helpers'
+import { settingsFor } from './Helpers'
 
 
 // Elsewhere, we verify that these keywords work.
@@ -25,7 +25,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
   const { markupForDefaultSettings, markupForKeywordVariations, invalidMarkupForEmptyKeyword, invalidMarkupForBlankKeyword } = args
 
   // A quick sanity check! Let's make sure the caller didn't accidentlly provide duplicate
-  // markup arguments. 
+  // markup arguments.
   const distinctMarkupArguments = distinct(
     markupForKeywordVariations,
     markupForDefaultSettings,
@@ -62,7 +62,7 @@ function itCanBeProvidedMultipleWaysWithTheSameResult(
     parsingSettingsFor(args.conflictingKeywordVariations)
 
   // Next, we'll produce "overall" settings (which cover both parsing and rendering
-  // settings). The `Up` class's constructor accepts these settings. 
+  // settings). The `Up` class's constructor accepts these settings.
 
   const changedSettings =
     settingsFor(changedParsingSettings)

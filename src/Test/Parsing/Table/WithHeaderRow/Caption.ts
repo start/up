@@ -67,7 +67,7 @@ Chrono Cross;   1999`
             new Up.Emphasis([
               new Up.Text('Chrono')
             ]),
-            new Up.Text(' series'),
+            new Up.Text(' series')
           ]))
       ]))
   })
@@ -102,7 +102,7 @@ Chrono Cross;   1999`
             new Up.Emphasis([
               new Up.Text('Chrono')
             ]),
-            new Up.Text(' series'),
+            new Up.Text(' series')
           ]))
       ]))
   })
@@ -171,7 +171,7 @@ Do it now; I'm tired of waiting.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Table the proposal.')]),
-        new Up.Paragraph([new Up.Text("Do it now; I'm tired of waiting.")]),
+        new Up.Paragraph([new Up.Text("Do it now; I'm tired of waiting.")])
       ]))
   })
 })

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from './Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from './Helpers'
 
 
 context('Bracketed (square bracketed or parenthesized) text starting with "image:" immediately followed by another instance of bracketed text', () => {
@@ -39,8 +39,8 @@ context('An image that is the only convention on its line is not placed inside a
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Link([
-            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-          ], 'https://hauntedhouse.com'),
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
+          ], 'https://hauntedhouse.com')
         ]))
     })
 
@@ -51,8 +51,8 @@ context('An image that is the only convention on its line is not placed inside a
       expect(Up.parse(markup)).to.deep.equal(
         new Up.Document([
           new Up.Link([
-            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg'),
-          ], 'https://hauntedhouse.com'),
+            new Up.Image('haunted house', 'http://example.com/hauntedhouse.svg')
+          ], 'https://hauntedhouse.com')
         ]))
     })
   })
@@ -194,14 +194,14 @@ describe('An image description (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('[image: haunted [house]](http://example.com/?state=NE)')).to.deep.equal(
       new Up.Document([
-        new Up.Image('haunted [house]', 'http://example.com/?state=NE'),
+        new Up.Image('haunted [house]', 'http://example.com/?state=NE')
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('[image: [haunted [house]]](http://example.com/?state=NE)')).to.deep.equal(
       new Up.Document([
-        new Up.Image('[haunted [house]]', 'http://example.com/?state=NE'),
+        new Up.Image('[haunted [house]]', 'http://example.com/?state=NE')
       ]))
   })
 })
@@ -211,14 +211,14 @@ describe('An image description (enclosed by parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('(image: ghosts eating (luggage))[http://example.com/?state=NE]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('ghosts eating (luggage)', 'http://example.com/?state=NE'),
+        new Up.Image('ghosts eating (luggage)', 'http://example.com/?state=NE')
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
     expect(Up.parse('(image: (ghosts (eating)) ((luggage)))[http://example.com/?state=NE]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE'),
+        new Up.Image('(ghosts (eating)) ((luggage))', 'http://example.com/?state=NE')
       ]))
   })
 })
@@ -228,14 +228,14 @@ describe('An image URL (enclosed in square brackets)', () => {
   it('can contain matching square brackets', () => {
     expect(Up.parse('(image: ghosts eating luggage)[http://example.com/?state=[NE]]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('ghosts eating luggage', 'http://example.com/?state=[NE]'),
+        new Up.Image('ghosts eating luggage', 'http://example.com/?state=[NE]')
       ]))
   })
 
   it('can contain nested matching square brackets', () => {
     expect(Up.parse('(image: ghosts eating luggage)[http://example.com/?[state=[NE]]]')).to.deep.equal(
       new Up.Document([
-        new Up.Image('ghosts eating luggage', 'http://example.com/?[state=[NE]]'),
+        new Up.Image('ghosts eating luggage', 'http://example.com/?[state=[NE]]')
       ]))
   })
 })
@@ -245,14 +245,14 @@ describe('An image URL (enclosed in parentheses)', () => {
   it('can contain matching parentheses', () => {
     expect(Up.parse('[image: ghosts eating luggage](http://example.com/?state=(NE))')).to.deep.equal(
       new Up.Document([
-        new Up.Image('ghosts eating luggage', 'http://example.com/?state=(NE)'),
+        new Up.Image('ghosts eating luggage', 'http://example.com/?state=(NE)')
       ]))
   })
 
   it('can contain nested matching parentheses', () => {
     expect(Up.parse('[image: ghosts eating luggage](http://example.com/?(state=(NE)))')).to.deep.equal(
       new Up.Document([
-        new Up.Image('ghosts eating luggage', 'http://example.com/?(state=(NE))'),
+        new Up.Image('ghosts eating luggage', 'http://example.com/?(state=(NE))')
       ]))
   })
 })

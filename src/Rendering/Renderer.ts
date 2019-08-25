@@ -11,7 +11,7 @@ export abstract class Renderer {
   abstract tableOfContents(tableOfContents: Up.Document.TableOfContents): string
 
   // Ideally, the following abstract methods wouldn't be public! But for the purpose of
-  // double dispatch, they need to be exposed to our syntax node classes. 
+  // double dispatch, they need to be exposed to our syntax node classes.
 
   abstract audio(audio: Up.Audio): string
   abstract blockquote(blockquote: Up.Blockquote): string

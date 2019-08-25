@@ -139,7 +139,7 @@ context("The `Document.create` method is automatically used during the normal pa
           new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([
-          cerealFootnote,
+          cerealFootnote
         ]),
         new Up.RevealableBlock([
           new Up.Paragraph([
@@ -147,7 +147,7 @@ context("The `Document.create` method is automatically used during the normal pa
             new Up.Footnote([new Up.Text("And this is a fun fact.")], { referenceNumber: 2 })
           ]),
           new Up.FootnoteBlock([
-            movieFootnote,
+            movieFootnote
           ])
         ])
       ]))

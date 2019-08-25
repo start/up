@@ -1,8 +1,8 @@
 import * as Up from '../../Main'
+import { either, patternIgnoringCapitalizationAndStartingWith } from '../../PatternHelpers'
 import { Renderer } from '.././Renderer'
-import { htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement, EMPTY_ATTRBUTE_VALUE } from './HtmlElementHelpers'
+import { EMPTY_ATTRBUTE_VALUE, htmlElement, htmlElementWithAlreadyEscapedChildren, singleTagHtmlElement } from './HtmlElementHelpers'
 import { escapeHtmlContent } from './HtmlEscapingHelpers'
-import { patternIgnoringCapitalizationAndStartingWith, either } from '../../PatternHelpers'
 
 
 export class HtmlRenderer extends Renderer {
@@ -32,7 +32,7 @@ export class HtmlRenderer extends Renderer {
   //
   // 1. No HTML is produced for footnotes. They're ignored.
   // 2. The IDs/names for inline revealable elements' radio buttons (described above) are given an additional
-  //    prefix to prevent clashes with IDs in the document.   
+  //    prefix to prevent clashes with IDs in the document.
   private isInsideTableOfContents = false
 
   document(document: Up.Document): string {
@@ -207,7 +207,7 @@ export class HtmlRenderer extends Renderer {
 
   referenceToFootnote(footnote: Up.Footnote): string {
     if (this.isInsideTableOfContents) {
-      // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.   
+      // Within the table of contents itself, no HTML is produced for footnotes. They're ignored.
       return ''
     }
 

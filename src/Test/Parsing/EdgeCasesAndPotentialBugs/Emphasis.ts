@@ -32,7 +32,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
             new Up.Italic([
               new Up.Emphasis([
                 new Up.Text('leetle')
-              ]),
+              ])
             ]),
             new Up.Text(' Mario!')
           ])
@@ -88,7 +88,7 @@ context('Within emphasis, (inner) emphasis can be the first convention within an
                 ])
               ]),
               new Up.Text(')')
-            ]),
+            ])
           ]),
           new Up.Text(' Mario!')
         ])
@@ -107,8 +107,8 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
               new Up.NormalParenthetical([
-                new Up.Text('(Mario)'),
-              ]),
+                new Up.Text('(Mario)')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -123,8 +123,8 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
               new Up.Italic([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -139,8 +139,8 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
               new Up.InlineQuote([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -155,8 +155,8 @@ context('Within emphasis, (inner) emphasis can close directly after a convention
             new Up.Emphasis([
               new Up.Text('Help me find brother '),
               new Up.InlineRevealable([
-                new Up.Text('Mario'),
-              ]),
+                new Up.Text('Mario')
+              ])
             ]),
             new Up.Text(', I heard Luigi say.')
           ])
@@ -178,7 +178,7 @@ describe('An unmatched opening asterisk', () => {
     expect(Up.parse('*Hello*, *world!')).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.Text('Hello'),
+          new Up.Text('Hello')
         ]),
         new Up.Text(', *world!')
       ]))

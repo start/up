@@ -1,6 +1,6 @@
+import { Renderer } from '../Rendering/Renderer'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { RichInlineSyntaxNode } from './RichInlineSyntaxNode'
-import { Renderer } from '../Rendering/Renderer'
 
 
 export class Footnote extends RichInlineSyntaxNode {

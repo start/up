@@ -36,7 +36,7 @@ Chrono Cross;       1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')], 1),
               new Up.Table.Row.Cell([new Up.Text('1999')], 1)
-            ]),
+            ])
           ])
       ]))
   })

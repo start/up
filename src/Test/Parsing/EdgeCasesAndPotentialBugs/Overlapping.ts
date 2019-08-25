@@ -41,23 +41,23 @@ describe('A paragraph with 2 (separately!) overlapped links', () => {
       insideDocumentAndParagraph([
         new Up.Text('I do '),
         new Up.Emphasis([
-          new Up.Text('not '),
+          new Up.Text('not ')
         ]),
         new Up.Link([
           new Up.Emphasis([
-            new Up.Text('care'),
+            new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all. I do '),
         new Up.Emphasis([
-          new Up.Text('not '),
+          new Up.Text('not ')
         ]),
         new Up.Link([
           new Up.Emphasis([
-            new Up.Text('care'),
+            new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))

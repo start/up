@@ -9,7 +9,7 @@ describe('Text surrounded by 2 underscores to its left and 1 underscore to its r
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Italic([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -23,7 +23,7 @@ describe('Text surrounded by 1 underscore to its left and 2 underscores to its r
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Italic([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -37,7 +37,7 @@ describe('Text surrounded by 3 underscores to its left and 1 underscore to its r
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Italic([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -51,7 +51,7 @@ describe('Text surrounded by 3 underscores to its left and 2 underscores to its 
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Bold([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -65,7 +65,7 @@ describe('Text surrounded by 1 underscore to its left and 3 underscores to its r
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Italic([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))
@@ -79,7 +79,7 @@ describe('Text surrounded by 2 underscore to its left and 3 underscores to its r
       insideDocumentAndParagraph([
         new Up.Text('Xamarin is now '),
         new Up.Bold([
-          new Up.Text('free'),
+          new Up.Text('free')
         ]),
         new Up.Text('!')
       ]))

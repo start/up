@@ -1,5 +1,5 @@
-import { ConventionVariation } from './ConventionVariation'
 import { ConventionContext } from './ConventionContext'
+import { ConventionVariation } from './ConventionVariation'
 
 
 // We use this class to keep track of which conventions we've been forced to backtrack.

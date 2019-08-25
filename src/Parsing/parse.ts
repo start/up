@@ -1,7 +1,7 @@
-import { Document } from '../SyntaxNodes/Document'
-import { HeadingLeveler } from './Outline/HeadingLeveler'
-import { getOutlineSyntaxNodes } from './Outline/getOutlineSyntaxNodes'
 import { NormalizedSettings } from '../NormalizedSettings'
+import { Document } from '../SyntaxNodes/Document'
+import { getOutlineSyntaxNodes } from './Outline/getOutlineSyntaxNodes'
+import { HeadingLeveler } from './Outline/HeadingLeveler'
 
 
 export function parse(markup: string, settings: NormalizedSettings.Parsing): Document {

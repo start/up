@@ -86,7 +86,7 @@ context('The "revealable" keyword is used by both inline revealables and reveala
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.parse(markup)).to.deep.equal(
@@ -107,14 +107,14 @@ ruins ending:
 ruins ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
       const mixedCase = `
 ruINs eNDiNg:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
       expect(up.parse(lowercase)).to.deep.equal(up.parse(mixedCase))
@@ -125,7 +125,7 @@ ruINs eNDiNg:
 RUINS ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {
@@ -152,7 +152,7 @@ RUINS ending:
 *RUINS* ending:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {
@@ -179,9 +179,9 @@ RUINS ending:
 LOOK AWAY:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   RUINS ENDING:
-    
+
     Luckily, Pikachu ultimately decided to stay.`
 
       const document = Up.parse(markup, {

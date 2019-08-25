@@ -25,7 +25,7 @@ describe('A convention overlapping emphasis (containing an unmatched opening del
           new Up.Text('[Hello, '),
           new Up.Emphasis([
             new Up.Text('my]')
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Text(' (^world')
@@ -46,7 +46,7 @@ describe('A convention overlapping double emphasis (with both emphasis conventio
             new Up.Emphasis([
               new Up.Text('my]')
             ])
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
@@ -70,7 +70,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
             new Up.Emphasis([
               new Up.Text('my]')
             ])
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
@@ -111,7 +111,7 @@ describe('A convention overlapping double emphasis (with the inner emphasis encl
             new Up.Emphasis([
               new Up.Text('my]')
             ])
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
@@ -135,7 +135,7 @@ describe('A convention overlapping double emphasis (with the outer emphasis encl
             new Up.Emphasis([
               new Up.Text('my]')
             ])
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
@@ -185,7 +185,7 @@ describe('Overlapped stressed, parenthesized, and quoted text, with an unmatched
         new Up.Stress([
           new Up.Text('love '),
           new Up.NormalParenthetical([
-            new Up.Text('(quickly '),
+            new Up.Text('(quickly ')
           ])
         ]),
         new Up.InlineQuote([

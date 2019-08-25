@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBracketsAroundContentAndUrl } from '../../Helpers'
+import { expectEveryPermutationOfBracketsAroundContentAndUrl, insideDocumentAndParagraph } from '../../Helpers'
 
 
 context('A linified revealable can have whitespace between itself and its bracketed URL, but only if the URL satisfies one of the following conditions:', () => {
@@ -49,7 +49,7 @@ context('A linified revealable can have whitespace between itself and its bracke
               new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
             new Up.Text(' is nice)')
-          ]),
+          ])
         ]))
     })
 
@@ -62,7 +62,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(mailto:)')
-          ]),
+          ])
         ]))
     })
 
@@ -75,7 +75,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(file:///)')
-          ]),
+          ])
         ]))
     })
 
@@ -103,7 +103,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(mailto:daniel@wants.email)')
-          ]),
+          ])
         ]))
     })
   })
@@ -135,7 +135,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/r9k/ created it)')
-          ]),
+          ])
         ]))
     })
 
@@ -148,7 +148,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/)')
-          ]),
+          ])
         ]))
     })
 
@@ -176,7 +176,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/r9k/)')
-          ]),
+          ])
         ]))
     })
   })
@@ -223,7 +223,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#)')
-          ]),
+          ])
         ]))
     })
 
@@ -236,7 +236,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#starcraft2 was never trending)')
-          ]),
+          ])
         ]))
     })
 
@@ -249,7 +249,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#starcraft2)')
-          ]),
+          ])
         ]))
     })
   })
@@ -311,7 +311,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(4chan.org-terrifying)')
-          ]),
+          ])
         ]))
     })
 
@@ -340,7 +340,7 @@ context('A linified revealable can have whitespace between itself and its bracke
             new Up.Text(' '),
             new Up.NormalParenthetical([
               new Up.Text('(john.e.smith5)')
-            ]),
+            ])
           ]))
       })
 
@@ -353,7 +353,7 @@ context('A linified revealable can have whitespace between itself and its bracke
             new Up.Text(' '),
             new Up.NormalParenthetical([
               new Up.Text('(john.e.smith-kline)')
-            ]),
+            ])
           ]))
       })
     })
@@ -367,7 +367,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(.co.uk)')
-          ]),
+          ])
         ]))
     })
 
@@ -380,7 +380,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(um…uh)')
-          ]),
+          ])
         ]))
     })
 
@@ -393,7 +393,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(4chan.org…/r9k/)')
-          ]),
+          ])
         ]))
     })
 
@@ -421,7 +421,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(ign.com had some hilarious forums)')
-          ]),
+          ])
         ]))
     })
 
@@ -434,7 +434,7 @@ context('A linified revealable can have whitespace between itself and its bracke
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(ign.com)')
-          ]),
+          ])
         ]))
     })
   })
@@ -449,7 +449,7 @@ context('A linified revealable can have whitespace between itself and its bracke
         new Up.Text(' '),
         new Up.NormalParenthetical([
           new Up.Text('(really)')
-        ]),
+        ])
       ]))
   })
 })

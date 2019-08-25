@@ -298,7 +298,7 @@ Skeltals are white
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -327,7 +327,7 @@ You're in for a fright`
           ]),
           new Up.LineBlock.Line([
             new Up.Text("You're in for a fright")
-          ]),
+          ])
         ])
       ]))
   })
@@ -354,7 +354,7 @@ context("Indentation does not matter for a code block's fences, though it does m
       n <= 1
         ? 1
         : n * factorial(n - 1))
-  }`    ),
+  }`    )
       ]))
   })
 })
@@ -364,7 +364,7 @@ context('For some outline conventions, all extra indentation is ignored:', () =>
   specify('Paragraphs', () => {
     const markup = `
    \t  I'm just a normal guy who eats only when it's raining outside.
-  
+
   \t\t\t\t Aren't you this way?`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -403,7 +403,7 @@ Hello, world!
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         worldHeading,
-        coreHeading,
+        coreHeading
       ], new Up.Document.TableOfContents([worldHeading, coreHeading])))
   })
 
@@ -463,7 +463,7 @@ Hello, world!
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
                 new Up.Table.Row.Cell([new Up.Text('1999')])
-              ]),
+              ])
             ])
         ]))
     })
@@ -486,7 +486,7 @@ Hello, world!
             ]), [
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('true')]),
-                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
               ], new Up.Table.Header.Cell([new Up.Text('1')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -628,7 +628,7 @@ context("Within list items, extra indentation for outline conventions is ignored
     const markup = `
 Charmander
    \t Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.
-   
+
 \t Does not evolve into Kadabra.`
 
     expect(Up.parse(markup)).to.deep.equal(

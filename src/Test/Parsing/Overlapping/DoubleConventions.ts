@@ -42,7 +42,7 @@ describe('Overlapped doubly emphasized text (closing at the same time) and paren
             new Up.NormalParenthetical([
               new Up.Text('(really.')
             ])
-          ]),
+          ])
         ]),
         new Up.NormalParenthetical([
           new Up.Text(' Ha!)')
@@ -64,7 +64,7 @@ describe('Nested inline revealables (closing at the same time) overlapping empha
             new Up.Emphasis([
               new Up.Text('really.')
             ])
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Text(' Good!')
@@ -80,7 +80,7 @@ describe('Emphasis overlapping nested Inline revealables (opening at the same ti
     expect(Up.parse("*I suspect [SPOILER: [SPOILER: you* fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Emphasis([
-          new Up.Text("I suspect "),
+          new Up.Text("I suspect ")
         ]),
         new Up.InlineRevealable([
           new Up.InlineRevealable([
@@ -107,7 +107,7 @@ describe('Nested Inline revealables (closing at the same time) overlapping a lin
             new Up.Link([
               new Up.Text('really.')
             ], 'https://example.com/really-good')
-          ]),
+          ])
         ]),
         new Up.Link([
           new Up.Text(' Good!')
@@ -123,7 +123,7 @@ describe('A link overlapping nested Inline revealables (opening at the same time
     expect(Up.parse("(I suspect [SPOILER: [SPOILER: you)(example.com/crime-suspects) fight Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.Text("I suspect "),
+          new Up.Text("I suspect ")
         ], 'https://example.com/crime-suspects'),
         new Up.InlineRevealable([
           new Up.InlineRevealable([
@@ -144,7 +144,7 @@ describe('A link overlapping an inline revealable convention containing a nested
     expect(Up.parse("(I suspect [NSFL: [NSFW: naked you)(example.com/crime-suspects) wrestles a rotting Gary.]] Hi!")).to.deep.equal(
       insideDocumentAndParagraph([
         new Up.Link([
-          new Up.Text("I suspect "),
+          new Up.Text("I suspect ")
         ], 'https://example.com/crime-suspects'),
         new Up.InlineRevealable([
           new Up.InlineRevealable([
@@ -171,7 +171,7 @@ describe('An inline revealable convention nested within another inline revealabl
             new Up.Link([
               new Up.Text('really.')
             ], 'https://example.com/really-good')
-          ]),
+          ])
         ]),
         new Up.Link([
           new Up.Text(' Good!')
@@ -215,13 +215,13 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at t
           new Up.Text("(I need to sleep. "),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.Text("So)"),
+              new Up.Text("So)")
             ])
           ])
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.Text(" what?"),
+            new Up.Text(" what?")
           ]),
           new Up.Text(" It's early.")
         ]),
@@ -246,7 +246,7 @@ describe('Overlapped parenthesized text and doubly emphasized text (opening at d
         ]),
         new Up.Emphasis([
           new Up.Emphasis([
-            new Up.Text(" what?"),
+            new Up.Text(" what?")
           ]),
           new Up.Text(" It's early.")
         ]),
@@ -265,14 +265,14 @@ describe('Emphasis nested within parenthesized text, both of which overlap a lin
           new Up.Text('('),
           new Up.Emphasis([
             new Up.Text('I never eat ')
-          ]),
+          ])
         ]),
         new Up.Link([
           new Up.NormalParenthetical([
             new Up.Emphasis([
               new Up.Text('cereal')
             ]),
-            new Up.Text(')'),
+            new Up.Text(')')
           ]),
           new Up.Text(' outside')
         ], 'https://example.com/sun-flakes'),
@@ -292,15 +292,15 @@ describe('A link that overlaps both an emphasis convention and some parenthesize
           new Up.NormalParenthetical([
             new Up.Text('('),
             new Up.Emphasis([
-              new Up.Text('I'),
-            ]),
-          ]),
+              new Up.Text('I')
+            ])
+          ])
         ], 'https://example.com/texas-hurricans'),
         new Up.NormalParenthetical([
           new Up.Emphasis([
             new Up.Text(' never eat cereal')
           ]),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text(' outside.')
       ]))
@@ -317,7 +317,7 @@ describe('A link that overlaps nested emphasis conventions', () => {
           new Up.Text('Texas, '),
           new Up.Emphasis([
             new Up.Emphasis([
-              new Up.Text('I'),
+              new Up.Text('I')
             ])
           ])
         ], 'https://example.com/texas-hurricans'),
@@ -343,14 +343,14 @@ describe('A link that overlaps nested already-overlapping emphasis and stress co
           new Up.Emphasis([
             new Up.Text('my '),
             new Up.Stress([
-              new Up.Text('very'),
+              new Up.Text('very')
             ])
           ])
         ], 'https://example.com/rhyme'),
         new Up.Emphasis([
           new Up.Stress([
             new Up.Text(' dear')
-          ]),
+          ])
         ]),
         new Up.Stress([
           new Up.Text(' friend')
@@ -373,20 +373,20 @@ describe('A link that overlaps nested already-overlapping double emphasis and st
             new Up.Emphasis([
               new Up.Text('own '),
               new Up.Stress([
-                new Up.Text('very'),
-              ]),
-            ]),
+                new Up.Text('very')
+              ])
+            ])
           ])
         ], 'https://example.com/rhyme'),
         new Up.Emphasis([
           new Up.Emphasis([
             new Up.Stress([
-              new Up.Text(' dear'),
-            ]),
+              new Up.Text(' dear')
+            ])
           ]),
           new Up.Stress([
             new Up.Text(' and kind')
-          ]),
+          ])
         ]),
         new Up.Stress([
           new Up.Text(' friend')
@@ -404,13 +404,13 @@ describe('Emphasis nested with an inline revealable, both of which overlap a lin
         new Up.Text('In Texas, '),
         new Up.InlineRevealable([
           new Up.Emphasis([
-            new Up.Text('I never eat '),
+            new Up.Text('I never eat ')
           ]),
           new Up.Link([
             new Up.Emphasis([
               new Up.Text('cereal')
-            ]),
-          ], 'https://example.com/sun-flakes'),
+            ])
+          ], 'https://example.com/sun-flakes')
         ]),
         new Up.Link([
           new Up.Text(' outside')
@@ -433,8 +433,8 @@ describe('Emphasis overlapping a linified revealable convention', () => {
             new Up.Emphasis([
               new Up.Text('care')
             ]),
-            new Up.Text(' at'),
-          ], 'https://en.wikipedia.org/wiki/Carrot'),
+            new Up.Text(' at')
+          ], 'https://en.wikipedia.org/wiki/Carrot')
         ]),
         new Up.Text(' all.')
       ]))
@@ -452,8 +452,8 @@ describe('A linkified revealable convention overlapping emphasized text', () => 
             new Up.Text('trash '),
             new Up.Emphasis([
               new Up.Text('can')
-            ]),
-          ], 'https://en.wikipedia.org/wiki/Waste_container'),
+            ])
+          ], 'https://en.wikipedia.org/wiki/Waste_container')
         ]),
         new Up.Emphasis([
           new Up.Text(' not')
@@ -475,11 +475,11 @@ describe('An inline revealable overlapping an emphasis convention split in two (
             new Up.Text('trash '),
             new Up.Emphasis([
               new Up.Text('can')
-            ]),
+            ])
           ], 'https://en.wikipedia.org/wiki/Waste_container'),
           new Up.Emphasis([
             new Up.Text(' certainly')
-          ]),
+          ])
         ]),
         new Up.Emphasis([
           new Up.Text(' not')

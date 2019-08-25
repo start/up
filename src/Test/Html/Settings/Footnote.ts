@@ -15,11 +15,11 @@ describe("A footnote's ID", () => {
     const node = new Up.Document([
       new Up.FootnoteBlock([
         new Up.Footnote([
-          new Up.Text("Arwings"),
+          new Up.Text("Arwings")
         ], { referenceNumber: 2 }),
         new Up.Footnote([
-          new Up.Text("Killer Bees"),
-        ], { referenceNumber: 3 }),
+          new Up.Text("Killer Bees")
+        ], { referenceNumber: 3 })
       ])
     ])
 

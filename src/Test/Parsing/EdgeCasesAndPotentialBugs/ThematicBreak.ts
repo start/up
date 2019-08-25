@@ -5,7 +5,7 @@ import * as Up from '../../../Main'
 describe('A thematic break streak', () => {
   it('can directly precede a heading with a different combination of characters in its underline', () => {
     const markup = `
--------------------- 
+--------------------
 Not me. Us!
 @---------@`
 

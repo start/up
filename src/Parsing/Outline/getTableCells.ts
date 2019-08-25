@@ -1,8 +1,8 @@
-import { Table } from '../../SyntaxNodes/Table'
-import { patternStartingWith, oneOrMore } from '../../PatternHelpers'
-import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
-import { NormalizedSettings } from '../../NormalizedSettings'
 import { last } from '../../CollectionHelpers'
+import { NormalizedSettings } from '../../NormalizedSettings'
+import { oneOrMore, patternStartingWith } from '../../PatternHelpers'
+import { Table } from '../../SyntaxNodes/Table'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { BACKSLASH } from '../Strings'
 
 
@@ -15,7 +15,7 @@ import { BACKSLASH } from '../Strings'
 // be misleading to export it as non-abstract.
 //
 // During parsing, however, we do need to create objects that can later be converted to
-// eaither header cells or row cells. Hence this fun little class. 
+// eaither header cells or row cells. Hence this fun little class.
 export class TableCell extends Table.Cell { }
 
 
@@ -27,7 +27,7 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
   // As a rule, if the last cell in a row spans just a single column (i.e. it ends in
   // a single unescaped semiclon), and if that last cell was not 0-length cell at the
   // start of the row (i.e. the row does not consist solely of a single semicolon), then
-  // we add an extra empty cell to the end of the row.   
+  // we add an extra empty cell to the end of the row.
   row = row.trim()
 
   const cells: TableCell[] = []
@@ -73,7 +73,7 @@ export function getTableCells(row: string, settings: NormalizedSettings.Parsing)
   // the rule described at the to of the mthod: If the last cell in a row spans just a single
   // column (i.e. it ends in a single unescaped semiclon), and if that last cell was not
   // 0-length cell at the start of the row (i.e. the row does not consist solely of a single
-  // semicolon), then we add an extra empty cell to the end of the row.   
+  // semicolon), then we add an extra empty cell to the end of the row.
 
   const lastCell = last(cells)
 

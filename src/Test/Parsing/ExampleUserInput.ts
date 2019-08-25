@@ -9,7 +9,7 @@ describe('Text surrounded by curly brackets', () => {
       insideDocumentAndParagraph([
         new Up.Text('Press '),
         new Up.ExampleUserInput('esc'),
-        new Up.Text(' to quit.'),
+        new Up.Text(' to quit.')
       ]))
   })
 })
@@ -174,9 +174,9 @@ describe('An unmatched curly bracket', () => {
       insideDocumentAndParagraph([
         new Up.Text('Yeah… :{ I '),
         new Up.Emphasis([
-          new Up.Text('hate'),
+          new Up.Text('hate')
         ]),
-        new Up.Text(' pizza.'),
+        new Up.Text(' pizza.')
       ]))
   })
 })

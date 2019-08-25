@@ -369,7 +369,7 @@ context('When a link has empty or blank content, its URL serves as its content:'
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('https://google.com')
-        ], 'https://google.com'),
+        ], 'https://google.com')
       ]))
   })
 
@@ -378,7 +378,7 @@ context('When a link has empty or blank content, its URL serves as its content:'
       insideDocumentAndParagraph([
         new Up.Link([
           new Up.Text('ftp://google.com')
-        ], 'ftp://google.com'),
+        ], 'ftp://google.com')
       ]))
   })
 })
@@ -432,7 +432,7 @@ context('An otherwise-valid link:', () => {
           new Up.SquareParenthetical([
             new Up.Text('[]')
           ]),
-          new Up.Text('!'),
+          new Up.Text('!')
         ]))
     })
   })

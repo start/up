@@ -7,7 +7,7 @@ context('Within most top-level outline conventions, footnotes produce a footnote
     specify("With one footnote", () => {
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
-        
+
 Anyway, none of that matters.`
 
       const footnote = new Up.Footnote([
@@ -65,7 +65,7 @@ Anyway, none of that matters.`
       const markup = `
 I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
 ================
-        
+
 Anyway, none of that matters.`
 
       const footnote = new Up.Footnote([
@@ -152,7 +152,7 @@ Anyway, none of that matters.`
         new Up.LineBlock([
           new Up.LineBlock.Line([
             new Up.Text("Roses are red"),
-            footnotes[0],
+            footnotes[0]
           ]),
           new Up.LineBlock.Line([
             new Up.Text("Violets are blue"),
@@ -227,7 +227,7 @@ Anyway, none of that matters.`
                 new Up.Text("Violets are blue"),
                 footnotes[3]
               ])
-            ]),
+            ])
           ])
         ]),
 
@@ -322,13 +322,13 @@ Anyway, none of that matters.`
           new Up.LineBlock([
             new Up.LineBlock.Line([
               new Up.Text("Roses are red"),
-              footnotes[2],
+              footnotes[2]
             ]),
             new Up.LineBlock.Line([
               new Up.Text("Violets are blue"),
               footnotes[3]
             ])
-          ]),
+          ])
         ]),
         new Up.FootnoteBlock(footnotes),
         new Up.Paragraph([
@@ -346,10 +346,10 @@ Confuse Ray
 Lick
 Night Shade (^This probably wasn't a reference to the family of plants.)
   Ghost type moves.
-  
+
 Gary
   A young man with a great sense of smell. (^Or maybe Ash simply smelled really good.)
-  
+
 Anyway, none of that matters.`
 
     const footnotes = [
@@ -656,7 +656,7 @@ context('To prevent footnotes from "leaking" out of revealable blocks', () => {
     const markup = `
 SPOILER:
   I don't eat cereal. (^Well, I do, but I pretend not to.) Never have. (^Except for Mondays.)
- 
+
   Roses are red (^This is not my line.)
   Violets are blue (^Neither is this line. I think my mom made it up.)
 
@@ -693,7 +693,7 @@ SPOILER:
           new Up.LineBlock([
             new Up.LineBlock.Line([
               new Up.Text("Roses are red"),
-              lineBlockFootnotes[0],
+              lineBlockFootnotes[0]
             ]),
             new Up.LineBlock.Line([
               new Up.Text("Violets are blue"),
@@ -715,11 +715,11 @@ SPOILER:
 SPOILER:
 
   * I don't eat cereal. (^Well, I do, but I pretend not to.) Never have.
- 
+
     It's too expensive.
- 
+
   * I don't eat (^Or touch.) pumpkins.
-  
+
   Anyway, none of that matters.`
 
       const footnotes = [
@@ -740,7 +740,7 @@ SPOILER:
                 new Up.Paragraph([
                   new Up.Text("I don't eat cereal."),
                   footnotes[0],
-                  new Up.Text(" Never have."),
+                  new Up.Text(" Never have.")
                 ]),
                 new Up.Paragraph([
                   new Up.Text("It's too expensive.")
@@ -782,16 +782,16 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
 
     const footnotesInBulletedList = [
       new Up.Footnote([
-        new Up.Text("Well, I do, but I pretend not to."),
+        new Up.Text("Well, I do, but I pretend not to.")
       ], { referenceNumber: 1 }),
       new Up.Footnote([
-        new Up.Text("Or touch."),
+        new Up.Text("Or touch.")
       ], { referenceNumber: 2 })
     ]
 
     const footnoteInParagraph =
       new Up.Footnote([
-        new Up.Text("It's actually been a dream of mine ever since I was young."),
+        new Up.Text("It's actually been a dream of mine ever since I was young.")
       ], { referenceNumber: 3 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -820,7 +820,7 @@ I wear glasses (^It's actually been a dream of mine ever since I was young.) eve
         new Up.Paragraph([
           new Up.Text("I wear glasses"),
           footnoteInParagraph,
-          new Up.Text(" even while working out."),
+          new Up.Text(" even while working out.")
         ]),
         new Up.FootnoteBlock([footnoteInParagraph])
       ]))
@@ -883,7 +883,7 @@ I wear glasses (^ It's actually been a dream of mine ever since I was young.) ev
         new Up.Paragraph([
           new Up.Text("I wear glasses"),
           footnoteAfterBulletedList,
-          new Up.Text(" even while working out."),
+          new Up.Text(" even while working out.")
         ]),
         new Up.FootnoteBlock([footnoteAfterBulletedList])
       ]))
@@ -910,7 +910,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.Text("Probably."),
+      new Up.Text("Probably.")
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -919,7 +919,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
           new Up.Text("Me? I'm totally normal."),
           firstFootnote,
           new Up.Text(" Really."),
-          secondFootnote,
+          secondFootnote
         ]),
         new Up.FootnoteBlock([
           firstFootnote,
@@ -935,7 +935,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
 
     const footnoteInsideFirstInnerFootnote =
       new Up.Footnote([
-        new Up.Text("Only on Mondays…"),
+        new Up.Text("Only on Mondays…")
       ], { referenceNumber: 5 })
 
     const secondInnerFootnote = new Up.Footnote([
@@ -945,7 +945,7 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
     const firstInnerFootnote = new Up.Footnote([
       new Up.Text('Well, I '),
       new Up.Emphasis([
-        new Up.Text('do'),
+        new Up.Text('do')
       ]),
       footnoteInsideFirstInnerFootnote,
       new Up.Text(' but I pretend not to.')
@@ -955,11 +955,11 @@ describe('Nesed footnotes (footnotes referenced by other footnotes)', () => {
       new Up.Text("That said, I don't eat cereal."),
       firstInnerFootnote,
       new Up.Text(" Never have."),
-      secondInnerFootnote,
+      secondInnerFootnote
     ], { referenceNumber: 1 })
 
     const secondFootnote = new Up.Footnote([
-      new Up.Text("Probably."),
+      new Up.Text("Probably.")
     ], { referenceNumber: 2 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -991,7 +991,7 @@ I don't eat (^Or touch.) pumpkins.`
       new Up.Emphasis([
         new Up.Text('do')
       ]),
-      new Up.Text(', but I pretend not to.'),
+      new Up.Text(', but I pretend not to.')
     ], { referenceNumber: 3 })
 
     const firstFootnoteInFirstParagraph = new Up.Footnote([
@@ -1014,7 +1014,7 @@ I don't eat (^Or touch.) pumpkins.`
           new Up.Text("Me? I'm totally normal."),
           firstFootnoteInFirstParagraph,
           new Up.Text(" Really."),
-          secondFootnoteInFirstParagraph,
+          secondFootnoteInFirstParagraph
         ]),
         new Up.FootnoteBlock([
           firstFootnoteInFirstParagraph,

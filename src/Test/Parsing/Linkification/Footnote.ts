@@ -19,7 +19,7 @@ describe('A footnote directly followed by a bracketed/parenthesized URL', () => 
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -135,7 +135,7 @@ describe('An otherwise-valid linkified footnote with its URL escaped', () => {
           footnote,
           new Up.NormalParenthetical([
             new Up.Text('(tel:5555555555)')
-          ]),
+          ])
         ]),
         new Up.FootnoteBlock([footnote])
       ]))

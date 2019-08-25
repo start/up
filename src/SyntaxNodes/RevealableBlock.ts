@@ -1,6 +1,6 @@
-import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
-import { Document } from './Document'
 import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
+import { RichOutlineSyntaxNode } from './RichOutlineSyntaxNode'
 
 
 export class RevealableBlock extends RichOutlineSyntaxNode {

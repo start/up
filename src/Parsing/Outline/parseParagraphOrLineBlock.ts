@@ -1,13 +1,13 @@
-import { LineConsumer } from './LineConsumer'
-import { Paragraph } from '../../SyntaxNodes/Paragraph'
-import { LineBlock } from '../../SyntaxNodes/LineBlock'
-import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
-import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { NON_BLANK_PATTERN } from '../../Patterns'
+import { InlineSyntaxNode } from '../../SyntaxNodes/InlineSyntaxNode'
+import { LineBlock } from '../../SyntaxNodes/LineBlock'
+import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
+import { Paragraph } from '../../SyntaxNodes/Paragraph'
+import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
-import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 
 
 // A single non-blank line is treated as a paragraph, while a block of consecutive non-blank

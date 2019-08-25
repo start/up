@@ -1,6 +1,6 @@
+import { Renderer } from '../Rendering/Renderer'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
 import { OutlineSyntaxNodeContainer } from './OutlineSyntaxNodeContainer'
-import { Renderer } from '../Rendering/Renderer'
 
 
 export abstract class RichOutlineSyntaxNode extends OutlineSyntaxNodeContainer implements OutlineSyntaxNode {

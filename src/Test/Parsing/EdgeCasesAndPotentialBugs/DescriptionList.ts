@@ -10,10 +10,10 @@ context('The terms for revealable block conventions', () => {
 
 \\NSFW
   Something that could get you fired.
-  
+
 \\NSFL
   Something that could ruin your life.
-  
+
 \\Revealable
   Something that can be revealed.`
 
@@ -75,7 +75,7 @@ context('The keyword for table', () => {
             new Up.Paragraph([
               new Up.Text('A table is a collection of data organized into rows and columns. Evere table must have a header, but the caption is optional.')
             ])
-          ])),
+          ]))
         ])
       ]))
   })
@@ -114,7 +114,7 @@ Night Shade
           ]),
           new Up.LineBlock.Line([
             new Up.Text("Squirtles are blue")
-          ]),
+          ])
         ]),
 
         new Up.DescriptionList([
@@ -168,7 +168,7 @@ Night Shade
             ]),
             new Up.LineBlock.Line([
               new Up.Text("Squirtles are blue")
-            ]),
+            ])
           ]),
 
           new Up.Paragraph([
@@ -225,7 +225,7 @@ Night Shade
             ]),
             new Up.LineBlock.Line([
               new Up.Text("Squirtles are blue")
-            ]),
+            ])
           ]),
 
           new Up.ThematicBreak(),

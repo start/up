@@ -1,6 +1,6 @@
-import { LineConsumer } from './LineConsumer'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { BLANK_PATTERN } from '../../Patterns'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
+import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
 
 
@@ -17,7 +17,7 @@ export function tryToParseBlankLineSeparation(args: OutlineParserArgs): boolean 
     countBlankLines += 1
   }
 
-  // If there are no blank lines, we can't say we parsed anything. Bail!  
+  // If there are no blank lines, we can't say we parsed anything. Bail!
   if (!countBlankLines) {
     return false
   }

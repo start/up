@@ -19,7 +19,7 @@ Goodbye, world!`
         new Up.ThematicBreak(),
         new Up.Paragraph([
           new Up.Text('Goodbye, world!')
-        ]),
+        ])
       ]))
   })
 
@@ -146,7 +146,7 @@ Goodbye.`
         new Up.ThematicBreak(),
         new Up.Paragraph([
           new Up.Text('Goodbye.')
-        ]),
+        ])
       ]))
   })
 })
@@ -258,7 +258,7 @@ context('When thematic break streaks are separated from each other by only blank
  \t
   \t
 ########
- 
+
 
 
 

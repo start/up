@@ -33,7 +33,7 @@ export function singleTagHtmlElement(tagName: string, attrs: any = {}): string {
 //     </li>
 //   </ol>
 //
-// The purpose of this constant is to make that behavior a bit clearer. 
+// The purpose of this constant is to make that behavior a bit clearer.
 export const EMPTY_ATTRBUTE_VALUE: string = ''
 
 

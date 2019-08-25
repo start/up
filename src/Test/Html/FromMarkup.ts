@@ -279,7 +279,7 @@ SPOILER
       const withEmptySettings =
         Up.parseAndRenderWithTableOfContents(markup, {})
 
-      expect(withoutSettings).to.deep.equal(withEmptySettings);
+      expect(withoutSettings).to.deep.equal(withEmptySettings)
     })
   })
 
@@ -365,10 +365,10 @@ SPOILER
     specify('can be used with empty settings', () => {
       const markup = `After beating the Elite Four, [SPOILER: Blue steals a Red Delicious from Red.]`
 
-      const withoutSettings = Up.parseAndRenderInline(markup);
-      const withEmptySettings = Up.parseAndRenderInline(markup, {});
+      const withoutSettings = Up.parseAndRenderInline(markup)
+      const withEmptySettings = Up.parseAndRenderInline(markup, {})
 
-      expect(withoutSettings).to.equal(withEmptySettings);
+      expect(withoutSettings).to.equal(withEmptySettings)
     })
   })
 })

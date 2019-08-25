@@ -112,7 +112,7 @@ Minor reason
               ])
             ], new Up.DescriptionList.Item.Description([
               new Up.Paragraph([
-                new Up.Text('People sometimes misinterpret my truth as a lie.'),
+                new Up.Text('People sometimes misinterpret my truth as a lie.')
               ])
             ])),
             new Up.DescriptionList.Item([
@@ -240,17 +240,17 @@ I've been alive for hundreds of years. I'm bound to have lied at some point`
         ]),
         new Up.LineBlock([
           new Up.LineBlock.Line([
-            new Up.Text('Roses are red'),
+            new Up.Text('Roses are red')
           ]),
           new Up.LineBlock.Line([
-            new Up.Text('Violets are blue'),
+            new Up.Text('Violets are blue')
           ]),
           new Up.LineBlock.Line([
             new Up.Text('See '),
             new Up.SectionLink('soda', sodaHeading)
           ]),
           new Up.LineBlock.Line([
-            new Up.Text("I've been alive for hundreds of years. I'm bound to have lied at some point"),
+            new Up.Text("I've been alive for hundreds of years. I'm bound to have lied at some point")
           ])
         ])
       ], new Up.Document.TableOfContents([sodaHeading, neverLieHeading])))
@@ -609,7 +609,7 @@ I get hungry (see [section: soda]);       Very valid`
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('Moderately valid')])
               ], new Up.Table.Header.Cell([
-                new Up.Text("I don't want to get in trouble"),
+                new Up.Text("I don't want to get in trouble")
               ])),
 
               new Up.Table.Row([
@@ -711,7 +711,7 @@ Not quite true.`
       const neverLieHeading =
         new Up.Heading([
           new Up.Text('I never lie. See '),
-          new Up.SectionLink('soda', sodaHeading),
+          new Up.SectionLink('soda', sodaHeading)
         ], {
             level: 1,
             titleMarkup: "I never lie. See [topic: soda]",

@@ -73,4 +73,4 @@ coverage: compile
 .PHONY: lint
 lint: compile
 # Lint all our TypeScript source code.
-	find src -name "*.ts" | xargs $(local_modules_dir)/tslint --out lint-warnings.txt
+	find src -name "*.ts" | xargs $(local_modules_dir)/tslint --out lint-warnings.txt --fix

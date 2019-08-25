@@ -1,28 +1,28 @@
-import { EMPHASIS, STRESS, ITALIC, BOLD, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, FOOTNOTE, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL } from '../RichConventions'
-import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
-import { escapeForRegex, patternStartingWith, solely, everyOptional, either, optional, oneOrMore, multiple, followedBy, notFollowedBy, anyCharMatching, anyCharNotMatching, capture } from '../../../PatternHelpers'
-import { WHITESPACE, ANY_OPTIONAL_WHITESPACE, WHITESPACE_CHAR, LETTER_CLASS, DIGIT, HASH_MARK, FORWARD_SLASH, LETTER_CHAR, URL_SCHEME } from '../../../PatternPieces'
-import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
-import { BACKSLASH } from '../../Strings'
+import { concat, last, reversed } from '../../../CollectionHelpers'
 import { NormalizedSettings } from '../../../NormalizedSettings'
-import { RichConvention } from './RichConvention'
-import { tryToTokenizeInlineCode } from './tryToTokenizeInlineCode'
-import { nestOverlappingConventions } from './nestOverlappingConventions'
-import { last, concat, reversed } from '../../../CollectionHelpers'
+import { anyCharMatching, anyCharNotMatching, capture, either, escapeForRegex, everyOptional, followedBy, multiple, notFollowedBy, oneOrMore, optional, patternStartingWith, solely } from '../../../PatternHelpers'
+import { ANY_OPTIONAL_WHITESPACE, DIGIT, FORWARD_SLASH, HASH_MARK, LETTER_CHAR, LETTER_CLASS, URL_SCHEME, WHITESPACE, WHITESPACE_CHAR } from '../../../PatternPieces'
+import { NON_BLANK_PATTERN, WHITESPACE_CHAR_PATTERN } from '../../../Patterns'
 import { repeat } from '../../../StringHelpers'
-import { Bracket } from './Bracket'
-import { BacktrackedConventionHelper } from './BacktrackedConventionHelper'
-import { ConventionContext } from './ConventionContext'
-import { TokenizerSnapshot } from './TokenizerSnapshot'
-import { TextConsumer } from './TextConsumer'
-import { OnTextMatch } from './OnTextMatch'
-import { TokenRole } from '../TokenRole'
-import { Token } from './Token'
+import { BACKSLASH } from '../../Strings'
+import { AUDIO, IMAGE, VIDEO } from '../MediaConventions'
 import { ParseableToken } from '../ParseableToken'
-import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
+import { BOLD, EMPHASIS, FOOTNOTE, HIGHLIGHT, INLINE_QUOTE, INLINE_REVEALABLE, ITALIC, LINK, NORMAL_PARENTHETICAL, SQUARE_PARENTHETICAL, STRESS } from '../RichConventions'
+import { TokenRole } from '../TokenRole'
+import { BacktrackedConventionHelper } from './BacktrackedConventionHelper'
+import { Bracket } from './Bracket'
+import { ConventionContext } from './ConventionContext'
 import { ConventionVariation, OnConventionEvent } from './ConventionVariation'
+import { EncloseWithinConventionArgs } from './EncloseWithinConventionArgs'
 import { ForgivingConventionHandler } from './ForgivingConventions/ForgivingConventionHandler'
+import { nestOverlappingConventions } from './nestOverlappingConventions'
+import { OnTextMatch } from './OnTextMatch'
+import { RichConvention } from './RichConvention'
+import { TextConsumer } from './TextConsumer'
+import { Token } from './Token'
+import { TokenizerSnapshot } from './TokenizerSnapshot'
 import { trimEscapedAndUnescapedOuterWhitespace } from './trimEscapedAndUnescapedOuterWhitespace'
+import { tryToTokenizeInlineCode } from './tryToTokenizeInlineCode'
 
 
 // Returns a collection of tokens representing inline conventions and their components.
@@ -72,10 +72,14 @@ const CURLY_BRACKET =
 
 
 class Tokenizer {
+
+  private get justEnteredAConvention(): boolean {
+    return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index
+  }
   // This is our result! A collection of tokens that the parser can use to generate syntax nodes.
   //
   // Yes, it's hackish, but this class is designed to be single-use, almost like a function.
-  // 
+  //
   // The reason we use a class instead of a function is because of the scoping a class provides. Ultimately,
   // we shamefully hide this class behind the exported `tokenize` and `tokenizeForInlineDocument` functions.
   result: ParseableToken[]
@@ -89,7 +93,7 @@ class Tokenizer {
 
   // Speaking of tokens, this is our collection! Unlike a `ParseableToken`, a `Token` knows when it's part of
   // a pair of tokens enclosing content. For example, an `EmphasisStart` token knows about its corresponding
-  // `EmphasisEnd` token. 
+  // `EmphasisEnd` token.
   //
   // This additional information helps us nest overlapping conventions.
   private tokens: Token[] = []
@@ -133,10 +137,10 @@ class Tokenizer {
   // context.
   //
   // If that fails (either because there isn't an opening bracket for the media URL, or because there isn't a
-  // closing bracket), we backtrack to right before we opened the media convention. 
+  // closing bracket), we backtrack to right before we opened the media convention.
   private mediaUrlConventions = this.getMediaUrlConventions()
 
-  // Link URL conventions serve the same purpose as media URL conventions, but for links.  
+  // Link URL conventions serve the same purpose as media URL conventions, but for links.
   private linkUrlConventions = this.getLinkUrlConventions()
 
   // As a rule, when a convention containing a bare URL is closed, the bare URL gets closed first. As a
@@ -201,21 +205,13 @@ class Tokenizer {
   // entered an outer convention.
   private markupIndexThatLastOpenedAConvention?: number
 
-  private get justEnteredAConvention(): boolean {
-    return this.markupIndexThatLastOpenedAConvention === this.markupConsumer.index
-  }
-
-  private indicateWeJustOpenedAConvention(): void {
-    this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index
-  }
-
   // The most recent token isn't necessarily the last token in the `tokens` collection.
   //
   // 1. When a rich convention is "linkified", its entire contents are nested within a link, which
   //    itself is nested within the original convention. In that case, the most recent token would
   //    be a `LinkEndAndUrl` token, while the *last* token would be the original rich convention's
   //    end token. For more information, please see the `getLinkifyingUrlConventions` method.
-  //    
+  //
   // 2. When a rich convention closes, we move its end token before any superficially overlapping
   //    end tokens. For more information, please see the `encloseWithin` method.
   private mostRecentToken?: Token
@@ -229,7 +225,7 @@ class Tokenizer {
       trimEscapedAndUnescapedOuterWhitespace(inlineMarkup)
 
     this.markupConsumer = new TextConsumer(trimmedMarkup)
-    
+
     this.conventionVariations = [
       ...this.getInlineRevealableConventions({
         richConvention: INLINE_REVEALABLE,
@@ -272,6 +268,10 @@ class Tokenizer {
 
     this.tokenize()
     this.result = nestOverlappingConventions(this.tokens)
+  }
+
+  private indicateWeJustOpenedAConvention(): void {
+    this.markupIndexThatLastOpenedAConvention = this.markupConsumer.index
   }
 
   private getFootnoteConventions(): ConventionVariation[] {
@@ -380,7 +380,7 @@ class Tokenizer {
     const { richConvention, startsWith, endsWith, startPatternContainsATerm, whenOpening, insteadOfFailingWhenLeftUnclosed, whenClosing, mustBeDirectlyFollowedBy } = args
 
     return new ConventionVariation({
-      startsWith: startsWith,
+      startsWith,
       startPatternContainsATerm,
 
       endsWith,
@@ -390,7 +390,7 @@ class Tokenizer {
 
       whenOpening,
 
-      whenClosing: (context) => {
+      whenClosing:context => {
         if (whenClosing) {
           whenClosing(context)
         }
@@ -544,7 +544,7 @@ class Tokenizer {
   //
   //   You should try [Typescript] (http://www.typescriptlang.org).
   //
-  // To verify the author actually intends to produce a link, we apply some extra rules (but only if 
+  // To verify the author actually intends to produce a link, we apply some extra rules (but only if
   // there is whitespace between a link's content and its URL):
   //
   // 1. First, the URL must either:
@@ -552,7 +552,7 @@ class Tokenizer {
   //    - Start with a slash
   //    - Start with a hash mark ("#")
   //    - Have a subdomain and a top-level domain
-  //      
+  //
   // 2. Second, the URL must not contain any unescaped whitespace.
   //
   // 3. Lastly, if the URL had no scheme but did have a subdomain and a top-level domain:
@@ -574,7 +574,7 @@ class Tokenizer {
   }
 
   // Certain conventions can be "linkified" if they're followed by a bracketed URL.
-  // 
+  //
   // When a rich convention is linkified, its content gets wrapped in a link. On the other hand,
   // when a media convention or example user input convention is linkified, it gets placed inside
   // a link.
@@ -686,7 +686,7 @@ class Tokenizer {
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing: (context) => {
+      whenClosing:context => {
         const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {
@@ -726,7 +726,7 @@ class Tokenizer {
   }
 
   private closeLinkifyingUrlForExampleUserInputConvention(url: string): void {
-    // We're going to (corretly) assume that the last token is `ExampleUserInput` 
+    // We're going to (corretly) assume that the last token is `ExampleUserInput`
     const indexOfExampleUserInputToken = this.tokens.length - 1
 
     this.encloseWithinLink({ startingBackAtTokenIndex: indexOfExampleUserInputToken, url })
@@ -954,7 +954,7 @@ class Tokenizer {
       // Next, if we can try to buffer whitespace...
       canTryToBufferWhitespace
       // ... then let's try! If we succeed, then we'll try to skip more non-whitespace characters. Otherwise,
-      // we've got to bail, because the current character can't be skipped.     
+      // we've got to bail, because the current character can't be skipped.
       && this.tryToAddWhitespaceToContentBuffer())
   }
 
@@ -1012,7 +1012,7 @@ class Tokenizer {
         // convention can only fail to close if:
         //
         // 1. It must be followed by one of a set of specific conventions, and
-        // 2. None of those conventions could be opened        
+        // 2. None of those conventions could be opened
         this.backtrackToBeforeContext(context)
 
         // We know for a fact that we won't be able to close any other conventions at our new (backtracked)
@@ -1063,7 +1063,7 @@ class Tokenizer {
 
     if (convention.whenClosingItAlsoClosesInnerConventions) {
       // Since we just removed the context at `contextIndex`, its inner contexts will now start at
-      // `contextIndex`.           
+      // `contextIndex`.
       this.openContexts.splice(contextIndex)
     }
 
@@ -1152,7 +1152,7 @@ class Tokenizer {
 
   private encloseWithin(args: EncloseWithinConventionArgs): void {
     const { richConvention } = args
-    let startTokenIndex = args.startingBackAtTokenIndex
+    const startTokenIndex = args.startingBackAtTokenIndex
 
     this.flushNonEmptyBufferToTextToken()
 
@@ -1182,7 +1182,7 @@ class Tokenizer {
     // rather split  a stress convention than an inline revealable convention, the stress convention in the
     // above example would be split in two, with one half outside the revealable convention, and the other half
     // inside. By moving the revealable convention's end token inside the stress convention, we avoid having to
-    // split the stress convention. 
+    // split the stress convention.
 
     const startToken = new Token(richConvention.startTokenRole)
     const endToken = new Token(richConvention.endTokenRole)
@@ -1210,7 +1210,7 @@ class Tokenizer {
 
     // Alright. It's time to insert our end token before any overlapping end tokens!
     for (let i = endTokenIndex - 1; i > startTokenIndex; i--) {
-      let token = this.tokens[i]
+      const token = this.tokens[i]
 
       // We should insert our new end token before the current end token if...
       const shouldEndTokenAppearBeforeCurrentToken =
@@ -1237,7 +1237,7 @@ class Tokenizer {
         // If all that applies, our end token should be inside the current end token's convention.
         endTokenIndex -= 1
       } else {
-        // We've hit a token that we can't swap with! Let's add our end token. 
+        // We've hit a token that we can't swap with! Let's add our end token.
         break
       }
     }
@@ -1291,7 +1291,7 @@ class Tokenizer {
     return didOpenAForgivingConvention
   }
 
-  // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.  
+  // Because inline code doesn't require any of the special machinery of this class, we keep its logic separate.
   private tryToTokenizeInlineCodeOrUnmatchedDelimiter(): boolean {
     return tryToTokenizeInlineCode({
       markup: this.markupConsumer.remaining,
@@ -1625,7 +1625,7 @@ const CLOSE_BRACKET_PATTERNS =
   ALL_BRACKETS.map(bracket => bracket.endPattern)
 
 const CHARACTERS_WITH_POTENTIAL_SPECIAL_MEANING = [
-  // The "h" is for the start of bare URLs. 
+  // The "h" is for the start of bare URLs.
   WHITESPACE_CHAR, FORWARD_SLASH, HYPHEN, PERIOD, PLUS_SIGN, 'h', '"', '_', '=', '`',
   ...OPEN_BRACKET_PATTERNS,
   ...CLOSE_BRACKET_PATTERNS,

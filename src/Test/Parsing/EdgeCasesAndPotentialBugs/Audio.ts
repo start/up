@@ -13,7 +13,7 @@ Do not pour the spiders into your sister's cereal.
         new Up.Paragraph([
           new Up.Text("Do not pour the spiders into your sister's cereal.")
         ]),
-        new Up.Audio('six seconds of screaming', 'http://example.com/screaming.ogg'),
+        new Up.Audio('six seconds of screaming', 'http://example.com/screaming.ogg')
       ]))
   })
 })
@@ -29,7 +29,7 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
           new Up.Link([
             new Up.Text('example.com/ghosts.ogg')
           ], 'http://example.com/ghosts.ogg'),
-          new Up.Text(')'),
+          new Up.Text(')')
         ]),
         new Up.Text('.')
       ]))
@@ -48,7 +48,7 @@ describe('An otherwise-valid audio convention with mismatched brackets surroundi
         new Up.Text('['),
         new Up.Link([
           new Up.Text('example.com/ghosts.ogg).')
-        ], 'http://example.com/ghosts.ogg).'),
+        ], 'http://example.com/ghosts.ogg).')
       ]))
   })
 })
@@ -58,7 +58,7 @@ context('Unmatched opening parentheses in an audio description have no affect on
   specify('parentheses surounding the URL', () => {
     expect(Up.parse('[audio: sad :( sad :( sounds](http://example.com/sad.ogg)')).to.deep.equal(
       new Up.Document([
-        new Up.Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
+        new Up.Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg')
       ]))
   })
 
@@ -69,7 +69,7 @@ context('Unmatched opening parentheses in an audio description have no affect on
           new Up.NormalParenthetical([
             new Up.Text('('),
             new Up.Audio('sad :( sad :( sounds', 'http://example.com/sad.ogg'),
-            new Up.Text(')'),
+            new Up.Text(')')
           ])
         ])
       ]))
@@ -82,7 +82,7 @@ describe("Unmatched opening parentheses in an audio URL", () => {
     const markup = '(^[audio: West Virginia exit polling][https://example.com/a(normal(url])'
 
     const footnote = new Up.Footnote([
-      new Up.Audio('West Virginia exit polling', 'https://example.com/a(normal(url'),
+      new Up.Audio('West Virginia exit polling', 'https://example.com/a(normal(url')
     ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(

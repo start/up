@@ -43,7 +43,7 @@ describe('Text enclosed within 1 equal sign on each side ', () => {
   it('is not highlighted', () => {
     expect(Up.parse('x=1 and y=2')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('x=1 and y=2'),
+        new Up.Text('x=1 and y=2')
       ]))
   })
 })
@@ -56,8 +56,8 @@ describe('Highlighted text', () => {
         new Up.Highlight([
           new Up.Text('You should always use '),
           new Up.InlineCode('<font>'),
-          new Up.Text(' elements.'),
-        ]),
+          new Up.Text(' elements.')
+        ])
       ]))
   })
 
@@ -97,8 +97,8 @@ describe('Nested highlighting', () => {
         new Up.Highlight([
           new Up.Text('Integrated '),
           new Up.Highlight([
-            new Up.Text('GPUs'),
-          ]),
+            new Up.Text('GPUs')
+          ])
         ]),
         new Up.Text(' are all the rage.')
       ]))
@@ -110,14 +110,14 @@ context('Text separated from (otherwise surrounding) equal signs by whitespace i
   specify('2 eaqual signs on each side', () => {
     expect(Up.parse('My favorite lines == are your favorite lines == and we all know it.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('My favorite lines == are your favorite lines == and we all know it.'),
+        new Up.Text('My favorite lines == are your favorite lines == and we all know it.')
       ]))
   })
 
   specify('4 eaqual signs on each side', () => {
     expect(Up.parse('My favorite lines ==== are your favorite lines ==== and we all know it.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('My favorite lines ==== are your favorite lines ==== and we all know it.'),
+        new Up.Text('My favorite lines ==== are your favorite lines ==== and we all know it.')
       ]))
   })
 })
@@ -128,14 +128,14 @@ context('Unmatched double equal signs (that would otherwise start a highlight) a
   specify('Can be the only double equal signs in a paragraph', () => {
     expect(Up.parse('I said that ==I am still typi')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('I said that ==I am still typi'),
+        new Up.Text('I said that ==I am still typi')
       ]))
   })
 
   specify('Can follow another unmatched instance of double equal signs', () => {
     expect(Up.parse('Bob likes ==eating every ==blueberry')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('Bob likes ==eating every ==blueberry'),
+        new Up.Text('Bob likes ==eating every ==blueberry')
       ]))
   })
 
@@ -169,7 +169,7 @@ context('Unmatched double equal signs (that would otherwise start a highlight) a
           new Up.Text('expensive '),
           new Up.Highlight([
             new Up.Text('blueberry cereal')
-          ]),
+          ])
         ]),
         new Up.Text(' frequently.')
       ]))
@@ -181,14 +181,14 @@ context('Unmatched double equal signs (that would otherwise close a highlight) a
   specify('Can be the only double equal signs in a paragraph', () => {
     expect(Up.parse('I love lines== a lot.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('I love lines== a lot.'),
+        new Up.Text('I love lines== a lot.')
       ]))
   })
 
   specify('Can follow another instance of unmatched double equal signs', () => {
     expect(Up.parse('I love lines== more than you love lines== and that cannot be disputed.')).to.deep.equal(
       insideDocumentAndParagraph([
-        new Up.Text('I love lines== more than you love lines== and that cannot be disputed.'),
+        new Up.Text('I love lines== more than you love lines== and that cannot be disputed.')
       ]))
   })
 
@@ -329,7 +329,7 @@ context("Pairs of highlight delimiters cancel each other's characters. A delimit
           new Up.Text('expensive '),
           new Up.Highlight([
             new Up.Text('blueberry cereal')
-          ]),
+          ])
         ]),
         new Up.Text(' frequently.')
       ]))
@@ -357,7 +357,7 @@ context("Pairs of highlight delimiters cancel each other's characters. A delimit
           new Up.Text('expensive '),
           new Up.Highlight([
             new Up.Text('blueberry cereal')
-          ]),
+          ])
         ]),
         new Up.Text(' frequently.')
       ]))

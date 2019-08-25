@@ -1,7 +1,7 @@
+import { Renderer } from '../Rendering/Renderer'
+import { Document } from './Document'
 import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { OutlineSyntaxNode } from './OutlineSyntaxNode'
-import { Document } from './Document'
-import { Renderer } from '../Rendering/Renderer'
 
 
 // If a line consists solely of media conventions (or media conventions within links),
@@ -36,6 +36,4 @@ export abstract class MediaSyntaxNode implements InlineSyntaxNode, OutlineSyntax
   protected MEDIA_SYNTAX_NODE(): void { }
 }
 
-export interface MediaSyntaxNodeType {
-  new (description: string, url: string): MediaSyntaxNode
-}
+export type MediaSyntaxNodeType = new (description: string, url: string) => MediaSyntaxNode

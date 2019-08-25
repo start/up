@@ -1,22 +1,22 @@
-import { LineConsumer } from './LineConsumer'
-import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
+import { last } from '../../CollectionHelpers'
+import { NormalizedSettings } from '../../NormalizedSettings'
+import { NON_BLANK_PATTERN } from '../../Patterns'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
-import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
-import { tryToParseHeading } from './tryToParseHeading'
+import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
+import { HeadingLeveler } from './HeadingLeveler'
+import { LineConsumer } from './LineConsumer'
+import { OutlineParserArgs } from './OutlineParserArgs'
+import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
-import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
 import { tryToParseBulletedList } from './tryToParseBulletedList'
-import { tryToParseNumberedList } from './tryToParseNumberedList'
+import { tryToParseCodeBlock } from './tryToParseCodeBlock'
 import { tryToParseDescriptionList } from './tryToParseDescriptionList'
-import { tryToParseTable } from './tryToParseTable'
+import { tryToParseHeading } from './tryToParseHeading'
+import { tryToParseNumberedList } from './tryToParseNumberedList'
 import { tryToParseRevealableBlock } from './tryToParseRevealableBlock'
-import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
-import { NON_BLANK_PATTERN } from '../../Patterns'
-import { last } from '../../CollectionHelpers'
-import { HeadingLeveler } from './HeadingLeveler'
-import { NormalizedSettings } from '../../NormalizedSettings'
-import { OutlineParserArgs } from './OutlineParserArgs'
+import { tryToParseTable } from './tryToParseTable'
+import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 
 
 
@@ -124,7 +124,7 @@ function withoutTrailingBlankLines(lines: string[]): string[] {
 function condenseConsecutiveThematicBreaks(nodes: OutlineSyntaxNode[]): OutlineSyntaxNode[] {
   const resultNodes: OutlineSyntaxNode[] = []
 
-  for (let node of nodes) {
+  for (const node of nodes) {
     const isConsecutiveThematicBreak =
       node instanceof ThematicBreak
       && last(resultNodes) instanceof ThematicBreak

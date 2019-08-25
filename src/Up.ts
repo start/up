@@ -1,10 +1,10 @@
-import { Document } from './SyntaxNodes/Document'
-import { InlineDocument } from './SyntaxNodes/InlineDocument'
 import { NormalizedSettings } from './NormalizedSettings'
-import { Settings } from './Settings'
 import { parse } from './Parsing/parse'
 import { parseInline } from './Parsing/parseInline'
 import { HtmlRenderer } from './Rendering/Html/HtmlRenderer'
+import { Settings } from './Settings'
+import { Document } from './SyntaxNodes/Document'
+import { InlineDocument } from './SyntaxNodes/InlineDocument'
 
 
 export class Up {

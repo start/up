@@ -17,7 +17,7 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
             new Up.Stress([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -33,7 +33,7 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
             new Up.Emphasis([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -49,8 +49,8 @@ describe('Inside of emphasized text, text that is stressed/again-emphasized at t
             new Up.Emphasis([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
-          ]),
+            new Up.Text(' eating the cardboard')
+          ])
         ]),
         new Up.Stress([
           new Up.Text(' immediately')
@@ -66,7 +66,7 @@ describe('A start delimiter consisting of 3 asterisks', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Emphasis([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -77,7 +77,7 @@ describe('A start delimiter consisting of 3 asterisks', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Stress([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -91,7 +91,7 @@ describe('A start delimiter consisting of 1 asterisk', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Emphasis([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -105,7 +105,7 @@ describe('A start delimiter consisting of 2 asterisks', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Stress([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -123,7 +123,7 @@ describe('Inside of stressed text, text that is emphasized/again-stressed at the
             new Up.Stress([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -155,8 +155,8 @@ describe('Inside of stressed text, text that is emphasized/again-stressed at the
             new Up.Stress([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
-          ]),
+            new Up.Text(' eating the cardboard')
+          ])
         ]),
         new Up.Emphasis([
           new Up.Text(' immediately')
@@ -259,7 +259,7 @@ describe('A start delimiter consisting of 4+ asterisks, with an emphasis convent
               new Up.Text('Xamarin')
             ]),
             new Up.Text(' is now free')
-          ]),
+          ])
         ]),
         new Up.Text('!')
       ]))
@@ -295,7 +295,7 @@ describe('A start delimiter consisting of 5+ asterisks, with an emphasis convent
               new Up.Text('Xamarin')
             ]),
             new Up.Text(' is now free')
-          ]),
+          ])
         ]),
         new Up.Text('!')
       ]))

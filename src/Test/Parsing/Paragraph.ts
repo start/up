@@ -83,7 +83,7 @@ Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')])
       ]))
   })
 
@@ -96,32 +96,32 @@ Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')])
       ]))
   })
 
   specify('1 blank line', () => {
     const markup = `
 Pokemon Moon has a Mew under a truck.
- \t \t 
+ \t \t
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')])
       ]))
   })
 
   specify('2 blank lines', () => {
     const markup = `
 Pokemon Moon has a Mew under a truck.
-  \t \t 
-\t \t 
+  \t \t
+\t \t
 Pokemon Sun is a truck.`
     expect(Up.parse(markup)).to.deep.equal(
       new Up.Document([
         new Up.Paragraph([new Up.Text('Pokemon Moon has a Mew under a truck.')]),
-        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')]),
+        new Up.Paragraph([new Up.Text('Pokemon Sun is a truck.')])
       ]))
   })
 })

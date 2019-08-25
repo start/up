@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import * as Up from '../../../../Main'
-import { insideDocumentAndParagraph, expectEveryPermutationOfBrackets } from '../../Helpers'
+import { expectEveryPermutationOfBrackets, insideDocumentAndParagraph } from '../../Helpers'
 
 
 const WITH_AND_WITHOUT_WHITESPACE = ['', ' \t\t ']
@@ -50,7 +50,7 @@ context('A linkified example user input convention can have whitespace between i
               new Up.Text('stackoverflow.com')
             ], 'https://stackoverflow.com'),
             new Up.Text(' is nice)')
-          ]),
+          ])
         ]))
     })
 
@@ -61,7 +61,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(mailto:)')
-          ]),
+          ])
         ]))
     })
 
@@ -72,7 +72,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(file:///)')
-          ]),
+          ])
         ]))
     })
 
@@ -98,7 +98,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(mailto:daniel@wants.email)')
-          ]),
+          ])
         ]))
     })
   })
@@ -128,7 +128,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/r9k/ created it)')
-          ]),
+          ])
         ]))
     })
 
@@ -139,7 +139,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/)')
-          ]),
+          ])
         ]))
     })
 
@@ -165,7 +165,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(/r9k/)')
-          ]),
+          ])
         ]))
     })
   })
@@ -210,7 +210,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#)')
-          ]),
+          ])
         ]))
     })
 
@@ -221,7 +221,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#starcraft2 was never trending)')
-          ]),
+          ])
         ]))
     })
 
@@ -232,7 +232,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(#starcraft2)')
-          ]),
+          ])
         ]))
     })
   })
@@ -292,7 +292,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(4chan.org-terrifying)')
-          ]),
+          ])
         ]))
     })
 
@@ -319,7 +319,7 @@ context('A linkified example user input convention can have whitespace between i
             new Up.Text(' '),
             new Up.NormalParenthetical([
               new Up.Text('(john.e.smith5)')
-            ]),
+            ])
           ]))
       })
 
@@ -330,7 +330,7 @@ context('A linkified example user input convention can have whitespace between i
             new Up.Text(' '),
             new Up.NormalParenthetical([
               new Up.Text('(john.e.smith-kline)')
-            ]),
+            ])
           ]))
       })
     })
@@ -342,7 +342,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(.co.uk)')
-          ]),
+          ])
         ]))
     })
 
@@ -353,7 +353,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(um…uh)')
-          ]),
+          ])
         ]))
     })
 
@@ -364,7 +364,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(4chan.org…/r9k/)')
-          ]),
+          ])
         ]))
     })
 
@@ -390,7 +390,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(ign.com had some hilarious forums)')
-          ]),
+          ])
         ]))
     })
 
@@ -401,7 +401,7 @@ context('A linkified example user input convention can have whitespace between i
           new Up.Text(' '),
           new Up.NormalParenthetical([
             new Up.Text('(ign.com)')
-          ]),
+          ])
         ]))
     })
   })
@@ -414,7 +414,7 @@ context('A linkified example user input convention can have whitespace between i
         new Up.Text(' '),
         new Up.NormalParenthetical([
           new Up.Text('(really)')
-        ]),
+        ])
       ]))
   })
 })

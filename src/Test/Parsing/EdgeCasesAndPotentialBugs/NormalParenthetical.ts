@@ -53,7 +53,7 @@ context('A normal parenthetical can be directly followed by whitespace followed 
               new Up.Text('(or oatmeal)')
             ]),
             footnote,
-            new Up.Text(" on Mondays."),
+            new Up.Text(" on Mondays.")
           ]),
           new Up.FootnoteBlock([footnote])
         ]))
@@ -74,7 +74,7 @@ context('A normal parenthetical can be directly followed by whitespace followed 
               new Up.Text('(or oatmeal)')
             ]),
             footnote,
-            new Up.Text(" on Mondays."),
+            new Up.Text(" on Mondays.")
           ]),
           new Up.FootnoteBlock([footnote])
         ]))

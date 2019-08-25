@@ -70,7 +70,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
                 new Up.Text('does '),
                 new Up.InlineRevealable([
                   new Up.Text('not')
-                ]),
+                ])
               ]),
               new Up.Text(' make')
             ]),
@@ -89,7 +89,7 @@ context('Up offers no real support for self-overlapping. When a convention overl
                   new Up.Text('not')
                 ]),
                 new Up.Text(' make')
-              ]),
+              ])
             ]),
             new Up.Text(' much sense.')
           ]))

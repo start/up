@@ -107,7 +107,7 @@ describe("The ID of an inline revealable's checkbox (on both the checkbox and th
           new Up.InlineRevealable([
             new Up.Text('Blue')
           ]),
-          new Up.Text('.'),
+          new Up.Text('.')
         ])
       ])
 

@@ -16,7 +16,7 @@ context('A code block preserves all indentation when it is', () => {
         new Up.CodeBlock(
           `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
       ]))
   })
 
@@ -37,7 +37,7 @@ SPOILER:
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
           ])
         ]))
     })
@@ -57,7 +57,7 @@ SPOILER:
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
           ])
         ]))
     })
@@ -77,7 +77,7 @@ SPOILER:
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
           ])
         ]))
     })
@@ -100,7 +100,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -121,7 +121,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -142,7 +142,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -166,7 +166,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -187,7 +187,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -208,7 +208,7 @@ SPOILER:
               new Up.CodeBlock(
                 `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
             ])
           ])
         ]))
@@ -315,7 +315,7 @@ Lesson 1
             new Up.CodeBlock(
               `  if (x < 0) {
 \t\treturn false
-  }`),
+  }`)
           ])
         ]))
     })
@@ -338,7 +338,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
           new Up.CodeBlock(
             `\tif (x < 0) {
 \t\treturn false
-\t}`),
+\t}`)
         ])
       ]))
   })
@@ -357,7 +357,7 @@ context('When a code block is nested within a blockquote that has no spaces afte
           new Up.CodeBlock(
             `if (x < 0) {
  return false
-}`),
+}`)
         ])
       ]))
   })

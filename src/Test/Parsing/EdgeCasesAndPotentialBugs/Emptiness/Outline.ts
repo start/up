@@ -11,11 +11,11 @@ describe('An empty document', () => {
 
 describe('A document with only blank lines', () => {
   it('produces an empty document object', () => {
-    const markup = `     
+    const markup = `
 
-\t       
-      
-      
+\t
+
+
 `
     expect(Up.parse(markup)).to.deep.equal(new Up.Document([]))
   })
@@ -24,11 +24,11 @@ describe('A document with only blank lines', () => {
 
 describe('A document with only escaped blank lines', () => {
   it('produces an empty document object', () => {
-    const markup = `     
+    const markup = `
  \\ \t
-\\\t       
-\\   \\ \\       
-\\\t    \\       
+\\\t
+\\   \\ \\
+\\\t    \\
  \\ `
     expect(Up.parse(markup)).to.deep.equal(new Up.Document([]))
   })

@@ -1,7 +1,7 @@
-import { MediaConvention } from './MediaConvention'
 import { Audio } from '../../SyntaxNodes/Audio'
 import { Image } from '../../SyntaxNodes/Image'
 import { Video } from '../../SyntaxNodes/Video'
+import { MediaConvention } from './MediaConvention'
 import { TokenRole } from './TokenRole'
 
 

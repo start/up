@@ -7,7 +7,7 @@ context('When a line consisting solely of a revealable keyword is followed by an
     const markup = `
 SPOILER
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -27,7 +27,7 @@ SPOILER
     const markup = `
 NSFW
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -47,7 +47,7 @@ NSFW
     const markup = `
 NSFL
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -67,7 +67,7 @@ NSFL
     const markup = `
 Revealable
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -90,7 +90,7 @@ describe('The "label line" of a revealable block', () => {
     const markup = `
 sPoiLeR
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -110,7 +110,7 @@ sPoiLeR
     const markup = `
 Revealable:
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -131,7 +131,7 @@ Revealable:
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -152,7 +152,7 @@ SPOILER:
 SPOILER
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -174,7 +174,7 @@ SPOILER:
 
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -198,7 +198,7 @@ SPOILER:
 
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -216,10 +216,10 @@ SPOILER:
 
   it('can have whitespace after the colon', () => {
     const markup = `
-SPOILER:  \t  \t  
+SPOILER:  \t  \t
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -237,10 +237,10 @@ SPOILER:  \t  \t
 
   it("can have whitespace after the revealable keyword if there isn't a colon", () => {
     const markup = `
-SPOILER  \t  \t  
+SPOILER  \t  \t
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -265,7 +265,7 @@ describe('Revealable blocks', () => {
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   SPOILER:
 
     Luckily, Pikachu ultimately decided to stay.`
@@ -290,7 +290,7 @@ SPOILER:
 SPOILER:
 
   With a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
 
 
   Luckily, Pikachu ultimately decided to stay.`
@@ -317,7 +317,7 @@ SPOILER:
   function nthFibonacci(n: number): number {
     return (
       n <= 2
-        ? n - 1 
+        ? n - 1
         : nthFibonacci(n - 1) + nthFibonacci(n - 2))
   }
   \`\`\``
@@ -329,7 +329,7 @@ SPOILER:
               `function nthFibonacci(n: number): number {
   return (
     n <= 2
-      ? n - 1 
+      ? n - 1
       : nthFibonacci(n - 1) + nthFibonacci(n - 2))
 }`)
           ])
@@ -361,7 +361,7 @@ That was my favorite episode.`
 SPOILER:
 
   With a *very* sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -372,7 +372,7 @@ SPOILER:
             new Up.Emphasis([
               new Up.Text('very')
             ]),
-            new Up.Text(' sad song playing in the background, Ash said goodbye to Pikachu.'),
+            new Up.Text(' sad song playing in the background, Ash said goodbye to Pikachu.')
           ]),
           new Up.Paragraph([
             new Up.Text('Luckily, Pikachu ultimately decided to stay.')
@@ -436,7 +436,7 @@ SPOILER:
 \tWell...
 
  \tWith a very sad song playing in the background, Ash said goodbye to Pikachu.
-  
+
   Luckily, Pikachu ultimately decided to stay.`
 
     expect(Up.parse(markup)).to.deep.equal(

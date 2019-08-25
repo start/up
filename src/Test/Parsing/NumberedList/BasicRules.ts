@@ -275,7 +275,7 @@ describe('A bulleted list item containing multiple indented lines', () => {
   =============
 
   Upcoming features:
-  
+
   * Code blocks in list items
   * Definition lists
 
@@ -339,7 +339,7 @@ context('Subsequent lines in a bulleted list item must be indented.', () => {
             new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -361,7 +361,7 @@ context('Subsequent lines in a bulleted list item must be indented.', () => {
             new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -383,7 +383,7 @@ context('Subsequent lines in a bulleted list item must be indented.', () => {
             new Up.BulletedList.Item([
               new Up.LineBlock([
                 new Up.LineBlock.Line([
-                  new Up.Text('Roses are red'),
+                  new Up.Text('Roses are red')
                 ]),
                 new Up.LineBlock.Line([
                   new Up.Text('Violets are blue')
@@ -399,7 +399,7 @@ context('Subsequent lines in a bulleted list item must be indented.', () => {
     const withMixedIndentation = `
 * Roses are red
   Violets are blue
- 
+
 \tI really like that poem.
 
  \tI think it's my favorite.
@@ -493,7 +493,7 @@ describe('A bulleted list', () => {
               new Up.Text('!')
             ])
           ])
-        ]),
+        ])
       ]))
   })
 

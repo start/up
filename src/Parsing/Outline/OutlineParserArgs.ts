@@ -1,6 +1,6 @@
+import { NormalizedSettings } from '../../NormalizedSettings'
 import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { HeadingLeveler } from './HeadingLeveler'
-import { NormalizedSettings } from '../../NormalizedSettings'
 
 
 export interface OutlineParserArgs {

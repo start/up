@@ -77,7 +77,7 @@ describe('An inline revealable convention', () => {
           new Up.Text('you fight '),
           new Up.Emphasis([
             new Up.Text('Gary')
-          ]),
+          ])
         ]),
         new Up.Text('.')
       ]))
@@ -91,7 +91,7 @@ describe('An inline revealable convention', () => {
           new Up.Text('you fight '),
           new Up.InlineRevealable([
             new Up.Text('Gary')
-          ]),
+          ])
         ]),
         new Up.Text('.')
       ]))

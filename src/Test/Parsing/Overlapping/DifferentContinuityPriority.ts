@@ -17,7 +17,7 @@ describe('Emphasized text overlapping a link', () => {
           new Up.Emphasis([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -34,7 +34,7 @@ describe('A link overlapping emphasized text', () => {
           new Up.Text('trash '),
           new Up.Emphasis([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Emphasis([
           new Up.Text(' not')
@@ -57,7 +57,7 @@ describe('Italicized text overlapping a link', () => {
           new Up.Italic([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -74,7 +74,7 @@ describe('A link overlapping italicized text', () => {
           new Up.Text('trash '),
           new Up.Italic([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Italic([
           new Up.Text(' not')
@@ -94,7 +94,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
           new Up.Text('trash '),
           new Up.Stress([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Stress([
           new Up.Text(' not')
@@ -114,7 +114,7 @@ context('When a link overlaps stressed text, the stressed text will always be sp
           new Up.Stress([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -131,7 +131,7 @@ context('When a link overlaps italicized text, the italicized text will always b
           new Up.Text('trash '),
           new Up.Italic([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Italic([
           new Up.Text(' not')
@@ -151,7 +151,7 @@ context('When a link overlaps italicized text, the italicized text will always b
           new Up.Italic([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -168,7 +168,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
           new Up.Text('trash '),
           new Up.Bold([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Bold([
           new Up.Text(' not')
@@ -188,7 +188,7 @@ context('When a link overlaps bold text, the bold text will always be split. Thi
           new Up.Bold([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -205,7 +205,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
           new Up.Text('trash '),
           new Up.Highlight([
             new Up.Text('can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.Highlight([
           new Up.Text(' not')
@@ -225,7 +225,7 @@ context('When a link overlaps highlighted text, the highlighted text will always
           new Up.Highlight([
             new Up.Text('care')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -242,7 +242,7 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
           new Up.Text('trash '),
           new Up.NormalParenthetical([
             new Up.Text('(can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.NormalParenthetical([
           new Up.Text(' not)')
@@ -262,7 +262,7 @@ context('When a link overlaps parenthesized text, the parenthesized text will al
           new Up.NormalParenthetical([
             new Up.Text('care)')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -279,7 +279,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
           new Up.Text('trash '),
           new Up.SquareParenthetical([
             new Up.Text('[can')
-          ]),
+          ])
         ], 'https://en.wikipedia.org/wiki/Waste_container'),
         new Up.SquareParenthetical([
           new Up.Text(' not]')
@@ -299,7 +299,7 @@ context('When a link overlaps square bracketed text, the square bracketed text w
           new Up.SquareParenthetical([
             new Up.Text('care]')
           ]),
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -333,10 +333,10 @@ context('When a link overlaps a quote, the link will always be split. This inclu
           new Up.Text('not '),
           new Up.Link([
             new Up.Text('care')
-          ], 'https://en.wikipedia.org/wiki/Carrot'),
+          ], 'https://en.wikipedia.org/wiki/Carrot')
         ]),
         new Up.Link([
-          new Up.Text(' at'),
+          new Up.Text(' at')
         ], 'https://en.wikipedia.org/wiki/Carrot'),
         new Up.Text(' all.')
       ]))
@@ -360,7 +360,7 @@ describe('An inline revealable that overlaps a footnote', () => {
       new Up.Document([
         new Up.Paragraph([
           new Up.InlineRevealable([
-            new Up.Text('Gary loses to Ash'),
+            new Up.Text('Gary loses to Ash')
           ]),
           footnote
         ]),
@@ -379,7 +379,7 @@ describe('A footnote that overlaps an inline revealable', () => {
         new Up.Text('reasonable '),
         new Up.InlineRevealable([
           new Up.Text('and realistic')
-        ]),
+        ])
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -390,7 +390,7 @@ describe('A footnote that overlaps an inline revealable', () => {
           new Up.InlineRevealable([
             new Up.Text(' example of a')
           ]),
-          new Up.Text(' footnote that overlaps an inline revealable.'),
+          new Up.Text(' footnote that overlaps an inline revealable.')
         ]),
         new Up.FootnoteBlock([footnote])
       ]))
@@ -600,7 +600,7 @@ context('When quoted text overlaps a footnote, the inline quote node will always
       new Up.Document([
         new Up.Paragraph([
           new Up.InlineQuote([
-            new Up.Text('This is not'),
+            new Up.Text('This is not')
           ]),
           footnote
         ]),
@@ -616,7 +616,7 @@ context('When quoted text overlaps a footnote, the inline quote node will always
         new Up.Text('reasonable '),
         new Up.InlineQuote([
           new Up.Text('and realistic')
-        ]),
+        ])
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -625,7 +625,7 @@ context('When quoted text overlaps a footnote, the inline quote node will always
           new Up.Text('Eventually, I will use a'),
           footnote,
           new Up.InlineQuote([
-            new Up.Text(' example'),
+            new Up.Text(' example')
           ]),
           new Up.Text(' of a footnote that overlaps an inline quote.')
         ]),
@@ -651,7 +651,7 @@ context('When an inline revealable convention overlaps footnote, the revealable 
       new Up.Document([
         new Up.Paragraph([
           new Up.InlineRevealable([
-            new Up.Text('Gary loses to Ash'),
+            new Up.Text('Gary loses to Ash')
           ]),
           footnote
         ]),
@@ -667,7 +667,7 @@ context('When an inline revealable convention overlaps footnote, the revealable 
         new Up.Text('reasonable '),
         new Up.InlineRevealable([
           new Up.Text('and realistic')
-        ]),
+        ])
       ], { referenceNumber: 1 })
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -676,7 +676,7 @@ context('When an inline revealable convention overlaps footnote, the revealable 
           new Up.Text('Eventually, I will think of one'),
           footnote,
           new Up.InlineRevealable([
-            new Up.Text(' example of a'),
+            new Up.Text(' example of a')
           ]),
           new Up.Text(' footnote that overlaps an inline revealable convention.')
         ]),

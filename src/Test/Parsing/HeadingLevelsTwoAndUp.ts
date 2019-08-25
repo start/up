@@ -559,7 +559,7 @@ describe("A level-2 heading underline defined inside a blockquote", () => {
       new Up.Document([
         new Up.Blockquote([
           helloHeading,
-          goodbyeHeading,
+          goodbyeHeading
         ]),
         new Up.Blockquote([
           keysHeading

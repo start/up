@@ -65,7 +65,7 @@ Chrono Cross;1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })
@@ -76,9 +76,9 @@ Table:
 
  Game\t ; \t Release Date \t
 
- \t Final Fantasy\t ;\t 1987 \t 
- \t Final Fantasy II\t ;\t 1988 \t 
- \t Chrono Trigger\t ;\t 1995 \t 
+ \t Final Fantasy\t ;\t 1987 \t
+ \t Final Fantasy II\t ;\t 1988 \t
+ \t Chrono Trigger\t ;\t 1995 \t
  \t Chrono Cross\t ;\t 1999 \t `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -103,7 +103,7 @@ Table:
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })
@@ -146,7 +146,7 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ]),
         new Up.Paragraph([
           new Up.Text("I don't like video games; in fact, I never have.")
@@ -190,7 +190,7 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ]),
         new Up.Paragraph([
           new Up.Text("I don't like video games; in fact, I never have.")
@@ -235,7 +235,7 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ]),
         new Up.ThematicBreak(),
         new Up.Paragraph([
@@ -435,7 +435,7 @@ Chrono Cross;       1999`
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('Chrono Cross')]),
               new Up.Table.Row.Cell([new Up.Text('1999')])
-            ]),
+            ])
           ])
       ]))
   })

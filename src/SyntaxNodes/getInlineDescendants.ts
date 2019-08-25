@@ -1,5 +1,5 @@
-import { InlineSyntaxNode } from './InlineSyntaxNode'
 import { concat } from '../CollectionHelpers'
+import { InlineSyntaxNode } from './InlineSyntaxNode'
 
 
 export function getInlineDescendants(nodes: InlineSyntaxNode[]): InlineSyntaxNode[] {

@@ -1,5 +1,5 @@
-import { MediaSyntaxNode } from './MediaSyntaxNode'
 import { Renderer } from '../Rendering/Renderer'
+import { MediaSyntaxNode } from './MediaSyntaxNode'
 
 
 export class Image extends MediaSyntaxNode {

@@ -147,7 +147,7 @@ Table: \`AND\` operator logic
             ]), [
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('true')]),
-                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
               ], new Up.Table.Header.Cell([new Up.Text('1')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -276,7 +276,7 @@ SPOILER:
 
         expect(up.parse(markup)).to.deep.equal(
           new Up.Document([
-            new Up.ThematicBreak({ sourceLineNumber: 1 }),
+            new Up.ThematicBreak({ sourceLineNumber: 1 })
           ]))
       })
 
@@ -354,7 +354,7 @@ const reason = "They are cheap and delicious."
 
       expect(up.parse(markup)).to.deep.equal(
         new Up.Document([
-          new Up.CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 }),
+          new Up.CodeBlock('const reason = "They are cheap and delicious."', { sourceLineNumber: 2 })
         ]))
     })
 
@@ -403,7 +403,7 @@ Table:
             ]), [
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('true')]),
-                new Up.Table.Row.Cell([new Up.Text('false')]),
+                new Up.Table.Row.Cell([new Up.Text('false')])
               ], new Up.Table.Header.Cell([new Up.Text('1')])),
               new Up.Table.Row([
                 new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -483,7 +483,7 @@ I do eat apples, though.`
         new Up.Paragraph([
           new Up.Text("I don't eat cereal."),
           footnote,
-          new Up.Text(" Never have."),
+          new Up.Text(" Never have.")
         ], { sourceLineNumber: 2 }),
         new Up.FootnoteBlock([footnote]),
         new Up.Paragraph([new Up.Text('I do eat apples, though.')], { sourceLineNumber: 4 })
@@ -513,7 +513,7 @@ Apples.
 
 The best apple
 --------------
-  
+
 Pink lady.`
 
     const enjoyApplesHeading =
@@ -576,7 +576,7 @@ Apple
 Pink lady
   The best apple
   --------------
-  
+
   > Really.`
 
 

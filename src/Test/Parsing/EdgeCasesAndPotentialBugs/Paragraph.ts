@@ -7,8 +7,8 @@ context('Normally, consecutive non-blank lines produce a line block. However, if
   specify('The blank lines are all trailing, and none of them are indented', () => {
     const markup = `
 You'll never believe this fake evidence!
-\\   \\  \t \\\t 
- \\   \\  \t \\\t 
+\\   \\  \t \\\t
+ \\   \\  \t \\\t
 \\   \t\\   \\  \t \\\t `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -19,9 +19,9 @@ You'll never believe this fake evidence!
 
   specify('The blank lines are all leading, and none but the first are indented', () => {
     const markup = `
-    \\   \t\\   \\  \t \\\t 
-\\   \\  \t \\\t 
- \\   \\  \t \\\t 
+    \\   \t\\   \\  \t \\\t
+\\   \\  \t \\\t
+ \\   \\  \t \\\t
 You'll never believe this fake evidence!`
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -32,12 +32,12 @@ You'll never believe this fake evidence!`
 
   specify('The blank lines surround the paragraph, and none but the first are indented', () => {
     const markup = `
-  \\   \t\\   \\  \t \\\t 
-\\   \\  \t \\\t 
- \\   \\  \t \\\t 
+  \\   \t\\   \\  \t \\\t
+\\   \\  \t \\\t
+ \\   \\  \t \\\t
 You'll never believe this fake evidence!
-\\   \t\\   \\  \t \\\t 
-\\   \\  \t \\\t 
+\\   \t\\   \\  \t \\\t
+\\   \\  \t \\\t
  \\   \\  \t \\\t `
 
     expect(Up.parse(markup)).to.deep.equal(

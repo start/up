@@ -139,7 +139,7 @@ Not quite true. For example, see [section: I drink soda].`
 
     specify('After the section link', () => {
       const markup = `
-I'm a great guy. For more information, skip to [section: I never lie]. 
+I'm a great guy. For more information, skip to [section: I never lie].
 
 I drink soda
 ============
@@ -701,7 +701,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
               new Up.Text('Not quite true.')
             ])
           ], { ordinal: 2 })
-        ]),
+        ])
       ], new Up.Document.TableOfContents([sodaHeading, honestHeading])))
   })
 })
@@ -710,7 +710,7 @@ There are plenty of important facts about me. For my favorite, skip to [section:
 context("If there are no matching table of contents entries for a given section link", () => {
   specify("the section link simply won't be associated with an entry", () => {
     const markup = `
-I'm a great guy. For more information, skip to [section: I became a world leader]. 
+I'm a great guy. For more information, skip to [section: I became a world leader].
 
 I drink soda
 ============
@@ -803,7 +803,7 @@ Not quite true. For example, see [sEcTIoN: I drink soda].`
 context('Whitespace within the snippet of a section link is significant.', () => {
   specify('If there is a space between words in the entry, there must be a space between those words in the snippet', () => {
     const markup = `
-I'm a concerned kind of guy. For more information, skip to [section: prepare]. 
+I'm a concerned kind of guy. For more information, skip to [section: prepare].
 
 Those who prep are more likely to survive
 =========================================
@@ -849,7 +849,7 @@ The zombies could arrive at any moment.`
 
   specify('If there is a space between words in a snippet, there must be a space between those words in the entry itself', () => {
     const markup = `
-I'm a helpful guy. For more information, skip to [section: prep are]. 
+I'm a helpful guy. For more information, skip to [section: prep are].
 
 Please prepare
 ==============
@@ -895,7 +895,7 @@ That's what the internet told me.`
 
   specify('However, any outer whitespace around the snippet is trimmed away and ignored.', () => {
     const markup = `
-I'm a helpful guy. For more information, skip to [section: \t \t drama \t \t ]. 
+I'm a helpful guy. For more information, skip to [section: \t \t drama \t \t ].
 
 Please prepare
 ==============
@@ -941,14 +941,14 @@ That's what the internet told me.`
 
   specify("However, any outer whitespace around the heading's content itself is trimmed away and ignored.", () => {
     const markup = `
-I'm a helpful guy. For more information, skip to [section: drama]. 
+I'm a helpful guy. For more information, skip to [section: drama].
 
 Please prepare
 ==============
 
 The zombies could arrive at any moment.
 
- Those who prep are superdramaticallly more likely to survive\t \t \t \t  
+ Those who prep are superdramaticallly more likely to survive\t \t \t \t
 ============================================================
 
 That's what the internet told me.`

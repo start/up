@@ -21,7 +21,7 @@ Table: AND operator logic
           ]), [
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -54,7 +54,7 @@ Table:
 
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
@@ -84,7 +84,7 @@ Table
 
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
 
             new Up.Table.Row([
@@ -117,16 +117,16 @@ Chrono Cross;     1999`
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
@@ -136,11 +136,11 @@ Chrono Cross;     1999`
     const markup = `
 Table:
 
- \t  \t\t  \t              Release Date \t \t \t 
+ \t  \t\t  \t              Release Date \t \t \t
 
- \t Final Fantasy\t ;\t    1987 \t 
- \t Final Fantasy II\t ;\t 1988 \t 
- \t Chrono Trigger\t ;\t   1995 \t 
+ \t Final Fantasy\t ;\t    1987 \t
+ \t Final Fantasy II\t ;\t 1988 \t
+ \t Chrono Trigger\t ;\t   1995 \t
  \t Chrono Cross\t ;\t     1999 \t `
 
     expect(Up.parse(markup)).to.deep.equal(
@@ -151,16 +151,16 @@ Table:
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
@@ -186,7 +186,7 @@ Table: AND operator logic
           ]), [
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -214,7 +214,7 @@ Table: AND operator logic
           ]), [
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -242,7 +242,7 @@ Table: AND operator logic
           ]), [
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('true')]),
-              new Up.Table.Row.Cell([new Up.Text('false')]),
+              new Up.Table.Row.Cell([new Up.Text('false')])
             ], new Up.Table.Header.Cell([new Up.Text('1')])),
             new Up.Table.Row([
               new Up.Table.Row.Cell([new Up.Text('false')]),
@@ -277,16 +277,16 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.Paragraph([
@@ -317,16 +317,16 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.Paragraph([
@@ -358,16 +358,16 @@ I don't like video games; in fact, I never have.`
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ]),
         new Up.ThematicBreak(),
@@ -488,16 +488,16 @@ Chrono Cross;       1999`
             ])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1988')]),
+              new Up.Table.Row.Cell([new Up.Text('1988')])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))
@@ -551,7 +551,7 @@ Chrono Cross;           1999`
             new Up.Table.Header.Cell([new Up.Text('Release Date')])
           ]), [
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1987')]),
+              new Up.Table.Row.Cell([new Up.Text('1987')])
             ], new Up.Table.Header.Cell([
               new Up.Text('Final Fantasy '),
               new Up.NormalParenthetical([
@@ -564,13 +564,13 @@ Chrono Cross;           1999`
                 new Up.NormalParenthetical([
                   new Up.Text('(almost 1989)')
                 ])
-              ]),
+              ])
             ], new Up.Table.Header.Cell([new Up.Text('Final Fantasy II')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1995')]),
+              new Up.Table.Row.Cell([new Up.Text('1995')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Trigger')])),
             new Up.Table.Row([
-              new Up.Table.Row.Cell([new Up.Text('1999')]),
+              new Up.Table.Row.Cell([new Up.Text('1999')])
             ], new Up.Table.Header.Cell([new Up.Text('Chrono Cross')]))
           ])
       ]))

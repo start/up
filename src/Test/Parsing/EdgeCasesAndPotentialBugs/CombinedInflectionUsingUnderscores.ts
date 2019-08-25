@@ -17,7 +17,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
             new Up.Bold([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -33,7 +33,7 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
             new Up.Italic([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -49,8 +49,8 @@ describe('Inside of italiczed text, text that is bolded/again-italiczed at the s
             new Up.Italic([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
-          ]),
+            new Up.Text(' eating the cardboard')
+          ])
         ]),
         new Up.Bold([
           new Up.Text(' immediately')
@@ -66,7 +66,7 @@ describe('A start delimiter consisting of 3 underscores', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Italic([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -77,7 +77,7 @@ describe('A start delimiter consisting of 3 underscores', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Bold([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -91,7 +91,7 @@ describe('A start delimiter consisting of 1 underscore', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Italic([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -105,7 +105,7 @@ describe('A start delimiter consisting of 2 underscores', () => {
       insideDocumentAndParagraph([
         new Up.Text('A '),
         new Up.Bold([
-          new Up.Text('bread'),
+          new Up.Text('bread')
         ]),
         new Up.Text(' to believe in')
       ]))
@@ -123,7 +123,7 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
             new Up.Bold([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
+            new Up.Text(' eating the cardboard')
           ]),
           new Up.Text(' immediately')
         ])
@@ -155,8 +155,8 @@ describe('Inside of bolded text, text that is italiczed/again-bolded at the same
             new Up.Bold([
               new Up.Text('stop')
             ]),
-            new Up.Text(' eating the cardboard'),
-          ]),
+            new Up.Text(' eating the cardboard')
+          ])
         ]),
         new Up.Italic([
           new Up.Text(' immediately')
@@ -259,7 +259,7 @@ describe('A start delimiter consisting of 4+ underscores, with an italics conven
               new Up.Text('Xamarin')
             ]),
             new Up.Text(' is now free')
-          ]),
+          ])
         ]),
         new Up.Text('!')
       ]))
@@ -295,7 +295,7 @@ describe('A start delimiter consisting of 5+ underscores, with an italics conven
               new Up.Text('Xamarin')
             ]),
             new Up.Text(' is now free')
-          ]),
+          ])
         ]),
         new Up.Text('!')
       ]))

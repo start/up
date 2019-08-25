@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import * as Up from '../../Main'
 import { concat } from '../../CollectionHelpers'
+import * as Up from '../../Main'
 
 
 export function insideDocumentAndParagraph(nodes: Up.InlineSyntaxNode[]): Up.Document {
@@ -67,7 +67,7 @@ export function expectEveryPermutationOfBrackets(
 }
 
 
-// Returns every permutation of the different values for each segment, each prefixed by `prefix`. 
+// Returns every permutation of the different values for each segment, each prefixed by `prefix`.
 //
 // If `prefix` is '(image: puppy)', and if `valuesBySegment` is:
 //
