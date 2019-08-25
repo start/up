@@ -1,5 +1,4 @@
 import { NormalizedSettings } from '../../NormalizedSettings'
-import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { HeadingLeveler } from './HeadingLeveler'
 
 
@@ -8,5 +7,4 @@ export interface OutlineParserArgs {
   sourceLineNumber: number
   headingLeveler: HeadingLeveler
   settings: NormalizedSettings.Parsing
-  then: (parsedNodes: OutlineSyntaxNode[], countLinesConsumed: number) => void
 }

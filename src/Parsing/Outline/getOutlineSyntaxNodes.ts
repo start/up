@@ -6,6 +6,7 @@ import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { HeadingLeveler } from './HeadingLeveler'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
@@ -20,9 +21,7 @@ import { tryToParseThematicBreakStreak } from './tryToParseThematicBreakStreak'
 
 
 
-// This includes every outline convention except paragraphs and line blocks.
-//
-// Paragraphs and line blocks serve as a last resort if none of these conventions apply.
+// This includes every outline convention.
 const OUTLINE_CONVENTION_PARSERS = [
   tryToParseBlankLineSeparation,
   tryToParseBulletedList,
@@ -33,7 +32,8 @@ const OUTLINE_CONVENTION_PARSERS = [
   tryToParseBlockquote,
   tryToParseTable,
   tryToParseRevealableBlock,
-  tryToParseDescriptionList
+  tryToParseDescriptionList,
+  parseParagraphOrLineBlock
 ]
 
 
@@ -70,16 +70,23 @@ export function getOutlineSyntaxNodes(
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
-      settings,
-      then: (parsedNodes, countLinesConsumed) => {
+      settings
+    }
+
+    for (const parse of OUTLINE_CONVENTION_PARSERS) {
+      const result: OutlineParseResult = parse(outlineParserArgs)
+
+      if (result) {
         if (settings.createSourceMap) {
-          for (const node of parsedNodes) {
+          for (const node of result.parsedNodes) {
             node.sourceLineNumber = sourceLineNumber
           }
         }
 
-        nodes.push(...parsedNodes)
-        markupLineConsumer.skipLines(countLinesConsumed)
+        nodes.push(...result.parsedNodes)
+        markupLineConsumer.skipLines(result.countLinesConsumed)
+
+        break
       }
     }
 

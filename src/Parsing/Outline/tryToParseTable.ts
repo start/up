@@ -6,6 +6,7 @@ import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // Tables start with a "label line". The label line consists of the configurable
@@ -55,7 +56,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // 2. An empty cell is automatically added to the beginning of the table's header
 //    row (the top left corner, above the header column).
 
-export function tryToParseTable(args: OutlineParserArgs): boolean {
+export function tryToParseTable(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { settings } = args
@@ -67,7 +68,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     markupLineConsumer.consumeLineIfMatches(labelPattern)
 
   if (!labelLineResult) {
-    return false
+    return null
   }
 
   const [captionPart] = labelLineResult.captures
@@ -85,7 +86,7 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     markupLineConsumer.consumeLineIfMatches(NON_BLANK_PATTERN)
 
   if (!headerRowResult) {
-    return false
+    return null
   }
 
   // As a rule, if a table's header row is indented, it indicates the table should
@@ -144,11 +145,10 @@ export function tryToParseTable(args: OutlineParserArgs): boolean {
     countLinesConsumed = markupLineConsumer.countLinesConsumed
   }
 
-  args.then(
-    [new Table(header, rows, caption)],
-    countLinesConsumed)
-
-  return true
+  return {
+    parsedNodes: [new Table(header, rows, caption)],
+    countLinesConsumed
+  }
 }
 
 

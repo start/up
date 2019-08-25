@@ -6,6 +6,7 @@ import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // Description lists are collections of subjects and descriptions.
@@ -21,7 +22,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 // trailing blank lines terminates the whole description list, not just the list item.
 //
 // TODO: Better handle edge-case of lines consisting solely of escaped whitespace.
-export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
+export function tryToParseDescriptionList(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: DescriptionList.Item[] = []
   let countLinesConsumed = 0
@@ -104,12 +105,11 @@ export function tryToParseDescriptionList(args: OutlineParserArgs): boolean {
   }
 
   if (!listItems.length) {
-    return false
+    return null
   }
 
-  args.then(
-    [new DescriptionList(listItems)],
-    countLinesConsumed)
-
-  return true
+  return {
+    parsedNodes: [new DescriptionList(listItems)],
+    countLinesConsumed
+  }
 }

@@ -4,6 +4,7 @@ import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any outline
@@ -11,7 +12,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // The space directly following the '>' can be omitted, but if it exists, it is considered part of
 // the delimiter (and is removed before parsing the blockquoted contents).
-export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
+export function tryToParseBlockquote(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const blockquotedLines: string[] = []
 
@@ -27,7 +28,7 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
   }
 
   if (!blockquotedLines.length) {
-    return false
+    return null
   }
 
   const { sourceLineNumber, headingLeveler } = args
@@ -39,11 +40,10 @@ export function tryToParseBlockquote(args: OutlineParserArgs): boolean {
     settings: args.settings
   })
 
-  args.then(
-    [new Blockquote(blockquoteChildren)],
-    markupLineConsumer.countLinesConsumed)
-
-  return true
+  return {
+    parsedNodes: [new Blockquote(blockquoteChildren)],
+    countLinesConsumed: markupLineConsumer.countLinesConsumed
+  }
 }
 
 

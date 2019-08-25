@@ -5,6 +5,7 @@ import { getIndentedBlock } from './getIndentedBlock'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // Bulleted lists are simply collections of bulleted list items.
@@ -14,7 +15,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
-export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
+export function tryToParseBulletedList(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const listItems: BulletedList.Item[] = []
 
@@ -59,14 +60,13 @@ export function tryToParseBulletedList(args: OutlineParserArgs): boolean {
   }
 
   if (!listItems.length) {
-    return false
+    return null
   }
 
-  args.then(
-    [new BulletedList(listItems)],
-    markupLineConsumer.countLinesConsumed)
-
-  return true
+  return {
+    parsedNodes: [new BulletedList(listItems)],
+    countLinesConsumed: markupLineConsumer.countLinesConsumed
+  }
 }
 
 const BULLETED_LINE_PATTERN =

@@ -34,7 +34,6 @@ export function isLineFancyOutlineConvention(markupLine: string, settings: Norma
       markupLines,
       settings,
       sourceLineNumber: DUMMY_SOURCE_LINE_NUMBER,
-      headingLeveler: DUMMY_HEADING_LEVELER,
-      then: () => { /* Do nothing */ }
+      headingLeveler: DUMMY_HEADING_LEVELER
     }))
 }

@@ -390,7 +390,7 @@ class Tokenizer {
 
       whenOpening,
 
-      whenClosing:context => {
+      whenClosing: context => {
         if (whenClosing) {
           whenClosing(context)
         }
@@ -686,7 +686,7 @@ class Tokenizer {
       insteadOfClosingOuterConventionsWhileOpen: () => this.handleTextAwareOfRawBrackets(),
       whenClosingItAlsoClosesInnerConventions: true,
 
-      whenClosing:context => {
+      whenClosing: context => {
         const url = this.settings.applySettingsToUrl(this.flushBufferedContent())
 
         if (this.probablyWasNotIntendedToBeAUrl(url)) {

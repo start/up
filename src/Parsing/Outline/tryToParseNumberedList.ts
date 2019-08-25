@@ -6,6 +6,7 @@ import { getIndentedBlock } from './getIndentedBlock'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // Numbered lists are simply collections of numbered list items.
@@ -15,7 +16,7 @@ import { OutlineParserArgs } from './OutlineParserArgs'
 //
 // List items don't need to be separated by blank lines, but when they are, 2 or more
 // blank lines terminates the whole list.
-export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
+export function tryToParseNumberedList(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const unparsedListItems: UnparsedListItem[] = []
 
@@ -61,7 +62,7 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
   }
 
   if (!isANumberedList(unparsedListItems)) {
-    return false
+    return null
   }
 
   const listItems = unparsedListItems.map(unparsedListItem => {
@@ -77,11 +78,10 @@ export function tryToParseNumberedList(args: OutlineParserArgs): boolean {
     return new NumberedList.Item(itemChildren, { ordinal })
   })
 
-  args.then(
-    [new NumberedList(listItems)],
-    markupLineConsumer.countLinesConsumed)
-
-  return true
+  return {
+    parsedNodes: [new NumberedList(listItems)],
+    countLinesConsumed: markupLineConsumer.countLinesConsumed
+  }
 }
 
 

@@ -3,7 +3,7 @@
 export class LineConsumer {
   private _countLinesConsumed = 0
 
-  constructor(private lines: string[]) { }
+                                       constructor(private lines: string[]) { }
 
   get countLinesConsumed(): number {
     return this._countLinesConsumed

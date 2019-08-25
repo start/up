@@ -7,6 +7,7 @@ import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 
 
@@ -19,7 +20,7 @@ import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 //   Violets are blue
 //   Lyrics have lines
 //   And addresses do, too
-export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
+export function parseParagraphOrLineBlock(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // We're going to keep gobbling lines until we encounter a terminating line (listed below).
@@ -104,20 +105,20 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): void {
 
     if (mediaPromotedToOutline.length) {
       // We're done! Let's include the promoted media nodes in our result.
-      args.then(
-        getAppropriateOutlineNodes(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
-        markupLineConsumer.countLinesConsumed)
-
-      return
+      return {
+        parsedNodes: getAppropriateOutlineNodes(inlineSyntaxNodesPerLine, mediaPromotedToOutline),
+        countLinesConsumed: markupLineConsumer.countLinesConsumed
+      }
     }
 
     // The current line survived the gauntlet!
     inlineSyntaxNodesPerLine.push(inlineSyntaxNodes)
   }
 
-  args.then(
-    getAppropriateOutlineNodes(inlineSyntaxNodesPerLine),
-    markupLineConsumer.countLinesConsumed)
+  return {
+    parsedNodes: getAppropriateOutlineNodes(inlineSyntaxNodesPerLine),
+    countLinesConsumed: markupLineConsumer.countLinesConsumed
+  }
 }
 
 

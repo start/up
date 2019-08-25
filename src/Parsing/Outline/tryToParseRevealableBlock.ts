@@ -4,13 +4,14 @@ import { getIndentedBlock } from './getIndentedBlock'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
 import { OutlineParserArgs } from './OutlineParserArgs'
+import { OutlineParseResult } from './OutlineParseResult'
 
 
 // A revealable block consists of a "label line" (a keyword followed by an optional colon) followed by
 // an indented block.
 //
 // A revealable block can contain any outline convention, and its label's keyword is case-insensitive.
-export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
+export function tryToParseRevealableBlock(args: OutlineParserArgs): OutlineParseResult {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const { keywords } = args.settings
 
@@ -19,7 +20,7 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
       either(...keywords.revealable.map(escapeForRegex)) + optional(':'))
 
   if (!markupLineConsumer.consumeLineIfMatches(labelLinePattern)) {
-    return false
+    return null
   }
 
   const indentedBlockResult = getIndentedBlock(markupLineConsumer.remaining())
@@ -32,7 +33,7 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
   }
 
   if (!contentLines.length) {
-    return false
+    return null
   }
 
   const children = getOutlineSyntaxNodes({
@@ -43,6 +44,8 @@ export function tryToParseRevealableBlock(args: OutlineParserArgs): boolean {
     settings: args.settings
   })
 
-  args.then([new RevealableBlock(children)], markupLineConsumer.countLinesConsumed)
-  return true
+  return {
+    parsedNodes: [new RevealableBlock(children)],
+    countLinesConsumed: markupLineConsumer.countLinesConsumed
+  }
 }
