@@ -3,15 +3,14 @@ import { RevealableBlock } from '../../SyntaxNodes/RevealableBlock'
 import { getIndentedBlock } from './getIndentedBlock'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // A revealable block consists of a "label line" (a keyword followed by an optional colon) followed by
 // an indented block.
 //
 // A revealable block can contain any outline convention, and its label's keyword is case-insensitive.
-export function tryToParseRevealableBlock(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseRevealableBlock(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const { keywords } = args.settings
 

@@ -5,8 +5,7 @@ import { Table } from '../../SyntaxNodes/Table'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { getTableCells } from './getTableCells'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // Tables start with a "label line". The label line consists of the configurable
@@ -56,7 +55,7 @@ import { OutlineParseResult } from './OutlineParseResult'
 // 2. An empty cell is automatically added to the beginning of the table's header
 //    row (the top left corner, above the header column).
 
-export function tryToParseTable(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseTable(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const { settings } = args

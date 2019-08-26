@@ -1,8 +1,7 @@
 import { streakOf } from '../../PatternHelpers'
 import { CodeBlock } from '../../SyntaxNodes/CodeBlock'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // Code blocks are surrounded (underlined and overlined) by matching streaks of backticks.
@@ -11,7 +10,7 @@ import { OutlineParseResult } from './OutlineParseResult'
 // the end of the current outline convention, if the code block is nested within one).
 //
 // Code blocks can contain streaks of backticks that aren't exactly as long as the enclosing streaks.
-export function tryToParseCodeBlock(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseCodeBlock(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   const startStreakResult =

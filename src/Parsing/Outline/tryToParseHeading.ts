@@ -4,8 +4,7 @@ import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isUnderlineConsistentWithOverline } from './HeadingLeveler'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // If text is underlined, it's treated as a heading.
@@ -27,7 +26,7 @@ import { OutlineParseResult } from './OutlineParseResult'
 // considered distinct from a heading without one, even if both headings use the same
 // combination of underline characters. Therefore, a heading with an overline will never
 // have the same level as a heading without an overline.
-export function tryToParseHeading(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseHeading(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // First, let's try to consume the optional overline...

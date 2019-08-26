@@ -6,8 +6,7 @@ import { Paragraph } from '../../SyntaxNodes/Paragraph'
 import { getInlineSyntaxNodes } from '../Inline/getInlineSyntaxNodes'
 import { isLineFancyOutlineConvention } from './isLineFancyOutlineConvention'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 
 
@@ -20,7 +19,7 @@ import { tryToPromoteMediaToOutline } from './tryToPromoteMediaToOutline'
 //   Violets are blue
 //   Lyrics have lines
 //   And addresses do, too
-export function parseParagraphOrLineBlock(args: OutlineParserArgs): OutlineParseResult {
+export function parseParagraphOrLineBlock(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   // We're going to keep gobbling lines until we encounter a terminating line (listed below).

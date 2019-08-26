@@ -1,15 +1,14 @@
 import { BLANK_PATTERN } from '../../Patterns'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 // Outline conventions (e.g. paragraphs, headings) are normally separated by 1 or 2 consecutive
 // blank lines. The blank lines themselves don't produce any syntax nodes.
 //
 // However, 3 or more consecutive blank lines indicates extra, purposeful separation between
 // outline conventions. We represent that separation with a `ThematicBreak` syntax node.
-export function tryToParseBlankLineSeparation(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseBlankLineSeparation(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   let countBlankLines = 0
 

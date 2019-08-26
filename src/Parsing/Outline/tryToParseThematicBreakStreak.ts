@@ -1,12 +1,11 @@
 import { DIVIDER_STREAK_PATTERN } from '../../Patterns'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // A horizontal streak of characters indicates purposeful separation between outline conventions.
-export function tryToParseThematicBreakStreak(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseThematicBreakStreak(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
 
   if (!markupLineConsumer.consumeLineIfMatches(DIVIDER_STREAK_PATTERN)) {

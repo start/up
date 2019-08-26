@@ -5,8 +5,7 @@ import { OutlineSyntaxNode } from '../../SyntaxNodes/OutlineSyntaxNode'
 import { ThematicBreak } from '../../SyntaxNodes/ThematicBreak'
 import { HeadingLeveler } from './HeadingLeveler'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 import { parseParagraphOrLineBlock } from './parseParagraphOrLineBlock'
 import { tryToParseBlankLineSeparation } from './tryToParseBlankLineSeparation'
 import { tryToParseBlockquote } from './tryToParseBlockquote'
@@ -66,7 +65,7 @@ export function getOutlineSyntaxNodes(
     const sourceLineNumber =
       initialSourceLineNumber + markupLineConsumer.countLinesConsumed
 
-    const outlineParserArgs: OutlineParserArgs = {
+    const outlineParserArgs: OutlineParser.Args = {
       markupLines: markupLineConsumer.remaining(),
       sourceLineNumber,
       headingLeveler,
@@ -74,7 +73,7 @@ export function getOutlineSyntaxNodes(
     }
 
     for (const parse of OUTLINE_CONVENTION_PARSERS) {
-      const result: OutlineParseResult = parse(outlineParserArgs)
+      const result = parse(outlineParserArgs)
 
       if (result) {
         if (settings.createSourceMap) {

@@ -3,8 +3,7 @@ import { ANY_OPTIONAL_WHITESPACE } from '../../PatternPieces'
 import { Blockquote } from '../../SyntaxNodes/Blockquote'
 import { getOutlineSyntaxNodes } from './getOutlineSyntaxNodes'
 import { LineConsumer } from './LineConsumer'
-import { OutlineParserArgs } from './OutlineParserArgs'
-import { OutlineParseResult } from './OutlineParseResult'
+import { OutlineParser } from './OutlineParser'
 
 
 // Consecutive lines starting with "> " form a blockquote. Blockquotes can contain any outline
@@ -12,7 +11,7 @@ import { OutlineParseResult } from './OutlineParseResult'
 //
 // The space directly following the '>' can be omitted, but if it exists, it is considered part of
 // the delimiter (and is removed before parsing the blockquoted contents).
-export function tryToParseBlockquote(args: OutlineParserArgs): OutlineParseResult {
+export function tryToParseBlockquote(args: OutlineParser.Args): OutlineParser.Result {
   const markupLineConsumer = new LineConsumer(args.markupLines)
   const blockquotedLines: string[] = []
 
