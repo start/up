@@ -94,16 +94,9 @@ export function parseParagraphOrLineBlock(args: OutlineParserArgs): OutlineParse
 
     // Before we include the current line in our paragraph or line block, let's make sure the line
     // didn't conssist solely of media conventions (see list item 3 above).
-    let mediaPromotedToOutline: OutlineSyntaxNode[] = []
+    const mediaPromotedToOutline = tryToPromoteMediaToOutline(inlineSyntaxNodes)
 
-    tryToPromoteMediaToOutline({
-      inlineSyntaxNodes,
-      then: outlineNodes => {
-        mediaPromotedToOutline = outlineNodes
-      }
-    })
-
-    if (mediaPromotedToOutline.length) {
+    if (mediaPromotedToOutline) {
       // We're done! Let's include the promoted media nodes in our result.
       return {
         parsedNodes: getAppropriateOutlineNodes(inlineSyntaxNodesPerLine, mediaPromotedToOutline),

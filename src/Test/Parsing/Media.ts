@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import * as Up from '../../Main'
 
 
-context('If a line consists solely of media conventions, those media conventions are placed directly into the outline (rather than into a paragraph).', () => {
+context('If a line consists solely of media conventions and optional whitespace, those media conventions are placed directly into the outline (rather than into a paragraph) minus any whitespace.', () => {
   specify('This line can be a mix of all media conventions', () => {
     const markup =
       '[audio: ghostly howling][http://example.com/ghosts.ogg][image: haunted house][http://example.com/hauntedhouse.svg][video: ghosts eating luggage][http://example.com/poltergeists.webm] '

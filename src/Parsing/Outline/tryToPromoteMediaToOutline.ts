@@ -9,18 +9,14 @@ import { isWhitespace } from '../isWhitespace'
 //
 // If a media convention is "linkified", or if a link otherwise contains only media conventions (and
 // whitespace), the link counts as media. In that situation, the link itself is placed directly into
-// the outline.
+// the outline, minus any whitespace.
 export type InlineSyntaxNodePromotableToOutline =
   MediaSyntaxNode | Link
 
 
 export function tryToPromoteMediaToOutline(
-  args: {
-    inlineSyntaxNodes: InlineSyntaxNode[]
-    then: (promotedNodes: InlineSyntaxNodePromotableToOutline[]) => void
-  }
-): boolean {
-  const { inlineSyntaxNodes, then } = args
+  inlineSyntaxNodes: InlineSyntaxNode[]
+): null | InlineSyntaxNodePromotableToOutline[] {
   const promotedNodes: InlineSyntaxNodePromotableToOutline[] = []
 
   for (const inlineNode of inlineSyntaxNodes) {
@@ -30,29 +26,24 @@ export function tryToPromoteMediaToOutline(
     }
 
     if (inlineNode instanceof Link) {
-      const wasAbleToPromoteChildrenToOutline = tryToPromoteMediaToOutline({
-        inlineSyntaxNodes: inlineNode.children,
-        then: promotableChildren => {
-          promotedNodes.push(new Link(promotableChildren, inlineNode.url))
-        }
-      })
+      const linkedPromotableChildren = tryToPromoteMediaToOutline(inlineNode.children)
 
-      if (!wasAbleToPromoteChildrenToOutline) {
-        return false
+      if (!linkedPromotableChildren) {
+        return null
       }
+
+      // By creating a new link node, we omit any whitespace the existing link held.
+      promotedNodes.push(new Link(linkedPromotableChildren, inlineNode.url))
 
       continue
     }
 
     if (!isWhitespace(inlineNode)) {
-      return false
+      return null
     }
   }
 
-  if (promotedNodes.length) {
-    then(promotedNodes)
-    return true
-  }
-
-  return false
+  return promotedNodes.length
+    ? promotedNodes
+    : null
 }
